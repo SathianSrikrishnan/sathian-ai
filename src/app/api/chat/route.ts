@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { getMemoryContext } from '@/lib/memory'
 import { buildSystemPrompt } from '@/lib/prompts'
+import { detectConnectionIntent, notifyVisitorMessage } from '@/lib/notifications'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -84,6 +85,12 @@ export async function POST(request: NextRequest) {
     // Log first message of new conversations to Notion (fire and forget)
     if (!history || history.length === 0) {
       logToNotion(message, mode, 1)
+    }
+
+    // Check if visitor wants to connect/request something - notify Sathian
+    const connectionIntent = detectConnectionIntent(message)
+    if (connectionIntent) {
+      notifyVisitorMessage(connectionIntent)
     }
 
     return NextResponse.json({

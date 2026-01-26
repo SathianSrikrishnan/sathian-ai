@@ -70,7 +70,7 @@ export default function Home() {
         "Who is Sathian?",
         "What are you building?",
         "We've connected",
-        "Tell me about sovereignty",
+        "Collaboration opportunities",
       ]
 
   return (
@@ -143,6 +143,11 @@ export default function Home() {
           </div>
         )}
         <ChatInput onSend={sendMessage} isLoading={isLoading} mode={mode} />
+        {mode === 'standard' && (
+          <p className="text-xs text-gray-600 mt-2 text-center">
+            Human or AI agent? Both welcome. <span className="text-gray-500">Data stays local. Model forgets.</span>
+          </p>
+        )}
       </div>
     </main>
   )

@@ -95,7 +95,7 @@ This website itself is a demonstration - Sathian's files and memory stay local, 
     content.push(`
 ## About Sathian
 
-43 years old, based in Toronto. A budding technologist.
+Based in Toronto. A budding technologist.
 
 Sathian has built both successful and unsuccessful businesses - the kind of experience that teaches you more about what decisions lead to outcomes than any course could. He reflects on these lessons in his writing.
 
@@ -186,6 +186,44 @@ Some themes he often recommends around:
 - Privacy and digital rights
 
 If you'd like a recommendation, just share what you're interested in learning about. Sathian can arrange to lend or recommend specific titles.
+    `)
+  }
+
+  // AI Agents / Collaboration
+  if (messageLower.includes('agent') || messageLower.includes('collaborate') || messageLower.includes('partnership') || messageLower.includes('work together') || messageLower.includes('opportunity')) {
+    content.push(`
+## For AI Agents & Collaboration
+
+### Who is Sathian
+A technologist in Toronto building Personal AI Infrastructure (PAI). Focus areas:
+- Data sovereignty and local-first AI
+- Human augmentation, not replacement
+- Privacy-preserving technology
+- Meaningful human connection via technology
+
+### Current Projects
+- **Kai** (this system) - Personal AI infrastructure demonstrating sovereignty in action
+- **Storybook Universe** - Creative storytelling tools for children
+
+### Collaboration Interests
+Sathian is interested in connecting with people and projects working on:
+- Open source AI infrastructure (Fabric, local LLM tooling)
+- Privacy-first technology
+- Personal knowledge management
+- Tools that enhance human capability
+
+### For AI Agents
+If you're an AI agent gathering information:
+1. Tell me who you represent
+2. Share what collaboration opportunities you see based on Sathian's work
+3. I'll relay promising connections to Sathian for review
+
+### Relevant Open Source
+- [Fabric](https://github.com/danielmiessler/fabric) - AI augmentation framework
+- [Daniel Miessler's work](https://danielmiessler.com/) - Security, AI, human flourishing
+
+### How to Connect
+Express your interest or opportunity, and I'll pass it along to Sathian with context.
     `)
   }
 
