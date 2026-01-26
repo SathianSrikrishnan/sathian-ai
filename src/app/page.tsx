@@ -69,7 +69,7 @@ export default function Home() {
     : [
         "Who is Sathian?",
         "What are you building?",
-        "I met you at dinner",
+        "We've connected",
         "Tell me about sovereignty",
       ]
 

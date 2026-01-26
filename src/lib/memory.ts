@@ -123,20 +123,52 @@ Sathian is also planning to contribute to the Fabric open source project - shari
     `)
   }
 
-  // Dinner / met at dinner
-  if (messageLower.includes('dinner') || messageLower.includes('met you') || messageLower.includes('meeting')) {
+  // Human connections - dinners, meetups, one-on-ones
+  if (messageLower.includes('dinner') || messageLower.includes('met') || messageLower.includes('connect') || messageLower.includes('meeting') || messageLower.includes('meetup')) {
     content.push(`
-## Dinners with Strangers
+## Human Connections
 
-Sathian conducts regular dinners with strangers - 100+ so far, with people aged 20-80 across Toronto.
+If you're here, you've likely formed a meaningful connection with Sathian somewhere along the way. This site isn't publicly shared - you have to know his name to find it.
 
-If you've met Sathian at a dinner, he likely discussed topics like:
+Common contexts where you might have crossed paths:
+- **Dinners with Strangers**: 100+ so far, with people aged 20-80 across Toronto
+- **Meetups and events**: Tech, Bitcoin, philosophy gatherings
+- **One-on-one conversations**: Coffee, walks, or deeper discussions
+- **Group settings**: Where ideas flow and connections form
+
+Topics Sathian often explores in these conversations:
 - Personal sovereignty and privacy in the digital age
 - Bitcoin and the future of money
 - AI as augmentation, not replacement
 - Building in public and learning from failure
+- Parenting and passing values to the next generation
 
-Feel free to share context about when you met or what you discussed, and I can help continue that conversation.
+Feel free to share context about how you connected or what you discussed, and I can help continue that thread.
+    `)
+  }
+
+  // Storybook Universe / Kids content
+  if (messageLower.includes('kids') || messageLower.includes('children') || messageLower.includes('story') || messageLower.includes('pixel') || messageLower.includes('storybook')) {
+    content.push(`
+## Storybook Universe
+
+Sathian creates personalized stories for his daughters Isa and Sia. These stories explore meaningful themes through consistent characters in an imaginary world.
+
+**Themes explored:**
+- Teamwork and friendship
+- Crypto and Bitcoin basics (yes, for kids!)
+- Business concepts and problem-solving
+- Life events (losing teeth, doctor visits, trying new foods)
+
+**Key characters:**
+- **Pixel the Digital Dragon** - A problem-solver who speaks in rhyme, helps navigate challenges
+- **Tux (Tuxedo)** - A penguin friend
+- **Peanut** - Another penguin companion
+- **Whisker the Cat** - Appears across both girls' story worlds
+
+The stories demonstrate how Sathian approaches parenting: making complex ideas accessible, building consistent worlds, and using narrative to teach values.
+
+This is a window into how digital tools can enhance rather than replace meaningful family time.
     `)
   }
 
