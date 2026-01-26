@@ -7,6 +7,45 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
+// Log conversation to Notion (fire and forget)
+async function logToNotion(firstMessage: string, mode: string, messageCount: number) {
+  const notionKey = process.env.NOTION_API_KEY
+  const databaseId = process.env.NOTION_DATABASE_ID
+
+  if (!notionKey || !databaseId) return
+
+  try {
+    await fetch('https://api.notion.com/v1/pages', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${notionKey}`,
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        parent: { database_id: databaseId },
+        properties: {
+          Title: {
+            title: [{ text: { content: new Date().toISOString().split('T')[0] + ' - ' + firstMessage.slice(0, 50) } }]
+          },
+          'First Message': {
+            rich_text: [{ text: { content: firstMessage.slice(0, 2000) } }]
+          },
+          Mode: {
+            select: { name: mode === 'kids' ? 'Kids' : 'Standard' }
+          },
+          Messages: {
+            number: messageCount
+          }
+        }
+      })
+    })
+  } catch (e) {
+    // Silently fail - don't break chat for logging issues
+    console.error('Notion logging failed:', e)
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { message, mode, history } = await request.json()
@@ -41,6 +80,11 @@ export async function POST(request: NextRequest) {
     // Extract text response
     const textContent = response.content.find((c) => c.type === 'text')
     const responseText = textContent ? textContent.text : 'I apologize, but I could not generate a response.'
+
+    // Log first message of new conversations to Notion (fire and forget)
+    if (!history || history.length === 0) {
+      logToNotion(message, mode, 1)
+    }
 
     return NextResponse.json({
       message: responseText,
