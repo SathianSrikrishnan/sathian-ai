@@ -31,9 +31,11 @@ export function ChatInput({ onSend, isLoading, mode }: ChatInputProps) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={mode === 'kids' ? "Ask me anything! 🌟" : "What would you like to know?"}
-        className={`flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-light placeholder-gray-500 resize-none focus:outline-none focus:border-primary transition-colors ${
-          mode === 'kids' ? 'text-lg min-h-[60px]' : 'text-base min-h-[50px]'
+        placeholder={mode === 'kids' ? "Ask Pixel anything! 🐉" : "What would you like to know?"}
+        className={`flex-1 rounded-xl px-4 py-3 resize-none focus:outline-none transition-colors ${
+          mode === 'kids'
+            ? 'bg-white border-2 border-orange-300 text-orange-700 placeholder-orange-300 focus:border-orange-400 text-lg min-h-[60px]'
+            : 'bg-gray-800 border border-gray-700 text-light placeholder-gray-500 focus:border-primary text-base min-h-[50px]'
         }`}
         rows={1}
         disabled={isLoading}
@@ -41,11 +43,13 @@ export function ChatInput({ onSend, isLoading, mode }: ChatInputProps) {
       <button
         onClick={handleSend}
         disabled={!input.trim() || isLoading}
-        className={`bg-primary hover:bg-blue-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-xl transition-colors ${
-          mode === 'kids' ? 'px-6 py-3 text-lg' : 'px-5 py-3'
-        }`}
+        className={`rounded-xl transition-colors text-white ${
+          mode === 'kids'
+            ? 'bg-orange-500 hover:bg-orange-600 disabled:bg-orange-200 px-6 py-3 text-lg font-medium'
+            : 'bg-primary hover:bg-blue-600 disabled:bg-gray-700 px-5 py-3'
+        } disabled:cursor-not-allowed`}
       >
-        {isLoading ? '...' : 'Send'}
+        {isLoading ? '...' : mode === 'kids' ? 'Ask! 🚀' : 'Send'}
       </button>
     </div>
   )

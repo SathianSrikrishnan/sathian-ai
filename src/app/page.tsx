@@ -74,27 +74,34 @@ export default function Home() {
       ]
 
   return (
-    <main className="flex flex-col h-screen max-w-4xl mx-auto">
+    <main className={`flex flex-col h-screen max-w-4xl mx-auto transition-colors duration-300 ${mode === 'kids' ? 'theme-kids' : ''}`}>
       {/* Header */}
-      <header className="flex items-center justify-between p-4 border-b border-gray-800">
+      <header className={`flex items-center justify-between p-4 border-b ${mode === 'kids' ? 'border-orange-200 bg-gradient-to-r from-yellow-50 to-orange-50' : 'border-gray-800'}`}>
         <div>
-          <h1 className="text-xl font-semibold text-light">sathian.ai</h1>
-          <p className="text-sm text-gray-400">Second Brain Interface</p>
+          <h1 className={`text-xl font-semibold ${mode === 'kids' ? 'text-orange-600' : 'text-light'}`}>
+            {mode === 'kids' ? "🐉 Pixel's Corner" : 'sathian.ai'}
+          </h1>
+          <p className={`text-sm ${mode === 'kids' ? 'text-orange-400' : 'text-gray-400'}`}>
+            {mode === 'kids' ? 'Adventures await!' : 'Second Brain Interface'}
+          </p>
         </div>
         <ModeToggle mode={mode} onModeChange={setMode} />
       </header>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${mode === 'kids' ? 'bg-gradient-to-b from-yellow-50 to-orange-50' : ''}`}>
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
             <div className="space-y-2">
-              <h2 className="text-2xl font-semibold text-light">
-                {mode === 'kids' ? 'Hi there! 👋' : 'Welcome'}
+              {mode === 'kids' && (
+                <div className="text-6xl mb-4">🐉</div>
+              )}
+              <h2 className={`text-2xl font-semibold ${mode === 'kids' ? 'text-orange-600' : 'text-light'}`}>
+                {mode === 'kids' ? "Hi there, young explorer!" : 'Welcome'}
               </h2>
-              <p className="text-gray-400 max-w-md">
+              <p className={`max-w-md ${mode === 'kids' ? 'text-orange-500' : 'text-gray-400'}`}>
                 {mode === 'kids'
-                  ? "I'm Kai, Sathian's helper! Want to explore some stories or learn something cool?"
+                  ? "I'm Pixel the Digital Dragon! Want to explore some stories, learn about treasure (that's Bitcoin!), or go on an adventure?"
                   : "You're interacting with Sathian's second brain. This site isn't SEO-optimized — if you're here, you've likely met Sathian or someone who knows him."
                 }
               </p>
@@ -124,7 +131,7 @@ export default function Home() {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 border-t border-gray-800">
+      <div className={`p-4 border-t ${mode === 'kids' ? 'border-orange-200 bg-gradient-to-r from-yellow-50 to-orange-50' : 'border-gray-800'}`}>
         {messages.length > 0 && (
           <div className="mb-3">
             <QuickPrompts

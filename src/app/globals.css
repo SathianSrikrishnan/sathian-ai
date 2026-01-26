@@ -9,6 +9,35 @@
   --foreground: #F0F6FC;
   --primary: #0066FF;
   --accent: #00D4AA;
+  --card-bg: #161b22;
+  --border: #30363d;
+}
+
+/* Kids mode - sunshine theme */
+.theme-kids {
+  --background: #FFF8E7;
+  --foreground: #2D3748;
+  --primary: #F6AD55;
+  --accent: #68D391;
+  --card-bg: #FFFFFF;
+  --border: #E2E8F0;
+}
+
+.theme-kids body,
+.theme-kids {
+  background: linear-gradient(180deg, #FFF8E7 0%, #FEEBC8 100%);
+}
+
+.theme-kids ::-webkit-scrollbar-track {
+  background: #FED7AA;
+}
+
+.theme-kids ::-webkit-scrollbar-thumb {
+  background: #F6AD55;
+}
+
+.theme-kids ::-webkit-scrollbar-thumb:hover {
+  background: #ED8936;
 }
 
 * {
