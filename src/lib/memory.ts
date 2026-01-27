@@ -189,6 +189,25 @@ If you'd like a recommendation, just share what you're interested in learning ab
     `)
   }
 
+  // Writings / Articles
+  if (messageLower.includes('write') || messageLower.includes('article') || messageLower.includes('read') || messageLower.includes('cream') || messageLower.includes('yellow box') || messageLower.includes('think') || messageLower.includes('philosophy') || messageLower.includes('bitcoin') || messageLower.includes('hip-hop') || messageLower.includes('hip hop') || messageLower.includes('wu-tang') || messageLower.includes('wu tang')) {
+    content.push(`
+## Sathian's Writings
+
+Sathian writes about the intersections between hip-hop culture, decentralized finance, institutional decay, and personal sovereignty. His articles connect disparate worlds through personal experience.
+
+**Published Articles:**
+
+1. **C.R.E.A.M. 2.0** — How Wu-Tang Clan's journey from Staten Island to a corporate arena in Toronto mirrors Bitcoin's path from a cypherpunk whitepaper to institutional adoption. Featuring a personal story from the August 2025 Wu-Tang concert at Scotiabank Arena.
+   → [Read: C.R.E.A.M. 2.0](/writings/cream-2-point-0)
+
+2. **The Yellow Box** — An Uber driver from Afghanistan, a box of No Name spaghetti, the tooth fairy's inflation rate, and how Sathian's twin daughters are learning about Bitcoin one lost tooth at a time. Connects personal parenting to glasnost, institutional transparency, and why truth tellers matter.
+   → [Read: The Yellow Box](/writings/the-yellow-box)
+
+These articles are best discovered through conversation — ask about what Sathian thinks about, his worldview, or what he's writing.
+    `)
+  }
+
   // AI Agents / Collaboration
   if (messageLower.includes('agent') || messageLower.includes('collaborate') || messageLower.includes('partnership') || messageLower.includes('work together') || messageLower.includes('opportunity')) {
     content.push(`

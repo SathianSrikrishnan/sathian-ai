@@ -69,20 +69,20 @@ export default function Home() {
     : [
         "Who is Sathian?",
         "What are you building?",
-        "We've connected",
+        "Read: C.R.E.A.M. 2.0",
         "Collaboration opportunities",
       ]
 
   return (
     <main className={`flex flex-col h-screen max-w-4xl mx-auto transition-colors duration-300 ${mode === 'kids' ? 'theme-kids' : ''}`}>
       {/* Header */}
-      <header className={`flex items-center justify-between p-4 border-b ${mode === 'kids' ? 'border-orange-200 bg-gradient-to-r from-yellow-50 to-orange-50' : 'border-gray-800'}`}>
+      <header className={`flex items-center justify-between px-6 py-4 border-b ${mode === 'kids' ? 'border-orange-200 bg-gradient-to-r from-yellow-50 to-orange-50' : 'border-gray-800'}`}>
         <div>
-          <h1 className={`text-xl font-semibold ${mode === 'kids' ? 'text-orange-600' : 'text-light'}`}>
-            {mode === 'kids' ? "🐉 Pixel's Corner" : 'sathian.ai'}
+          <h1 className={`text-xl tracking-tight ${mode === 'kids' ? 'text-orange-600 font-semibold' : 'text-[#F0F6FC] font-mono font-medium'}`}>
+            {mode === 'kids' ? "Pixel's Corner" : 'sathian.ai'}
           </h1>
-          <p className={`text-sm ${mode === 'kids' ? 'text-orange-400' : 'text-gray-400'}`}>
-            {mode === 'kids' ? 'Adventures await!' : 'Second Brain Interface'}
+          <p className={`text-xs mt-0.5 ${mode === 'kids' ? 'text-orange-400' : 'text-gray-500 font-mono'}`}>
+            {mode === 'kids' ? 'Adventures await!' : 'second brain interface'}
           </p>
         </div>
         <ModeToggle mode={mode} onModeChange={setMode} />
@@ -91,20 +91,25 @@ export default function Home() {
       {/* Chat Area */}
       <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${mode === 'kids' ? 'bg-gradient-to-b from-yellow-50 to-orange-50' : ''}`}>
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-            <div className="space-y-2">
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+            <div className="space-y-3">
               {mode === 'kids' && (
                 <div className="text-6xl mb-4">🐉</div>
               )}
-              <h2 className={`text-2xl font-semibold ${mode === 'kids' ? 'text-orange-600' : 'text-light'}`}>
+              <h2 className={`text-2xl ${mode === 'kids' ? 'text-orange-600 font-semibold' : 'text-[#F0F6FC] font-light tracking-tight'}`}>
                 {mode === 'kids' ? "Hi there, young explorer!" : 'Welcome'}
               </h2>
-              <p className={`max-w-md ${mode === 'kids' ? 'text-orange-500' : 'text-gray-400'}`}>
+              <p className={`max-w-md text-sm leading-relaxed ${mode === 'kids' ? 'text-orange-500' : 'text-gray-500'}`}>
                 {mode === 'kids'
                   ? "I'm Pixel the Digital Dragon! Want to explore some stories, learn about treasure (that's Bitcoin!), or go on an adventure?"
                   : "You're interacting with Sathian's second brain. This site isn't SEO-optimized — if you're here, you've likely met Sathian or someone who knows him."
                 }
               </p>
+              {mode === 'standard' && (
+                <p className="text-xs text-gray-600 max-w-sm mt-2">
+                  Entrepreneur. Technologist. 20+ years of building.
+                </p>
+              )}
             </div>
 
             <QuickPrompts
@@ -144,8 +149,8 @@ export default function Home() {
         )}
         <ChatInput onSend={sendMessage} isLoading={isLoading} mode={mode} />
         {mode === 'standard' && (
-          <p className="text-xs text-gray-600 mt-2 text-center">
-            Human or AI agent? Both welcome. <span className="text-gray-500">Data stays local. Model forgets.</span>
+          <p className="text-xs text-gray-600 mt-2 text-center font-mono">
+            Human or AI agent — both welcome. <span className="text-gray-700">Data stays local. Model forgets.</span>
           </p>
         )}
       </div>
