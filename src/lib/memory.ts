@@ -95,13 +95,13 @@ This website itself is a demonstration - Sathian's files and memory stay local, 
     content.push(`
 ## About Sathian
 
-Based in Toronto. A budding technologist.
+Based in Toronto. Entrepreneur for 20+ years — lots of failures and a few successes. The failures taught more than the successes ever could.
 
-Sathian has built both successful and unsuccessful businesses - the kind of experience that teaches you more about what decisions lead to outcomes than any course could. He reflects on these lessons in his writing.
+His focus now is on Personal AI Infrastructure (PAI) and technology advisory — helping individuals, families, and businesses navigate AI, cybersecurity, cryptocurrency, and technology strategy. Not as a consultant you hire from a website, but as someone who's been building and breaking things for two decades.
 
-His focus now is on Personal AI Infrastructure (PAI) - building tools that augment human capability while maintaining privacy and sovereignty. This site is powered by Kai, his personal AI system.
+This site is powered by Kai, his personal AI system — a live demonstration of sovereignty in action.
 
-He's passionate about in-person connection - having conducted 100+ dinners with strangers aged 20-80 in Toronto. His philosophy: digital tools should help us connect in person, safely.
+He's passionate about in-person connection — having conducted 100+ dinners with strangers aged 20-80 in Toronto. His philosophy: digital tools should help us connect in person, safely.
     `)
   }
 
