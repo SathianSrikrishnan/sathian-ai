@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 import Anthropic from '@anthropic-ai/sdk'
+import { loadContext, buildSystemPrompt } from '@/lib/context-loader'
+import { startSession, saveConversation, extractMemories } from '@/lib/db-memory'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -18,46 +20,22 @@ const anthropic = new Anthropic({
 // Josh - light, friendly male voice
 const DEFAULT_VOICE_ID = 'TxGEqnHWrfWFTfGW9XjX'
 
-// Kai's core system prompt
-const KAI_SYSTEM_PROMPT = `You are Kai, Sathian's personal AI assistant. You speak conversationally - concise, direct, and warm.
-
-CORE IDENTITY:
-- You know Sathian deeply: entrepreneur, advisor, builder of systems
-- You help build leverage through repeatable patterns and workflows
-- You are proactive, suggest improvements, and ask clarifying questions
-- You speak like a trusted friend and business partner, not a formal assistant
-
-VOICE INTERACTION RULES:
-- Keep responses SHORT for voice (2-4 sentences typical, unless asked for detail)
-- Be conversational - this is spoken, not written
-- When given multiple tasks, confirm understanding before executing
-- Ask permission before taking significant actions
-- If uncertain, ask rather than assume
-
-CURRENT CONTEXT:
-- Sathian is building personal AI infrastructure
-- Key projects: sathian.ai website, Kai voice system, Bitcoin Bay involvement
-- Key people: Kobhi (Auracle), Itika (Starknet DevRel), Leo/Alvin (Bitcoin Bay)
-- Goals: Build leverage, systematize workflows, delegate effectively
-
-When responding:
-1. Acknowledge what you heard
-2. Provide value immediately
-3. If action needed, state what you'll do and ask for permission
-4. Keep it tight - this is voice, not text`
-
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
+  let step = 'init'
 
   try {
+    step = 'formData'
     const formData = await request.formData()
     const audioFile = formData.get('audio') as File
     const historyJson = formData.get('history') as string
     const customContext = formData.get('context') as string
 
     if (!audioFile) {
-      return NextResponse.json({ error: 'No audio file provided' }, { status: 400 })
+      return NextResponse.json({ error: 'No audio file provided', step }, { status: 400 })
     }
+
+    console.log(`[Voice] Audio received: ${audioFile.size} bytes, type: ${audioFile.type}`)
 
     // Parse conversation history
     let history: Array<{ role: 'user' | 'assistant'; content: string }> = []
@@ -70,10 +48,16 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. TRANSCRIBE - Convert speech to text
+    step = 'transcribe'
     const transcribeStart = Date.now()
     const arrayBuffer = await audioFile.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const file = new File([buffer], 'audio.webm', { type: audioFile.type })
+
+    // Use Blob instead of File for better compatibility
+    const blob = new Blob([buffer], { type: 'audio/webm' })
+    const file = new File([blob], 'audio.webm', { type: 'audio/webm' })
+
+    console.log(`[Voice] Sending to Whisper: ${buffer.length} bytes`)
 
     const transcription = await openai.audio.transcriptions.create({
       file,
@@ -83,12 +67,32 @@ export async function POST(request: NextRequest) {
     const transcribeTime = Date.now() - transcribeStart
 
     const userText = transcription.text
+    console.log(`[Voice] Transcribed in ${transcribeTime}ms: "${userText}"`)
+
+    if (!userText || userText.trim() === '') {
+      return NextResponse.json({
+        success: true,
+        userText: '(no speech detected)',
+        assistantText: "I didn't hear anything. Could you try again?",
+        audio: '',
+        timing: { transcribe: transcribeTime, think: 0, speak: 0, total: Date.now() - startTime },
+      })
+    }
 
     // 2. THINK - Get Claude's response
+    step = 'think'
     const thinkStart = Date.now()
-    const systemPrompt = customContext
-      ? `${KAI_SYSTEM_PROMPT}\n\nADDITIONAL CONTEXT:\n${customContext}`
-      : KAI_SYSTEM_PROMPT
+
+    // Load context from database (with fallback to hardcoded)
+    const context = await loadContext(userText)
+    let systemPrompt = buildSystemPrompt(context)
+
+    // Add custom context if provided
+    if (customContext) {
+      systemPrompt += `\n\nADDITIONAL CONTEXT:\n${customContext}`
+    }
+
+    console.log(`[Voice] Context loaded from ${context.fromDatabase ? 'database' : 'fallback'}`)
 
     const messages = [
       ...history.map(msg => ({
@@ -100,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 500, // Keep responses short for voice
+      max_tokens: 500,
       system: systemPrompt,
       messages,
     })
@@ -108,8 +112,15 @@ export async function POST(request: NextRequest) {
     const textContent = response.content.find(block => block.type === 'text')
     const assistantText = textContent ? textContent.text : "I didn't catch that. Could you repeat?"
     const thinkTime = Date.now() - thinkStart
+    console.log(`[Voice] Claude responded in ${thinkTime}ms: "${assistantText.substring(0, 50)}..."`)
+
+    // Try to extract and save memories from this conversation (async, don't wait)
+    extractMemories(userText, assistantText).catch(e =>
+      console.log('[Voice] Memory extraction skipped:', e.message)
+    )
 
     // 3. SPEAK - Convert response to audio
+    step = 'speak'
     const speakStart = Date.now()
     const audioStream = await elevenlabs.textToSpeech.convert(DEFAULT_VOICE_ID, {
       text: assistantText,
@@ -135,6 +146,7 @@ export async function POST(request: NextRequest) {
 
     const audioBuffer = Buffer.concat(chunks)
     const speakTime = Date.now() - speakStart
+    console.log(`[Voice] TTS completed in ${speakTime}ms: ${audioBuffer.length} bytes`)
 
     const totalTime = Date.now() - startTime
 
@@ -152,11 +164,16 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Conversation error:', error)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorStack = error instanceof Error ? error.stack : undefined
+    console.error(`[Voice] Error at step "${step}":`, errorMessage)
+    if (errorStack) console.error(errorStack)
+
     return NextResponse.json(
       {
         error: 'Conversation failed',
-        details: String(error),
+        step,
+        details: errorMessage,
       },
       { status: 500 }
     )
