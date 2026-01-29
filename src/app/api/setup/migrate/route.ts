@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { readFileSync, existsSync, readdirSync } from 'fs'
-import { join } from 'path'
-
-const KAI_CONTEXT_PATH = 'C:/Users/sathi/kai/context'
 
 interface ContextEntry {
   category: string
@@ -15,109 +11,8 @@ interface ContextEntry {
 }
 
 /**
- * Read a file safely
- */
-function readFile(path: string): string | null {
-  try {
-    if (!existsSync(path)) return null
-    return readFileSync(path, 'utf-8')
-  } catch {
-    return null
-  }
-}
-
-/**
- * Extract title from markdown content
- */
-function extractTitle(content: string, filename: string): string {
-  const match = content.match(/^#\s+(.+)$/m)
-  if (match) return match[1]
-  return filename.replace('.md', '').replace(/-/g, ' ')
-}
-
-/**
- * Determine importance based on file location and content
- */
-function determineImportance(path: string, content: string): number {
-  // Universal files are highest importance
-  if (path.includes('universal')) return 10
-
-  // Biography, goals, preferences are very important
-  if (path.includes('biography') || path.includes('goals') || path.includes('preferences')) return 9
-
-  // TELOS and knowledge files
-  if (path.includes('TELOS') || path.includes('knowledge')) return 8
-
-  // Tools/fobs are important for capabilities
-  if (path.includes('tools/fobs')) return 7
-
-  // Projects and roadmaps
-  if (path.includes('projects') || path.includes('roadmap')) return 6
-
-  // Agents
-  if (path.includes('agents')) return 5
-
-  // Default
-  return 5
-}
-
-/**
- * Categorize file based on path
- */
-function categorizeFile(path: string): { category: string; subcategory: string | null } {
-  const relativePath = path.replace(KAI_CONTEXT_PATH, '').replace(/^[/\\]/, '')
-
-  if (relativePath.startsWith('knowledge')) {
-    if (relativePath.includes('TELOS')) return { category: 'knowledge', subcategory: 'telos' }
-    if (relativePath.includes('social-media')) return { category: 'knowledge', subcategory: 'social-media' }
-    return { category: 'knowledge', subcategory: 'core' }
-  }
-
-  if (relativePath.startsWith('tools/fobs')) return { category: 'tools', subcategory: 'fobs' }
-  if (relativePath.startsWith('tools')) return { category: 'tools', subcategory: 'commands' }
-
-  if (relativePath.startsWith('agents')) return { category: 'agents', subcategory: null }
-
-  if (relativePath.startsWith('projects')) return { category: 'projects', subcategory: 'planning' }
-
-  if (relativePath.startsWith('roadmap')) return { category: 'roadmap', subcategory: null }
-
-  if (relativePath.startsWith('telos')) return { category: 'telos', subcategory: null }
-
-  if (relativePath.startsWith('substrate')) return { category: 'substrate', subcategory: null }
-
-  if (relativePath.startsWith('storybook')) return { category: 'storybook', subcategory: null }
-
-  if (relativePath.startsWith('fabric-workflows')) return { category: 'workflows', subcategory: 'fabric' }
-
-  if (relativePath.startsWith('writings')) return { category: 'writings', subcategory: null }
-
-  if (relativePath === 'universal.md') return { category: 'universal', subcategory: 'identity' }
-
-  return { category: 'other', subcategory: null }
-}
-
-/**
- * Recursively get all markdown files in a directory
- */
-function getAllMarkdownFiles(dir: string, files: string[] = []): string[] {
-  if (!existsSync(dir)) return files
-
-  const items = readdirSync(dir, { withFileTypes: true })
-  for (const item of items) {
-    const fullPath = join(dir, item.name)
-    if (item.isDirectory() && !item.name.startsWith('.') && item.name !== 'node_modules') {
-      getAllMarkdownFiles(fullPath, files)
-    } else if (item.isFile() && item.name.endsWith('.md')) {
-      files.push(fullPath)
-    }
-  }
-
-  return files
-}
-
-/**
- * POST /api/setup/migrate - Migrate kai/context to Supabase
+ * POST /api/setup/migrate - Import context entries to Supabase
+ * Accepts an array of context entries in the request body
  */
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
@@ -147,29 +42,28 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get all markdown files
-    const files = getAllMarkdownFiles(KAI_CONTEXT_PATH)
-    console.log(`[Migrate] Found ${files.length} markdown files`)
+    // Get entries from request body
+    const body = await request.json()
+    const entries: ContextEntry[] = body.entries || []
 
-    // Process each file
-    for (const filePath of files) {
-      const content = readFile(filePath)
-      if (!content || content.trim().length < 50) {
+    if (entries.length === 0) {
+      return NextResponse.json(
+        {
+          error: 'No entries provided',
+          instructions:
+            'Run the local migration script: node scripts/migrate-context.js',
+        },
+        { status: 400 }
+      )
+    }
+
+    console.log(`[Migrate] Processing ${entries.length} entries`)
+
+    // Process each entry
+    for (const entry of entries) {
+      if (!entry.content || entry.content.trim().length < 50) {
         results.skipped++
         continue
-      }
-
-      const { category, subcategory } = categorizeFile(filePath)
-      const title = extractTitle(content, filePath.split(/[/\\]/).pop() || 'Unknown')
-      const importance = determineImportance(filePath, content)
-
-      const entry: ContextEntry = {
-        category,
-        subcategory,
-        title,
-        content: content.slice(0, 50000), // Limit content size
-        source_file: filePath.replace(KAI_CONTEXT_PATH, '').replace(/^[/\\]/, ''),
-        importance,
       }
 
       // Check if already exists
@@ -184,9 +78,11 @@ export async function POST(request: NextRequest) {
         const { error } = await supabaseAdmin
           .from('context')
           .update({
-            content: entry.content,
+            content: entry.content.slice(0, 50000),
             title: entry.title,
             importance: entry.importance,
+            category: entry.category,
+            subcategory: entry.subcategory,
           })
           .eq('source_file', entry.source_file)
 
@@ -198,7 +94,10 @@ export async function POST(request: NextRequest) {
         }
       } else {
         // Insert new
-        const { error } = await supabaseAdmin.from('context').insert(entry)
+        const { error } = await supabaseAdmin.from('context').insert({
+          ...entry,
+          content: entry.content.slice(0, 50000),
+        })
 
         if (error) {
           results.failed++
@@ -215,7 +114,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: `Migration complete in ${totalTime}ms`,
       results,
-      totalFiles: files.length,
+      totalEntries: entries.length,
     })
   } catch (error) {
     return NextResponse.json(
@@ -233,7 +132,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET() {
   try {
-    const { data, error, count } = await supabaseAdmin
+    const { error, count } = await supabaseAdmin
       .from('context')
       .select('category', { count: 'exact' })
 

@@ -10,22 +10,9 @@ interface MigrationStatus {
   instructions?: string
 }
 
-interface MigrationResult {
-  success: boolean
-  message?: string
-  error?: string
-  results?: {
-    success: number
-    skipped: number
-    failed: number
-    errors: string[]
-  }
-}
 
 export default function SetupPage() {
   const [status, setStatus] = useState<MigrationStatus | null>(null)
-  const [migrating, setMigrating] = useState(false)
-  const [result, setResult] = useState<MigrationResult | null>(null)
 
   const checkStatus = async () => {
     try {
@@ -34,21 +21,6 @@ export default function SetupPage() {
       setStatus(data)
     } catch {
       setStatus({ status: 'error', message: 'Failed to check status' })
-    }
-  }
-
-  const runMigration = async () => {
-    setMigrating(true)
-    setResult(null)
-    try {
-      const res = await fetch('/api/setup/migrate', { method: 'POST' })
-      const data = await res.json()
-      setResult(data)
-      checkStatus()
-    } catch (e) {
-      setResult({ success: false, error: String(e) })
-    } finally {
-      setMigrating(false)
     }
   }
 
@@ -162,42 +134,30 @@ export default function SetupPage() {
           </h2>
 
           <p className="text-slate-300 mb-4">
-            Load context from kai/context folder into the database.
+            Run the migration script locally to load kai/context into the database.
+          </p>
+
+          <div className="bg-slate-800 rounded p-4 mb-4">
+            <p className="text-sm text-slate-400 mb-2">Run in terminal:</p>
+            <code className="text-green-400 text-sm block">
+              cd C:/Users/sathi/sathian-ai
+            </code>
+            <code className="text-green-400 text-sm block mt-1">
+              node scripts/migrate-context.js
+            </code>
+          </div>
+
+          <p className="text-sm text-slate-400">
+            This reads from your local kai/context folder and uploads to Supabase.
+            After running, refresh this page to see the imported records.
           </p>
 
           <button
-            onClick={runMigration}
-            disabled={migrating || status?.status !== 'ready'}
-            className={`px-4 py-2 rounded font-medium transition-colors ${
-              migrating || status?.status !== 'ready'
-                ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-500 text-white'
-            }`}
+            onClick={checkStatus}
+            className="mt-4 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm transition-colors"
           >
-            {migrating ? 'Migrating...' : 'Run Migration'}
+            Refresh Status
           </button>
-
-          {result && (
-            <div className={`mt-4 p-4 rounded ${result.success ? 'bg-green-900/50' : 'bg-red-900/50'}`}>
-              {result.success ? (
-                <div>
-                  <p className="text-green-400 font-medium">{result.message}</p>
-                  {result.results && (
-                    <div className="mt-2 text-sm text-slate-300">
-                      <p>Imported: {result.results.success}</p>
-                      <p>Skipped: {result.results.skipped}</p>
-                      <p>Failed: {result.results.failed}</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="text-red-400">
-                  <p className="font-medium">Migration failed</p>
-                  <p className="text-sm mt-1">{result.error}</p>
-                </div>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Voice Test Link */}
