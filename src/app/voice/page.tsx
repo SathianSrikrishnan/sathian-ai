@@ -23,6 +23,7 @@ export default function VoicePage() {
   const [lastTiming, setLastTiming] = useState<Timing | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [recordMode, setRecordMode] = useState<'hold' | 'tap'>('hold')
+  const [playbackSpeed, setPlaybackSpeed] = useState(2.0) // 2x playback speed
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -102,7 +103,7 @@ export default function VoicePage() {
       const formData = new FormData()
       formData.append('audio', audioBlob, 'recording.webm')
       formData.append('history', JSON.stringify(messages.slice(-10)))
-      formData.append('speed', '4.0') // 4x max speed
+      formData.append('speed', '1.2') // ElevenLabs max (1.2x), browser does the rest
 
       const response = await fetch('/api/voice/conversation', {
         method: 'POST',
@@ -133,6 +134,7 @@ export default function VoicePage() {
         const audioUrl = URL.createObjectURL(audioBlob)
 
         audioRef.current.src = audioUrl
+        audioRef.current.playbackRate = playbackSpeed // Apply speed multiplier
         audioRef.current.play()
         setIsPlaying(true)
       }
@@ -308,6 +310,24 @@ export default function VoicePage() {
             >
               {recordMode === 'hold' ? '🎤 Hold Mode' : '🎙️ Tap Mode'}
             </button>
+
+            {/* Speed control */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-zinc-500">Speed:</span>
+              {[1.5, 2, 2.5, 3].map((speed) => (
+                <button
+                  key={speed}
+                  onClick={() => setPlaybackSpeed(speed)}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-all ${
+                    playbackSpeed === speed
+                      ? 'bg-blue-600/30 text-blue-400 border border-blue-500/30'
+                      : 'bg-zinc-800/50 text-zinc-500 border border-zinc-700/50 hover:bg-zinc-800'
+                  }`}
+                >
+                  {speed}x
+                </button>
+              ))}
+            </div>
 
             {/* Skip button - only visible when playing */}
             {isPlaying && (

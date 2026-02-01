@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
     const speakStart = Date.now()
     // Speed parameter from request (default 1.35 = 35% faster)
     const speedParam = formData.get('speed') as string
-    const speed = speedParam ? parseFloat(speedParam) : 4.0
+    const speed = speedParam ? parseFloat(speedParam) : 1.2 // ElevenLabs max is 1.2
 
     const ttsResponse = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${DEFAULT_VOICE_ID}?output_format=mp3_44100_128`,
