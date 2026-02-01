@@ -102,7 +102,7 @@ export default function VoicePage() {
       const formData = new FormData()
       formData.append('audio', audioBlob, 'recording.webm')
       formData.append('history', JSON.stringify(messages.slice(-10)))
-      formData.append('speed', '2.0') // 2x speed - fast talker mode
+      formData.append('speed', '4.0') // 4x max speed
 
       const response = await fetch('/api/voice/conversation', {
         method: 'POST',
