@@ -56,11 +56,22 @@ export default function VoicePage() {
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
         stream.getTracks().forEach((track) => track.stop())
+
+        // Check if we actually captured audio
+        console.log(`[Voice] Recording stopped: ${audioChunksRef.current.length} chunks, ${audioBlob.size} bytes`)
+
+        if (audioBlob.size < 1000) {
+          setError('Recording too short or no audio captured. Try again.')
+          setIsProcessing(false)
+          return
+        }
+
         await processAudio(audioBlob)
       }
 
       mediaRecorderRef.current = mediaRecorder
-      mediaRecorder.start()
+      // Collect chunks every 1 second for reliable long recordings
+      mediaRecorder.start(1000)
       setIsRecording(true)
     } catch (err) {
       setError('Microphone access denied. Please allow microphone access.')
