@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 import Anthropic from '@anthropic-ai/sdk'
 import { loadContext, buildSystemPrompt } from '@/lib/context-loader'
 import { startSession, saveConversation, extractMemories } from '@/lib/db-memory'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-})
-
-const elevenlabs = new ElevenLabsClient({
-  apiKey: process.env.ELEVENLABS_API_KEY,
 })
 
 const anthropic = new Anthropic({
@@ -119,32 +114,41 @@ export async function POST(request: NextRequest) {
       console.log('[Voice] Memory extraction skipped:', e.message)
     )
 
-    // 3. SPEAK - Convert response to audio
+    // 3. SPEAK - Convert response to audio using raw API (supports speed parameter)
     step = 'speak'
     const speakStart = Date.now()
-    const audioStream = await elevenlabs.textToSpeech.convert(DEFAULT_VOICE_ID, {
-      text: assistantText,
-      modelId: 'eleven_turbo_v2_5',
-      outputFormat: 'mp3_44100_128',
-      voiceSettings: {
-        stability: 0.5,
-        similarityBoost: 0.75,
-        style: 0.4,
-        useSpeakerBoost: true,
-      },
-    })
+    // Speed parameter from request (default 1.35 = 35% faster)
+    const speedParam = formData.get('speed') as string
+    const speed = speedParam ? parseFloat(speedParam) : 1.35
 
-    // Convert stream to buffer
-    const reader = audioStream.getReader()
-    const chunks: Uint8Array[] = []
+    const ttsResponse = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${DEFAULT_VOICE_ID}?output_format=mp3_44100_128`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xi-api-key': process.env.ELEVENLABS_API_KEY || '',
+        },
+        body: JSON.stringify({
+          text: assistantText,
+          model_id: 'eleven_turbo_v2_5',
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75,
+            style: 0.4,
+            use_speaker_boost: true,
+          },
+          speed, // 0.25 to 4.0, default 1.0 - we use 1.35 for 35% faster
+        }),
+      }
+    )
 
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      if (value) chunks.push(value)
+    if (!ttsResponse.ok) {
+      const errorText = await ttsResponse.text()
+      throw new Error(`ElevenLabs TTS failed: ${ttsResponse.status} - ${errorText}`)
     }
 
-    const audioBuffer = Buffer.concat(chunks)
+    const audioBuffer = Buffer.from(await ttsResponse.arrayBuffer())
     const speakTime = Date.now() - speakStart
     console.log(`[Voice] TTS completed in ${speakTime}ms: ${audioBuffer.length} bytes`)
 
