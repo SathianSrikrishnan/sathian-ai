@@ -7,30 +7,34 @@ export default function ToothFairyLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Override html and body background when this layout mounts
+  // Override CSS variables when this layout mounts
   useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
+    const root = document.documentElement;
 
     // Store originals
-    const originalHtmlBg = html.style.background;
-    const originalBodyBg = body.style.background;
-    const originalBodyColor = body.style.color;
+    const originalBg = root.style.getPropertyValue('--background');
+    const originalFg = root.style.getPropertyValue('--foreground');
 
-    // Apply light backgrounds
-    html.style.background = '#FFFDF7';
-    body.style.background = '#FFFDF7';
-    body.style.color = '#5D4E37';
+    // Override CSS variables
+    root.style.setProperty('--background', '#FFFDF7');
+    root.style.setProperty('--foreground', '#5D4E37');
 
     return () => {
-      html.style.background = originalHtmlBg;
-      body.style.background = originalBodyBg;
-      body.style.color = originalBodyColor;
+      if (originalBg) {
+        root.style.setProperty('--background', originalBg);
+      } else {
+        root.style.removeProperty('--background');
+      }
+      if (originalFg) {
+        root.style.setProperty('--foreground', originalFg);
+      } else {
+        root.style.removeProperty('--foreground');
+      }
     };
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFDF7' }}>
+    <div style={{ minHeight: '100vh' }}>
       {children}
     </div>
   );
