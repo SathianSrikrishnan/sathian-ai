@@ -1,31 +1,29 @@
-import type { Metadata } from 'next'
+'use client';
 
-export const metadata: Metadata = {
-  title: "The Tooth Fairy's Secret Project",
-  description: 'Track your lost teeth and discover animal teeth secrets!',
-}
+import { useEffect } from 'react';
 
 export default function ToothFairyLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Override body background when this layout mounts
+  useEffect(() => {
+    const originalBg = document.body.style.background;
+    const originalColor = document.body.style.color;
+
+    document.body.style.background = '#FFFDF7';
+    document.body.style.color = '#5D4E37';
+
+    return () => {
+      document.body.style.background = originalBg;
+      document.body.style.color = originalColor;
+    };
+  }, []);
+
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background: '#FFFDF7',
-        minHeight: '100vh',
-        minWidth: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: 'auto'
-      }}
-    >
+    <div style={{ minHeight: '100vh', background: '#FFFDF7' }}>
       {children}
     </div>
-  )
+  );
 }

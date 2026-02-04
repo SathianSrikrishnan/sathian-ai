@@ -13,7 +13,7 @@ export default function IsaPage() {
     <div
       style={{
         background: 'linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 50%, #CBD5E1 100%)',
-        minHeight: '100%'
+        minHeight: '100vh'
       }}
     >
       {/* Header */}

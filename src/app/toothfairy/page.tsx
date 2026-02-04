@@ -21,7 +21,7 @@ export default function ToothFairyLanding() {
       className="relative overflow-hidden"
       style={{
         background: 'linear-gradient(180deg, #FFFEF8 0%, #FFF8F0 50%, #FFEEDD 100%)',
-        minHeight: '100%'
+        minHeight: '100vh'
       }}
     >
       {/* Animated sparkles */}

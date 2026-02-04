@@ -13,7 +13,7 @@ export default function SiaPage() {
     <div
       style={{
         background: 'linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
-        minHeight: '100%'
+        minHeight: '100vh'
       }}
     >
       {/* Header */}
