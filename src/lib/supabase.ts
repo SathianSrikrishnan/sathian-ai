@@ -61,3 +61,63 @@ export interface Task {
   completed_at: string | null
   result: string | null
 }
+
+// ============================================
+// TOOTH FAIRY APP
+// ============================================
+
+export type ToothState = 'healthy' | 'wiggly' | 'lost'
+
+export interface ToothRecord {
+  id?: string
+  child_name: string
+  tooth_position: number
+  state: ToothState
+  updated_at?: string
+}
+
+// Save tooth state
+export async function saveToothState(childName: string, position: number, state: ToothState) {
+  const { data, error } = await supabase
+    .from('tooth_states')
+    .upsert({
+      child_name: childName,
+      tooth_position: position,
+      state: state,
+      updated_at: new Date().toISOString()
+    }, {
+      onConflict: 'child_name,tooth_position'
+    })
+
+  if (error) console.error('Error saving tooth state:', error)
+  return { data, error }
+}
+
+// Get all tooth states for a child
+export async function getToothStates(childName: string): Promise<ToothRecord[]> {
+  const { data, error } = await supabase
+    .from('tooth_states')
+    .select('*')
+    .eq('child_name', childName)
+
+  if (error) {
+    console.error('Error fetching tooth states:', error)
+    return []
+  }
+  return data || []
+}
+
+// Count lost teeth for a child
+export async function countLostTeeth(childName: string): Promise<number> {
+  const { count, error } = await supabase
+    .from('tooth_states')
+    .select('*', { count: 'exact', head: true })
+    .eq('child_name', childName)
+    .eq('state', 'lost')
+
+  if (error) {
+    console.error('Error counting lost teeth:', error)
+    return 0
+  }
+  return count || 0
+}
