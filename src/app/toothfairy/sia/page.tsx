@@ -11,9 +11,9 @@ export default function SiaPage() {
 
   return (
     <div
-      className="min-h-screen"
       style={{
-        background: 'linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)'
+        background: 'linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
+        minHeight: '100%'
       }}
     >
       {/* Header */}

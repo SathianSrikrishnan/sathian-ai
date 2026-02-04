@@ -18,9 +18,10 @@ export default function ToothFairyLanding() {
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden"
+      className="relative overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #FFFEF8 0%, #FFF8F0 50%, #FFEEDD 100%)'
+        background: 'linear-gradient(180deg, #FFFEF8 0%, #FFF8F0 50%, #FFEEDD 100%)',
+        minHeight: '100%'
       }}
     >
       {/* Animated sparkles */}
