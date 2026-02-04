@@ -36,24 +36,28 @@ export default function TeethMouth({ childName, onLostTeethChange }: TeethMouthP
   // Load saved states on mount
   useEffect(() => {
     async function loadStates() {
-      const records = await getToothStates(childName);
-      if (records.length > 0) {
-        const newStates = [...teethStates];
-        records.forEach((r) => {
-          if (r.tooth_position >= 0 && r.tooth_position < 20) {
-            newStates[r.tooth_position] = r.state;
-          }
-        });
-        setTeethStates(newStates);
+      try {
+        const records = await getToothStates(childName);
+        if (records.length > 0) {
+          const newStates: ToothState[] = Array(20).fill('healthy');
+          records.forEach((r) => {
+            if (r.tooth_position >= 0 && r.tooth_position < 20) {
+              newStates[r.tooth_position] = r.state;
+            }
+          });
+          setTeethStates(newStates);
 
-        // Notify parent of lost teeth count
-        const lostCount = newStates.filter(s => s === 'lost').length;
-        onLostTeethChange?.(lostCount);
+          // Notify parent of lost teeth count
+          const lostCount = newStates.filter(s => s === 'lost').length;
+          onLostTeethChange?.(lostCount);
+        }
+      } catch (error) {
+        console.error('Error loading tooth states:', error);
       }
       setLoading(false);
     }
     loadStates();
-  }, [childName]);
+  }, [childName, onLostTeethChange]);
 
   const cycleToothState = async (index: number) => {
     const currentState = teethStates[index];
