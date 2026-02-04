@@ -7,17 +7,25 @@ export default function ToothFairyLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Override body background when this layout mounts
+  // Override html and body background when this layout mounts
   useEffect(() => {
-    const originalBg = document.body.style.background;
-    const originalColor = document.body.style.color;
+    const html = document.documentElement;
+    const body = document.body;
 
-    document.body.style.background = '#FFFDF7';
-    document.body.style.color = '#5D4E37';
+    // Store originals
+    const originalHtmlBg = html.style.background;
+    const originalBodyBg = body.style.background;
+    const originalBodyColor = body.style.color;
+
+    // Apply light backgrounds
+    html.style.background = '#FFFDF7';
+    body.style.background = '#FFFDF7';
+    body.style.color = '#5D4E37';
 
     return () => {
-      document.body.style.background = originalBg;
-      document.body.style.color = originalColor;
+      html.style.background = originalHtmlBg;
+      body.style.background = originalBodyBg;
+      body.style.color = originalBodyColor;
     };
   }, []);
 
