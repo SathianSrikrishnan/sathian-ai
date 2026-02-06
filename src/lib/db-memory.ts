@@ -5,12 +5,17 @@ import { supabaseAdmin, Memory, Session, Conversation } from './supabase'
  * Complements the file-based memory.ts with persistent storage
  */
 
+function getAdmin() {
+  if (!supabaseAdmin) throw new Error('supabaseAdmin not available on client')
+  return supabaseAdmin
+}
+
 /**
  * Start a new conversation session
  */
 export async function startSession(mode: Session['mode'] = 'default'): Promise<string | null> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getAdmin()
       .from('sessions')
       .insert({ mode })
       .select('id')
@@ -33,7 +38,7 @@ export async function startSession(mode: Session['mode'] = 'default'): Promise<s
  */
 export async function endSession(sessionId: string, summary?: string): Promise<void> {
   try {
-    await supabaseAdmin
+    await getAdmin()
       .from('sessions')
       .update({
         ended_at: new Date().toISOString(),
@@ -58,7 +63,7 @@ export async function saveConversation(
 
   try {
     // Save the conversation
-    const { error: insertError } = await supabaseAdmin.from('conversations').insert({
+    const { error: insertError } = await getAdmin().from('conversations').insert({
       session_id: sessionId,
       role,
       content,
@@ -71,14 +76,14 @@ export async function saveConversation(
     }
 
     // Update message count manually (no RPC needed)
-    const { data } = await supabaseAdmin
+    const { data } = await getAdmin()
       .from('sessions')
       .select('message_count')
       .eq('id', sessionId)
       .single()
 
     if (data) {
-      await supabaseAdmin
+      await getAdmin()
         .from('sessions')
         .update({ message_count: (data.message_count || 0) + 1 })
         .eq('id', sessionId)
@@ -93,7 +98,7 @@ export async function saveConversation(
  */
 export async function getRecentConversations(limit: number = 10): Promise<Conversation[]> {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getAdmin()
       .from('conversations')
       .select('*')
       .order('timestamp', { ascending: false })
@@ -121,7 +126,7 @@ export async function saveMemory(
   importance: number = 5
 ): Promise<void> {
   try {
-    const { error } = await supabaseAdmin
+    const { error } = await getAdmin()
       .from('memory')
       .upsert(
         {
@@ -147,7 +152,7 @@ export async function saveMemory(
  */
 export async function getMemories(category?: string): Promise<Memory[]> {
   try {
-    let query = supabaseAdmin
+    let query = getAdmin()
       .from('memory')
       .select('*')
       .order('importance', { ascending: false })
@@ -176,14 +181,14 @@ export async function getMemories(category?: string): Promise<Memory[]> {
  */
 export async function touchMemory(key: string): Promise<void> {
   try {
-    const { data } = await supabaseAdmin
+    const { data } = await getAdmin()
       .from('memory')
       .select('times_referenced')
       .eq('key', key)
       .single()
 
     if (data) {
-      await supabaseAdmin
+      await getAdmin()
         .from('memory')
         .update({
           times_referenced: (data.times_referenced || 0) + 1,

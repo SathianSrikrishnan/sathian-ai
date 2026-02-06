@@ -1,0 +1,320 @@
+<svg viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- OPTION 2: TOY PLAYSET STYLE -->
+  <!-- Inspired by: Toca Boca, Fisher-Price, Playmobil -->
+  <!-- Chunky, rounded, plastic-like, bold primary colors, toy aesthetic -->
+
+  <defs>
+    <!-- Plastic shine effect -->
+    <linearGradient id="plasticShine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:white;stop-opacity:0.4"/>
+      <stop offset="30%" style="stop-color:white;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:black;stop-opacity:0.1"/>
+    </linearGradient>
+
+    <!-- Toy shadow -->
+    <filter id="toyShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#2D1B4E" flood-opacity="0.25"/>
+    </filter>
+
+    <!-- Glossy highlight for teeth -->
+    <linearGradient id="toothPlastic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="20%" style="stop-color:#FFF8F0"/>
+      <stop offset="100%" style="stop-color:#F0E6D8"/>
+    </linearGradient>
+
+    <!-- Pink gum plastic -->
+    <linearGradient id="gumPlastic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9EAA"/>
+      <stop offset="50%" style="stop-color:#FF7A8A"/>
+      <stop offset="100%" style="stop-color:#E85A6A"/>
+    </linearGradient>
+
+    <!-- Playset base -->
+    <linearGradient id="basePlastic" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5DADE2"/>
+      <stop offset="50%" style="stop-color:#3498DB"/>
+      <stop offset="100%" style="stop-color:#2980B9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- PLAYSET BASE - like a toy tray -->
+  <g filter="url(#toyShadow)">
+    <!-- Outer rim -->
+    <rect x="30" y="60" width="440" height="360" rx="30" fill="#2980B9"/>
+    <!-- Inner play area -->
+    <rect x="45" y="75" width="410" height="330" rx="22" fill="url(#basePlastic)"/>
+    <!-- Plastic shine overlay -->
+    <rect x="45" y="75" width="410" height="165" rx="22" fill="url(#plasticShine)"/>
+  </g>
+
+  <!-- TITLE - raised plastic letters -->
+  <g transform="translate(140, 40)">
+    <text font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="32" font-weight="bold">
+      <tspan fill="#FF6B6B" x="0" y="30">M</tspan>
+      <tspan fill="#FFE66D" x="30" y="30">y</tspan>
+      <tspan fill="#4ECDC4" x="55" y="30"> </tspan>
+      <tspan fill="#95E1D3" x="70" y="30">T</tspan>
+      <tspan fill="#FF6B6B" x="95" y="30">e</tspan>
+      <tspan fill="#FFE66D" x="120" y="30">e</tspan>
+      <tspan fill="#4ECDC4" x="145" y="30">t</tspan>
+      <tspan fill="#95E1D3" x="165" y="30">h</tspan>
+      <tspan fill="#FF6B6B" x="195" y="30">!</tspan>
+    </text>
+  </g>
+
+  <!-- UPPER GUM - chunky plastic piece -->
+  <g filter="url(#toyShadow)">
+    <path
+      d="M70 150
+         Q70 100, 150 90
+         Q250 80, 350 90
+         Q430 100, 430 150
+         L430 190
+         Q430 210, 350 215
+         Q250 220, 150 215
+         Q70 210, 70 190
+         Z"
+      fill="url(#gumPlastic)"
+    />
+    <!-- Highlight -->
+    <path
+      d="M80 150
+         Q80 110, 150 100
+         Q250 92, 350 100
+         Q420 110, 420 150"
+      fill="none" stroke="white" stroke-width="4" opacity="0.3"
+    />
+  </g>
+
+  <!-- UPPER TEETH - chunky toy teeth that look like they snap in -->
+
+  <!-- Tooth A -->
+  <g transform="translate(85, 130)" filter="url(#toyShadow)">
+    <rect width="36" height="65" rx="10" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="30" height="20" rx="8" fill="white" opacity="0.5"/>
+    <!-- Big simple eyes (like Toca Boca) -->
+    <circle cx="12" cy="28" r="6" fill="white"/>
+    <circle cx="24" cy="28" r="6" fill="white"/>
+    <circle cx="13" cy="29" r="3.5" fill="#2D3436"/>
+    <circle cx="25" cy="29" r="3.5" fill="#2D3436"/>
+    <circle cx="14" cy="27" r="1.5" fill="white"/>
+    <circle cx="26" cy="27" r="1.5" fill="white"/>
+    <!-- Simple curved smile -->
+    <path d="M10 42 Q18 50, 26 42" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth B -->
+  <g transform="translate(128, 120)" filter="url(#toyShadow)">
+    <rect width="34" height="70" rx="10" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="28" height="18" rx="7" fill="white" opacity="0.5"/>
+    <circle cx="11" cy="30" r="5" fill="white"/>
+    <circle cx="23" cy="30" r="5" fill="white"/>
+    <circle cx="12" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="24" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="13" cy="29" r="1.2" fill="white"/>
+    <circle cx="25" cy="29" r="1.2" fill="white"/>
+    <path d="M9 45 Q17 52, 25 45" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth C -->
+  <g transform="translate(169, 112)" filter="url(#toyShadow)">
+    <rect width="32" height="75" rx="9" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="26" height="16" rx="6" fill="white" opacity="0.5"/>
+    <circle cx="10" cy="30" r="5" fill="white"/>
+    <circle cx="22" cy="30" r="5" fill="white"/>
+    <circle cx="11" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="23" cy="31" r="3" fill="#2D3436"/>
+    <path d="M8 48 Q16 55, 24 48" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth D -->
+  <g transform="translate(208, 108)" filter="url(#toyShadow)">
+    <rect width="30" height="78" rx="8" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="24" height="15" rx="6" fill="white" opacity="0.5"/>
+    <circle cx="9" cy="30" r="5" fill="white"/>
+    <circle cx="21" cy="30" r="5" fill="white"/>
+    <circle cx="10" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="22" cy="31" r="3" fill="#2D3436"/>
+    <path d="M7 50 Q15 57, 23 50" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth E (LOST - empty slot with growing indicator) -->
+  <g transform="translate(245, 105)">
+    <!-- Empty socket hole -->
+    <rect width="32" height="82" rx="9" fill="#E85A6A"/>
+    <rect x="4" y="4" width="24" height="74" rx="7" fill="#C0392B" opacity="0.5"/>
+    <!-- Growing plant toy piece -->
+    <g transform="translate(16, 40)">
+      <ellipse cx="0" cy="25" rx="8" ry="6" fill="#27AE60"/>
+      <rect x="-3" y="0" width="6" height="28" rx="3" fill="#2ECC71"/>
+      <ellipse cx="-8" cy="10" rx="7" ry="5" fill="#27AE60" transform="rotate(-30)"/>
+      <ellipse cx="8" cy="5" rx="7" ry="5" fill="#27AE60" transform="rotate(30)"/>
+      <!-- Baby tooth emerging -->
+      <ellipse cx="0" cy="-8" rx="8" ry="10" fill="#FFF8F0"/>
+      <circle cx="-2" cy="-8" r="2" fill="#2D3436"/>
+      <circle cx="4" cy="-8" r="2" fill="#2D3436"/>
+    </g>
+    <!-- Sparkle stickers -->
+    <circle cx="30" cy="15" r="5" fill="#FFE66D"/>
+    <circle cx="-5" cy="25" r="4" fill="#FF6B6B"/>
+  </g>
+
+  <!-- Tooth F -->
+  <g transform="translate(284, 108)" filter="url(#toyShadow)">
+    <rect width="30" height="78" rx="8" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="24" height="15" rx="6" fill="white" opacity="0.5"/>
+    <circle cx="9" cy="30" r="5" fill="white"/>
+    <circle cx="21" cy="30" r="5" fill="white"/>
+    <circle cx="10" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="22" cy="31" r="3" fill="#2D3436"/>
+    <path d="M7 50 Q15 57, 23 50" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth G -->
+  <g transform="translate(321, 112)" filter="url(#toyShadow)">
+    <rect width="32" height="75" rx="9" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="26" height="16" rx="6" fill="white" opacity="0.5"/>
+    <circle cx="10" cy="30" r="5" fill="white"/>
+    <circle cx="22" cy="30" r="5" fill="white"/>
+    <circle cx="11" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="23" cy="31" r="3" fill="#2D3436"/>
+    <path d="M8 48 Q16 55, 24 48" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth H -->
+  <g transform="translate(360, 120)" filter="url(#toyShadow)">
+    <rect width="34" height="70" rx="10" fill="url(#toothPlastic)"/>
+    <rect x="3" y="3" width="28" height="18" rx="7" fill="white" opacity="0.5"/>
+    <circle cx="11" cy="30" r="5" fill="white"/>
+    <circle cx="23" cy="30" r="5" fill="white"/>
+    <circle cx="12" cy="31" r="3" fill="#2D3436"/>
+    <circle cx="24" cy="31" r="3" fill="#2D3436"/>
+    <path d="M9 45 Q17 52, 25 45" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth I (WIGGLY - tilted with worried face) -->
+  <g transform="translate(401, 130) rotate(-8)" filter="url(#toyShadow)">
+    <rect width="36" height="65" rx="10" fill="#FFF3CD"/>
+    <rect x="3" y="3" width="30" height="20" rx="8" fill="#FFE66D" opacity="0.5"/>
+    <!-- Worried eyes -->
+    <ellipse cx="12" cy="28" rx="6" ry="7" fill="white"/>
+    <ellipse cx="24" cy="28" rx="6" ry="7" fill="white"/>
+    <circle cx="13" cy="30" r="3.5" fill="#2D3436"/>
+    <circle cx="25" cy="30" r="3.5" fill="#2D3436"/>
+    <!-- Worried eyebrows -->
+    <line x1="6" y1="18" x2="16" y2="22" stroke="#2D3436" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="30" y1="22" x2="20" y2="18" stroke="#2D3436" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Wavy worried mouth -->
+    <path d="M10 44 Q14 40, 18 44 Q22 48, 26 44" stroke="#FF7675" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Motion wobble lines -->
+    <line x1="-8" y1="20" x2="-15" y2="20" stroke="#F39C12" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-8" y1="35" x2="-15" y2="35" stroke="#F39C12" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- LOWER GUM -->
+  <g filter="url(#toyShadow)">
+    <path
+      d="M70 290
+         Q70 270, 150 265
+         Q250 260, 350 265
+         Q430 270, 430 290
+         L430 340
+         Q430 380, 350 390
+         Q250 400, 150 390
+         Q70 380, 70 340
+         Z"
+      fill="url(#gumPlastic)"
+    />
+    <path
+      d="M80 290
+         Q80 275, 150 270
+         Q250 265, 350 270
+         Q420 275, 420 290"
+      fill="none" stroke="white" stroke-width="4" opacity="0.3"
+    />
+  </g>
+
+  <!-- LOWER TEETH - 10 teeth -->
+  <g transform="translate(85, 275)" filter="url(#toyShadow)">
+    <rect width="36" height="60" rx="10" fill="url(#toothPlastic)"/>
+    <circle cx="12" cy="22" r="5" fill="white"/><circle cx="24" cy="22" r="5" fill="white"/>
+    <circle cx="13" cy="23" r="3" fill="#2D3436"/><circle cx="25" cy="23" r="3" fill="#2D3436"/>
+    <path d="M10 38 Q18 32, 26 38" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(128, 268)" filter="url(#toyShadow)">
+    <rect width="34" height="65" rx="10" fill="url(#toothPlastic)"/>
+    <circle cx="11" cy="24" r="5" fill="white"/><circle cx="23" cy="24" r="5" fill="white"/>
+    <circle cx="12" cy="25" r="3" fill="#2D3436"/><circle cx="24" cy="25" r="3" fill="#2D3436"/>
+    <path d="M9 42 Q17 36, 25 42" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(169, 262)" filter="url(#toyShadow)">
+    <rect width="32" height="70" rx="9" fill="url(#toothPlastic)"/>
+    <circle cx="10" cy="26" r="5" fill="white"/><circle cx="22" cy="26" r="5" fill="white"/>
+    <circle cx="11" cy="27" r="3" fill="#2D3436"/><circle cx="23" cy="27" r="3" fill="#2D3436"/>
+    <path d="M8 45 Q16 39, 24 45" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(208, 258)" filter="url(#toyShadow)">
+    <rect width="30" height="73" rx="8" fill="url(#toothPlastic)"/>
+    <circle cx="9" cy="28" r="5" fill="white"/><circle cx="21" cy="28" r="5" fill="white"/>
+    <circle cx="10" cy="29" r="3" fill="#2D3436"/><circle cx="22" cy="29" r="3" fill="#2D3436"/>
+    <path d="M7 48 Q15 42, 23 48" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(245, 255)" filter="url(#toyShadow)">
+    <rect width="32" height="76" rx="9" fill="url(#toothPlastic)"/>
+    <circle cx="10" cy="28" r="5" fill="white"/><circle cx="22" cy="28" r="5" fill="white"/>
+    <circle cx="11" cy="29" r="3" fill="#2D3436"/><circle cx="23" cy="29" r="3" fill="#2D3436"/>
+    <path d="M8 50 Q16 44, 24 50" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(284, 255)" filter="url(#toyShadow)">
+    <rect width="32" height="76" rx="9" fill="url(#toothPlastic)"/>
+    <circle cx="10" cy="28" r="5" fill="white"/><circle cx="22" cy="28" r="5" fill="white"/>
+    <circle cx="11" cy="29" r="3" fill="#2D3436"/><circle cx="23" cy="29" r="3" fill="#2D3436"/>
+    <path d="M8 50 Q16 44, 24 50" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(321, 258)" filter="url(#toyShadow)">
+    <rect width="30" height="73" rx="8" fill="url(#toothPlastic)"/>
+    <circle cx="9" cy="28" r="5" fill="white"/><circle cx="21" cy="28" r="5" fill="white"/>
+    <circle cx="10" cy="29" r="3" fill="#2D3436"/><circle cx="22" cy="29" r="3" fill="#2D3436"/>
+    <path d="M7 48 Q15 42, 23 48" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(358, 262)" filter="url(#toyShadow)">
+    <rect width="32" height="70" rx="9" fill="url(#toothPlastic)"/>
+    <circle cx="10" cy="26" r="5" fill="white"/><circle cx="22" cy="26" r="5" fill="white"/>
+    <circle cx="11" cy="27" r="3" fill="#2D3436"/><circle cx="23" cy="27" r="3" fill="#2D3436"/>
+    <path d="M8 45 Q16 39, 24 45" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(397, 268)" filter="url(#toyShadow)">
+    <rect width="34" height="65" rx="10" fill="url(#toothPlastic)"/>
+    <circle cx="11" cy="24" r="5" fill="white"/><circle cx="23" cy="24" r="5" fill="white"/>
+    <circle cx="12" cy="25" r="3" fill="#2D3436"/><circle cx="24" cy="25" r="3" fill="#2D3436"/>
+    <path d="M9 42 Q17 36, 25 42" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- J lower -->
+  <g transform="translate(85, 340)" filter="url(#toyShadow)">
+    <rect width="36" height="55" rx="10" fill="url(#toothPlastic)"/>
+    <circle cx="12" cy="20" r="5" fill="white"/><circle cx="24" cy="20" r="5" fill="white"/>
+    <circle cx="13" cy="21" r="3" fill="#2D3436"/><circle cx="25" cy="21" r="3" fill="#2D3436"/>
+    <path d="M10 35 Q18 29, 26 35" stroke="#FF7675" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Control buttons at bottom -->
+  <g transform="translate(150, 420)">
+    <circle cx="0" cy="0" r="12" fill="#FF6B6B" filter="url(#toyShadow)"/>
+    <circle cx="0" cy="-2" r="10" fill="#FF8E8E"/>
+    <circle cx="70" cy="0" r="12" fill="#FFE66D" filter="url(#toyShadow)"/>
+    <circle cx="70" cy="-2" r="10" fill="#FFF3A3"/>
+    <circle cx="140" cy="0" r="12" fill="#4ECDC4" filter="url(#toyShadow)"/>
+    <circle cx="140" cy="-2" r="10" fill="#7EDDD7"/>
+  </g>
+
+</svg>

@@ -1,0 +1,99 @@
+<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Storybook-style LOST tooth slot - sprout growing, magical -->
+
+  <defs>
+    <filter id="glowFilter" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft pink gum gradient -->
+    <linearGradient id="gumGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB5BA"/>
+      <stop offset="100%" style="stop-color:#E8A0A5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Empty gum slot - where tooth was -->
+  <ellipse
+    cx="50"
+    cy="55"
+    rx="25"
+    ry="35"
+    fill="url(#gumGradient)"
+    stroke="#D4908A"
+    stroke-width="1.5"
+  />
+
+  <!-- Inner shadow to show depth -->
+  <ellipse
+    cx="50"
+    cy="58"
+    rx="18"
+    ry="25"
+    fill="#D4908A"
+    opacity="0.4"
+  />
+
+  <!-- Little sprout growing - new tooth coming! -->
+  <g transform="translate(50, 65)">
+    <!-- Stem -->
+    <path
+      d="M0 0 C-2 -8, 2 -15, 0 -20"
+      fill="none"
+      stroke="#7CB342"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+
+    <!-- Left leaf -->
+    <path
+      d="M-2 -12 C-10 -18, -12 -8, -4 -10"
+      fill="#9DC183"
+      stroke="#7CB342"
+      stroke-width="1"
+    />
+
+    <!-- Right leaf -->
+    <path
+      d="M2 -16 C10 -22, 12 -12, 4 -14"
+      fill="#9DC183"
+      stroke="#7CB342"
+      stroke-width="1"
+    />
+
+    <!-- Tiny bud at top (baby tooth coming) -->
+    <ellipse cx="0" cy="-22" rx="4" ry="5" fill="#FFFEF5" stroke="#E8D5C4" stroke-width="1"/>
+  </g>
+
+  <!-- Magical sparkles around the gap -->
+  <g filter="url(#glowFilter)">
+    <!-- Star 1 -->
+    <g transform="translate(25, 30)">
+      <path d="M0 -5 L1.5 -1.5 L5 0 L1.5 1.5 L0 5 L-1.5 1.5 L-5 0 L-1.5 -1.5 Z" fill="#F5D76E"/>
+    </g>
+
+    <!-- Star 2 -->
+    <g transform="translate(75, 35)">
+      <path d="M0 -4 L1 -1 L4 0 L1 1 L0 4 L-1 1 L-4 0 L-1 -1 Z" fill="#F5D76E"/>
+    </g>
+
+    <!-- Star 3 -->
+    <g transform="translate(35, 85)">
+      <path d="M0 -3 L0.8 -0.8 L3 0 L0.8 0.8 L0 3 L-0.8 0.8 L-3 0 L-0.8 -0.8 Z" fill="#FFB5BA"/>
+    </g>
+
+    <!-- Star 4 -->
+    <g transform="translate(68, 80)">
+      <path d="M0 -3 L0.8 -0.8 L3 0 L0.8 0.8 L0 3 L-0.8 0.8 L-3 0 L-0.8 -0.8 Z" fill="#B8E4F0"/>
+    </g>
+  </g>
+
+  <!-- Floating sparkle dots -->
+  <circle cx="30" cy="50" r="2" fill="#F5D76E" opacity="0.8"/>
+  <circle cx="72" cy="55" r="1.5" fill="#F5D76E" opacity="0.6"/>
+  <circle cx="45" cy="25" r="1.5" fill="#FFB5BA" opacity="0.7"/>
+</svg>

@@ -1,5 +1,5 @@
 -- Kai Voice Database Schema
--- Run this in Supabase SQL Editor: https://supabase.com/dashboard/project/tvujxgdwgvrunjvhseey/sql
+-- Run this in your Supabase SQL Editor
 
 -- Context table: Stores all knowledge from kai/context
 CREATE TABLE IF NOT EXISTS context (

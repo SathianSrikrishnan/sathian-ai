@@ -1,0 +1,307 @@
+<svg viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- OPTION 1: PAPER CRAFT DIORAMA STYLE -->
+  <!-- Inspired by: Paper Mario, Tearaway, Yoshi's Crafted World -->
+  <!-- Layered paper cutouts, construction paper textures, visible craft edges -->
+
+  <defs>
+    <!-- Paper texture pattern -->
+    <filter id="paperNoise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+      <feDiffuseLighting in="noise" lighting-color="#FFFEF5" surfaceScale="1.5" result="light">
+        <feDistantLight azimuth="45" elevation="60"/>
+      </feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+    </filter>
+
+    <!-- Cut paper shadow (like layered paper) -->
+    <filter id="cutShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="4" stdDeviation="1" flood-color="#4A3728" flood-opacity="0.3"/>
+    </filter>
+
+    <!-- Deeper layer shadow -->
+    <filter id="deepShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="5" dy="6" stdDeviation="2" flood-color="#4A3728" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- LAYER 0: Background - kraft paper -->
+  <rect width="500" height="450" fill="#D4C4A8"/>
+  <rect width="500" height="450" fill="#E8DCC8" opacity="0.7"/>
+
+  <!-- Subtle paper grain -->
+  <rect width="500" height="450" fill="url(#paperNoise)" opacity="0.1"/>
+
+  <!-- LAYER 1: Back felt/fabric piece (dark maroon - inside mouth) -->
+  <g filter="url(#deepShadow)">
+    <path
+      d="M80 180
+         Q80 140, 150 120
+         Q250 100, 350 120
+         Q420 140, 420 180
+         L420 320
+         Q420 360, 350 380
+         Q250 400, 150 380
+         Q80 360, 80 320
+         Z"
+      fill="#8B3A3A"
+    />
+    <!-- Felt texture lines -->
+    <path d="M120 200 L120 300" stroke="#7A2A2A" stroke-width="1" opacity="0.3"/>
+    <path d="M180 180 L180 320" stroke="#7A2A2A" stroke-width="1" opacity="0.3"/>
+    <path d="M250 170 L250 330" stroke="#7A2A2A" stroke-width="1" opacity="0.3"/>
+    <path d="M320 180 L320 320" stroke="#7A2A2A" stroke-width="1" opacity="0.3"/>
+    <path d="M380 200 L380 300" stroke="#7A2A2A" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- LAYER 2: Pink gum paper (upper) - construction paper pink -->
+  <g filter="url(#cutShadow)">
+    <path
+      d="M90 170
+         Q90 130, 160 115
+         Q250 100, 340 115
+         Q410 130, 410 170
+         L410 195
+         Q410 210, 340 220
+         Q250 230, 160 220
+         Q90 210, 90 195
+         Z"
+      fill="#E8A0A0"
+    />
+    <!-- Paper edge texture (torn/cut look) -->
+    <path
+      d="M90 195 Q95 193, 100 196 Q110 192, 120 195 Q130 193, 140 196 Q160 192, 180 195 Q200 193, 220 195 Q240 193, 260 196 Q280 193, 300 195 Q320 192, 340 196 Q360 193, 380 195 Q390 193, 400 196 Q405 193, 410 195"
+      fill="none" stroke="#D08080" stroke-width="1"
+    />
+  </g>
+
+  <!-- LAYER 3: Upper Teeth - white cardstock cutouts -->
+  <!-- Each tooth is a separate paper piece with its own shadow -->
+
+  <!-- Tooth A -->
+  <g transform="translate(100, 145)" filter="url(#cutShadow)">
+    <rect width="32" height="55" rx="6" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="28" height="51" rx="5" fill="#FFF8E7"/>
+    <!-- Crayon face -->
+    <line x1="10" y1="22" x2="14" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18" y1="22" x2="22" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M11 32 Q16 37, 21 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth B -->
+  <g transform="translate(138, 138)" filter="url(#cutShadow)">
+    <rect width="30" height="58" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="26" height="54" rx="4" fill="#FFF8E7"/>
+    <line x1="9" y1="22" x2="13" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="22" x2="21" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 32 Q15 37, 20 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth C -->
+  <g transform="translate(174, 132)" filter="url(#cutShadow)">
+    <rect width="28" height="60" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="56" rx="4" fill="#FFF8E7"/>
+    <line x1="8" y1="22" x2="12" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="22" x2="20" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 32 Q14 37, 19 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth D -->
+  <g transform="translate(208, 128)" filter="url(#cutShadow)">
+    <rect width="26" height="62" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="22" height="58" rx="3" fill="#FFF8E7"/>
+    <line x1="7" y1="22" x2="11" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="22" x2="19" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 32 Q13 37, 18 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth E -->
+  <g transform="translate(240, 126)" filter="url(#cutShadow)">
+    <rect width="28" height="65" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="61" rx="3" fill="#FFF8E7"/>
+    <line x1="8" y1="24" x2="12" y2="24" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="24" x2="20" y2="24" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 34 Q14 39, 19 34" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth F (lost - just a gap with decorative sprout cutout) -->
+  <g transform="translate(274, 126)">
+    <!-- No tooth - just sprout paper cutout -->
+    <g filter="url(#cutShadow)">
+      <!-- Green stem cutout -->
+      <path d="M14 60 Q12 40, 14 25" stroke="#6B8E4E" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- Leaf cutouts -->
+      <ellipse cx="8" cy="35" rx="8" ry="5" fill="#8FBC6B" transform="rotate(-30, 8, 35)"/>
+      <ellipse cx="20" cy="28" rx="8" ry="5" fill="#8FBC6B" transform="rotate(30, 20, 28)"/>
+      <!-- Tiny bud -->
+      <ellipse cx="14" cy="20" rx="6" ry="8" fill="#FFF8E7"/>
+    </g>
+    <!-- Star stickers! -->
+    <polygon points="26,15 28,21 34,21 29,25 31,31 26,27 21,31 23,25 18,21 24,21" fill="#FFD93D"/>
+    <polygon points="2,45 3,48 6,48 4,50 5,53 2,51 -1,53 0,50 -2,48 1,48" fill="#FF9EAA" transform="scale(0.8)"/>
+  </g>
+
+  <!-- Tooth G -->
+  <g transform="translate(308, 128)" filter="url(#cutShadow)">
+    <rect width="26" height="62" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="22" height="58" rx="3" fill="#FFF8E7"/>
+    <line x1="7" y1="22" x2="11" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="22" x2="19" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 32 Q13 37, 18 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth H -->
+  <g transform="translate(340, 132)" filter="url(#cutShadow)">
+    <rect width="28" height="60" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="56" rx="4" fill="#FFF8E7"/>
+    <line x1="8" y1="22" x2="12" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="22" x2="20" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 32 Q14 37, 19 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth I -->
+  <g transform="translate(374, 138)" filter="url(#cutShadow)">
+    <rect width="30" height="58" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="26" height="54" rx="4" fill="#FFF8E7"/>
+    <line x1="9" y1="22" x2="13" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="22" x2="21" y2="22" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 32 Q15 37, 20 32" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth J (wiggly - tilted with worried face) -->
+  <g transform="translate(410, 145) rotate(8)" filter="url(#cutShadow)">
+    <rect width="32" height="55" rx="6" fill="#FFF9D6"/>
+    <rect x="2" y="2" width="28" height="51" rx="5" fill="#FFF3C4"/>
+    <!-- Worried eyes -->
+    <ellipse cx="11" cy="20" rx="4" ry="5" fill="white"/>
+    <ellipse cx="21" cy="20" rx="4" ry="5" fill="white"/>
+    <circle cx="12" cy="21" r="2.5" fill="#5D4E37"/>
+    <circle cx="22" cy="21" r="2.5" fill="#5D4E37"/>
+    <!-- Worried brows -->
+    <line x1="7" y1="13" x2="14" y2="15" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="25" y1="15" x2="18" y2="13" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <!-- Wavy mouth -->
+    <path d="M10 35 Q16 32, 22 35" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Motion lines (drawn with marker) -->
+    <line x1="-5" y1="15" x2="-10" y2="15" stroke="#FFB347" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-5" y1="25" x2="-10" y2="25" stroke="#FFB347" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- LAYER 4: Pink gum paper (lower) -->
+  <g filter="url(#cutShadow)">
+    <path
+      d="M90 280
+         Q90 265, 160 255
+         Q250 245, 340 255
+         Q410 265, 410 280
+         L410 330
+         Q410 370, 340 385
+         Q250 400, 160 385
+         Q90 370, 90 330
+         Z"
+      fill="#E8A0A0"
+    />
+    <!-- Paper edge texture -->
+    <path
+      d="M90 280 Q95 277, 100 280 Q110 276, 120 280 Q140 276, 160 280 Q180 277, 200 280 Q220 276, 240 280 Q260 277, 280 279 Q300 276, 320 280 Q340 277, 360 279 Q380 276, 400 280 Q405 277, 410 280"
+      fill="none" stroke="#D08080" stroke-width="1"
+    />
+  </g>
+
+  <!-- LAYER 5: Lower Teeth -->
+
+  <!-- Tooth K -->
+  <g transform="translate(100, 260)" filter="url(#cutShadow)">
+    <rect width="32" height="50" rx="6" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="28" height="46" rx="5" fill="#FFF8E7"/>
+    <line x1="10" y1="28" x2="14" y2="28" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18" y1="28" x2="22" y2="28" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M11 18 Q16 13, 21 18" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tooth L -->
+  <g transform="translate(138, 252)" filter="url(#cutShadow)">
+    <rect width="30" height="53" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="26" height="49" rx="4" fill="#FFF8E7"/>
+    <line x1="9" y1="30" x2="13" y2="30" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="30" x2="21" y2="30" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 20 Q15 15, 20 20" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Teeth M, N, O, P, Q, R, S, T similar pattern... -->
+  <g transform="translate(174, 248)" filter="url(#cutShadow)">
+    <rect width="28" height="55" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="51" rx="4" fill="#FFF8E7"/>
+    <line x1="8" y1="32" x2="12" y2="32" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="32" x2="20" y2="32" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 22 Q14 17, 19 22" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(208, 244)" filter="url(#cutShadow)">
+    <rect width="26" height="58" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="22" height="54" rx="3" fill="#FFF8E7"/>
+    <line x1="7" y1="35" x2="11" y2="35" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="35" x2="19" y2="35" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 25 Q13 20, 18 25" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(240, 242)" filter="url(#cutShadow)">
+    <rect width="28" height="60" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="56" rx="3" fill="#FFF8E7"/>
+    <line x1="8" y1="36" x2="12" y2="36" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="36" x2="20" y2="36" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 26 Q14 21, 19 26" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(274, 242)" filter="url(#cutShadow)">
+    <rect width="28" height="60" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="56" rx="3" fill="#FFF8E7"/>
+    <line x1="8" y1="36" x2="12" y2="36" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="36" x2="20" y2="36" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 26 Q14 21, 19 26" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(308, 244)" filter="url(#cutShadow)">
+    <rect width="26" height="58" rx="4" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="22" height="54" rx="3" fill="#FFF8E7"/>
+    <line x1="7" y1="35" x2="11" y2="35" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="15" y1="35" x2="19" y2="35" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 25 Q13 20, 18 25" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(340, 248)" filter="url(#cutShadow)">
+    <rect width="28" height="55" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="24" height="51" rx="4" fill="#FFF8E7"/>
+    <line x1="8" y1="32" x2="12" y2="32" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="32" x2="20" y2="32" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M9 22 Q14 17, 19 22" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(374, 252)" filter="url(#cutShadow)">
+    <rect width="30" height="53" rx="5" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="26" height="49" rx="4" fill="#FFF8E7"/>
+    <line x1="9" y1="30" x2="13" y2="30" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="30" x2="21" y2="30" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 20 Q15 15, 20 20" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(410, 260)" filter="url(#cutShadow)">
+    <rect width="32" height="50" rx="6" fill="#FFFEF5"/>
+    <rect x="2" y="2" width="28" height="46" rx="5" fill="#FFF8E7"/>
+    <line x1="10" y1="28" x2="14" y2="28" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18" y1="28" x2="22" y2="28" stroke="#5D4E37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M11 18 Q16 13, 21 18" stroke="#E88A8A" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Title banner - construction paper style -->
+  <g transform="translate(125, 30)" filter="url(#cutShadow)">
+    <rect width="250" height="45" rx="8" fill="#87CEEB"/>
+    <text x="125" y="32" text-anchor="middle" font-family="Comic Sans MS, cursive" font-size="24" fill="#FFFEF5" stroke="#5D4E37" stroke-width="0.5">My Tooth Map!</text>
+  </g>
+
+  <!-- Decorative washi tape corners -->
+  <rect x="10" y="10" width="60" height="15" fill="#FFB6C1" opacity="0.8" transform="rotate(-45, 10, 10)"/>
+  <rect x="430" y="10" width="60" height="15" fill="#98FB98" opacity="0.8" transform="rotate(45, 490, 10)"/>
+  <rect x="10" y="425" width="60" height="15" fill="#DDA0DD" opacity="0.8" transform="rotate(45, 10, 440)"/>
+  <rect x="430" y="425" width="60" height="15" fill="#F0E68C" opacity="0.8" transform="rotate(-45, 490, 440)"/>
+
+</svg>

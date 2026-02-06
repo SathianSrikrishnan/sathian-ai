@@ -1,9 +1,21 @@
+export interface ArticleTheme {
+  accent: string        // Primary accent color (hex)
+  accentGlow: string    // Glow variant for backgrounds
+  background: 'beams' | 'aurora' | 'grid'
+  mood: 'energetic' | 'contemplative' | 'urgent'
+}
+
 export interface Article {
   title: string
+  titleHighlight?: string   // Substring to accent-highlight in title
   slug: string
   date: string
+  author: string
   domains: string[]
+  description: string       // Short description for cards and OG
   body: string
+  pullQuotes: string[]      // Key sentences to feature as pull quotes
+  theme: ArticleTheme
   media?: { src: string; alt: string; placeholder?: boolean }[]
   hiddenSignal?: string
 }
@@ -11,9 +23,23 @@ export interface Article {
 export const articles: Article[] = [
   {
     title: 'C.R.E.A.M. 2.0',
+    titleHighlight: 'C.R.E.A.M.',
     slug: 'cream-2-point-0',
-    date: '2026-01-27',
-    domains: ['hip-hop culture', 'decentralized finance', 'truth tellers'],
+    date: '2026-10-31',
+    author: 'Sathian',
+    domains: ['hip-hop culture', 'decentralized finance'],
+    description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
+    pullQuotes: [
+      'Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium.',
+      'The people who move first are the ones in the margins who recognize a signal before it has a name.',
+      'The question isn\'t whether that happens. It always does. The question is whether enough people heard the original frequency to keep it alive underneath.',
+    ],
+    theme: {
+      accent: '#F59E0B',
+      accentGlow: 'rgba(245, 158, 11, 0.15)',
+      background: 'beams',
+      mood: 'energetic',
+    },
     hiddenSignal: '"Reunited" — Wu-Tang Forever (1997), Method Man: "worldwide total carnage / the sickest flow that we code name Agent Orange"',
     media: [
       { src: '/media/wu-tang-1993.jpg', alt: 'Wu-Tang Clan, circa 1993 — Staten Island', placeholder: true },
@@ -24,97 +50,97 @@ export const articles: Article[] = [
 
 Cash Rules Everything Around Me. The anthem of project kids in Staten Island, now soundtracking a corporate arena experience for small-town Ontario families.
 
-Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium. The raw signal wrapped in institutional clothing.
+Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium.
 
 ---
 
 In 1993, Wu-Tang did something labels said couldn't be done. They kept the group together while every member negotiated solo deals. No label owned them. They built Shaolin. RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy — pieces that already existed, threaded into something that hadn't.
 
-There were always nine members, plus Cappadonna on his own label. It was always "Wu-Tang Clan *featuring* Cappadonna" — the tenth man with an asterisk. When ODB died in 2004, the asterisk disappeared. Cap stepped in. Even the clan's membership rules evolved when they had to. Institutions always do.
-
-On their 1997 album *Wu-Tang Forever*, Method Man dropped a line on "Reunited" — *worldwide total carnage, the sickest flow that we code name Agent Orange.* Agent Orange was a chemical weapon sprayed across Vietnam. But *agent* and *orange* together hit different now. Bitcoin's color is orange. Its agents are autonomous. Its protocol runs without a name on the door.
-
-I collect these — old hip-hop lines that accidentally predicted crypto before crypto existed. It's a hobby. You'll find them buried throughout this site if you look.
-
----
-
-Fifteen years after Wu-Tang built Shaolin, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang*. No publisher. No institution. No face. Just: here's the work.
+Fifteen years later, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang*. No publisher. No institution. No face. Just: here's the work.
 
 And like RZA, Satoshi didn't invent the components. Adam Back had built Hashcash — proof-of-work — back in 1997, the same year Wu-Tang Forever came out. Hal Finney built Reusable Proof of Work. Wei Dai proposed b-money. Nick Szabo sketched Bit Gold. David Chaum had been working on digital cash since the early nineties. Satoshi sampled all of it. Threaded existing cryptographic ideas together the way a producer threads existing sounds — into something that hadn't existed before.
 
-The first person to exchange bitcoin for dollars was Martti Malmi — a Finnish developer who sold 5,050 BTC for $5.02 over PayPal in October 2009. Five dollars to etch the first price on the blockchain. Before Malmi, Bitcoin had no market value. After him, the snowball started. First a handful of developers. Then the cypherpunks. Then the world.
+The first person to exchange bitcoin for dollars was Martti Malmi — a Finnish developer who sold 5,050 BTC for $5.02 over PayPal in October 2009. Before Malmi, Bitcoin had no market value. After him, a handful of developers picked it up. Then the cypherpunks. Then the world.
 
-That's how every movement starts. Not with mass adoption but with a handful of people in the margins who hear something everyone else is ignoring. A few kids in Staten Island who heard what RZA was building. A few cryptographers who read what Satoshi wrote. The signal doesn't start loud. It starts specific.
+A few kids in Staten Island who heard what RZA was building. A few cryptographers who read what Satoshi wrote. Same pattern. The people who move first are the ones in the margins who recognize a signal before it has a name.
 
 ---
 
 That kid from Sudbury singing along to C.R.E.A.M. doesn't know any of this history. He doesn't know the song was written in a project hallway about surviving a system that wasn't built for the people inside it. He just knows it hits.
 
-The signal finds people when they're ready. Wu-Tang went from Staten Island to Scotiabank Arena. Bitcoin went from Malmi's five-dollar PayPal transaction to a hundred-thousand-dollar asset. The signal always gets louder. The question is what it sounds like after the institutions get hold of it — and whether the next generation hears the original frequency or only the repackaged version.
+But here's what I think about, sitting in that arena watching him: he's hearing the repackaged version. The Scotiabank Arena version. Wu-Tang in Leafs jerseys, the edges filed off, the danger gone. And that's exactly what's happening to Bitcoin right now — ETFs, institutional custody, boardroom presentations. The thing that was built to escape the system is being absorbed by it.
 
-The signal was always there. Most of us just weren't ready to hear it.
+The question isn't whether that happens. It always does. The question is whether enough people heard the original frequency to keep it alive underneath. Whether somewhere, right now, there's a kid in a project hallway writing something that won't make sense to the rest of us for another fifteen years.
 
-Cash ruled everything around them in '93. It still does. The protocol just changed.`,
+Cash ruled everything around them in '93. It still does. But the next verse is being written somewhere the institutions haven't found yet.`,
   },
   {
     title: 'The Yellow Box',
+    titleHighlight: 'Yellow Box',
     slug: 'the-yellow-box',
-    date: '2026-01-27',
-    domains: ['institutional decay', 'personal sovereignty', 'parenting', 'truth tellers'],
+    date: '2026-02-06',
+    author: 'Sathian',
+    domains: ['institutional decay', 'digital sovereignty'],
+    description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
+    pullQuotes: [
+      'The most basic nutrition on the shelf, more than doubled, while nothing else about his life changed except what he could afford.',
+      'The collapse didn\'t arrive as a single dramatic event. It arrived the way Hemingway described going bankrupt: gradually, then suddenly.',
+      'The question for every institution today is the same one the Soviet Union faced in 1986: can you survive your citizens doing the math?',
+    ],
+    theme: {
+      accent: '#DC2626',
+      accentGlow: 'rgba(220, 38, 38, 0.12)',
+      background: 'aurora',
+      mood: 'contemplative',
+    },
     media: [
       { src: '/media/no-name-spaghetti.jpg', alt: 'No Name spaghetti — the yellow box', placeholder: true },
-      { src: '/media/yeltsin-gorbachev.jpg', alt: 'Boris Yeltsin and Mikhail Gorbachev', placeholder: true },
-      { src: '/media/toronto-skyline.jpg', alt: 'Toronto skyline', placeholder: true },
+      { src: '/media/yeltsin-gorbachev.jpg', alt: 'Boris Yeltsin visiting a Houston supermarket, 1989', placeholder: true },
     ],
-    body: `I had just dropped off my kids and was heading to a dinner across town. My Uber driver — a guy who'd come to Canada from Afghanistan in 2017 — was trying to explain to me what went wrong.
+    hiddenSignal: 'In 1989, Boris Yeltsin made an unscheduled stop at a Randalls supermarket in Clear Lake, Texas. He wandered the aisles in silence. Later he told his aides the Soviet people would revolt if they saw what Americans had access to. Within two years, the Soviet Union was gone.',
+    body: `My Uber driver — a guy who'd come to Canada from Afghanistan in 2017 — was trying to explain to me what went wrong.
 
 When he arrived, Canada was paradise. He started driving, things were good, the math worked. Somewhere in the last few years, the math stopped working and he couldn't figure out why. He wasn't reading economics papers or following central bank announcements. But he had an analogy that was better than anything I'd read in the Financial Post.
 
 No Name spaghetti. The yellow box. Loblaw's cheapest option — the thing you buy when you're watching every dollar. It was about a dollar a few years ago. Now it's well over two. The most basic nutrition on the shelf, more than doubled, while nothing else about his life changed except what he could afford.
 
-Before you get to housing. Before you get to gas or daycare or rent. Just the yellow box. That's the signal.
+Before you get to housing. Before you get to gas or daycare or rent. Just the yellow box.
 
 ---
 
-A few weeks earlier, my twin daughters had each lost a tooth — within days of each other, because that's what twins do. Their mom told me the tooth fairy left them five dollars each.
+In 1986, Mikhail Gorbachev made a bet. He believed that if the Soviet Union told the truth about itself, the system would get stronger. He called it glasnost — openness. The idea was simple: expose the problems, let people discuss them, and the state would earn trust by showing it could reform.
 
-Five dollars. I got one dollar when I lost my first tooth. My parents left it under my pillow with a little handwritten note. That was the early nineties. Thirty years later the tooth fairy pays five times more for the same tooth.
+Within five years, there was no Soviet Union.
 
-Even the tooth fairy has inflation.
+What Gorbachev didn't account for was that the gap between what the state had been saying and what people had been living was too wide to survive exposure. For decades, the system had told its citizens that the shelves were stocked, that the economy was growing, that the West was failing. Glasnost didn't create the rot. It just let people talk about what they already knew — that the emperor had no clothes and the shelves had no food.
 
-But here's where it gets interesting. In October 2009, a Finnish developer named Martti Malmi sold 5,050 bitcoins for $5.02 — the first time anyone exchanged bitcoin for dollars. Five dollars. That's what it cost to set the first price on the blockchain. Before Malmi, Bitcoin had no market value. After that five-dollar PayPal transaction, the snowball started to roll.
-
-Five dollars from the tooth fairy. Five dollars for the genesis of a trillion-dollar protocol. Same amount. The tooth fairy's five dollars will be worth less next year. Malmi's five dollars bought an asset that went from a fraction of a penny to over a hundred thousand dollars — and will be worth orders of magnitude more within our lifetimes.
-
-I told my daughters I'd also left them something. I'd deposited some sats — satoshis, the smallest unit of Bitcoin — into their digital wallets. They stared at me. "What are sats?"
-
-What followed was twenty minutes of questions I wasn't fully prepared for, which is how most of my best parenting moments start. Why does money change? Why does the tooth fairy give more now? What makes sats different from dollars? They didn't get all of it. But they asked, and I'd rather they ask early than figure it out late — the way I did.
-
-That conversation became a project. I started building a series of stories for them — characters they already knew from their bedtime world, exploring money, value, and why the tooth fairy's rates keep going up. That work lives in a different part of this site, behind a door. If you're curious, ask.
+The collapse didn't arrive as a single dramatic event. It arrived the way Hemingway described going bankrupt: gradually, then suddenly. Years of quiet erosion — the slow accumulation of small lies, small shortages, small disappointments — and then one day, a wall comes down and everyone acts surprised. But nobody who'd been standing in line for bread was surprised. They'd known for years. They just hadn't been allowed to say it out loud.
 
 ---
 
-In 1986, Gorbachev bet that if the Soviet Union told the truth about itself, the system would get stronger. He called it glasnost — openness. Within five years, there was no Soviet Union. Transparency didn't reform the system. It exposed it.
+Social media gave the West its own glasnost without anyone planning it.
 
-Social media gave the West its own glasnost without anyone planning it. Every institution that relied on controlling its narrative — governments, banks, media — suddenly had millions of people fact-checking them live. And the gap between what was promised and what was delivered turned out to be as embarrassing as empty Soviet shelves.
+Every institution that relied on controlling its narrative — governments, banks, media companies — suddenly had millions of people fact-checking them in real time. The gap between what was promised and what was delivered turned out to be wider than anyone in charge had expected. Central banks said inflation was transitory. The yellow box said otherwise. Politicians said the economy was strong. The rent check said otherwise. The official numbers told one story. The grocery receipt told another.
 
-My Uber driver didn't need a history lesson to understand this. He had the yellow box. The system told him Canada was working. The spaghetti told him it wasn't. And once you see that gap — between what the institution says and what the shelf price confirms — you can't unsee it.
+My Uber driver didn't need a history lesson to understand this. He had his own yellow box. The system told him Canada was working. The spaghetti told him it wasn't. And once you see that gap — between what the institution says and what the shelf price confirms — you can't unsee it.
 
-That's the thing about transparency. It doesn't fix broken systems. It exposes them. Gorbachev learned that. My Uber driver is learning it in real time. My daughters will learn it — one lost tooth, one sat at a time.
+This is the pattern that repeats. The Soviet citizen standing in line for bread. The Canadian immigrant staring at spaghetti prices. Different decades, different countries, same realization: the system's accounting doesn't match your lived experience, and no amount of official reassurance can put that knowledge back in the box.
 
 ---
 
-I didn't understand any of this when I was younger. A friend put *End the Fed* by Ron Paul in my hands years ago and told me to pay attention. I nodded and didn't listen. Later I stumbled across people building alternative financial systems from scratch — and something clicked. But the real education came from running my own business head-to-tail and watching how easily short-term incentives drown out long-term thinking.
+Bitcoin was built for this moment, even if most people don't see it yet.
 
-The signal was always there. I just wasn't ready to hear it.
+Satoshi's whitepaper wasn't a manifesto. It was an engineering document — nine pages describing a system where no single institution controls the ledger. No central bank decides how much money exists. No government can inflate away your purchasing power to cover its own debts. The protocol doesn't care about elections or monetary policy or what the governor of the Bank of Canada said on Tuesday.
 
-That's the thread that connects everything I write about on this site. Cryptographers, technologists, rappers, comedians — the people I'm drawn to are all truth tellers. People who said the uncomfortable thing before the crowd was ready to hear it. Satoshi published a whitepaper nobody asked for. Ron Paul wrote a book most people laughed at. RZA built a sound out of things other people threw away. Truth doesn't always arrive when you're ready for it. But once you hear it — once you pick up the yellow box and actually look at the price — you can't unhear it.
+This isn't ideology. It's architecture. The same way glasnost revealed what Soviet citizens already knew, the transparent ledger of a blockchain makes it impossible to hide what's happening to the money supply. Every transaction visible. Every coin accounted for. No closed-door meetings where a handful of people decide that your savings should be worth a little less this year.
 
-The people building alternatives right now — sovereign technology, decentralized finance, local-first infrastructure — aren't idealists. They're people who picked up the yellow box, looked at the price, and started asking questions nobody around them was asking.
+The people building sovereign technology right now — decentralized finance, local-first infrastructure, open protocols — aren't utopians. They're people who picked up the yellow box, looked at the price, and decided to stop trusting systems that can't be audited.
 
-My daughters are asking those questions now. One lost tooth, one sat at a time.
+It happens slowly, then suddenly. The quiet part — the part we're in now — is millions of people around the world doing the same math my Uber driver did. Looking at the price of the most basic things and realizing the numbers don't add up. Most of them haven't heard of Bitcoin yet. Most of them don't know there's an alternative. But they know something is wrong, the same way Soviet citizens knew something was wrong long before anyone gave them permission to say it.
 
-That's how it always starts. Not with a revolution. With a question at the grocery store.`,
+Gorbachev thought transparency would save the system. It destroyed it — because the system couldn't survive being seen clearly. The question for every institution today is the same one the Soviet Union faced in 1986: can you survive your citizens doing the math?
+
+My Uber driver already did the math. He's still driving. He's still watching the yellow box. And slowly, then suddenly, so is everyone else.`,
   },
 ]
 

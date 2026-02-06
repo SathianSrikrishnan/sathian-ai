@@ -1,0 +1,281 @@
+<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+  <!-- DENTAL CHART STYLE - Two arches of teeth, clean and clear -->
+  <!-- Like pediatric dental charts - focus on the teeth, not mouth anatomy -->
+
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#D4A59A" flood-opacity="0.3"/>
+    </filter>
+
+    <linearGradient id="toothGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFEF5"/>
+      <stop offset="100%" style="stop-color:#F5EBE0"/>
+    </linearGradient>
+
+    <linearGradient id="gumGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB5BA"/>
+      <stop offset="100%" style="stop-color:#E8A0A5"/>
+    </linearGradient>
+
+    <pattern id="paperTexture" patternUnits="userSpaceOnUse" width="100" height="100">
+      <rect width="100" height="100" fill="#FFFDF7"/>
+      <circle cx="20" cy="30" r="0.5" fill="#F5E6D3" opacity="0.3"/>
+      <circle cx="70" cy="60" r="0.5" fill="#F5E6D3" opacity="0.3"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="420" fill="url(#paperTexture)"/>
+
+  <!-- Decorative frame corners -->
+  <path d="M20 20 L20 50 M20 20 L50 20" stroke="#E8B4B8" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M480 20 L480 50 M480 20 L450 20" stroke="#E8B4B8" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M20 400 L20 370 M20 400 L50 400" stroke="#E8B4B8" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M480 400 L480 370 M480 400 L450 400" stroke="#E8B4B8" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Title -->
+  <text x="250" y="45" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#6B5B4F">My Teeth</text>
+
+  <!-- ========== UPPER ARCH - Rainbow/U shape ========== -->
+  <!-- Label -->
+  <text x="250" y="75" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#8B7355">Upper Teeth</text>
+
+  <!-- Upper gum arch (pink curved band) -->
+  <path
+    d="M70 130
+       Q70 85, 150 75
+       Q250 65, 350 75
+       Q430 85, 430 130
+       L410 130
+       Q410 105, 350 95
+       Q250 85, 150 95
+       Q90 105, 90 130
+       Z"
+    fill="url(#gumGradient)"
+    stroke="#D4908A"
+    stroke-width="1.5"
+  />
+
+  <!-- Upper teeth arranged in arch - teeth point DOWN -->
+
+  <!-- A - Upper Right 2nd Molar -->
+  <g transform="translate(85, 105)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -5, 18 -5 Q36 -5, 38 0 L38 45 Q38 52, 19 52 Q0 52, 0 45 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="19" cy="18" rx="8" ry="5" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M8 15 Q19 8, 30 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="19" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">A</text>
+  </g>
+
+  <!-- B - Upper Right 1st Molar -->
+  <g transform="translate(128, 95)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -5, 16 -5 Q32 -5, 34 0 L34 48 Q34 55, 17 55 Q0 55, 0 48 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="17" cy="18" rx="7" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M7 15 Q17 8, 27 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="17" y="51" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">B</text>
+  </g>
+
+  <!-- C - Upper Right Canine -->
+  <g transform="translate(167, 88)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -4, 14 -4 Q26 -4, 28 0 L28 50 Q28 58, 14 58 Q0 58, 0 50 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="18" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 15 Q14 8, 23 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="54" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">C</text>
+  </g>
+
+  <!-- D - Upper Right Lateral Incisor -->
+  <g transform="translate(200, 83)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -3, 13 -3 Q24 -3, 26 0 L26 52 Q26 60, 13 60 Q0 60, 0 52 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="13" cy="18" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M4 15 Q13 8, 22 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="13" y="56" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">D</text>
+  </g>
+
+  <!-- E - Upper Right Central Incisor -->
+  <g transform="translate(230, 80)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -2, 14 -2 Q26 -2, 28 0 L28 55 Q28 63, 14 63 Q0 63, 0 55 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="19" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 16 Q14 9, 23 16" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="59" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">E</text>
+  </g>
+
+  <!-- F - Upper Left Central Incisor -->
+  <g transform="translate(262, 80)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -2, 14 -2 Q26 -2, 28 0 L28 55 Q28 63, 14 63 Q0 63, 0 55 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="19" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 16 Q14 9, 23 16" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="59" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">F</text>
+  </g>
+
+  <!-- G - Upper Left Lateral Incisor -->
+  <g transform="translate(294, 83)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -3, 13 -3 Q24 -3, 26 0 L26 52 Q26 60, 13 60 Q0 60, 0 52 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="13" cy="18" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M4 15 Q13 8, 22 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="13" y="56" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">G</text>
+  </g>
+
+  <!-- H - Upper Left Canine -->
+  <g transform="translate(325, 88)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -4, 14 -4 Q26 -4, 28 0 L28 50 Q28 58, 14 58 Q0 58, 0 50 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="18" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 15 Q14 8, 23 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="54" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">H</text>
+  </g>
+
+  <!-- I - Upper Left 1st Molar -->
+  <g transform="translate(358, 95)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -5, 16 -5 Q32 -5, 34 0 L34 48 Q34 55, 17 55 Q0 55, 0 48 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="17" cy="18" rx="7" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M7 15 Q17 8, 27 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="17" y="51" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">I</text>
+  </g>
+
+  <!-- J - Upper Left 2nd Molar -->
+  <g transform="translate(397, 105)" filter="url(#softShadow)">
+    <path d="M0 0 Q2 -5, 18 -5 Q36 -5, 38 0 L38 45 Q38 52, 19 52 Q0 52, 0 45 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="19" cy="18" rx="8" ry="5" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M8 15 Q19 8, 30 15" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="19" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">J</text>
+  </g>
+
+  <!-- ========== LOWER ARCH - Inverted U shape ========== -->
+  <!-- Label -->
+  <text x="250" y="215" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#8B7355">Lower Teeth</text>
+
+  <!-- Lower gum arch (pink curved band) -->
+  <path
+    d="M70 290
+       Q70 335, 150 345
+       Q250 355, 350 345
+       Q430 335, 430 290
+       L410 290
+       Q410 315, 350 325
+       Q250 335, 150 325
+       Q90 315, 90 290
+       Z"
+    fill="url(#gumGradient)"
+    stroke="#D4908A"
+    stroke-width="1.5"
+  />
+
+  <!-- Lower teeth arranged in arch - teeth point UP -->
+
+  <!-- K - Lower Right 2nd Molar -->
+  <g transform="translate(85, 245)" filter="url(#softShadow)">
+    <path d="M0 45 Q0 38, 0 7 Q2 2, 19 2 Q36 2, 38 7 L38 45 Q36 50, 19 50 Q2 50, 0 45 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="19" cy="30" rx="8" ry="5" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M8 33 Q19 40, 30 33" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="19" y="14" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">K</text>
+  </g>
+
+  <!-- L - Lower Right 1st Molar - WIGGLY -->
+  <g transform="translate(128, 252) rotate(-5, 17, 25)" filter="url(#softShadow)">
+    <path d="M0 48 Q0 41, 0 7 Q2 2, 17 2 Q32 2, 34 7 L34 48 Q32 53, 17 53 Q2 53, 0 48 Z" fill="#FFF9D6" stroke="#FFB74D" stroke-width="2"/>
+    <!-- Worried eyes -->
+    <ellipse cx="10" cy="22" rx="4" ry="5" fill="#FFFEF5" stroke="#6B5B4F" stroke-width="1"/>
+    <ellipse cx="24" cy="22" rx="4" ry="5" fill="#FFFEF5" stroke="#6B5B4F" stroke-width="1"/>
+    <circle cx="10" cy="24" r="2.5" fill="#6B5B4F"/>
+    <circle cx="24" cy="24" r="2.5" fill="#6B5B4F"/>
+    <!-- Worried eyebrows -->
+    <path d="M6 16 L14 18" stroke="#6B5B4F" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M28 18 L20 16" stroke="#6B5B4F" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Wavy worried mouth -->
+    <path d="M9 38 Q17 34, 25 38" fill="none" stroke="#C9857A" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Sweat drop -->
+    <ellipse cx="36" cy="15" rx="3" ry="4" fill="#B8E4F0"/>
+    <text x="17" y="14" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">L</text>
+  </g>
+
+  <!-- M - Lower Right Canine -->
+  <g transform="translate(167, 257)" filter="url(#softShadow)">
+    <path d="M0 50 Q0 43, 0 8 Q2 3, 14 3 Q26 3, 28 8 L28 50 Q26 57, 14 57 Q2 57, 0 50 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="35" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 38 Q14 45, 23 38" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">M</text>
+  </g>
+
+  <!-- N - Lower Right Lateral Incisor -->
+  <g transform="translate(200, 262)" filter="url(#softShadow)">
+    <path d="M0 52 Q0 45, 0 8 Q2 3, 13 3 Q24 3, 26 8 L26 52 Q24 59, 13 59 Q2 59, 0 52 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="13" cy="38" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M4 41 Q13 48, 22 41" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="13" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">N</text>
+  </g>
+
+  <!-- O - Lower Right Central Incisor - LOST TOOTH -->
+  <g transform="translate(230, 265)">
+    <!-- Empty gum spot -->
+    <ellipse cx="14" cy="30" rx="14" ry="25" fill="#E8A0A5"/>
+    <ellipse cx="14" cy="35" rx="10" ry="18" fill="#D4908A" opacity="0.5"/>
+    <!-- Sprout growing -->
+    <path d="M14 20 Q11 10, 14 0" fill="none" stroke="#7CB342" stroke-width="3" stroke-linecap="round"/>
+    <path d="M12 8 Q4 2, 8 10" fill="#9DC183" stroke="#7CB342" stroke-width="0.5"/>
+    <path d="M16 4 Q24 -2, 20 6" fill="#9DC183" stroke="#7CB342" stroke-width="0.5"/>
+    <!-- Baby tooth bud emerging -->
+    <ellipse cx="14" cy="-5" rx="5" ry="7" fill="#FFFEF5" stroke="#E8D5C4" stroke-width="1"/>
+    <!-- Sparkles -->
+    <circle cx="28" cy="5" r="3" fill="#F5D76E"/>
+    <circle cx="0" cy="-5" r="2.5" fill="#FFB5BA"/>
+    <circle cx="26" cy="-10" r="2" fill="#B8E4F0"/>
+    <text x="14" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">O</text>
+  </g>
+
+  <!-- P - Lower Left Central Incisor -->
+  <g transform="translate(262, 265)" filter="url(#softShadow)">
+    <path d="M0 55 Q0 48, 0 8 Q2 3, 14 3 Q26 3, 28 8 L28 55 Q26 62, 14 62 Q2 62, 0 55 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="40" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 43 Q14 50, 23 43" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">P</text>
+  </g>
+
+  <!-- Q - Lower Left Lateral Incisor -->
+  <g transform="translate(294, 262)" filter="url(#softShadow)">
+    <path d="M0 52 Q0 45, 0 8 Q2 3, 13 3 Q24 3, 26 8 L26 52 Q24 59, 13 59 Q2 59, 0 52 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="13" cy="38" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M4 41 Q13 48, 22 41" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="13" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">Q</text>
+  </g>
+
+  <!-- R - Lower Left Canine -->
+  <g transform="translate(325, 257)" filter="url(#softShadow)">
+    <path d="M0 50 Q0 43, 0 8 Q2 3, 14 3 Q26 3, 28 8 L28 50 Q26 57, 14 57 Q2 57, 0 50 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="14" cy="35" rx="6" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M5 38 Q14 45, 23 38" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="14" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">R</text>
+  </g>
+
+  <!-- S - Lower Left 1st Molar -->
+  <g transform="translate(358, 252)" filter="url(#softShadow)">
+    <path d="M0 48 Q0 41, 0 7 Q2 2, 17 2 Q32 2, 34 7 L34 48 Q32 53, 17 53 Q2 53, 0 48 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="17" cy="32" rx="7" ry="4" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M7 35 Q17 42, 27 35" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="17" y="14" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">S</text>
+  </g>
+
+  <!-- T - Lower Left 2nd Molar -->
+  <g transform="translate(397, 245)" filter="url(#softShadow)">
+    <path d="M0 45 Q0 38, 0 7 Q2 2, 19 2 Q36 2, 38 7 L38 45 Q36 50, 19 50 Q2 50, 0 45 Z" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <ellipse cx="19" cy="30" rx="8" ry="5" fill="#FFB5BA" opacity="0.3"/>
+    <path d="M8 33 Q19 40, 30 33" fill="none" stroke="#6B5B4F" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="19" y="14" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#8B7355">T</text>
+  </g>
+
+  <!-- ========== LEGEND ========== -->
+  <g transform="translate(85, 390)">
+    <!-- Healthy -->
+    <rect x="0" y="-10" width="20" height="20" rx="4" fill="url(#toothGradient)" stroke="#C9B8A8" stroke-width="1.5"/>
+    <path d="M5 0 Q10 -4, 15 0" fill="none" stroke="#6B5B4F" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="28" y="4" font-family="Georgia, serif" font-size="12" fill="#6B5B4F">Healthy</text>
+
+    <!-- Wiggly -->
+    <rect x="120" y="-10" width="20" height="20" rx="4" fill="#FFF9D6" stroke="#FFB74D" stroke-width="2" transform="rotate(-5, 130, 0)"/>
+    <circle cx="126" cy="0" r="2" fill="#6B5B4F"/>
+    <circle cx="134" cy="0" r="2" fill="#6B5B4F"/>
+    <text x="148" y="4" font-family="Georgia, serif" font-size="12" fill="#6B5B4F">Wiggly</text>
+
+    <!-- Lost/Growing -->
+    <ellipse cx="250" cy="0" rx="10" ry="10" fill="#E8A0A5" stroke="#D4908A" stroke-width="1.5"/>
+    <path d="M250 -2 Q248 -8, 250 -14" fill="none" stroke="#7CB342" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="268" y="4" font-family="Georgia, serif" font-size="12" fill="#6B5B4F">Growing!</text>
+  </g>
+</svg>

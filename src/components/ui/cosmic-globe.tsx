@@ -75,10 +75,16 @@ export const NETWORK_COLORS: Record<NetworkType, string> = {
 }
 
 // ─── Predefined arc connections (pairs of node indices) ─────────────────────
-// Only arcs between the 12 card character cities
-const HUB_SET = new Set([2, 14, 21, 30, 36, 37, 38, 39, 40, 41, 42, 43])
+// Primary hubs = 12 card character cities (bright markers + ripple rings)
+const PRIMARY_HUBS = new Set([2, 14, 21, 30, 36, 37, 38, 39, 40, 41, 42, 43])
+// Secondary hubs = 8 major cities for visual density (smaller markers, no ripples)
+const SECONDARY_HUBS = new Set([0, 1, 4, 9, 13, 16, 25, 29])
+// 0=Tokyo, 1=London, 4=Mumbai, 9=Seoul, 13=Singapore, 16=New York, 25=Shanghai, 29=Taipei
+// Combined: all visible markers (20 total)
+const HUB_SET = new Set([...Array.from(PRIMARY_HUBS), ...Array.from(SECONDARY_HUBS)])
+
 const ARC_CONNECTIONS: [number, number][] = [
-  // ─── Hub-to-hub connections (12 card cities interconnected) ─────
+  // ─── Card city connections (primary mesh) ─────
   [2, 14],  // Toronto ↔ Reykjavik
   [2, 42],  // Toronto ↔ Warsaw
   [14, 21], // Reykjavik ↔ Moscow
@@ -98,6 +104,19 @@ const ARC_CONNECTIONS: [number, number][] = [
   [30, 43], // Cape Town ↔ Abu Dhabi
   [39, 41], // Starbase ↔ Rio
   [14, 42], // Reykjavik ↔ Warsaw
+  // ─── Secondary hub connections (bridge to major cities) ─────
+  [0, 9],   // Tokyo ↔ Seoul
+  [0, 29],  // Tokyo ↔ Taipei
+  [1, 42],  // London ↔ Warsaw
+  [1, 14],  // London ↔ Reykjavik
+  [4, 38],  // Mumbai ↔ Usulampatti
+  [4, 43],  // Mumbai ↔ Abu Dhabi
+  [13, 37], // Singapore ↔ Johor Bahru
+  [13, 25], // Singapore ↔ Shanghai
+  [16, 2],  // New York ↔ Toronto
+  [16, 39], // New York ↔ Starbase
+  [25, 0],  // Shanghai ↔ Tokyo
+  [9, 29],  // Seoul ↔ Taipei
 ]
 
 // ─── Colors ──────────────────────────────────────────────────────────────────
@@ -210,8 +229,7 @@ export function CosmicGlobe({
   // Projected hub positions for click detection
   const hubProjections = useRef<{ x: number; y: number; visible: boolean; idx: number }[]>([])
 
-  // Key hubs for ripple ring effect — the 12 card character cities
-  // Exported as static array for data mapping
+  // Key hubs for ripple ring effect — only the 12 card character cities get ripples
   const KEY_HUBS = KEY_HUB_INDICES
 
   const drawArcs = useCallback(() => {
@@ -289,6 +307,39 @@ export function CosmicGlobe({
       ctx.fill()
     }
 
+    // ─── Draw subtle glow dots at secondary hub positions ─────────
+    for (const secIdx of Array.from(SECONDARY_HUBS)) {
+      const node = FAIRY_NODES[secIdx]
+      if (!node) continue
+      const p = projectToScreen(
+        node.location[0], node.location[1],
+        phiRef.current, thetaRef.current,
+        radius, cx, cy
+      )
+      projections.push({ x: p.x, y: p.y, visible: p.visible, idx: secIdx })
+      if (!p.visible) continue
+
+      const color = NETWORK_COLORS[node.networkType]
+      const cR = parseInt(color.slice(1, 3), 16)
+      const cG = parseInt(color.slice(3, 5), 16)
+      const cB = parseInt(color.slice(5, 7), 16)
+
+      // Soft glow dot (smaller than primary, no ripple rings)
+      const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, maxRingRadius * 0.35)
+      glow.addColorStop(0, `rgba(${cR}, ${cG}, ${cB}, 0.15)`)
+      glow.addColorStop(1, `rgba(${cR}, ${cG}, ${cB}, 0)`)
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, maxRingRadius * 0.35, 0, Math.PI * 2)
+      ctx.fillStyle = glow
+      ctx.fill()
+
+      // Small core dot
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(${cR}, ${cG}, ${cB}, 0.7)`
+      ctx.fill()
+    }
+
     hubProjections.current = projections
 
     // ─── Draw arcs (only between visible nodes, slightly subtler) ────
@@ -362,8 +413,11 @@ export function CosmicGlobe({
       glowColor: hexToGl("#1e1e5a"),
       scale: 1,
       offset: [0, 0],
-      // Only show markers for the 12 card cities (hub nodes)
-      markers: FAIRY_NODES.map((n, i) => ({ location: n.location, size: HUB_SET.has(i) ? n.size : 0 })),
+      // Show markers: primary hubs (card cities) full size, secondary hubs smaller, rest hidden
+      markers: FAIRY_NODES.map((n, i) => ({
+        location: n.location,
+        size: PRIMARY_HUBS.has(i) ? n.size : SECONDARY_HUBS.has(i) ? n.size * 0.6 : 0,
+      })),
       onRender: (state) => {
         const FRICTION = 0.92
         const THETA_CLAMP = 0.8
@@ -376,7 +430,7 @@ export function CosmicGlobe({
         }
         state.markers = FAIRY_NODES.map((n, i) => ({
           location: n.location,
-          size: HUB_SET.has(i) ? markerSizes.current[i] : 0,
+          size: PRIMARY_HUBS.has(i) ? markerSizes.current[i] : SECONDARY_HUBS.has(i) ? markerSizes.current[i] * 0.6 : 0,
         }))
 
         if (isDragging.current) {
@@ -440,14 +494,15 @@ export function CosmicGlobe({
     }
 
     const interval = setInterval(() => {
-      // Only pulse hub nodes (the 12 card cities)
+      // Pulse any visible hub node (primary or secondary)
       const hubArray = Array.from(HUB_SET)
       const idx = hubArray[Math.floor(seededRandom() * hubArray.length)]
       const node = FAIRY_NODES[idx]
+      const isPrimary = PRIMARY_HUBS.has(idx)
 
       // Subtle pulse on the selected hub node
       markerTargets.current = FAIRY_NODES.map((n, i) =>
-        i === idx ? n.size + 0.04 : (HUB_SET.has(i) ? n.size : 0)
+        i === idx ? n.size + (isPrimary ? 0.04 : 0.03) : (PRIMARY_HUBS.has(i) ? n.size : SECONDARY_HUBS.has(i) ? n.size * 0.6 : 0)
       )
 
       // Return to base size smoothly after delay

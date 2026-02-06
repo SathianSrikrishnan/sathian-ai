@@ -70,12 +70,27 @@ const config: Config = {
         '3xl': '24px',
         '4xl': '32px',
       },
+      fontSize: {
+        'display-sm': ['2.25rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'display-md': ['3rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        'display-lg': ['3.75rem', { lineHeight: '1.02', letterSpacing: '-0.03em' }],
+        'display-xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.03em' }],
+        'display-2xl': ['6rem', { lineHeight: '0.95', letterSpacing: '-0.04em' }],
+      },
+      letterSpacing: {
+        'tightest': '-0.04em',
+        'display': '-0.02em',
+      },
       animation: {
         'sparkle': 'sparkle 2s ease-in-out infinite',
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'shimmer': 'shimmer 2s linear infinite',
         'fairy-trail': 'fairyTrail 1.5s ease-out forwards',
+        'aurora-drift': 'auroraDrift 20s ease-in-out infinite',
+        'aurora-drift-reverse': 'auroraDrift 25s ease-in-out infinite reverse',
+        'aurora-breathe': 'auroraBreathe 8s ease-in-out infinite',
+        'glow-pulse': 'glowPulse 4s ease-in-out infinite alternate',
       },
       keyframes: {
         sparkle: {
@@ -98,10 +113,28 @@ const config: Config = {
           '0%': { opacity: '1', transform: 'scale(1) translateY(0)' },
           '100%': { opacity: '0', transform: 'scale(0.3) translateY(-50px)' },
         },
+        auroraDrift: {
+          '0%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(40px, -30px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+          '100%': { transform: 'translate(0, 0) scale(1)' },
+        },
+        auroraBreathe: {
+          '0%, 100%': { opacity: '0.15' },
+          '50%': { opacity: '0.25' },
+        },
+        glowPulse: {
+          '0%': { boxShadow: '0 0 30px rgba(124,58,237,0.15), 0 0 60px rgba(6,182,212,0.08)' },
+          '100%': { boxShadow: '0 0 50px rgba(124,58,237,0.25), 0 0 100px rgba(6,182,212,0.15)' },
+        },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'shimmer-gradient': 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
+      },
+      backdropBlur: {
+        'glass': '16px',
+        'glass-heavy': '24px',
       },
     },
   },

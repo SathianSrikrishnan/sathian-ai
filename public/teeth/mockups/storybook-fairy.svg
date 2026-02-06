@@ -1,0 +1,224 @@
+<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- Storybook-style Tooth Fairy character - whimsical, hand-drawn feel -->
+
+  <defs>
+    <!-- Soft glow for magical elements -->
+    <filter id="fairyGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Wing gradient -->
+    <linearGradient id="wingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8F4FC;stop-opacity:0.9"/>
+      <stop offset="50%" style="stop-color:#D4EAF7;stop-opacity:0.7"/>
+      <stop offset="100%" style="stop-color:#B8E4F0;stop-opacity:0.5"/>
+    </linearGradient>
+
+    <!-- Dress gradient -->
+    <linearGradient id="dressGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8B4B8"/>
+      <stop offset="100%" style="stop-color:#D4908A"/>
+    </linearGradient>
+
+    <!-- Hair gradient -->
+    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5D76E"/>
+      <stop offset="100%" style="stop-color:#E8C547"/>
+    </linearGradient>
+
+    <!-- Face gradient -->
+    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFECD2"/>
+      <stop offset="100%" style="stop-color:#F5DCC4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Wing (back) -->
+  <path
+    d="M55 90 C20 70, 10 100, 30 130 C15 140, 25 170, 55 160 C45 150, 50 120, 55 90"
+    fill="url(#wingGradient)"
+    stroke="#B8E4F0"
+    stroke-width="1"
+    filter="url(#fairyGlow)"
+    opacity="0.85"
+  />
+
+  <!-- Right Wing (back) -->
+  <path
+    d="M145 90 C180 70, 190 100, 170 130 C185 140, 175 170, 145 160 C155 150, 150 120, 145 90"
+    fill="url(#wingGradient)"
+    stroke="#B8E4F0"
+    stroke-width="1"
+    filter="url(#fairyGlow)"
+    opacity="0.85"
+  />
+
+  <!-- Wing sparkle details -->
+  <circle cx="35" cy="110" r="2" fill="#F5D76E" opacity="0.8"/>
+  <circle cx="45" cy="140" r="1.5" fill="#FFB5BA" opacity="0.7"/>
+  <circle cx="165" cy="115" r="2" fill="#F5D76E" opacity="0.8"/>
+  <circle cx="155" cy="145" r="1.5" fill="#FFB5BA" opacity="0.7"/>
+
+  <!-- Hair (back layer) -->
+  <path
+    d="M70 55 C60 45, 55 70, 60 100 C55 110, 60 130, 75 140
+       M130 55 C140 45, 145 70, 140 100 C145 110, 140 130, 125 140"
+    fill="url(#hairGradient)"
+    stroke="#D4B43E"
+    stroke-width="1"
+  />
+
+  <!-- Dress / Body -->
+  <path
+    d="M75 130 C70 140, 60 180, 70 210
+       L90 220 L100 195 L110 220 L130 210
+       C140 180, 130 140, 125 130
+       C115 125, 85 125, 75 130"
+    fill="url(#dressGradient)"
+    stroke="#C9857A"
+    stroke-width="1.5"
+  />
+
+  <!-- Dress details - petal scallops at bottom -->
+  <path
+    d="M70 210 C75 205, 85 208, 90 220
+       M90 220 C95 210, 105 210, 110 220
+       M110 220 C115 208, 125 205, 130 210"
+    fill="none"
+    stroke="#D4908A"
+    stroke-width="1"
+  />
+
+  <!-- Neck -->
+  <ellipse cx="100" cy="125" rx="12" ry="8" fill="url(#skinGradient)"/>
+
+  <!-- Face -->
+  <ellipse cx="100" cy="85" rx="35" ry="40" fill="url(#skinGradient)" stroke="#E8D5C4" stroke-width="1"/>
+
+  <!-- Hair (front layer) -->
+  <path
+    d="M65 70 C60 50, 75 35, 100 30 C125 35, 140 50, 135 70
+       C140 55, 125 45, 100 42 C75 45, 60 55, 65 70"
+    fill="url(#hairGradient)"
+    stroke="#D4B43E"
+    stroke-width="1"
+  />
+
+  <!-- Hair bangs -->
+  <path
+    d="M70 65 C75 55, 85 50, 90 58
+       M85 60 C90 50, 100 48, 105 55
+       M100 55 C105 48, 115 50, 120 58
+       M115 60 C120 52, 128 55, 130 65"
+    fill="url(#hairGradient)"
+    stroke="#D4B43E"
+    stroke-width="1"
+  />
+
+  <!-- Crown / Tiara -->
+  <path
+    d="M72 42 L78 28 L88 38 L100 22 L112 38 L122 28 L128 42"
+    fill="none"
+    stroke="#F5D76E"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    filter="url(#fairyGlow)"
+  />
+
+  <!-- Crown jewels -->
+  <circle cx="100" cy="26" r="4" fill="#FFB5BA" stroke="#E8A0A5" stroke-width="1"/>
+  <circle cx="78" cy="34" r="2.5" fill="#B8E4F0" stroke="#8BCFE0" stroke-width="0.5"/>
+  <circle cx="122" cy="34" r="2.5" fill="#B8E4F0" stroke="#8BCFE0" stroke-width="0.5"/>
+
+  <!-- Eyes - large, expressive, anime-ish but soft -->
+  <!-- Left eye -->
+  <ellipse cx="85" cy="82" rx="10" ry="12" fill="#FFFEF5" stroke="#8B7355" stroke-width="1.5"/>
+  <ellipse cx="87" cy="84" rx="5" ry="6" fill="#6B5B4F"/>
+  <circle cx="89" cy="81" r="2.5" fill="white"/>
+  <circle cx="85" cy="87" r="1" fill="white" opacity="0.5"/>
+  <!-- Eyelashes -->
+  <path d="M76 75 L74 71" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M80 73 L79 68" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M85 72 L86 67" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Right eye -->
+  <ellipse cx="115" cy="82" rx="10" ry="12" fill="#FFFEF5" stroke="#8B7355" stroke-width="1.5"/>
+  <ellipse cx="117" cy="84" rx="5" ry="6" fill="#6B5B4F"/>
+  <circle cx="119" cy="81" r="2.5" fill="white"/>
+  <circle cx="115" cy="87" r="1" fill="white" opacity="0.5"/>
+  <!-- Eyelashes -->
+  <path d="M124 75 L126 71" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M120 73 L121 68" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M115 72 L114 67" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Rosy cheeks -->
+  <ellipse cx="70" cy="92" rx="8" ry="5" fill="#FFB5BA" opacity="0.5"/>
+  <ellipse cx="130" cy="92" rx="8" ry="5" fill="#FFB5BA" opacity="0.5"/>
+
+  <!-- Nose - tiny, cute -->
+  <path d="M98 90 C100 92, 102 92, 100 90" fill="#E8C5B5" stroke="#D4B5A5" stroke-width="0.5"/>
+
+  <!-- Smile -->
+  <path
+    d="M88 102 C95 112, 105 112, 112 102"
+    fill="none"
+    stroke="#C9857A"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <!-- Arms holding wand -->
+  <!-- Left arm -->
+  <path
+    d="M75 135 C60 145, 55 160, 60 175"
+    fill="none"
+    stroke="url(#skinGradient)"
+    stroke-width="10"
+    stroke-linecap="round"
+  />
+  <circle cx="60" cy="175" r="6" fill="url(#skinGradient)"/>
+
+  <!-- Right arm -->
+  <path
+    d="M125 135 C140 145, 150 155, 155 140"
+    fill="none"
+    stroke="url(#skinGradient)"
+    stroke-width="10"
+    stroke-linecap="round"
+  />
+  <circle cx="155" cy="140" r="6" fill="url(#skinGradient)"/>
+
+  <!-- Magic wand -->
+  <line x1="155" y1="140" x2="175" y2="100" stroke="#D4B43E" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Star on wand -->
+  <g transform="translate(178, 92)" filter="url(#fairyGlow)">
+    <path
+      d="M0 -10 L3 -3 L10 -3 L5 2 L7 10 L0 5 L-7 10 L-5 2 L-10 -3 L-3 -3 Z"
+      fill="#F5D76E"
+      stroke="#E8C547"
+      stroke-width="1"
+    />
+  </g>
+
+  <!-- Floating sparkles around fairy -->
+  <circle cx="40" cy="60" r="2" fill="#F5D76E" opacity="0.7"/>
+  <circle cx="160" cy="55" r="1.5" fill="#FFB5BA" opacity="0.6"/>
+  <circle cx="50" cy="180" r="2" fill="#B8E4F0" opacity="0.7"/>
+  <circle cx="150" cy="190" r="1.5" fill="#F5D76E" opacity="0.6"/>
+
+  <!-- Little tooth she's carrying (in left hand area) -->
+  <g transform="translate(55, 168) scale(0.3)">
+    <path
+      d="M50 8 C35 8, 22 18, 20 35 C18 48, 22 60, 28 75 C30 82, 32 95, 35 105 C37 112, 43 115, 45 108 C47 100, 48 88, 50 80 C52 88, 53 100, 55 108 C57 115, 63 112, 65 105 C68 95, 70 82, 72 75 C78 60, 82 48, 80 35 C78 18, 65 8, 50 8 Z"
+      fill="#FFFEF5"
+      stroke="#E8D5C4"
+      stroke-width="3"
+    />
+  </g>
+</svg>

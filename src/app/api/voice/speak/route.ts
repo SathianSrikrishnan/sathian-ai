@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Text-to-speech error:', error)
     return NextResponse.json(
-      { error: 'Speech synthesis failed', details: String(error) },
+      { error: 'Speech synthesis failed. Please try again.' },
       { status: 500 }
     )
   }

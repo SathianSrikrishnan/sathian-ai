@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Transcription error:', error)
     return NextResponse.json(
-      { error: 'Transcription failed', details: String(error) },
+      { error: 'Transcription failed. Please try again.' },
       { status: 500 }
     )
   }

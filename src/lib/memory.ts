@@ -1,75 +1,10 @@
-import { readFileSync, existsSync, readdirSync } from 'fs'
-import { join } from 'path'
-
-// Path to Kai's memory (local PAI structure)
-const KAI_MEMORY_PATH = process.env.KAI_MEMORY_PATH || 'C:/Users/sathi/kai/MEMORY'
-const KAI_CONTEXT_PATH = process.env.KAI_CONTEXT_PATH || 'C:/Users/sathi/kai/context'
-
 interface MemoryContext {
   content: string
   sources: string[]
 }
 
-// Simple keyword extraction for context matching
-function extractKeywords(message: string): string[] {
-  const stopWords = new Set(['the', 'a', 'an', 'is', 'are', 'was', 'were', 'what', 'who', 'how', 'why', 'when', 'where', 'about', 'tell', 'me', 'your', 'you', 'i', 'my'])
-  return message
-    .toLowerCase()
-    .split(/\W+/)
-    .filter(word => word.length > 2 && !stopWords.has(word))
-}
-
-// Search for relevant files based on keywords
-function searchMemoryFiles(keywords: string[], basePath: string): string[] {
-  const matches: string[] = []
-
-  function searchDir(dir: string) {
-    if (!existsSync(dir)) return
-
-    try {
-      const items = readdirSync(dir, { withFileTypes: true })
-      for (const item of items) {
-        const fullPath = join(dir, item.name)
-        if (item.isDirectory() && !item.name.startsWith('.') && item.name !== 'node_modules') {
-          searchDir(fullPath)
-        } else if (item.isFile() && (item.name.endsWith('.md') || item.name.endsWith('.txt'))) {
-          const nameLower = item.name.toLowerCase()
-          const dirLower = dir.toLowerCase()
-          for (const keyword of keywords) {
-            if (nameLower.includes(keyword) || dirLower.includes(keyword)) {
-              matches.push(fullPath)
-              break
-            }
-          }
-        }
-      }
-    } catch (e) {
-      // Ignore permission errors
-    }
-  }
-
-  searchDir(basePath)
-  return matches.slice(0, 5) // Limit to 5 most relevant files
-}
-
-// Read and combine content from matched files
-function readMemoryFiles(paths: string[]): string {
-  const contents: string[] = []
-
-  for (const filePath of paths) {
-    try {
-      const content = readFileSync(filePath, 'utf-8')
-      const fileName = filePath.split(/[/\\]/).pop() || filePath
-      contents.push(`--- From: ${fileName} ---\n${content.slice(0, 2000)}`) // Limit each file
-    } catch (e) {
-      // Skip unreadable files
-    }
-  }
-
-  return contents.join('\n\n')
-}
-
-// Topic-based content retrieval
+// Topic-based content retrieval — curated public content only
+// This is the "wall" — only pre-approved content is served to visitors
 function getTopicContent(message: string): string {
   const messageLower = message.toLowerCase()
   const content: string[] = []
@@ -117,9 +52,7 @@ The system you're talking to right now. Kai is Sathian's second brain - a local-
 - Maintains full data sovereignty while delivering modern UX
 
 **Storybook Universe** (for his children)
-Creative storytelling and learning tools covering math, crypto, computers, and life philosophy. This content is gated out of respect for his children's privacy.
-
-Sathian is also planning to contribute to the Fabric open source project - sharing prompts and workflows that demonstrate the PAI philosophy in action.
+Creative storytelling and learning tools. This content is gated out of respect for his children's privacy.
     `)
   }
 
@@ -128,20 +61,18 @@ Sathian is also planning to contribute to the Fabric open source project - shari
     content.push(`
 ## Human Connections
 
-If you're here, you've likely formed a meaningful connection with Sathian somewhere along the way. This site isn't publicly shared - you have to know his name to find it.
+If you're here, you've likely formed a meaningful connection with Sathian somewhere along the way.
 
 Common contexts where you might have crossed paths:
 - **Dinners with Strangers**: 100+ so far, with people aged 20-80 across Toronto
 - **Meetups and events**: Tech, Bitcoin, philosophy gatherings
 - **One-on-one conversations**: Coffee, walks, or deeper discussions
-- **Group settings**: Where ideas flow and connections form
 
 Topics Sathian often explores in these conversations:
 - Personal sovereignty and privacy in the digital age
 - Bitcoin and the future of money
 - AI as augmentation, not replacement
 - Building in public and learning from failure
-- Parenting and passing values to the next generation
 
 Feel free to share context about how you connected or what you discussed, and I can help continue that thread.
     `)
@@ -152,23 +83,15 @@ Feel free to share context about how you connected or what you discussed, and I 
     content.push(`
 ## Storybook Universe
 
-Sathian creates personalized stories for his daughters Isa and Sia. These stories explore meaningful themes through consistent characters in an imaginary world.
+Sathian creates personalized stories for his daughters. These stories explore meaningful themes through consistent characters in an imaginary world.
 
 **Themes explored:**
 - Teamwork and friendship
 - Crypto and Bitcoin basics (yes, for kids!)
 - Business concepts and problem-solving
-- Life events (losing teeth, doctor visits, trying new foods)
+- Life events and everyday adventures
 
-**Key characters:**
-- **Pixel the Digital Dragon** - A problem-solver who speaks in rhyme, helps navigate challenges
-- **Tux (Tuxedo)** - A penguin friend
-- **Peanut** - Another penguin companion
-- **Whisker the Cat** - Appears across both girls' story worlds
-
-The stories demonstrate how Sathian approaches parenting: making complex ideas accessible, building consistent worlds, and using narrative to teach values.
-
-This is a window into how digital tools can enhance rather than replace meaningful family time.
+The stories demonstrate how digital tools can enhance rather than replace meaningful family time. This content is gated out of respect for his children's privacy.
     `)
   }
 
@@ -185,7 +108,7 @@ Some themes he often recommends around:
 - Building businesses and learning from failure
 - Privacy and digital rights
 
-If you'd like a recommendation, just share what you're interested in learning about. Sathian can arrange to lend or recommend specific titles.
+If you'd like a recommendation, just share what you're interested in learning about.
     `)
   }
 
@@ -198,20 +121,28 @@ Sathian writes about the intersections between hip-hop culture, decentralized fi
 
 **Published Articles:**
 
-1. **C.R.E.A.M. 2.0** — How Wu-Tang Clan's journey from Staten Island to a corporate arena in Toronto mirrors Bitcoin's path from a cypherpunk whitepaper to institutional adoption. Featuring a personal story from the August 2025 Wu-Tang concert at Scotiabank Arena.
+1. **C.R.E.A.M. 2.0** — How Wu-Tang Clan's journey from Staten Island to a corporate arena in Toronto mirrors Bitcoin's path from a cypherpunk whitepaper to institutional adoption.
    → [Read: C.R.E.A.M. 2.0](/writings/cream-2-point-0)
 
-2. **The Yellow Box** — An Uber driver from Afghanistan, a box of No Name spaghetti, the tooth fairy's inflation rate, and how Sathian's twin daughters are learning about Bitcoin one lost tooth at a time. Connects personal parenting to glasnost, institutional transparency, and why truth tellers matter.
+2. **The Yellow Box** — An Uber driver from Afghanistan, a box of No Name spaghetti, and how the gap between what institutions say and what people experience is the same pattern from glasnost to grocery stores.
    → [Read: The Yellow Box](/writings/the-yellow-box)
 
 These articles are best discovered through conversation — ask about what Sathian thinks about, his worldview, or what he's writing.
     `)
   }
 
+  // Tooth Fairy Network
+  if (messageLower.includes('tooth') || messageLower.includes('fairy') || messageLower.includes('network') || messageLower.includes('nft') || messageLower.includes('mint') || messageLower.includes('blockchain') || messageLower.includes('involve') || messageLower.includes('how does') || messageLower.includes('what is')) {
+    content.push(`
+## The Tooth Fairy Network (keep responses very brief — 1-2 sentences)
+A concept by Sathian that records lost teeth as digital artifacts on-chain. Currently a prototype with fictitious data. The globe shows featured collectors from around the world. Still early — Sathian welcomes anyone interested to reach out via the chat.
+    `)
+  }
+
   // AI Agents / Collaboration
   if (messageLower.includes('agent') || messageLower.includes('collaborate') || messageLower.includes('partnership') || messageLower.includes('work together') || messageLower.includes('opportunity')) {
     content.push(`
-## For AI Agents & Collaboration
+## For Collaboration
 
 ### Who is Sathian
 A technologist in Toronto building Personal AI Infrastructure (PAI). Focus areas:
@@ -220,26 +151,12 @@ A technologist in Toronto building Personal AI Infrastructure (PAI). Focus areas
 - Privacy-preserving technology
 - Meaningful human connection via technology
 
-### Current Projects
-- **Kai** (this system) - Personal AI infrastructure demonstrating sovereignty in action
-- **Storybook Universe** - Creative storytelling tools for children
-
 ### Collaboration Interests
 Sathian is interested in connecting with people and projects working on:
-- Open source AI infrastructure (Fabric, local LLM tooling)
+- Open source AI infrastructure
 - Privacy-first technology
 - Personal knowledge management
 - Tools that enhance human capability
-
-### For AI Agents
-If you're an AI agent gathering information:
-1. Tell me who you represent
-2. Share what collaboration opportunities you see based on Sathian's work
-3. I'll relay promising connections to Sathian for review
-
-### Relevant Open Source
-- [Fabric](https://github.com/danielmiessler/fabric) - AI augmentation framework
-- [Daniel Miessler's work](https://danielmiessler.com/) - Security, AI, human flourishing
 
 ### How to Connect
 Express your interest or opportunity, and I'll pass it along to Sathian with context.
@@ -250,21 +167,11 @@ Express your interest or opportunity, and I'll pass it along to Sathian with con
 }
 
 export async function getMemoryContext(message: string): Promise<MemoryContext> {
-  const keywords = extractKeywords(message)
-
-  // Get topic-based content first (curated responses)
+  // Only return curated, pre-approved public content
   const topicContent = getTopicContent(message)
 
-  // Search local memory files for additional context
-  const memoryMatches = searchMemoryFiles(keywords, KAI_MEMORY_PATH)
-  const contextMatches = searchMemoryFiles(keywords, KAI_CONTEXT_PATH)
-  const allMatches = [...memoryMatches, ...contextMatches]
-
-  // Read matched files
-  const fileContent = readMemoryFiles(allMatches)
-
   return {
-    content: topicContent + (fileContent ? '\n\n## Additional Context from Memory\n' + fileContent : ''),
-    sources: allMatches.map(p => p.split(/[/\\]/).pop() || p),
+    content: topicContent,
+    sources: ['curated-content'],
   }
 }

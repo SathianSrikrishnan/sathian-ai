@@ -27,7 +27,12 @@ export async function POST(request: NextRequest) {
     const customContext = formData.get('context') as string
 
     if (!audioFile) {
-      return NextResponse.json({ error: 'No audio file provided', step }, { status: 400 })
+      return NextResponse.json({ error: 'No audio file provided' }, { status: 400 })
+    }
+
+    // Cap audio file size at 10MB to prevent abuse
+    if (audioFile.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: 'Audio file too large (max 10MB)' }, { status: 400 })
     }
 
     console.log(`[Voice] Audio received: ${audioFile.size} bytes, type: ${audioFile.type}`)
@@ -168,17 +173,10 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
-    const errorStack = error instanceof Error ? error.stack : undefined
-    console.error(`[Voice] Error at step "${step}":`, errorMessage)
-    if (errorStack) console.error(errorStack)
+    console.error(`[Voice] Error at step "${step}":`, error)
 
     return NextResponse.json(
-      {
-        error: 'Conversation failed',
-        step,
-        details: errorMessage,
-      },
+      { error: 'Conversation failed. Please try again.' },
       { status: 500 }
     )
   }

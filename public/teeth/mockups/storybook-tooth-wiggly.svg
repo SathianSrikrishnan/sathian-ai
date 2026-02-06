@@ -1,0 +1,79 @@
+<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Storybook-style WIGGLY tooth - nervous expression -->
+
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#D4A59A" flood-opacity="0.3"/>
+    </filter>
+
+    <!-- Slightly yellow tint for wiggly tooth -->
+    <linearGradient id="wigglyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFEF0"/>
+      <stop offset="50%" style="stop-color:#FFF9D6"/>
+      <stop offset="100%" style="stop-color:#F5E8C8"/>
+    </linearGradient>
+
+    <radialGradient id="blushGradient">
+      <stop offset="0%" style="stop-color:#FFB5BA;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#FFB5BA;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Main tooth body - slightly tilted to show wobble -->
+  <g transform="rotate(-5, 50, 60)">
+    <path
+      d="M50 8
+         C35 8, 22 18, 20 35
+         C18 48, 22 60, 28 75
+         C30 82, 32 95, 35 105
+         C37 112, 43 115, 45 108
+         C47 100, 48 88, 50 80
+         C52 88, 53 100, 55 108
+         C57 115, 63 112, 65 105
+         C68 95, 70 82, 72 75
+         C78 60, 82 48, 80 35
+         C78 18, 65 8, 50 8 Z"
+      fill="url(#wigglyGradient)"
+      stroke="#C9B8A8"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#softShadow)"
+    />
+
+    <!-- Worried eyes - open with concern -->
+    <!-- Left eye -->
+    <ellipse cx="40" cy="42" rx="5" ry="6" fill="#FFFEF5" stroke="#6B5B4F" stroke-width="1.5"/>
+    <ellipse cx="41" cy="43" rx="2.5" ry="3" fill="#6B5B4F"/>
+    <circle cx="42" cy="42" r="1" fill="white"/>
+
+    <!-- Right eye -->
+    <ellipse cx="60" cy="42" rx="5" ry="6" fill="#FFFEF5" stroke="#6B5B4F" stroke-width="1.5"/>
+    <ellipse cx="61" cy="43" rx="2.5" ry="3" fill="#6B5B4F"/>
+    <circle cx="62" cy="42" r="1" fill="white"/>
+
+    <!-- Worried eyebrows -->
+    <path d="M34 34 C38 30, 42 32, 44 34" fill="none" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M56 34 C58 32, 62 30, 66 34" fill="none" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- Rosy cheeks -->
+    <ellipse cx="32" cy="52" rx="6" ry="4" fill="url(#blushGradient)"/>
+    <ellipse cx="68" cy="52" rx="6" ry="4" fill="url(#blushGradient)"/>
+
+    <!-- Nervous wobbly mouth -->
+    <path
+      d="M40 58 C44 56, 48 60, 50 58 C52 60, 56 56, 60 58"
+      fill="none"
+      stroke="#C9857A"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+
+    <!-- Sweat drop -->
+    <ellipse cx="72" cy="35" rx="3" ry="5" fill="#B8E4F0" opacity="0.8"/>
+  </g>
+
+  <!-- Motion lines to show wobble -->
+  <path d="M12 30 C8 35, 8 45, 12 50" stroke="#9DC183" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M88 30 C92 35, 92 45, 88 50" stroke="#9DC183" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+</svg>

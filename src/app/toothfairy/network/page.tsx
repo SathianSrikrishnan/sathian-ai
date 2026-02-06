@@ -6,6 +6,9 @@ import Link from "next/link"
 import { motion, useScroll, useTransform } from "motion/react"
 import { FAIRY_NODES, NETWORK_COLORS, KEY_HUB_INDICES } from "@/components/ui/cosmic-globe"
 import type { NetworkType } from "@/components/ui/cosmic-globe"
+import { AuroraBlob } from "@/components/ui/aurora-background"
+import { ScrollReveal } from "@/components/ui/scroll-reveal"
+import { ChatWidget } from "@/components/ChatWidget"
 
 const CosmicGlobe = dynamic(
   () => import("@/components/ui/cosmic-globe").then((mod) => mod.CosmicGlobe),
@@ -188,156 +191,7 @@ function MiniCardPopup({ card, bio, onClose }: { card: NFTCard; bio: { age: numb
   )
 }
 
-// ─── Chat Widget (Aceternity-style — white/light, profile photo) ─────────────
-function ChatWidget() {
-  const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState([
-    { role: "bot" as const, text: "Hey, I'm Sathian. Welcome to the Tooth Fairy Network. Ask me anything." },
-  ])
-  const [input, setInput] = useState("")
-  const [showSuggestions, setShowSuggestions] = useState(true)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  const SUGGESTIONS = [
-    "What is the Tooth Fairy Network?",
-    "How does blockchain connect to teeth?",
-    "Tell me about your ideology",
-    "How can I get involved?",
-  ]
-
-  const handleSend = useCallback((text?: string) => {
-    const msg = text || input.trim()
-    if (!msg) return
-    setShowSuggestions(false)
-    setMessages((prev) => [...prev, { role: "user" as const, text: msg }])
-    setInput("")
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { role: "bot" as const, text: "Thanks for the question! I'll get back to you shortly. In the meantime, explore the globe and check out our minted memories below." }])
-    }, 1200)
-  }, [input])
-
-  useEffect(() => {
-    if (open && inputRef.current) inputRef.current.focus()
-  }, [open])
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
-
-  return (
-    <>
-      {/* Chat panel — white/light, large */}
-      {open && (
-        <motion.div
-          className="fixed bottom-20 right-6 z-50 w-[440px] rounded-2xl overflow-hidden"
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          style={{
-            background: "#ffffff",
-            boxShadow: "0 25px 80px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.08)",
-            border: "1px solid rgba(0,0,0,0.06)",
-          }}
-        >
-          {/* Header with profile photo */}
-          <div className="px-6 pt-5 pb-4 border-b border-gray-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full relative overflow-hidden flex-shrink-0 shadow-sm">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sathian-profile.png" alt="Sathian" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full" style={{
-                    background: "#22c55e", border: "2px solid #ffffff",
-                    boxShadow: "0 0 4px rgba(34,197,94,0.4)",
-                  }} />
-                </div>
-                <div>
-                  <h4 className="text-[15px] font-semibold text-gray-900">Sathian</h4>
-                  <p className="text-xs text-gray-400">Founder &middot; Online</p>
-                </div>
-              </div>
-              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
-                <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Messages */}
-          <div className="px-6 py-5 space-y-3 max-h-[440px] min-h-[240px] overflow-y-auto bg-gray-50/50">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === "bot" ? "justify-start" : "justify-end"} gap-2.5`}>
-                {msg.role === "bot" && (
-                  <div className="w-7 h-7 rounded-full flex-shrink-0 mt-1 overflow-hidden shadow-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/sathian-profile.png" alt="" className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed ${
-                  msg.role === "bot"
-                    ? "bg-white text-gray-700 border border-gray-100 shadow-sm"
-                    : "bg-gray-900 text-white"
-                }`} style={{
-                  borderTopLeftRadius: msg.role === "bot" ? "4px" : undefined,
-                  borderTopRightRadius: msg.role === "user" ? "4px" : undefined,
-                }}>{msg.text}</div>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-
-            {/* Suggested prompts */}
-            {showSuggestions && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} onClick={() => handleSend(s)}
-                    className="px-3 py-1.5 rounded-full text-[12px] bg-white border border-gray-200 text-gray-600 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-all shadow-sm">
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <div className="px-5 py-4 border-t border-gray-100 flex gap-2 bg-white">
-            <input
-              ref={inputRef}
-              type="text" value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleSend() }}
-              placeholder="Type your message..."
-              className="flex-1 px-4 py-3 rounded-xl text-sm outline-none bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 transition-colors"
-            />
-            <button onClick={() => handleSend()} className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:opacity-80 bg-gray-900 text-white">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
-            </button>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Floating button — profile photo */}
-      <motion.button
-        onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer overflow-hidden"
-        style={{
-          boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 0 40px rgba(124,58,237,0.1)",
-          border: open ? "2px solid rgba(0,0,0,0.1)" : "2px solid rgba(255,255,255,0.2)",
-        }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {open ? (
-          <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M18 6L6 18M6 6L18 18" /></svg>
-          </div>
-        ) : (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src="/sathian-profile.png" alt="Chat with Sathian" className="w-full h-full object-cover" />
-        )}
-      </motion.button>
-    </>
-  )
-}
+// ChatWidget is now imported from @/components/ChatWidget
 
 // ─── Star Field Background ───────────────────────────────────────────────────
 function StarField() {
@@ -386,33 +240,44 @@ function StarField() {
 // ─── Top Navigation ──────────────────────────────────────────────────────────
 function NavBar() {
   const [scrolled, setScrolled] = useState(false)
+  const [walletToast, setWalletToast] = useState(false)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{
-      background: scrolled ? "rgba(5,5,16,0.85)" : "transparent",
-      backdropFilter: scrolled ? "blur(20px)" : "none",
-      borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
-    }}>
-      <div className="max-w-7xl mx-auto flex items-center justify-end px-6 py-4">
-        <div className="flex items-center gap-3">
-          <Link href="/toothfairy/network/about" className="px-4 py-2 rounded-xl text-[12px] font-mono uppercase tracking-wider transition-all hover:bg-white/[0.06] cursor-pointer inline-block" style={{
-            color: C.muted, border: "1px solid rgba(255,255,255,0.08)",
-          }}>About</Link>
-          <button className="px-4 py-2 rounded-xl text-[12px] font-mono uppercase tracking-wider cursor-pointer relative overflow-hidden group" style={{
-            color: C.bg, background: `linear-gradient(135deg, ${C.nebula}, ${C.aurora})`,
-          }}>
-            <span className="relative z-10">Connect Wallet</span>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{
-              background: `linear-gradient(135deg, ${C.aurora}, ${C.nebula})`,
-            }} />
-          </button>
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "glass" : ""}`} style={{
+        background: scrolled ? undefined : "transparent",
+        backdropFilter: scrolled ? undefined : "none",
+        borderBottom: scrolled ? undefined : "1px solid transparent",
+      }}>
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+          <Link href="/" className="font-mono text-sm tracking-tight transition-colors hover:text-white" style={{ color: C.muted }}>
+            sathian.ai
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/toothfairy/network/about" className="px-4 py-2 rounded-xl text-[12px] font-mono uppercase tracking-wider transition-all hover:bg-white/[0.06] cursor-pointer inline-block" style={{
+              color: C.muted, border: "1px solid rgba(255,255,255,0.08)",
+            }}>About</Link>
+            <button onClick={() => { setWalletToast(true); setTimeout(() => setWalletToast(false), 3000) }} className="px-4 py-2 rounded-xl text-[12px] font-mono uppercase tracking-wider cursor-pointer relative overflow-hidden group" style={{
+              color: C.bg, background: `linear-gradient(135deg, ${C.nebula}, ${C.aurora})`,
+            }}>
+              <span className="relative z-10">Connect Wallet</span>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{
+                background: `linear-gradient(135deg, ${C.aurora}, ${C.nebula})`,
+              }} />
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      {walletToast && (
+        <div className="fixed top-20 right-6 z-[60] px-4 py-3 rounded-xl glass text-sm font-mono animate-fadeIn" style={{ color: C.text }}>
+          Wallet connection coming soon.
+        </div>
+      )}
+    </>
   )
 }
 
@@ -432,10 +297,10 @@ function MetricTicker({ label, value, color }: { label: string; value: number; c
     return () => clearInterval(iv)
   }, [])
   return (
-    <div className="rounded-2xl p-5 relative overflow-hidden" style={{
-      background: "linear-gradient(135deg, rgba(15,15,45,0.7), rgba(15,15,45,0.4))",
-      backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.06)",
-    }}>
+    <div className="glass-card rounded-2xl p-5 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none" style={{
+        background: `radial-gradient(circle, ${color}15, transparent 70%)`,
+      }} />
       <div className="text-[10px] uppercase tracking-[0.15em] font-mono mb-2" style={{ color: color + "90" }}>{label}</div>
       <div className="font-display text-2xl font-bold" style={{ color: C.text }}>{display.toLocaleString()}</div>
     </div>
@@ -466,10 +331,7 @@ function ActivityFeed() {
     return () => clearInterval(iv)
   }, [])
   return (
-    <div className="rounded-2xl p-5 overflow-hidden" style={{
-      background: "linear-gradient(135deg, rgba(15,15,45,0.6), rgba(15,15,45,0.3))",
-      backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.06)",
-    }}>
+    <div className="glass-card-gradient rounded-2xl p-5 overflow-hidden">
       <div className="text-[10px] uppercase tracking-[0.2em] font-mono mb-3" style={{ color: C.muted + "60" }}>Live Collections</div>
       {events.map((e, i) => (
         <motion.div key={e.id} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}
@@ -1157,6 +1019,9 @@ export default function FairyNetworkPage() {
   const [nftCount, setNftCount] = useState(12503)
   const [countryCount, setCountryCount] = useState(84)
   const [selectedCardIdx, setSelectedCardIdx] = useState<number | null>(null)
+  const [bottomWalletToast, setBottomWalletToast] = useState(false)
+  const [email, setEmail] = useState("")
+  const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent">("idle")
 
   const handleNodeClick = useCallback((nodeIndex: number, _city: string) => {
     const cardIdx = HUB_TO_CARD[nodeIndex]
@@ -1192,20 +1057,22 @@ export default function FairyNetworkPage() {
 
       {/* ─── HERO: Globe ─── */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-20 z-10">
+        {/* Aurora blob layer — large animated gradient orbs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full blur-[150px] opacity-[0.04]" style={{ background: C.nebula }} />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.03]" style={{ background: C.aurora }} />
+          <AuroraBlob color={C.nebula} size={800} blur={120} opacity={0.1} className="absolute -top-[200px] left-[10%] animate-aurora-drift" />
+          <AuroraBlob color={C.aurora} size={700} blur={100} opacity={0.08} className="absolute top-[30%] -right-[100px] animate-aurora-drift-reverse" />
+          <AuroraBlob color={C.plasma} size={600} blur={110} opacity={0.06} className="absolute -bottom-[150px] left-[30%] animate-aurora-drift" />
         </div>
 
         <div className="max-w-7xl w-full mx-auto relative">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-[11px] font-mono uppercase tracking-[0.2em]" style={{
-              background: "rgba(15,15,45,0.7)", border: "1px solid rgba(255,255,255,0.08)", color: C.aurora,
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-[11px] font-mono uppercase tracking-[0.2em] glass" style={{
+              color: C.aurora,
             }}>
               <span className="w-1.5 h-1.5 rounded-full bg-green-400" style={{ boxShadow: "0 0 6px #22c55e" }} />
               Network Live — {FAIRY_NODES.length} Nodes
             </div>
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+            <h1 className="font-display text-display-lg md:text-display-xl lg:text-display-2xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-300 via-cyan-300 to-amber-300 bg-clip-text text-transparent">The Tooth Fairy Network</span>
             </h1>
             <p className="text-base md:text-lg max-w-xl mx-auto font-sans leading-relaxed" style={{ color: C.muted + "aa" }}>
@@ -1216,7 +1083,10 @@ export default function FairyNetworkPage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
             className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 items-start">
             <div className="flex flex-col items-center relative">
-              <CosmicGlobe size={560} rotateSpeed={0.002} simulateArrivals arrivalInterval={3000} showLabels darkness={1} showArcs onNodeClick={handleNodeClick} />
+              {/* Globe glow wrapper — breathing cosmic aura */}
+              <div className="globe-glow-wrapper">
+                <CosmicGlobe size={560} rotateSpeed={0.002} simulateArrivals arrivalInterval={3000} showLabels darkness={1} showArcs onNodeClick={handleNodeClick} />
+              </div>
               {/* Mini card popup when a globe node is clicked */}
               {selectedCardIdx !== null && CARDS[selectedCardIdx] && (
                 <MiniCardPopup
@@ -1240,31 +1110,78 @@ export default function FairyNetworkPage() {
         </div>
       </section>
 
+      {/* ─── BENTO GRID: Navigation Cards ─── */}
+      <section className="relative py-20 z-10">
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollReveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Card 1: About — spans 2 cols */}
+              <Link href="/toothfairy/network/about" className="md:col-span-2 group">
+                <div className="glass-card rounded-3xl p-8 h-full relative overflow-hidden transition-all duration-300 group-hover:scale-[1.01]">
+                  <div className="absolute top-0 right-0 w-[300px] h-[300px] pointer-events-none opacity-[0.04]" style={{
+                    background: `radial-gradient(circle, ${C.nebula}, transparent 70%)`,
+                  }} />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3 block" style={{ color: C.nebula + "70" }}>About</span>
+                  <h3 className="font-display text-2xl font-bold mb-2" style={{ color: C.text }}>Meet the Architect</h3>
+                  <p className="text-sm leading-relaxed max-w-md" style={{ color: C.muted + "80" }}>
+                    The story behind the network, the philosophy of sovereign ownership, and why teeth matter.
+                  </p>
+                </div>
+              </Link>
+              {/* Card 2: Bitcoin GenZ */}
+              <Link href="/toothfairy/network/bitcoin-genz" className="group">
+                <div className="glass-card rounded-3xl p-8 h-full relative overflow-hidden transition-all duration-300 group-hover:scale-[1.01]">
+                  <div className="absolute bottom-0 left-0 w-[200px] h-[200px] pointer-events-none opacity-[0.04]" style={{
+                    background: `radial-gradient(circle, ${C.stardust}, transparent 70%)`,
+                  }} />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] mb-3 block" style={{ color: C.stardust + "70" }}>Article</span>
+                  <h3 className="font-display text-xl font-bold mb-2" style={{ color: C.text }}>Bitcoin for Gen Z</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: C.muted + "80" }}>
+                    The whitepaper, translated.
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* ─── THE JOURNEY ─── */}
       <JourneySection />
 
       {/* ─── MINTED MEMORIES: 3D Card Carousel ─── */}
       <section className="relative py-24 z-10">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <AuroraBlob color={C.plasma} size={600} blur={100} opacity={0.06} className="absolute top-[20%] -left-[100px]" />
+        </div>
         <div className="max-w-7xl mx-auto px-6 mb-8">
-          <motion.div className="text-center" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-              <span className="bg-gradient-to-r from-amber-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">Minted Memories</span>
-            </h2>
-          </motion.div>
+          <ScrollReveal>
+            <div className="text-center">
+              <h2 className="font-display text-display-sm md:text-display-md font-bold mb-3">
+                <span className="bg-gradient-to-r from-amber-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">Minted Memories</span>
+              </h2>
+            </div>
+          </ScrollReveal>
         </div>
         <CardCarousel />
       </section>
 
       {/* ─── EVERY TOOTH + ACTION (unified bottom) ─── */}
       <section className="relative py-28 px-6 z-10">
-        <div className="max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight mb-16 text-center">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <AuroraBlob color={C.nebula} size={700} blur={100} opacity={0.08} className="absolute top-0 right-[10%]" />
+          <AuroraBlob color={C.aurora} size={500} blur={90} opacity={0.06} className="absolute bottom-0 left-[20%]" />
+        </div>
+        <div className="max-w-5xl mx-auto relative">
+          <ScrollReveal>
+            <h2 className="font-display text-display-md md:text-display-xl font-bold mb-16 text-center">
               <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 bg-clip-text text-transparent">
                 Every tooth tells a story.
               </span>
             </h2>
+          </ScrollReveal>
 
+          <ScrollReveal delay={0.2}>
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 items-center">
               {/* Metrics (live) */}
               <div className="grid grid-cols-2 gap-4">
@@ -1274,10 +1191,10 @@ export default function FairyNetworkPage() {
                   { value: countryCount.toLocaleString(), label: "Countries", color: C.stardust },
                   { value: fairyCount.toLocaleString(), label: "Active Fairies", color: C.nebula },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-2xl p-6 relative overflow-hidden" style={{
-                    background: "linear-gradient(135deg, rgba(15,15,45,0.6), rgba(15,15,45,0.3))",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                  }}>
+                  <div key={stat.label} className="glass-card rounded-2xl p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none" style={{
+                      background: `radial-gradient(circle, ${stat.color}12, transparent 70%)`,
+                    }} />
                     <div className="font-display text-3xl md:text-4xl font-bold mb-1" style={{ color: stat.color }}>{stat.value}</div>
                     <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: C.muted + "70" }}>{stat.label}</div>
                   </div>
@@ -1285,8 +1202,10 @@ export default function FairyNetworkPage() {
               </div>
 
               {/* Action panel */}
-              <div className="flex flex-col items-center gap-5 md:min-w-[280px]">
-                <motion.button className="w-full px-10 py-4 rounded-2xl font-display text-base font-semibold relative overflow-hidden cursor-pointer"
+              <div className="flex flex-col items-center gap-5 md:min-w-[280px] relative">
+                <motion.button
+                  onClick={() => { setBottomWalletToast(true); setTimeout(() => setBottomWalletToast(false), 3000) }}
+                  className="w-full px-10 py-4 rounded-2xl font-display text-base font-semibold relative overflow-hidden cursor-pointer"
                   style={{ color: C.bg, background: `linear-gradient(135deg, ${C.nebula}, ${C.aurora}, ${C.stardust})`, backgroundSize: "200% 200%" }}
                   whileHover={{ scale: 1.03, boxShadow: `0 0 40px ${C.nebula}40, 0 0 80px ${C.aurora}20` }}
                   whileTap={{ scale: 0.98 }}
@@ -1294,26 +1213,40 @@ export default function FairyNetworkPage() {
                   transition={{ duration: 5, repeat: Infinity, ease: "linear" }}>
                   Connect Wallet
                 </motion.button>
+                {bottomWalletToast && (
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl glass text-xs font-mono whitespace-nowrap animate-fadeIn" style={{ color: C.text }}>
+                    Wallet connection coming soon.
+                  </div>
+                )}
                 <div className="w-full flex items-center gap-2">
                   <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
                   <span className="text-[10px] font-mono" style={{ color: C.muted + "40" }}>or</span>
                   <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
                 </div>
-                <div className="w-full flex gap-2">
-                  <input type="email" placeholder="your@email.com" className="flex-1 px-4 py-3 rounded-xl text-sm font-mono outline-none" style={{
+                <form className="w-full flex gap-2" onSubmit={(e) => {
+                  e.preventDefault()
+                  if (!email.trim() || emailStatus === "sending") return
+                  setEmailStatus("sending")
+                  // Store locally — backend integration coming soon
+                  setTimeout(() => {
+                    setEmailStatus("sent")
+                    setEmail("")
+                  }, 600)
+                }}>
+                  <input type="email" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 px-4 py-3 rounded-xl text-sm font-mono outline-none" style={{
                     background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
                     color: C.text,
                   }} />
-                  <button className="px-5 py-3 rounded-xl text-sm font-mono cursor-pointer transition-all hover:bg-white/[0.08]" style={{
+                  <button type="submit" className="px-5 py-3 rounded-xl text-sm font-mono cursor-pointer transition-all hover:bg-white/[0.08]" style={{
                     color: C.muted, border: "1px solid rgba(255,255,255,0.1)",
-                  }}>Join</button>
-                </div>
-                <button className="text-sm font-mono cursor-pointer transition-all hover:underline" style={{ color: C.muted + "60" }}>
+                  }}>{emailStatus === "sent" ? "Joined!" : emailStatus === "sending" ? "..." : "Join"}</button>
+                </form>
+                <Link href="/toothfairy/network/about" className="text-sm font-mono cursor-pointer transition-all hover:underline" style={{ color: C.muted + "60" }}>
                   Learn More
-                </button>
+                </Link>
               </div>
             </div>
-          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 

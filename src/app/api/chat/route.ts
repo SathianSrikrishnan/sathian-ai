@@ -55,6 +55,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
+    // Input validation — cap message length to prevent token abuse
+    if (typeof message !== 'string' || message.length > 2000) {
+      return NextResponse.json({ error: 'Message too long (max 2000 characters)' }, { status: 400 })
+    }
+
     // Get relevant context from local memory
     const memoryContext = await getMemoryContext(message)
 
@@ -73,7 +78,7 @@ export async function POST(request: NextRequest) {
     // Call Claude API
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
+      max_tokens: 300,
       system: systemPrompt,
       messages,
     })

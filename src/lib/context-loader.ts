@@ -10,8 +10,7 @@ CORE IDENTITY:
 ABOUT SATHIAN:
 - Entrepreneur, advisor, builder of systems
 - Currently building personal AI infrastructure
-- Key projects: sathian.ai website, Kai voice system, Bitcoin Bay involvement
-- Key people: Kobhi (Auracle), Itika (Starknet DevRel), Leo/Alvin (Bitcoin Bay)
+- Key projects: sathian.ai website, Kai voice system
 
 GOALS:
 - Build leverage through repeatable patterns and workflows
@@ -33,6 +32,9 @@ export interface LoadedContext {
  */
 export async function loadContext(topic?: string): Promise<LoadedContext> {
   try {
+    if (!supabaseAdmin) {
+      return { universal: FALLBACK_CONTEXT, relevant: '', memories: '', fromDatabase: false }
+    }
     // Try to load universal context (highest importance)
     const { data: universalData, error: universalError } = await supabaseAdmin
       .from('context')
