@@ -16,7 +16,11 @@ export interface Article {
   body: string
   pullQuotes: string[]      // Key sentences to feature as pull quotes
   theme: ArticleTheme
-  media?: { src: string; alt: string; placeholder?: boolean }[]
+  media?: { src: string; alt: string; caption?: string; placement: 'hero' | 'full-bleed' | 'inline-left' | 'inline-right'; afterSection?: number }[]
+  sectionHeadings?: string[]   // Heading for each section (index matches section index)
+  sectionTints?: string[]      // Hex color tint per section (emotional arc)
+  specialElements?: { type: 'price-counter' | 'scroll-pin'; afterSection: number; data?: Record<string, unknown> }[]
+  textHighlights?: { text: string; color: string }[]  // Specific phrases to color-highlight
   hiddenSignal?: string
 }
 
@@ -41,10 +45,18 @@ export const articles: Article[] = [
       mood: 'energetic',
     },
     hiddenSignal: '"Reunited" — Wu-Tang Forever (1997), Method Man: "worldwide total carnage / the sickest flow that we code name Agent Orange"',
+    sectionHeadings: ['The Arena', 'The Producers', 'The Frequency'],
+    sectionTints: ['#F59E0B', '#D4A017', '#3B4252'],
+    textHighlights: [
+      { text: 'C.R.E.A.M.', color: '#F59E0B' },
+      { text: 'Cash Rules Everything Around Me', color: '#F59E0B' },
+    ],
     media: [
-      { src: '/media/wu-tang-1993.jpg', alt: 'Wu-Tang Clan, circa 1993 — Staten Island', placeholder: true },
-      { src: '/media/wu-tang-scotiabank-2025.jpg', alt: 'Wu-Tang Clan at Scotiabank Arena, Toronto — August 2025', placeholder: true },
-      { src: '/media/bitcoin-whitepaper-page1.png', alt: 'First page of the Bitcoin whitepaper — October 31, 2008', placeholder: true },
+      { src: '/media/stage-smoke.jpg', alt: 'Concert stage atmosphere', caption: 'Nine men in their fifties reminiscing on verses they wrote as teenagers', placement: 'hero' },
+      { src: '/media/vinyl-turntable.jpg', alt: 'Vinyl turntable', caption: 'RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy', placement: 'inline-right', afterSection: 1 },
+      { src: '/media/bitcoin-coin.jpg', alt: 'Bitcoin', caption: 'Here\'s the work', placement: 'inline-left', afterSection: 1 },
+      { src: '/media/wutang-scotiabank-arena.jpg', alt: 'Wu-Tang Clan performing at Scotiabank Arena with Maple Leafs banners', caption: 'The Scotiabank Arena version — Leafs banners overhead, the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 2 },
+      { src: '/media/boardroom.jpg', alt: 'Corporate boardroom', caption: 'ETFs, institutional custody, boardroom presentations', placement: 'inline-right', afterSection: 2 },
     ],
     body: `Last August I was sitting in the Scotiabank Arena watching Wu-Tang Clan perform in Maple Leafs jerseys. My buddy and I were the only ones smoking joints in the building — which twenty years ago at a Wu-Tang show would've been the least notable thing happening. But this wasn't 2003. This was nine men in their fifties reminiscing on verses they wrote as teenagers, for an audience that included an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
 
@@ -93,9 +105,25 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
       background: 'aurora',
       mood: 'contemplative',
     },
+    sectionHeadings: ['The Math', 'Glasnost', 'The Western Mirror', 'The Architecture'],
+    sectionTints: ['#D4A017', '#CD0000', '#CD0000', '#F7931A'],
+    textHighlights: [
+      { text: 'yellow box', color: '#F5D442' },
+      { text: 'No Name', color: '#F5D442' },
+      { text: 'glasnost', color: '#CD0000' },
+      { text: 'gradually, then suddenly', color: '#DC2626' },
+    ],
+    specialElements: [
+      { type: 'price-counter', afterSection: 0, data: { startPrice: 0.97, endPrice: 2.49, startYear: 2019, endYear: 2026 } },
+      { type: 'scroll-pin', afterSection: 1 },
+    ],
     media: [
-      { src: '/media/no-name-spaghetti.jpg', alt: 'No Name spaghetti — the yellow box', placeholder: true },
-      { src: '/media/yeltsin-gorbachev.jpg', alt: 'Boris Yeltsin visiting a Houston supermarket, 1989', placeholder: true },
+      { src: '/media/night-driving.jpg', alt: 'Night driving through city streets', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
+      { src: '/media/supermarket-shelves.jpg', alt: 'Grocery store shelves', caption: 'Just the yellow box', placement: 'inline-left', afterSection: 0 },
+      { src: '/media/soviet-building.jpg', alt: 'Soviet-era architecture', caption: 'The gap between what the state had been saying and what people had been living', placement: 'full-bleed', afterSection: 1 },
+      { src: '/media/propaganda-red.jpg', alt: 'Soviet red', caption: 'The emperor had no clothes and the shelves had no food', placement: 'inline-left', afterSection: 1 },
+      { src: '/media/grocery-aisle.jpg', alt: 'Supermarket aisle', caption: 'The official numbers told one story. The grocery receipt told another.', placement: 'full-bleed', afterSection: 2 },
+      { src: '/media/empty-shelf.jpg', alt: 'Empty grocery shelf', caption: 'The system\'s accounting doesn\'t match your lived experience', placement: 'inline-right', afterSection: 2 },
     ],
     hiddenSignal: 'In 1989, Boris Yeltsin made an unscheduled stop at a Randalls supermarket in Clear Lake, Texas. He wandered the aisles in silence. Later he told his aides the Soviet people would revolt if they saw what Americans had access to. Within two years, the Soviet Union was gone.',
     body: `My Uber driver — a guy who'd come to Canada from Afghanistan in 2017 — was trying to explain to me what went wrong.
@@ -141,6 +169,83 @@ It happens slowly, then suddenly. The quiet part — the part we're in now — i
 Gorbachev thought transparency would save the system. It destroyed it — because the system couldn't survive being seen clearly. The question for every institution today is the same one the Soviet Union faced in 1986: can you survive your citizens doing the math?
 
 My Uber driver already did the math. He's still driving. He's still watching the yellow box. And slowly, then suddenly, so is everyone else.`,
+  },
+  {
+    title: 'Nine Pages',
+    titleHighlight: 'Nine',
+    slug: 'nine-pages',
+    date: '2026-02-06',
+    author: 'Sathian',
+    domains: ['cryptocurrency', 'first principles'],
+    description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything. Here\'s what I found — and two versions so you can read it yourself.',
+    pullQuotes: [
+      'I had opinions about Bitcoin for years before I actually read the document that started it. Most people do. That should bother us.',
+      'Nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars — it fits in a pamphlet.',
+      'The Gen Z version did something I didn\'t think was possible: it made me understand the parts I\'d been pretending to understand.',
+    ],
+    theme: {
+      accent: '#F7931A',
+      accentGlow: 'rgba(247, 147, 26, 0.12)',
+      background: 'aurora',
+      mood: 'contemplative',
+    },
+    sectionHeadings: ['The Confession', 'The Read', 'The Translation', 'The Resource'],
+    sectionTints: ['#F7931A', '#F59E0B', '#06B6D4', '#22C55E'],
+    textHighlights: [
+      { text: 'nine pages', color: '#F7931A' },
+      { text: 'Nine pages', color: '#F7931A' },
+      { text: 'Satoshi Nakamoto', color: '#F7931A' },
+    ],
+    media: [
+      { src: '/media/bitcoin-coin.jpg', alt: 'Bitcoin', caption: 'Nine pages that changed the architecture of money', placement: 'hero' },
+      { src: '/media/adam-back-btc-dc.jpg', alt: 'Sathian with Adam Back at Bitcoin Conference DC', caption: 'With Adam Back — inventor of Hashcash, cited in the whitepaper — at Bitcoin Conference, DC, October 2025', placement: 'inline-right', afterSection: 1 },
+    ],
+    hiddenSignal: 'On page 1, section 1, Satoshi writes: "What is needed is an electronic payment system based on cryptographic proof instead of trust." Every section that follows is an answer to that single sentence. The entire system is one idea, executed with discipline.',
+    body: `People ask me why Bitcoin is my religion. Not my investment thesis — my religion. It\'s a fair question. I\'ve built pieces of my life around it. I talk about it the way some people talk about their faith — with a certainty that can be off-putting if you haven\'t had the same experience.
+
+Here\'s my confession: I had opinions about Bitcoin for years before I actually read the document that started it. Most people do. That should bother us.
+
+I bought Bitcoin. I traded Bitcoin. I argued about Bitcoin at dinner tables and in group chats. I watched the price. I had takes. But I never sat down and read the nine-page whitepaper that Satoshi Nakamoto published on October 31, 2008. Not once. Not until 2024.
+
+For years, I was forming opinions about the most significant financial innovation of our lifetime based on other people\'s summaries, podcasts, Twitter threads, and vibes. I suspect I\'m not alone.
+
+---
+
+When I finally read it — actually read it — two things hit me immediately.
+
+First: nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars — it fits in a pamphlet. Satoshi Nakamoto laid out the entire architecture of a peer-to-peer electronic cash system in fewer pages than most college essays. No fluff. No marketing. No vision statement about changing the world. Just: here is a problem, here is a solution, here is the math.
+
+Second: the mechanisms are simple. Not easy — simple. There\'s a difference. Proof-of-work isn\'t some alien concept. It\'s the idea that if you make someone spend real computational energy to add a record, they won\'t waste it on lies. A timestamp server isn\'t mysterious — it\'s a chain of digital fingerprints, each one proving the one before it existed. The longest chain wins because it represents the most work, and work can\'t be faked.
+
+I\'d been intimidated by these concepts for years. The jargon made them feel inaccessible. But reading the source material — not a summary, not an explainer, the actual document — I realized these mechanisms are deeply intuitive once you strip away the mystique. Satoshi wasn\'t writing for cryptographers. The paper reads like someone explaining a system to a smart friend over coffee.
+
+The moment I understood how a network of strangers could agree on truth without trusting each other — without any institution mediating — something shifted. This wasn\'t just a better way to move money. This was a new way to protect truth. A protocol that makes it more expensive to lie than to be honest. That\'s not a financial product. That\'s an architecture for trust in a world that\'s running out of it.
+
+---
+
+I carried this around for a while, this realization that the source material was sitting there the whole time and I\'d ignored it. Then I came across something that made me think about it differently.
+
+Someone had taken the Bitcoin whitepaper and translated it into Gen Z language. Not a summary — a full translation. Every section, every concept, rewritten in the kind of language you\'d hear on TikTok or in a group chat. Slang. Memes. The word "vibe" used unironically in a discussion about cryptographic hash functions.
+
+My first reaction was to dismiss it. This is serious technology. You don\'t translate the Magna Carta into emoji.
+
+But then I read it. And the Gen Z version did something I didn\'t think was possible: it made me understand the parts I\'d been pretending to understand. The sections on Simplified Payment Verification and Merkle trees — concepts I\'d nodded along to in the original without fully grasping — suddenly clicked when they were described as "receipts" and "cheat codes." The irreverent tone somehow made the precision more accessible, not less.
+
+This is the paradox: an AI-generated, meme-laden, deliberately unserious translation of the most important financial document of the century did a better job of transmitting the actual ideas than years of serious commentary. Not because the ideas are unserious — because the barriers to understanding them are mostly artificial. Jargon creates a priesthood. Strip the jargon and you strip the priesthood.
+
+---
+
+So here\'s what this is. A resource. Something I can send to the next person who asks me why Bitcoin is my religion.
+
+Read the original: bitcoin.org/bitcoin.pdf — nine pages, published October 31, 2008, by someone whose identity remains unknown. It is, in my view, the most significant document published in the 21st century. Read it like you\'d read the operating manual for something you already own but never learned to use.
+
+Read the translation: the Gen Z version on this site — same nine sections, same ideas, different language. Read it if the original feels impenetrable, or read it after and see which version made the concepts stick.
+
+Then decide for yourself. Which version communicated better? Which section surprised you? Did you already know how proof-of-work actually works, or were you — like me — running on borrowed conviction?
+
+I spent years having opinions about something I hadn\'t read. Most people in Bitcoin have. Most people arguing against Bitcoin definitely have. The document is nine pages. It takes twenty minutes. There is no excuse, mine included, for not reading the primary source before forming a position.
+
+This isn\'t about converting anyone. It\'s about intellectual honesty. Read the thing. Then we can talk.`,
   },
 ]
 

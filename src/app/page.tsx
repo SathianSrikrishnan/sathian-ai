@@ -67,6 +67,13 @@ const PROJECTS = [
 
 const WRITINGS = [
   {
+    title: 'Nine Pages',
+    description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything. Here\'s what I found — and two versions so you can read it yourself.',
+    href: '/writings/nine-pages',
+    date: '2026-02-06',
+    accent: '#F7931A',
+  },
+  {
     title: 'C.R.E.A.M. 2.0',
     description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
     href: '/writings/cream-2-point-0',

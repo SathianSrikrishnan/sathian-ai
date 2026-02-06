@@ -63,6 +63,7 @@ const config: Config = {
         display: ['Outfit', 'system-ui', 'sans-serif'],
         sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        article: ['Source Serif 4', 'Georgia', 'Times New Roman', 'serif'],
       },
       borderRadius: {
         'xl': '12px',

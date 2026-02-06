@@ -24,8 +24,6 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
     const audioFile = formData.get('audio') as File
     const historyJson = formData.get('history') as string
-    const customContext = formData.get('context') as string
-
     if (!audioFile) {
       return NextResponse.json({ error: 'No audio file provided' }, { status: 400 })
     }
@@ -86,11 +84,6 @@ export async function POST(request: NextRequest) {
     // Load context from database (with fallback to hardcoded)
     const context = await loadContext(userText)
     let systemPrompt = buildSystemPrompt(context)
-
-    // Add custom context if provided
-    if (customContext) {
-      systemPrompt += `\n\nADDITIONAL CONTEXT:\n${customContext}`
-    }
 
     console.log(`[Voice] Context loaded from ${context.fromDatabase ? 'database' : 'fallback'}`)
 
