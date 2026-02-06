@@ -19,7 +19,7 @@ export interface Article {
   media?: { src: string; alt: string; caption?: string; placement: 'hero' | 'full-bleed' | 'inline-left' | 'inline-right'; afterSection?: number }[]
   sectionHeadings?: string[]   // Heading for each section (index matches section index)
   sectionTints?: string[]      // Hex color tint per section (emotional arc)
-  specialElements?: { type: 'price-counter' | 'scroll-pin'; afterSection: number; data?: Record<string, unknown> }[]
+  specialElements?: { type: 'price-counter' | 'scroll-pin' | 'stacked-pages' | 'whitepaper-cta'; afterSection: number; data?: Record<string, unknown> }[]
   textHighlights?: { text: string; color: string }[]  // Specific phrases to color-highlight
   hiddenSignal?: string
 }
@@ -197,8 +197,11 @@ My Uber driver already did the math. He's still driving. He's still watching the
       { text: 'Satoshi Nakamoto', color: '#F7931A' },
     ],
     media: [
-      { src: '/media/bitcoin-coin.jpg', alt: 'Bitcoin', caption: 'Nine pages that changed the architecture of money', placement: 'hero' },
       { src: '/media/adam-back-btc-dc.jpg', alt: 'Sathian with Adam Back at Bitcoin Conference DC', caption: 'With Adam Back — inventor of Hashcash, cited in the whitepaper — at Bitcoin Conference, DC, October 2025', placement: 'inline-right', afterSection: 1 },
+    ],
+    specialElements: [
+      { type: 'stacked-pages', afterSection: -1 },
+      { type: 'whitepaper-cta', afterSection: 3 },
     ],
     hiddenSignal: 'On page 1, section 1, Satoshi writes: "What is needed is an electronic payment system based on cryptographic proof instead of trust." Every section that follows is an answer to that single sentence. The entire system is one idea, executed with discipline.',
     body: `People ask me why Bitcoin is my religion. Not my investment thesis — my religion. It\'s a fair question. I\'ve built pieces of my life around it. I talk about it the way some people talk about their faith — with a certainty that can be off-putting if you haven\'t had the same experience.

@@ -16,6 +16,8 @@ import { ScrambleQuote } from '@/components/article/ScrambleQuote'
 import { SectionHeading } from '@/components/article/SectionHeading'
 import { ScrollPin } from '@/components/article/ScrollPin'
 import { SectionGradient } from '@/components/article/SectionGradient'
+import { NinePageStack } from '@/components/article/NinePageStack'
+import { WhitepaperCTA } from '@/components/article/WhitepaperCTA'
 
 function readingTime(text: string): number {
   const words = text.trim().split(/\s+/).length
@@ -340,6 +342,12 @@ function renderBody(article: Article, articleUrl: string) {
     pullQuoteIndex++
   }
 
+  // Whitepaper CTA (after last section)
+  const whitepaperCta = specialElements?.find(s => s.type === 'whitepaper-cta')
+  if (whitepaperCta) {
+    elements.push(<WhitepaperCTA key="whitepaper-cta" accent={accent} />)
+  }
+
   return elements
 }
 
@@ -368,6 +376,7 @@ export default function ArticlePage() {
   const minutes = readingTime(article.body)
   const articleUrl = `https://sathian.ai/writings/${article.slug}`
   const heroImage = article.media?.find((m) => m.placement === 'hero')
+  const hasStackedPages = article.specialElements?.some(s => s.type === 'stacked-pages')
 
   return (
     <main
@@ -381,8 +390,23 @@ export default function ArticlePage() {
 
       {/* Hero */}
       <header className="relative min-h-[75vh] flex flex-col justify-end pb-16 px-6 overflow-hidden">
+        {/* Stacked pages hero (Linear-style) */}
+        {hasStackedPages && (
+          <div className="absolute inset-0 z-0 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              <NinePageStack accent={article.theme.accent} />
+            </motion.div>
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A12] via-[#0A0A12]/40 to-[#0A0A12]/20" />
+          </div>
+        )}
+
         {/* Hero background image */}
-        {heroImage && (
+        {heroImage && !hasStackedPages && (
           <div className="absolute inset-0 z-0">
             <motion.img
               src={heroImage.src}
