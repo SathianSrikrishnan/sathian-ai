@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Atma:wght@400;500;600;700&display=swap');
 
 :root {
   --background: #0D1117;
@@ -126,4 +127,25 @@ body {
 .theme-kids ::selection {
   background: rgba(246, 173, 85, 0.3);
   color: #2D3748;
+}
+
+/* Tooth Fairy Tracker Animations */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  25% { transform: rotate(3deg); }
+  50% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
 }

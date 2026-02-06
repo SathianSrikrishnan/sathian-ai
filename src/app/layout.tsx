@@ -1,5 +1,24 @@
 import type { Metadata } from 'next'
+import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'sathian.ai — Second Brain Interface',
@@ -30,8 +49,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }

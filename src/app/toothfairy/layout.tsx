@@ -1,3 +1,5 @@
+import ThemeOverride from '@/components/toothfairy/ThemeOverride';
+
 export default function ToothFairyLayout({
   children,
 }: {
@@ -5,15 +7,8 @@ export default function ToothFairyLayout({
 }) {
   return (
     <>
-      <style>{`
-        html, body {
-          background: #FFFDF7 !important;
-          color: #5D4E37 !important;
-        }
-      `}</style>
-      <div style={{ minHeight: '100vh', background: '#FFFDF7' }}>
-        {children}
-      </div>
+      <ThemeOverride />
+      {children}
     </>
   );
 }
