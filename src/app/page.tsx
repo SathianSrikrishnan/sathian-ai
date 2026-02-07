@@ -117,7 +117,7 @@ export default function Home() {
         >
           {/* Name */}
           <motion.h1
-            className="font-display text-display-2xl sm:text-display-2xl text-gradient-cosmic"
+            className="font-display text-5xl sm:text-display-2xl text-gradient-cosmic"
             variants={fadeUp}
           >
             <TextGenerate text="Sathian" speed={60} />
@@ -125,7 +125,7 @@ export default function Home() {
 
           {/* Subtitle */}
           <motion.p
-            className="mt-4 text-lg sm:text-xl max-w-lg"
+            className="mt-3 text-base sm:text-xl max-w-lg px-4 sm:px-0"
             style={{ color: C.text }}
             variants={fadeUp}
           >
@@ -136,7 +136,7 @@ export default function Home() {
 
           {/* Globe → BTC Cultural Atlas */}
           <motion.div
-            className="mt-12 globe-glow-wrapper"
+            className="mt-8 sm:mt-12 globe-glow-wrapper w-full"
             variants={fadeUp}
           >
             <AtlasGlobeTeaser size={420} />

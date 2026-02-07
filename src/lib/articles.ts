@@ -127,6 +127,7 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
     media: [
       { src: '/media/abandoned-cart.jpg', alt: 'Empty shopping cart on barren pavement', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
       { src: '/media/supermarket-shelves.jpg', alt: 'Grocery store shelves', caption: 'Just the yellow box', placement: 'inline-left', afterSection: 0 },
+      { src: '/media/sathian-yellow-box.jpg', alt: 'Sathian standing in front of yellow pasta boxes at the grocery store', caption: 'The yellow box. The thing you buy when you\'re watching every dollar.', placement: 'inline-right', afterSection: 0 },
       { src: '/media/soviet-building.jpg', alt: 'Soviet-era architecture', caption: 'The gap between what the state had been saying and what people had been living', placement: 'full-bleed', afterSection: 1 },
       { src: '/media/propaganda-red.jpg', alt: 'Soviet red', caption: 'The emperor had no clothes and the shelves had no food', placement: 'inline-left', afterSection: 1 },
       { src: '/media/grocery-aisle.jpg', alt: 'Supermarket aisle', caption: 'The official numbers told one story. The grocery receipt told another.', placement: 'full-bleed', afterSection: 2 },

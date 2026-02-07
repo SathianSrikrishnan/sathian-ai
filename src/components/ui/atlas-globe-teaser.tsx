@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import createGlobe, { type COBEOptions } from "cobe"
 import markersData from "@/data/atlas-markers.json"
-import { motion, AnimatePresence } from "motion/react"
 
 type PillarType = "music" | "dialing" | "sports" | "history" | "internet"
 
@@ -25,7 +24,7 @@ const PILLAR_COLORS: Record<PillarType, string> = {
 
 const PILLAR_LABELS: Record<PillarType, string> = {
   music: "Music",
-  dialing: "Area Code",
+  dialing: "Area Codes",
   sports: "Sports",
   history: "History",
   internet: "Internet",
@@ -33,7 +32,7 @@ const PILLAR_LABELS: Record<PillarType, string> = {
 
 const PILLARS: PillarType[] = ["music", "dialing", "sports", "history", "internet"]
 
-const markers = markersData as AtlasMarker[]
+const allMarkers = markersData as AtlasMarker[]
 
 function hexToRgb01(hex: string): [number, number, number] {
   const h = hex.replace("#", "")
@@ -45,61 +44,58 @@ function hexToRgb01(hex: string): [number, number, number] {
 }
 
 function projectPoint(
-  lat: number,
-  lng: number,
-  phi: number,
-  theta: number,
-  size: number
+  lat: number, lng: number, phi: number, theta: number, size: number
 ): { x: number; y: number; z: number } | null {
   const latRad = (lat * Math.PI) / 180
   const lngRad = (lng * Math.PI) / 180
-
-  // Point on unit sphere
   const px = Math.cos(latRad) * Math.sin(lngRad)
   const py = -Math.sin(latRad)
   const pz = Math.cos(latRad) * Math.cos(lngRad)
-
-  // Rotate by phi (globe's horizontal rotation)
   const rx = px * Math.cos(phi) + pz * Math.sin(phi)
   const ry = py
   const rz = -px * Math.sin(phi) + pz * Math.cos(phi)
-
-  // Rotate by theta (globe's vertical tilt)
   const fx = rx
   const fy = ry * Math.cos(theta) - rz * Math.sin(theta)
   const fz = ry * Math.sin(theta) + rz * Math.cos(theta)
-
-  // Only visible if facing camera
   if (fz < -0.1) return null
-
-  const radius = size * 0.43 // globe visual radius within canvas
-  const cx = size / 2
-  const cy = size / 2
-
-  return {
-    x: cx + fx * radius,
-    y: cy + fy * radius,
-    z: fz,
-  }
+  const radius = size * 0.43
+  return { x: size / 2 + fx * radius, y: size / 2 + fy * radius, z: fz }
 }
 
-export function AtlasGlobeTeaser({ size = 320 }: { size?: number }) {
+export function AtlasGlobeTeaser({ size = 420 }: { size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
-  const phiRef = useRef(0)
+  const phiRef = useRef(1.8) // Start facing North America
   const thetaRef = useRef(0.3)
   const pointerDownRef = useRef(false)
   const pointerOrigin = useRef<[number, number]>([0, 0])
-  const [legendOpen, setLegendOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState<Set<PillarType>>(new Set())
+  const velocityRef = useRef<[number, number]>([0, 0])
+  const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null)
+
+  // Default: all 5 pillars active = all markers lit
+  const [activeFilters, setActiveFilters] = useState<Set<PillarType>>(new Set(PILLARS))
+
+  const allActive = activeFilters.size === PILLARS.length
+  const noneActive = activeFilters.size === 0
 
   const filteredMarkers = useMemo(() => {
-    if (activeFilters.size === 0) return markers
-    return markers.filter(m => m.pillars.some(p => activeFilters.has(p)))
-  }, [activeFilters])
+    if (noneActive) return []
+    if (allActive) return allMarkers
+    return allMarkers.filter(m => m.pillars.some(p => activeFilters.has(p)))
+  }, [activeFilters, allActive, noneActive])
+
+  const filteredRef = useRef(filteredMarkers)
+  filteredRef.current = filteredMarkers
+  const filtersRef = useRef(activeFilters)
+  filtersRef.current = activeFilters
 
   const toggleFilter = useCallback((pillar: PillarType) => {
     setActiveFilters(prev => {
+      // If all 5 are active, clicking one = isolate to just that one
+      if (prev.size === PILLARS.length) {
+        return new Set([pillar])
+      }
+      // Otherwise toggle
       const next = new Set(prev)
       if (next.has(pillar)) next.delete(pillar)
       else next.add(pillar)
@@ -107,12 +103,25 @@ export function AtlasGlobeTeaser({ size = 320 }: { size?: number }) {
     })
   }, [])
 
+  // Responsive globe size
+  const [globeSize, setGlobeSize] = useState(size)
+  useEffect(() => {
+    const updateSize = () => {
+      const maxW = window.innerWidth - 32
+      setGlobeSize(Math.min(size, maxW, 420))
+    }
+    updateSize()
+    window.addEventListener("resize", updateSize)
+    return () => window.removeEventListener("resize", updateSize)
+  }, [size])
+
+  // Create globe
   useEffect(() => {
     const canvas = canvasRef.current
     const overlay = overlayRef.current
     if (!canvas || !overlay) return
 
-    const renderSize = size * 2
+    const renderSize = globeSize * 2
     overlay.width = renderSize
     overlay.height = renderSize
     const overlayCtx = overlay.getContext("2d")
@@ -126,52 +135,51 @@ export function AtlasGlobeTeaser({ size = 320 }: { size?: number }) {
       dark: 1,
       diffuse: 1.2,
       mapSamples: 16000,
-      mapBrightness: 6,
-      baseColor: [0.05, 0.03, 0.12],
+      mapBrightness: 3,
+      baseColor: [0.04, 0.02, 0.1],
       markerColor: hexToRgb01("#7C3AED"),
-      glowColor: [0.08, 0.04, 0.2],
-      markers: [], // We draw our own colored markers
+      glowColor: [0.06, 0.03, 0.18],
+      markers: [],
       onRender: (state) => {
         state.phi = phiRef.current
         state.theta = thetaRef.current
         state.width = renderSize
         state.height = renderSize
 
-        // Draw colored markers on overlay
         if (!overlayCtx) return
         overlayCtx.clearRect(0, 0, renderSize, renderSize)
 
-        for (const m of filteredMarkers) {
+        const markers = filteredRef.current
+        const isFiltered = filtersRef.current.size > 0 && filtersRef.current.size < PILLARS.length
+
+        for (const m of markers) {
           const pt = projectPoint(
-            m.coordinates.lat,
-            m.coordinates.lng,
-            phiRef.current,
-            thetaRef.current,
-            renderSize
+            m.coordinates.lat, m.coordinates.lng,
+            phiRef.current, thetaRef.current, renderSize
           )
           if (!pt) continue
 
           const primaryPillar = m.pillars[0]
           const color = PILLAR_COLORS[primaryPillar] || "#A78BFA"
-
-          // Depth-based sizing and opacity
           const depthAlpha = 0.3 + pt.z * 0.7
-          const dotSize = 2 + pt.z * 2
+          const dotSize = isFiltered ? (3 + pt.z * 3) : (2 + pt.z * 2)
+          const brightness = isFiltered ? 0.95 : 0.7
 
+          // Outer glow
+          if (pt.z > 0.2) {
+            overlayCtx.beginPath()
+            overlayCtx.arc(pt.x, pt.y, dotSize * (isFiltered ? 3 : 2), 0, Math.PI * 2)
+            overlayCtx.fillStyle = color
+            overlayCtx.globalAlpha = depthAlpha * (isFiltered ? 0.15 : 0.06)
+            overlayCtx.fill()
+          }
+
+          // Core dot
           overlayCtx.beginPath()
           overlayCtx.arc(pt.x, pt.y, dotSize, 0, Math.PI * 2)
           overlayCtx.fillStyle = color
-          overlayCtx.globalAlpha = depthAlpha * 0.85
+          overlayCtx.globalAlpha = depthAlpha * brightness
           overlayCtx.fill()
-
-          // Glow for front-facing dots
-          if (pt.z > 0.3) {
-            overlayCtx.beginPath()
-            overlayCtx.arc(pt.x, pt.y, dotSize * 2.5, 0, Math.PI * 2)
-            overlayCtx.fillStyle = color
-            overlayCtx.globalAlpha = depthAlpha * 0.12
-            overlayCtx.fill()
-          }
 
           overlayCtx.globalAlpha = 1
         }
@@ -179,11 +187,22 @@ export function AtlasGlobeTeaser({ size = 320 }: { size?: number }) {
     }
 
     const globe = createGlobe(canvas, opts)
+    globeRef.current = globe
 
     let raf = 0
     const tick = () => {
       if (!pointerDownRef.current) {
-        phiRef.current += 0.003
+        // Apply momentum decay
+        const [vx, vy] = velocityRef.current
+        if (Math.abs(vx) > 0.0001 || Math.abs(vy) > 0.0001) {
+          phiRef.current += vx
+          thetaRef.current = Math.min(1.5, Math.max(-0.5, thetaRef.current + vy))
+          velocityRef.current = [vx * 0.95, vy * 0.95]
+        } else {
+          // Gentle auto-rotate when no momentum
+          phiRef.current += 0.002
+          velocityRef.current = [0, 0]
+        }
       }
       raf = requestAnimationFrame(tick)
     }
@@ -192,133 +211,136 @@ export function AtlasGlobeTeaser({ size = 320 }: { size?: number }) {
     return () => {
       cancelAnimationFrame(raf)
       globe.destroy()
+      globeRef.current = null
     }
-  }, [size, filteredMarkers])
+  }, [globeSize])
 
-  // Pointer drag
+  // Pointer drag — on CANVAS directly, NO passive flag
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const onDown = (e: PointerEvent) => {
+    const onPointerDown = (e: PointerEvent) => {
+      e.preventDefault() // Prevent browser drag/selection behavior
       pointerDownRef.current = true
+      velocityRef.current = [0, 0]
       canvas.setPointerCapture(e.pointerId)
       pointerOrigin.current = [e.clientX, e.clientY]
     }
-    const onMove = (e: PointerEvent) => {
-      if (!pointerDownRef.current) return
-      const [ox, oy] = pointerOrigin.current
-      phiRef.current += (e.clientX - ox) * 0.005
-      thetaRef.current = Math.min(1.2, Math.max(0.05, thetaRef.current + (e.clientY - oy) * 0.005))
-      pointerOrigin.current = [e.clientX, e.clientY]
-    }
-    const onUp = () => { pointerDownRef.current = false }
 
-    canvas.addEventListener("pointerdown", onDown)
-    canvas.addEventListener("pointermove", onMove)
-    window.addEventListener("pointerup", onUp)
+    const onPointerMove = (e: PointerEvent) => {
+      if (!pointerDownRef.current) return
+      e.preventDefault()
+      const [ox, oy] = pointerOrigin.current
+      const dx = e.clientX - ox
+      const dy = e.clientY - oy
+      pointerOrigin.current = [e.clientX, e.clientY]
+
+      const sensitivity = 0.015
+      const dphi = dx * sensitivity
+      const dtheta = dy * sensitivity
+
+      phiRef.current += dphi
+      thetaRef.current = Math.min(1.5, Math.max(-0.5, thetaRef.current + dtheta))
+
+      // Track velocity for momentum
+      velocityRef.current = [dphi * 0.5, dtheta * 0.5]
+    }
+
+    const onPointerUp = () => {
+      pointerDownRef.current = false
+    }
+
+    canvas.addEventListener("pointerdown", onPointerDown)
+    canvas.addEventListener("pointermove", onPointerMove)
+    window.addEventListener("pointerup", onPointerUp)
+
     return () => {
-      canvas.removeEventListener("pointerdown", onDown)
-      canvas.removeEventListener("pointermove", onMove)
-      window.removeEventListener("pointerup", onUp)
+      canvas.removeEventListener("pointerdown", onPointerDown)
+      canvas.removeEventListener("pointermove", onPointerMove)
+      window.removeEventListener("pointerup", onPointerUp)
     }
   }, [])
 
-  const allActive = activeFilters.size === 0
-
   return (
-    <div className="relative" style={{ width: size, height: size }}>
-      {/* Cobe base globe */}
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing"
-        style={{ width: size, height: size, touchAction: "none" }}
-      />
-      {/* Colored marker overlay */}
-      <canvas
-        ref={overlayRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ width: size, height: size }}
-      />
+    <div className="flex flex-col items-center gap-3 w-full">
+      {/* Globe */}
+      <div
+        className="relative select-none"
+        style={{ width: globeSize, height: globeSize }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full cursor-grab active:cursor-grabbing"
+          style={{ width: globeSize, height: globeSize, touchAction: "none" }}
+        />
+        <canvas
+          ref={overlayRef}
+          className="absolute inset-0 pointer-events-none"
+          style={{ width: globeSize, height: globeSize }}
+        />
+      </div>
 
-      {/* Compact legend toggle */}
-      <div className="absolute bottom-2 right-2 z-20">
+      {/* Legend */}
+      <div
+        className="rounded-xl px-3 py-2 flex flex-wrap items-center justify-center gap-1"
+        style={{
+          background: "rgba(15,15,45,0.75)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          backdropFilter: "blur(16px)",
+        }}
+      >
+        {/* All / None controls */}
         <button
           type="button"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLegendOpen(!legendOpen) }}
-          className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-mono transition-all hover:bg-white/10"
+          onClick={() => setActiveFilters(new Set(PILLARS))}
+          className="text-[10px] font-mono px-2 py-1 rounded-full transition-all hover:bg-white/5"
           style={{
-            background: "rgba(15,15,45,0.85)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            backdropFilter: "blur(12px)",
-            color: "rgba(255,255,255,0.5)",
+            color: allActive ? "white" : "rgba(255,255,255,0.35)",
+            background: allActive ? "rgba(255,255,255,0.1)" : "transparent",
           }}
         >
-          {/* 5 colored dots */}
-          <span className="flex gap-0.5">
-            {PILLARS.map(p => (
-              <span
-                key={p}
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ background: PILLAR_COLORS[p], opacity: allActive || activeFilters.has(p) ? 1 : 0.3 }}
-              />
-            ))}
-          </span>
-          <span>{filteredMarkers.length}</span>
+          All
         </button>
+        <span className="text-[8px] mx-0.5" style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
 
-        <AnimatePresence>
-          {legendOpen && (
-            <motion.div
-              className="absolute bottom-full right-0 mb-1 rounded-xl overflow-hidden"
-              style={{
-                background: "rgba(15,15,45,0.92)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                backdropFilter: "blur(16px)",
-              }}
-              initial={{ opacity: 0, y: 8, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.95 }}
-              transition={{ duration: 0.15 }}
-              onClick={(e) => { e.preventDefault(); e.stopPropagation() }}
+        {/* Pillar buttons */}
+        {PILLARS.map(p => {
+          const isActive = activeFilters.has(p)
+          return (
+            <button
+              key={p}
+              type="button"
+              onClick={() => toggleFilter(p)}
+              className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-left transition-all hover:bg-white/5"
+              style={{ opacity: isActive ? 1 : 0.35 }}
             >
-              <div className="px-3 py-2 flex flex-col gap-1">
-                {PILLARS.map(p => {
-                  const isActive = allActive || activeFilters.has(p)
-                  return (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFilter(p) }}
-                      className="flex items-center gap-2 rounded-md px-2 py-0.5 text-[10px] font-mono transition-all hover:bg-white/5 whitespace-nowrap"
-                      style={{ opacity: isActive ? 1 : 0.35 }}
-                    >
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                          background: PILLAR_COLORS[p],
-                          boxShadow: isActive ? `0 0 6px ${PILLAR_COLORS[p]}60` : "none",
-                        }}
-                      />
-                      <span style={{ color: isActive ? "white" : "rgba(255,255,255,0.5)" }}>
-                        {PILLAR_LABELS[p]}
-                      </span>
-                    </button>
-                  )
-                })}
-                {!allActive && (
-                  <button
-                    type="button"
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveFilters(new Set()) }}
-                    className="text-[9px] font-mono text-white/40 hover:text-white/60 mt-0.5 text-center"
-                  >
-                    Show all
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <span
+                className="w-2 h-2 rounded-full shrink-0 transition-all"
+                style={{
+                  background: isActive ? PILLAR_COLORS[p] : "rgba(255,255,255,0.25)",
+                  boxShadow: isActive ? `0 0 8px ${PILLAR_COLORS[p]}80` : "none",
+                }}
+              />
+              <span className="text-[10px] font-mono" style={{ color: isActive ? "white" : "rgba(255,255,255,0.35)" }}>
+                {PILLAR_LABELS[p]}
+              </span>
+            </button>
+          )
+        })}
+
+        <span className="text-[8px] mx-0.5" style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+        <button
+          type="button"
+          onClick={() => setActiveFilters(new Set())}
+          className="text-[10px] font-mono px-2 py-1 rounded-full transition-all hover:bg-white/5"
+          style={{
+            color: noneActive ? "white" : "rgba(255,255,255,0.35)",
+            background: noneActive ? "rgba(255,255,255,0.1)" : "transparent",
+          }}
+        >
+          None
+        </button>
       </div>
     </div>
   )
