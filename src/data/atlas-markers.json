@@ -1,0 +1,6203 @@
+[
+  {
+    "number": "001",
+    "label": "North American Numbering Plan (NANP)",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Country calling code +1 covers the NANP (U.S., Canada, and several territories), anchoring countless city identities and sports cultures across North America.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "002",
+    "label": "E.164 Zone 2 (Africa) Prefix",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "In the E.164 numbering plan, country codes beginning with 2xx are assigned primarily to Africa, reflecting post-colonial state formation and modern telecom identity.",
+    "coordinates": {
+      "lat": 9.082,
+      "lng": 8.6753
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "003",
+    "label": "E.164 Zone 3 (Europe) Prefix",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country codes beginning with 3xx are assigned to Europe, mapping a dense cluster of national identities into a shared telecom zone.",
+    "coordinates": {
+      "lat": 50.1109,
+      "lng": 8.6821
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "004",
+    "label": "E.164 Zone 4 (Europe) Prefix",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country codes beginning with 4xx are assigned largely to Europe, including many of the continent’s most globally connected economies and media markets.",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "005",
+    "label": "E.164 Zone 5 (Latin America) Prefix",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country codes beginning with 5xx primarily cover Latin America, a region with strong music export identities tied to national and city numerology.",
+    "coordinates": {
+      "lat": 19.4326,
+      "lng": -99.1332
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "006",
+    "label": "E.164 Zone 6 (Oceania) Prefix",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country codes beginning with 6xx include Oceania and parts of Southeast Asia, spanning island identity markers and major diaspora music corridors.",
+    "coordinates": {
+      "lat": -33.8688,
+      "lng": 151.2093
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "007",
+    "label": "007 (James Bond) / Russia-Kazakhstan (+7)",
+    "pillars": [
+      "internet",
+      "dialing"
+    ],
+    "description": "‘007’ is the globally recognized James Bond code name, and ‘7’ is also the country calling code shared by Russia and Kazakhstan—two distinct cultural associations attached to the same digits.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Global"
+  },
+  {
+    "number": "008",
+    "label": "E.164 Zone 8 (East Asia & Services) Prefix",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "Country codes beginning with 8xx include East Asia and certain services, aligning some of the world’s most internet-native cultures under a single telecom zone.",
+    "coordinates": {
+      "lat": 35.6762,
+      "lng": 139.6503
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "009",
+    "label": "E.164 Zone 9 (West/South/Central Asia & Middle East) Prefix",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country codes beginning with 9xx broadly map West, South, and Central Asia plus the Middle East—regions where borders and modern telecom identity often track recent history.",
+    "coordinates": {
+      "lat": 25.2048,
+      "lng": 55.2708
+    },
+    "region": "Middle East"
+  },
+  {
+    "number": "010",
+    "label": "Japan International Dial-Out Prefix (010)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In Japan, ‘010’ is the international call prefix used to dial out of the country, a small numeric marker embedded in everyday global connectivity.",
+    "coordinates": {
+      "lat": 35.6762,
+      "lng": 139.6503
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "011",
+    "label": "NANP International Dial-Out Prefix (011)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "In the U.S. and Canada, ‘011’ is the international dialing prefix used to place calls outside the NANP—an everyday ‘gateway number’ into the global network.",
+    "coordinates": {
+      "lat": 43.6532,
+      "lng": -79.3832
+    },
+    "region": "North America"
+  },
+  {
+    "number": "012",
+    "label": "UK Geographic Prefix Family (01/02)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In the UK, geographic landlines largely sit under 01 and 02 ranges; ‘012’ is a recognizable front edge of many city and town dial codes.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "013",
+    "label": "Edinburgh Dial Code Family (0131 → 131)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Edinburgh’s landline area code is 0131, often reduced in cultural shorthand to ‘131’, tying a historic capital to a compact numeric marker.",
+    "coordinates": {
+      "lat": 55.9533,
+      "lng": -3.1883
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "014",
+    "label": "Glasgow Dial Code Family (0141 → 141)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Glasgow’s landline area code is 0141, commonly compressed to ‘141’, a numeric identity marker for one of the UK’s strongest live-music cities.",
+    "coordinates": {
+      "lat": 55.8642,
+      "lng": -4.2518
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "015",
+    "label": "Liverpool Dial Code Family (0151 → 151)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Liverpool’s landline area code is 0151, often shortened to ‘151’, aligning a globally famous music city with a crisp numeric shorthand.",
+    "coordinates": {
+      "lat": 53.4084,
+      "lng": -2.9916
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "016",
+    "label": "Manchester Dial Code Family (0161 → 161)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Manchester’s landline area code 0161 is widely recognized as ‘161’—a numeric identity marker tied to a major UK music and nightlife ecosystem.",
+    "coordinates": {
+      "lat": 53.4808,
+      "lng": -2.2426
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "017",
+    "label": "Bristol Dial Code Family (0117 → 117)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Bristol’s major-city code is 0117, often seen as ‘117’, connecting a key UK electronic-music city to a compact numeric tag.",
+    "coordinates": {
+      "lat": 51.4545,
+      "lng": -2.5879
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "018",
+    "label": "Reading Dial Code Family (0118 → 118)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "Reading uses 0118, commonly shown as ‘118’, a number also strongly associated in the UK with directory-enquiries branding (118 xxx).",
+    "coordinates": {
+      "lat": 51.4543,
+      "lng": -0.9781
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "019",
+    "label": "Tyneside/Sunderland/Durham Dial Code Family (0191 → 191)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "North East England’s major-city code is 0191, often reduced to ‘191’, linking multiple communities under one numeric umbrella.",
+    "coordinates": {
+      "lat": 54.9783,
+      "lng": -1.6178
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "020",
+    "label": "London, UK",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "London dialing code (020). The financial and cultural capital of the UK.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "021",
+    "label": "Morocco (+212) Regional Family (21x → 021 shorthand)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country codes in the 21x range include North African identities; Morocco’s +212 frequently creates ‘21x’ shorthand in diaspora contact culture.",
+    "coordinates": {
+      "lat": 33.9716,
+      "lng": -6.8498
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "022",
+    "label": "Senegal (+221) Regional Family (22x → 022 shorthand)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country codes in the 22x range mark West Africa; Senegal’s +221 sits inside a music-export belt spanning Dakar and the wider region.",
+    "coordinates": {
+      "lat": 14.7167,
+      "lng": -17.4677
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "023",
+    "label": "Southampton & Portsmouth, UK",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In the UK ‘02x’ city-code scheme, 023 serves Southampton and Portsmouth, two major south-coast hubs with distinct maritime identity.",
+    "coordinates": {
+      "lat": 50.9097,
+      "lng": -1.4044
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "024",
+    "label": "Coventry, UK",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Coventry’s UK city code is 024, a compact marker for a Midlands city with deep automotive and industrial history.",
+    "coordinates": {
+      "lat": 52.4068,
+      "lng": -1.5197
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "025",
+    "label": "Tanzania (+255) Regional Family (25x → 025 shorthand)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "The 25x block clusters East African country codes; Tanzania’s +255 often drives ‘25x’ shorthand in regional calling and diaspora contacts.",
+    "coordinates": {
+      "lat": -6.7924,
+      "lng": 39.2083
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "026",
+    "label": "Botswana (+267) Regional Family (26x → 026 shorthand)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "The 26x block includes several Southern African codes; Botswana’s +267 contributes to a recognizable ‘26x’ regional numbering identity.",
+    "coordinates": {
+      "lat": -24.6282,
+      "lng": 25.9231
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "027",
+    "label": "South Africa",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "South Africa country code (+27). Cape Town, Johannesburg, rainbow nation.",
+    "coordinates": {
+      "lat": -33.9249,
+      "lng": 18.4241
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "028",
+    "label": "Northern Ireland (UK)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "UK area code 028 covers Northern Ireland, a distinct political and cultural region often recognized immediately by its dial-code identity.",
+    "coordinates": {
+      "lat": 54.5973,
+      "lng": -5.9301
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "029",
+    "label": "Cardiff, Wales (UK)",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "UK area code 029 serves Cardiff, the Welsh capital; the number often functions as a shorthand identity tag tied to national sports culture.",
+    "coordinates": {
+      "lat": 51.4816,
+      "lng": -3.1791
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "030",
+    "label": "Greece (+30)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +30 represents Greece, a cultural cornerstone of Western history and a modern diaspora with strong identity markers.",
+    "coordinates": {
+      "lat": 37.9838,
+      "lng": 23.7275
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "031",
+    "label": "Netherlands",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Netherlands country code (+31). Amsterdam, cycling culture, Dutch innovation.",
+    "coordinates": {
+      "lat": 52.3676,
+      "lng": 4.9041
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "032",
+    "label": "Belgium (+32)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +32 represents Belgium, a small but globally central European state with Brussels as an international political hub.",
+    "coordinates": {
+      "lat": 50.8503,
+      "lng": 4.3517
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "033",
+    "label": "France",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "France country code (+33). Paris, haute couture, revolution.",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "034",
+    "label": "Spain",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Spain country code (+34). Barcelona, Madrid, flamenco.",
+    "coordinates": {
+      "lat": 40.4168,
+      "lng": -3.7038
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "035",
+    "label": "Ireland (+353) Regional Family (35x → 035 shorthand)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "The 35x block contains parts of Europe; Ireland’s +353 is a strong diaspora identity marker tied to global music and pub culture.",
+    "coordinates": {
+      "lat": 53.3498,
+      "lng": -6.2603
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "036",
+    "label": "Hungary (+36)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +36 represents Hungary, a Central European nation with strong historical identity and a major capital in Budapest.",
+    "coordinates": {
+      "lat": 47.4979,
+      "lng": 19.0402
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "039",
+    "label": "Italy",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Italy country code (+39). Rome, Milan, Renaissance birthplace.",
+    "coordinates": {
+      "lat": 41.9028,
+      "lng": 12.4964
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "040",
+    "label": "Romania (+40)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +40 represents Romania, tying a modern national identity to a region central to European and Balkan history.",
+    "coordinates": {
+      "lat": 44.4268,
+      "lng": 26.1025
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "041",
+    "label": "Switzerland (+41)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +41 represents Switzerland, a globally recognized neutrality and finance brand with a compact numeric identity.",
+    "coordinates": {
+      "lat": 46.948,
+      "lng": 7.4474
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "042",
+    "label": "42 (Hitchhiker’s Guide) / Czechia (+420 family)",
+    "pillars": [
+      "internet",
+      "dialing"
+    ],
+    "description": "‘42’ is the famous pop-culture answer to ‘life, the universe, and everything,’ and it also points into the +420 Czechia calling-code family.",
+    "coordinates": {
+      "lat": 50.0755,
+      "lng": 14.4378
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "043",
+    "label": "Austria (+43)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +43 represents Austria, strongly associated with classical music heritage centered around Vienna.",
+    "coordinates": {
+      "lat": 48.2082,
+      "lng": 16.3738
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "044",
+    "label": "United Kingdom",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "UK international dialing code (+44). The British Isles, from Buckingham to Beatles.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "045",
+    "label": "Denmark (+45)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +45 represents Denmark, a compact national identity marker for a highly networked Nordic state.",
+    "coordinates": {
+      "lat": 55.6761,
+      "lng": 12.5683
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "046",
+    "label": "Sweden (+46)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +46 represents Sweden, a global music powerhouse from ABBA to modern pop production ecosystems.",
+    "coordinates": {
+      "lat": 59.3293,
+      "lng": 18.0686
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "047",
+    "label": "Norway (+47)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +47 represents Norway, a distinct Nordic identity marker spanning major cities and dispersed coastal culture.",
+    "coordinates": {
+      "lat": 59.9139,
+      "lng": 10.7522
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "048",
+    "label": "Poland",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Poland country code (+48). Warsaw, Krakow, Solidarity movement.",
+    "coordinates": {
+      "lat": 52.2297,
+      "lng": 21.0122
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "049",
+    "label": "Germany",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Germany country code (+49). Berlin, techno capital of the world.",
+    "coordinates": {
+      "lat": 52.52,
+      "lng": 13.405
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "050",
+    "label": "UK Personal Numbering (070 family → 050 legacy shorthand)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "The UK historically used specialized non-geographic numbering schemes; ‘050’ is a legacy-style shorthand for the idea of personal/non-geographic ranges.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "051",
+    "label": "Peru (+51)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +51 represents Peru, a nation tied to deep pre-Columbian history and modern Latin cultural identity.",
+    "coordinates": {
+      "lat": -12.0464,
+      "lng": -77.0428
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "052",
+    "label": "Mexico (+52)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +52 represents Mexico, closely linked to major music export traditions from regional Mexican genres to global pop.",
+    "coordinates": {
+      "lat": 19.4326,
+      "lng": -99.1332
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "053",
+    "label": "Cuba (+53)",
+    "pillars": [
+      "dialing",
+      "music",
+      "history"
+    ],
+    "description": "Country calling code +53 represents Cuba, a major node in global music history (son, salsa) and 20th-century geopolitics.",
+    "coordinates": {
+      "lat": 23.1136,
+      "lng": -82.3666
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "054",
+    "label": "Argentina (+54)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +54 represents Argentina, home to tango’s cultural identity and a major Latin media market.",
+    "coordinates": {
+      "lat": -34.6037,
+      "lng": -58.3816
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "055",
+    "label": "Brazil (+55)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +55 represents Brazil, a global music and carnival identity with massive diaspora and social-media resonance.",
+    "coordinates": {
+      "lat": -22.9068,
+      "lng": -43.1729
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "056",
+    "label": "Chile (+56)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +56 represents Chile, a long coastal nation with a distinct national identity and major capital in Santiago.",
+    "coordinates": {
+      "lat": -33.4489,
+      "lng": -70.6693
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "057",
+    "label": "Colombia (+57)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +57 represents Colombia, a major Latin music exporter with strong city-based cultural identities.",
+    "coordinates": {
+      "lat": 4.711,
+      "lng": -74.0721
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "058",
+    "label": "Venezuela (+58)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +58 represents Venezuela, a distinct national identity marker for a country with a large regional diaspora.",
+    "coordinates": {
+      "lat": 10.4806,
+      "lng": -66.9036
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "060",
+    "label": "Malaysia (+60)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +60 represents Malaysia, a multi-ethnic Southeast Asian hub with strong regional connectivity.",
+    "coordinates": {
+      "lat": 3.139,
+      "lng": 101.6869
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "061",
+    "label": "Australia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Australia country code (+61). Sydney Opera House, surf culture, outback.",
+    "coordinates": {
+      "lat": -33.8688,
+      "lng": 151.2093
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "062",
+    "label": "Indonesia (+62)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +62 represents Indonesia, the world’s largest archipelago with rapidly growing internet and music subcultures.",
+    "coordinates": {
+      "lat": -6.2088,
+      "lng": 106.8456
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "063",
+    "label": "Philippines (+63)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +63 represents the Philippines, a major diaspora nation with strong karaoke, pop, and performance culture.",
+    "coordinates": {
+      "lat": 14.5995,
+      "lng": 120.9842
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "064",
+    "label": "New Zealand",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "New Zealand country code (+64). Auckland, Middle Earth, All Blacks.",
+    "coordinates": {
+      "lat": -36.8485,
+      "lng": 174.7633
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "065",
+    "label": "Singapore (+65)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +65 represents Singapore, a compact numeric identity tied to a globally networked city-state model.",
+    "coordinates": {
+      "lat": 1.3521,
+      "lng": 103.8198
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "066",
+    "label": "Thailand",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Thailand country code (+66). Bangkok. Also Route 66 — America's Mother Road.",
+    "coordinates": {
+      "lat": 13.7563,
+      "lng": 100.5018
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "069",
+    "label": "Nice.",
+    "pillars": [
+      "internet"
+    ],
+    "description": "The internet's favorite number. You know exactly what this means.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "070",
+    "label": "UK Personal Numbers (070)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "In the UK, 070 is a non-geographic range historically used for personal numbering—widely recognized in consumer telecom awareness.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "073",
+    "label": "UK Mobile Range Family (073)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In the UK, 07 ranges include mobiles; 073 sits inside the cultural reality of modern British identity being ‘mobile-first.’",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "075",
+    "label": "UK Mobile Range Family (075)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "UK mobile numbering includes multiple 07 prefixes; 075 appears frequently as a recognizable mobile identity tag in everyday life.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "076",
+    "label": "UK Mobile/VoIP Range Family (076/07624)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "UK numbering includes specialized 076 allocations (including Isle of Man 07624), creating a niche but real identity marker inside UK telecom culture.",
+    "coordinates": {
+      "lat": 54.2361,
+      "lng": -4.5481
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "078",
+    "label": "UK Mobile",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "UK mobile phone prefix (078). Every British phone number starts here.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "079",
+    "label": "UK Mobile Range Family (079)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "UK mobile numbering includes 079 prefixes, a familiar ‘mobile identity’ front edge used across Britain.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "080",
+    "label": "Freephone Concept (080 / 0800 family)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "‘080’ evokes the Freephone concept (notably 0800), a widely recognized consumer pattern for toll-free service access.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "081",
+    "label": "Japan",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Japan country code (+81). Tokyo, anime, technology, cherry blossoms.",
+    "coordinates": {
+      "lat": 35.6762,
+      "lng": 139.6503
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "082",
+    "label": "South Korea",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "South Korea country code (+82). Seoul, K-pop, Samsung, kimchi.",
+    "coordinates": {
+      "lat": 37.5665,
+      "lng": 126.978
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "084",
+    "label": "Vietnam (+84)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +84 represents Vietnam, a fast-growing Asia-Pacific economy with strong diaspora connectivity patterns.",
+    "coordinates": {
+      "lat": 21.0285,
+      "lng": 105.8542
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "086",
+    "label": "China",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "China country code (+86). Beijing, the Great Wall, world's factory.",
+    "coordinates": {
+      "lat": 39.9042,
+      "lng": 116.4074
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "090",
+    "label": "Türkiye (+90)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +90 represents Türkiye, a transcontinental cultural bridge with deep historical resonance.",
+    "coordinates": {
+      "lat": 39.9334,
+      "lng": 32.8597
+    },
+    "region": "Middle East"
+  },
+  {
+    "number": "091",
+    "label": "India",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "India country code (+91). Mumbai, Bangalore, Bollywood, 1.4 billion people.",
+    "coordinates": {
+      "lat": 19.076,
+      "lng": 72.8777
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "092",
+    "label": "Pakistan (+92)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +92 represents Pakistan, a major South Asian state whose modern identity is tightly linked to 20th-century history.",
+    "coordinates": {
+      "lat": 33.6844,
+      "lng": 73.0479
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "093",
+    "label": "Afghanistan (+93)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +93 represents Afghanistan, a nation whose modern global narratives and diaspora ties often travel through this numeric marker.",
+    "coordinates": {
+      "lat": 34.5553,
+      "lng": 69.2075
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "094",
+    "label": "Sri Lanka (+94)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +94 represents Sri Lanka, an island identity with deep historical layers and a globally connected diaspora.",
+    "coordinates": {
+      "lat": 6.9271,
+      "lng": 79.8612
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "095",
+    "label": "Myanmar (+95)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +95 represents Myanmar, a distinct Southeast Asian identity marker in the global numbering map.",
+    "coordinates": {
+      "lat": 16.8409,
+      "lng": 96.1735
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "098",
+    "label": "Iran (+98)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +98 represents Iran, a major civilizational node whose modern cultural and political narratives often anchor on national identifiers.",
+    "coordinates": {
+      "lat": 35.6892,
+      "lng": 51.389
+    },
+    "region": "Middle East"
+  },
+  {
+    "number": "100",
+    "label": "HTTP 100 Continue",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 100 ‘Continue’ is an informational status indicating the client should proceed—an early-stage handshake marker in web protocol culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "101",
+    "label": "HTTP 101 Switching Protocols",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 101 signals a protocol switch (commonly toward upgraded connections), a key concept in modern web infrastructure evolution.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "102",
+    "label": "HTTP 102 Processing (WebDAV)",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 102 ‘Processing’ (WebDAV) indicates the server has received and is working on the request—an infrastructure-era status with niche developer recognition.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "103",
+    "label": "HTTP 103 Early Hints",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 103 ‘Early Hints’ allows servers to send preliminary headers to speed page loads, a performance-era marker in modern web culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "108",
+    "label": "India Emergency Ambulance (108)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "In India, 108 is widely used as an emergency ambulance number, a real-world safety marker embedded into public life.",
+    "coordinates": {
+      "lat": 28.6139,
+      "lng": 77.209
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "110",
+    "label": "Police Emergency (110) — Japan/China",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "110 is the police emergency number in Japan and also used for police in China, making it a cross-country safety and civic marker.",
+    "coordinates": {
+      "lat": 35.6762,
+      "lng": 139.6503
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "111",
+    "label": "New Zealand Emergency Number (111)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In New Zealand, 111 is the national emergency number, a compact public-safety identity marker for the country.",
+    "coordinates": {
+      "lat": -41.2865,
+      "lng": 174.7762
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "112",
+    "label": "112 Emergency Number (Europe and beyond)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "112 is the European emergency number (and used in various countries beyond Europe), a globally recognized safety default on many mobile networks.",
+    "coordinates": {
+      "lat": 50.1109,
+      "lng": 8.6821
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "113",
+    "label": "Japan Telephone Repair Service (113)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In Japan, 113 is a well-known service number historically associated with telephone line trouble/repair, part of everyday telecom culture.",
+    "coordinates": {
+      "lat": 35.6762,
+      "lng": 139.6503
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "118",
+    "label": "UK Directory Enquiries (118 xxx)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "In the UK, ‘118’ is strongly associated with directory enquiries services (118 xxx), a culturally sticky number family from pre-smartphone life.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "119",
+    "label": "Fire & Ambulance (119) — Japan/South Korea",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "119 is the fire and ambulance emergency number in Japan and South Korea, a high-recognition public-safety marker in East Asia.",
+    "coordinates": {
+      "lat": 37.5665,
+      "lng": 126.978
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "121",
+    "label": "Birmingham, UK",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Birmingham dialing code (0121). UK's second city, Peaky Blinders territory.",
+    "coordinates": {
+      "lat": 52.4862,
+      "lng": -1.8904
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "122",
+    "label": "Traffic Police Emergency (122) — Egypt",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "In Egypt, 122 is associated with traffic police/emergency road assistance, a civic-services number embedded in local daily life.",
+    "coordinates": {
+      "lat": 30.0444,
+      "lng": 31.2357
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "123",
+    "label": "UK Speaking Clock (123)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "In the UK, dialing 123 historically reached the ‘Speaking Clock’ time service, a cultural relic of analog-era telecom habits.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "131",
+    "label": "Edinburgh (0131 → 131)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Edinburgh’s UK dial code is 0131, frequently compressed to ‘131’ as a numeric identity marker for Scotland’s capital.",
+    "coordinates": {
+      "lat": 55.9533,
+      "lng": -3.1883
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "141",
+    "label": "Glasgow (0141 → 141)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Glasgow’s UK dial code is 0141, often shortened to ‘141’, tying a major live-music city to a compact numeric tag.",
+    "coordinates": {
+      "lat": 55.8642,
+      "lng": -4.2518
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "143",
+    "label": "I Love You",
+    "pillars": [
+      "internet"
+    ],
+    "description": "Pager code for 'I Love You' (1-4-3 letters). Made famous by Mister Rogers.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "151",
+    "label": "Liverpool (0151 → 151)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Liverpool’s UK dial code is 0151, frequently reduced to ‘151’, a numeric shorthand for a globally iconic music city.",
+    "coordinates": {
+      "lat": 53.4084,
+      "lng": -2.9916
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "161",
+    "label": "Manchester, UK",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Manchester dialing code (0161). Oasis, The Smiths, Hacienda, rave culture.",
+    "coordinates": {
+      "lat": 53.4808,
+      "lng": -2.2426
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "171",
+    "label": "The 171 (London Telecom Identity)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "171 is a well-known UK call-return/service prefix and also appears as a London-adjacent numeric identity in older telecom culture; it persists in pop references tied to the city.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "191",
+    "label": "Tyneside/Sunderland/Durham (0191 → 191)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "0191 is the major-city code for parts of North East England; ‘191’ acts as shorthand across the region’s communities.",
+    "coordinates": {
+      "lat": 54.9783,
+      "lng": -1.6178
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "200",
+    "label": "HTTP 200 OK",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 200 ‘OK’ is the internet’s most recognized success signal—an instantly memetic marker for ‘it worked.’",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "201",
+    "label": "HTTP 201 Created",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 201 indicates a resource was successfully created, often associated with successful POST requests in web development.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "202",
+    "label": "HTTP 202 Accepted",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 202 signals that a request has been accepted for processing but not yet completed, common in async systems.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "203",
+    "label": "HTTP 203 Non-Authoritative Information",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 203 indicates returned metadata may not be from the origin server, reflecting proxy-era web architecture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "204",
+    "label": "HTTP 204 No Content",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 204 represents a successful request with no response body, often used in modern APIs.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "205",
+    "label": "HTTP 205 Reset Content",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 205 instructs the client to reset the document view, a lesser-known but defined web status code.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "206",
+    "label": "Seattle, WA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Seattle area code. Nirvana, grunge, Amazon, Microsoft, coffee culture.",
+    "coordinates": {
+      "lat": 47.6062,
+      "lng": -122.3321
+    },
+    "region": "North America"
+  },
+  {
+    "number": "207",
+    "label": "HTTP 207 Multi-Status",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 207 is used in WebDAV to represent multiple independent operations in a single response.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "208",
+    "label": "HTTP 208 Already Reported",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 208 avoids repeated enumeration of resources in WebDAV, signaling deduplication at the protocol level.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "210",
+    "label": "Morocco (+212) Cultural Shortcode (210 family)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "The 21x dialing range is often culturally shorthand for North Africa; Morocco’s +212 anchors the identity.",
+    "coordinates": {
+      "lat": 33.5731,
+      "lng": -7.5898
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "212",
+    "label": "Manhattan, NY",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Manhattan area code. Azealia Banks '212'. The cultural center of the world.",
+    "coordinates": {
+      "lat": 40.7831,
+      "lng": -73.9712
+    },
+    "region": "North America"
+  },
+  {
+    "number": "213",
+    "label": "Los Angeles, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Downtown LA area code. Hollywood, Chicano culture, city of angels.",
+    "coordinates": {
+      "lat": 34.0522,
+      "lng": -118.2437
+    },
+    "region": "North America"
+  },
+  {
+    "number": "214",
+    "label": "Dallas, TX",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 214 is one of Dallas’s original codes, tied to Texas business culture and major sports franchises.",
+    "coordinates": {
+      "lat": 32.7767,
+      "lng": -96.797
+    },
+    "region": "North America"
+  },
+  {
+    "number": "215",
+    "label": "Philadelphia, PA",
+    "pillars": [
+      "dialing",
+      "history",
+      "sports"
+    ],
+    "description": "Area code 215 covers Philadelphia, a foundational U.S. city central to independence history and sports fandom.",
+    "coordinates": {
+      "lat": 39.9526,
+      "lng": -75.1652
+    },
+    "region": "North America"
+  },
+  {
+    "number": "216",
+    "label": "Cleveland, OH",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 216 represents Cleveland, home to legacy sports teams and a distinct Rust Belt identity.",
+    "coordinates": {
+      "lat": 41.4993,
+      "lng": -81.6944
+    },
+    "region": "North America"
+  },
+  {
+    "number": "217",
+    "label": "Central Illinois",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 217 serves central Illinois, including Springfield, tying telecom identity to Midwestern civic culture.",
+    "coordinates": {
+      "lat": 39.7817,
+      "lng": -89.6501
+    },
+    "region": "North America"
+  },
+  {
+    "number": "218",
+    "label": "Northern Minnesota",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 218 covers northern Minnesota, culturally associated with lake country and rural Upper Midwest life.",
+    "coordinates": {
+      "lat": 46.7867,
+      "lng": -92.1005
+    },
+    "region": "North America"
+  },
+  {
+    "number": "219",
+    "label": "Northwest Indiana",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 219 serves northwest Indiana, part of the greater Chicago economic orbit.",
+    "coordinates": {
+      "lat": 41.6028,
+      "lng": -87.3372
+    },
+    "region": "North America"
+  },
+  {
+    "number": "220",
+    "label": "Columbus, OH (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 220 overlays Columbus, Ohio, reflecting telecom growth in a major Midwestern city.",
+    "coordinates": {
+      "lat": 39.9612,
+      "lng": -82.9988
+    },
+    "region": "North America"
+  },
+  {
+    "number": "221",
+    "label": "Senegal",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +221 represents Senegal, centered on Dakar and influential in West African music culture.",
+    "coordinates": {
+      "lat": 14.7167,
+      "lng": -17.4677
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "222",
+    "label": "HTTP 222 (Unofficial Meme Code)",
+    "pillars": [
+      "internet"
+    ],
+    "description": "While not an official HTTP status, 222 is sometimes used informally to signal ‘all good’ in internal systems.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "223",
+    "label": "Mali",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +223 represents Mali, a historic center of West African music and griot traditions.",
+    "coordinates": {
+      "lat": 12.6392,
+      "lng": -8.0029
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "224",
+    "label": "Guinea",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +224 represents Guinea, influential in percussion-driven West African music styles.",
+    "coordinates": {
+      "lat": 9.6412,
+      "lng": -13.5784
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "225",
+    "label": "Ivory Coast",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +225 represents Côte d’Ivoire, a major hub for Francophone African pop and dance music.",
+    "coordinates": {
+      "lat": 5.3599,
+      "lng": -4.0083
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "226",
+    "label": "Burkina Faso",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +226 represents Burkina Faso, a culturally distinct West African nation.",
+    "coordinates": {
+      "lat": 12.3714,
+      "lng": -1.5197
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "227",
+    "label": "Niger",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +227 represents Niger, a Sahel-region state with strong trans-Saharan cultural ties.",
+    "coordinates": {
+      "lat": 13.5116,
+      "lng": 2.1254
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "228",
+    "label": "Togo",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +228 represents Togo, a small West African country with coastal cultural influence.",
+    "coordinates": {
+      "lat": 6.1725,
+      "lng": 1.2314
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "229",
+    "label": "Benin",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +229 represents Benin, historically linked to the Kingdom of Dahomey and Vodun traditions.",
+    "coordinates": {
+      "lat": 6.4969,
+      "lng": 2.6289
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "230",
+    "label": "Mauritius",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +230 represents Mauritius, an Indian Ocean island nation with a multicultural identity.",
+    "coordinates": {
+      "lat": -20.3484,
+      "lng": 57.5522
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "231",
+    "label": "Liberia",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +231 represents Liberia, founded in the 19th century by freed African Americans.",
+    "coordinates": {
+      "lat": 6.3156,
+      "lng": -10.8074
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "232",
+    "label": "Sierra Leone",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +232 represents Sierra Leone, historically linked to Atlantic trade and Creole culture.",
+    "coordinates": {
+      "lat": 8.4657,
+      "lng": -13.2317
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "233",
+    "label": "Ghana",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Ghana country code (+233). Accra, Year of Return, Afrobeats rising.",
+    "coordinates": {
+      "lat": 5.6037,
+      "lng": -0.187
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "234",
+    "label": "Nigeria",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Nigeria country code (+234). Lagos, Afrobeats capital. Burna Boy, Wizkid.",
+    "coordinates": {
+      "lat": 6.5244,
+      "lng": 3.3792
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "235",
+    "label": "Chad",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +235 represents Chad, a landlocked Central African nation.",
+    "coordinates": {
+      "lat": 12.1348,
+      "lng": 15.0557
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "236",
+    "label": "Central African Republic",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +236 represents the Central African Republic, a culturally diverse inland state.",
+    "coordinates": {
+      "lat": 4.3947,
+      "lng": 18.5582
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "237",
+    "label": "Cameroon",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +237 represents Cameroon, a bilingual nation with rich rhythmic music traditions.",
+    "coordinates": {
+      "lat": 3.848,
+      "lng": 11.5021
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "238",
+    "label": "Cape Verde",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +238 represents Cape Verde, globally known for morna music and diaspora culture.",
+    "coordinates": {
+      "lat": 14.933,
+      "lng": -23.5133
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "239",
+    "label": "São Tomé and Príncipe",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +239 represents São Tomé and Príncipe, a small island nation in the Gulf of Guinea.",
+    "coordinates": {
+      "lat": 0.3365,
+      "lng": 6.7273
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "240",
+    "label": "Equatorial Guinea",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +240 represents Equatorial Guinea, one of Africa’s few Spanish-speaking countries.",
+    "coordinates": {
+      "lat": 3.75,
+      "lng": 8.7833
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "241",
+    "label": "Gabon",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +241 represents Gabon, a Central African nation with significant rainforest coverage.",
+    "coordinates": {
+      "lat": 0.4162,
+      "lng": 9.4673
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "242",
+    "label": "Republic of the Congo",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +242 represents the Republic of the Congo, centered on Brazzaville.",
+    "coordinates": {
+      "lat": -4.2634,
+      "lng": 15.2429
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "243",
+    "label": "Democratic Republic of the Congo",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +243 represents the DRC, a major contributor to modern African rumba and pop music.",
+    "coordinates": {
+      "lat": -4.4419,
+      "lng": 15.2663
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "244",
+    "label": "Angola",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +244 represents Angola, home of kuduro and a growing Lusophone music scene.",
+    "coordinates": {
+      "lat": -8.839,
+      "lng": 13.2894
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "245",
+    "label": "Guinea-Bissau",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +245 represents Guinea-Bissau, a small West African nation with distinct cultural traditions.",
+    "coordinates": {
+      "lat": 11.8817,
+      "lng": -15.617
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "246",
+    "label": "Diego Garcia / British Indian Ocean Territory",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +246 represents the British Indian Ocean Territory, notable for Diego Garcia’s strategic role.",
+    "coordinates": {
+      "lat": -7.3133,
+      "lng": 72.4111
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "247",
+    "label": "Ascension Island",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +247 represents Ascension Island, a remote Atlantic territory with niche geopolitical significance.",
+    "coordinates": {
+      "lat": -7.9467,
+      "lng": -14.3559
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "248",
+    "label": "Seychelles",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +248 represents Seychelles, an Indian Ocean island nation associated with tourism and biodiversity.",
+    "coordinates": {
+      "lat": -4.6796,
+      "lng": 55.492
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "249",
+    "label": "Sudan",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +249 represents Sudan, historically central to Nile Valley civilizations.",
+    "coordinates": {
+      "lat": 15.5007,
+      "lng": 32.5599
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "250",
+    "label": "Rwanda",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Rwanda country code (+250). Kigali, Africa's cleanest city, tech hub.",
+    "coordinates": {
+      "lat": -1.9403,
+      "lng": 29.8739
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "251",
+    "label": "Ethiopia",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +251 represents Ethiopia, one of the world’s oldest continuous civilizations.",
+    "coordinates": {
+      "lat": 9.03,
+      "lng": 38.74
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "252",
+    "label": "Somalia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +252 represents Somalia, with a large global diaspora connected through telecom identity.",
+    "coordinates": {
+      "lat": 2.0469,
+      "lng": 45.3182
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "254",
+    "label": "Kenya",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Kenya country code (+254). Nairobi, M-Pesa mobile money revolution.",
+    "coordinates": {
+      "lat": -1.2921,
+      "lng": 36.8219
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "255",
+    "label": "Tanzania",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Tanzania country code (+255). Dar es Salaam, Zanzibar, Kilimanjaro.",
+    "coordinates": {
+      "lat": -6.7924,
+      "lng": 39.2083
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "256",
+    "label": "Uganda",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Uganda country code (+256). Kampala, Pearl of Africa.",
+    "coordinates": {
+      "lat": 0.3476,
+      "lng": 32.5825
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "257",
+    "label": "Burundi",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +257 represents Burundi, a small but culturally distinct East African nation.",
+    "coordinates": {
+      "lat": -3.3614,
+      "lng": 29.3599
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "258",
+    "label": "Mozambique",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +258 represents Mozambique, with strong Lusophone and coastal music influences.",
+    "coordinates": {
+      "lat": -25.9692,
+      "lng": 32.5732
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "260",
+    "label": "Zambia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Zambia country code (+260). Lusaka, Victoria Falls.",
+    "coordinates": {
+      "lat": -15.3875,
+      "lng": 28.3228
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "261",
+    "label": "Madagascar",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +261 represents Madagascar, an island nation with unique biodiversity and culture.",
+    "coordinates": {
+      "lat": -18.8792,
+      "lng": 47.5079
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "262",
+    "label": "Réunion / Mayotte",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +262 represents Réunion and Mayotte, French overseas territories in the Indian Ocean.",
+    "coordinates": {
+      "lat": -21.1151,
+      "lng": 55.5364
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "263",
+    "label": "Zimbabwe",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +263 represents Zimbabwe, a Southern African nation with strong regional identity.",
+    "coordinates": {
+      "lat": -17.8252,
+      "lng": 31.0335
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "264",
+    "label": "Namibia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +264 represents Namibia, known for desert landscapes and sparse population.",
+    "coordinates": {
+      "lat": -22.5609,
+      "lng": 17.0658
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "265",
+    "label": "Malawi",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +265 represents Malawi, often called the ‘Warm Heart of Africa.’",
+    "coordinates": {
+      "lat": -13.9626,
+      "lng": 33.7741
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "266",
+    "label": "Lesotho",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +266 represents Lesotho, a high-altitude kingdom entirely surrounded by South Africa.",
+    "coordinates": {
+      "lat": -29.61,
+      "lng": 28.2336
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "268",
+    "label": "Eswatini (Swaziland)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +268 represents Eswatini, one of Africa’s last absolute monarchies.",
+    "coordinates": {
+      "lat": -26.3054,
+      "lng": 31.1367
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "269",
+    "label": "Comoros",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +269 represents Comoros, an island nation in the Indian Ocean with Arab and African influences.",
+    "coordinates": {
+      "lat": -11.6455,
+      "lng": 43.3333
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "270",
+    "label": "South Africa (Regional Identity)",
+    "pillars": [
+      "dialing",
+      "music",
+      "sports"
+    ],
+    "description": "South Africa’s telecom identity frequently references the ‘27’ country code, culturally shorthand as ‘two-seven.’",
+    "coordinates": {
+      "lat": -26.2041,
+      "lng": 28.0473
+    },
+    "region": "Africa"
+  },
+  {
+    "number": "272",
+    "label": "HTTP 272 (Unofficial / Dev Humor)",
+    "pillars": [
+      "internet"
+    ],
+    "description": "272 appears occasionally in developer humor as a playful non-standard status code.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "280",
+    "label": "Germany Emergency (Legacy 112/110 family reference)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Numbers in the 11x–28x range are often culturally associated with European emergency and service numbering clusters.",
+    "coordinates": {
+      "lat": 52.52,
+      "lng": 13.405
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "299",
+    "label": "Greenland",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +299 represents Greenland, an autonomous territory with Inuit cultural identity.",
+    "coordinates": {
+      "lat": 64.1835,
+      "lng": -51.7216
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "301",
+    "label": "HTTP 301 Moved Permanently",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 301 is a foundational redirect status code, deeply embedded in SEO and web infrastructure culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "302",
+    "label": "HTTP 302 Found",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 302 indicates a temporary redirect, widely recognized by developers and marketers.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "303",
+    "label": "HTTP 303 See Other",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 303 directs clients to retrieve resources via GET, often used after form submissions.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "304",
+    "label": "HTTP 304 Not Modified",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 304 signals cached content is still valid, central to efficient web performance.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "305",
+    "label": "Miami, FL",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Miami area code. Pitbull 'Mr. 305'. Art Basel, Latin beats, Vice City.",
+    "coordinates": {
+      "lat": 25.7617,
+      "lng": -80.1918
+    },
+    "region": "North America"
+  },
+  {
+    "number": "306",
+    "label": "Saskatchewan, Canada",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 306 represents Saskatchewan, culturally tied to prairie identity and Canadian football fandom.",
+    "coordinates": {
+      "lat": 50.4452,
+      "lng": -104.6189
+    },
+    "region": "North America"
+  },
+  {
+    "number": "307",
+    "label": "Wyoming",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 307 uniquely covers all of Wyoming, symbolizing sparse population and frontier identity.",
+    "coordinates": {
+      "lat": 41.14,
+      "lng": -104.8202
+    },
+    "region": "North America"
+  },
+  {
+    "number": "308",
+    "label": "Nebraska (Western)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 308 serves western Nebraska, reinforcing regional identity within the Great Plains.",
+    "coordinates": {
+      "lat": 40.8136,
+      "lng": -96.7026
+    },
+    "region": "North America"
+  },
+  {
+    "number": "309",
+    "label": "Western Illinois",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 309 covers western Illinois, including Peoria, anchoring local Midwestern identity.",
+    "coordinates": {
+      "lat": 40.6936,
+      "lng": -89.589
+    },
+    "region": "North America"
+  },
+  {
+    "number": "310",
+    "label": "LA Westside",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Beverly Hills, Santa Monica, Malibu. The glamour side of Los Angeles.",
+    "coordinates": {
+      "lat": 34.0259,
+      "lng": -118.3965
+    },
+    "region": "North America"
+  },
+  {
+    "number": "311",
+    "label": "Non-Emergency Civic Services (311)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "311 is widely used in North America for non-emergency civic services, symbolizing municipal responsiveness.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "312",
+    "label": "Chicago, IL",
+    "pillars": [
+      "dialing",
+      "music",
+      "sports"
+    ],
+    "description": "Area code 312 is Chicago’s core downtown code, deeply tied to house music, blues, and major sports culture.",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    "region": "North America"
+  },
+  {
+    "number": "313",
+    "label": "Detroit, MI",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Detroit area code. Eminem's '313'. Motown, techno birthplace, motor city.",
+    "coordinates": {
+      "lat": 42.3314,
+      "lng": -83.0458
+    },
+    "region": "North America"
+  },
+  {
+    "number": "314",
+    "label": "St. Louis, MO",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 314 represents St. Louis, historically influential in blues and early rock music.",
+    "coordinates": {
+      "lat": 38.627,
+      "lng": -90.1994
+    },
+    "region": "North America"
+  },
+  {
+    "number": "315",
+    "label": "Upstate New York",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 315 serves upstate New York, connecting smaller cities into a shared regional identity.",
+    "coordinates": {
+      "lat": 43.0481,
+      "lng": -76.1474
+    },
+    "region": "North America"
+  },
+  {
+    "number": "316",
+    "label": "Wichita, KS",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 316 represents Wichita, Kansas, a regional aviation and manufacturing hub.",
+    "coordinates": {
+      "lat": 37.6872,
+      "lng": -97.3301
+    },
+    "region": "North America"
+  },
+  {
+    "number": "317",
+    "label": "Indianapolis, IN",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 317 represents Indianapolis, closely associated with motorsports and the Indy 500.",
+    "coordinates": {
+      "lat": 39.7684,
+      "lng": -86.1581
+    },
+    "region": "North America"
+  },
+  {
+    "number": "318",
+    "label": "Northern Louisiana",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 318 serves northern Louisiana, part of a broader region tied to blues and Southern music culture.",
+    "coordinates": {
+      "lat": 32.5252,
+      "lng": -93.7502
+    },
+    "region": "North America"
+  },
+  {
+    "number": "319",
+    "label": "Eastern Iowa",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 319 represents eastern Iowa, anchoring local Midwest identity.",
+    "coordinates": {
+      "lat": 41.6611,
+      "lng": -91.5302
+    },
+    "region": "North America"
+  },
+  {
+    "number": "320",
+    "label": "Central Minnesota",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 320 serves central Minnesota, reflecting rural and small-city culture.",
+    "coordinates": {
+      "lat": 45.5579,
+      "lng": -94.1632
+    },
+    "region": "North America"
+  },
+  {
+    "number": "321",
+    "label": "Space Coast, FL",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 321 was chosen for Florida’s Space Coast, symbolically referencing a countdown to launch.",
+    "coordinates": {
+      "lat": 28.3922,
+      "lng": -80.6077
+    },
+    "region": "North America"
+  },
+  {
+    "number": "323",
+    "label": "Los Angeles (Central)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 323 covers central Los Angeles, heavily referenced in hip-hop and street culture.",
+    "coordinates": {
+      "lat": 34.0522,
+      "lng": -118.2437
+    },
+    "region": "North America"
+  },
+  {
+    "number": "325",
+    "label": "West Central Texas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 325 serves west central Texas, part of the broader Lone Star regional identity.",
+    "coordinates": {
+      "lat": 31.4638,
+      "lng": -100.437
+    },
+    "region": "North America"
+  },
+  {
+    "number": "330",
+    "label": "Northeast Ohio",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 330 covers northeast Ohio outside Cleveland, representing suburban and industrial communities.",
+    "coordinates": {
+      "lat": 41.0814,
+      "lng": -81.519
+    },
+    "region": "North America"
+  },
+  {
+    "number": "331",
+    "label": "Naperville / Chicago Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 331 overlays Chicago’s western suburbs, reflecting metro expansion.",
+    "coordinates": {
+      "lat": 41.7508,
+      "lng": -88.1535
+    },
+    "region": "North America"
+  },
+  {
+    "number": "337",
+    "label": "Acadiana, Louisiana",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 337 covers Acadiana, culturally tied to Cajun and Zydeco music traditions.",
+    "coordinates": {
+      "lat": 30.2241,
+      "lng": -92.0198
+    },
+    "region": "North America"
+  },
+  {
+    "number": "340",
+    "label": "U.S. Virgin Islands",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 340 represents the U.S. Virgin Islands, linked to Caribbean music and island culture.",
+    "coordinates": {
+      "lat": 18.3358,
+      "lng": -64.8963
+    },
+    "region": "North America"
+  },
+  {
+    "number": "345",
+    "label": "Cayman Islands",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 345 represents the Cayman Islands, globally associated with finance and offshore identity.",
+    "coordinates": {
+      "lat": 19.3133,
+      "lng": -81.2546
+    },
+    "region": "North America"
+  },
+  {
+    "number": "347",
+    "label": "New York City (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 347 overlays NYC boroughs, appearing frequently in modern hip-hop and pop references.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "351",
+    "label": "Portugal",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +351 represents Portugal, culturally tied to fado music and Atlantic exploration history.",
+    "coordinates": {
+      "lat": 38.7223,
+      "lng": -9.1393
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "352",
+    "label": "Luxembourg",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +352 represents Luxembourg, a small but globally connected European state.",
+    "coordinates": {
+      "lat": 49.6116,
+      "lng": 6.1319
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "353",
+    "label": "Ireland",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +353 represents Ireland, deeply linked to global folk and rock music heritage.",
+    "coordinates": {
+      "lat": 53.3498,
+      "lng": -6.2603
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "354",
+    "label": "Iceland",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +354 represents Iceland, disproportionately influential in alternative and electronic music.",
+    "coordinates": {
+      "lat": 64.1466,
+      "lng": -21.9426
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "355",
+    "label": "Albania",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +355 represents Albania, a Balkan nation with growing global diaspora.",
+    "coordinates": {
+      "lat": 41.3275,
+      "lng": 19.8187
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "356",
+    "label": "Malta",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Country calling code +356 represents Malta, a Mediterranean island nation with layered history.",
+    "coordinates": {
+      "lat": 35.8989,
+      "lng": 14.5146
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "357",
+    "label": "Cyprus",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +357 represents Cyprus, a crossroads of Greek, Turkish, and Middle Eastern cultures.",
+    "coordinates": {
+      "lat": 35.1856,
+      "lng": 33.3823
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "358",
+    "label": "Finland",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Country calling code +358 represents Finland, known globally for metal music and design culture.",
+    "coordinates": {
+      "lat": 60.1699,
+      "lng": 24.9384
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "359",
+    "label": "Bulgaria",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +359 represents Bulgaria, a Balkan nation with deep medieval and folk traditions.",
+    "coordinates": {
+      "lat": 42.6977,
+      "lng": 23.3219
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "360",
+    "label": "Washington State (Outside Seattle)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 360 covers western Washington outside Seattle, including Olympic Peninsula communities.",
+    "coordinates": {
+      "lat": 47.0379,
+      "lng": -122.9007
+    },
+    "region": "North America"
+  },
+  {
+    "number": "361",
+    "label": "Corpus Christi, TX",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 361 represents Corpus Christi and South Texas coastal culture.",
+    "coordinates": {
+      "lat": 27.8006,
+      "lng": -97.3964
+    },
+    "region": "North America"
+  },
+  {
+    "number": "365",
+    "label": "Southern Ontario (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 365 overlays Ontario’s Golden Horseshoe, reflecting telecom growth in Canada’s population core.",
+    "coordinates": {
+      "lat": 43.2557,
+      "lng": -79.8711
+    },
+    "region": "North America"
+  },
+  {
+    "number": "380",
+    "label": "Columbus, OH (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 380 overlays Columbus, reinforcing the city’s growth as a Midwest tech and education hub.",
+    "coordinates": {
+      "lat": 39.9612,
+      "lng": -82.9988
+    },
+    "region": "North America"
+  },
+  {
+    "number": "385",
+    "label": "Salt Lake City, UT",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 385 overlays Salt Lake City, a region shaped by Mormon settlement history.",
+    "coordinates": {
+      "lat": 40.7608,
+      "lng": -111.891
+    },
+    "region": "North America"
+  },
+  {
+    "number": "386",
+    "label": "Daytona Beach, FL",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 386 covers Daytona Beach, strongly associated with motorsports and racing culture.",
+    "coordinates": {
+      "lat": 29.2108,
+      "lng": -81.0228
+    },
+    "region": "North America"
+  },
+  {
+    "number": "390",
+    "label": "Italy (Mobile/Regional Family Reference)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Italian mobile and regional numbering schemes often reference the 39 country code in shortened form.",
+    "coordinates": {
+      "lat": 41.9028,
+      "lng": 12.4964
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "400",
+    "label": "HTTP 400 Bad Request",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 400 indicates a malformed request, widely memed as a user-side error in web culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "401",
+    "label": "HTTP 401 Unauthorized",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 401 signals missing or invalid authentication, a core concept in access control and internet security culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "402",
+    "label": "HTTP 402 Payment Required",
+    "pillars": [
+      "internet",
+      "history"
+    ],
+    "description": "HTTP 402 was reserved for future payment systems and is frequently cited in crypto and digital-payments discourse.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "403",
+    "label": "HTTP 403 Forbidden",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 403 indicates access is explicitly denied, a widely recognized internet error tied to permissions and censorship.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "404",
+    "label": "Atlanta, GA",
+    "pillars": [
+      "music",
+      "dialing",
+      "internet"
+    ],
+    "description": "Atlanta area code AND HTTP 'Not Found' error. OutKast, trap music capital. The ultimate multi-pillar marker.",
+    "coordinates": {
+      "lat": 33.749,
+      "lng": -84.388
+    },
+    "region": "North America"
+  },
+  {
+    "number": "405",
+    "label": "HTTP 405 Method Not Allowed",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 405 signals misuse of an HTTP method, a common developer-facing protocol constraint.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "406",
+    "label": "HTTP 406 Not Acceptable",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 406 indicates the server cannot satisfy the requested content format, reflecting negotiation in web standards.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "408",
+    "label": "HTTP 408 Request Timeout",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 408 indicates a client request timed out, a familiar failure mode in unstable network conditions.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "409",
+    "label": "HTTP 409 Conflict",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 409 represents a conflict with the current state of a resource, common in collaborative systems.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "410",
+    "label": "HTTP 410 Gone",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 410 signals a resource intentionally removed, often interpreted as a permanent digital erasure.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "411",
+    "label": "Directory Assistance (411)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "411 historically provided directory assistance in North America, a pre-search-engine information ritual.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "412",
+    "label": "Pittsburgh, PA",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 412 represents Pittsburgh, strongly associated with legacy steel culture and championship sports teams.",
+    "coordinates": {
+      "lat": 40.4406,
+      "lng": -79.9959
+    },
+    "region": "North America"
+  },
+  {
+    "number": "413",
+    "label": "Western Massachusetts",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 413 serves western Massachusetts, a region distinct from the Boston metro core.",
+    "coordinates": {
+      "lat": 42.1015,
+      "lng": -72.5898
+    },
+    "region": "North America"
+  },
+  {
+    "number": "414",
+    "label": "Milwaukee, WI",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 414 represents Milwaukee, historically tied to blues, brewing culture, and Midwest industry.",
+    "coordinates": {
+      "lat": 43.0389,
+      "lng": -87.9065
+    },
+    "region": "North America"
+  },
+  {
+    "number": "415",
+    "label": "San Francisco, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "San Francisco area code. Silicon Valley gateway, Summer of Love, tech capital.",
+    "coordinates": {
+      "lat": 37.7749,
+      "lng": -122.4194
+    },
+    "region": "North America"
+  },
+  {
+    "number": "416",
+    "label": "Toronto, ON",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Toronto area code. 'The 6'. Drake's city. Raptors. The cultural capital of Canada.",
+    "coordinates": {
+      "lat": 43.6532,
+      "lng": -79.3832
+    },
+    "region": "North America"
+  },
+  {
+    "number": "417",
+    "label": "Southwest Missouri",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 417 covers southwest Missouri, including Springfield and Branson.",
+    "coordinates": {
+      "lat": 37.2089,
+      "lng": -93.2923
+    },
+    "region": "North America"
+  },
+  {
+    "number": "418",
+    "label": "Quebec City / Eastern Quebec",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 418 represents eastern Quebec, including Quebec City, a historic Francophone capital.",
+    "coordinates": {
+      "lat": 46.8139,
+      "lng": -71.208
+    },
+    "region": "North America"
+  },
+  {
+    "number": "419",
+    "label": "Northwest Ohio",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 419 covers northwest Ohio, including Toledo, tied to Great Lakes industrial history.",
+    "coordinates": {
+      "lat": 41.6528,
+      "lng": -83.5379
+    },
+    "region": "North America"
+  },
+  {
+    "number": "420",
+    "label": "Cannabis Culture",
+    "pillars": [
+      "internet"
+    ],
+    "description": "April 20th. The universal cannabis culture number. Global counterculture icon.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "421",
+    "label": "Slovakia",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +421 represents Slovakia, a nation formed after the peaceful split of Czechoslovakia.",
+    "coordinates": {
+      "lat": 48.1486,
+      "lng": 17.1077
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "422",
+    "label": "HTTP 422 Unprocessable Entity",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 422 indicates semantic errors in a request, widely used in modern APIs.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "423",
+    "label": "Eastern Tennessee",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 423 represents eastern Tennessee, culturally tied to Appalachia.",
+    "coordinates": {
+      "lat": 35.0456,
+      "lng": -85.3097
+    },
+    "region": "North America"
+  },
+  {
+    "number": "424",
+    "label": "Los Angeles (Westside Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 424 overlays West Los Angeles, appearing in contemporary music and pop culture.",
+    "coordinates": {
+      "lat": 34.0522,
+      "lng": -118.2437
+    },
+    "region": "North America"
+  },
+  {
+    "number": "425",
+    "label": "Seattle Eastside",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 425 covers Seattle’s Eastside suburbs, including major tech campuses.",
+    "coordinates": {
+      "lat": 47.6101,
+      "lng": -122.2015
+    },
+    "region": "North America"
+  },
+  {
+    "number": "427",
+    "label": "HTTP 427 Unassigned",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 427 is unassigned, occasionally referenced in speculative protocol discussions.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "428",
+    "label": "HTTP 428 Precondition Required",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 428 enforces request preconditions, part of modern web consistency safeguards.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "429",
+    "label": "HTTP 429 Too Many Requests",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 429 indicates rate limiting, a core concept in APIs and anti-abuse systems.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "430",
+    "label": "South Texas (Legacy)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "430 appears historically in reassignment discussions tied to Texas regional numbering growth.",
+    "coordinates": {
+      "lat": 27.5306,
+      "lng": -99.4803
+    },
+    "region": "North America"
+  },
+  {
+    "number": "431",
+    "label": "Manitoba, Canada (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 431 overlays Manitoba, reinforcing provincial identity in Canadian telecom.",
+    "coordinates": {
+      "lat": 49.8951,
+      "lng": -97.1384
+    },
+    "region": "North America"
+  },
+  {
+    "number": "432",
+    "label": "West Texas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 432 serves West Texas, culturally associated with oil, desert, and frontier imagery.",
+    "coordinates": {
+      "lat": 31.8457,
+      "lng": -102.3676
+    },
+    "region": "North America"
+  },
+  {
+    "number": "434",
+    "label": "Charlottesville / Central Virginia",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 434 covers central Virginia, near sites central to early U.S. political history.",
+    "coordinates": {
+      "lat": 38.0293,
+      "lng": -78.4767
+    },
+    "region": "North America"
+  },
+  {
+    "number": "435",
+    "label": "Rural Utah",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 435 represents rural Utah, contrasting sharply with Salt Lake City’s metro identity.",
+    "coordinates": {
+      "lat": 37.0965,
+      "lng": -113.5684
+    },
+    "region": "North America"
+  },
+  {
+    "number": "440",
+    "label": "Cleveland Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 440 serves suburban Cleveland, reflecting metro sprawl and telecom evolution.",
+    "coordinates": {
+      "lat": 41.5055,
+      "lng": -81.6813
+    },
+    "region": "North America"
+  },
+  {
+    "number": "441",
+    "label": "Bermuda",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 441 represents Bermuda, a British Overseas Territory with offshore financial associations.",
+    "coordinates": {
+      "lat": 32.3078,
+      "lng": -64.7505
+    },
+    "region": "North America"
+  },
+  {
+    "number": "442",
+    "label": "Ontario (Southwest Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 442 overlays southwestern Ontario, tied to cross-border industrial regions.",
+    "coordinates": {
+      "lat": 42.9849,
+      "lng": -81.2453
+    },
+    "region": "North America"
+  },
+  {
+    "number": "443",
+    "label": "Baltimore, MD (Overlay)",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 443 overlays Baltimore, reinforcing the city’s sports and port identity.",
+    "coordinates": {
+      "lat": 39.2904,
+      "lng": -76.6122
+    },
+    "region": "North America"
+  },
+  {
+    "number": "447",
+    "label": "UK Mobile (077/447 International)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "447 appears in international formats for UK mobile numbers, a common global-facing identifier.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "448",
+    "label": "HTTP 448 Retry With",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 448 is an experimental Microsoft extension instructing clients to retry with additional data.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "451",
+    "label": "HTTP 451 Unavailable For Legal Reasons",
+    "pillars": [
+      "internet",
+      "history"
+    ],
+    "description": "HTTP 451 references censorship and legal takedowns, named after Ray Bradbury’s Fahrenheit 451.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "469",
+    "label": "Dallas Metro (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 469 overlays Dallas–Fort Worth, reflecting rapid population and telecom growth.",
+    "coordinates": {
+      "lat": 32.7767,
+      "lng": -96.797
+    },
+    "region": "North America"
+  },
+  {
+    "number": "470",
+    "label": "Atlanta Metro (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 470 overlays Atlanta, reinforcing its role as a dominant hip-hop and media hub.",
+    "coordinates": {
+      "lat": 33.749,
+      "lng": -84.388
+    },
+    "region": "North America"
+  },
+  {
+    "number": "473",
+    "label": "Grenada",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 473 represents Grenada, part of Caribbean carnival and soca music culture.",
+    "coordinates": {
+      "lat": 12.1165,
+      "lng": -61.679
+    },
+    "region": "North America"
+  },
+  {
+    "number": "475",
+    "label": "Connecticut (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 475 overlays Connecticut, reflecting dense regional connectivity.",
+    "coordinates": {
+      "lat": 41.3083,
+      "lng": -72.9279
+    },
+    "region": "North America"
+  },
+  {
+    "number": "478",
+    "label": "Central Georgia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 478 covers central Georgia, including Macon, a historic Southern music city.",
+    "coordinates": {
+      "lat": 32.8407,
+      "lng": -83.6324
+    },
+    "region": "North America"
+  },
+  {
+    "number": "480",
+    "label": "Arizona (East Valley)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 480 represents suburban Phoenix’s East Valley tech and business corridor.",
+    "coordinates": {
+      "lat": 33.4152,
+      "lng": -111.8315
+    },
+    "region": "North America"
+  },
+  {
+    "number": "484",
+    "label": "Pennsylvania (Eastern Suburbs)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 484 overlays eastern Pennsylvania suburbs near Philadelphia.",
+    "coordinates": {
+      "lat": 40.0379,
+      "lng": -75.343
+    },
+    "region": "North America"
+  },
+  {
+    "number": "500",
+    "label": "HTTP 500 Internal Server Error",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 500 is the archetypal server-side failure, deeply embedded in internet meme culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "502",
+    "label": "HTTP 502 Bad Gateway",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 502 indicates upstream server failure, common in distributed systems.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "503",
+    "label": "HTTP 503 Service Unavailable",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 503 signals temporary downtime, often associated with outages and maintenance.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "504",
+    "label": "HTTP 504 Gateway Timeout",
+    "pillars": [
+      "internet"
+    ],
+    "description": "HTTP 504 reflects delayed responses across networks, symbolizing latency bottlenecks.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "505",
+    "label": "New Mexico",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 505 covers much of New Mexico, culturally tied to desert landscapes and Indigenous heritage.",
+    "coordinates": {
+      "lat": 35.0844,
+      "lng": -106.6504
+    },
+    "region": "North America"
+  },
+  {
+    "number": "507",
+    "label": "Southern Minnesota",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 507 serves southern Minnesota, reflecting agricultural Midwest identity.",
+    "coordinates": {
+      "lat": 44.0121,
+      "lng": -92.4802
+    },
+    "region": "North America"
+  },
+  {
+    "number": "508",
+    "label": "Massachusetts (Central)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 508 represents central Massachusetts, including Worcester.",
+    "coordinates": {
+      "lat": 42.2626,
+      "lng": -71.8023
+    },
+    "region": "North America"
+  },
+  {
+    "number": "509",
+    "label": "Eastern Washington",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 509 covers eastern Washington, contrasting Seattle’s west-side tech culture.",
+    "coordinates": {
+      "lat": 47.6588,
+      "lng": -117.426
+    },
+    "region": "North America"
+  },
+  {
+    "number": "510",
+    "label": "East Bay, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 510 represents Oakland and the East Bay, deeply tied to Bay Area hip-hop and activism.",
+    "coordinates": {
+      "lat": 37.8044,
+      "lng": -122.2711
+    },
+    "region": "North America"
+  },
+  {
+    "number": "512",
+    "label": "Austin, TX",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 512 represents Austin, widely branded as the ‘Live Music Capital of the World.’",
+    "coordinates": {
+      "lat": 30.2672,
+      "lng": -97.7431
+    },
+    "region": "North America"
+  },
+  {
+    "number": "513",
+    "label": "Cincinnati, OH",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 513 covers Cincinnati, a city with deep baseball and football culture.",
+    "coordinates": {
+      "lat": 39.1031,
+      "lng": -84.512
+    },
+    "region": "North America"
+  },
+  {
+    "number": "514",
+    "label": "Montreal, QC",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 514 represents Montreal, a bilingual cultural hub known for festivals and electronic music.",
+    "coordinates": {
+      "lat": 45.5019,
+      "lng": -73.5674
+    },
+    "region": "North America"
+  },
+  {
+    "number": "515",
+    "label": "Central Iowa",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 515 serves central Iowa, including Des Moines.",
+    "coordinates": {
+      "lat": 41.5868,
+      "lng": -93.625
+    },
+    "region": "North America"
+  },
+  {
+    "number": "516",
+    "label": "Long Island, NY",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 516 represents Nassau County on Long Island, suburban New York identity.",
+    "coordinates": {
+      "lat": 40.6546,
+      "lng": -73.5594
+    },
+    "region": "North America"
+  },
+  {
+    "number": "517",
+    "label": "Central Michigan",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 517 covers central Michigan, including Lansing.",
+    "coordinates": {
+      "lat": 42.7325,
+      "lng": -84.5555
+    },
+    "region": "North America"
+  },
+  {
+    "number": "518",
+    "label": "Upstate New York (Capital Region)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 518 serves Albany and surrounding regions tied to New York state governance.",
+    "coordinates": {
+      "lat": 42.6526,
+      "lng": -73.7562
+    },
+    "region": "North America"
+  },
+  {
+    "number": "519",
+    "label": "Southwestern Ontario",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 519 covers southwestern Ontario, including London and Windsor.",
+    "coordinates": {
+      "lat": 42.9849,
+      "lng": -81.2453
+    },
+    "region": "North America"
+  },
+  {
+    "number": "520",
+    "label": "Southern Arizona",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 520 represents southern Arizona, including Tucson.",
+    "coordinates": {
+      "lat": 32.2226,
+      "lng": -110.9747
+    },
+    "region": "North America"
+  },
+  {
+    "number": "530",
+    "label": "Northern California (Rural)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 530 covers rural northern California, distinct from coastal metro tech zones.",
+    "coordinates": {
+      "lat": 39.7285,
+      "lng": -121.8375
+    },
+    "region": "North America"
+  },
+  {
+    "number": "540",
+    "label": "Virginia (Shenandoah / Roanoke)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 540 serves western Virginia, including the Shenandoah Valley.",
+    "coordinates": {
+      "lat": 37.271,
+      "lng": -79.9414
+    },
+    "region": "North America"
+  },
+  {
+    "number": "541",
+    "label": "Oregon (Outside Portland)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 541 covers most of Oregon outside Portland, tied to Pacific Northwest landscapes.",
+    "coordinates": {
+      "lat": 44.0521,
+      "lng": -123.0868
+    },
+    "region": "North America"
+  },
+  {
+    "number": "551",
+    "label": "New Jersey (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 551 overlays northern New Jersey, reflecting dense metro expansion near NYC.",
+    "coordinates": {
+      "lat": 40.7357,
+      "lng": -74.1724
+    },
+    "region": "North America"
+  },
+  {
+    "number": "559",
+    "label": "California Central Valley",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 559 represents California’s Central Valley, an agricultural powerhouse.",
+    "coordinates": {
+      "lat": 36.7378,
+      "lng": -119.7871
+    },
+    "region": "North America"
+  },
+  {
+    "number": "561",
+    "label": "Palm Beach County, FL",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 561 serves Palm Beach County, associated with coastal wealth and tourism.",
+    "coordinates": {
+      "lat": 26.7153,
+      "lng": -80.0534
+    },
+    "region": "North America"
+  },
+  {
+    "number": "562",
+    "label": "Long Beach, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 562 represents Long Beach, closely tied to West Coast hip-hop history.",
+    "coordinates": {
+      "lat": 33.7701,
+      "lng": -118.1937
+    },
+    "region": "North America"
+  },
+  {
+    "number": "570",
+    "label": "Northeastern Pennsylvania",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 570 covers northeastern Pennsylvania, including Scranton.",
+    "coordinates": {
+      "lat": 41.4089,
+      "lng": -75.6624
+    },
+    "region": "North America"
+  },
+  {
+    "number": "571",
+    "label": "Northern Virginia (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 571 overlays Northern Virginia, part of the Washington, DC political ecosystem.",
+    "coordinates": {
+      "lat": 38.8048,
+      "lng": -77.0469
+    },
+    "region": "North America"
+  },
+  {
+    "number": "573",
+    "label": "Eastern Missouri",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 573 covers eastern Missouri outside St. Louis.",
+    "coordinates": {
+      "lat": 38.5767,
+      "lng": -92.1735
+    },
+    "region": "North America"
+  },
+  {
+    "number": "574",
+    "label": "Northern Indiana",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 574 serves northern Indiana, including South Bend.",
+    "coordinates": {
+      "lat": 41.6764,
+      "lng": -86.252
+    },
+    "region": "North America"
+  },
+  {
+    "number": "580",
+    "label": "Western Oklahoma",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 580 represents western Oklahoma, a largely rural region.",
+    "coordinates": {
+      "lat": 34.6078,
+      "lng": -98.3959
+    },
+    "region": "North America"
+  },
+  {
+    "number": "585",
+    "label": "Rochester, NY",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 585 represents Rochester, historically tied to imaging and optics industries.",
+    "coordinates": {
+      "lat": 43.1566,
+      "lng": -77.6088
+    },
+    "region": "North America"
+  },
+  {
+    "number": "586",
+    "label": "Detroit Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 586 overlays Detroit’s suburbs, complementing the city’s core identity.",
+    "coordinates": {
+      "lat": 42.4734,
+      "lng": -83.2219
+    },
+    "region": "North America"
+  },
+  {
+    "number": "600",
+    "label": "HTTP 600 (Unofficial / Error-Class Boundary)",
+    "pillars": [
+      "internet"
+    ],
+    "description": "600 is commonly referenced as the upper boundary of HTTP status classes, used symbolically in error taxonomy.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "601",
+    "label": "Mississippi",
+    "pillars": [
+      "dialing",
+      "music",
+      "history"
+    ],
+    "description": "Area code 601 represents Mississippi, a foundational region for blues music and early American musical history.",
+    "coordinates": {
+      "lat": 32.2988,
+      "lng": -90.1848
+    },
+    "region": "North America"
+  },
+  {
+    "number": "602",
+    "label": "Phoenix, AZ",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 602 is Phoenix’s original core code, anchoring Arizona’s largest metro area.",
+    "coordinates": {
+      "lat": 33.4484,
+      "lng": -112.074
+    },
+    "region": "North America"
+  },
+  {
+    "number": "603",
+    "label": "New Hampshire",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 603 uniquely covers all of New Hampshire, symbolizing a small-state, single-code identity.",
+    "coordinates": {
+      "lat": 43.2073,
+      "lng": -71.5366
+    },
+    "region": "North America"
+  },
+  {
+    "number": "604",
+    "label": "Vancouver, BC",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 604 represents Vancouver, a Pacific Rim city with strong electronic and indie music scenes.",
+    "coordinates": {
+      "lat": 49.2827,
+      "lng": -123.1207
+    },
+    "region": "North America"
+  },
+  {
+    "number": "605",
+    "label": "South Dakota",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 605 covers all of South Dakota, reflecting sparse population and unified regional identity.",
+    "coordinates": {
+      "lat": 44.3683,
+      "lng": -100.3509
+    },
+    "region": "North America"
+  },
+  {
+    "number": "606",
+    "label": "Eastern Kentucky",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 606 represents eastern Kentucky, culturally tied to Appalachian folk and bluegrass traditions.",
+    "coordinates": {
+      "lat": 37.9887,
+      "lng": -84.4777
+    },
+    "region": "North America"
+  },
+  {
+    "number": "607",
+    "label": "Southern Tier, New York",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 607 serves New York’s Southern Tier, including Ithaca and Binghamton.",
+    "coordinates": {
+      "lat": 42.443,
+      "lng": -76.5019
+    },
+    "region": "North America"
+  },
+  {
+    "number": "608",
+    "label": "Southwestern Wisconsin",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 608 covers southwestern Wisconsin, centered on Madison’s college-town culture.",
+    "coordinates": {
+      "lat": 43.0731,
+      "lng": -89.4012
+    },
+    "region": "North America"
+  },
+  {
+    "number": "609",
+    "label": "Southern New Jersey",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 609 represents southern New Jersey, including Atlantic City and the state capital Trenton.",
+    "coordinates": {
+      "lat": 39.3643,
+      "lng": -74.4229
+    },
+    "region": "North America"
+  },
+  {
+    "number": "610",
+    "label": "Eastern Pennsylvania Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 610 serves the suburbs west of Philadelphia, reflecting metro-area expansion.",
+    "coordinates": {
+      "lat": 40.0379,
+      "lng": -75.343
+    },
+    "region": "North America"
+  },
+  {
+    "number": "612",
+    "label": "Minneapolis, MN",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 612 represents Minneapolis, globally known for Prince and the Minneapolis Sound.",
+    "coordinates": {
+      "lat": 44.9778,
+      "lng": -93.265
+    },
+    "region": "North America"
+  },
+  {
+    "number": "613",
+    "label": "Ottawa, ON",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 613 represents Ottawa, Canada’s capital and political center.",
+    "coordinates": {
+      "lat": 45.4215,
+      "lng": -75.6972
+    },
+    "region": "North America"
+  },
+  {
+    "number": "614",
+    "label": "Columbus, OH",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 614 represents Columbus, Ohio’s capital and a growing tech and education hub.",
+    "coordinates": {
+      "lat": 39.9612,
+      "lng": -82.9988
+    },
+    "region": "North America"
+  },
+  {
+    "number": "615",
+    "label": "Nashville, TN",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 615 represents Nashville, globally branded as Music City and the heart of country music.",
+    "coordinates": {
+      "lat": 36.1627,
+      "lng": -86.7816
+    },
+    "region": "North America"
+  },
+  {
+    "number": "616",
+    "label": "Western Michigan",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 616 covers western Michigan, including Grand Rapids.",
+    "coordinates": {
+      "lat": 42.9634,
+      "lng": -85.6681
+    },
+    "region": "North America"
+  },
+  {
+    "number": "617",
+    "label": "Boston, MA",
+    "pillars": [
+      "dialing",
+      "history",
+      "music"
+    ],
+    "description": "Area code 617 represents Boston, a city central to U.S. independence history and modern music scenes.",
+    "coordinates": {
+      "lat": 42.3601,
+      "lng": -71.0589
+    },
+    "region": "North America"
+  },
+  {
+    "number": "618",
+    "label": "Southern Illinois",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 618 covers southern Illinois, culturally distinct from Chicago’s metro influence.",
+    "coordinates": {
+      "lat": 38.627,
+      "lng": -90.1994
+    },
+    "region": "North America"
+  },
+  {
+    "number": "619",
+    "label": "San Diego, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 619 represents San Diego, a coastal city with military and surf culture.",
+    "coordinates": {
+      "lat": 32.7157,
+      "lng": -117.1611
+    },
+    "region": "North America"
+  },
+  {
+    "number": "620",
+    "label": "Southern Kansas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 620 serves southern Kansas, reflecting rural Plains identity.",
+    "coordinates": {
+      "lat": 37.6872,
+      "lng": -97.3301
+    },
+    "region": "North America"
+  },
+  {
+    "number": "623",
+    "label": "West Phoenix Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 623 covers Phoenix’s western suburbs, a fast-growing Sun Belt region.",
+    "coordinates": {
+      "lat": 33.5387,
+      "lng": -112.186
+    },
+    "region": "North America"
+  },
+  {
+    "number": "626",
+    "label": "San Gabriel Valley, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 626 represents the San Gabriel Valley, often referenced in Southern California hip-hop culture.",
+    "coordinates": {
+      "lat": 34.1478,
+      "lng": -118.1445
+    },
+    "region": "North America"
+  },
+  {
+    "number": "628",
+    "label": "San Francisco Peninsula (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 628 overlays San Francisco and nearby areas, reflecting Bay Area telecom growth.",
+    "coordinates": {
+      "lat": 37.7749,
+      "lng": -122.4194
+    },
+    "region": "North America"
+  },
+  {
+    "number": "630",
+    "label": "Western Chicago Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 630 covers Chicago’s western suburbs, part of the greater metro ecosystem.",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    "region": "North America"
+  },
+  {
+    "number": "631",
+    "label": "Suffolk County, Long Island",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 631 represents eastern Long Island, distinct from New York City’s urban core.",
+    "coordinates": {
+      "lat": 40.9849,
+      "lng": -72.6151
+    },
+    "region": "North America"
+  },
+  {
+    "number": "636",
+    "label": "St. Louis Outer Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 636 surrounds St. Louis, reflecting suburban expansion.",
+    "coordinates": {
+      "lat": 38.7881,
+      "lng": -90.4974
+    },
+    "region": "North America"
+  },
+  {
+    "number": "641",
+    "label": "North Central Iowa",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 641 covers north central Iowa, a largely rural region.",
+    "coordinates": {
+      "lat": 43.143,
+      "lng": -93.201
+    },
+    "region": "North America"
+  },
+  {
+    "number": "646",
+    "label": "Manhattan (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 646 overlays Manhattan, commonly referenced in contemporary New York culture.",
+    "coordinates": {
+      "lat": 40.7831,
+      "lng": -73.9712
+    },
+    "region": "North America"
+  },
+  {
+    "number": "647",
+    "label": "Toronto (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 647 overlays Toronto, frequently referenced in modern Canadian hip-hop.",
+    "coordinates": {
+      "lat": 43.6532,
+      "lng": -79.3832
+    },
+    "region": "North America"
+  },
+  {
+    "number": "650",
+    "label": "Silicon Valley (Peninsula)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "Area code 650 represents Silicon Valley’s core peninsula, synonymous with the modern tech industry.",
+    "coordinates": {
+      "lat": 37.4419,
+      "lng": -122.143
+    },
+    "region": "North America"
+  },
+  {
+    "number": "651",
+    "label": "St. Paul, MN",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 651 represents St. Paul, the political counterpart to Minneapolis.",
+    "coordinates": {
+      "lat": 44.9537,
+      "lng": -93.09
+    },
+    "region": "North America"
+  },
+  {
+    "number": "657",
+    "label": "Orange County, CA (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 657 overlays Orange County, reflecting Southern California growth.",
+    "coordinates": {
+      "lat": 33.7175,
+      "lng": -117.8311
+    },
+    "region": "North America"
+  },
+  {
+    "number": "660",
+    "label": "North Central Missouri",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 660 covers north central Missouri, largely rural communities.",
+    "coordinates": {
+      "lat": 39.759,
+      "lng": -93.7424
+    },
+    "region": "North America"
+  },
+  {
+    "number": "661",
+    "label": "Bakersfield / Kern County, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 661 represents Bakersfield, associated with the Bakersfield Sound in country music history.",
+    "coordinates": {
+      "lat": 35.3733,
+      "lng": -119.0187
+    },
+    "region": "North America"
+  },
+  {
+    "number": "662",
+    "label": "Northern Mississippi",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 662 covers northern Mississippi, part of the broader Delta blues region.",
+    "coordinates": {
+      "lat": 34.2576,
+      "lng": -88.7034
+    },
+    "region": "North America"
+  },
+  {
+    "number": "669",
+    "label": "San Jose, CA (Overlay)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "Area code 669 overlays San Jose, the heart of Silicon Valley.",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    },
+    "region": "North America"
+  },
+  {
+    "number": "670",
+    "label": "Northern Mariana Islands",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 670 represents the Northern Mariana Islands, a U.S. territory in the Pacific.",
+    "coordinates": {
+      "lat": 15.0979,
+      "lng": 145.6739
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "671",
+    "label": "Guam",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 671 represents Guam, a strategic U.S. territory in the Western Pacific.",
+    "coordinates": {
+      "lat": 13.4443,
+      "lng": 144.7937
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "678",
+    "label": "Atlanta Suburbs (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 678 overlays Atlanta’s suburbs, reinforcing metro Atlanta’s dominance in hip-hop culture.",
+    "coordinates": {
+      "lat": 33.749,
+      "lng": -84.388
+    },
+    "region": "North America"
+  },
+  {
+    "number": "679",
+    "label": "Fiji / Fetty Wap",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Fiji country code (+679). Fetty Wap's 'Trap Queen' made this number famous.",
+    "coordinates": {
+      "lat": -17.7134,
+      "lng": 178.065
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "680",
+    "label": "Upstate New York (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 680 overlays parts of upstate New York, introduced to meet growing demand.",
+    "coordinates": {
+      "lat": 42.6526,
+      "lng": -73.7562
+    },
+    "region": "North America"
+  },
+  {
+    "number": "681",
+    "label": "West Virginia (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 681 overlays West Virginia, complementing the state’s original 304 identity.",
+    "coordinates": {
+      "lat": 38.3498,
+      "lng": -81.6326
+    },
+    "region": "North America"
+  },
+  {
+    "number": "682",
+    "label": "Fort Worth, TX (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 682 overlays Fort Worth, part of the Dallas–Fort Worth metroplex.",
+    "coordinates": {
+      "lat": 32.7555,
+      "lng": -97.3308
+    },
+    "region": "North America"
+  },
+  {
+    "number": "701",
+    "label": "North Dakota",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 701 uniquely covers all of North Dakota, reinforcing statewide identity.",
+    "coordinates": {
+      "lat": 46.8083,
+      "lng": -100.7837
+    },
+    "region": "North America"
+  },
+  {
+    "number": "702",
+    "label": "Las Vegas, NV",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Las Vegas area code. Sin City, entertainment capital, what happens here stays here.",
+    "coordinates": {
+      "lat": 36.1699,
+      "lng": -115.1398
+    },
+    "region": "North America"
+  },
+  {
+    "number": "703",
+    "label": "Northern Virginia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 703 represents Northern Virginia, deeply connected to Washington, DC governance and defense.",
+    "coordinates": {
+      "lat": 38.8048,
+      "lng": -77.0469
+    },
+    "region": "North America"
+  },
+  {
+    "number": "704",
+    "label": "Charlotte, NC",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 704 represents Charlotte, a major U.S. banking center and sports city.",
+    "coordinates": {
+      "lat": 35.2271,
+      "lng": -80.8431
+    },
+    "region": "North America"
+  },
+  {
+    "number": "706",
+    "label": "Northern Georgia",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 706 covers northern Georgia outside Atlanta.",
+    "coordinates": {
+      "lat": 34.7304,
+      "lng": -84.9333
+    },
+    "region": "North America"
+  },
+  {
+    "number": "707",
+    "label": "California North Coast",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "Area code 707 covers California’s North Coast; the number is also culturally linked to the James Bond ‘007’ motif.",
+    "coordinates": {
+      "lat": 38.4405,
+      "lng": -122.7144
+    },
+    "region": "North America"
+  },
+  {
+    "number": "708",
+    "label": "Chicago South Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 708 represents Chicago’s southern suburbs.",
+    "coordinates": {
+      "lat": 41.7377,
+      "lng": -87.6976
+    },
+    "region": "North America"
+  },
+  {
+    "number": "709",
+    "label": "Newfoundland and Labrador",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 709 represents Newfoundland and Labrador, known for distinct folk music traditions.",
+    "coordinates": {
+      "lat": 47.5615,
+      "lng": -52.7126
+    },
+    "region": "North America"
+  },
+  {
+    "number": "710",
+    "label": "U.S. Government Services (Special)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "710 is reserved in the NANP for U.S. government services, rarely encountered by the public.",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    },
+    "region": "North America"
+  },
+  {
+    "number": "712",
+    "label": "Western Iowa",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 712 serves western Iowa, a largely rural Plains region.",
+    "coordinates": {
+      "lat": 41.2619,
+      "lng": -95.8608
+    },
+    "region": "North America"
+  },
+  {
+    "number": "713",
+    "label": "Houston, TX",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 713 represents Houston, central to Southern hip-hop and chopped-and-screwed music culture.",
+    "coordinates": {
+      "lat": 29.7604,
+      "lng": -95.3698
+    },
+    "region": "North America"
+  },
+  {
+    "number": "714",
+    "label": "Orange County, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 714 represents Orange County, California’s coastal suburban region.",
+    "coordinates": {
+      "lat": 33.7175,
+      "lng": -117.8311
+    },
+    "region": "North America"
+  },
+  {
+    "number": "715",
+    "label": "Northern Wisconsin",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 715 covers northern Wisconsin, associated with lakes and forests.",
+    "coordinates": {
+      "lat": 45.7833,
+      "lng": -90.787
+    },
+    "region": "North America"
+  },
+  {
+    "number": "716",
+    "label": "Buffalo, NY",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 716 represents Buffalo, strongly associated with football fandom and Great Lakes identity.",
+    "coordinates": {
+      "lat": 42.8864,
+      "lng": -78.8784
+    },
+    "region": "North America"
+  },
+  {
+    "number": "717",
+    "label": "Central Pennsylvania",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 717 covers central Pennsylvania, including Harrisburg.",
+    "coordinates": {
+      "lat": 40.2732,
+      "lng": -76.8867
+    },
+    "region": "North America"
+  },
+  {
+    "number": "718",
+    "label": "Brooklyn/Queens, NY",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "NYC outer boroughs. Jay-Z's Brooklyn. The Notorious B.I.G. Hip-hop's birthplace.",
+    "coordinates": {
+      "lat": 40.6782,
+      "lng": -73.9442
+    },
+    "region": "North America"
+  },
+  {
+    "number": "719",
+    "label": "Colorado Springs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 719 represents Colorado Springs, tied to military installations and mountain geography.",
+    "coordinates": {
+      "lat": 38.8339,
+      "lng": -104.8214
+    },
+    "region": "North America"
+  },
+  {
+    "number": "720",
+    "label": "Denver Metro (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 720 overlays Denver, reflecting Front Range population growth.",
+    "coordinates": {
+      "lat": 39.7392,
+      "lng": -104.9903
+    },
+    "region": "North America"
+  },
+  {
+    "number": "724",
+    "label": "Western Pennsylvania Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 724 surrounds Pittsburgh, complementing the city’s 412 core.",
+    "coordinates": {
+      "lat": 40.4406,
+      "lng": -79.9959
+    },
+    "region": "North America"
+  },
+  {
+    "number": "725",
+    "label": "Las Vegas (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 725 overlays Las Vegas, introduced due to population growth.",
+    "coordinates": {
+      "lat": 36.1699,
+      "lng": -115.1398
+    },
+    "region": "North America"
+  },
+  {
+    "number": "727",
+    "label": "St. Petersburg / Clearwater, FL",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 727 covers Florida’s Gulf Coast communities near Tampa Bay.",
+    "coordinates": {
+      "lat": 27.7676,
+      "lng": -82.6403
+    },
+    "region": "North America"
+  },
+  {
+    "number": "731",
+    "label": "Western Tennessee",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 731 serves western Tennessee outside Memphis.",
+    "coordinates": {
+      "lat": 35.6145,
+      "lng": -88.8139
+    },
+    "region": "North America"
+  },
+  {
+    "number": "732",
+    "label": "Central New Jersey",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 732 represents central New Jersey’s dense suburban corridor.",
+    "coordinates": {
+      "lat": 40.4862,
+      "lng": -74.4518
+    },
+    "region": "North America"
+  },
+  {
+    "number": "734",
+    "label": "Ann Arbor / Southeastern Michigan",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 734 covers Ann Arbor, home to the University of Michigan.",
+    "coordinates": {
+      "lat": 42.2808,
+      "lng": -83.743
+    },
+    "region": "North America"
+  },
+  {
+    "number": "737",
+    "label": "Austin, TX (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 737 overlays Austin, reinforcing its rapid growth.",
+    "coordinates": {
+      "lat": 30.2672,
+      "lng": -97.7431
+    },
+    "region": "North America"
+  },
+  {
+    "number": "740",
+    "label": "Southeastern Ohio",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 740 serves southeastern Ohio, largely rural communities.",
+    "coordinates": {
+      "lat": 39.9403,
+      "lng": -82.0132
+    },
+    "region": "North America"
+  },
+  {
+    "number": "747",
+    "label": "San Fernando Valley (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 747 overlays the San Fernando Valley in Los Angeles.",
+    "coordinates": {
+      "lat": 34.2819,
+      "lng": -118.438
+    },
+    "region": "North America"
+  },
+  {
+    "number": "754",
+    "label": "Broward County, FL (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 754 overlays Broward County, Florida, north of Miami.",
+    "coordinates": {
+      "lat": 26.1901,
+      "lng": -80.3659
+    },
+    "region": "North America"
+  },
+  {
+    "number": "757",
+    "label": "Hampton Roads, VA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 757 covers Hampton Roads, a major U.S. naval and military region.",
+    "coordinates": {
+      "lat": 36.8508,
+      "lng": -76.2859
+    },
+    "region": "North America"
+  },
+  {
+    "number": "760",
+    "label": "Southern California Desert",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 760 covers California’s desert regions including Palm Springs.",
+    "coordinates": {
+      "lat": 33.8303,
+      "lng": -116.5453
+    },
+    "region": "North America"
+  },
+  {
+    "number": "762",
+    "label": "Columbus, GA (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 762 overlays parts of Georgia outside Atlanta.",
+    "coordinates": {
+      "lat": 32.4609,
+      "lng": -84.9877
+    },
+    "region": "North America"
+  },
+  {
+    "number": "763",
+    "label": "Northwest Minneapolis Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 763 serves northwest suburbs of Minneapolis.",
+    "coordinates": {
+      "lat": 45.1199,
+      "lng": -93.4025
+    },
+    "region": "North America"
+  },
+  {
+    "number": "765",
+    "label": "Indiana (Outside Indy)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 765 covers Indiana regions outside Indianapolis.",
+    "coordinates": {
+      "lat": 40.1934,
+      "lng": -85.3864
+    },
+    "region": "North America"
+  },
+  {
+    "number": "769",
+    "label": "Mississippi (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 769 overlays Mississippi, supplementing the original 601.",
+    "coordinates": {
+      "lat": 32.2988,
+      "lng": -90.1848
+    },
+    "region": "North America"
+  },
+  {
+    "number": "770",
+    "label": "Atlanta Metro, GA",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Atlanta suburbs area code. Migos, Future. The sprawl of trap music.",
+    "coordinates": {
+      "lat": 33.8823,
+      "lng": -84.2321
+    },
+    "region": "North America"
+  },
+  {
+    "number": "773",
+    "label": "Chicago (Outside Loop)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 773 represents Chicago neighborhoods outside downtown, heavily referenced in hip-hop culture.",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    "region": "North America"
+  },
+  {
+    "number": "774",
+    "label": "Central Massachusetts (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 774 overlays central Massachusetts.",
+    "coordinates": {
+      "lat": 42.2626,
+      "lng": -71.8023
+    },
+    "region": "North America"
+  },
+  {
+    "number": "775",
+    "label": "Northern Nevada",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 775 covers northern Nevada, including Reno.",
+    "coordinates": {
+      "lat": 39.5296,
+      "lng": -119.8138
+    },
+    "region": "North America"
+  },
+  {
+    "number": "776",
+    "label": "United States (1776)",
+    "pillars": [
+      "history"
+    ],
+    "description": "1776 — Declaration of Independence. The birth of America.",
+    "coordinates": {
+      "lat": 39.9526,
+      "lng": -75.1652
+    },
+    "region": "North America"
+  },
+  {
+    "number": "777",
+    "label": "Lucky Sevens",
+    "pillars": [
+      "internet"
+    ],
+    "description": "777 is globally associated with luck and jackpots, especially in gambling and online culture.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "778",
+    "label": "British Columbia (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 778 overlays British Columbia, including Vancouver and surrounding regions.",
+    "coordinates": {
+      "lat": 49.2827,
+      "lng": -123.1207
+    },
+    "region": "North America"
+  },
+  {
+    "number": "779",
+    "label": "Northern Illinois (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 779 overlays northern Illinois outside Chicago’s core.",
+    "coordinates": {
+      "lat": 42.2711,
+      "lng": -89.0937
+    },
+    "region": "North America"
+  },
+  {
+    "number": "780",
+    "label": "Edmonton, AB",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 780 represents Edmonton, strongly associated with hockey culture.",
+    "coordinates": {
+      "lat": 53.5461,
+      "lng": -113.4938
+    },
+    "region": "North America"
+  },
+  {
+    "number": "781",
+    "label": "Boston Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 781 surrounds Boston, reflecting suburban expansion.",
+    "coordinates": {
+      "lat": 42.4072,
+      "lng": -71.3824
+    },
+    "region": "North America"
+  },
+  {
+    "number": "785",
+    "label": "Northern Kansas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 785 covers northern Kansas, including Topeka.",
+    "coordinates": {
+      "lat": 39.0558,
+      "lng": -95.689
+    },
+    "region": "North America"
+  },
+  {
+    "number": "786",
+    "label": "Miami (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 786 overlays Miami, reinforcing the city’s Latin and hip-hop music presence.",
+    "coordinates": {
+      "lat": 25.7617,
+      "lng": -80.1918
+    },
+    "region": "North America"
+  },
+  {
+    "number": "787",
+    "label": "Puerto Rico",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 787 represents Puerto Rico, a global center for reggaeton and Latin music culture.",
+    "coordinates": {
+      "lat": 18.4655,
+      "lng": -66.1057
+    },
+    "region": "North America"
+  },
+  {
+    "number": "789",
+    "label": "Dominican Republic (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 809/829/849 serve the Dominican Republic; 789 is sometimes used colloquially as a shorthand reference.",
+    "coordinates": {
+      "lat": 18.4861,
+      "lng": -69.9312
+    },
+    "region": "North America"
+  },
+  {
+    "number": "800",
+    "label": "Toll-Free (800)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "800 is the original toll-free number in North America, symbolizing customer service and mass commerce.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "801",
+    "label": "Salt Lake City, UT",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 801 represents Salt Lake City, rooted in Mormon pioneer history and Mountain West identity.",
+    "coordinates": {
+      "lat": 40.7608,
+      "lng": -111.891
+    },
+    "region": "North America"
+  },
+  {
+    "number": "802",
+    "label": "Vermont",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 802 uniquely covers all of Vermont, symbolizing a small-state, single-code identity.",
+    "coordinates": {
+      "lat": 44.2601,
+      "lng": -72.5754
+    },
+    "region": "North America"
+  },
+  {
+    "number": "803",
+    "label": "South Carolina (Central)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 803 covers central South Carolina, including Columbia.",
+    "coordinates": {
+      "lat": 34.0007,
+      "lng": -81.0348
+    },
+    "region": "North America"
+  },
+  {
+    "number": "804",
+    "label": "Richmond, VA",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 804 represents Richmond, a former Confederate capital and historic U.S. city.",
+    "coordinates": {
+      "lat": 37.5407,
+      "lng": -77.436
+    },
+    "region": "North America"
+  },
+  {
+    "number": "805",
+    "label": "Santa Barbara / Ventura, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 805 covers California’s Central Coast, often referenced in West Coast music and surf culture.",
+    "coordinates": {
+      "lat": 34.4208,
+      "lng": -119.6982
+    },
+    "region": "North America"
+  },
+  {
+    "number": "806",
+    "label": "Texas Panhandle",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 806 represents the Texas Panhandle, including Amarillo and Lubbock.",
+    "coordinates": {
+      "lat": 35.221997,
+      "lng": -101.831297
+    },
+    "region": "North America"
+  },
+  {
+    "number": "807",
+    "label": "Northern Ontario",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 807 covers vast Northern Ontario, symbolizing geographic scale and remoteness.",
+    "coordinates": {
+      "lat": 48.3809,
+      "lng": -89.2477
+    },
+    "region": "North America"
+  },
+  {
+    "number": "808",
+    "label": "TR-808 Drum Machine",
+    "pillars": [
+      "internet",
+      "music"
+    ],
+    "description": "Roland TR-808. The drum machine that created hip-hop, trap, and modern pop. Also Hawaii's area code.",
+    "coordinates": {
+      "lat": 21.3069,
+      "lng": -157.8583
+    },
+    "region": "North America"
+  },
+  {
+    "number": "809",
+    "label": "Dominican Republic",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 809 represents the Dominican Republic, globally influential through merengue and bachata.",
+    "coordinates": {
+      "lat": 18.4861,
+      "lng": -69.9312
+    },
+    "region": "North America"
+  },
+  {
+    "number": "810",
+    "label": "Flint / Eastern Michigan",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 810 covers Flint and eastern Michigan, tied to automotive and industrial history.",
+    "coordinates": {
+      "lat": 43.0125,
+      "lng": -83.6875
+    },
+    "region": "North America"
+  },
+  {
+    "number": "812",
+    "label": "Southern Indiana",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 812 serves southern Indiana, including Bloomington and Evansville.",
+    "coordinates": {
+      "lat": 39.1653,
+      "lng": -86.5264
+    },
+    "region": "North America"
+  },
+  {
+    "number": "813",
+    "label": "Tampa, FL",
+    "pillars": [
+      "dialing",
+      "sports"
+    ],
+    "description": "Area code 813 represents Tampa, associated with professional sports and Gulf Coast culture.",
+    "coordinates": {
+      "lat": 27.9506,
+      "lng": -82.4572
+    },
+    "region": "North America"
+  },
+  {
+    "number": "814",
+    "label": "Central Pennsylvania",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 814 covers central Pennsylvania, including State College.",
+    "coordinates": {
+      "lat": 40.7934,
+      "lng": -77.86
+    },
+    "region": "North America"
+  },
+  {
+    "number": "815",
+    "label": "Northern Illinois",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 815 covers northern Illinois outside Chicago’s metro core.",
+    "coordinates": {
+      "lat": 42.2711,
+      "lng": -89.0937
+    },
+    "region": "North America"
+  },
+  {
+    "number": "816",
+    "label": "Kansas City, MO",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 816 represents Kansas City, historically significant in jazz and blues.",
+    "coordinates": {
+      "lat": 39.0997,
+      "lng": -94.5786
+    },
+    "region": "North America"
+  },
+  {
+    "number": "817",
+    "label": "Fort Worth, TX",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 817 represents Fort Worth, part of the Dallas–Fort Worth metroplex.",
+    "coordinates": {
+      "lat": 32.7555,
+      "lng": -97.3308
+    },
+    "region": "North America"
+  },
+  {
+    "number": "818",
+    "label": "San Fernando Valley, CA",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 818 represents the San Fernando Valley, frequently referenced in Los Angeles pop culture.",
+    "coordinates": {
+      "lat": 34.2819,
+      "lng": -118.438
+    },
+    "region": "North America"
+  },
+  {
+    "number": "819",
+    "label": "Western Quebec",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 819 covers western Quebec, including Gatineau.",
+    "coordinates": {
+      "lat": 45.4765,
+      "lng": -75.7013
+    },
+    "region": "North America"
+  },
+  {
+    "number": "820",
+    "label": "HTTP 820 (Unofficial)",
+    "pillars": [
+      "internet"
+    ],
+    "description": "820 appears in unofficial and experimental HTTP status code discussions.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "825",
+    "label": "Alberta (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 825 overlays Alberta, including Calgary and Edmonton.",
+    "coordinates": {
+      "lat": 53.5461,
+      "lng": -113.4938
+    },
+    "region": "North America"
+  },
+  {
+    "number": "828",
+    "label": "Western North Carolina",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 828 covers western North Carolina, tied to Appalachian folk traditions.",
+    "coordinates": {
+      "lat": 35.5951,
+      "lng": -82.5515
+    },
+    "region": "North America"
+  },
+  {
+    "number": "829",
+    "label": "Dominican Republic (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 829 overlays the Dominican Republic, reinforcing Caribbean music influence.",
+    "coordinates": {
+      "lat": 18.4861,
+      "lng": -69.9312
+    },
+    "region": "North America"
+  },
+  {
+    "number": "830",
+    "label": "Texas Hill Country",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 830 covers Texas Hill Country, west of Austin and San Antonio.",
+    "coordinates": {
+      "lat": 29.4241,
+      "lng": -98.4936
+    },
+    "region": "North America"
+  },
+  {
+    "number": "831",
+    "label": "Monterey Bay, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 831 represents the Monterey Bay region of California.",
+    "coordinates": {
+      "lat": 36.6002,
+      "lng": -121.8947
+    },
+    "region": "North America"
+  },
+  {
+    "number": "832",
+    "label": "Houston (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 832 overlays Houston, reinforcing its cultural and musical footprint.",
+    "coordinates": {
+      "lat": 29.7604,
+      "lng": -95.3698
+    },
+    "region": "North America"
+  },
+  {
+    "number": "843",
+    "label": "Charleston, SC",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 843 represents Charleston, a historic Southern port city.",
+    "coordinates": {
+      "lat": 32.7765,
+      "lng": -79.9311
+    },
+    "region": "North America"
+  },
+  {
+    "number": "845",
+    "label": "Hudson Valley, NY",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 845 covers New York’s Hudson Valley region.",
+    "coordinates": {
+      "lat": 41.7004,
+      "lng": -74.0134
+    },
+    "region": "North America"
+  },
+  {
+    "number": "847",
+    "label": "Chicago North Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 847 represents Chicago’s northern suburbs.",
+    "coordinates": {
+      "lat": 42.084,
+      "lng": -87.8245
+    },
+    "region": "North America"
+  },
+  {
+    "number": "848",
+    "label": "New Jersey (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 848 overlays parts of New Jersey, complementing 732.",
+    "coordinates": {
+      "lat": 40.0583,
+      "lng": -74.4057
+    },
+    "region": "North America"
+  },
+  {
+    "number": "850",
+    "label": "Florida Panhandle",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 850 represents Florida’s Panhandle, culturally distinct from South Florida.",
+    "coordinates": {
+      "lat": 30.4383,
+      "lng": -84.2807
+    },
+    "region": "North America"
+  },
+  {
+    "number": "857",
+    "label": "Boston (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 857 overlays Boston, reflecting telecom demand in the urban core.",
+    "coordinates": {
+      "lat": 42.3601,
+      "lng": -71.0589
+    },
+    "region": "North America"
+  },
+  {
+    "number": "858",
+    "label": "San Diego North",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 858 covers northern San Diego County.",
+    "coordinates": {
+      "lat": 32.8328,
+      "lng": -117.2713
+    },
+    "region": "North America"
+  },
+  {
+    "number": "859",
+    "label": "Lexington, KY",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 859 represents Lexington, known for horse racing and bourbon culture.",
+    "coordinates": {
+      "lat": 38.0406,
+      "lng": -84.5037
+    },
+    "region": "North America"
+  },
+  {
+    "number": "860",
+    "label": "Connecticut",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 860 covers most of Connecticut outside Fairfield County.",
+    "coordinates": {
+      "lat": 41.7658,
+      "lng": -72.6734
+    },
+    "region": "North America"
+  },
+  {
+    "number": "862",
+    "label": "Northern New Jersey (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 862 overlays northern New Jersey, tied to the NYC metro region.",
+    "coordinates": {
+      "lat": 40.7357,
+      "lng": -74.1724
+    },
+    "region": "North America"
+  },
+  {
+    "number": "863",
+    "label": "Central Florida",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 863 covers central Florida inland regions.",
+    "coordinates": {
+      "lat": 28.0395,
+      "lng": -81.9498
+    },
+    "region": "North America"
+  },
+  {
+    "number": "864",
+    "label": "Upstate South Carolina",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 864 represents upstate South Carolina, including Greenville.",
+    "coordinates": {
+      "lat": 34.8526,
+      "lng": -82.394
+    },
+    "region": "North America"
+  },
+  {
+    "number": "865",
+    "label": "Knoxville, TN",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 865 represents Knoxville, near the Great Smoky Mountains.",
+    "coordinates": {
+      "lat": 35.9606,
+      "lng": -83.9207
+    },
+    "region": "North America"
+  },
+  {
+    "number": "867",
+    "label": "Northern Canada (Territories)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 867 covers Yukon, Northwest Territories, and Nunavut.",
+    "coordinates": {
+      "lat": 64.2823,
+      "lng": -135
+    },
+    "region": "North America"
+  },
+  {
+    "number": "868",
+    "label": "Trinidad & Tobago",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Trinidad country code (+868). Soca, Carnival, steelpan. The rhythm of the Caribbean.",
+    "coordinates": {
+      "lat": 10.6918,
+      "lng": -61.2225
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "869",
+    "label": "St. Kitts & Nevis",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 869 represents St. Kitts and Nevis, a small Caribbean nation.",
+    "coordinates": {
+      "lat": 17.3578,
+      "lng": -62.783
+    },
+    "region": "North America"
+  },
+  {
+    "number": "870",
+    "label": "Eastern Arkansas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 870 covers eastern Arkansas and rural regions.",
+    "coordinates": {
+      "lat": 35.8423,
+      "lng": -90.7043
+    },
+    "region": "North America"
+  },
+  {
+    "number": "872",
+    "label": "Chicago (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 872 overlays Chicago, supplementing 312 and 773.",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    "region": "North America"
+  },
+  {
+    "number": "876",
+    "label": "Jamaica",
+    "pillars": [
+      "music",
+      "dialing"
+    ],
+    "description": "Jamaica country code (+876). Reggae, Bob Marley, dancehall. One love.",
+    "coordinates": {
+      "lat": 18.1096,
+      "lng": -77.2975
+    },
+    "region": "Latin America"
+  },
+  {
+    "number": "878",
+    "label": "Pittsburgh (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 878 overlays Pittsburgh, reinforcing regional telecom growth.",
+    "coordinates": {
+      "lat": 40.4406,
+      "lng": -79.9959
+    },
+    "region": "North America"
+  },
+  {
+    "number": "880",
+    "label": "Bangladesh",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Country calling code +880 represents Bangladesh, independent since 1971.",
+    "coordinates": {
+      "lat": 23.8103,
+      "lng": 90.4125
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "888",
+    "label": "Toll-Free (888)",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "888 is a major toll-free prefix, symbolizing corporate and digital commerce.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "890",
+    "label": "France (Satellite Services)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "890 is used in international satellite and special services linked to France.",
+    "coordinates": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "899",
+    "label": "FC Barcelona (Founded 1899)",
+    "pillars": [
+      "sports",
+      "history"
+    ],
+    "description": "899 references 1899, the founding year of FC Barcelona, one of the world’s most iconic football clubs.",
+    "coordinates": {
+      "lat": 41.3809,
+      "lng": 2.1228
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "900",
+    "label": "Premium-Rate Numbers",
+    "pillars": [
+      "dialing",
+      "internet"
+    ],
+    "description": "900 numbers are premium-rate services, historically linked to pay-per-call content.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "909",
+    "label": "TR-909 Drum Machine",
+    "pillars": [
+      "internet",
+      "music"
+    ],
+    "description": "Roland TR-909. The drum machine that created house and techno. Also Inland Empire, CA area code.",
+    "coordinates": {
+      "lat": 34.0555,
+      "lng": -117.1825
+    },
+    "region": "North America"
+  },
+  {
+    "number": "911",
+    "label": "Emergency Services",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "911 is the universal emergency number in North America, symbolizing crisis response.",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    },
+    "region": "North America"
+  },
+  {
+    "number": "916",
+    "label": "Sacramento, CA",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 916 represents Sacramento, the capital of California.",
+    "coordinates": {
+      "lat": 38.5816,
+      "lng": -121.4944
+    },
+    "region": "North America"
+  },
+  {
+    "number": "917",
+    "label": "New York City (Mobile / Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 917 spans all NYC boroughs, frequently referenced in modern culture.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "918",
+    "label": "Tulsa, OK",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "Area code 918 represents Tulsa, tied to oil wealth and historic racial events.",
+    "coordinates": {
+      "lat": 36.15398,
+      "lng": -95.99277
+    },
+    "region": "North America"
+  },
+  {
+    "number": "919",
+    "label": "Raleigh-Durham, NC",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 919 represents the Research Triangle, a major U.S. education and tech hub.",
+    "coordinates": {
+      "lat": 35.7796,
+      "lng": -78.6382
+    },
+    "region": "North America"
+  },
+  {
+    "number": "929",
+    "label": "New York City (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 929 overlays New York City, reflecting telecom saturation.",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -74.006
+    },
+    "region": "North America"
+  },
+  {
+    "number": "939",
+    "label": "Puerto Rico (Overlay)",
+    "pillars": [
+      "dialing",
+      "music"
+    ],
+    "description": "Area code 939 overlays Puerto Rico, reinforcing its global Latin music influence.",
+    "coordinates": {
+      "lat": 18.4655,
+      "lng": -66.1057
+    },
+    "region": "North America"
+  },
+  {
+    "number": "947",
+    "label": "India/Pakistan (1947)",
+    "pillars": [
+      "history"
+    ],
+    "description": "1947 — Indian independence and Partition. The birth of two nations.",
+    "coordinates": {
+      "lat": 28.6139,
+      "lng": 77.209
+    },
+    "region": "Asia-Pacific"
+  },
+  {
+    "number": "949",
+    "label": "Orange County, CA (South)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 949 covers southern Orange County, California.",
+    "coordinates": {
+      "lat": 33.5427,
+      "lng": -117.7854
+    },
+    "region": "North America"
+  },
+  {
+    "number": "954",
+    "label": "Fort Lauderdale, FL",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 954 represents Fort Lauderdale and Broward County.",
+    "coordinates": {
+      "lat": 26.1224,
+      "lng": -80.1373
+    },
+    "region": "North America"
+  },
+  {
+    "number": "956",
+    "label": "Rio Grande Valley, TX",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 956 represents South Texas along the U.S.–Mexico border.",
+    "coordinates": {
+      "lat": 26.2034,
+      "lng": -98.23
+    },
+    "region": "North America"
+  },
+  {
+    "number": "959",
+    "label": "Connecticut (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 959 overlays Connecticut, supplementing 860.",
+    "coordinates": {
+      "lat": 41.7658,
+      "lng": -72.6734
+    },
+    "region": "North America"
+  },
+  {
+    "number": "969",
+    "label": "Moon Landing Era (1969)",
+    "pillars": [
+      "history"
+    ],
+    "description": "969 references 1969, the year humans first landed on the Moon.",
+    "coordinates": {
+      "lat": 0,
+      "lng": 0
+    },
+    "region": "Global"
+  },
+  {
+    "number": "970",
+    "label": "Northern Colorado",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 970 covers northern Colorado, including Fort Collins.",
+    "coordinates": {
+      "lat": 40.5853,
+      "lng": -105.0844
+    },
+    "region": "North America"
+  },
+  {
+    "number": "971",
+    "label": "Portland, OR (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 971 overlays Portland, Oregon.",
+    "coordinates": {
+      "lat": 45.5152,
+      "lng": -122.6784
+    },
+    "region": "North America"
+  },
+  {
+    "number": "972",
+    "label": "Dallas Suburbs",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 972 represents Dallas suburbs within the metroplex.",
+    "coordinates": {
+      "lat": 32.7767,
+      "lng": -96.797
+    },
+    "region": "North America"
+  },
+  {
+    "number": "973",
+    "label": "Northern New Jersey",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 973 covers northern New Jersey, close to NYC.",
+    "coordinates": {
+      "lat": 40.7357,
+      "lng": -74.1724
+    },
+    "region": "North America"
+  },
+  {
+    "number": "978",
+    "label": "Massachusetts (North)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 978 represents northern Massachusetts.",
+    "coordinates": {
+      "lat": 42.6334,
+      "lng": -71.3162
+    },
+    "region": "North America"
+  },
+  {
+    "number": "979",
+    "label": "Southeast Texas",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 979 covers southeast Texas outside Houston.",
+    "coordinates": {
+      "lat": 29.7069,
+      "lng": -96.5397
+    },
+    "region": "North America"
+  },
+  {
+    "number": "980",
+    "label": "Charlotte, NC (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 980 overlays Charlotte, reflecting metro growth.",
+    "coordinates": {
+      "lat": 35.2271,
+      "lng": -80.8431
+    },
+    "region": "North America"
+  },
+  {
+    "number": "984",
+    "label": "Raleigh-Durham (Overlay)",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 984 overlays North Carolina’s Research Triangle.",
+    "coordinates": {
+      "lat": 35.7796,
+      "lng": -78.6382
+    },
+    "region": "North America"
+  },
+  {
+    "number": "985",
+    "label": "Southeastern Louisiana",
+    "pillars": [
+      "dialing"
+    ],
+    "description": "Area code 985 represents southeastern Louisiana outside New Orleans.",
+    "coordinates": {
+      "lat": 29.9511,
+      "lng": -90.0715
+    },
+    "region": "North America"
+  },
+  {
+    "number": "989",
+    "label": "Berlin Wall (1989)",
+    "pillars": [
+      "history"
+    ],
+    "description": "1989 — Fall of the Berlin Wall. The end of the Cold War.",
+    "coordinates": {
+      "lat": 52.5163,
+      "lng": 13.3777
+    },
+    "region": "Europe"
+  },
+  {
+    "number": "999",
+    "label": "Emergency Services (UK)",
+    "pillars": [
+      "dialing",
+      "history"
+    ],
+    "description": "999 is the emergency number in the United Kingdom, one of the world’s earliest centralized emergency systems.",
+    "coordinates": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "region": "Europe"
+  }
+]

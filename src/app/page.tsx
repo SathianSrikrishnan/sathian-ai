@@ -11,8 +11,8 @@ import { ScrollReveal } from '@/components/ui/scroll-reveal'
 import { SiteNav } from '@/components/SiteNav'
 import { ChatWidget } from '@/components/ChatWidget'
 
-const CosmicGlobe = dynamic(
-  () => import('@/components/ui/cosmic-globe').then((mod) => mod.CosmicGlobe),
+const AtlasGlobeTeaser = dynamic(
+  () => import('@/components/ui/atlas-globe-teaser').then((mod) => mod.AtlasGlobeTeaser),
   { ssr: false }
 )
 
@@ -137,31 +137,49 @@ export default function Home() {
             style={{ color: C.text }}
             variants={fadeUp}
           >
-            Building experiments and projects.
+            Experiments in technology and culture.
           </motion.p>
 
-          {/* Tagline */}
-          <motion.p
-            className="mt-2 font-mono text-xs sm:text-sm tracking-wide"
-            style={{ color: `${C.muted}99` }}
-            variants={fadeUp}
-          >
-            Entrepreneur &middot; Technologist &middot; 20+ years
-          </motion.p>
+          {/* Tagline — removed, let the work speak */}
 
-          {/* Ambient Globe */}
+          {/* Globe → BTC Cultural Atlas */}
           <motion.div
             className="mt-12 globe-glow-wrapper"
             variants={fadeUp}
           >
-            <CosmicGlobe
-              size={320}
-              showLabels={false}
-              showArcs={false}
-              simulateArrivals={false}
-              rotateSpeed={0.002}
-              darkness={1.1}
-            />
+            <a
+              href="https://btc-atlas.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block cursor-pointer"
+            >
+              <AtlasGlobeTeaser size={320} />
+              {/* Overlay label */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div
+                  className="rounded-full px-4 py-2 text-xs font-mono"
+                  style={{
+                    background: 'rgba(15,15,45,0.85)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    backdropFilter: 'blur(12px)',
+                    color: '#06B6D4',
+                  }}
+                >
+                  BTC Cultural Atlas →
+                </div>
+              </div>
+            </a>
+            <div className="mt-3 text-center">
+              <a
+                href="https://btc-atlas.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] font-mono transition-colors hover:text-white/60"
+                style={{ color: `${C.muted}60` }}
+              >
+                463 cultural markers · live BTC price
+              </a>
+            </div>
           </motion.div>
 
           {/* Scroll hint */}

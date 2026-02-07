@@ -20,7 +20,7 @@ export interface Article {
   sectionHeadings?: string[]   // Heading for each section (index matches section index)
   sectionTints?: string[]      // Hex color tint per section (emotional arc)
   specialElements?: { type: 'price-counter' | 'scroll-pin' | 'stacked-pages' | 'whitepaper-cta'; afterSection: number; data?: Record<string, unknown> }[]
-  textHighlights?: { text: string; color: string }[]  // Specific phrases to color-highlight
+  textHighlights?: { text: string; color: string; link?: string }[]  // Specific phrases to color-highlight (optional Grokipedia link)
   hiddenSignal?: string
 }
 
@@ -44,7 +44,7 @@ export const articles: Article[] = [
       background: 'beams',
       mood: 'energetic',
     },
-    hiddenSignal: '"Reunited" — Wu-Tang Forever (1997), Method Man: "worldwide total carnage / the sickest flow that we code name Agent Orange"',
+    hiddenSignal: 'In 2015, Wu-Tang pressed a single copy of "Once Upon a Time in Shaolin" and sold it for $2 million to Martin Shkreli. The DOJ seized it. In 2021, PleasrDAO — a crypto collective of strangers on the internet — bought it for $4 million. The most exclusive album in history ended up owned by a decentralized group. Wu-Tang and crypto didn\'t just mirror each other. They literally converged.',
     sectionHeadings: ['The Arena', 'The Producers', 'The Frequency'],
     sectionTints: ['#F59E0B', '#D4A017', '#3B4252'],
     textHighlights: [
@@ -110,15 +110,15 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
     textHighlights: [
       { text: 'yellow box', color: '#F5D442' },
       { text: 'No Name', color: '#F5D442' },
-      { text: 'glasnost', color: '#CD0000' },
+      { text: 'glasnost', color: '#CD0000', link: 'https://grokipedia.com/page/Glasnost' },
+      { text: 'perestroika', color: '#CD0000', link: 'https://grokipedia.com/page/Perestroika' },
       { text: 'gradually, then suddenly', color: '#DC2626' },
     ],
     specialElements: [
       { type: 'price-counter', afterSection: 0, data: { startPrice: 0.97, endPrice: 2.49, startYear: 2019, endYear: 2026 } },
-      { type: 'scroll-pin', afterSection: 1 },
     ],
     media: [
-      { src: '/media/night-driving.jpg', alt: 'Night driving through city streets', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
+      { src: '/media/abandoned-cart.jpg', alt: 'Empty shopping cart on barren pavement', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
       { src: '/media/supermarket-shelves.jpg', alt: 'Grocery store shelves', caption: 'Just the yellow box', placement: 'inline-left', afterSection: 0 },
       { src: '/media/soviet-building.jpg', alt: 'Soviet-era architecture', caption: 'The gap between what the state had been saying and what people had been living', placement: 'full-bleed', afterSection: 1 },
       { src: '/media/propaganda-red.jpg', alt: 'Soviet red', caption: 'The emperor had no clothes and the shelves had no food', placement: 'inline-left', afterSection: 1 },
@@ -136,7 +136,7 @@ Before you get to housing. Before you get to gas or daycare or rent. Just the ye
 
 ---
 
-In 1986, Mikhail Gorbachev made a bet. He believed that if the Soviet Union told the truth about itself, the system would get stronger. He called it glasnost — openness. The idea was simple: expose the problems, let people discuss them, and the state would earn trust by showing it could reform.
+In 1986, Mikhail Gorbachev made a bet. He believed that if the Soviet Union told the truth about itself and restructured from within, the system would get stronger. He called it glasnost — openness — and perestroika — restructuring. The idea was simple: expose the problems, let people discuss them, rebuild the machinery from inside, and the state would earn trust by showing it could reform.
 
 Within five years, there was no Soviet Union.
 
