@@ -8,6 +8,38 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
+// --- Rate Limiting ---
+const RATE_LIMIT = 30 // messages per hour per IP
+const RATE_WINDOW = 60 * 60 * 1000 // 1 hour in ms
+const ipRequests = new Map<string, number[]>()
+let cleanupCounter = 0
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const timestamps = ipRequests.get(ip) || []
+
+  // Remove timestamps older than the window
+  const recent = timestamps.filter(t => now - t < RATE_WINDOW)
+  ipRequests.set(ip, recent)
+
+  // Cleanup stale IPs every 100 requests
+  cleanupCounter++
+  if (cleanupCounter >= 100) {
+    cleanupCounter = 0
+    for (const [key, times] of Array.from(ipRequests.entries())) {
+      const valid = times.filter(t => now - t < RATE_WINDOW)
+      if (valid.length === 0) ipRequests.delete(key)
+      else ipRequests.set(key, valid)
+    }
+  }
+
+  if (recent.length >= RATE_LIMIT) return true
+
+  recent.push(now)
+  ipRequests.set(ip, recent)
+  return false
+}
+
 // Log conversation to Notion (fire and forget)
 async function logToNotion(firstMessage: string, mode: string, messageCount: number) {
   const notionKey = process.env.NOTION_API_KEY
@@ -49,6 +81,15 @@ async function logToNotion(firstMessage: string, mode: string, messageCount: num
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "You've been chatting a lot! Give me a moment to catch up. Try again in a few minutes." },
+        { status: 429 }
+      )
+    }
+
     const { message, mode, history } = await request.json()
 
     if (!message) {

@@ -89,6 +89,36 @@ const CARDS: NFTCard[] = [
   { id: "TFN-0012", name: "Zofia Kowalska", type: "child", label: "Amber Wing Post",
     toothType: TOOTH_TYPES[4], color: "#F472B6", accent: "#FBCFE8",
     blockHash: genHash(), tokenId: 558, verifications: 558, location: "Warsaw, Poland", rarity: "uncommon" },
+  { id: "TFN-0013", name: "Yuki Tanaka", type: "child", label: "Sakura Drift Gate",
+    toothType: TOOTH_TYPES[0], color: C.plasma, accent: "#F9A8D4",
+    blockHash: genHash(), tokenId: 927, verifications: 927, location: "Osaka, Japan", rarity: "rare" },
+  { id: "TFN-0014", name: "Amara Okafor", type: "child", label: "Lagoon Spark Hub",
+    toothType: TOOTH_TYPES[3], color: C.stardust, accent: "#FCD34D",
+    blockHash: genHash(), tokenId: 384, verifications: 384, location: "Lagos, Nigeria", rarity: "common" },
+  { id: "TFN-0015", name: "Liam Chen", type: "child", label: "Harbour Glow Post",
+    toothType: TOOTH_TYPES[1], color: C.aurora, accent: "#67E8F9",
+    blockHash: genHash(), tokenId: 1672, verifications: 1672, location: "Sydney, Australia", rarity: "rare" },
+  { id: "TFN-0016", name: "Sofia Morales", type: "child", label: "Obsidian Sun Relay",
+    toothType: TOOTH_TYPES[2], color: C.nebula, accent: "#A78BFA",
+    blockHash: genHash(), tokenId: 445, verifications: 445, location: "Mexico City, Mexico", rarity: "uncommon" },
+  { id: "TFN-0017", name: "Kwame Asante", type: "child", label: "Gold Coast Beacon",
+    toothType: TOOTH_TYPES[5], color: C.stardust, accent: "#FBBF24",
+    blockHash: genHash(), tokenId: 612, verifications: 612, location: "Accra, Ghana", rarity: "uncommon" },
+  { id: "TFN-0018", name: "Mai Nguyen", type: "child", label: "Delta Lantern Spire",
+    toothType: TOOTH_TYPES[0], color: "#60A5FA", accent: "#93C5FD",
+    blockHash: genHash(), tokenId: 289, verifications: 289, location: "Ho Chi Minh City, Vietnam", rarity: "common" },
+  { id: "TFN-0019", name: "Oliver Dupont", type: "child", label: "Iron Lattice Tower",
+    toothType: TOOTH_TYPES[4], color: "#818CF8", accent: "#C4B5FD",
+    blockHash: genHash(), tokenId: 1103, verifications: 1103, location: "Paris, France", rarity: "rare" },
+  { id: "TFN-0020", name: "Aaliya Khan", type: "child", label: "Indus Flame Relay",
+    toothType: TOOTH_TYPES[3], color: C.plasma, accent: "#FB7185",
+    blockHash: genHash(), tokenId: 378, verifications: 378, location: "Lahore, Pakistan", rarity: "common" },
+  { id: "TFN-0021", name: "Diego Fernandez", type: "child", label: "Pampas Wind Anchor",
+    toothType: TOOTH_TYPES[1], color: "#34D399", accent: "#6EE7B7",
+    blockHash: genHash(), tokenId: 765, verifications: 765, location: "Buenos Aires, Argentina", rarity: "uncommon" },
+  { id: "TFN-0022", name: "Mia Thompson", type: "child", label: "Blue Mountain Spire",
+    toothType: TOOTH_TYPES[2], color: C.aurora, accent: "#22D3EE",
+    blockHash: genHash(), tokenId: 491, verifications: 491, location: "Kingston, Jamaica", rarity: "uncommon" },
 ]
 
 const CARD_BIOS = [
@@ -104,18 +134,28 @@ const CARD_BIOS = [
   { age: 8, bio: "Found it on a hike up Table Mountain at sunrise" },
   { age: 9, bio: "Placed it under her pillow in a gold-trimmed pouch" },
   { age: 7, bio: "Lost it biting into a warm p\u0105czek on Fat Thursday" },
+  { age: 7, bio: "It popped out while eating takoyaki at the summer festival" },
+  { age: 8, bio: "Discovered it under her desk at school during math class" },
+  { age: 6, bio: "Lost it bodysurfing at Bondi Beach — found it in the sand" },
+  { age: 9, bio: "It fell out during Day of the Dead celebrations in Coyoacán" },
+  { age: 7, bio: "Wiggled it out while drumming at a naming ceremony" },
+  { age: 8, bio: "Lost it slurping ph\u1EDF at her grandmother's kitchen table" },
+  { age: 6, bio: "Found it on his pillow after dreaming about the Eiffel Tower" },
+  { age: 10, bio: "Last baby tooth. Celebrated with mango lassi and fireworks" },
+  { age: 7, bio: "It flew out while riding horses across the estancia at sunset" },
+  { age: 8, bio: "Lost it jumping off the dock into the Caribbean Sea" },
 ]
 
 const RARITY_COLORS: Record<string, string> = {
   common: "#94A3B8", uncommon: "#22C55E", rare: "#3B82F6", legendary: "#F59E0B",
 }
 
-// ─── SVG: Tooth (single filled path — NOT jellyfish) ─────────────────────────
+// ─── SVG: Tooth (wide crown, two roots — reads as a tooth, not a tulip) ──────
 function ToothSVG({ className = "", size = 48 }: { className?: string; size?: number }) {
   return (
-    <svg width={size} height={size * 1.2} viewBox="0 0 40 48" fill="none" className={className}>
+    <svg width={size} height={size * 1.3} viewBox="0 0 40 52" fill="none" className={className}>
       <path
-        d="M20 2 C12 2, 4 10, 4 22 C4 29, 7 35, 10 39 C12 43, 14 46, 16 44 C18 42, 19 38, 20 34 C21 38, 22 42, 24 44 C26 46, 28 43, 30 39 C33 35, 36 29, 36 22 C36 10, 28 2, 20 2Z"
+        d="M6 18 C6 4, 14 0, 20 2 C26 0, 34 4, 34 18 C34 24, 31 28, 28 33 C26 42, 26 50, 27 52 C24 50, 22 42, 20 35 C18 42, 16 50, 13 52 C14 50, 14 42, 12 33 C9 28, 6 24, 6 18Z"
         fill="currentColor"
       />
     </svg>
@@ -331,7 +371,7 @@ function ScanGrid() {
   return <svg viewBox="0 0 100 100" className="scene3-grid absolute inset-0 w-full h-full" preserveAspectRatio="none">{lines}</svg>
 }
 
-// ─── Child NFT Card ──────────────────────────────────────────────────────────
+// ─── Child NFT Card (25-30% bigger) ─────────────────────────────────────────
 function ChildCard({ index, compact = false }: { index: number; compact?: boolean }) {
   const card = CARDS[index]
   const bio = CARD_BIOS[index]
@@ -339,57 +379,57 @@ function ChildCard({ index, compact = false }: { index: number; compact?: boolea
 
   return (
     <div
-      className={`rounded-2xl overflow-hidden flex-shrink-0 ${compact ? "w-56" : "w-72"}`}
+      className={`rounded-2xl overflow-hidden flex-shrink-0 ${compact ? "w-72" : "w-[360px]"}`}
       style={{
         background: `linear-gradient(145deg, ${C.surface}f0, ${C.bg}e0)`,
         border: `1px solid ${card.color}30`,
         boxShadow: `0 8px 40px rgba(0,0,0,0.4), 0 0 30px ${card.color}12`,
       }}
     >
-      <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${card.color}, ${card.accent})` }} />
-      <div className={compact ? "p-3.5" : "p-5"}>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-mono tracking-wider" style={{ color: `${C.muted}70` }}>{card.id}</span>
-          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-widest" style={{
+      <div className="h-[4px]" style={{ background: `linear-gradient(90deg, ${card.color}, ${card.accent})` }} />
+      <div className={compact ? "p-4" : "p-6"}>
+        <div className="flex items-center justify-between mb-2.5">
+          <span className="text-xs font-mono tracking-wider" style={{ color: `${C.muted}70` }}>{card.id}</span>
+          <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-widest" style={{
             color: RARITY_COLORS[card.rarity], background: `${RARITY_COLORS[card.rarity]}15`, border: `1px solid ${RARITY_COLORS[card.rarity]}30`,
           }}>{card.rarity}</span>
         </div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{
             background: `linear-gradient(135deg, ${card.color}25, ${card.accent}15)`, border: `2px solid ${card.color}40`,
           }}>
-            <svg viewBox="0 0 64 64" className="w-6 h-6 opacity-60">
+            <svg viewBox="0 0 64 64" className="w-7 h-7 opacity-60">
               <circle cx="32" cy="24" r="12" fill={`${card.color}50`} />
               <ellipse cx="32" cy="52" rx="18" ry="14" fill={`${card.color}35`} />
             </svg>
           </div>
           <div className="min-w-0">
-            <h4 className={`font-display font-bold truncate ${compact ? "text-sm" : "text-base"}`} style={{ color: C.text }}>{card.name}</h4>
-            <p className="text-[10px] font-mono" style={{ color: card.color }}>Age {bio.age} &middot; {card.location}</p>
+            <h4 className={`font-display font-bold truncate ${compact ? "text-base" : "text-lg"}`} style={{ color: C.text }}>{card.name}</h4>
+            <p className="text-xs font-mono" style={{ color: card.color }}>Age {bio.age} &middot; {card.location}</p>
           </div>
         </div>
-        <p className="text-[11px] leading-relaxed italic mb-3" style={{ color: `${C.muted}90` }}>&ldquo;{bio.bio}&rdquo;</p>
-        <div className="flex items-center gap-2 mb-3 px-2.5 py-1.5 rounded-lg" style={{ background: `${card.color}08`, border: `1px solid ${card.color}15` }}>
-          <div className="w-2 h-2 rounded-full" style={{ background: card.color, boxShadow: `0 0 6px ${card.color}80` }} />
-          <span className="text-[10px] font-mono" style={{ color: card.color }}>{card.label}</span>
-          <span className="text-[9px] font-mono ml-auto" style={{ color: `${C.muted}50` }}>{typeLabels[card.type]}</span>
+        <p className="text-xs leading-relaxed italic mb-3.5" style={{ color: `${C.muted}90` }}>&ldquo;{bio.bio}&rdquo;</p>
+        <div className="flex items-center gap-2.5 mb-3.5 px-3 py-2 rounded-lg" style={{ background: `${card.color}08`, border: `1px solid ${card.color}15` }}>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ background: card.color, boxShadow: `0 0 6px ${card.color}80` }} />
+          <span className="text-xs font-mono" style={{ color: card.color }}>{card.label}</span>
+          <span className="text-[11px] font-mono ml-auto" style={{ color: `${C.muted}50` }}>{typeLabels[card.type]}</span>
         </div>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-1 mb-2">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 mb-2.5">
           <div className="flex justify-between">
-            <span className="text-[10px] font-mono" style={{ color: `${C.muted}60` }}>Tooth</span>
-            <span className="text-[10px] font-mono font-bold" style={{ color: `${C.text}cc` }}>{card.toothType.name}</span>
+            <span className="text-xs font-mono" style={{ color: `${C.muted}60` }}>Tooth</span>
+            <span className="text-xs font-mono font-bold" style={{ color: `${C.text}cc` }}>{card.toothType.name}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[10px] font-mono" style={{ color: `${C.muted}60` }}>Ca</span>
-            <span className="text-[10px] font-mono font-bold" style={{ color: card.accent }}>{card.toothType.calciumPct}%</span>
+            <span className="text-xs font-mono" style={{ color: `${C.muted}60` }}>Ca</span>
+            <span className="text-xs font-mono font-bold" style={{ color: card.accent }}>{card.toothType.calciumPct}%</span>
           </div>
         </div>
-        <div className="flex items-center justify-between pt-2 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: C.green, boxShadow: `0 0 4px ${C.green}` }} />
-            <span className="text-[10px] font-mono" style={{ color: C.green }}>Verified</span>
+        <div className="flex items-center justify-between pt-2.5 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full" style={{ background: C.green, boxShadow: `0 0 4px ${C.green}` }} />
+            <span className="text-xs font-mono" style={{ color: C.green }}>Verified</span>
           </div>
-          <span className="text-[9px] font-mono" style={{ color: `${C.muted}50` }}>#{card.tokenId}</span>
+          <span className="text-[11px] font-mono" style={{ color: `${C.muted}50` }}>#{card.tokenId}</span>
         </div>
       </div>
     </div>
@@ -451,13 +491,13 @@ function CardCarousel() {
         <div className="relative h-full flex items-center justify-center">
           {CARDS.map((_, i) => {
             const off = i - active
-            if (Math.abs(off) > 5) return null
-            // Tight overlap: cards are 50px apart, slight rotation, depth stacking
-            const tX = off * 50
-            const tZ = -Math.abs(off) * 20
-            const rY = off * 4
-            const sc = off === 0 ? 1 : Math.max(0.8, 1 - Math.abs(off) * 0.03)
-            const op = Math.abs(off) > 4 ? 0.2 : 1 - Math.abs(off) * 0.12
+            if (Math.abs(off) > 6) return null
+            // Tight overlap: cards 45px apart, slight rotation, stacked depth
+            const tX = off * 45
+            const tZ = -Math.abs(off) * 15
+            const rY = off * 3
+            const sc = off === 0 ? 1 : Math.max(0.78, 1 - Math.abs(off) * 0.03)
+            const op = Math.abs(off) > 5 ? 0.15 : 1 - Math.abs(off) * 0.1
             return (
               <div
                 key={i}
@@ -711,15 +751,28 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
       {/* Light Beam (full viewport thread connecting through all scenes) */}
       <div ref={beamRef} className="fixed left-1/2 z-20 pointer-events-none" style={{ opacity: 0, transform: "translateX(-50%)", top: 0, width: "2px", height: "100vh" }} />
 
+      {/* ═══ HERO TITLE ═══════════════════════════════════════════ */}
+      <section className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+        <div className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, ${C.nebula}08 0%, transparent 60%)`, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+        <div className="text-center">
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-display font-bold tracking-tight" style={{ color: C.text }}>
+            The Tooth Fairy Network
+          </h1>
+          <p className="mt-5 text-lg sm:text-xl font-mono" style={{ color: `${C.muted}90` }}>
+            Financial infrastructure for the next generation.
+          </p>
+        </div>
+        <div className="absolute bottom-10 flex flex-col items-center gap-2 opacity-50">
+          <span className="text-xs font-mono" style={{ color: C.muted }}>scroll to begin</span>
+          <div className="w-px h-8" style={{ background: `linear-gradient(to bottom, ${C.muted}60, transparent)`, animation: "scrollPulse 2s ease-in-out infinite" }} />
+        </div>
+      </section>
+
       {/* ═══ SCENE 1: THE ROOM ═══════════════════════════════════ */}
       <section ref={s1} className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, ${C.stardust}12 0%, transparent 70%)`, top: "25%", left: "50%", transform: "translate(-50%, -50%)" }} />
         <div className="s1-room px-2 sm:px-4 w-full flex justify-center"><BedroomScene /></div>
         <p className="s1-text mt-6 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>A tooth falls.</p>
-        <div className="absolute bottom-8 flex flex-col items-center gap-2 opacity-50">
-          <span className="text-xs font-mono" style={{ color: C.muted }}>scroll</span>
-          <div className="w-px h-8" style={{ background: `linear-gradient(to bottom, ${C.muted}60, transparent)`, animation: "scrollPulse 2s ease-in-out infinite" }} />
-        </div>
       </section>
 
       {/* ═══ SCENE 2: THE FAIRY ══════════════════════════════════ */}
