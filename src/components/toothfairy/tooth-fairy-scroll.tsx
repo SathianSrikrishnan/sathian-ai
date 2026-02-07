@@ -396,9 +396,9 @@ function ChildCard({ index, compact = false }: { index: number; compact?: boolea
   )
 }
 
-// ─── 3D Card Carousel (Stripe Sessions style) ───────────────────────────────
+// ─── Stacked Card Carousel (deck-shuffle style, overlapping) ────────────────
 function CardCarousel() {
-  const [active, setActive] = useState(Math.floor(CARDS.length / 2))
+  const [active, setActive] = useState(0)
   const dragRef = useRef({ startX: 0, dragging: false, startIdx: 0 })
   const touchRef = useRef({ startX: 0, startIdx: 0 })
 
@@ -420,7 +420,7 @@ function CardCarousel() {
   }, [active])
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragRef.current.dragging) return
-    const offset = Math.round(-(e.clientX - dragRef.current.startX) / 80)
+    const offset = Math.round(-(e.clientX - dragRef.current.startX) / 60)
     const idx = Math.max(0, Math.min(CARDS.length - 1, dragRef.current.startIdx + offset))
     if (idx !== active) setActive(idx)
   }, [active])
@@ -429,48 +429,56 @@ function CardCarousel() {
     touchRef.current = { startX: e.touches[0].clientX, startIdx: active }
   }, [active])
   const onTouchMove = useCallback((e: React.TouchEvent) => {
-    const offset = Math.round(-(e.touches[0].clientX - touchRef.current.startX) / 60)
+    const offset = Math.round(-(e.touches[0].clientX - touchRef.current.startX) / 50)
     const idx = Math.max(0, Math.min(CARDS.length - 1, touchRef.current.startIdx + offset))
     if (idx !== active) setActive(idx)
   }, [active])
 
   return (
-    <div className="relative py-8">
+    <div className="relative py-8 w-full">
+      {/* Active card showcase */}
+      <div className="flex justify-center mb-8">
+        <ChildCard index={active} />
+      </div>
+      {/* Stacked deck below — overlapping, shuffleable */}
       <div
-        className="relative h-[480px] overflow-hidden select-none"
-        style={{ perspective: "1200px", cursor: "grab" }}
+        className="relative h-[320px] overflow-visible select-none mx-auto"
+        style={{ maxWidth: "800px", perspective: "1200px", cursor: "grab" }}
         onPointerDown={onPointerDown} onPointerMove={onPointerMove}
         onPointerUp={onPointerUp} onPointerLeave={onPointerUp}
         onTouchStart={onTouchStart} onTouchMove={onTouchMove}
       >
-        <div className="relative h-full" style={{ transformStyle: "preserve-3d" }}>
+        <div className="relative h-full flex items-center justify-center">
           {CARDS.map((_, i) => {
             const off = i - active
-            if (Math.abs(off) > 3) return null
-            const rY = off * 30
-            const tX = off * 260 - 140
-            const tZ = off === 0 ? 0 : -100 - Math.abs(off) * 40
-            const sc = off === 0 ? 1 : 0.85 - Math.abs(off) * 0.05
-            const op = Math.abs(off) > 2 ? 0 : 1 - Math.abs(off) * 0.15
+            if (Math.abs(off) > 5) return null
+            // Tight overlap: cards are 50px apart, slight rotation, depth stacking
+            const tX = off * 50
+            const tZ = -Math.abs(off) * 20
+            const rY = off * 4
+            const sc = off === 0 ? 1 : Math.max(0.8, 1 - Math.abs(off) * 0.03)
+            const op = Math.abs(off) > 4 ? 0.2 : 1 - Math.abs(off) * 0.12
             return (
               <div
                 key={i}
-                className="absolute top-0 left-1/2"
+                className="absolute"
                 onClick={() => goTo(i)}
                 style={{
-                  transform: `translateX(${tX}px) perspective(1200px) rotateY(${rY}deg) translateZ(${tZ}px) scale(${sc})`,
-                  transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s",
-                  opacity: op, zIndex: 10 - Math.abs(off), transformStyle: "preserve-3d",
+                  transform: `translateX(${tX}px) translateZ(${tZ}px) rotateY(${rY}deg) scale(${sc})`,
+                  transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s",
+                  opacity: op,
+                  zIndex: 20 - Math.abs(off),
+                  cursor: off === 0 ? "default" : "pointer",
                 }}
               >
-                <ChildCard index={i} />
+                <ChildCard index={i} compact />
               </div>
             )
           })}
         </div>
       </div>
-      {/* Nav arrows */}
-      <div className="flex justify-center items-center gap-4 mt-2">
+      {/* Nav arrows + dots */}
+      <div className="flex justify-center items-center gap-4 mt-4">
         <button onClick={() => goTo(active - 1)} disabled={active === 0} className="w-10 h-10 rounded-full flex items-center justify-center disabled:opacity-20 cursor-pointer transition-all" style={{ border: "1px solid rgba(255,255,255,0.1)", color: C.muted }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18L9 12L15 6" /></svg>
         </button>
@@ -487,9 +495,13 @@ function CardCarousel() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18L15 12L9 6" /></svg>
         </button>
       </div>
+      <p className="text-center mt-3 text-xs font-mono" style={{ color: `${C.muted}60` }}>Drag to shuffle &middot; {CARDS.length} children across {hubCities.length} cities</p>
     </div>
   )
 }
+
+// hub cities reference for carousel label
+const hubCities = CARDS.map(c => ({ name: c.location.split(",")[0], color: c.color }))
 
 // ─── SVG: Wallet Icon ────────────────────────────────────────────────────────
 function WalletIcon({ className = "", lit = false }: { className?: string; lit?: boolean }) {
@@ -579,12 +591,11 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
             t.style.color = color
             t.style.filter = `drop-shadow(0 0 ${16 * scale}px ${color}80)`
 
-            // Light beam
+            // Light beam — full viewport thread from pillow through tooth
             if (b) {
-              const beamOpacity = p < 0.12 ? 0 : p < 0.75 ? 0.4 * Math.min(1, (p - 0.12) * 5) : 0
+              const beamOpacity = p < 0.08 ? 0 : p < 0.75 ? 0.5 * Math.min(1, (p - 0.08) * 6) : 0
               b.style.opacity = `${beamOpacity}`
-              b.style.top = `${y - 12}%`
-              b.style.background = `linear-gradient(to bottom, transparent, ${color}40 30%, ${color}40 70%, transparent)`
+              b.style.background = `linear-gradient(to bottom, ${color}50 0%, ${color}60 ${y}%, ${color}30 ${y + 5}%, transparent 100%)`
             }
           },
         })
@@ -685,8 +696,7 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
     { x: 70, y: 5, c: C.nebula }, { x: 50, y: 50, c: C.aurora },
   ]
 
-  // Hub cities for sidebar
-  const hubCities = CARDS.map(c => ({ name: c.location.split(",")[0], color: c.color }))
+  // Hub cities for sidebar (uses module-level hubCities)
 
   return (
     <div ref={containerRef} className="relative" style={{ background: C.bg }}>
@@ -698,14 +708,14 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
         <ToothSVG size={48} />
       </div>
 
-      {/* Light Beam (connects through all scenes) */}
-      <div ref={beamRef} className="fixed left-1/2 z-20 pointer-events-none w-[2px] h-[25vh]" style={{ opacity: 0, transform: "translateX(-50%)" }} />
+      {/* Light Beam (full viewport thread connecting through all scenes) */}
+      <div ref={beamRef} className="fixed left-1/2 z-20 pointer-events-none" style={{ opacity: 0, transform: "translateX(-50%)", top: 0, width: "2px", height: "100vh" }} />
 
       {/* ═══ SCENE 1: THE ROOM ═══════════════════════════════════ */}
       <section ref={s1} className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, ${C.stardust}12 0%, transparent 70%)`, top: "25%", left: "50%", transform: "translate(-50%, -50%)" }} />
         <div className="s1-room px-2 sm:px-4 w-full flex justify-center"><BedroomScene /></div>
-        <p className="s1-text mt-6 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>A tooth falls.</p>
+        <p className="s1-text mt-6 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>A tooth falls.</p>
         <div className="absolute bottom-8 flex flex-col items-center gap-2 opacity-50">
           <span className="text-xs font-mono" style={{ color: C.muted }}>scroll</span>
           <div className="w-px h-8" style={{ background: `linear-gradient(to bottom, ${C.muted}60, transparent)`, animation: "scrollPulse 2s ease-in-out infinite" }} />
@@ -716,7 +726,7 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
       <section ref={s2} className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="s2-scene px-2 sm:px-4 w-full flex justify-center"><FairyScene /></div>
         <div className="s2-flash absolute w-48 h-48 rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, white 0%, ${C.stardust}40 40%, transparent 70%)`, top: "45%", left: "50%", transform: "translate(-50%, -50%) scale(0)" }} />
-        <p className="s2-text mt-4 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>Collected.</p>
+        <p className="s2-text mt-4 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>Collected.</p>
       </section>
 
       {/* ═══ SCENE 3: THE SCAN ═══════════════════════════════════ */}
@@ -733,16 +743,16 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
               { label: "TOKEN", value: "#1091", cls: "s3-data" },
             ].map((d) => (
               <div key={d.label} className={d.cls}>
-                <span className="text-[10px] font-mono uppercase tracking-widest block" style={{ color: `${C.aurora}80` }}>{d.label}</span>
-                <span className="text-xl sm:text-2xl font-mono font-bold" style={{ color: C.aurora }}>{d.value}</span>
+                <span className="text-xs font-mono uppercase tracking-widest block mb-1" style={{ color: `${C.aurora}80` }}>{d.label}</span>
+                <span className="text-2xl sm:text-3xl font-mono font-bold" style={{ color: C.aurora }}>{d.value}</span>
               </div>
             ))}
           </div>
-          <div className="s3-verified mt-2 px-8 py-2.5 rounded-full border" style={{ borderColor: `${C.aurora}50`, background: `${C.aurora}12`, boxShadow: `0 0 40px ${C.aurora}25` }}>
-            <span className="text-base font-mono font-bold tracking-widest" style={{ color: C.aurora }}>&#10003; VERIFIED ON-CHAIN</span>
+          <div className="s3-verified mt-4 px-10 py-3.5 rounded-full" style={{ border: `2px solid ${C.aurora}60`, background: `${C.aurora}12`, boxShadow: `0 0 50px ${C.aurora}30` }}>
+            <span className="text-lg sm:text-xl font-mono font-bold tracking-widest" style={{ color: C.aurora }}>&#10003; VERIFIED ON-CHAIN</span>
           </div>
         </div>
-        <p className="s3-text mt-6 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>Verified on-chain.</p>
+        <p className="s3-text mt-6 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>Verified on-chain.</p>
       </section>
 
       {/* ═══ SCENE 4: NFT + SMART CONTRACT + PAYMENT ═════════════ */}
@@ -751,24 +761,22 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
         <div className="s4-card relative" style={{ perspective: "1000px" }}>
           <ChildCard index={0} />
           <div className="s4-stamp absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="px-6 py-2 rounded-full rotate-[-8deg]" style={{ border: `2px solid ${C.green}60`, color: C.green, background: `${C.green}08` }}>
-              <span className="text-lg font-mono font-bold tracking-widest">MINTED</span>
+            <div className="px-8 py-3 rounded-full rotate-[-8deg]" style={{ border: `3px solid ${C.green}70`, color: C.green, background: `${C.green}10`, boxShadow: `0 0 24px ${C.green}20` }}>
+              <span className="text-xl sm:text-2xl font-mono font-bold tracking-widest">MINTED</span>
             </div>
           </div>
         </div>
         {/* Smart contract + payment */}
-        <div className="s4-contract mt-5 flex flex-col items-center gap-2">
-          <div className="flex items-center gap-3 px-5 py-2.5 rounded-xl" style={{ background: `${C.aurora}08`, border: `1px solid ${C.aurora}20` }}>
-            <div className="w-2 h-2 rounded-full" style={{ background: C.aurora, boxShadow: `0 0 6px ${C.aurora}` }}>
-              <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" />
-            </div>
-            <span className="text-sm font-mono" style={{ color: C.aurora }}>Smart contract executed</span>
+        <div className="s4-contract mt-6 flex flex-col items-center gap-3">
+          <div className="flex items-center gap-3 px-6 py-3 rounded-xl" style={{ background: `${C.aurora}12`, border: `2px solid ${C.aurora}35`, boxShadow: `0 0 20px ${C.aurora}15` }}>
+            <div className="w-3 h-3 rounded-full" style={{ background: C.aurora, boxShadow: `0 0 8px ${C.aurora}` }} />
+            <span className="text-base sm:text-lg font-mono font-bold" style={{ color: C.aurora }}>Smart contract executed</span>
           </div>
-          <div className="flex items-center gap-3 px-5 py-2 rounded-xl" style={{ background: `${C.green}08`, border: `1px solid ${C.green}20` }}>
-            <span className="text-sm font-mono" style={{ color: C.green }}>Payment sent &rarr; 0.05 ETH</span>
+          <div className="flex items-center gap-3 px-6 py-3 rounded-xl" style={{ background: `${C.green}12`, border: `2px solid ${C.green}35`, boxShadow: `0 0 20px ${C.green}15` }}>
+            <span className="text-base sm:text-lg font-mono font-bold" style={{ color: C.green }}>Payment sent &rarr; 0.05 ETH</span>
           </div>
         </div>
-        <p className="s4-text mt-4 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>Minted. Paid. Permanent.</p>
+        <p className="s4-text mt-4 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>Minted. Paid. Permanent.</p>
       </section>
 
       {/* ═══ SCENE 5: THE NETWORK (LARGER) ═════════════════════════ */}
@@ -802,40 +810,40 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
             </div>
           ))}
         </div>
-        <p className="s5-text mt-3 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>One network.</p>
+        <p className="s5-text mt-3 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>One network.</p>
       </section>
 
       {/* ═══ SCENE 6: DELIVERY (NFT + ETH → Wallet) ══════════════ */}
       <section ref={s6} className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden">
-        <div className="flex items-center gap-6 sm:gap-12">
+        <div className="flex items-center gap-8 sm:gap-16">
           {/* NFT card flying */}
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-4">
             <div className="s6-nft">
-              <div className="w-16 h-20 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(145deg, ${C.aurora}25, ${C.nebula}15)`, border: `1px solid ${C.aurora}35`, boxShadow: `0 0 20px ${C.aurora}25`, color: C.aurora }}>
-                <ToothSVG size={20} />
+              <div className="w-24 h-32 sm:w-28 sm:h-36 rounded-xl flex flex-col items-center justify-center gap-2" style={{ background: `linear-gradient(145deg, ${C.aurora}25, ${C.nebula}15)`, border: `2px solid ${C.aurora}45`, boxShadow: `0 0 30px ${C.aurora}30`, color: C.aurora }}>
+                <ToothSVG size={28} />
+                <span className="text-xs font-mono font-bold" style={{ color: C.aurora }}>NFT</span>
               </div>
-              <p className="text-[9px] font-mono mt-1 text-center" style={{ color: `${C.aurora}80` }}>NFT</p>
             </div>
             <div className="s6-eth">
-              <div className="px-3 py-1.5 rounded-lg" style={{ background: `${C.green}12`, border: `1px solid ${C.green}25` }}>
-                <span className="text-xs font-mono font-bold" style={{ color: C.green }}>0.05 ETH</span>
+              <div className="px-5 py-2.5 rounded-xl" style={{ background: `${C.green}12`, border: `2px solid ${C.green}35`, boxShadow: `0 0 16px ${C.green}15` }}>
+                <span className="text-base font-mono font-bold" style={{ color: C.green }}>0.05 ETH</span>
               </div>
             </div>
           </div>
           {/* Arrow */}
-          <svg width="60" height="40" viewBox="0 0 60 40" fill="none">
-            <path d="M0 20 L48 20 M38 10 L50 20 L38 30" stroke={C.aurora} strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+          <svg width="80" height="50" viewBox="0 0 80 50" fill="none">
+            <path d="M0 25 L64 25 M52 13 L66 25 L52 37" stroke={C.aurora} strokeWidth="2.5" strokeDasharray="5 5" opacity="0.6" />
           </svg>
           {/* Wallet */}
           <div className="s6-wallet relative">
-            <WalletIcon lit={true} />
+            <WalletIcon className="w-36 h-36 sm:w-44 sm:h-44" lit={true} />
             <div className="s6-glow absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-36 h-36 rounded-full" style={{ background: `radial-gradient(circle, ${C.green}20 0%, transparent 70%)` }} />
+              <div className="w-48 h-48 rounded-full" style={{ background: `radial-gradient(circle, ${C.green}25 0%, transparent 70%)` }} />
             </div>
           </div>
         </div>
-        <p className="s6-text mt-10 text-xl sm:text-2xl font-display tracking-wide" style={{ color: `${C.text}dd` }}>Delivered to your wallet.</p>
-        <p className="mt-2 text-sm font-mono" style={{ color: `${C.muted}90` }}>NFT stored. Payment received. All on-chain.</p>
+        <p className="s6-text mt-10 text-3xl sm:text-5xl font-display tracking-wide font-bold" style={{ color: `${C.text}ee` }}>Delivered to your wallet.</p>
+        <p className="mt-3 text-base sm:text-lg font-mono" style={{ color: `${C.muted}99` }}>NFT stored. Payment received. All on-chain.</p>
       </section>
 
       {/* ═══ SCENE 7: GLOBE + CITY SIDEBAR ═══════════════════════ */}
@@ -864,8 +872,8 @@ export function ToothFairyScroll({ children }: { children?: ReactNode }) {
       {/* ═══ SCENE 8: CTA ════════════════════════════════════════ */}
       <section ref={s8} className="relative z-10 h-screen flex flex-col items-center justify-center overflow-hidden px-6">
         <div className="s8-card w-full max-w-md rounded-3xl p-8 sm:p-12 text-center" style={{ background: "linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", boxShadow: `0 0 60px ${C.nebula}10, 0 20px 60px rgba(0,0,0,0.5)` }}>
-          <p className="text-2xl sm:text-3xl font-display tracking-tight mb-2" style={{ color: C.text }}>Every tooth tells a story.</p>
-          <p className="text-sm mb-8" style={{ color: `${C.muted}99` }}>Financial ownership starts young. Join the network.</p>
+          <p className="text-2xl sm:text-4xl font-display tracking-tight mb-2 font-bold" style={{ color: C.text }}>Every tooth tells a story.</p>
+          <p className="text-base sm:text-lg mb-8" style={{ color: `${C.muted}cc` }}>Take digital ownership. It starts young.</p>
           <div className="flex gap-2">
             <input type="email" placeholder="your@email.com" className="flex-1 px-4 py-3 rounded-xl text-sm font-mono outline-none" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", color: C.text }} />
             <button className="px-6 py-3 rounded-xl text-sm font-mono font-bold transition-all hover:scale-105" style={{ background: `linear-gradient(135deg, ${C.nebula}, ${C.aurora})`, color: "white", boxShadow: `0 0 20px ${C.nebula}40` }}>Join</button>
