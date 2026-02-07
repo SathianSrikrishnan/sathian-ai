@@ -55,14 +55,15 @@ export const articles: Article[] = [
       { text: '5,050 BTC', color: '#F7931A' },
     ],
     media: [
-      { src: '/media/stage-smoke.jpg', alt: 'Concert stage atmosphere', caption: 'Nine men in their fifties reminiscing on verses they wrote as teenagers', placement: 'hero' },
+      { src: '/media/wutang-90s.jpg', alt: 'Wu-Tang Clan in the 90s — before the corporate arena, before the ETFs', caption: 'Before the Scotiabank Arena. Before the Leafs jerseys. Before anyone outside Staten Island was paying attention.', placement: 'hero' },
+      { src: '/media/wutang-rooftop.jpg', alt: 'Wu-Tang Clan rooftop photo', caption: 'The same group, two decades and a corporate arena later — the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 0 },
       { src: '/media/vinyl-turntable.jpg', alt: 'Vinyl turntable', caption: 'RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy', placement: 'inline-right', afterSection: 1 },
       { src: '/media/bitcoin-coin.jpg', alt: 'Bitcoin', caption: 'Here\'s the work', placement: 'inline-left', afterSection: 1 },
       { src: '/media/wutang-concert-selfie.jpg', alt: 'At the Wu-Tang show with friends', caption: 'My buddy and I were the only ones smoking joints in the building', placement: 'inline-left', afterSection: 0 },
       { src: '/media/wutang-scotiabank-arena.jpg', alt: 'Wu-Tang Clan performing at Scotiabank Arena with Maple Leafs banners', caption: 'The Scotiabank Arena version — Leafs banners overhead, the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 3 },
       { src: '/media/boardroom.jpg', alt: 'Corporate boardroom', caption: 'ETFs, institutional custody, boardroom presentations', placement: 'inline-right', afterSection: 3 },
     ],
-    body: `Last August I was sitting in the Scotiabank Arena watching Wu-Tang Clan perform in Maple Leafs jerseys. My buddy and I were the only ones smoking joints in the building — which twenty years ago at a Wu-Tang show would've been the least notable thing happening. But this wasn't 2003. This was nine men in their fifties reminiscing on verses they wrote as teenagers, for an audience that included an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
+    body: `Last July I was sitting in the Scotiabank Arena watching Wu-Tang Clan perform in Maple Leafs jerseys. My buddy and I were the only ones smoking joints in the building — which twenty years ago at a Wu-Tang show would've been the least notable thing happening. But this wasn't 2003. This was nine men in their fifties (ODB passed in 2004, replaced by Cappadonna) reminiscing on verses they wrote as teenagers, for an audience that included an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
 
 Cash Rules Everything Around Me. The anthem of project kids in Staten Island, now soundtracking a corporate arena experience for small-town Ontario families.
 
@@ -72,7 +73,7 @@ Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized,
 
 In 1993, Wu-Tang did something labels said couldn't be done. They kept the group together while every member negotiated solo deals. No label owned them. They built Shaolin. RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy — pieces that already existed, threaded into something that hadn't.
 
-Fifteen years later, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang*. No publisher. No institution. No face. Just: here's the work.
+Fifteen years later, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang* — raw, unfiltered. But unlike RZA, Satoshi had no publisher. No institution. No face. Just: here's the work.
 
 And like RZA, Satoshi didn't invent the components. Adam Back had built Hashcash — proof-of-work — back in 1997, the same year Wu-Tang Forever came out. Hal Finney built Reusable Proof of Work. Wei Dai proposed b-money. Nick Szabo sketched Bit Gold. David Chaum had been working on digital cash since the early nineties. Satoshi sampled all of it. Threaded existing cryptographic ideas together the way a producer threads existing sounds — into something that hadn't existed before.
 
@@ -96,7 +97,7 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
     title: 'The Yellow Box',
     titleHighlight: 'Yellow Box',
     slug: 'the-yellow-box',
-    date: '2026-12-29',
+    date: '2025-12-29',
     author: 'Sathian',
     domains: ['institutional decay', 'digital sovereignty'],
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
@@ -121,7 +122,7 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
       { text: 'gradually, then suddenly', color: '#DC2626' },
     ],
     specialElements: [
-      { type: 'price-counter', afterSection: 0, data: { startPrice: 0.97, endPrice: 2.49, startYear: 2019, endYear: 2026 } },
+      { type: 'price-counter', afterSection: 0, data: { startPrice: 0.97, endPrice: 2.49, startYear: 2019, endYear: 2025 } },
     ],
     media: [
       { src: '/media/abandoned-cart.jpg', alt: 'Empty shopping cart on barren pavement', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
@@ -249,7 +250,7 @@ So here\'s what this is. A resource. Something I can send to the next person who
 
 Read the original: bitcoin.org/bitcoin.pdf — nine pages, published October 31, 2008, by someone whose identity remains unknown. It is, in my view, the most significant document published in the 21st century. Read it like you\'d read the operating manual for something you already own but never learned to use.
 
-Read the translation: the Gen Z version on this site — same nine sections, same ideas, different language. Read it if the original feels impenetrable, or read it after and see which version made the concepts stick.
+Read the translation: the Gen Z version linked below — same nine sections, same ideas, different language. Read it if the original feels impenetrable, or read it after and see which version made the concepts stick.
 
 Then decide for yourself. Which version communicated better? Which section surprised you? Did you already know how proof-of-work actually works, or were you — like me — running on borrowed conviction?
 

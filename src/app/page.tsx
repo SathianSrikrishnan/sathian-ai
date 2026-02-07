@@ -76,7 +76,7 @@ const WRITINGS = [
     title: 'The Yellow Box',
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
     href: '/writings/the-yellow-box',
-    date: '2026-12-29',
+    date: '2025-12-29',
     accent: '#DC2626',
   },
 ]
@@ -139,38 +139,33 @@ export default function Home() {
             className="mt-12 globe-glow-wrapper"
             variants={fadeUp}
           >
-            <a
-              href="https://btc-atlas.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative block cursor-pointer"
-            >
-              <AtlasGlobeTeaser size={320} />
-              {/* Overlay label */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <div
-                  className="rounded-full px-4 py-2 text-xs font-mono"
-                  style={{
-                    background: 'rgba(15,15,45,0.85)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    backdropFilter: 'blur(12px)',
-                    color: '#06B6D4',
-                  }}
-                >
-                  BTC Cultural Atlas →
-                </div>
-              </div>
-            </a>
-            <div className="mt-3 text-center">
+            <AtlasGlobeTeaser size={420} />
+            <div className="mt-4 text-center">
               <a
                 href="https://btc-atlas.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono transition-colors hover:text-white/60"
-                style={{ color: `${C.muted}60` }}
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-mono transition-all hover:scale-105"
+                style={{
+                  background: 'rgba(15,15,45,0.85)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(12px)',
+                  color: '#06B6D4',
+                }}
               >
-                463 cultural markers · live BTC price
+                BTC Cultural Atlas
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </a>
+              <div className="mt-2">
+                <span
+                  className="text-[10px] font-mono"
+                  style={{ color: `${C.muted}60` }}
+                >
+                  463 cultural markers · drag to explore
+                </span>
+              </div>
             </div>
           </motion.div>
 
