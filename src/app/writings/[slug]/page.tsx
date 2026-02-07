@@ -48,7 +48,7 @@ function AnimatedParagraph({ children, delay = 0 }: { children: React.ReactNode;
 
 function applyHighlights(
   text: string,
-  highlights?: { text: string; color: string }[]
+  highlights?: { text: string; color: string; link?: string }[]
 ): React.ReactNode[] {
   if (!highlights || highlights.length === 0) return [text]
 
@@ -73,17 +73,37 @@ function applyHighlights(
       result.push(<span key={`t-${keyIdx++}`}>{remaining.slice(0, idx)}</span>)
     }
     const matchedText = remaining.slice(idx, idx + hl.text.length)
-    result.push(
-      <span
-        key={`hl-${keyIdx++}`}
-        style={{
-          color: hl.color,
-          textShadow: `0 0 20px ${hl.color}33`,
-        }}
-      >
-        {matchedText}
-      </span>
-    )
+    const highlightStyle = {
+      color: hl.color,
+      textShadow: `0 0 20px ${hl.color}33`,
+    }
+
+    if (hl.link) {
+      result.push(
+        <a
+          key={`hl-${keyIdx++}`}
+          href={hl.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            ...highlightStyle,
+            textDecoration: 'none',
+            borderBottom: `1px solid ${hl.color}44`,
+            transition: 'border-color 0.2s',
+          }}
+          onMouseEnter={(e) => { (e.target as HTMLElement).style.borderBottomColor = hl.color }}
+          onMouseLeave={(e) => { (e.target as HTMLElement).style.borderBottomColor = `${hl.color}44` }}
+        >
+          {matchedText}
+        </a>
+      )
+    } else {
+      result.push(
+        <span key={`hl-${keyIdx++}`} style={highlightStyle}>
+          {matchedText}
+        </span>
+      )
+    }
     remaining = remaining.slice(idx + hl.text.length)
   }
 

@@ -159,8 +159,9 @@ export function WhitepaperCTA({ accent = '#F7931A' }: { accent?: string }) {
           title="The Translation"
           subtitle="9 pages · Gen Z edition"
           description="Same ideas, different language. The full whitepaper translated into language that actually makes sense."
-          href="/toothfairy/network/bitcoin-genz"
+          href="https://bitcoinforgenz.org/Bitcoin-Whitepaper-For-Gen-Z.pdf"
           accent="#06B6D4"
+          external
           delay={0.2}
         />
       </div>

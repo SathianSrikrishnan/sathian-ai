@@ -29,7 +29,7 @@ export const articles: Article[] = [
     title: 'C.R.E.A.M. 2.0',
     titleHighlight: 'C.R.E.A.M.',
     slug: 'cream-2-point-0',
-    date: '2026-10-31',
+    date: '2025-10-31',
     author: 'Sathian',
     domains: ['hip-hop culture', 'decentralized finance'],
     description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
@@ -45,18 +45,22 @@ export const articles: Article[] = [
       mood: 'energetic',
     },
     hiddenSignal: 'In 2015, Wu-Tang pressed a single copy of "Once Upon a Time in Shaolin" and sold it for $2 million to Martin Shkreli. The DOJ seized it. In 2021, PleasrDAO — a crypto collective of strangers on the internet — bought it for $4 million. The most exclusive album in history ended up owned by a decentralized group. Wu-Tang and crypto didn\'t just mirror each other. They literally converged.',
-    sectionHeadings: ['The Arena', 'The Producers', 'The Frequency'],
-    sectionTints: ['#F59E0B', '#D4A017', '#3B4252'],
+    sectionHeadings: ['The Arena', 'The Producers', 'Martti Malmi or $5.02', 'The Frequency'],
+    sectionTints: ['#F59E0B', '#D4A017', '#F7931A', '#3B4252'],
     textHighlights: [
       { text: 'C.R.E.A.M.', color: '#F59E0B' },
       { text: 'Cash Rules Everything Around Me', color: '#F59E0B' },
+      { text: 'Martti Malmi', color: '#F7931A' },
+      { text: '$5.02', color: '#F7931A' },
+      { text: '5,050 BTC', color: '#F7931A' },
     ],
     media: [
       { src: '/media/stage-smoke.jpg', alt: 'Concert stage atmosphere', caption: 'Nine men in their fifties reminiscing on verses they wrote as teenagers', placement: 'hero' },
       { src: '/media/vinyl-turntable.jpg', alt: 'Vinyl turntable', caption: 'RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy', placement: 'inline-right', afterSection: 1 },
       { src: '/media/bitcoin-coin.jpg', alt: 'Bitcoin', caption: 'Here\'s the work', placement: 'inline-left', afterSection: 1 },
-      { src: '/media/wutang-scotiabank-arena.jpg', alt: 'Wu-Tang Clan performing at Scotiabank Arena with Maple Leafs banners', caption: 'The Scotiabank Arena version — Leafs banners overhead, the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 2 },
-      { src: '/media/boardroom.jpg', alt: 'Corporate boardroom', caption: 'ETFs, institutional custody, boardroom presentations', placement: 'inline-right', afterSection: 2 },
+      { src: '/media/wutang-concert-selfie.jpg', alt: 'At the Wu-Tang show with friends', caption: 'My buddy and I were the only ones smoking joints in the building', placement: 'inline-left', afterSection: 0 },
+      { src: '/media/wutang-scotiabank-arena.jpg', alt: 'Wu-Tang Clan performing at Scotiabank Arena with Maple Leafs banners', caption: 'The Scotiabank Arena version — Leafs banners overhead, the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 3 },
+      { src: '/media/boardroom.jpg', alt: 'Corporate boardroom', caption: 'ETFs, institutional custody, boardroom presentations', placement: 'inline-right', afterSection: 3 },
     ],
     body: `Last August I was sitting in the Scotiabank Arena watching Wu-Tang Clan perform in Maple Leafs jerseys. My buddy and I were the only ones smoking joints in the building — which twenty years ago at a Wu-Tang show would've been the least notable thing happening. But this wasn't 2003. This was nine men in their fifties reminiscing on verses they wrote as teenagers, for an audience that included an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
 
@@ -71,6 +75,8 @@ In 1993, Wu-Tang did something labels said couldn't be done. They kept the group
 Fifteen years later, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang*. No publisher. No institution. No face. Just: here's the work.
 
 And like RZA, Satoshi didn't invent the components. Adam Back had built Hashcash — proof-of-work — back in 1997, the same year Wu-Tang Forever came out. Hal Finney built Reusable Proof of Work. Wei Dai proposed b-money. Nick Szabo sketched Bit Gold. David Chaum had been working on digital cash since the early nineties. Satoshi sampled all of it. Threaded existing cryptographic ideas together the way a producer threads existing sounds — into something that hadn't existed before.
+
+---
 
 The first person to exchange bitcoin for dollars was Martti Malmi — a Finnish developer who sold 5,050 BTC for $5.02 over PayPal in October 2009. Before Malmi, Bitcoin had no market value. After him, a handful of developers picked it up. Then the cypherpunks. Then the world.
 
@@ -90,7 +96,7 @@ Cash ruled everything around them in '93. It still does. But the next verse is b
     title: 'The Yellow Box',
     titleHighlight: 'Yellow Box',
     slug: 'the-yellow-box',
-    date: '2026-02-06',
+    date: '2026-12-29',
     author: 'Sathian',
     domains: ['institutional decay', 'digital sovereignty'],
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
@@ -174,7 +180,7 @@ My Uber driver already did the math. He's still driving. He's still watching the
     title: 'Nine Pages',
     titleHighlight: 'Nine',
     slug: 'nine-pages',
-    date: '2026-02-06',
+    date: '2025-07-01',
     author: 'Sathian',
     domains: ['cryptocurrency', 'first principles'],
     description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything. Here\'s what I found — and two versions so you can read it yourself.',
@@ -195,6 +201,7 @@ My Uber driver already did the math. He's still driving. He's still watching the
       { text: 'nine pages', color: '#F7931A' },
       { text: 'Nine pages', color: '#F7931A' },
       { text: 'Satoshi Nakamoto', color: '#F7931A' },
+      { text: 'bitcoin.org/bitcoin.pdf', color: '#F7931A', link: 'https://bitcoin.org/bitcoin.pdf' },
     ],
     media: [
       { src: '/media/adam-back-btc-dc.jpg', alt: 'Sathian with Adam Back at Bitcoin Conference DC', caption: 'With Adam Back — inventor of Hashcash, cited in the whitepaper — at Bitcoin Conference, DC, October 2025', placement: 'inline-right', afterSection: 1 },

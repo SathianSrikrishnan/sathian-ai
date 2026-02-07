@@ -55,14 +55,6 @@ const PROJECTS = [
     accent: C.aurora,
     glare: 'rgba(6,182,212,0.2)',
   },
-  {
-    title: 'Bitcoin for Gen Z',
-    description: 'The Bitcoin whitepaper, translated into language that actually makes sense.',
-    href: '/toothfairy/network/bitcoin-genz',
-    tag: 'education / crypto',
-    accent: C.stardust,
-    glare: 'rgba(245,158,11,0.2)',
-  },
 ]
 
 const WRITINGS = [
@@ -70,21 +62,21 @@ const WRITINGS = [
     title: 'Nine Pages',
     description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything. Here\'s what I found — and two versions so you can read it yourself.',
     href: '/writings/nine-pages',
-    date: '2026-02-06',
+    date: '2025-07-01',
     accent: '#F7931A',
   },
   {
     title: 'C.R.E.A.M. 2.0',
     description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
     href: '/writings/cream-2-point-0',
-    date: '2026-10-31',
+    date: '2025-10-31',
     accent: '#F59E0B',
   },
   {
     title: 'The Yellow Box',
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
     href: '/writings/the-yellow-box',
-    date: '2026-02-06',
+    date: '2026-12-29',
     accent: '#DC2626',
   },
 ]
