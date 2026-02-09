@@ -18,6 +18,7 @@ import { ScrollPin } from '@/components/article/ScrollPin'
 import { SectionGradient } from '@/components/article/SectionGradient'
 import { NinePageStack } from '@/components/article/NinePageStack'
 import { WhitepaperCTA } from '@/components/article/WhitepaperCTA'
+import { YouTubeEmbed } from '@/components/article/YouTubeEmbed'
 
 function readingTime(text: string): number {
   const words = text.trim().split(/\s+/).length
@@ -149,6 +150,15 @@ function renderBody(article: Article, articleUrl: string) {
                 endPrice={special.data?.endPrice as number}
                 startYear={special.data?.startYear as number}
                 endYear={special.data?.endYear as number}
+                accent={accent}
+              />
+            )
+          }
+          if (special.type === 'youtube-embed') {
+            elements.push(
+              <YouTubeEmbed
+                key={`special-youtube-${sectionIdx}`}
+                videoId={special.data?.videoId as string}
                 accent={accent}
               />
             )
