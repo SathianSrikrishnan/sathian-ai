@@ -33,7 +33,7 @@ This website itself is a demonstration: Sathian's memory and context stay local,
 
 Based in Toronto. Technologist, builder, digital anthropologist, historian. Entrepreneur for 20+ years — lots of failures and a few successes. The failures taught more than the successes ever could.
 
-Non-traditional path into tech. Late bloomer. Self-taught. Divorced father of twins — his children are a big part of his life and what drives the tools he builds.
+Non-traditional path into tech. Late bloomer. Self-taught. Father of twins — his children are a big part of his life and what drives the tools he builds.
 
 His focus now is on personal AI infrastructure and technology advisory — helping individuals, families, and businesses navigate AI, cybersecurity, cryptocurrency, and technology strategy.
 

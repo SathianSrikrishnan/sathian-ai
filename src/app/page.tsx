@@ -33,11 +33,10 @@ const PROJECTS = [
   {
     title: 'BTC Cultural Atlas',
     description: 'Live Bitcoin price mapped to 463 cultural markers — dialing codes, music, sports, history, and internet memes.',
-    href: 'https://btc-atlas.vercel.app',
+    href: '/btc-atlas',
     tag: 'data / culture / crypto',
     accent: '#F97316',
     glare: 'rgba(249,115,22,0.2)',
-    external: true,
   },
   {
     title: 'Tooth Fairy Network',
@@ -78,6 +77,13 @@ const WRITINGS = [
     href: '/writings/the-yellow-box',
     date: '2025-12-29',
     accent: '#DC2626',
+  },
+  {
+    title: 'Yakko\'s World Was Already Wrong',
+    description: 'In 1993 a cartoon Warner brother sang every country on Earth. A cypherpunk wrote a manifesto. The web went free. The map was already wrong on day one.',
+    href: '/writings/yakkos-world',
+    date: '2026-02-09',
+    accent: '#06B6D4',
   },
 ]
 
@@ -129,7 +135,7 @@ export default function Home() {
             style={{ color: C.text }}
             variants={fadeUp}
           >
-            Experiments in technology and culture.
+            Building with AI: Learning and Writing.
           </motion.p>
 
           {/* Tagline — removed, let the work speak */}
@@ -141,10 +147,8 @@ export default function Home() {
           >
             <AtlasGlobeTeaser size={420} />
             <div className="mt-4 text-center">
-              <a
-                href="https://btc-atlas.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/btc-atlas"
                 className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-mono transition-all hover:scale-105"
                 style={{
                   background: 'rgba(15,15,45,0.85)',
@@ -157,7 +161,7 @@ export default function Home() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </a>
+              </Link>
               <div className="mt-2">
                 <span
                   className="text-[10px] font-mono"

@@ -58,9 +58,19 @@ export function PitchLanding() {
     return () => obs.disconnect()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email.includes("@")) setSubmitted(true)
+    if (!email.includes("@")) return
+    try {
+      await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+    } catch {
+      // Still show success — Telegram/Notion are best-effort
+    }
+    setSubmitted(true)
   }
 
   return (
