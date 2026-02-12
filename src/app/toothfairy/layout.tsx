@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
+import { ChatWidget } from '@/components/ChatWidget'
 
 export const metadata: Metadata = {
   title: 'Tooth Fairy Network',
-  description: 'Every child loses teeth. The Tooth Fairy Network brings that story on-chain.',
+  description: 'Every child loses teeth. The Tooth Fairy Network turns childhood milestones into permanent digital keepsakes.',
   openGraph: {
     title: 'Tooth Fairy Network',
-    description: 'Every child loses teeth. The Tooth Fairy Network brings that story on-chain.',
+    description: 'Turn childhood milestones into permanent digital keepsakes. A product by sathian.ai.',
   },
 }
 
@@ -14,5 +15,10 @@ export default function ToothFairyLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <ChatWidget />
+    </>
+  )
 }

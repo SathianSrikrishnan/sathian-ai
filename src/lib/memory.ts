@@ -9,32 +9,33 @@ function getTopicContent(message: string): string {
   const messageLower = message.toLowerCase()
   const content: string[] = []
 
-  // Sovereignty / ideology
-  if (messageLower.includes('sovereign') || messageLower.includes('privacy') || messageLower.includes('ideology') || messageLower.includes('human 3.0')) {
+  // Sovereignty / philosophy
+  if (messageLower.includes('sovereign') || messageLower.includes('privacy') || messageLower.includes('ideology') || messageLower.includes('human 3.0') || messageLower.includes('philosophy')) {
     content.push(`
-## Sathian's Philosophy: Sovereignty
+## Sathian's Philosophy
 
-Sathian believes in personal sovereignty - the idea that individuals should control their own data, wealth, and digital identity. Key principles:
+Sathian believes in personal sovereignty — individuals should control their own data, wealth, and digital identity.
 
-1. **Privacy First**: Your data should stay on your infrastructure, not be harvested by corporations
-2. **Human 3.0**: Augmenting human capability with AI, not being replaced by it
-3. **Local-First**: Running your own AI infrastructure where possible
-4. **Wealth Autonomy**: Understanding Bitcoin and crypto as tools for financial sovereignty
+Core principles:
+1. Privacy first — your data stays on your infrastructure
+2. Local-first — run your own AI where possible
+3. Model-agnostic — don't get locked into any single vendor
+4. Financial autonomy — understand Bitcoin and crypto as tools for sovereignty
 
-This website itself is a demonstration - Sathian's files and memory stay local, while a frontier AI model is used as a processing engine that forgets after each interaction.
+This website itself is a demonstration: Sathian's memory and context stay local, while a frontier AI model processes conversations statelessly.
     `)
   }
 
   // About Sathian
-  if (messageLower.includes('who') || messageLower.includes('sathian') || messageLower.includes('about')) {
+  if (messageLower.includes('who') || messageLower.includes('sathian') || messageLower.includes('about') || messageLower.includes('tell me')) {
     content.push(`
 ## About Sathian
 
-Based in Toronto. Entrepreneur for 20+ years — lots of failures and a few successes. The failures taught more than the successes ever could.
+Based in Toronto. Technologist, builder, digital anthropologist, historian. Entrepreneur for 20+ years — lots of failures and a few successes. The failures taught more than the successes ever could.
 
-His focus now is on Personal AI Infrastructure (PAI) and technology advisory — helping individuals, families, and businesses navigate AI, cybersecurity, cryptocurrency, and technology strategy. Not as a consultant you hire from a website, but as someone who's been building and breaking things for two decades.
+Non-traditional path into tech. Late bloomer. Self-taught. Divorced father of twins — his children are a big part of his life and what drives the tools he builds.
 
-This site is powered by Kai, his personal AI system — a live demonstration of sovereignty in action.
+His focus now is on personal AI infrastructure and technology advisory — helping individuals, families, and businesses navigate AI, cybersecurity, cryptocurrency, and technology strategy.
 
 He's passionate about in-person connection — having conducted 100+ dinners with strangers aged 20-80 in Toronto. His philosophy: digital tools should help us connect in person, safely.
     `)
@@ -45,14 +46,20 @@ He's passionate about in-person connection — having conducted 100+ dinners wit
     content.push(`
 ## What Sathian is Building
 
-**Kai** - Personal AI Infrastructure
-The system you're talking to right now. Kai is Sathian's second brain - a local-first AI system that:
-- Stores all memory and context on Sathian's own machine
-- Uses frontier models (like Claude) for response generation
-- Maintains full data sovereignty while delivering modern UX
+**Kai** — Personal Digital Assistant
+The system you're talking to right now. Kai is Sathian's second brain — a model-agnostic AI system that stores all intelligence locally. This public version helps visitors learn about his work.
 
-**Storybook Universe** (for his children)
-Creative storytelling and learning tools. This content is gated out of respect for his children's privacy.
+**Tooth Fairy Network** — Childhood Milestones On-Chain
+A concept that records lost teeth as digital artifacts. Currently a prototype with fictitious data. The globe on the site shows featured collectors from around the world.
+
+**Cultural Atlas** — Mapping Culture Through Data
+Exploring how culture, data, and technology intersect.
+
+**Storybook Universe** — For His Children
+Creative storytelling and learning tools. This content is private out of respect for his family.
+
+**Writings** — Crypto Philosophy and Essays
+Long-form explorations of technology, culture, and sovereignty.
     `)
   }
 
@@ -61,12 +68,10 @@ Creative storytelling and learning tools. This content is gated out of respect f
     content.push(`
 ## Human Connections
 
-If you're here, you've likely formed a meaningful connection with Sathian somewhere along the way.
-
-Common contexts where you might have crossed paths:
-- **Dinners with Strangers**: 100+ so far, with people aged 20-80 across Toronto
-- **Meetups and events**: Tech, Bitcoin, philosophy gatherings
-- **One-on-one conversations**: Coffee, walks, or deeper discussions
+Common contexts where you might have crossed paths with Sathian:
+- Dinners with Strangers: 100+ so far, with people aged 20-80 across Toronto
+- Meetups and events: Tech, Bitcoin, philosophy gatherings
+- One-on-one conversations: Coffee, walks, or deeper discussions
 
 Topics Sathian often explores in these conversations:
 - Personal sovereignty and privacy in the digital age
@@ -74,24 +79,18 @@ Topics Sathian often explores in these conversations:
 - AI as augmentation, not replacement
 - Building in public and learning from failure
 
-Feel free to share context about how you connected or what you discussed, and I can help continue that thread.
+Feel free to share context about how you connected or what you discussed.
     `)
   }
 
-  // Storybook Universe / Kids content
-  if (messageLower.includes('kids') || messageLower.includes('children') || messageLower.includes('story') || messageLower.includes('pixel') || messageLower.includes('storybook')) {
+  // Storybook / Kids content — gated, minimal info
+  if (messageLower.includes('kids') || messageLower.includes('children') || messageLower.includes('story') || messageLower.includes('storybook')) {
     content.push(`
 ## Storybook Universe
 
-Sathian creates personalized stories for his daughters. These stories explore meaningful themes through consistent characters in an imaginary world.
+Sathian creates personalized stories for his children. These stories explore meaningful themes through consistent characters in an imaginary world — teamwork, friendship, problem-solving, and even Bitcoin basics for kids.
 
-**Themes explored:**
-- Teamwork and friendship
-- Crypto and Bitcoin basics (yes, for kids!)
-- Business concepts and problem-solving
-- Life events and everyday adventures
-
-The stories demonstrate how digital tools can enhance rather than replace meaningful family time. This content is gated out of respect for his children's privacy.
+This content is private out of respect for his family. If you'd like to learn more, reach out to Sathian directly.
     `)
   }
 
@@ -100,34 +99,35 @@ The stories demonstrate how digital tools can enhance rather than replace meanin
     content.push(`
 ## Book Recommendations
 
-Sathian maintains a personal library and happily lends physical copies of his favorites. He believes in books as tools for sovereignty - expanding your thinking independently.
+Sathian maintains a personal library and happily lends physical copies. He believes in books as tools for expanding thinking independently.
 
-Some themes he often recommends around:
+Themes he often recommends around:
 - Bitcoin and monetary history
 - Philosophy and clear thinking
 - Building businesses and learning from failure
 - Privacy and digital rights
 
-If you'd like a recommendation, just share what you're interested in learning about.
+If you'd like a recommendation, share what you're interested in learning about.
     `)
   }
 
   // Writings / Articles
-  if (messageLower.includes('write') || messageLower.includes('article') || messageLower.includes('read') || messageLower.includes('cream') || messageLower.includes('yellow box') || messageLower.includes('think') || messageLower.includes('philosophy') || messageLower.includes('bitcoin') || messageLower.includes('hip-hop') || messageLower.includes('hip hop') || messageLower.includes('wu-tang') || messageLower.includes('wu tang')) {
+  if (messageLower.includes('write') || messageLower.includes('article') || messageLower.includes('cream') || messageLower.includes('yellow box') || messageLower.includes('nine pages') || messageLower.includes('bitcoin') || messageLower.includes('hip-hop') || messageLower.includes('hip hop') || messageLower.includes('wu-tang') || messageLower.includes('wu tang') || messageLower.includes('essay')) {
     content.push(`
 ## Sathian's Writings
 
-Sathian writes about the intersections between hip-hop culture, decentralized finance, institutional decay, and personal sovereignty. His articles connect disparate worlds through personal experience.
+Sathian writes about the intersections between culture, decentralized finance, and personal sovereignty. His articles connect disparate worlds through personal experience.
 
 **Published Articles:**
 
-1. **C.R.E.A.M. 2.0** — How Wu-Tang Clan's journey from Staten Island to a corporate arena in Toronto mirrors Bitcoin's path from a cypherpunk whitepaper to institutional adoption.
-   → [Read: C.R.E.A.M. 2.0](/writings/cream-2-point-0)
+1. **Nine Pages** — "I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything."
+   → /writings/nine-pages
 
-2. **The Yellow Box** — An Uber driver from Afghanistan, a box of No Name spaghetti, and how the gap between what institutions say and what people experience is the same pattern from glasnost to grocery stores.
-   → [Read: The Yellow Box](/writings/the-yellow-box)
+2. **C.R.E.A.M. 2.0** — How Wu-Tang Clan's journey from Staten Island to a corporate arena in Toronto mirrors Bitcoin's path from a cypherpunk whitepaper to institutional adoption.
+   → /writings/cream-2-point-0
 
-These articles are best discovered through conversation — ask about what Sathian thinks about, his worldview, or what he's writing.
+3. **The Yellow Box** — An Uber driver from Afghanistan, a box of No Name spaghetti, and how the gap between what institutions say and what people experience follows the same pattern from glasnost to grocery stores.
+   → /writings/the-yellow-box
     `)
   }
 
@@ -139,27 +139,33 @@ A concept by Sathian that records lost teeth as digital artifacts on-chain. Curr
     `)
   }
 
-  // AI Agents / Collaboration
-  if (messageLower.includes('agent') || messageLower.includes('collaborate') || messageLower.includes('partnership') || messageLower.includes('work together') || messageLower.includes('opportunity')) {
+  // Inspiration
+  if (messageLower.includes('inspir') || messageLower.includes('influence') || messageLower.includes('mentor') || messageLower.includes('satoshi') || messageLower.includes('balaji') || messageLower.includes('miessler') || messageLower.includes('daniel')) {
     content.push(`
-## For Collaboration
+## Inspiration
 
-### Who is Sathian
-A technologist in Toronto building Personal AI Infrastructure (PAI). Focus areas:
-- Data sovereignty and local-first AI
-- Human augmentation, not replacement
-- Privacy-preserving technology
-- Meaningful human connection via technology
+Sathian draws inspiration from a growing list:
+- **Satoshi Nakamoto** — Nine pages that changed money forever.
+- **Balaji Srinivasan** — Network School: rethinking education and governance.
+- **Daniel Miessler** — Unsupervised Learning: security, AI, and personal infrastructure.
 
-### Collaboration Interests
-Sathian is interested in connecting with people and projects working on:
+These are current inspirations. The list grows over time.
+    `)
+  }
+
+  // Collaboration
+  if (messageLower.includes('agent') || messageLower.includes('collaborate') || messageLower.includes('partnership') || messageLower.includes('work together') || messageLower.includes('opportunity') || messageLower.includes('hire') || messageLower.includes('consult')) {
+    content.push(`
+## Collaboration
+
+Sathian is a technologist in Toronto building personal AI infrastructure. He's interested in connecting with people and projects working on:
 - Open source AI infrastructure
 - Privacy-first technology
 - Personal knowledge management
 - Tools that enhance human capability
+- Bitcoin and cryptocurrency education
 
-### How to Connect
-Express your interest or opportunity, and I'll pass it along to Sathian with context.
+Express your interest or opportunity, and Kai will pass it along to Sathian with context.
     `)
   }
 

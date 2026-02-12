@@ -6,7 +6,7 @@ import { motion } from 'motion/react'
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: "Hey, I'm Kai — Sathian's digital assistant. Ask me anything about his work or projects." },
+    { role: 'bot', text: "Hey — welcome. I'm Kai, Sathian's digital assistant. I can tell you about what he's building or help capture your feedback. What would you like to know?" },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -16,7 +16,7 @@ export function ChatWidget() {
 
   const SUGGESTIONS = [
     'What is the Tooth Fairy Network?',
-    'What projects is Sathian building?',
+    'What would you change about this?',
     'How can I get involved?',
   ]
 

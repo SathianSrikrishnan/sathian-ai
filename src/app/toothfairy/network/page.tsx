@@ -1,35 +1,34 @@
-"use client"
-
+import { Metadata } from "next"
 import dynamic from "next/dynamic"
-import { SmoothScrollProvider } from "@/components/ui/smooth-scroll-provider"
-import { ChatWidget } from "@/components/ChatWidget"
 
-const ToothFairyScroll = dynamic(
-  () => import("@/components/toothfairy/tooth-fairy-scroll").then((mod) => mod.ToothFairyScroll),
+const PitchLanding = dynamic(
+  () => import("@/components/toothfairy/pitch-landing").then((mod) => mod.PitchLanding),
   { ssr: false }
 )
 
-const CosmicGlobe = dynamic(
-  () => import("@/components/ui/cosmic-globe").then((mod) => mod.CosmicGlobe),
-  { ssr: false }
-)
+export const metadata: Metadata = {
+  title: "The Tooth Fairy Network | sathian.ai",
+  description:
+    "Turn childhood milestones into permanent, verifiable digital keepsakes on blockchain. Your child earns it. You keep it. They learn from it.",
+  openGraph: {
+    title: "The Tooth Fairy Network",
+    description:
+      "Narrative-driven childhood milestone platform built on Base. NFT keepsakes for parents. Crypto education for children.",
+    siteName: "sathian.ai",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Tooth Fairy Network",
+    description:
+      "Turn childhood milestones into permanent, verifiable digital keepsakes on blockchain.",
+  },
+}
 
 export default function ToothFairyNetworkPage() {
   return (
-    <SmoothScrollProvider>
-      <main className="relative min-h-screen" style={{ background: "#050510" }}>
-        <ToothFairyScroll>
-          {/* Scene 5 globe — injected as children, rendered inside #globe-mount */}
-          <CosmicGlobe
-            size={500}
-            showLabels={true}
-            simulateArrivals={true}
-            showArcs={true}
-          />
-        </ToothFairyScroll>
-
-        <ChatWidget />
-      </main>
-    </SmoothScrollProvider>
+    <main className="relative min-h-screen" style={{ background: "#030712" }}>
+      <PitchLanding />
+    </main>
   )
 }
