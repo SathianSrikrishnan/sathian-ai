@@ -5,7 +5,7 @@ export function BackgroundBeams({ color }: { color: string }) {
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
       {/* Subtle radial gradient */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-[0.07]"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-[0.03]"
         style={{
           background: `radial-gradient(ellipse at center, ${color}, transparent 70%)`,
         }}
@@ -15,12 +15,12 @@ export function BackgroundBeams({ color }: { color: string }) {
         <defs>
           <linearGradient id="beam1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={color} stopOpacity="0" />
-            <stop offset="50%" stopColor={color} stopOpacity="0.06" />
+            <stop offset="50%" stopColor={color} stopOpacity="0.025" />
             <stop offset="100%" stopColor={color} stopOpacity="0" />
           </linearGradient>
           <linearGradient id="beam2" x1="100%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={color} stopOpacity="0" />
-            <stop offset="50%" stopColor={color} stopOpacity="0.04" />
+            <stop offset="50%" stopColor={color} stopOpacity="0.015" />
             <stop offset="100%" stopColor={color} stopOpacity="0" />
           </linearGradient>
         </defs>
