@@ -5,18 +5,12 @@ import { useRef, useMemo } from 'react'
 import { motion, useInView } from 'motion/react'
 import { getArticle, type Article } from '@/lib/articles'
 import { ReadingProgress } from '@/components/article/ReadingProgress'
-import { BackgroundBeams } from '@/components/article/BackgroundBeams'
 import { ShareBar } from '@/components/article/ShareBar'
-import { TracingBeam } from '@/components/article/TracingBeam'
 import { FullBleedImage, InlineImage } from '@/components/article/FullBleedImage'
-import { TextRevealEffect, GradualReveal } from '@/components/article/TextRevealEffect'
-import { PixelCanvas } from '@/components/article/PixelCanvas'
+import { GradualReveal } from '@/components/article/TextRevealEffect'
 import { PriceCounter } from '@/components/article/PriceCounter'
-import { ScrambleQuote } from '@/components/article/ScrambleQuote'
-import { SectionHeading } from '@/components/article/SectionHeading'
-import { ScrollPin } from '@/components/article/ScrollPin'
+import { PullQuote } from '@/components/article/PullQuote'
 import { SectionGradient } from '@/components/article/SectionGradient'
-import { NinePageStack } from '@/components/article/NinePageStack'
 import { WhitepaperCTA } from '@/components/article/WhitepaperCTA'
 import { YouTubeEmbed } from '@/components/article/YouTubeEmbed'
 
@@ -30,20 +24,38 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
-function AnimatedParagraph({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+function AnimatedParagraph({ children, delay = 0, dropCap = false }: { children: React.ReactNode; delay?: number; dropCap?: boolean }) {
   const ref = useRef<HTMLParagraphElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-5% 0px' })
 
   return (
     <motion.p
       ref={ref}
-      className="mb-7 leading-[1.85] text-[#B8C0CC] font-article"
+      className={`mb-7 leading-[1.85] text-[#B8C0CC] font-article ${dropCap ? 'article-drop-cap' : ''}`}
       initial={{ opacity: 0, y: 8 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
       transition={{ duration: 0.3, delay, ease: [0.22, 1, 0.36, 1] as const }}
     >
       {children}
     </motion.p>
+  )
+}
+
+function SimpleSectionHeading({ children, accent }: { children: string; accent: string }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
+
+  return (
+    <motion.h2
+      ref={ref}
+      className="text-2xl md:text-3xl font-bold text-[#E6EDF3] mb-8 mt-4 pl-5 border-l-[3px] font-article"
+      style={{ borderColor: accent }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
+    >
+      {children}
+    </motion.h2>
   )
 }
 
@@ -182,53 +194,28 @@ function renderBody(article: Article, articleUrl: string) {
         )
       }
 
-      // Section divider
-      if (mood === 'contemplative') {
-        elements.push(
-          <div key={`divider-${sectionIdx}`} className="my-16 flex justify-center">
-            <div
-              className="w-full max-w-md h-px"
-              style={{
-                background: `linear-gradient(90deg, transparent, ${sectionTints?.[sectionIdx] || accent}33, transparent)`,
-              }}
-            />
-          </div>
-        )
-      } else {
-        elements.push(
-          <div key={`divider-${sectionIdx}`} className="my-16 flex justify-center items-center">
-            <svg width="200" height="24" viewBox="0 0 200 24" className="opacity-40">
-              {[...Array(20)].map((_, i) => (
-                <motion.rect
-                  key={i}
-                  x={i * 10}
-                  width="4"
-                  rx="2"
-                  fill={sectionTints?.[sectionIdx] || accent}
-                  initial={{ height: 4, y: 10 }}
-                  animate={{
-                    height: [4, 8 + Math.sin(i * 0.8) * 12, 4],
-                    y: [10, 8 - Math.sin(i * 0.8) * 6, 10],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.08, ease: 'easeInOut' }}
-                />
-              ))}
-            </svg>
-          </div>
-        )
-      }
+      // Section divider — clean gradient line
+      elements.push(
+        <div key={`divider-${sectionIdx}`} className="my-16 flex justify-center">
+          <div
+            className="w-full max-w-md h-px"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${sectionTints?.[sectionIdx] || accent}33, transparent)`,
+            }}
+          />
+        </div>
+      )
     }
 
-    // Section heading
+    // Section heading — simple accent bar + fade
     if (sectionHeadings?.[sectionIdx]) {
       elements.push(
-        <SectionHeading
+        <SimpleSectionHeading
           key={`heading-${sectionIdx}`}
           accent={sectionTints?.[sectionIdx] || accent}
-          index={sectionIdx}
         >
           {sectionHeadings[sectionIdx]}
-        </SectionHeading>
+        </SimpleSectionHeading>
       )
     }
 
@@ -292,9 +279,8 @@ function renderBody(article: Article, articleUrl: string) {
       }
 
       if (isFirstParagraph) {
-        const plainText = p.replace(/\*[^*]+\*/g, (m) => m.slice(1, -1))
         sectionContent.push(
-          <TextRevealEffect key={key} text={plainText} accent={accent} className="mb-7 font-article" />
+          <AnimatedParagraph key={key} dropCap>{rendered}</AnimatedParagraph>
         )
       } else if (mood === 'contemplative' && isLastParagraph) {
         const plainText = p.replace(/\*[^*]+\*/g, (m) => m.slice(1, -1))
@@ -307,7 +293,7 @@ function renderBody(article: Article, articleUrl: string) {
         )
       }
 
-      // Pull quotes — scramble effect
+      // Pull quotes — clean accent bar
       if (pullQuoteIndex < pullQuotes.length) {
         const totalParagraphs = sections.reduce((sum, s) => sum + s.trim().split('\n\n').length, 0)
         const insertEvery = Math.floor(totalParagraphs / (pullQuotes.length + 1))
@@ -316,30 +302,15 @@ function renderBody(article: Article, articleUrl: string) {
         ) + pIdx
 
         if (globalPIdx > 0 && (globalPIdx + 1) % insertEvery === 0) {
-          // Check if this pull quote should be pinned (scroll-pin special element)
-          const shouldPin = specialElements?.some(
-            (s) => s.type === 'scroll-pin' && s.afterSection === sectionIdx
-          ) && pullQuoteIndex === 1
-
-          const quoteElement = (
-            <ScrambleQuote
+          sectionContent.push(
+            <PullQuote
               key={`pq-${pullQuoteIndex}`}
               accent={sectionTints?.[sectionIdx] || accent}
               articleUrl={articleUrl}
             >
               {pullQuotes[pullQuoteIndex]}
-            </ScrambleQuote>
+            </PullQuote>
           )
-
-          if (shouldPin) {
-            sectionContent.push(
-              <ScrollPin key={`pin-${pullQuoteIndex}`} accent={accent} duration={1.5}>
-                {quoteElement}
-              </ScrollPin>
-            )
-          } else {
-            sectionContent.push(quoteElement)
-          }
           pullQuoteIndex++
         }
       }
@@ -360,13 +331,13 @@ function renderBody(article: Article, articleUrl: string) {
   // Remaining pull quotes
   while (pullQuoteIndex < pullQuotes.length) {
     elements.push(
-      <ScrambleQuote
+      <PullQuote
         key={`pq-${pullQuoteIndex}`}
         accent={accent}
         articleUrl={articleUrl}
       >
         {pullQuotes[pullQuoteIndex]}
-      </ScrambleQuote>
+      </PullQuote>
     )
     pullQuoteIndex++
   }
@@ -405,7 +376,6 @@ export default function ArticlePage() {
   const minutes = readingTime(article.body)
   const articleUrl = `https://sathian.ai/writings/${article.slug}`
   const heroImage = article.media?.find((m) => m.placement === 'hero')
-  const hasStackedPages = article.specialElements?.some(s => s.type === 'stacked-pages')
 
   return (
     <main
@@ -415,47 +385,11 @@ export default function ArticlePage() {
       }}
     >
       <ReadingProgress color={article.theme.accent} />
-      <BackgroundBeams color={article.theme.accent} />
 
       {/* Hero */}
       <header className="relative min-h-[75vh] flex flex-col justify-end pb-16 px-6 overflow-hidden">
-        {/* Blurry portrait background behind stacked pages */}
-        {heroImage && hasStackedPages && (
-          <div className="absolute inset-0 z-0">
-            <motion.img
-              src={heroImage.src}
-              alt={heroImage.alt}
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ filter: 'blur(8px) saturate(0.35) brightness(0.45)', objectPosition: 'center 20%' }}
-              initial={{ scale: 1.15, opacity: 0 }}
-              animate={{ scale: 1.05, opacity: 0.45 }}
-              transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <div
-              className="absolute inset-0 mix-blend-color opacity-15"
-              style={{ background: article.theme.accent }}
-            />
-          </div>
-        )}
-
-        {/* Stacked pages hero (Linear-style) — ghosted in front of portrait */}
-        {hasStackedPages && (
-          <div className="absolute inset-0 z-[1] flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: heroImage ? 0.55 : 1 }}
-              transition={{ duration: 1.2, delay: 0.3 }}
-              style={{ filter: heroImage ? 'blur(1.5px)' : 'none' }}
-            >
-              <NinePageStack accent={article.theme.accent} />
-            </motion.div>
-            {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A12] via-[#0A0A12]/40 to-[#0A0A12]/20" />
-          </div>
-        )}
-
-        {/* Hero background image (standalone, no stacked pages) */}
-        {heroImage && !hasStackedPages && (
+        {/* Hero background image */}
+        {heroImage && (
           <div className="absolute inset-0 z-0">
             <motion.img
               src={heroImage.src}
@@ -466,12 +400,9 @@ export default function ArticlePage() {
               animate={{ scale: 1, opacity: 0.35 }}
               transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
             />
-            {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A12] via-[#0A0A12]/60 to-[#0A0A12]/30" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A12]/50 via-transparent to-[#0A0A12]/50" />
-            {/* Accent color wash */}
             <div
-              className="absolute inset-0 mix-blend-color opacity-30"
+              className="absolute inset-0 mix-blend-color opacity-20"
               style={{ background: article.theme.accent }}
             />
           </div>
@@ -570,13 +501,11 @@ export default function ArticlePage() {
         }} />
       </header>
 
-      {/* Article body with tracing beam */}
+      {/* Article body */}
       <article className="px-6 py-16">
-        <TracingBeam color={article.theme.accent}>
-          <div className="text-[1.125rem] max-w-2xl mx-auto font-article">
-            {renderBody(article, articleUrl)}
-          </div>
-        </TracingBeam>
+        <div className="text-[1.125rem] max-w-2xl mx-auto font-article">
+          {renderBody(article, articleUrl)}
+        </div>
 
         {/* Hidden signal */}
         <div className="max-w-2xl mx-auto">

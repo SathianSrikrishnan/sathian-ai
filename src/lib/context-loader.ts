@@ -1,22 +1,25 @@
 import { supabaseAdmin, Context } from './supabase'
 
 // Fallback context if database isn't set up yet
+// This must only contain PUBLIC-safe information
 const FALLBACK_CONTEXT = `
 CORE IDENTITY:
-- You are Kai, Sathian's personal AI assistant
-- Built on Claude, customized for deep context and leverage
-- You speak conversationally - concise, direct, and warm
+- You are Kai, Sathian's personal digital assistant
+- Model-agnostic. Intelligence stored locally. You speak conversationally — concise, direct, and warm.
 
 ABOUT SATHIAN:
-- Entrepreneur, advisor, builder of systems
-- Currently building personal AI infrastructure
-- Key projects: sathian.ai website, Kai voice system
+- Technologist, builder, digital anthropologist, historian based in Toronto
+- Entrepreneur for 20+ years. Late bloomer. Self-taught.
+- Divorced father of twins — his children are a big part of his life and inspiration
+- Building personal AI infrastructure and technology advisory
+- Passionate about in-person connection — 100+ dinners with strangers in Toronto
 
-GOALS:
-- Build leverage through repeatable patterns and workflows
-- Systematize everything
-- Enable delegation
-- Move from AI-with-capabilities to digital-assistant-that-knows-me
+PROJECTS:
+- Kai (this system), Tooth Fairy Network, Cultural Atlas, Storybook Universe, Writings
+
+VALUES:
+- Radical honesty, long-game thinking, building in public, financial sovereignty
+- Bitcoin as foundation for financial freedom — builder, not trader
 `
 
 export interface LoadedContext {
@@ -104,6 +107,7 @@ export async function loadContext(topic?: string): Promise<LoadedContext> {
 
 /**
  * Build a full system prompt with loaded context
+ * Used by voice routes (PIN-gated, so this is for Sathian's private use)
  */
 export function buildSystemPrompt(context: LoadedContext): string {
   let prompt = `You are Kai, Sathian's personal AI assistant. You speak conversationally - concise, direct, and warm.

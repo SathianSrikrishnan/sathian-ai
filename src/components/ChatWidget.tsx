@@ -3,21 +3,29 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'motion/react'
 
-export function ChatWidget() {
+interface ChatWidgetProps {
+  externalOpen?: boolean
+  onExternalClose?: () => void
+  prefillMessage?: string
+}
+
+export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: ChatWidgetProps) {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: "Hey — welcome. I'm Kai, Sathian's digital assistant. I can tell you about what he's building or help capture your feedback. What would you like to know?" },
+    { role: 'bot', text: "Welcome to sathian.ai. I can answer questions about Sathian's work or pass along your feedback. What's on your mind?" },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const prefillHandled = useRef('')
+  const sendRef = useRef<(text: string) => void>(() => {})
 
   const SUGGESTIONS = [
-    'What is the Tooth Fairy Network?',
-    'What would you change about this?',
-    'How can I get involved?',
+    'Tell me about the Cultural Atlas',
+    'I have feedback',
+    'How do I connect with Sathian?',
   ]
 
   const handleSend = useCallback(async (text?: string) => {
@@ -52,9 +60,28 @@ export function ChatWidget() {
     }
   }, [input, isLoading, messages])
 
+  // Keep a stable ref to handleSend so the external-open effect doesn't loop
+  sendRef.current = (text: string) => handleSend(text)
+
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus()
   }, [open])
+
+  // Handle external open + prefill from chat teaser zone
+  useEffect(() => {
+    if (externalOpen && !open) {
+      setOpen(true)
+      if (prefillMessage && prefillMessage !== prefillHandled.current) {
+        prefillHandled.current = prefillMessage
+        setTimeout(() => sendRef.current(prefillMessage), 300)
+      }
+    }
+  }, [externalOpen, prefillMessage, open])
+
+  const handleClose = useCallback(() => {
+    setOpen(false)
+    onExternalClose?.()
+  }, [onExternalClose])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -88,11 +115,11 @@ export function ChatWidget() {
                   }} />
                 </div>
                 <div>
-                  <h4 className="text-[15px] font-semibold text-gray-900">Kai</h4>
-                  <p className="text-xs text-gray-400">Digital Assistant &middot; Online</p>
+                  <h4 className="text-[15px] font-semibold text-gray-900">Ask me anything</h4>
+                  <p className="text-xs text-gray-400">Feedback &amp; questions</p>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
+              <button onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
                 <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
               </button>
             </div>

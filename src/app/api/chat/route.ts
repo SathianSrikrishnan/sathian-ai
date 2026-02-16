@@ -79,26 +79,46 @@ async function logToNotion(firstMessage: string, mode: string, messageCount: num
   }
 }
 
+// CORS headers for cross-origin chat widget
+const ALLOWED_ORIGINS = ['https://btc.sathian.ai', 'https://sathian.ai']
+
+function corsHeaders(origin: string | null) {
+  const headers: Record<string, string> = {
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  }
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin
+  }
+  return headers
+}
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin')
+  return new NextResponse(null, { status: 204, headers: corsHeaders(origin) })
+}
+
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin')
   try {
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { error: "You've been chatting a lot! Give me a moment to catch up. Try again in a few minutes." },
-        { status: 429 }
+        { status: 429, headers: corsHeaders(origin) }
       )
     }
 
     const { message, mode, history } = await request.json()
 
     if (!message) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+      return NextResponse.json({ error: 'Message is required' }, { status: 400, headers: corsHeaders(origin) })
     }
 
     // Input validation — cap message length to prevent token abuse
     if (typeof message !== 'string' || message.length > 2000) {
-      return NextResponse.json({ error: 'Message too long (max 2000 characters)' }, { status: 400 })
+      return NextResponse.json({ error: 'Message too long (max 2000 characters)' }, { status: 400, headers: corsHeaders(origin) })
     }
 
     // Get relevant context from local memory
@@ -119,7 +139,7 @@ export async function POST(request: NextRequest) {
     // Call Claude API
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 800,
+      max_tokens: 400,
       system: systemPrompt,
       messages,
     })
@@ -142,13 +162,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: responseText,
       memoryUsed: memoryContext.sources,
-    })
+    }, { headers: corsHeaders(origin) })
 
   } catch (error) {
     console.error('Chat API error:', error)
     return NextResponse.json(
       { error: 'Failed to process message' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders(origin) }
     )
   }
 }

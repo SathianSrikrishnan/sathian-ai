@@ -34,9 +34,9 @@ export const articles: Article[] = [
     domains: ['hip-hop culture', 'decentralized finance'],
     description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
     pullQuotes: [
-      'Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium.',
+      'Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium. The raw signal wrapped in institutional clothing.',
       'The people who move first are the ones in the margins who recognize a signal before it has a name.',
-      'The question isn\'t whether that happens. It always does. The question is whether enough people heard the original frequency to keep it alive underneath.',
+      'Cash ruled everything around them in \'93. Corporate rules the arena now. Crypto is writing the next verse.',
     ],
     theme: {
       accent: '#F59E0B',
@@ -53,6 +53,7 @@ export const articles: Article[] = [
       { text: 'Martti Malmi', color: '#F7931A' },
       { text: '$5.02', color: '#F7931A' },
       { text: '5,050 BTC', color: '#F7931A' },
+      { text: 'Agent Orange', color: '#F59E0B' },
     ],
     media: [
       { src: '/media/wutang-90s.jpg', alt: 'Wu-Tang Clan in the 90s — before the corporate arena, before the ETFs', caption: 'Before the Scotiabank Arena. Before the Leafs jerseys. Before anyone outside Staten Island was paying attention.', placement: 'hero' },
@@ -63,19 +64,29 @@ export const articles: Article[] = [
       { src: '/media/wutang-scotiabank-arena.jpg', alt: 'Wu-Tang Clan performing at Scotiabank Arena with Maple Leafs banners', caption: 'The Scotiabank Arena version — Leafs banners overhead, the edges filed off, the danger gone', placement: 'full-bleed', afterSection: 3 },
       { src: '/media/boardroom.jpg', alt: 'Corporate boardroom', caption: 'ETFs, institutional custody, boardroom presentations', placement: 'inline-right', afterSection: 3 },
     ],
-    body: `Last July I was sitting in the Scotiabank Arena watching Wu-Tang Clan perform in Maple Leafs jerseys. I was the only one smoking a joint in the building — doing exactly what I would've done twenty years ago, except back then nobody would've noticed. This wasn't a basement in Scarborough. This was a corporate arena full of small-town Ontario families and kids in overpriced merch. Nine men in their fifties (ODB passed in 2004, replaced by Cappadonna) reminiscing on verses they wrote as teenagers. An eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M. And me — still listening the way I first heard it, out of place in a room that had moved on entirely.
+    body: `In grade nine, I carved a Wu-Tang W out of a block of wood in Mr. Lovering's design and tech shop class. The look on his face when I showed him the finished piece — he had no idea what it was. But I did. I was starting to feel Wu-Tang's pull, my first real taste of how culture could grab you. Nine guys from Staten Island who threaded Shaolin sword philosophy into hip-hop, the first to weave Asian cinema and martial arts mythology into the music. The chess references, the Five Percenters theology, the raw Staten Island grit layered under something almost spiritual. I didn't just like the music. I respected what they were building.
+
+Last August at the Scotiabank Arena, I was one of maybe a handful of people in the entire building who lit up. Twenty years ago at a Wu-Tang show, that would've been the least notable thing happening. This time, I felt awkward about it — nine men in their fifties performing in Maple Leafs jerseys, for an audience that included families from suburban Ontario and an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
+
+I still did it.
 
 Cash Rules Everything Around Me. The anthem of project kids in Staten Island, now soundtracking a corporate arena experience for small-town Ontario families.
 
-Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium.
+Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium. The raw signal wrapped in institutional clothing.
 
 ---
 
 In 1993, Wu-Tang did something labels said couldn't be done. They kept the group together while every member negotiated solo deals. No label owned them. They built Shaolin. RZA constructed the sound by sampling kung fu movies, dusty soul records, and street corner philosophy — pieces that already existed, threaded into something that hadn't.
 
-Fifteen years later, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang* — raw, unfiltered. But unlike RZA, Satoshi had no publisher. No institution. No face. Just: here's the work.
+There were always nine members, plus Cappadonna on his own label. It was always "Wu-Tang Clan *featuring* Cappadonna" — the tenth man with an asterisk. When ODB died in 2004, the asterisk disappeared. Cap stepped in. Even the clan's membership rules evolved when they had to. Institutions always do.
 
-And like RZA, Satoshi didn't invent the components. Adam Back built Hashcash — proof-of-work — in 1997, the same year Wu-Tang Forever came out. Hal Finney built Reusable Proof of Work. Wei Dai proposed b-money. Satoshi sampled all of them — threaded existing cryptographic ideas together the way a producer threads existing sounds into something that hadn't existed before.
+On their 1997 album *Wu-Tang Forever*, Method Man dropped a line on "Reunited" — *worldwide total carnage, the sickest flow that we code name Agent Orange.* Agent Orange was a chemical weapon sprayed across Vietnam. But *agent* and *orange* together hit different now. Bitcoin's color is orange. Its agents are autonomous. Its protocol runs without a name on the door.
+
+I collect these — old hip-hop lines that accidentally predicted crypto before crypto existed. It's a hobby. You'll find them buried throughout this site if you look.
+
+Fifteen years after Wu-Tang built Shaolin, Satoshi dropped a nine-page whitepaper the same way RZA dropped *Enter the Wu-Tang*. No publisher. No institution. No face. Just: here's the work.
+
+And like RZA, Satoshi didn't invent the components. Adam Back had built Hashcash — proof-of-work — back in 1997, the same year Wu-Tang Forever came out. Hal Finney built Reusable Proof of Work. Wei Dai proposed b-money. Nick Szabo sketched Bit Gold. David Chaum had been working on digital cash since the early nineties. Satoshi sampled all of it. Threaded existing cryptographic ideas together the way a producer threads existing sounds — into something that hadn't existed before.
 
 ---
 
@@ -87,22 +98,29 @@ A few kids in Staten Island who heard what RZA was building. A few cryptographer
 
 That kid from Sudbury singing along to C.R.E.A.M. doesn't know any of this history. He doesn't know the song was written in a project hallway about surviving a system that wasn't built for the people inside it. He just knows it hits.
 
-But here's what I think about, sitting in that arena watching him: he's hearing the repackaged version. The Scotiabank Arena version. Wu-Tang in Leafs jerseys, the edges filed off, the danger gone. And that's exactly what's happening to Bitcoin right now — ETFs, institutional custody, boardroom presentations. The thing that was built to escape the system is being absorbed by it.
+The signal finds people when they're ready. Wu-Tang went from Staten Island to Scotiabank Arena. Bitcoin went from Malmi's five-dollar PayPal transaction to a hundred-thousand-dollar asset. The signal always gets louder. The question is what it sounds like after the institutions get hold of it — and whether the next generation hears the original frequency or only the repackaged version.
 
-The question isn't whether that happens. It always does. The question is whether enough people heard the original frequency to keep it alive underneath. Whether somewhere, right now, there's a kid in a project hallway writing something that won't make sense to the rest of us for another fifteen years.
+Cash ruled everything around them in '93. Corporate rules the arena now. Crypto is writing the next verse.
 
-Cash ruled everything around them in '93. It still does. The arena changes. The frequency doesn't.`,
+C.R.E.A.M. The acronym keeps finding new meanings because the truth underneath it doesn't change: the system takes its cut. The people who see it first build around it.
+
+The protocol changed. The rule didn't. The arena changes. The frequency doesn't.
+
+---
+
+*Sathian S. builds at sathian.ai*`,
   },
   {
     title: 'The Yellow Box',
     titleHighlight: 'Yellow Box',
     slug: 'the-yellow-box',
-    date: '2025-12-29',
+    date: '2025-12-25',
     author: 'Sathian',
     domains: ['institutional decay', 'digital sovereignty'],
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
     pullQuotes: [
       'The most basic nutrition on the shelf, more than doubled, while nothing else about his life changed except what he could afford.',
+      'Five dollars from the tooth fairy. Five dollars for the genesis of a trillion-dollar protocol. Same amount. One depreciates. The other doesn\'t.',
       'The collapse didn\'t arrive as a single dramatic event. It arrived the way Hemingway described going bankrupt: gradually, then suddenly.',
       'The question for every institution today is the same one the Soviet Union faced in 1986: can you survive your citizens doing the math?',
     ],
@@ -112,11 +130,14 @@ Cash ruled everything around them in '93. It still does. The arena changes. The 
       background: 'aurora',
       mood: 'contemplative',
     },
-    sectionHeadings: ['The Math', 'Glasnost', 'The Western Mirror', 'The Architecture'],
-    sectionTints: ['#D4A017', '#CD0000', '#CD0000', '#F7931A'],
+    sectionHeadings: ['The Math', 'Five Dollars', 'Glasnost', 'The Western Mirror', 'The Architecture'],
+    sectionTints: ['#D4A017', '#F7931A', '#CD0000', '#CD0000', '#F7931A'],
     textHighlights: [
       { text: 'yellow box', color: '#F5D442' },
       { text: 'No Name', color: '#F5D442' },
+      { text: 'Martti Malmi', color: '#F7931A' },
+      { text: '$5.02', color: '#F7931A' },
+      { text: 'sats', color: '#F7931A' },
       { text: 'glasnost', color: '#CD0000', link: 'https://grokipedia.com/page/Glasnost' },
       { text: 'perestroika', color: '#CD0000', link: 'https://grokipedia.com/page/Perestroika' },
       { text: 'gradually, then suddenly', color: '#DC2626' },
@@ -128,19 +149,35 @@ Cash ruled everything around them in '93. It still does. The arena changes. The 
       { src: '/media/abandoned-cart.jpg', alt: 'Empty shopping cart on barren pavement', caption: 'He was trying to explain to me what went wrong', placement: 'hero' },
       { src: '/media/supermarket-shelves.jpg', alt: 'Grocery store shelves', caption: 'Just the yellow box', placement: 'inline-left', afterSection: 0 },
       { src: '/media/sathian-yellow-box.jpg', alt: 'Sathian standing in front of yellow pasta boxes at the grocery store', caption: 'The yellow box. The thing you buy when you\'re watching every dollar.', placement: 'inline-right', afterSection: 0 },
-      { src: '/media/soviet-building.jpg', alt: 'Soviet-era architecture', caption: 'The gap between what the state had been saying and what people had been living', placement: 'full-bleed', afterSection: 1 },
-      { src: '/media/propaganda-red.jpg', alt: 'Soviet red', caption: 'The emperor had no clothes and the shelves had no food', placement: 'inline-left', afterSection: 1 },
-      { src: '/media/grocery-aisle.jpg', alt: 'Supermarket aisle', caption: 'The official numbers told one story. The grocery receipt told another.', placement: 'full-bleed', afterSection: 2 },
-      { src: '/media/empty-shelf.jpg', alt: 'Empty grocery shelf', caption: 'The system\'s accounting doesn\'t match your lived experience', placement: 'inline-right', afterSection: 2 },
+      { src: '/media/soviet-building.jpg', alt: 'Soviet-era architecture', caption: 'The gap between what the state had been saying and what people had been living', placement: 'full-bleed', afterSection: 2 },
+      { src: '/media/propaganda-red.jpg', alt: 'Soviet red', caption: 'The emperor had no clothes and the shelves had no food', placement: 'inline-left', afterSection: 2 },
+      { src: '/media/grocery-aisle.jpg', alt: 'Supermarket aisle', caption: 'The official numbers told one story. The grocery receipt told another.', placement: 'full-bleed', afterSection: 3 },
+      { src: '/media/empty-shelf.jpg', alt: 'Empty grocery shelf', caption: 'The system\'s accounting doesn\'t match your lived experience', placement: 'inline-right', afterSection: 3 },
     ],
     hiddenSignal: 'In 1989, Boris Yeltsin made an unscheduled stop at a Randalls supermarket in Clear Lake, Texas. He wandered the aisles in silence. Later he told his aides the Soviet people would revolt if they saw what Americans had access to. Within two years, the Soviet Union was gone.',
-    body: `My Uber driver — a guy who'd come to Canada from Afghanistan in 2017 — was trying to explain to me what went wrong.
+    body: `I had just dropped off my kids and was heading to a dinner across town. My Uber driver had come to Canada from Afghanistan in 2017. He was a non-Muslim who'd lived in Afghanistan for many years — long enough to explain, without drama, what daily life looked like under the Taliban. The checkpoints. The rules that changed depending on who was enforcing them. The quiet calculus of survival in a place where the system wasn't broken — it was working exactly as designed, just not for people like him.
 
-When he arrived, Canada was paradise. He started driving, things were good, the math worked. Somewhere in the last few years, the math stopped working and he couldn't figure out why. He wasn't reading economics papers or following central bank announcements. But he had an analogy that was better than anything I'd read in the Financial Post.
+He left. Canada was paradise. He started driving, things were good, the math worked. Somewhere in the last few years, the math stopped working and he couldn't figure out why. He wasn't reading economics papers or following central bank announcements. But he had an analogy that was better than anything I'd read in the Financial Post.
 
 No Name spaghetti. The yellow box. Loblaw's cheapest option — the thing you buy when you're watching every dollar. It was about a dollar a few years ago. Now it's well over two. The most basic nutrition on the shelf, more than doubled, while nothing else about his life changed except what he could afford.
 
-Before you get to housing. Before you get to gas or daycare or rent. Just the yellow box.
+Before you get to housing. Before you get to gas or daycare or rent. Just the yellow box. That's the signal.
+
+---
+
+A few weeks earlier, my children had each lost a tooth within a few days of each other. Their mom told me the tooth fairy left them five dollars each.
+
+Five dollars. I got one dollar when I lost my first tooth. My parents left it under my pillow with a little handwritten note. That was the early nineties. Thirty years later the tooth fairy pays five times more for the same tooth.
+
+Even the tooth fairy has inflation.
+
+But here's where it gets interesting. In October 2009, a Finnish developer named Martti Malmi sold 5,050 bitcoins for $5.02 — the first time anyone exchanged bitcoin for dollars. Five dollars. That's what it cost to set the first price on the blockchain. Before Malmi, Bitcoin had no market value. After that five-dollar PayPal transaction, the snowball started to roll.
+
+Five dollars from the tooth fairy. Five dollars for the genesis of a trillion-dollar protocol. Same amount. The tooth fairy's five dollars will be worth less next year. Malmi's five dollars bought an asset that went from a fraction of a penny to over a hundred thousand dollars — and will be worth orders of magnitude more within our lifetimes.
+
+I told my daughters I'd also left them something. I'd deposited some sats — satoshis, the smallest unit of Bitcoin — into their digital wallets. They stared at me. "What are sats?"
+
+What followed was twenty minutes of questions I wasn't fully prepared for, which is how most of my best parenting moments start. Why does money change? Why does the tooth fairy give more now? What makes sats different from dollars? They didn't get all of it. But they asked, and I'd rather they ask early than figure it out late — the way I did.
 
 ---
 
@@ -168,7 +205,11 @@ It happens slowly, then suddenly. Millions of people around the world doing the 
 
 Gorbachev thought transparency would save the system. It destroyed it — because the system couldn't survive being seen clearly. The question for every institution today is the same one the Soviet Union faced in 1986: can you survive your citizens doing the math?
 
-My Uber driver already did the math. He's still driving. He's still watching the yellow box. And slowly, then suddenly, so is everyone else.`,
+My Uber driver already did the math. He's still driving. He's still watching the yellow box. And slowly, then suddenly, so is everyone else.
+
+---
+
+*Sathian S. builds at sathian.ai*`,
   },
   {
     title: 'Nine Pages',
@@ -182,6 +223,7 @@ My Uber driver already did the math. He's still driving. He's still watching the
       'I had opinions about Bitcoin for years before I actually read the document that started it. Most people do. That\'s worth sitting with.',
       'Nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars — it fits in a pamphlet.',
       'The Gen Z version did something I didn\'t think was possible: it made me understand the parts I\'d been pretending to understand.',
+      'The wallet attributed to Satoshi \u2014 roughly one million bitcoin, worth over a hundred billion dollars \u2014 has never moved. The most valuable act of restraint in the history of money.',
     ],
     theme: {
       accent: '#F7931A',
@@ -194,8 +236,13 @@ My Uber driver already did the math. He's still driving. He's still watching the
     textHighlights: [
       { text: 'nine pages', color: '#F7931A' },
       { text: 'Nine pages', color: '#F7931A' },
+      { text: 'Charlie Munger', color: '#F59E0B' },
+      { text: 'rat poison', color: '#F59E0B' },
       { text: 'Satoshi Nakamoto', color: '#F7931A' },
       { text: 'bitcoin.org/bitcoin.pdf', color: '#F7931A', link: 'https://bitcoin.org/bitcoin.pdf' },
+      { text: 'twenty-one million', color: '#F7931A' },
+      { text: 'genesis block', color: '#F7931A' },
+      { text: 'Martti Malmi', color: '#F7931A' },
     ],
     media: [
       { src: '/media/sathian-oracle.jpg', alt: 'Sathian — Bitcoin is my religion', caption: '', placement: 'hero' },
@@ -206,23 +253,27 @@ My Uber driver already did the math. He's still driving. He's still watching the
       { type: 'whitepaper-cta', afterSection: 3 },
     ],
     hiddenSignal: 'On page 1, section 1, Satoshi writes: "What is needed is an electronic payment system based on cryptographic proof instead of trust." Every section that follows is an answer to that single sentence. The entire system is one idea, executed with discipline.',
-    body: `Here\'s my confession: I had opinions about Bitcoin for years before I actually read the document that started it. Most people do. That\'s worth sitting with.
+    body: `One of my biggest intellectual influences over the last decade was Charlie Munger. I read *Poor Charlie\'s Almanac* and it rewired how I think \u2014 mental models, first principles, the whole framework. I followed Munger and Buffett the way some people follow athletes. And Charlie Munger hated Bitcoin. Called it rat poison. So for years, that was good enough for me. One of the sharpest minds of the century said it was garbage, and I filed it away as settled. I never once thought to check his work.
 
-I bought Bitcoin. I traded Bitcoin. I argued about Bitcoin at dinner tables and in group chats. I watched the price. I had takes. I talked about it with the certainty of someone who\'d done the reading — except I hadn\'t. I never sat down and read the nine-page whitepaper that Satoshi Nakamoto published on October 31, 2008. Not once. Not until 2024.
+For years, that was me with Bitcoin. I bought it. I traded it. I argued about it at dinner tables with the certainty of someone who\'d done the reading. I called the true believers zealots. I rolled my eyes at the maximalists. I had takes on the technology, the economics, the culture \u2014 all without ever reading the nine-page document that started it. Not once. Not until 2024.
 
-For years, I was forming opinions about the most significant financial innovation of our lifetime based on other people\'s summaries, podcasts, Twitter threads, and vibes. I suspect I\'m not alone.
+Satoshi Nakamoto published the Bitcoin whitepaper on October 31, 2008. I\'d been forming opinions about the most significant financial innovation of our lifetime based on other people\'s summaries, other people\'s convictions, other people\'s dismissals. Running on borrowed conviction. I suspect I\'m not alone.
 
 ---
 
 When I finally read it — actually read it — two things hit me immediately.
 
-First: nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars — it fits in a pamphlet. Satoshi Nakamoto laid out the entire architecture of a peer-to-peer electronic cash system in fewer pages than most college essays. No fluff. No marketing. No vision statement about changing the world. Just: here is a problem, here is a solution, here is the math.
+First: nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars \u2014 it fits in a pamphlet. The U.S. Constitution is four pages. The Declaration of Independence is one. The Communist Manifesto is twenty-three. Martin Luther nailed ninety-five theses to a church door. Einstein\'s special relativity paper was thirty-one pages. Satoshi Nakamoto laid out the entire architecture of a peer-to-peer electronic cash system in fewer pages than most college essays. No fluff. No marketing. No vision statement about changing the world. Just: here is a problem, here is a solution, here is the math.
 
 Second: the mechanisms are simple. Not easy — simple. There\'s a difference. Proof-of-work isn\'t some alien concept. It\'s the idea that if you make someone spend real computational energy to add a record, they won\'t waste it on lies. A timestamp server isn\'t mysterious — it\'s a chain of digital fingerprints, each one proving the one before it existed. The longest chain wins because it represents the most work, and work can\'t be faked.
 
 I\'d been intimidated by these concepts for years. The jargon made them feel inaccessible. But reading the source material — not a summary, not an explainer, the actual document — I realized these mechanisms are deeply intuitive once you strip away the mystique. Satoshi wasn\'t writing for cryptographers. The paper reads like someone explaining a system to a smart friend over coffee.
 
-The moment I understood how a network of strangers could agree on truth without trusting each other — without any institution mediating — something shifted. This wasn\'t just a better way to move money. This was a new way to protect truth. A protocol that makes it more expensive to lie than to be honest. That\'s not a financial product. That\'s an architecture for trust in a world that\'s running out of it.
+The document has twelve sections. I\'ll name them because the structure itself tells you something about the mind that wrote it: Introduction. Transactions. Timestamp Server. Proof-of-Work. Network. Incentive. Reclaiming Disk Space. Simplified Payment Verification. Combining and Splitting Value. Privacy. Calculations. Conclusion. There\'s no "Vision" section. No "Philosophy." No "Why This Matters." Satoshi didn\'t argue. Satoshi built. The document describes a machine, not an ideology.
+
+Eight references at the bottom. That\'s all. Adam Back\'s Hashcash. Wei Dai\'s b-money. Ralph Merkle\'s work on public key cryptography. The bibliography of a builder who studied what came before and assembled something new from existing parts.
+
+The moment I understood how a network of strangers could agree on truth without trusting each other \u2014 without any institution mediating \u2014 something shifted. This wasn\'t just a better way to move money. This was a new way to protect truth. A protocol that makes it more expensive to lie than to be honest. That\'s not a financial product. That\'s an architecture for trust in a world that\'s running out of it.
 
 ---
 
@@ -242,27 +293,36 @@ So here\'s what this is. A resource. Something I can send to the next person who
 
 Read the original: bitcoin.org/bitcoin.pdf — nine pages, published October 31, 2008, by someone whose identity remains unknown. Read it like you\'d read the operating manual for something you already own but never learned to use.
 
-Read the translation: the Gen Z version linked below — same nine sections, same ideas, different language. Read it if the original feels impenetrable, or read it after and see which version made the concepts stick.
+Read the translation: the Gen Z version linked below \u2014 same nine sections, same ideas, different language. Read it if the original feels impenetrable, or read it after and see which version made the concepts stick.
+
+Here\'s what those nine pages set in motion. On January 3, 2009, the genesis block was mined. Embedded in it: *"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."* Fourteen months from document to working system. Martti Malmi sold 5,050 BTC for $5.02 on PayPal \u2014 the moment code crossed into money. As I write this, a single bitcoin is worth over a hundred thousand dollars. The wallet attributed to Satoshi \u2014 roughly one million bitcoin, worth over a hundred billion dollars \u2014 has never moved. The most valuable act of restraint in the history of money.
+
+Every fiat currency in history has gone to zero. Every single one. Nine pages described a system where supply is fixed. Twenty-one million. Ever. No central bank can print more. No government can inflate it away. The math is the law. An anonymous person \u2014 or group \u2014 wrote a document that will eventually reprice everything we thought we understood about value, sovereignty, and trust. Not through revolution. Through code.
 
 Then decide for yourself. Which version communicated better? Which section surprised you? Did you already know how proof-of-work actually works, or were you — like me — running on borrowed conviction?
 
 I spent years having opinions about something I hadn\'t read. Most people in Bitcoin have. Most people arguing against Bitcoin definitely have. The document is nine pages. It takes twenty minutes. There is no excuse, mine included, for not reading the primary source before forming a position.
 
-Nine pages. Twenty minutes. Read the thing. Then we can talk.`,
+Nine pages. Twenty minutes. Read the thing. Then we can talk.
+
+---
+
+*Sathian S. builds at sathian.ai*`,
   },
   {
     title: 'Yakko\'s World Was Already Wrong',
     titleHighlight: 'Already Wrong',
     slug: 'yakkos-world',
-    date: '2026-02-09',
+    date: '2026-02-06',
     author: 'Sathian',
     domains: ['geopolitics', 'digital sovereignty', 'culture'],
-    description: 'In 1993 a cartoon Warner brother sang every country on Earth. A cypherpunk wrote a manifesto. The web went free. A billion people entered the global economy. The map was already wrong on day one — and we\'re at the same hinge point again.',
+    description: '1993 was a hinge. A cartoon taught geography. A cypherpunk wrote about electronic money. The web went free. The old world was ending and the new one was being coded into existence — and we\'re at the next hinge now.',
     pullQuotes: [
       'The map was already wrong on day one.',
+      'Privacy is not secrecy. Secrecy is hiding everything. Privacy is the power to selectively reveal yourself to the world.',
       'Fifty-two days apart. The manifesto for encrypted money. And the free, open network it would ride on.',
       'One billion people. Gold airlifted in secrecy. A planned economy dismantled. The internet launched on the anniversary of freedom.',
-      'I wasn\'t paying attention in 1993 \u2014 I was ten, watching cartoons. I\'m paying attention now.',
+      'The map was wrong the day Yakko sang it. The song was right. The world is ready for a new verse.',
     ],
     theme: {
       accent: '#06B6D4',
@@ -291,20 +351,18 @@ Nine pages. Twenty minutes. Read the thing. Then we can talk.`,
     ],
     media: [
       { src: '/media/yakkos-world-globe.jpg', alt: 'Yakko Warner pointing at a world map, naming every country', caption: 'September 14, 1993 — Yakko names roughly 185 countries. The map was already wrong.', placement: 'hero' },
+      { src: '/media/sathian-daughter-yakkos-world.jpg', alt: 'My daughter and I watching Yakko\'s World — singing every country', caption: 'Now I play it for my own children on demand.', placement: 'inline-right', afterSection: 0 },
       { src: '/media/cypherpunk-manifesto.jpg', alt: 'A Cypherpunk\'s Manifesto by Eric Hughes — March 9, 1993', caption: 'March 9, 1993. Twelve paragraphs on a mailing list. "We are defending our privacy with cryptography... and with electronic money."', placement: 'inline-left', afterSection: 1 },
       { src: '/media/sovereign-individual-cover.jpg', alt: 'The Sovereign Individual by Davidson and Rees-Mogg — book cover', caption: 'Published 1997. Predicted encrypted digital money eleven years before Bitcoin.', placement: 'inline-right', afterSection: 2 },
-      { src: '/media/india-ambassador-1991.jpg', alt: 'A white Hindustan Ambassador on a dusty Delhi road — symbol of the License Raj era', caption: '1991. Gold airlifted in secrecy. A planned economy dismantled. A billion people entered the global economy.', placement: 'inline-left', afterSection: 4 },
-      { src: '/media/wutang-90s.jpg', alt: 'Wu-Tang Clan in the early 90s — the same year as Yakko\'s World', caption: 'November 1993. C.R.E.A.M. — Cash Rules Everything Around Me. A song about the system, the same year someone wrote a manifesto about replacing it with cryptography.', placement: 'inline-left', afterSection: 4 },
+      { src: '/media/india-ambassador-1991.jpg', alt: 'The Hindustan Ambassador — for decades the only passenger car India produced, a symbol of the License Raj era. A billion people entered the global economy when it ended.', caption: 'The Hindustan Ambassador — a 1956 Morris Oxford frozen in amber by the License Raj. A billion people entered the global economy when it ended.', placement: 'inline-left', afterSection: 4 },
     ],
     specialElements: [
       { type: 'youtube-embed', afterSection: 0, data: { videoId: '5pOFKmk7ytU' } },
     ],
     hiddenSignal: 'September 14, 1993 was episode 2 of Animaniacs. The show\'s premiere had been September 13 \u2014 the same day the Oslo Accords were signed. The entire show debuted in a two-day window that also saw the last attempt at Middle East peace and the world\'s most comprehensive geography lesson, both rendered obsolete within the decade.',
-    body: `September 14, 1993. A Tuesday. I was ten years old in Toronto, the son of parents who ran a small business. Every morning before they carted us off to work at the shop \u2014 which I despised at the time and now count as the greatest education of my life \u2014 I had a narrow window of cartoons. I savored every minute of it. That morning, I watched a cartoon Warner brother in khakis belt out the names of every country on Earth to the tune of the Mexican Hat Dance.
+    body: `September 14, 1993. I was ten years old in Toronto. On weekends, my parents took us to help at their shop \u2014 which I despised at the time and now count as the greatest education of my life. But Saturday mornings, before we left, I had a narrow window of cartoons, and I savored every minute of it. That morning, a cartoon Warner brother in khakis sang every country on Earth to the tune of the Mexican Hat Dance. One hundred and eighty-five places in under two minutes. It was beautiful, it was catchy, and the map was already shifting underneath it.
 
-Yakko Warner named roughly 185 places in under two minutes. It was virtuoso. It was catchy. And it was already wrong.
-
-I only saw it once or twice. There was no replay, no DVR, no YouTube. You caught the episode or you didn\'t. But the melody stuck. I tried to memorize it. Now, of course, I play it for my own children on demand.
+I only saw it once or twice \u2014 there was no replay, no DVR, no YouTube. You caught the episode or you didn\'t. But the melody stayed with me. I tried to memorize every country, not knowing that some of them wouldn\'t exist by the time I finished high school. Now I play it for my own children on demand, and the song still teaches, still holds up, even as the world beneath it keeps changing.
 
 Czechoslovakia had dissolved into two countries eight months earlier \u2014 the "Velvet Divorce," midnight, January 1, 1993. Yugoslavia was mid-disintegration, bleeding into wars that would produce seven successor states. Yakko sang "both Yemens" even though Yemen had unified three years prior. He named Zaire, which would become the Democratic Republic of the Congo four years later. He skipped all fifteen former Soviet republics except Russia.
 
@@ -312,12 +370,14 @@ The map was already wrong on day one. But I didn\'t know that. I was ten. I was 
 
 1993 wasn\'t just a year. It was a hinge. The old world was dissolving and the new one was being coded into existence \u2014 literally \u2014 while a cartoon taught kids geography that was already obsolete.
 
+And I believe we\'re standing at the next hinge right now.
+
 ---
 Rewind six months before Yakko\'s debut.
 
 March 9, 1993. Eric Hughes, a Berkeley mathematician, posts a 12-paragraph document to a mailing list. He calls it *A Cypherpunk\'s Manifesto*. The opening line: *"Privacy is necessary for an open society in the electronic age."*
 
-The manifesto draws a distinction that still trips people up: privacy is not secrecy. Secrecy is hiding everything. Privacy is the power to selectively reveal yourself to the world. He argues that governments and corporations will never protect this power voluntarily. That the only defense is code. Cryptography. Anonymous systems. And \u2014 here\'s the line that echoes forward into Bitcoin \u2014 electronic money.
+Hughes draws a line that most people still don\'t understand thirty-three years later: **privacy is not secrecy.** Secrecy is hiding everything. Privacy is the power to selectively reveal yourself to the world. He argues that governments and corporations will never protect this power voluntarily. That the only defense is code. Cryptography. Anonymous systems. And \u2014 here\'s the line that echoes forward into Bitcoin \u2014 *electronic money.*
 
 *"We the Cypherpunks are dedicated to building anonymous systems. We are defending our privacy with cryptography, with anonymous mail forwarding systems, with digital signatures, and with electronic money."*
 
@@ -337,9 +397,18 @@ Four years later, in 1997, James Dale Davidson and Lord William Rees-Mogg publis
 
 They described digital money with eerie precision: *"It will consist of encrypted sequences of multihundred-digit prime numbers. Unique, anonymous, and verifiable, this money will accommodate the largest transactions. It will also be divisible into the tiniest fraction of value."*
 
-Written in 1997. Eleven years before Bitcoin. They described proof-of-work cryptocurrency without knowing the name.
+Written in 1997. Eleven years before Bitcoin. They described digital cryptocurrency without knowing the name.
 
-But Davidson and Rees-Mogg went further. They predicted remote work becoming the default for knowledge workers. Digital nomads choosing jurisdictions like consumers. Nation-states losing tax revenue to cybercommerce. Citizenship becoming a product, with countries competing for residents. The cognitive elite pulling away from everyone else. Information overload making curation valuable. All of this has come true.
+But Davidson and Rees-Mogg went further. They predicted:
+
+- Remote work becoming the default for knowledge workers
+- Digital nomads choosing jurisdictions like consumers
+- Nation-states losing tax revenue to cybercommerce
+- Citizenship becoming a product \u2014 countries competing for residents
+- The cognitive elite pulling away from everyone else
+- Information overload making curation valuable
+
+All of this has come true.
 
 They also got things wrong. They predicted the collapse of public schooling by 2010, the end of democratic governance, and widespread elite abandonment of national loyalty within a generation. None of that happened on their timeline. Prophecy is never a clean hit \u2014 it\'s a direction, not a GPS coordinate.
 
@@ -357,9 +426,13 @@ And here\'s the thing: the next 34 changes won\'t just be borders. They\'ll be c
 ---
 1993 wasn\'t just geopolitics and manifestos. It was a creative supernova \u2014 the kind that only happens when an old world is burning out and a new one hasn\'t quite ignited.
 
+Spielberg released both the highest-grossing film AND the Best Picture winner in the same year \u2014 *Jurassic Park* (June) and *Schindler\'s List* (November). Nobody has done this before or since. Think about what those two films represent together: technology unleashed without ethics, and the worst of what nation-state power produces. Both themes in the same year, from the same mind.
+
 Nirvana released *In Utero* in September \u2014 the same month Yakko sang. Six months later, Kurt Cobain was dead. When I was ten, Nirvana was just the loud music my older cousins played. Now I hear it as the sound of a world that knew something was ending but couldn\'t articulate what came next.
 
 Wu-Tang Clan dropped *36 Chambers* in November. C.R.E.A.M. \u2014 Cash Rules Everything Around Me \u2014 became the anthem. A song about money, survival, and the system, released the same year someone wrote a manifesto about replacing that entire system with cryptography.
+
+DOOM launched on December 10 \u2014 uploaded to the internet at midnight, crashing the University of Wisconsin\'s network with 10,000 simultaneous download attempts. Distributed as shareware. For free. On the same internet that CERN had opened eight months earlier. The cypherpunks\' dream applied to entertainment: free software, distributed globally, without anyone\'s permission.
 
 The Oslo Accords were signed on September 13 \u2014 one day before Yakko\'s World aired. Rabin and Arafat shaking hands on the White House lawn. The optimism of that handshake didn\'t survive the decade. The EU formally came into existence on November 1. Nations binding together while others were splitting apart.
 
@@ -371,7 +444,7 @@ One billion people. Gold airlifted in secrecy. A planned economy dismantled. The
 
 And through all of it, a ten-year-old in Toronto was watching a cartoon character sing about countries, absorbing a worldview that was already dissolving. That kid was at the peak of the old childhood \u2014 the last generation to grow up without the internet, to learn geography from cartoons instead of algorithms, to experience a world that still felt stable even as it was fracturing underneath.
 
-I think about this a lot now. Because I have young children about to turn seven. They\'re the age where the world is still a song you can memorize. And I\'m acutely aware that the map I hand them will be wrong too.
+I think about this a lot now. Because I have young children. They\'re the age where the world is still a song you can memorize. And I\'m acutely aware that the map I hand them will be wrong too.
 ---
 Here\'s the thread that connects all of this.
 
@@ -391,15 +464,25 @@ Here\'s the thread that connects all of this.
 
 We\'re at the next hinge. I wasn\'t paying attention in 1993 \u2014 I was ten, watching cartoons. I\'m paying attention now.
 
-Bitcoin has crossed from experiment to infrastructure \u2014 nation-states are buying it, ETFs hold it, the thing the cypherpunks described in a manifesto is on the balance sheets of sovereign wealth funds. Identity is moving on-chain: ENS names, Nostr key pairs, self-sovereign credentials. The next generation won\'t need a government to prove who they are. The map is fracturing again \u2014 new currencies, new protocols, new forms of sovereignty that don\'t correspond to any line on a map.
+The signals:
+- AI is doing to knowledge work what the internet did to information. The cost of intelligence is dropping toward zero, just like the cost of publishing did in 1993.
+- Bitcoin has crossed from experiment to infrastructure. Nation-states are buying it. ETFs hold it. The thing the cypherpunks described in a manifesto is on the balance sheets of sovereign wealth funds.
+- Identity is moving on-chain. ENS names, Nostr key pairs, self-sovereign credentials. The next generation won\'t need a government to prove who they are.
+- The map is fracturing again. New currencies, new protocols, new forms of sovereignty that don\'t correspond to any line on a map.
 
-The people who saw 1993 clearly \u2014 Hughes, Berners-Lee, Davidson, Rees-Mogg, and later Satoshi \u2014 they didn\'t just predict. They built. They wrote code. They released things into the world.
+The people who saw 1993 clearly \u2014 Hughes, Berners-Lee, Davidson, Rees-Mogg, and later Satoshi \u2014 they didn\'t just predict. They built. They wrote code. They released things into the world. The Cypherpunk Manifesto wasn\'t a prediction \u2014 it was a declaration of intent. The web wasn\'t a forecast \u2014 it was an act of generosity.
 
-I\'m building too. That\'s what the BTC Cultural Atlas is \u2014 btc.sathian.ai \u2014 my attempt to map what I see happening.
+That\'s the part that matters. Seeing the hinge isn\'t enough. You have to build through it.
+
+The map was wrong the day Yakko sang it. The song was right. The world is ready for a new verse.
 
 ---
 
-*The original "Yakko\'s World" was written by Randy Rogel and performed by Rob Paulsen as Yakko Warner. It first aired as part of Animaniacs, Season 1 Episode 2, on September 14, 1993. The song remains one of the most creative pieces of educational entertainment ever produced. This essay is written in admiration of that work.*`,
+*The original "Yakko\'s World" was written by Randy Rogel and performed by Rob Paulsen as Yakko Warner. It first aired as part of Animaniacs, Season 1 Episode 2, on September 14, 1993. The song remains one of the most creative pieces of educational entertainment ever produced. This essay is written in admiration of that work.*
+
+*Sources: Eric Hughes, A Cypherpunk\'s Manifesto (March 9, 1993). James Dale Davidson & William Rees-Mogg, The Sovereign Individual (1997). CERN, "The Birth of the Web" \u2014 April 30, 1993. Satoshi Nakamoto, Bitcoin: A Peer-to-Peer Electronic Cash System (October 31, 2008). India\'s 1991 Economic Liberalization. VSNL Internet Launch \u2014 August 15, 1995.*
+
+*Sathian S. builds at sathian.ai*`,
   },
 ]
 

@@ -10,7 +10,24 @@ const nextConfig = {
         destination: '/toothfairy/network',
         permanent: true,
       },
+      {
+        source: '/btc-atlas',
+        destination: 'https://btc.sathian.ai',
+        permanent: true,
+      },
     ]
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        // toothfairy.sathian.ai → /toothfairy/* pages
+        {
+          source: '/:path*',
+          has: [{ type: 'host', value: 'toothfairy.sathian.ai' }],
+          destination: '/toothfairy/:path*',
+        },
+      ],
+    }
   },
 }
 

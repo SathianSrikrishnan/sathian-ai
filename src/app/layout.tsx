@@ -45,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" data-theme="dark" className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )

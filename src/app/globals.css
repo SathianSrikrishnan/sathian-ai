@@ -14,6 +14,34 @@
   --border: #30363d;
 }
 
+/* ─── Observatory Hub Design System ──────────────────────────────────────── */
+
+[data-theme="dark"] {
+  --hub-bg-primary: #0A0A0F;
+  --hub-bg-alt: #111118;
+  --hub-bg-dark: #060609;
+  --hub-bg-elevated: #18182A;
+  --hub-text-primary: #F9FAFB;
+  --hub-text-secondary: #9CA3AF;
+  --hub-text-muted: #4B5563;
+  --hub-grid-color: rgba(255, 255, 255, 0.075);
+  --hub-accent: #F7931A;
+  --hub-border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --hub-bg-primary: #FFFFFF;
+  --hub-bg-alt: #F5F5F5;
+  --hub-bg-dark: #1c1c1c;
+  --hub-bg-elevated: #FFFFFF;
+  --hub-text-primary: #1c1c1c;
+  --hub-text-secondary: #4c4c4c;
+  --hub-text-muted: #8A8EA8;
+  --hub-grid-color: rgba(0, 0, 0, 0.075);
+  --hub-accent: #F7931A;
+  --hub-border-subtle: rgba(0, 0, 0, 0.08);
+}
+
 /* Kids mode - sunshine theme */
 .theme-kids {
   --background: #FFF8E7;
@@ -270,15 +298,630 @@ h1, h2, h3 {
 .globe-glow-wrapper::before {
   content: '';
   position: absolute;
-  inset: -15%;
+  inset: -20%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(6,182,212,0.06) 30%, transparent 60%);
+  background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, rgba(6,182,212,0.15) 30%, transparent 60%);
   animation: glowPulse 4s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
 }
 
+.globe-glow-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(6,182,212,0.18) 0%, rgba(236,72,153,0.08) 25%, transparent 55%);
+  animation: glowPulseSecondary 6s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
 @keyframes glowPulse {
-  0% { opacity: 0.6; transform: scale(1); }
-  100% { opacity: 1; transform: scale(1.05); }
+  0% { opacity: 0.5; transform: scale(1); filter: blur(0px); }
+  100% { opacity: 1; transform: scale(1.08); filter: blur(2px); }
+}
+
+@keyframes glowPulseSecondary {
+  0% { opacity: 0.4; transform: scale(0.95); }
+  100% { opacity: 0.8; transform: scale(1.08) rotate(3deg); }
+}
+
+/* ─── Observatory Hub: Zone System ───────────────────────────────────────── */
+
+.zone-primary {
+  background: var(--hub-bg-primary);
+  color: var(--hub-text-primary);
+}
+
+.zone-alt {
+  position: relative;
+  background: var(--hub-bg-alt);
+  color: var(--hub-text-primary);
+}
+
+.zone-alt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--hub-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hub-grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.zone-dark {
+  background: var(--hub-bg-dark);
+  color: var(--hub-text-primary);
+}
+
+/* ─── Observatory Hub: Corner Dots ───────────────────────────────────────── */
+
+.zone-bordered {
+  position: relative;
+}
+
+.zone-bordered::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--dot-color, var(--hub-accent));
+}
+
+.zone-bordered-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--dot-color, var(--hub-accent));
+}
+
+/* ─── Observatory Hub: 12-Column Grid ────────────────────────────────────── */
+
+.hub-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hub-container > .span-full { grid-column: 1 / -1; }
+.hub-container > .span-8 { grid-column: span 8; }
+.hub-container > .span-4 { grid-column: span 4; }
+.hub-container > .span-6 { grid-column: span 6; }
+
+@media (max-width: 768px) {
+  .hub-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+  }
+  .hub-container > .span-8,
+  .hub-container > .span-4,
+  .hub-container > .span-6 {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ─── Observatory Hub: Section Spacing ───────────────────────────────────── */
+
+.hub-section {
+  padding: 80px 0;
+}
+
+@media (max-width: 768px) {
+  .hub-section {
+    padding: 48px 0;
+  }
+}
+
+/* ─── Observatory Hub: Typography Scale ──────────────────────────────────── */
+
+.hub-hero-name {
+  font-family: var(--font-display), 'Outfit', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.hub-section-heading {
+  font-family: var(--font-display), 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hub-card-title {
+  font-family: var(--font-display), 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.hub-body {
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.hub-eyebrow {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.hub-mono {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .hub-hero-name { font-size: 32px; }
+  .hub-section-heading { font-size: 20px; }
+  .hub-card-title { font-size: 18px; }
+  .hub-body { font-size: 15px; }
+  .hub-eyebrow { font-size: 11px; }
+  .hub-mono { font-size: 12px; }
+}
+
+/* ─── Observatory Hub: Project Cards ─────────────────────────────────────── */
+
+.hub-card {
+  background: var(--hub-bg-elevated);
+  border: 1px solid var(--hub-border-subtle);
+  border-radius: 12px;
+  padding: 32px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hub-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .hub-card:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Observatory Hub: Nav ────────────────────────────────────────────────── */
+
+.hub-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.hub-nav-solid {
+  background: var(--hub-bg-primary);
+  border-bottom: 1px solid var(--hub-border-subtle);
+}
+
+/* ─── Observatory Hub: Price Badge ────────────────────────────────────────── */
+
+.hub-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(247, 147, 26, 0.1);
+  border: 1px solid rgba(247, 147, 26, 0.2);
+  color: var(--hub-accent);
+}
+
+/* ─── Observatory Hub: Newsletter Input ──────────────────────────────────── */
+
+.hub-email-input {
+  background: var(--hub-bg-primary);
+  border: 1px solid var(--hub-border-subtle);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--hub-text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  max-width: 360px;
+}
+
+.hub-email-input::placeholder {
+  color: var(--hub-text-muted);
+}
+
+.hub-email-input:focus {
+  border-color: var(--hub-accent);
+}
+
+.hub-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--hub-accent);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.hub-btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* ─── Observatory Hub: Prompt Chips ──────────────────────────────────────── */
+
+.hub-prompt-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  background: var(--hub-bg-elevated);
+  border: 1px solid var(--hub-border-subtle);
+  color: var(--hub-text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.hub-prompt-chip:hover {
+  border-color: var(--hub-accent);
+  color: var(--hub-text-primary);
+}
+
+/* ─── Observatory Hub: Visual Polish ─────────────────────────────────────── */
+
+/* Hero radial glow behind name */
+.hub-hero-glow {
+  position: relative;
+}
+.hub-hero-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(247, 147, 26, 0.06) 0%, rgba(124, 58, 237, 0.04) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Accent-colored top line on cards */
+.hub-card-accent-orange { border-top: 2px solid rgba(247, 147, 26, 0.4); }
+.hub-card-accent-purple { border-top: 2px solid rgba(124, 58, 237, 0.4); }
+.hub-card-accent-cyan { border-top: 2px solid rgba(6, 182, 212, 0.4); }
+
+/* Card hover glow variants */
+.hub-card-glow-orange:hover {
+  box-shadow: 0 4px 32px rgba(247, 147, 26, 0.08), 0 0 0 1px rgba(247, 147, 26, 0.12);
+}
+.hub-card-glow-purple:hover {
+  box-shadow: 0 4px 32px rgba(124, 58, 237, 0.08), 0 0 0 1px rgba(124, 58, 237, 0.12);
+}
+.hub-card-glow-cyan:hover {
+  box-shadow: 0 4px 32px rgba(6, 182, 212, 0.06), 0 0 0 1px rgba(6, 182, 212, 0.1);
+}
+
+/* Subtle separator line between zones */
+.zone-separator {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--hub-border-subtle) 20%, var(--hub-border-subtle) 80%, transparent 100%);
+}
+
+/* Pillar mini tiles in globe section */
+.hub-pillar-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--hub-bg-elevated);
+  border: 1px solid var(--hub-border-subtle);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--hub-text-secondary);
+}
+
+.hub-pillar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Globe side-by-side layout */
+.hub-globe-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .hub-globe-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Featured article accent bar */
+.hub-featured-bar {
+  width: 3px;
+  background: var(--hub-accent);
+  border-radius: 2px;
+  align-self: stretch;
+}
+
+/* Explore button — emphasized CTA */
+.hub-btn-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  background: var(--hub-accent);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.hub-btn-explore:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Stat badge for globe section */
+.hub-stat {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--hub-text-primary);
+}
+
+.hub-stat-label {
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: var(--hub-text-muted);
+  margin-top: 4px;
+}
+
+/* ─── Observatory Hub: Marker Preview Cards ─────────────────────────────── */
+
+.hub-marker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .hub-marker-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .hub-marker-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.hub-marker-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 12px;
+  border-radius: 10px;
+  background: var(--hub-bg-elevated);
+  border: 1px solid var(--hub-border-subtle);
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hub-marker-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--marker-accent);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.hub-marker-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.hub-marker-card:hover::before {
+  opacity: 1;
+}
+
+.hub-marker-number {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--marker-accent);
+}
+
+.hub-marker-label {
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--hub-text-primary);
+  line-height: 1.3;
+}
+
+.hub-marker-pillar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--hub-text-muted);
+  margin-top: 2px;
+}
+
+/* ─── Article Simplification: Drop Cap ──────────────────────────────────── */
+
+.article-drop-cap::first-letter {
+  font-family: 'Playfair Display', Georgia, serif;
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.8;
+  padding-right: 10px;
+  padding-top: 6px;
+  color: #E6EDF3;
+  font-weight: 700;
+}
+
+/* ─── Observatory Hub: Visual Polish ────────────────────────────────────── */
+
+/* Subtle noise texture overlay for zones */
+.zone-alt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Zone edge fades — soft gradient transitions */
+.zone-edge-top {
+  position: relative;
+}
+.zone-edge-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--hub-bg-primary), transparent);
+  z-index: 1;
+}
+
+/* Enhanced card depth for hub */
+.hub-card {
+  background: var(--hub-bg-elevated);
+  border: 1px solid var(--hub-border-subtle);
+  border-radius: 12px;
+  padding: 32px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  position: relative;
+}
+
+.hub-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .hub-card:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Hero section — deeper radial glow */
+.hub-hero-glow-deep {
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 35%,
+    rgba(247, 147, 26, 0.06) 0%,
+    rgba(124, 58, 237, 0.04) 30%,
+    rgba(6, 182, 212, 0.02) 50%,
+    transparent 70%
+  );
+}
+
+/* Footer top gradient border */
+.zone-dark-edge {
+  position: relative;
+}
+.zone-dark-edge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+/* Newsletter zone — warm accent glow */
+.hub-newsletter-glow {
+  background: radial-gradient(
+    ellipse 50% 70% at 30% 50%,
+    rgba(234, 179, 8, 0.03) 0%,
+    transparent 70%
+  );
+}
+
+/* Chat zone — subtle purple ambient */
+.hub-chat-glow {
+  background: radial-gradient(
+    ellipse 40% 60% at 70% 50%,
+    rgba(124, 58, 237, 0.03) 0%,
+    transparent 60%
+  );
+}
+
+/* About zone — warm gradient */
+.hub-about-glow {
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(247, 147, 26, 0.02) 0%,
+    transparent 70%
+  );
+}
+
+/* Writing zone — cyan hint */
+.hub-writing-glow {
+  background: radial-gradient(
+    ellipse 60% 50% at 60% 40%,
+    rgba(6, 182, 212, 0.025) 0%,
+    transparent 60%
+  );
 }
