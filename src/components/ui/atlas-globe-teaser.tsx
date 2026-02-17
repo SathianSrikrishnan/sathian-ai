@@ -217,12 +217,14 @@ interface AtlasGlobeTeaserProps {
   size?: number
   activeFilters?: Set<PillarType>
   hideFilters?: boolean
+  highlightNumber?: string | null
 }
 
 export function AtlasGlobeTeaser({
   size = 420,
   activeFilters: externalFilters,
   hideFilters = false,
+  highlightNumber,
 }: AtlasGlobeTeaserProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const phiRef = useRef(0.4)
@@ -262,16 +264,28 @@ export function AtlasGlobeTeaser({
   const filteredSetRef = useRef(filteredSet)
   filteredSetRef.current = filteredSet
 
-  // Update marker targets when filters change
+  // Track highlight number in a ref for access in onRender
+  const highlightNumberRef = useRef(highlightNumber)
+  highlightNumberRef.current = highlightNumber
+
+  // Pre-compute highlight index for fast lookup
+  const highlightIndex = useMemo(() => {
+    if (!highlightNumber) return -1
+    return allMarkers.findIndex(m => m.number === highlightNumber)
+  }, [highlightNumber])
+
+  // Update marker targets when filters or highlight change
   useEffect(() => {
     const isFiltered = filteredSet !== null
     const baseSize = isFiltered ? 0.08 : 0.06
     markerTargets.current = allMarkers.map((_, i) => {
+      // Highlighted marker gets a big pulse
+      if (i === highlightIndex) return 0.18
       if (filteredSet === null) return baseSize // all active
       if (filteredSet.has(i)) return baseSize
       return 0 // smooth shrink to invisible
     })
-  }, [filteredSet])
+  }, [filteredSet, highlightIndex])
 
   // Responsive globe size
   const [globeSize, setGlobeSize] = useState(size)
@@ -319,11 +333,12 @@ export function AtlasGlobeTeaser({
           markerSizes.current[i] = current + (target - current) * 0.08
         }
 
-        // Set native markers with per-marker color
+        // Set native markers with per-marker color (highlighted = bright white)
+        const hlNum = highlightNumberRef.current
         state.markers = allMarkers.map((m, i): Marker => ({
           location: [m.coordinates.lat, m.coordinates.lng],
           size: markerSizes.current[i],
-          color: markerColors[i],
+          color: hlNum && m.number === hlNum ? [1, 1, 1] : markerColors[i],
         }))
       },
     }

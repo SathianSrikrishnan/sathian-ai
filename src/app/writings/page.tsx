@@ -4,10 +4,10 @@ import { getAllArticles } from '@/lib/articles'
 
 export const metadata: Metadata = {
   title: 'Writing — sathian.ai',
-  description: 'Essays on culture, money, and technology by Sathian Srikrishnan.',
+  description: 'Essays on culture, money, and technology by Sathian S.',
   openGraph: {
     title: 'Writing — sathian.ai',
-    description: 'Essays on culture, money, and technology by Sathian Srikrishnan.',
+    description: 'Essays on culture, money, and technology by Sathian S.',
   },
 }
 

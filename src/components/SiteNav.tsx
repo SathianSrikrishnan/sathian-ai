@@ -52,15 +52,15 @@ export function SiteNav() {
           >
             Writing
           </Link>
-          <a
-            href="#about"
+          <Link
+            href="/about"
             className="text-sm transition-colors"
             style={{ color: 'var(--hub-text-secondary)' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
           >
             About
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

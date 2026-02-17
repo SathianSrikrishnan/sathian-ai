@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, FormEvent } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { SiteNav } from '@/components/SiteNav'
 import { ChatWidget } from '@/components/ChatWidget'
+import { ScrollReveal } from '@/components/ui/scroll-reveal'
 
 const AtlasGlobeTeaser = dynamic(
   () => import('@/components/ui/atlas-globe-teaser').then((mod) => mod.AtlasGlobeTeaser),
@@ -47,22 +48,13 @@ const WRITINGS = [
   },
 ]
 
-// ─── Pillar data for globe tiles ────────────────────────────────────────────
-const PILLARS = [
-  { name: 'Music', color: '#A855F7', example: '808' },
-  { name: 'Area Codes', color: '#3B82F6', example: '416' },
-  { name: 'Sports', color: '#F97316', example: '023' },
-  { name: 'History', color: '#EAB308', example: '1776' },
-  { name: 'Internet', color: '#22C55E', example: '404' },
-]
-
 // ─── Featured markers — one per pillar for interest diversity ────────────────
 const FEATURED_MARKERS = [
-  { number: '808', label: 'TR-808 Drum Machine', pillar: 'Music', color: '#A855F7', href: 'https://btc.sathian.ai/atlas/808' },
-  { number: '404', label: 'Page Not Found / Atlanta', pillar: 'Internet', color: '#22C55E', href: 'https://btc.sathian.ai/atlas/404' },
-  { number: '234', label: 'Nigeria', pillar: 'Area Codes', color: '#3B82F6', href: 'https://btc.sathian.ai/atlas/234' },
-  { number: '989', label: 'Berlin Wall 1989', pillar: 'History', color: '#EAB308', href: 'https://btc.sathian.ai/atlas/989' },
-  { number: '899', label: 'FC Barcelona 1899', pillar: 'Sports', color: '#F97316', href: 'https://btc.sathian.ai/atlas/899' },
+  { number: '808', label: 'TR-808 Drum Machine', pillar: 'Music', color: '#A855F7', href: 'https://btc.sathian.ai/atlas/808', lat: 21.3, lng: -157.8 },
+  { number: '404', label: 'Page Not Found / Atlanta', pillar: 'Internet', color: '#22C55E', href: 'https://btc.sathian.ai/atlas/404', lat: 33.7, lng: -84.4 },
+  { number: '234', label: 'Nigeria', pillar: 'Area Codes', color: '#3B82F6', href: 'https://btc.sathian.ai/atlas/234', lat: 9.1, lng: 7.5 },
+  { number: '989', label: 'Berlin Wall 1989', pillar: 'History', color: '#EAB308', href: 'https://btc.sathian.ai/atlas/989', lat: 52.5, lng: 13.4 },
+  { number: '899', label: 'FC Barcelona 1899', pillar: 'Sports', color: '#F97316', href: 'https://btc.sathian.ai/atlas/899', lat: 41.4, lng: 2.2 },
 ]
 
 // ─── Live BTC Price Hook ────────────────────────────────────────────────────
@@ -120,11 +112,74 @@ function ArrowRight({ size = 14 }: { size?: number }) {
   )
 }
 
+// ─── Newsletter form ────────────────────────────────────────────────────────
+function NewsletterForm() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!email.includes('@') || status === 'loading') return
+
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <p className="hub-mono" style={{ color: '#22C55E', fontSize: 14 }}>
+        You&apos;re in. I&apos;ll let you know when something new ships.
+      </p>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-wrap gap-3">
+      <input
+        type="email"
+        placeholder="your@email.com"
+        className="hub-email-input"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <button
+        type="submit"
+        className="hub-btn-primary"
+        disabled={status === 'loading'}
+        style={status === 'loading' ? { opacity: 0.6 } : undefined}
+      >
+        {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+      </button>
+      {status === 'error' && (
+        <p className="hub-mono w-full" style={{ color: '#EF4444', fontSize: 12 }}>
+          Something went wrong. Try again.
+        </p>
+      )}
+    </form>
+  )
+}
+
 // ─── Chat prompts ───────────────────────────────────────────────────────────
 const CHAT_PROMPTS = [
-  "What's 404?",
-  'Tell me about Tooth Fairy',
-  'What are you building?',
+  "What's the story behind 808?",
+  'Why Bitcoin and culture?',
+  'What are you working on right now?',
+  'Who is Sathian?',
 ]
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -132,6 +187,7 @@ export default function Home() {
   const btcPrice = useBtcPrice()
   const [chatOpen, setChatOpen] = useState(false)
   const [prefillMsg, setPrefillMsg] = useState('')
+  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null)
 
   const handlePromptClick = useCallback((prompt: string) => {
     setPrefillMsg(prompt)
@@ -147,14 +203,11 @@ export default function Home() {
         <div className="absolute inset-0 pointer-events-none hub-hero-glow-deep" />
         <div className="hub-container relative">
           <div className="span-full text-center">
-            <div className="hub-eyebrow mb-6" style={{ color: 'var(--hub-text-muted)' }}>
-              sathian.ai
-            </div>
             <h1 className="hub-hero-name mb-6" style={{ position: 'relative' }}>
-              Sathian S.
+              Sathian&apos;s Lab
             </h1>
-            <p className="hub-body max-w-xl mx-auto mb-10" style={{ color: 'var(--hub-text-secondary)', fontSize: 17 }}>
-              Builder in Toronto, Canada. Exploring the intersection of culture, money, and technology.
+            <p className="hub-mono mb-10" style={{ color: 'var(--hub-text-muted)', fontSize: 14, letterSpacing: '0.15em' }}>
+              Culture &middot; Money &middot; Technology
             </p>
             {btcPrice && (
               <div className="flex justify-center">
@@ -169,12 +222,13 @@ export default function Home() {
       </section>
 
       {/* ═══ Zone 3: Projects ═══════════════════════════════════════════════ */}
+      <ScrollReveal>
       <section id="projects" className="zone-alt hub-section relative">
         <CornerDots color="#F7931A" />
+        <div className="absolute inset-0 pointer-events-none hub-projects-glow" />
         <div className="hub-container relative" style={{ zIndex: 1 }}>
-          <div className="span-full mb-4">
-            <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Projects</div>
-            <h2 className="hub-section-heading">What I&apos;m building</h2>
+          <div className="span-full mb-6">
+            <div className="hub-eyebrow" style={{ color: 'var(--hub-text-muted)' }}>Projects</div>
           </div>
 
           {/* BTC Atlas — Hero card */}
@@ -204,38 +258,19 @@ export default function Home() {
                 </span>
               )}
             </div>
-            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)', fontSize: 22 }}>
+            <h3 className="hub-card-title mb-3" style={{ color: 'var(--hub-text-primary)', fontSize: 22 }}>
               BTC Cultural Atlas
             </h3>
-            <p
-              className="hub-body mb-2"
-              style={{ color: 'var(--hub-text-primary)', fontSize: 17, fontWeight: 500 }}
-            >
-              Every number tells a story
-            </p>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              500+ cultural markers mapped to Bitcoin&apos;s price, tracking the journey to $1M.
-              Area codes, music, sports, history, and internet culture. Updated every 10 seconds.
+              500+ cultural markers mapped to Bitcoin&apos;s price as it climbs toward $1M.
+              Area codes, drum machines, error pages, history, and sports — every number decoded.
             </p>
-            <div className="flex items-center gap-3 mb-4">
-              <span
-                className="hub-eyebrow px-2 py-0.5 rounded"
-                style={{
-                  color: 'var(--hub-text-muted)',
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  fontSize: 10,
-                }}
-              >
-                Work in progress
-              </span>
-            </div>
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#F7931A' }}>
               btc.sathian.ai <ArrowRight />
             </div>
           </a>
 
-          {/* Tooth Fairy Network */}
+          {/* Tooth Fairy Network — Observatory style */}
           <a
             href="https://toothfairy.sathian.ai"
             target="_blank"
@@ -260,7 +295,7 @@ export default function Home() {
               Tooth Fairy Network
             </h3>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              Making childhood magical, on-chain. A smart contract for family milestones.
+              Making childhood magical, on-chain. Turning lost teeth into family memories that last.
             </p>
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#7C3AED' }}>
               toothfairy.sathian.ai <ArrowRight />
@@ -268,14 +303,15 @@ export default function Home() {
           </a>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ═══ Zone 4: Writing ════════════════════════════════════════════════ */}
+      <ScrollReveal>
       <section className="zone-primary hub-section relative">
         <div className="absolute inset-0 pointer-events-none hub-writing-glow" />
         <div className="hub-container">
-          <div className="span-full mb-4">
-            <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Writing</div>
-            <h2 className="hub-section-heading">Essays on culture, money, and technology</h2>
+          <div className="span-full mb-6">
+            <div className="hub-eyebrow" style={{ color: 'var(--hub-text-muted)' }}>Writing</div>
           </div>
 
           {/* Featured article — large with accent bar */}
@@ -337,37 +373,35 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ═══ Zone 5: Globe — The Observatory ════════════════════════════════ */}
+      <ScrollReveal>
       <section className="zone-alt hub-section relative">
         <CornerDots color="#3B82F6" />
+        <div className="absolute inset-0 pointer-events-none hub-globe-glow" />
         <div className="max-w-[1200px] mx-auto px-6 relative" style={{ zIndex: 1 }}>
           <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Cultural Atlas</div>
           <h2 className="hub-section-heading mb-10">
-            Every number has a story. Five pillars. One globe.
+            Every number has a story.
           </h2>
 
           <div className="hub-globe-layout">
             {/* Left: Globe */}
             <div className="flex justify-center">
               <div className="globe-glow-wrapper" style={{ width: '100%', maxWidth: 420 }}>
-                <AtlasGlobeTeaser size={420} hideFilters />
+                <AtlasGlobeTeaser size={420} hideFilters highlightNumber={hoveredMarker} />
               </div>
             </div>
 
             {/* Right: Description + marker cards + CTA */}
             <div>
-              <p className="hub-body mb-4" style={{ color: 'var(--hub-text-secondary)', maxWidth: 460 }}>
-                Every three-digit number has a cultural story. A drum machine.
-                A country code. An error page that became a city&apos;s identity.
-                We&apos;re mapping 500+ of them to Bitcoin&apos;s live price as it climbs toward $1M.
+              <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', maxWidth: 460 }}>
+                A drum machine. A country code. An error page that became a city&apos;s identity.
+                Five pillars of culture, all tied to one live price.
               </p>
 
-              <p className="hub-mono mb-6" style={{ color: 'var(--hub-text-muted)', fontSize: 12 }}>
-                500+ markers &middot; 5 pillars &middot; updated every 10s
-              </p>
-
-              {/* Marker preview cards */}
+              {/* Marker preview cards — with hover interaction */}
               <div className="hub-marker-grid mb-8">
                 {FEATURED_MARKERS.map((m) => (
                   <a
@@ -376,7 +410,20 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hub-marker-card"
-                    style={{ '--marker-accent': m.color } as React.CSSProperties}
+                    style={{
+                      '--marker-accent': m.color,
+                      boxShadow: hoveredMarker === m.number
+                        ? `0 4px 24px ${m.color}30, 0 0 0 1px ${m.color}40`
+                        : undefined,
+                      borderColor: hoveredMarker === m.number
+                        ? `${m.color}60`
+                        : undefined,
+                      transform: hoveredMarker === m.number
+                        ? 'translateY(-3px)'
+                        : undefined,
+                    } as React.CSSProperties}
+                    onMouseEnter={() => setHoveredMarker(m.number)}
+                    onMouseLeave={() => setHoveredMarker(null)}
                   >
                     <span className="hub-marker-number">{m.number}</span>
                     <span className="hub-marker-label">{m.label}</span>
@@ -401,59 +448,56 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
-      {/* ═══ Zone 6: About ══════════════════════════════════════════════════ */}
+      {/* ═══ Zone 6: About — teaser linking to /about ═════════════════════ */}
+      <ScrollReveal>
       <section id="about" className="zone-primary hub-section relative">
         <div className="absolute inset-0 pointer-events-none hub-about-glow" />
         <div className="hub-container">
           <div className="span-full max-w-2xl">
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>About</div>
-            <h2 className="hub-section-heading mb-6">Building in public</h2>
-            <p className="hub-body mb-4" style={{ color: 'var(--hub-text-secondary)' }}>
-              I&apos;m a builder in Toronto, Canada. Father of twins. Exploring the intersection
-              of culture, money, and technology.
-            </p>
+            <h2 className="hub-section-heading mb-6">A lab for relearning</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              The BTC Cultural Atlas maps 500+ numbers to cultural meaning as Bitcoin starts
-              its climb to $1 million plus. The Tooth Fairy Network is an experiment in on-chain
-              family memory. The writing is ongoing.
+              Re-examining things I thought I understood &mdash; money, culture, geography,
+              sovereignty &mdash; through writing and code. Not expert commentary. A student&apos;s notes.
             </p>
-            <Link href="/toothfairy/network/about" className="hub-mono flex items-center gap-2" style={{ color: 'var(--hub-accent)' }}>
+            <Link href="/about" className="hub-mono flex items-center gap-2" style={{ color: 'var(--hub-accent)' }}>
               More about me <ArrowRight />
             </Link>
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
-      {/* ═══ Zone 7: Newsletter ═════════════════════════════════════════════ */}
+      {/* ═══ Zone 7: Newsletter — real subscribe ═════════════════════════ */}
+      <ScrollReveal>
       <section className="zone-alt hub-section relative">
         <CornerDots color="#EAB308" />
+        <div className="absolute inset-0 pointer-events-none hub-newsletter-glow" />
         <div className="hub-container relative" style={{ zIndex: 1 }}>
           <div className="span-full max-w-lg">
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Newsletter</div>
-            <h2 className="hub-section-heading mb-3">Stay in touch</h2>
+            <h2 className="hub-section-heading mb-3">Get notified when I publish</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              Occasional updates on new writing, projects, and ideas. No spam. Unsubscribe anytime.
+              New essays and project updates. Nothing else.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <input type="email" placeholder="your@email.com" className="hub-email-input" readOnly />
-              <button className="hub-btn-primary" style={{ opacity: 0.6, cursor: 'default' }}>
-                Coming soon
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ═══ Zone 8: Chat Teaser ════════════════════════════════════════════ */}
-      <section className="zone-primary hub-section relative">
+      <ScrollReveal>
+      <section id="chat" className="zone-primary hub-section relative">
         <div className="absolute inset-0 pointer-events-none hub-chat-glow" />
         <div className="hub-container">
           <div className="span-full max-w-lg">
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Chat</div>
             <h2 className="hub-section-heading mb-3">Ask me anything</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              Kai is my personal AI assistant. Ask about my projects, writing, or just say hello.
+              The projects, the writing, whatever. Try one of these or type your own.
             </p>
             <div className="flex flex-wrap gap-3">
               {CHAT_PROMPTS.map((prompt) => (
@@ -465,6 +509,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ═══ Zone 9: Footer ═════════════════════════════════════════════════ */}
       <footer className="zone-dark zone-dark-edge" style={{ padding: '56px 0 40px' }}>
@@ -482,9 +527,9 @@ export default function Home() {
               <div className="flex gap-12">
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Site</span>
-                  <a href="#projects" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Projects</a>
                   <Link href="/writings" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Writing</Link>
-                  <a href="#about" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>About</a>
+                  <a href="#projects" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Projects</a>
+                  <Link href="/about" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>About</Link>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Projects</span>
