@@ -38,8 +38,17 @@ const ALLOWED_ORIGINS = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const hostname = request.headers.get('host') || ''
 
-  // Only apply to API routes
+  // --- Subdomain routing: toothfairy.sathian.ai → /toothfairy/* ---
+  if (hostname === 'toothfairy.sathian.ai') {
+    // Don't rewrite static assets (images, videos, fonts, etc.)
+    if (pathname.match(/\.\w+$/)) return NextResponse.next()
+    const dest = pathname === '/' ? '/toothfairy/network' : `/toothfairy/network${pathname}`
+    return NextResponse.rewrite(new URL(dest, request.url))
+  }
+
+  // Only apply rate limiting / CORS to API routes
   if (!pathname.startsWith('/api/')) {
     return NextResponse.next()
   }
@@ -82,5 +91,9 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: [
+    '/api/:path*',
+    // Match all paths for subdomain routing
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
 }

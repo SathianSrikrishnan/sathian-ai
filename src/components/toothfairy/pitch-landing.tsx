@@ -3,32 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
 import Image from "next/image"
-
-// ─── Design Tokens (Magic UI–inspired dark minimal) ─────────────────────────
-const C = {
-  bg: "#030712",
-  text: "#f9fafb",
-  muted: "#9ca3af",
-  dim: "#4b5563",
-  border: "rgba(255,255,255,0.06)",
-  rose: "#f43f5e",
-  cyan: "#06b6d4",
-  amber: "#f59e0b",
-  emerald: "#10b981",
-}
-
-// ─── Animation presets ──────────────────────────────────────────────────────
-const fadeUp = {
-  initial: { opacity: 0, y: 20 } as const,
-  whileInView: { opacity: 1, y: 0 } as const,
-  viewport: { once: true, margin: "-60px" } as const,
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-}
-
-const stagger = (i: number) => ({
-  ...fadeUp,
-  transition: { ...fadeUp.transition, delay: i * 0.1 },
-})
+import { C, fadeUp, stagger } from "./tokens"
+import { TfnNav } from "./tfn-nav"
 
 // ═════════════════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
@@ -36,15 +12,7 @@ const stagger = (i: number) => ({
 export function PitchLanding() {
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-
-  // Track scroll for nav blur
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   // Autoplay video when visible
   useEffect(() => {
@@ -82,43 +50,7 @@ export function PitchLanding() {
       }} />
 
       {/* ═══ NAV ═════════════════════════════════════════════════════════ */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-        style={{
-          background: scrolled ? `${C.bg}e6` : "transparent",
-          backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-          borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent",
-        }}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="text-base font-display font-bold tracking-tight">
-            Tooth Fairy Network
-          </span>
-          <div className="hidden sm:flex items-center gap-1">
-            {[
-              { label: "Story", href: "#" },
-              { label: "Technical", href: "/toothfairy/network/technical" },
-              { label: "Market", href: "/toothfairy/network/market" },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="px-4 py-2 rounded-lg text-sm transition-colors duration-200 hover:bg-white/[0.05]"
-                style={{ color: C.muted }}
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="#feedback"
-              className="ml-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-200 hover:opacity-90"
-              style={{ background: C.rose }}
-            >
-              Share Feedback
-            </a>
-          </div>
-        </div>
-      </nav>
+      <TfnNav activePage="story" />
 
       {/* ═══ HERO ════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16">
@@ -301,7 +233,7 @@ export function PitchLanding() {
                 {...stagger(i)}
                 className="rounded-xl overflow-hidden transition-colors duration-300"
                 style={{
-                  background: "rgba(255,255,255,0.02)",
+                  background: C.surface,
                   border: `1px solid ${C.border}`,
                 }}
               >
@@ -470,11 +402,6 @@ export function PitchLanding() {
               to make sure that when my children hit a milestone, everyone who loves them can
               be part of it, no matter where they are.
             </p>
-            <p className="text-base leading-relaxed mb-4" style={{ color: C.muted }}>
-              The more I talked to other parents, the more I realized this isn&apos;t just my
-              problem. It&apos;s a universal one. Every co-parenting family, every long-distance
-              grandparent, every uncle who misses the moment.
-            </p>
             <p className="text-base leading-relaxed" style={{ color: C.muted }}>
               I&apos;m building this in the open. The technology underneath uses blockchain to
               make these keepsakes permanent and verifiable — but you shouldn&apos;t need to
@@ -555,49 +482,15 @@ export function PitchLanding() {
       </section>
 
       {/* ═══ FOOTER ══════════════════════════════════════════════════════ */}
-      <footer className="py-16 px-6" style={{ borderTop: `1px solid ${C.border}` }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid sm:grid-cols-3 gap-12 mb-12">
-            <div>
-              <span className="text-base font-display font-bold">Tooth Fairy Network</span>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: C.muted }}>
-                Childhood milestones, made permanent.
-                <br />A product by{" "}
-                <a href="/" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.muted }}>
-                  sathian.ai
-                </a>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: C.dim }}>
-                Explore
-              </p>
-              <div className="flex flex-col gap-2">
-                <a href="#how-it-works" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>How It Works</a>
-                <a href="#video" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>Video</a>
-                <a href="/toothfairy/network/technical" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>Technical Details</a>
-                <a href="/toothfairy/network/market" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>Market Analysis</a>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: C.dim }}>
-                More
-              </p>
-              <div className="flex flex-col gap-2">
-                <a href="/toothfairy/network/about" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>About Sathian</a>
-                <a href="/toothfairy/network/bitcoin-genz" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: C.muted }}>Bitcoin Gen Z</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
-            <span className="text-xs" style={{ color: C.dim }}>
-              &copy; {new Date().getFullYear()} sathian.ai
-            </span>
-            <span className="text-xs" style={{ color: C.dim }}>
-              Built with care in Toronto
-            </span>
-          </div>
+      <footer className="py-8 px-6" style={{ borderTop: `1px solid ${C.border}` }}>
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-sm font-display font-bold tracking-tight">Tooth Fairy Network</span>
+          <span className="text-xs" style={{ color: C.dim }}>
+            &copy; {new Date().getFullYear()}{" "}
+            <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.dim }}>
+              sathian.ai
+            </a>
+          </span>
         </div>
       </footer>
     </div>

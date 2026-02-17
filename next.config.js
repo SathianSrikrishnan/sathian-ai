@@ -3,6 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   transpilePackages: ['pdfjs-dist'],
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'media.sathian.ai' },
+    ],
+  },
   async redirects() {
     return [
       {
@@ -17,18 +22,7 @@ const nextConfig = {
       },
     ]
   },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        // toothfairy.sathian.ai → /toothfairy/* pages
-        {
-          source: '/:path*',
-          has: [{ type: 'host', value: 'toothfairy.sathian.ai' }],
-          destination: '/toothfairy/:path*',
-        },
-      ],
-    }
-  },
+  // Subdomain routing handled by middleware.ts
 }
 
 module.exports = nextConfig

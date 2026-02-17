@@ -33,3 +33,9 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Media (hosted on media.sathian.ai / Cloudflare R2)
+public/*.mp4
+public/*.mp3
+public/v2-storyboard/
+public/media/
