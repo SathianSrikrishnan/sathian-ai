@@ -39,5 +39,36 @@ export async function generateStaticParams() {
 export default async function ArticlePage({ params }: Props) {
   const article = await getArticleBySlug(params.slug)
   if (!article) notFound()
-  return <ArticleRenderer article={article} />
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    datePublished: article.date,
+    author: {
+      '@type': 'Person',
+      name: 'Sathian S.',
+      url: 'https://sathian.ai',
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Sathian S.',
+      url: 'https://sathian.ai',
+    },
+    url: `https://sathian.ai/writings/${article.slug}`,
+    mainEntityOfPage: `https://sathian.ai/writings/${article.slug}`,
+    articleSection: article.domains?.[0],
+    keywords: article.domains?.join(', '),
+  }
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ArticleRenderer article={article} />
+    </>
+  )
 }
