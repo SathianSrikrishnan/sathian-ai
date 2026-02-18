@@ -2,17 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Atma:wght@400;500;600;700&display=swap');
-
-:root {
-  --background: #0D1117;
-  --foreground: #F0F6FC;
-  --primary: #0066FF;
-  --accent: #00D4AA;
-  --card-bg: #161b22;
-  --border: #30363d;
-}
+/* Article fonts loaded via next/font/google in article layout */
 
 /* ─── Observatory Hub Design System ──────────────────────────────────────── */
 
@@ -29,45 +19,6 @@
   --hub-border-subtle: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="light"] {
-  --hub-bg-primary: #FFFFFF;
-  --hub-bg-alt: #F5F5F5;
-  --hub-bg-dark: #1c1c1c;
-  --hub-bg-elevated: #FFFFFF;
-  --hub-text-primary: #1c1c1c;
-  --hub-text-secondary: #4c4c4c;
-  --hub-text-muted: #8A8EA8;
-  --hub-grid-color: rgba(0, 0, 0, 0.075);
-  --hub-accent: #F7931A;
-  --hub-border-subtle: rgba(0, 0, 0, 0.08);
-}
-
-/* Kids mode - sunshine theme */
-.theme-kids {
-  --background: #FFF8E7;
-  --foreground: #2D3748;
-  --primary: #F6AD55;
-  --accent: #68D391;
-  --card-bg: #FFFFFF;
-  --border: #E2E8F0;
-}
-
-.theme-kids body,
-.theme-kids {
-  background: linear-gradient(180deg, #FFF8E7 0%, #FEEBC8 100%);
-}
-
-.theme-kids ::-webkit-scrollbar-track {
-  background: #FED7AA;
-}
-
-.theme-kids ::-webkit-scrollbar-thumb {
-  background: #F6AD55;
-}
-
-.theme-kids ::-webkit-scrollbar-thumb:hover {
-  background: #ED8936;
-}
 
 * {
   box-sizing: border-box;
@@ -79,18 +30,18 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--hub-bg-primary);
+  color: var(--hub-text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 /* Article typography */
 .font-serif {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-serif-display), Georgia, serif;
 }
 
 .font-article {
-  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-family: var(--font-serif), Georgia, 'Times New Roman', serif;
   font-optical-sizing: auto;
 }
 
@@ -131,7 +82,7 @@ body {
 }
 
 .font-body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.75;
 }
 
@@ -189,11 +140,6 @@ body {
   color: #F0F6FC;
 }
 
-.theme-kids ::selection {
-  background: rgba(246, 173, 85, 0.3);
-  color: #2D3748;
-}
-
 /* Tooth Fairy Tracker Animations */
 @keyframes wiggle {
   0%, 100% { transform: rotate(-3deg); }
@@ -204,61 +150,6 @@ body {
 
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
-}
-
-/* ─── Aurora Glassmorphism System ─────────────────────────────────────────── */
-
-.glass {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background: rgba(15, 15, 45, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-card {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background: rgba(15, 15, 45, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 58, 237, 0.08);
-}
-
-.glass-card-gradient {
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  background: linear-gradient(135deg, rgba(15, 15, 45, 0.7), rgba(15, 15, 45, 0.4));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Gradient border utility — wrap element in a parent with this class */
-.gradient-border {
-  position: relative;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.2), rgba(245,158,11,0.15));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
 }
 
 /* ─── Scroll-driven reveal (native CSS for Chrome/Safari) ─────────────────── */
@@ -480,24 +371,6 @@ h1, h2, h3 {
 
 /* ─── Observatory Hub: Project Cards ─────────────────────────────────────── */
 
-.hub-card {
-  background: var(--hub-bg-elevated);
-  border: 1px solid var(--hub-border-subtle);
-  border-radius: 12px;
-  padding: 32px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.hub-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="light"] .hub-card:hover {
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
 /* ─── Observatory Hub: Nav ────────────────────────────────────────────────── */
 
 .hub-nav {
@@ -594,27 +467,6 @@ h1, h2, h3 {
 
 /* ─── Observatory Hub: Visual Polish ─────────────────────────────────────── */
 
-/* Hero radial glow behind name */
-.hub-hero-glow {
-  position: relative;
-}
-.hub-hero-glow::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 300px;
-  background: radial-gradient(ellipse, rgba(247, 147, 26, 0.06) 0%, rgba(124, 58, 237, 0.04) 40%, transparent 70%);
-  pointer-events: none;
-}
-
-/* Accent-colored top line on cards */
-.hub-card-accent-orange { border-top: 2px solid rgba(247, 147, 26, 0.4); }
-.hub-card-accent-purple { border-top: 2px solid rgba(124, 58, 237, 0.4); }
-.hub-card-accent-cyan { border-top: 2px solid rgba(6, 182, 212, 0.4); }
-
 /* Card hover glow variants */
 .hub-card-glow-orange:hover {
   box-shadow: 0 4px 32px rgba(247, 147, 26, 0.08), 0 0 0 1px rgba(247, 147, 26, 0.12);
@@ -633,27 +485,6 @@ h1, h2, h3 {
   background: linear-gradient(90deg, transparent 0%, var(--hub-border-subtle) 20%, var(--hub-border-subtle) 80%, transparent 100%);
 }
 
-/* Pillar mini tiles in globe section */
-.hub-pillar-tile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--hub-bg-elevated);
-  border: 1px solid var(--hub-border-subtle);
-  font-family: var(--font-mono), 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--hub-text-secondary);
-}
-
-.hub-pillar-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 /* Globe side-by-side layout */
 .hub-globe-layout {
   display: grid;
@@ -667,14 +498,6 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-}
-
-/* Featured article accent bar */
-.hub-featured-bar {
-  width: 3px;
-  background: var(--hub-accent);
-  border-radius: 2px;
-  align-self: stretch;
 }
 
 /* Explore button — emphasized CTA */
@@ -700,21 +523,6 @@ h1, h2, h3 {
   transform: translateY(-1px);
 }
 
-/* Stat badge for globe section */
-.hub-stat {
-  font-family: var(--font-mono), 'JetBrains Mono', monospace;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--hub-text-primary);
-}
-
-.hub-stat-label {
-  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
-  color: var(--hub-text-muted);
-  margin-top: 4px;
-}
 
 /* ─── Observatory Hub: Marker Preview Cards ─────────────────────────────── */
 
@@ -803,7 +611,7 @@ h1, h2, h3 {
 /* ─── Article Simplification: Drop Cap ──────────────────────────────────── */
 
 .article-drop-cap::first-letter {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-serif-display), Georgia, serif;
   float: left;
   font-size: 3.5rem;
   line-height: 0.8;
@@ -973,4 +781,17 @@ h1, h2, h3 {
       rgba(168, 85, 247, 0.02) 35%,
       transparent 60%
     );
+}
+
+/* Writing card hover */
+.writing-card-link {
+  transition: background 0.2s ease;
+}
+.writing-card-link:hover {
+  background: var(--hub-bg-elevated);
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-radius: 8px;
 }

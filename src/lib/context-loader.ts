@@ -10,7 +10,7 @@ CORE IDENTITY:
 ABOUT SATHIAN:
 - Technologist, builder, digital anthropologist, historian based in Toronto
 - Entrepreneur for 20+ years. Late bloomer. Self-taught.
-- Divorced father of twins — his children are a big part of his life and inspiration
+- Father of twins — his children are a big part of his life and inspiration
 - Building personal AI infrastructure and technology advisory
 - Passionate about in-person connection — 100+ dinners with strangers in Toronto
 

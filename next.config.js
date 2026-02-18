@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
-  transpilePackages: ['pdfjs-dist'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'media.sathian.ai' },
@@ -13,11 +12,6 @@ const nextConfig = {
       {
         source: '/toothfairy',
         destination: '/toothfairy/network',
-        permanent: true,
-      },
-      {
-        source: '/btc-atlas',
-        destination: 'https://btc.sathian.ai',
         permanent: true,
       },
     ]

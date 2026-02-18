@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SiteNav } from '@/components/SiteNav'
 
 export const metadata: Metadata = {
   title: 'About — Sathian S.',
@@ -16,17 +17,9 @@ export default function AboutPage() {
       data-theme="dark"
       style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100dvh' }}
     >
-      {/* Nav back */}
-      <nav style={{ padding: '24px 24px 0', maxWidth: 720, margin: '0 auto' }}>
-        <Link
-          href="/"
-          className="hub-mono"
-          style={{ color: 'var(--hub-text-muted)', textDecoration: 'none', fontSize: 13 }}
-        >
-          &larr; sathian.ai
-        </Link>
-      </nav>
+      <SiteNav />
 
+      <main>
       <article style={{ maxWidth: 720, margin: '0 auto', padding: '64px 24px 80px' }}>
         {/* Heading */}
         <h1
@@ -164,6 +157,7 @@ export default function AboutPage() {
           </Link>
         </div>
       </article>
+      </main>
     </div>
   )
 }

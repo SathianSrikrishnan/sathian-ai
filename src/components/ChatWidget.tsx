@@ -1,15 +1,16 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion } from 'motion/react'
 
-interface ChatWidgetProps {
-  externalOpen?: boolean
-  onExternalClose?: () => void
-  prefillMessage?: string
-}
+const SUGGESTIONS = [
+  'What should I explore here?',
+  'I have feedback or an idea',
+  'I want to connect',
+]
 
-export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: ChatWidgetProps) {
+export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
     { role: 'bot', text: "Welcome to sathian.ai. I can answer questions about Sathian's work or pass along your feedback. What's on your mind?" },
@@ -19,14 +20,8 @@ export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: Ch
   const inputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const prefillHandled = useRef('')
   const sendRef = useRef<(text: string) => void>(() => {})
-
-  const SUGGESTIONS = [
-    'Tell me about the Cultural Atlas',
-    'I have feedback',
-    'How do I connect with Sathian?',
-  ]
+  const pathname = usePathname()
 
   const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim()
@@ -44,7 +39,7 @@ export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: Ch
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, mode: 'standard', history }),
+        body: JSON.stringify({ message: msg, page: pathname, history }),
       })
 
       if (res.ok) {
@@ -58,30 +53,28 @@ export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: Ch
     } finally {
       setIsLoading(false)
     }
-  }, [input, isLoading, messages])
+  }, [input, isLoading, messages, pathname])
 
-  // Keep a stable ref to handleSend so the external-open effect doesn't loop
   sendRef.current = (text: string) => handleSend(text)
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus()
   }, [open])
 
-  // Handle external open + prefill from chat teaser zone
+  // Listen for custom events from other components (e.g. homepage chat prompts)
   useEffect(() => {
-    if (externalOpen && !open) {
-      setOpen(true)
-      if (prefillMessage && prefillMessage !== prefillHandled.current) {
-        prefillHandled.current = prefillMessage
-        setTimeout(() => sendRef.current(prefillMessage), 300)
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail
+      if (detail?.message) {
+        setOpen(true)
+        setTimeout(() => sendRef.current(detail.message), 300)
+      } else {
+        setOpen(true)
       }
     }
-  }, [externalOpen, prefillMessage, open])
-
-  const handleClose = useCallback(() => {
-    setOpen(false)
-    onExternalClose?.()
-  }, [onExternalClose])
+    window.addEventListener('open-chat', handler)
+    return () => window.removeEventListener('open-chat', handler)
+  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -119,7 +112,7 @@ export function ChatWidget({ externalOpen, onExternalClose, prefillMessage }: Ch
                   <p className="text-xs text-gray-400">Feedback &amp; questions</p>
                 </div>
               </div>
-              <button onClick={handleClose} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
+              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
                 <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
               </button>
             </div>

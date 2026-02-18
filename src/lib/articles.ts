@@ -13,6 +13,7 @@ export interface Article {
   author: string
   domains: string[]
   description: string       // Short description for cards and OG
+  readTime: string          // e.g. "7 min"
   body: string
   pullQuotes: string[]      // Key sentences to feature as pull quotes
   theme: ArticleTheme
@@ -33,6 +34,7 @@ export const articles: Article[] = [
     author: 'Sathian',
     domains: ['hip-hop culture', 'decentralized finance'],
     description: 'How Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption.',
+    readTime: '5 min',
     pullQuotes: [
       'Wu-Tang had become their own ETF — the authentic thing, repackaged, sanitized, and sold to a broader market at a premium. The raw signal wrapped in institutional clothing.',
       'The people who move first are the ones in the margins who recognize a signal before it has a name.',
@@ -118,6 +120,7 @@ The protocol changed. The rule didn't. The arena changes. The frequency doesn't.
     author: 'Sathian',
     domains: ['institutional decay', 'digital sovereignty'],
     description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern from glasnost to grocery stores.',
+    readTime: '8 min',
     pullQuotes: [
       'The most basic nutrition on the shelf, more than doubled, while nothing else about his life changed except what he could afford.',
       'Five dollars from the tooth fairy. Five dollars for the genesis of a trillion-dollar protocol. Same amount. One depreciates. The other doesn\'t.',
@@ -219,6 +222,7 @@ My Uber driver already did the math. He's still driving. He's still watching the
     author: 'Sathian',
     domains: ['cryptocurrency', 'first principles'],
     description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything. Here\'s what I found — and two versions so you can read it yourself.',
+    readTime: '8 min',
     pullQuotes: [
       'I had opinions about Bitcoin for years before I actually read the document that started it. Most people do. That\'s worth sitting with.',
       'Nine pages. That\'s it. The thing that governments are scrambling to regulate, that Wall Street is racing to package, that has moved trillions of dollars — it fits in a pamphlet.',
@@ -285,6 +289,8 @@ My first reaction was to dismiss it. This is serious technology. You don\'t tran
 
 But then I read it. And the Gen Z version did something I didn\'t think was possible: it made me understand the parts I\'d been pretending to understand. The sections on Simplified Payment Verification and Merkle trees — concepts I\'d nodded along to in the original without fully grasping — suddenly clicked when they were described as "receipts" and "cheat codes." The irreverent tone somehow made the precision more accessible, not less.
 
+That\'s when it hit me: complex concepts are extrapolations of simple concepts. When you strip the language down to its most basic knobs — when you describe a hash function as a "digital fingerprint" or a Merkle tree as a "cheat code for checking receipts" — the math stops being intimidating. Not because it\'s been dumbed down, but because it was always simple ideas dressed in specialized vocabulary. Proof-of-work is just "make it expensive to lie." A blockchain is just "a chain of receipts where each one proves the last one existed." The complexity was never in the concepts. It was in the language guarding them.
+
 This is the paradox: an AI-generated, meme-laden, deliberately unserious translation of the most important financial document of the century did a better job of transmitting the actual ideas than years of serious commentary. Not because the ideas are unserious — because the barriers to understanding them are mostly artificial. Jargon creates a priesthood. Strip the jargon and you strip the priesthood.
 
 ---
@@ -317,6 +323,7 @@ Nine pages. Twenty minutes. Read the thing. Then we can talk.
     author: 'Sathian',
     domains: ['geopolitics', 'digital sovereignty', 'culture'],
     description: '1993 was a hinge. A cartoon taught geography. A cypherpunk wrote about electronic money. The web went free. The old world was ending and the new one was being coded into existence — and we\'re at the next hinge now.',
+    readTime: '12 min',
     pullQuotes: [
       'The map was already wrong on day one.',
       'Privacy is not secrecy. Secrecy is hiding everything. Privacy is the power to selectively reveal yourself to the world.',
@@ -426,15 +433,11 @@ And here\'s the thing: the next 34 changes won\'t just be borders. They\'ll be c
 ---
 1993 wasn\'t just geopolitics and manifestos. It was a creative supernova \u2014 the kind that only happens when an old world is burning out and a new one hasn\'t quite ignited.
 
-Spielberg released both the highest-grossing film AND the Best Picture winner in the same year \u2014 *Jurassic Park* (June) and *Schindler\'s List* (November). Nobody has done this before or since. Think about what those two films represent together: technology unleashed without ethics, and the worst of what nation-state power produces. Both themes in the same year, from the same mind.
-
 Nirvana released *In Utero* in September \u2014 the same month Yakko sang. Six months later, Kurt Cobain was dead. When I was ten, Nirvana was just the loud music my older cousins played. Now I hear it as the sound of a world that knew something was ending but couldn\'t articulate what came next.
 
-Wu-Tang Clan dropped *36 Chambers* in November. C.R.E.A.M. \u2014 Cash Rules Everything Around Me \u2014 became the anthem. A song about money, survival, and the system, released the same year someone wrote a manifesto about replacing that entire system with cryptography.
+Wu-Tang Clan dropped *36 Chambers* that November \u2014 C.R.E.A.M., a song about money, survival, and the system, released the same year someone wrote a manifesto about replacing that entire system with cryptography.
 
-DOOM launched on December 10 \u2014 uploaded to the internet at midnight, crashing the University of Wisconsin\'s network with 10,000 simultaneous download attempts. Distributed as shareware. For free. On the same internet that CERN had opened eight months earlier. The cypherpunks\' dream applied to entertainment: free software, distributed globally, without anyone\'s permission.
-
-The Oslo Accords were signed on September 13 \u2014 one day before Yakko\'s World aired. Rabin and Arafat shaking hands on the White House lawn. The optimism of that handshake didn\'t survive the decade. The EU formally came into existence on November 1. Nations binding together while others were splitting apart.
+The Oslo Accords were signed on September 13 \u2014 one day before Yakko\'s World aired. The optimism of that handshake didn\'t survive the decade. The EU formally came into existence on November 1. Nations binding together while others were splitting apart.
 
 And then there was India. Two years before Yakko sang, in July 1991, the world\'s largest democracy was days away from sovereign default. Foreign reserves had fallen to $1.2 billion \u2014 enough for two weeks of imports. The government, in secret, airlifted 67 tonnes of gold to London and Zurich as collateral for emergency loans. Citizens were voting in general elections while their nation\'s gold reserves were being flown out of the country in crates.
 

@@ -149,13 +149,26 @@ export function TechnicalContent() {
             Want to discuss the technical architecture?
           </p>
           <p className="text-sm" style={{ color: C.muted }}>
-            Use the chat below or reach out at{" "}
+            Reach out at{" "}
             <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.cyan }}>
               sathian.ai
             </a>
           </p>
         </motion.div>
       </div>
+
+      {/* Footer */}
+      <footer className="py-8 px-6" style={{ borderTop: `1px solid ${C.border}` }}>
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-sm font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>The Tooth Fairy Network</span>
+          <span className="text-xs" style={{ color: C.dim }}>
+            &copy; {new Date().getFullYear()}{" "}
+            <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.dim }}>
+              sathian.ai
+            </a>
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -31,9 +31,9 @@ setInterval(() => {
 const ALLOWED_ORIGINS = [
   'https://sathian.ai',
   'https://www.sathian.ai',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3002',
+  'https://btc.sathian.ai',
+  'https://toothfairy.sathian.ai',
+  ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] : []),
 ]
 
 export function middleware(request: NextRequest) {
@@ -46,6 +46,19 @@ export function middleware(request: NextRequest) {
     if (pathname.match(/\.\w+$/)) return NextResponse.next()
     const dest = pathname === '/' ? '/toothfairy/network' : `/toothfairy/network${pathname}`
     return NextResponse.rewrite(new URL(dest, request.url))
+  }
+
+  // --- Studio authentication ---
+  if (pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')) {
+    if (pathname !== '/studio/login' && pathname !== '/api/studio/auth') {
+      const studioAuth = request.cookies.get('studio_auth')?.value
+      if (studioAuth !== 'true') {
+        if (pathname.startsWith('/api/studio/')) {
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+        return NextResponse.redirect(new URL('/studio/login', request.url))
+      }
+    }
   }
 
   // Only apply rate limiting / CORS to API routes
@@ -85,7 +98,7 @@ export function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, x-voice-pin')
 
   return response
 }

@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -12,57 +13,156 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Close menu on route change / escape
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  const navLinks = [
+    { label: 'Atlas', href: 'https://btc.sathian.ai', external: true },
+    { label: 'Projects', href: '#projects', external: false },
+    { label: 'Writing', href: '/writings', external: false },
+    { label: 'About', href: '/about', external: false },
+  ]
+
   return (
-    <nav className={`hub-nav ${scrolled ? 'hub-nav-solid' : ''}`}>
-      <div className="max-w-[1200px] mx-auto flex items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="hub-mono"
-          style={{ color: 'var(--hub-text-primary)', textDecoration: 'none' }}
-        >
-          sathian.ai
-        </Link>
-        <div className="flex items-center gap-8">
-          <a
-            href="https://btc.sathian.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm transition-colors"
-            style={{ color: 'var(--hub-text-secondary)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
-          >
-            Atlas
-          </a>
-          <a
-            href="#projects"
-            className="text-sm transition-colors"
-            style={{ color: 'var(--hub-text-secondary)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
-          >
-            Projects
-          </a>
+    <>
+      <nav className={`hub-nav ${scrolled ? 'hub-nav-solid' : ''}`}>
+        <div className="max-w-[1200px] mx-auto flex items-center justify-between px-6 py-4">
           <Link
-            href="/writings"
-            className="text-sm transition-colors"
-            style={{ color: 'var(--hub-text-secondary)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
+            href="/"
+            className="hub-mono"
+            style={{ color: 'var(--hub-text-primary)', textDecoration: 'none' }}
           >
-            Writing
+            sathian.ai
           </Link>
-          <Link
-            href="/about"
-            className="text-sm transition-colors"
-            style={{ color: 'var(--hub-text-secondary)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
+
+          {/* Desktop nav */}
+          <div className="hidden sm:flex items-center gap-8">
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm transition-colors"
+                  style={{ color: 'var(--hub-text-secondary)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
+                >
+                  {link.label}
+                </a>
+              ) : link.href.startsWith('#') ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm transition-colors"
+                  style={{ color: 'var(--hub-text-secondary)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm transition-colors"
+                  style={{ color: 'var(--hub-text-secondary)' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--hub-text-primary)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--hub-text-secondary)')}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
+          </div>
+
+          {/* Mobile hamburger button */}
+          <button
+            className="sm:hidden flex flex-col justify-center items-center gap-[5px] w-8 h-8"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            About
-          </Link>
+            <span
+              className="block w-5 h-[1.5px] transition-all duration-200"
+              style={{
+                background: 'var(--hub-text-primary)',
+                transform: menuOpen ? 'rotate(45deg) translateY(6.5px)' : 'none',
+              }}
+            />
+            <span
+              className="block w-5 h-[1.5px] transition-all duration-200"
+              style={{
+                background: 'var(--hub-text-primary)',
+                opacity: menuOpen ? 0 : 1,
+              }}
+            />
+            <span
+              className="block w-5 h-[1.5px] transition-all duration-200"
+              style={{
+                background: 'var(--hub-text-primary)',
+                transform: menuOpen ? 'rotate(-45deg) translateY(-6.5px)' : 'none',
+              }}
+            />
+          </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile overlay */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-40 sm:hidden"
+          style={{ background: 'var(--hub-bg-primary)', paddingTop: '80px' }}
+        >
+          <div className="flex flex-col items-center gap-8 pt-12">
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-medium"
+                  style={{ color: 'var(--hub-text-primary)', textDecoration: 'none' }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ) : link.href.startsWith('#') ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-lg font-medium"
+                  style={{ color: 'var(--hub-text-primary)', textDecoration: 'none' }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-lg font-medium"
+                  style={{ color: 'var(--hub-text-primary)', textDecoration: 'none' }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
+          </div>
+        </div>
+      )}
+    </>
   )
 }

@@ -3,6 +3,7 @@ import OpenAI from 'openai'
 import Anthropic from '@anthropic-ai/sdk'
 import { loadContext, buildSystemPrompt } from '@/lib/context-loader'
 import { startSession, saveConversation, extractMemories } from '@/lib/db-memory'
+import { checkVoiceAuth } from '@/lib/voice-auth'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -16,6 +17,10 @@ const anthropic = new Anthropic({
 const DEFAULT_VOICE_ID = 'TxGEqnHWrfWFTfGW9XjX'
 
 export async function POST(request: NextRequest) {
+  // PIN gate
+  const authError = checkVoiceAuth(request)
+  if (authError) return authError
+
   const startTime = Date.now()
   let step = 'init'
 
@@ -35,11 +40,24 @@ export async function POST(request: NextRequest) {
 
     console.log(`[Voice] Audio received: ${audioFile.size} bytes, type: ${audioFile.type}`)
 
-    // Parse conversation history
+    // Parse and validate conversation history
     let history: Array<{ role: 'user' | 'assistant'; content: string }> = []
     if (historyJson) {
       try {
-        history = JSON.parse(historyJson)
+        const parsed = JSON.parse(historyJson)
+        if (Array.isArray(parsed)) {
+          history = parsed
+            .slice(-20)
+            .filter((msg: { role: string; content: string }) =>
+              msg &&
+              typeof msg.content === 'string' &&
+              (msg.role === 'user' || msg.role === 'assistant')
+            )
+            .map((msg: { role: string; content: string }) => ({
+              role: msg.role as 'user' | 'assistant',
+              content: msg.content.slice(0, 2000),
+            }))
+        }
       } catch {
         // Ignore parse errors, start fresh
       }
@@ -115,9 +133,9 @@ export async function POST(request: NextRequest) {
     // 3. SPEAK - Convert response to audio using raw API (supports speed parameter)
     step = 'speak'
     const speakStart = Date.now()
-    // Speed parameter from request (default 1.35 = 35% faster)
+    // Speed parameter from request (default 1.2)
     const speedParam = formData.get('speed') as string
-    const speed = speedParam ? parseFloat(speedParam) : 1.2 // ElevenLabs max is 1.2
+    const speed = speedParam ? parseFloat(speedParam) : 1.2
 
     const ttsResponse = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${DEFAULT_VOICE_ID}?output_format=mp3_44100_128`,
@@ -136,7 +154,7 @@ export async function POST(request: NextRequest) {
             style: 0.4,
             use_speaker_boost: true,
           },
-          speed, // 0.25 to 4.0, default 1.0 - we use 1.35 for 35% faster
+          speed,
         }),
       }
     )

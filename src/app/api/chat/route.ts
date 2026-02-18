@@ -41,7 +41,7 @@ function isRateLimited(ip: string): boolean {
 }
 
 // Log conversation to Notion (fire and forget)
-async function logToNotion(firstMessage: string, mode: string, messageCount: number) {
+async function logToNotion(firstMessage: string, page: string, messageCount: number) {
   const notionKey = process.env.NOTION_API_KEY
   const databaseId = process.env.NOTION_DATABASE_ID
 
@@ -65,7 +65,7 @@ async function logToNotion(firstMessage: string, mode: string, messageCount: num
             rich_text: [{ text: { content: firstMessage.slice(0, 2000) } }]
           },
           Mode: {
-            select: { name: mode === 'kids' ? 'Kids' : 'Standard' }
+            select: { name: page || '/' }
           },
           Messages: {
             number: messageCount
@@ -80,7 +80,7 @@ async function logToNotion(firstMessage: string, mode: string, messageCount: num
 }
 
 // CORS headers for cross-origin chat widget
-const ALLOWED_ORIGINS = ['https://btc.sathian.ai', 'https://sathian.ai']
+const ALLOWED_ORIGINS = ['https://btc.sathian.ai', 'https://sathian.ai', 'https://toothfairy.sathian.ai']
 
 function corsHeaders(origin: string | null) {
   const headers: Record<string, string> = {
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { message, mode, history } = await request.json()
+    const { message, page, history } = await request.json()
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400, headers: corsHeaders(origin) })
@@ -124,15 +124,24 @@ export async function POST(request: NextRequest) {
     // Get relevant context from local memory
     const memoryContext = await getMemoryContext(message)
 
-    // Build system prompt with mode and context
-    const systemPrompt = buildSystemPrompt(mode, memoryContext)
+    // Build system prompt with page context
+    const systemPrompt = buildSystemPrompt(page || '/', memoryContext)
 
-    // Build conversation history
-    const messages = [
-      ...(history || []).map((msg: { role: string; content: string }) => ({
+    // Validate and sanitize conversation history
+    const rawHistory = Array.isArray(history) ? history.slice(-20) : []
+    const validatedHistory = rawHistory
+      .filter((msg: { role: string; content: string }) =>
+        msg &&
+        typeof msg.content === 'string' &&
+        (msg.role === 'user' || msg.role === 'assistant')
+      )
+      .map((msg: { role: string; content: string }) => ({
         role: msg.role as 'user' | 'assistant',
-        content: msg.content,
-      })),
+        content: msg.content.slice(0, 2000),
+      }))
+
+    const messages = [
+      ...validatedHistory,
       { role: 'user' as const, content: message },
     ]
 
@@ -150,11 +159,11 @@ export async function POST(request: NextRequest) {
 
     // Log first message of new conversations to Notion (fire and forget)
     if (!history || history.length === 0) {
-      logToNotion(message, mode, 1)
+      logToNotion(message, page || '/', 1)
     }
 
     // Check if visitor wants to connect/request something - notify Sathian
-    const connectionIntent = detectConnectionIntent(message)
+    const connectionIntent = detectConnectionIntent(message, page || '/')
     if (connectionIntent) {
       notifyVisitorMessage(connectionIntent)
     }

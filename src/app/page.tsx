@@ -1,52 +1,28 @@
 'use client'
 
-import { useState, useEffect, useCallback, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { SiteNav } from '@/components/SiteNav'
-import { ChatWidget } from '@/components/ChatWidget'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
+import { articles } from '@/lib/articles'
 
 const AtlasGlobeTeaser = dynamic(
   () => import('@/components/ui/atlas-globe-teaser').then((mod) => mod.AtlasGlobeTeaser),
   { ssr: false }
 )
 
-// ─── Articles data ──────────────────────────────────────────────────────────
-const WRITINGS = [
-  {
-    title: 'Yakko\u2019s World Was Already Wrong',
-    description: '1993 was a hinge. A cartoon taught geography. A cypherpunk wrote about electronic money. The web went free. The old world was ending and the new one was being coded into existence.',
-    href: '/writings/yakkos-world',
-    date: '2026-02-06',
-    readTime: '12 min',
-    accent: '#06B6D4',
-  },
-  {
-    title: 'The Yellow Box',
-    description: 'An Uber driver, a box of No Name spaghetti, and how the gap between what institutions promise and what people experience follows the same pattern.',
-    href: '/writings/the-yellow-box',
-    date: '2025-12-25',
-    readTime: '8 min',
-    accent: '#DC2626',
-  },
-  {
-    title: 'C.R.E.A.M. 2.0',
-    description: 'How Wu-Tang Clan\u2019s journey from Staten Island mirrors Bitcoin\u2019s path from cypherpunk whitepaper to institutional adoption.',
-    href: '/writings/cream-2-point-0',
-    date: '2025-10-31',
-    readTime: '7 min',
-    accent: '#F59E0B',
-  },
-  {
-    title: 'Nine Pages',
-    description: 'I was around Bitcoin for years before I actually read the whitepaper. Nine pages changed everything.',
-    href: '/writings/nine-pages',
-    date: '2025-07-01',
-    readTime: '9 min',
-    accent: '#F7931A',
-  },
-]
+// ─── Articles data (canonical source: src/lib/articles.ts) ──────────────────
+const WRITINGS = [...articles]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .map(a => ({
+    title: a.title,
+    description: a.description,
+    href: `/writings/${a.slug}`,
+    date: a.date,
+    readTime: a.readTime,
+    accent: a.theme.accent,
+  }))
 
 // ─── Featured markers — one per pillar for interest diversity ────────────────
 const FEATURED_MARKERS = [
@@ -185,18 +161,16 @@ const CHAT_PROMPTS = [
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function Home() {
   const btcPrice = useBtcPrice()
-  const [chatOpen, setChatOpen] = useState(false)
-  const [prefillMsg, setPrefillMsg] = useState('')
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null)
 
-  const handlePromptClick = useCallback((prompt: string) => {
-    setPrefillMsg(prompt)
-    setChatOpen(true)
-  }, [])
+  const handlePromptClick = (prompt: string) => {
+    window.dispatchEvent(new CustomEvent('open-chat', { detail: { message: prompt } }))
+  }
 
   return (
     <div data-theme="dark" style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)' }}>
       <SiteNav />
+      <main>
 
       {/* ═══ Zone 2: Hero ═══════════════════════════════════════════════════ */}
       <section className="zone-primary relative" style={{ paddingTop: 160, paddingBottom: 100 }}>
@@ -524,12 +498,14 @@ export default function Home() {
                   &copy; {new Date().getFullYear()} Sathian S.
                 </p>
               </div>
-              <div className="flex gap-12">
+              <div className="flex flex-wrap gap-x-12 gap-y-6">
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Site</span>
                   <Link href="/writings" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Writing</Link>
                   <a href="#projects" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Projects</a>
                   <Link href="/about" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>About</Link>
+                  <Link href="/voice" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Voice</Link>
+                  <Link href="/studio" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Studio</Link>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Projects</span>
@@ -546,9 +522,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* ═══ Zone 10: Chat Widget ═══════════════════════════════════════════ */}
-      <ChatWidget externalOpen={chatOpen} onExternalClose={() => setChatOpen(false)} prefillMessage={prefillMsg} />
+      </main>
     </div>
   )
 }

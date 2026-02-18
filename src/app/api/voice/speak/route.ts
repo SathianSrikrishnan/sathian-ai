@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
+import { checkVoiceAuth } from '@/lib/voice-auth'
 
 const elevenlabs = new ElevenLabsClient({
   apiKey: process.env.ELEVENLABS_API_KEY,
@@ -9,6 +10,10 @@ const elevenlabs = new ElevenLabsClient({
 const DEFAULT_VOICE_ID = 'TxGEqnHWrfWFTfGW9XjX' // Josh
 
 export async function POST(request: NextRequest) {
+  // PIN gate
+  const authError = checkVoiceAuth(request)
+  if (authError) return authError
+
   try {
     const { text, voiceId } = await request.json()
 

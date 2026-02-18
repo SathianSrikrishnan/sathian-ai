@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { checkVoiceAuth } from '@/lib/voice-auth'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
 export async function POST(request: NextRequest) {
+  // PIN gate
+  const authError = checkVoiceAuth(request)
+  if (authError) return authError
+
   try {
     const formData = await request.formData()
     const audioFile = formData.get('audio') as File

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getAllArticles } from '@/lib/articles'
+import { getPublishedArticles } from '@/lib/articles-db'
+import { SiteNav } from '@/components/SiteNav'
 
 export const metadata: Metadata = {
   title: 'Writing — sathian.ai',
@@ -11,11 +12,7 @@ export const metadata: Metadata = {
   },
 }
 
-function estimateReadTime(body: string): string {
-  const words = body.split(/\s+/).length
-  const minutes = Math.ceil(words / 250)
-  return `${minutes} min read`
-}
+export const revalidate = 60
 
 function formatDate(dateStr: string) {
   return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', {
@@ -25,29 +22,16 @@ function formatDate(dateStr: string) {
   })
 }
 
-export default function WritingsIndex() {
-  const articles = getAllArticles().sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+export default async function WritingsIndex() {
+  const articles = await getPublishedArticles()
 
   return (
     <div data-theme="dark" style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100vh' }}>
+      <SiteNav />
+      <main>
       {/* Header */}
       <header style={{ padding: '120px 0 48px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <Link
-            href="/"
-            style={{
-              fontFamily: 'var(--font-mono), monospace',
-              fontSize: 13,
-              color: 'var(--hub-text-muted)',
-              textDecoration: 'none',
-              display: 'inline-block',
-              marginBottom: 32,
-            }}
-          >
-            &larr; sathian.ai
-          </Link>
           <h1
             style={{
               fontFamily: 'var(--font-display), sans-serif',
@@ -80,6 +64,7 @@ export default function WritingsIndex() {
               <Link
                 key={article.slug}
                 href={`/writings/${article.slug}`}
+                className="writing-card-link"
                 style={{
                   display: 'block',
                   textDecoration: 'none',
@@ -104,7 +89,7 @@ export default function WritingsIndex() {
                       color: 'var(--hub-text-muted)',
                     }}
                   >
-                    {estimateReadTime(article.body)}
+                    {article.readTime}
                   </span>
                   <span
                     style={{
@@ -179,6 +164,7 @@ export default function WritingsIndex() {
           </div>
         </div>
       </footer>
+      </main>
     </div>
   )
 }

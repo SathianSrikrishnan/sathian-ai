@@ -6,20 +6,32 @@ const NOTION_API_KEY = process.env.NOTION_API_KEY
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID
 
 interface VisitorMessage {
-  type: 'connect' | 'feedback' | 'story_request' | 'general'
+  type: 'connect' | 'feedback' | 'number_suggestion' | 'resource' | 'subscribe' | 'general'
   message: string
   context?: string
   visitorInfo?: string
+  page?: string
 }
 
 // Send to Telegram
 async function sendTelegram(msg: VisitorMessage): Promise<boolean> {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return false
 
-  const text = `🔔 *New Visitor Message*
+  const typeEmoji: Record<string, string> = {
+    connect: '\u{1F91D}',
+    feedback: '\u{1F4AC}',
+    number_suggestion: '\u{1F522}',
+    resource: '\u{1F517}',
+    subscribe: '\u{1F4E7}',
+    general: '\u{1F4E8}',
+  }
 
-*Type:* ${msg.type}
-*Message:* ${msg.message}
+  const emoji = typeEmoji[msg.type] || '\u{1F514}'
+
+  const text = `${emoji} *${msg.type.replace('_', ' ').toUpperCase()}*
+
+*Message:* ${msg.message.slice(0, 500)}
+${msg.page ? `*Page:* ${msg.page}` : ''}
 ${msg.visitorInfo ? `*Visitor:* ${msg.visitorInfo}` : ''}
 ${msg.context ? `*Context:* ${msg.context}` : ''}
 
@@ -64,7 +76,7 @@ async function logToNotion(msg: VisitorMessage): Promise<boolean> {
             rich_text: [{ text: { content: msg.message.slice(0, 2000) } }]
           },
           Mode: {
-            select: { name: 'Standard' }
+            select: { name: msg.page || '/' }
           },
           Messages: {
             number: 0  // 0 indicates this is a direct request, not a conversation
@@ -79,39 +91,52 @@ async function logToNotion(msg: VisitorMessage): Promise<boolean> {
   }
 }
 
-// Send email notification
-async function sendEmail(msg: VisitorMessage): Promise<boolean> {
-  // Using a simple email service - for now we'll use a webhook approach
-  // In production, integrate with SendGrid, Resend, or similar
-
-  // For MVP, we'll rely on Telegram + Notion
-  // Email can be added when you set up a mail service
-  console.log('Email notification (not yet configured):', msg)
-  return true
-}
-
 // Main notification function
 export async function notifyVisitorMessage(msg: VisitorMessage): Promise<void> {
   // Fire all notifications in parallel, don't wait
   Promise.all([
     sendTelegram(msg),
     logToNotion(msg),
-    sendEmail(msg)
   ]).catch(e => console.error('Notification error:', e))
 }
 
 // Detect if a message indicates the visitor wants to connect/request something
-export function detectConnectionIntent(message: string): VisitorMessage | null {
+export function detectConnectionIntent(message: string, page: string): VisitorMessage | null {
   const msgLower = message.toLowerCase()
 
-  // Story access requests
-  if (msgLower.includes('see the stories') ||
-      msgLower.includes('access to stories') ||
-      msgLower.includes('storybook') && (msgLower.includes('access') || msgLower.includes('see'))) {
+  // Number suggestions for Cultural Atlas
+  if (msgLower.includes('number') && (msgLower.includes('should') || msgLower.includes('add') || msgLower.includes('suggest') || msgLower.includes('what about')) ||
+      msgLower.match(/\b(area code|dial|marker)\b/) && (msgLower.includes('story') || msgLower.includes('add'))) {
     return {
-      type: 'story_request',
-      message: message,
-      context: 'Requested access to Storybook Universe'
+      type: 'number_suggestion',
+      message,
+      page,
+      context: 'Suggested a number or story for the Cultural Atlas'
+    }
+  }
+
+  // Resource / person recommendations
+  if (msgLower.includes('check out') ||
+      msgLower.includes('you should') && (msgLower.includes('follow') || msgLower.includes('read') || msgLower.includes('watch') || msgLower.includes('meet')) ||
+      msgLower.includes('recommend') && !msgLower.includes('recommend me') ||
+      msgLower.includes('interesting person') ||
+      msgLower.includes('should connect with') ||
+      msgLower.includes('know someone')) {
+    return {
+      type: 'resource',
+      message,
+      page,
+      context: 'Shared a resource or person recommendation'
+    }
+  }
+
+  // Subscribe intent
+  if (msgLower.includes('subscribe') || msgLower.includes('newsletter') || msgLower.includes('updates') && msgLower.includes('get')) {
+    return {
+      type: 'subscribe',
+      message,
+      page,
+      context: 'Wants to subscribe'
     }
   }
 
@@ -121,20 +146,27 @@ export function detectConnectionIntent(message: string): VisitorMessage | null {
       msgLower.includes('contact') ||
       msgLower.includes('collaborate') ||
       msgLower.includes('work together') ||
-      msgLower.includes('get in touch')) {
+      msgLower.includes('get in touch') ||
+      msgLower.includes('hire') ||
+      msgLower.includes('consult')) {
     return {
       type: 'connect',
-      message: message,
+      message,
+      page,
       context: 'Wants to connect'
     }
   }
 
   // Feedback
   if (msgLower.includes('feedback') ||
-      msgLower.includes('suggestion')) {
+      msgLower.includes('suggestion') ||
+      msgLower.includes('bug') && (msgLower.includes('found') || msgLower.includes('report')) ||
+      msgLower.includes('broken') ||
+      msgLower.includes('doesn\'t work')) {
     return {
       type: 'feedback',
-      message: message,
+      message,
+      page,
       context: 'Providing feedback'
     }
   }
@@ -144,8 +176,9 @@ export function detectConnectionIntent(message: string): VisitorMessage | null {
   if (emailMatch) {
     return {
       type: 'connect',
-      message: message,
+      message,
       visitorInfo: emailMatch[0],
+      page,
       context: 'Shared email address'
     }
   }

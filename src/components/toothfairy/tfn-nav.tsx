@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { C } from "./tokens"
 
 type ActivePage = "story" | "technical" | "market"
@@ -33,21 +34,22 @@ export function TfnNav({ activePage }: { activePage: ActivePage }) {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href={`${base}/`} className="text-base font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-          Tooth Fairy Network
-        </a>
+        <Link href={`${base}/`} className="text-base font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+          <span className="hidden sm:inline">The Tooth Fairy Network</span>
+          <span className="sm:hidden">TFN</span>
+        </Link>
         <div className="flex items-center gap-1">
           {links.map((link) => (
-            <a
+            <Link
               key={link.page}
               href={link.href}
-              className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
                 activePage === link.page ? "text-white bg-white/[0.05]" : "hover:bg-white/[0.05]"
               }`}
               style={activePage !== link.page ? { color: C.muted } : undefined}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <a
             href={activePage === "story" ? "#feedback" : `${base}/#feedback`}

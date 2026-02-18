@@ -108,7 +108,7 @@ export function PitchLanding() {
               className="px-8 py-3.5 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-white/[0.06]"
               style={{ border: `1px solid ${C.border}`, color: C.muted }}
             >
-              Share Your Thoughts
+              Share Feedback
             </a>
           </div>
         </motion.div>
@@ -164,21 +164,17 @@ export function PitchLanding() {
                 A working parent who missed the school play. When a tooth falls or a first bike
                 ride happens — someone who loves that child isn&apos;t there.
               </p>
-              <p className="text-base leading-relaxed mb-4" style={{ color: C.muted }}>
-                In the US alone, 750,000 divorces a year create over a million children splitting
-                time between homes. But this isn&apos;t just a co-parenting problem — it&apos;s
-                a <strong style={{ color: C.text }}>distance</strong> problem. Every family
-                orientation has it. Nuclear, blended, single-parent, multi-generational.
-              </p>
-              <p className="text-base leading-relaxed mb-6" style={{ color: C.muted }}>
-                The Tooth Fairy Network gives{" "}
-                <strong style={{ color: C.text }}>everyone who loves a child</strong> — parents,
-                grandparents, aunts, uncles — a way to participate in milestones they can&apos;t
-                physically witness. And it gives the child something real: their first savings,
-                their first digital wallet, their first lesson in financial responsibility.
-              </p>
-              <p className="text-base font-display font-medium italic" style={{ color: `${C.text}cc` }}>
-                &ldquo;You shouldn&apos;t have to be in the room to be part of the moment.&rdquo;
+              <p className="text-base leading-relaxed" style={{ color: C.muted }}>
+                This isn&apos;t just a co-parenting problem — it&apos;s a{" "}
+                <strong style={{ color: C.text }}>distance</strong> problem. Every family
+                orientation has it. Nuclear, blended, single-parent, multi-generational.{" "}
+                <a
+                  href="/toothfairy/network/market"
+                  className="underline underline-offset-4 transition-colors hover:text-white"
+                  style={{ color: C.amber }}
+                >
+                  Read the full market thesis &rarr;
+                </a>
               </p>
             </motion.div>
           </div>
@@ -296,7 +292,7 @@ export function PitchLanding() {
                 </p>
                 <p className="text-2xl font-display font-bold mb-2">Real savings</p>
                 <p className="text-sm leading-relaxed" style={{ color: C.muted }}>
-                  Their first digital wallet. Their first deposit. Financial sovereignty starts with their very first lost tooth.
+                  Their first digital wallet. Their first deposit. Learning about money starts with their very first lost tooth.
                 </p>
               </div>
             </div>
@@ -335,91 +331,6 @@ export function PitchLanding() {
         </div>
       </section>
 
-      {/* ═══ BEYOND TEETH ════════════════════════════════════════════════ */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row-reverse gap-16 items-center">
-            {/* Image */}
-            <motion.div
-              {...fadeUp}
-              className="relative w-full lg:w-1/2 aspect-[4/3] rounded-xl overflow-hidden flex-shrink-0"
-              style={{ border: `1px solid ${C.border}` }}
-            >
-              <Image src="/v2-storyboard/objects/obj-06-network-globe.png" alt="Growth milestones" fill className="object-cover" />
-              <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, transparent 40%, ${C.bg}cc 100%)` }} />
-            </motion.div>
-
-            {/* Milestones */}
-            <motion.div {...fadeUp} className="flex-1">
-              <p className="text-sm font-semibold tracking-wide uppercase mb-4" style={{ color: C.cyan }}>
-                The Vision
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-2">
-                Teeth are just the beginning.
-              </h2>
-              <p className="text-base mb-8" style={{ color: C.muted }}>
-                Every family has these moments. We&apos;re making them permanent.
-              </p>
-              <div>
-                {[
-                  { icon: "\uD83E\uDDB7", title: "First Tooth Lost", desc: "The classic. The one that started it all." },
-                  { icon: "\uD83D\uDEB2", title: "First Bike Ride", desc: "Grandparent contributes from across the country." },
-                  { icon: "\uD83C\uDF92", title: "First Day of School", desc: "The whole family participates. The savings grow." },
-                  { icon: "\uD83C\uDFCA", title: "Learning to Swim", desc: "Uncle sends money. The child\u2019s account grows." },
-                  { icon: "\uD83C\uDF93", title: "Graduation", desc: "Years of milestones. One permanent collection." },
-                ].map((m, i) => (
-                  <motion.div
-                    key={m.title}
-                    {...stagger(i)}
-                    className="flex items-start gap-4 py-4"
-                    style={{ borderBottom: `1px solid ${C.border}` }}
-                  >
-                    <span className="text-xl flex-shrink-0 mt-0.5">{m.icon}</span>
-                    <div>
-                      <div className="text-base font-display font-semibold">{m.title}</div>
-                      <div className="text-sm mt-0.5" style={{ color: C.muted }}>{m.desc}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ WHY I'M BUILDING THIS ═══════════════════════════════════════ */}
-      <section className="py-24 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div {...fadeUp}>
-            <p className="text-sm font-semibold tracking-wide uppercase mb-3" style={{ color: C.rose }}>
-              The Builder
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-6">
-              Why I&apos;m building this
-            </h2>
-            <p className="text-base leading-relaxed mb-4" style={{ color: C.muted }}>
-              I&apos;m a father. This started as something I wanted for my own family — a way
-              to make sure that when my children hit a milestone, everyone who loves them can
-              be part of it, no matter where they are.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: C.muted }}>
-              I&apos;m building this in the open. The technology underneath uses blockchain to
-              make these keepsakes permanent and verifiable — but you shouldn&apos;t need to
-              understand any of that to use it. If you&apos;re curious about the technical
-              details, there&apos;s a{" "}
-              <a
-                href="/toothfairy/network/technical"
-                className="underline underline-offset-4 transition-colors hover:text-white"
-                style={{ color: C.cyan }}
-              >
-                technical page
-              </a>{" "}
-              for that.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* ═══ THE ASK / FEEDBACK CTA ══════════════════════════════════════ */}
       <section className="py-32 px-6" id="feedback">
         <div className="relative max-w-2xl mx-auto text-center">
@@ -436,11 +347,12 @@ export function PitchLanding() {
               I&apos;d love your feedback.
             </h2>
             <p className="text-lg mb-4" style={{ color: C.muted }}>
-              This is early. The concept is live but the product is still being built.
+              I&apos;m a father building this for my own family — a way to make sure that when
+              my children hit a milestone, everyone who loves them can be part of it. This is
+              early, and I&apos;m building in the open.
             </p>
             <p className="text-base mb-10" style={{ color: C.muted }}>
-              If you&apos;re a parent, a builder, or just curious — tell me what you think.
-              Use the chat, or leave your email to follow along.
+              If you&apos;re a parent, a builder, or just curious — leave your email to follow along.
             </p>
 
             {submitted ? (
@@ -484,7 +396,7 @@ export function PitchLanding() {
       {/* ═══ FOOTER ══════════════════════════════════════════════════════ */}
       <footer className="py-8 px-6" style={{ borderTop: `1px solid ${C.border}` }}>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-sm font-display font-bold tracking-tight">Tooth Fairy Network</span>
+          <span className="text-sm font-display font-bold tracking-tight">The Tooth Fairy Network</span>
           <span className="text-xs" style={{ color: C.dim }}>
             &copy; {new Date().getFullYear()}{" "}
             <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.dim }}>

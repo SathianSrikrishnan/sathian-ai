@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import { motion } from 'motion/react'
+import { ChatWidget } from '@/components/ChatWidget'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -48,6 +50,165 @@ function WaveformRing() {
   )
 }
 
+/* ── PIN Gate Overlay ───────────────── */
+function PinGate({ onUnlock }: { onUnlock: (pin: string) => void }) {
+  const [pin, setPin] = useState('')
+  const [error, setError] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!pin.trim() || verifying) return
+
+    setVerifying(true)
+    setError(false)
+
+    try {
+      // Verify PIN by making a lightweight request to the voice API
+      const res = await fetch('/api/voice/speak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-voice-pin': pin,
+        },
+        body: JSON.stringify({ text: 'test' }),
+      })
+
+      if (res.status === 401) {
+        setError(true)
+        setPin('')
+        inputRef.current?.focus()
+      } else {
+        // PIN is valid (even if the actual TTS fails, auth passed)
+        onUnlock(pin)
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setVerifying(false)
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ background: 'var(--cosmic-bg, #050510)' }}
+    >
+      {/* Aurora ambient */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div
+          className="absolute -top-[150px] right-[10%] h-[500px] w-[500px] rounded-full opacity-[0.06]"
+          style={{ background: 'radial-gradient(circle, var(--cosmic-nebula, #7C3AED), transparent 70%)' }}
+        />
+        <div
+          className="absolute -left-[80px] bottom-[15%] h-[400px] w-[400px] rounded-full opacity-[0.04]"
+          style={{ background: 'radial-gradient(circle, var(--cosmic-aurora, #06B6D4), transparent 70%)' }}
+        />
+      </div>
+
+      <motion.div
+        className="relative z-10 w-full max-w-sm mx-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Card */}
+        <div
+          className="rounded-2xl p-8 text-center"
+          style={{
+            background: 'rgba(15,15,45,0.6)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            backdropFilter: 'blur(20px)',
+          }}
+        >
+          {/* Kai orb */}
+          <div
+            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full"
+            style={{
+              background: 'linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1))',
+              border: '1px solid rgba(124,58,237,0.2)',
+            }}
+          >
+            <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="rgba(167,139,250,0.8)" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+
+          <h2 className="font-display text-lg font-semibold mb-1" style={{ color: '#F1F5F9' }}>
+            Kai Voice
+          </h2>
+          <p className="text-sm mb-6" style={{ color: 'rgba(167,139,250,0.6)' }}>
+            Enter access code to continue
+          </p>
+
+          <form onSubmit={handleSubmit}>
+            <motion.input
+              ref={inputRef}
+              type="password"
+              value={pin}
+              onChange={(e) => { setPin(e.target.value); setError(false) }}
+              placeholder="Access code"
+              className="w-full px-4 py-3 rounded-xl text-center text-sm font-mono tracking-[0.3em] outline-none transition-all"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                color: '#F1F5F9',
+              }}
+              animate={error ? { x: [-8, 8, -6, 6, -4, 4, 0] } : {}}
+              transition={{ duration: 0.4 }}
+            />
+
+            {error && (
+              <p className="mt-2 text-xs" style={{ color: '#FCA5A5' }}>
+                Invalid access code
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={verifying || !pin.trim()}
+              className="mt-4 w-full py-3 rounded-xl text-sm font-medium transition-all"
+              style={{
+                background: verifying ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.2))',
+                border: '1px solid rgba(124,58,237,0.3)',
+                color: '#F1F5F9',
+                cursor: verifying ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {verifying ? 'Verifying...' : 'Unlock'}
+            </button>
+          </form>
+
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <Link
+              href="/voice/about"
+              className="text-xs font-mono transition-colors hover:text-white/60"
+              style={{ color: 'rgba(6,182,212,0.5)' }}
+            >
+              About Kai Voice
+            </Link>
+            <span style={{ color: 'rgba(255,255,255,0.1)' }}>|</span>
+            <Link
+              href="/"
+              className="text-xs font-mono transition-colors hover:text-white/60"
+              style={{ color: 'rgba(167,139,250,0.4)' }}
+            >
+              &larr; sathian.ai
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+
+      <ChatWidget />
+    </div>
+  )
+}
+
 export default function VoicePage() {
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -57,15 +218,29 @@ export default function VoicePage() {
   const [error, setError] = useState<string | null>(null)
   const [recordMode, setRecordMode] = useState<'hold' | 'tap'>('hold')
   const [playbackSpeed] = useState(2.0)
+  const [voicePin, setVoicePin] = useState<string | null>(null)
+  const [authChecked, setAuthChecked] = useState(false)
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
+  // Check for stored PIN on mount
+  useEffect(() => {
+    const stored = sessionStorage.getItem('voice-pin')
+    if (stored) setVoicePin(stored)
+    setAuthChecked(true)
+  }, [])
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  const handleUnlock = (pin: string) => {
+    sessionStorage.setItem('voice-pin', pin)
+    setVoicePin(pin)
+  }
 
   const startRecording = useCallback(async () => {
     if (isProcessing || isRecording) return
@@ -140,8 +315,19 @@ export default function VoicePage() {
 
       const response = await fetch('/api/voice/conversation', {
         method: 'POST',
+        headers: {
+          'x-voice-pin': voicePin || '',
+        },
         body: formData,
       })
+
+      if (response.status === 401) {
+        // PIN expired or invalid — clear and show gate
+        sessionStorage.removeItem('voice-pin')
+        setVoicePin(null)
+        setIsProcessing(false)
+        return
+      }
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -185,6 +371,7 @@ export default function VoicePage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!voicePin) return // Don't handle keys if not authenticated
       if (e.code === 'Escape' && isPlaying) {
         e.preventDefault()
         skipAudio()
@@ -201,6 +388,7 @@ export default function VoicePage() {
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
+      if (!voicePin) return
       if (e.code === 'Space' && recordMode === 'hold' && isRecording) {
         e.preventDefault()
         stopRecording()
@@ -213,7 +401,7 @@ export default function VoicePage() {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [isRecording, isProcessing, isPlaying, recordMode, startRecording, stopRecording, toggleRecording, skipAudio])
+  }, [voicePin, isRecording, isProcessing, isPlaying, recordMode, startRecording, stopRecording, toggleRecording, skipAudio])
 
   const handleMouseDown = () => {
     if (recordMode === 'hold') startRecording()
@@ -223,6 +411,14 @@ export default function VoicePage() {
   }
   const handleClick = () => {
     if (recordMode === 'tap') toggleRecording()
+  }
+
+  // Show nothing until we check sessionStorage (avoid flash)
+  if (!authChecked) return null
+
+  // Show PIN gate if not authenticated
+  if (!voicePin) {
+    return <PinGate onUnlock={handleUnlock} />
   }
 
   return (
@@ -536,6 +732,8 @@ export default function VoicePage() {
       </footer>
 
       <audio ref={audioRef} className="hidden" />
+
+      <ChatWidget />
     </div>
   )
 }

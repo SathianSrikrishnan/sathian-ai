@@ -112,7 +112,7 @@ export function MarketContent() {
             <div className="rounded-xl p-8" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
               <div className="space-y-6 text-sm" style={{ color: C.muted }}>
                 <div>
-                  <h4 className="text-base font-semibold mb-1" style={{ color: C.text }}>For the child: financial sovereignty starts at age 5</h4>
+                  <h4 className="text-base font-semibold mb-1" style={{ color: C.text }}>For the child: real savings start at age 5</h4>
                   <p className="leading-relaxed">
                     A real digital wallet. Real deposits. Compounding from the first lost tooth.
                     By the time a child loses their last tooth at 12, they have 7 years of savings,
@@ -284,13 +284,26 @@ export function MarketContent() {
           </p>
           <p className="text-sm" style={{ color: C.dim }}>
             If you see the opportunity — or the flaw — I want to hear it.
-            Use the chat, or reach out at{" "}
+            Reach out at{" "}
             <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.cyan }}>
               sathian.ai
             </a>
           </p>
         </motion.div>
       </div>
+
+      {/* Footer */}
+      <footer className="py-8 px-6" style={{ borderTop: `1px solid ${C.border}` }}>
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-sm font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>The Tooth Fairy Network</span>
+          <span className="text-xs" style={{ color: C.dim }}>
+            &copy; {new Date().getFullYear()}{" "}
+            <a href="https://sathian.ai" className="underline underline-offset-4 hover:text-white transition-colors" style={{ color: C.dim }}>
+              sathian.ai
+            </a>
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }
