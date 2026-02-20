@@ -43,7 +43,11 @@ export const metadata: Metadata = {
   title: 'sathian.ai',
   description: 'Personal site of Sathian. Experiments, projects, and writings.',
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'sathian.ai',
