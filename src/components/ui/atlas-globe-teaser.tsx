@@ -432,7 +432,7 @@ export function AtlasGlobeTeaser({
         <canvas
           ref={canvasRef}
           className="w-full h-full cursor-grab active:cursor-grabbing"
-          style={{ width: globeSize, height: globeSize, touchAction: "none" }}
+          style={{ width: globeSize, height: globeSize, touchAction: "pan-y" }}
         />
         {/* Interaction glow overlay */}
         <div

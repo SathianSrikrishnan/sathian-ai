@@ -1,10 +1,5 @@
 import { Metadata } from "next"
-import dynamic from "next/dynamic"
-
-const TechnicalContent = dynamic(
-  () => import("@/components/toothfairy/technical-content").then((mod) => mod.TechnicalContent),
-  { ssr: false }
-)
+import { TechnicalContent } from "@/components/toothfairy/technical-content"
 
 export const metadata: Metadata = {
   title: "Technical Details | Tooth Fairy Network",

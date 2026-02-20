@@ -45,6 +45,14 @@ body {
   font-optical-sizing: auto;
 }
 
+/* ─── Glass Card (used by BTC Atlas pillar cards) ────────────────────────── */
+
+.glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* ─── Article Visual System ──────────────────────────────────────────────── */
 
 /* Yellow box highlight — the signature visual moment */
@@ -673,21 +681,141 @@ h1, h2, h3 {
   transform: translateY(-2px);
 }
 
-/* Hero section — warm orange radial glow */
+/* Hero section — warm orange radial glow, concentrated on portrait side */
 .hub-hero-glow-deep {
   background:
     radial-gradient(
-      ellipse 70% 60% at 50% 30%,
-      rgba(247, 147, 26, 0.10) 0%,
-      rgba(247, 147, 26, 0.04) 25%,
-      rgba(124, 58, 237, 0.03) 45%,
-      transparent 70%
+      ellipse 45% 65% at 32% 50%,
+      rgba(247, 147, 26, 0.14) 0%,
+      rgba(247, 147, 26, 0.06) 30%,
+      transparent 60%
     ),
     radial-gradient(
-      ellipse 40% 50% at 70% 60%,
-      rgba(234, 179, 8, 0.04) 0%,
+      ellipse 60% 50% at 50% 30%,
+      rgba(247, 147, 26, 0.05) 0%,
+      rgba(124, 58, 237, 0.03) 35%,
       transparent 60%
+    ),
+    radial-gradient(
+      ellipse 35% 45% at 65% 60%,
+      rgba(234, 179, 8, 0.04) 0%,
+      transparent 50%
     );
+}
+
+@media (max-width: 768px) {
+  .hub-hero-glow-deep {
+    background:
+      radial-gradient(
+        ellipse 70% 50% at 50% 25%,
+        rgba(247, 147, 26, 0.12) 0%,
+        rgba(247, 147, 26, 0.04) 35%,
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 50% 40% at 50% 50%,
+        rgba(124, 58, 237, 0.03) 0%,
+        transparent 55%
+      );
+  }
+}
+
+/* ─── Observatory Hub: Hero Split Layout ─────────────────────────────── */
+
+.hub-hero-split {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.hub-hero-portrait {
+  display: flex;
+  justify-content: center;
+}
+
+.hub-hero-portrait-frame {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  transform: rotate(-1.5deg);
+  box-shadow:
+    0 25px 80px rgba(247, 147, 26, 0.14),
+    0 0 120px rgba(247, 147, 26, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: heroPortraitIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hub-hero-portrait-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hub-hero-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hub-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hub-hero-copy > * {
+  animation: heroTextIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hub-hero-copy > *:nth-child(1) { animation-delay: 0.2s; }
+.hub-hero-copy > *:nth-child(2) { animation-delay: 0.3s; }
+.hub-hero-copy > *:nth-child(3) { animation-delay: 0.4s; }
+.hub-hero-copy > *:nth-child(4) { animation-delay: 0.5s; }
+
+@keyframes heroPortraitIn {
+  from {
+    opacity: 0;
+    transform: rotate(-3deg) translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-1.5deg) translateY(0) scale(1);
+  }
+}
+
+@keyframes heroTextIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hub-hero-split {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hub-hero-portrait-frame {
+    width: 240px;
+    height: 240px;
+    transform: rotate(0deg);
+  }
+
+  @keyframes heroPortraitIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .hub-hero-copy {
+    align-items: center;
+  }
 }
 
 /* Footer top gradient border */

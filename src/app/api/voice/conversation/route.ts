@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Audio file too large (max 10MB)' }, { status: 400 })
     }
 
-    console.log(`[Voice] Audio received: ${audioFile.size} bytes, type: ${audioFile.type}`)
 
     // Parse and validate conversation history
     let history: Array<{ role: 'user' | 'assistant'; content: string }> = []
@@ -73,7 +72,6 @@ export async function POST(request: NextRequest) {
     const blob = new Blob([buffer], { type: 'audio/webm' })
     const file = new File([blob], 'audio.webm', { type: 'audio/webm' })
 
-    console.log(`[Voice] Sending to Whisper: ${buffer.length} bytes`)
 
     const transcription = await openai.audio.transcriptions.create({
       file,
@@ -83,7 +81,6 @@ export async function POST(request: NextRequest) {
     const transcribeTime = Date.now() - transcribeStart
 
     const userText = transcription.text
-    console.log(`[Voice] Transcribed in ${transcribeTime}ms: "${userText}"`)
 
     if (!userText || userText.trim() === '') {
       return NextResponse.json({
@@ -101,9 +98,8 @@ export async function POST(request: NextRequest) {
 
     // Load context from database (with fallback to hardcoded)
     const context = await loadContext(userText)
-    let systemPrompt = buildSystemPrompt(context)
+    const systemPrompt = buildSystemPrompt(context)
 
-    console.log(`[Voice] Context loaded from ${context.fromDatabase ? 'database' : 'fallback'}`)
 
     const messages = [
       ...history.map(msg => ({
@@ -123,12 +119,9 @@ export async function POST(request: NextRequest) {
     const textContent = response.content.find(block => block.type === 'text')
     const assistantText = textContent ? textContent.text : "I didn't catch that. Could you repeat?"
     const thinkTime = Date.now() - thinkStart
-    console.log(`[Voice] Claude responded in ${thinkTime}ms: "${assistantText.substring(0, 50)}..."`)
 
     // Try to extract and save memories from this conversation (async, don't wait)
-    extractMemories(userText, assistantText).catch(e =>
-      console.log('[Voice] Memory extraction skipped:', e.message)
-    )
+    extractMemories(userText, assistantText).catch(() => {})
 
     // 3. SPEAK - Convert response to audio using raw API (supports speed parameter)
     step = 'speak'
@@ -166,7 +159,6 @@ export async function POST(request: NextRequest) {
 
     const audioBuffer = Buffer.from(await ttsResponse.arrayBuffer())
     const speakTime = Date.now() - speakStart
-    console.log(`[Voice] TTS completed in ${speakTime}ms: ${audioBuffer.length} bytes`)
 
     const totalTime = Date.now() - startTime
 

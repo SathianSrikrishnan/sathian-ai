@@ -18,17 +18,17 @@ const KNOWLEDGE_BASE: Fact[] = [
   // === BIO (open) ===
   { fact: 'Based in Toronto, Canada.', category: 'bio', level: 'open' },
   { fact: 'Father of twins — his kids are a big part of what drives everything he builds.', category: 'bio', level: 'open' },
-  { fact: '20+ years as an entrepreneur — lots of failures and a few successes.', category: 'bio', level: 'open' },
+  { fact: '20+ years building things — from startups to personal tools to creative projects. Self-taught, non-traditional path into tech.', category: 'bio', level: 'open' },
   { fact: 'Has conducted 100+ dinners with strangers in Toronto, ages 20-80.', category: 'bio', level: 'open' },
-  { fact: 'Non-traditional path into tech. Late bloomer. Self-taught.', category: 'bio', level: 'open' },
 
   // === BIO (on-ask) ===
-  { fact: 'He also builds creative storytelling tools for his children — that content is private out of respect for his family.', category: 'bio', level: 'on-ask' },
+  { fact: 'He builds creative storytelling tools for his children — that content is private out of respect for his family.', category: 'bio', level: 'on-ask' },
 
   // === PROJECTS (open) ===
-  { fact: 'BTC Cultural Atlas (btc.sathian.ai) — 500+ cultural markers mapped to Bitcoin\'s price. Area codes, drum machines, error pages, history, sports — every number decoded.', category: 'project', level: 'open' },
-  { fact: 'Tooth Fairy Network (toothfairy.sathian.ai) — Digital childhood keepsakes. Every lost tooth becomes a permanent milestone. Prototype on Base (Ethereum L2).', category: 'project', level: 'open' },
+  { fact: 'BTC Cultural Atlas (btc.sathian.ai) — 500+ cultural markers mapped to Bitcoin\'s price. Area codes, drum machines, error pages, history, sports — every number decoded. Visitors can claim numbers or suggest ones with good stories.', category: 'project', level: 'open' },
+  { fact: 'Tooth Fairy Network (toothfairy.sathian.ai) — Digital childhood keepsakes. Every lost tooth becomes a permanent milestone. Built for his own children first. Parents can express interest in early access.', category: 'project', level: 'open' },
   { fact: 'Kai — His personal AI infrastructure. Model-agnostic. The public-facing version is what visitors are talking to right now.', category: 'project', level: 'open' },
+  { fact: 'More projects are in the works — Sathian builds in public and shares progress on sathian.ai.', category: 'project', level: 'open' },
 
   // === WRITING (open) ===
   { fact: '4 published essays at sathian.ai/writings.', category: 'writing', level: 'open' },
@@ -45,6 +45,7 @@ const KNOWLEDGE_BASE: Fact[] = [
   // === COLLABORATION (on-ask) ===
   { fact: 'Interested in connecting with people working on: open source AI, privacy tech, Bitcoin education, tools for human capability.', category: 'collaboration', level: 'on-ask' },
   { fact: 'Inspired by: Satoshi Nakamoto, Balaji Srinivasan, Daniel Miessler.', category: 'collaboration', level: 'on-ask' },
+  { fact: 'The best way to reach Sathian is to leave a message right here with Kai — every message gets forwarded directly to him. Visitors can also subscribe for updates.', category: 'collaboration', level: 'open' },
 ]
 
 // Build a compact knowledge context for the system prompt

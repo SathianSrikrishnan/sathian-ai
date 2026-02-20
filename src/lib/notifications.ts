@@ -157,6 +157,33 @@ export function detectConnectionIntent(message: string, page: string): VisitorMe
     }
   }
 
+  // Parent interest in Tooth Fairy
+  if ((msgLower.includes('parent') || msgLower.includes('my kid') || msgLower.includes('my child') || msgLower.includes('my son') || msgLower.includes('my daughter') || msgLower.includes('my family')) &&
+      (msgLower.includes('interest') || msgLower.includes('love') || msgLower.includes('want') || msgLower.includes('sign up') || msgLower.includes('try') || msgLower.includes('meaningful'))) {
+    return {
+      type: 'feedback',
+      message,
+      page,
+      context: 'Parent expressing interest in Tooth Fairy Network'
+    }
+  }
+
+  // Explicit "pass a message to Sathian" intent
+  if (msgLower.includes('tell sathian') ||
+      msgLower.includes('tell him') ||
+      msgLower.includes('let him know') ||
+      msgLower.includes('pass along') ||
+      msgLower.includes('pass this') ||
+      msgLower.includes('message for sathian') ||
+      msgLower.includes('leave a message')) {
+    return {
+      type: 'general',
+      message,
+      page,
+      context: 'Visitor left a message for Sathian'
+    }
+  }
+
   // Feedback
   if (msgLower.includes('feedback') ||
       msgLower.includes('suggestion') ||

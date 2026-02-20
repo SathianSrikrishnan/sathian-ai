@@ -53,10 +53,10 @@ export function TfnNav({ activePage }: { activePage: ActivePage }) {
           ))}
           <a
             href={activePage === "story" ? "#feedback" : `${base}/#feedback`}
-            className="ml-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-all duration-200 hover:opacity-90 hidden sm:inline-flex"
+            className="ml-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-all duration-200 hover:opacity-90"
             style={{ background: C.rose }}
           >
-            Share Feedback
+            Feedback
           </a>
         </div>
       </div>

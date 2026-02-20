@@ -1,19 +1,14 @@
 import { Metadata } from "next"
-import dynamic from "next/dynamic"
-
-const PitchLanding = dynamic(
-  () => import("@/components/toothfairy/pitch-landing").then((mod) => mod.PitchLanding),
-  { ssr: false }
-)
+import { PitchLanding } from "@/components/toothfairy/pitch-landing"
 
 export const metadata: Metadata = {
   title: "The Tooth Fairy Network | sathian.ai",
   description:
-    "Turn childhood milestones into permanent, verifiable digital keepsakes on blockchain. Your child earns it. You keep it. They learn from it.",
+    "Turn your child's lost tooth into permanent savings and a digital keepsake. Every child loses teeth — this turns those milestones into something lasting.",
   openGraph: {
     title: "The Tooth Fairy Network",
     description:
-      "Narrative-driven childhood milestone platform built on Base. NFT keepsakes for parents. Crypto education for children.",
+      "Every child loses teeth. Turn those milestones into permanent digital keepsakes and your child's first real savings.",
     siteName: "sathian.ai",
     type: "website",
   },
@@ -21,7 +16,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Tooth Fairy Network",
     description:
-      "Turn childhood milestones into permanent, verifiable digital keepsakes on blockchain.",
+      "Turn your child's lost tooth into permanent savings and a digital keepsake.",
   },
 }
 

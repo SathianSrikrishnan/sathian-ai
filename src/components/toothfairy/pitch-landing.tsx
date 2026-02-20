@@ -26,9 +26,12 @@ export function PitchLanding() {
     return () => obs.disconnect()
   }, [])
 
+  const [submitting, setSubmitting] = useState(false)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email.includes("@")) return
+    if (!email.includes("@") || submitting) return
+    setSubmitting(true)
     try {
       await fetch("/api/waitlist", {
         method: "POST",
@@ -39,6 +42,7 @@ export function PitchLanding() {
       // Still show success — Telegram/Notion are best-effort
     }
     setSubmitted(true)
+    setSubmitting(false)
   }
 
   return (
@@ -74,8 +78,8 @@ export function PitchLanding() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-display font-bold tracking-tight leading-[0.95]">
-            Every tooth
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-bold tracking-tight leading-[1.05]">
+            Turn your child&apos;s lost tooth into
             <br />
             <span
               style={{
@@ -84,14 +88,14 @@ export function PitchLanding() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              tells a story.
+              savings and a keepsake.
             </span>
           </h1>
 
           {/* Subheadline */}
           <p className="mt-6 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: C.muted }}>
-            I&apos;m building a platform where childhood milestones become permanent digital
-            keepsakes — and children start building real savings from their very first lost tooth.
+            Every tooth tells a story. I&apos;m building the platform that turns each one
+            into a permanent digital keepsake and your child&apos;s first real savings.
           </p>
 
           {/* CTAs */}
@@ -347,8 +351,8 @@ export function PitchLanding() {
               I&apos;d love your feedback.
             </h2>
             <p className="text-lg mb-4" style={{ color: C.muted }}>
-              I&apos;m a father building this for my own family — a way to make sure that when
-              my children hit a milestone, everyone who loves them can be part of it. This is
+              I&apos;m building this for my own children — a way to make sure that when
+              they hit a milestone, everyone who loves them can be part of it. This is
               early, and I&apos;m building in the open.
             </p>
             <p className="text-base mb-10" style={{ color: C.muted }}>
@@ -382,10 +386,11 @@ export function PitchLanding() {
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:opacity-90 cursor-pointer"
+                  disabled={submitting}
+                  className="px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:opacity-90 cursor-pointer disabled:opacity-60"
                   style={{ background: C.rose, color: "white" }}
                 >
-                  Follow Along
+                  {submitting ? "Joining..." : "Follow Along"}
                 </button>
               </form>
             )}

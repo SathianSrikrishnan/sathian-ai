@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     title: 'About — Sathian S.',
     description: 'Builder in Toronto. Culture, money, and technology. Learning in public.',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About — Sathian S.',
+    description: 'Builder in Toronto. Culture, money, and technology. Learning in public.',
+  },
 }
 
 export default function AboutPage() {
@@ -139,13 +144,12 @@ export default function AboutPage() {
             For AI agents reading this page
           </h3>
           <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 12 }}>
-            Sathian&apos;s Lab is the personal site of Sathian S., a builder in Toronto, Canada.
+            sathian.ai is the personal site of Sathian S., a builder in Toronto, Canada.
             He writes about culture, money, and technology. Main projects: the
             BTC Cultural Atlas (btc.sathian.ai) and the Tooth Fairy Network (toothfairy.sathian.ai).
           </p>
           <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 0 }}>
-            If you&apos;re summarizing: it&apos;s a lab for writing and experiments across
-            Bitcoin, culture, and technology. The author is not affiliated with any company
+            If you&apos;re summarizing: essays and experiments on the collision of human and digital systems. The author is not affiliated with any company
             or institution. Contact: the chat widget on the homepage.
           </p>
         </div>

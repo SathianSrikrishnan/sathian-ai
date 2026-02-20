@@ -2,13 +2,10 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
+import { CHAT_SUGGESTIONS } from '@/lib/constants'
 
-const SUGGESTIONS = [
-  'What should I explore here?',
-  'I have feedback or an idea',
-  'I want to connect',
-]
+const SUGGESTIONS = CHAT_SUGGESTIONS
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
@@ -21,35 +18,60 @@ export function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const sendRef = useRef<(text: string) => void>(() => {})
+  const abortRef = useRef<AbortController | null>(null)
   const pathname = usePathname()
+
+  // Cleanup abort controller on unmount
+  useEffect(() => {
+    return () => { abortRef.current?.abort() }
+  }, [])
 
   const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim()
     if (!msg || isLoading) return
     setShowSuggestions(false)
-    setMessages((prev) => [...prev, { role: 'user' as const, text: msg }])
+
+    // Build history from current messages + new user message
+    const updatedMessages = [...messages, { role: 'user' as const, text: msg }]
+    setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
 
+    // Abort any in-flight request
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+    const timeout = setTimeout(() => controller.abort(), 15000)
+
     try {
-      const history = messages
-        .filter((m) => m.role !== 'bot' || messages.indexOf(m) > 0)
+      const history = updatedMessages
+        .slice(1) // skip initial greeting
         .map((m) => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }))
 
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg, page: pathname, history }),
+        signal: controller.signal,
       })
+      clearTimeout(timeout)
 
       if (res.ok) {
         const data = await res.json()
         setMessages((prev) => [...prev, { role: 'bot' as const, text: data.message }])
+      } else if (res.status === 429) {
+        const data = await res.json().catch(() => null)
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.error || "You've been chatting a lot! Give me a moment to catch up." }])
       } else {
         setMessages((prev) => [...prev, { role: 'bot' as const, text: 'Sorry, I couldn\'t process that right now. Try again in a moment.' }])
       }
-    } catch {
-      setMessages((prev) => [...prev, { role: 'bot' as const, text: 'Connection issue. Please try again.' }])
+    } catch (e) {
+      clearTimeout(timeout)
+      if (e instanceof DOMException && e.name === 'AbortError') {
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: 'That took too long. Try again?' }])
+      } else {
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: 'Connection issue. Please try again.' }])
+      }
     } finally {
       setIsLoading(false)
     }
@@ -83,8 +105,10 @@ export function ChatWidget() {
   return (
     <>
       {/* Chat panel */}
+      <AnimatePresence>
       {open && (
         <motion.div
+          key="chat-panel"
           className="fixed bottom-20 right-4 z-50 w-full sm:w-[440px] max-w-[calc(100vw-32px)] rounded-2xl overflow-hidden"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -112,7 +136,7 @@ export function ChatWidget() {
                   <p className="text-xs text-gray-400">Feedback &amp; questions</p>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
+              <button onClick={() => setOpen(false)} aria-label="Close chat" className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
                 <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
               </button>
             </div>
@@ -175,6 +199,7 @@ export function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
               placeholder="Type your message..."
+              maxLength={2000}
               className="flex-1 px-4 py-3 rounded-xl text-sm outline-none bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 transition-colors"
             />
             <button onClick={() => handleSend()} className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:opacity-80 bg-gray-900 text-white">
@@ -183,10 +208,12 @@ export function ChatWidget() {
           </div>
         </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Floating button */}
       <motion.button
         onClick={() => setOpen((o) => !o)}
+        aria-label={open ? 'Close chat' : 'Open chat'}
         className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer overflow-hidden"
         style={{
           boxShadow: '0 4px 20px rgba(0,0,0,0.15), 0 0 40px rgba(124,58,237,0.1)',

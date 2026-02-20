@@ -28,13 +28,7 @@ setInterval(() => {
   keysToDelete.forEach(key => rateLimitMap.delete(key))
 }, 60_000)
 
-const ALLOWED_ORIGINS = [
-  'https://sathian.ai',
-  'https://www.sathian.ai',
-  'https://btc.sathian.ai',
-  'https://toothfairy.sathian.ai',
-  ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] : []),
-]
+import { ALLOWED_ORIGINS } from '@/lib/constants'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -52,7 +46,10 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')) {
     if (pathname !== '/studio/login' && pathname !== '/api/studio/auth') {
       const studioAuth = request.cookies.get('studio_auth')?.value
-      if (studioAuth !== 'true') {
+      // Verify signed token format: timestamp.hmac (not just 'true')
+      const isValidFormat = studioAuth && /^\d+\.[a-f0-9]{64}$/.test(studioAuth)
+      const isNotExpired = isValidFormat && (Date.now() - parseInt(studioAuth!.split('.')[0], 10)) < 30 * 24 * 60 * 60 * 1000
+      if (!isNotExpired) {
         if (pathname.startsWith('/api/studio/')) {
           return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
@@ -91,7 +88,7 @@ export function middleware(request: NextRequest) {
     )
   }
 
-  // --- Add CORS headers to response ---
+  // --- Add CORS + security headers to response ---
   const response = NextResponse.next()
 
   if (origin && ALLOWED_ORIGINS.includes(origin)) {
@@ -99,6 +96,9 @@ export function middleware(request: NextRequest) {
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, x-voice-pin')
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
   return response
 }

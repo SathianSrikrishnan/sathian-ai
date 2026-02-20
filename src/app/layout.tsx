@@ -39,6 +39,7 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
+  alternates: { canonical: './' },
   title: 'sathian.ai',
   description: 'Personal site of Sathian. Experiments, projects, and writings.',
   icons: {

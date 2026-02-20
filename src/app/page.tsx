@@ -2,10 +2,12 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import Link from 'next/link'
 import { SiteNav } from '@/components/SiteNav'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
 import { articles } from '@/lib/articles'
+import { CHAT_SUGGESTIONS } from '@/lib/constants'
 
 const AtlasGlobeTeaser = dynamic(
   () => import('@/components/ui/atlas-globe-teaser').then((mod) => mod.AtlasGlobeTeaser),
@@ -150,13 +152,8 @@ function NewsletterForm() {
   )
 }
 
-// ─── Chat prompts ───────────────────────────────────────────────────────────
-const CHAT_PROMPTS = [
-  "What's the story behind 808?",
-  'Why Bitcoin and culture?',
-  'What are you working on right now?',
-  'Who is Sathian?',
-]
+// ─── Chat prompts (shared from constants) ───────────────────────────────────
+const CHAT_PROMPTS = CHAT_SUGGESTIONS
 
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function Home() {
@@ -173,24 +170,39 @@ export default function Home() {
       <main>
 
       {/* ═══ Zone 2: Hero ═══════════════════════════════════════════════════ */}
-      <section className="zone-primary relative" style={{ paddingTop: 160, paddingBottom: 100 }}>
+      <section className="zone-primary relative" style={{ paddingTop: 140, paddingBottom: 80 }}>
         <div className="absolute inset-0 pointer-events-none hub-hero-glow-deep" />
-        <div className="hub-container relative">
-          <div className="span-full text-center">
-            <h1 className="hub-hero-name mb-6" style={{ position: 'relative' }}>
-              Sathian&apos;s Lab
-            </h1>
-            <p className="hub-mono mb-10" style={{ color: 'var(--hub-text-muted)', fontSize: 14, letterSpacing: '0.15em' }}>
-              Culture &middot; Money &middot; Technology
-            </p>
-            {btcPrice && (
-              <div className="flex justify-center">
+        <div className="max-w-[1200px] mx-auto px-6 relative" style={{ zIndex: 1 }}>
+          <div className="hub-hero-split">
+            {/* Portrait */}
+            <div className="hub-hero-portrait">
+              <div className="hub-hero-portrait-frame">
+                <Image
+                  src="/sathian-profile.png"
+                  alt="Sathian S. — sketch portrait"
+                  width={340}
+                  height={340}
+                  priority
+                  className="hub-hero-portrait-img"
+                />
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="hub-hero-copy">
+              <h1 className="hub-hero-name mb-4">
+                What a time to be alive!
+              </h1>
+              <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 460 }}>
+                Essays and experiments on the collision of human and digital systems.
+              </p>
+              {btcPrice && (
                 <span className="hub-price-badge">
                   <span style={{ fontSize: 11, opacity: 0.7 }}>&#x20BF;</span>
                   {formatPrice(btcPrice)}
                 </span>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -269,7 +281,7 @@ export default function Home() {
               Tooth Fairy Network
             </h3>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              Making childhood magical, on-chain. Turning lost teeth into family memories that last.
+              Turn lost teeth into digital keepsakes and a child&apos;s first real savings.
             </p>
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#7C3AED' }}>
               toothfairy.sathian.ai <ArrowRight />
@@ -432,9 +444,10 @@ export default function Home() {
           <div className="span-full max-w-2xl">
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>About</div>
             <h2 className="hub-section-heading mb-6">A lab for relearning</h2>
-            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              Re-examining things I thought I understood &mdash; money, culture, geography,
-              sovereignty &mdash; through writing and code. Not expert commentary. A student&apos;s notes.
+            <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)' }}>
+              Re-examining things I thought I understood &mdash; money, culture,
+              sovereignty &mdash; through writing and code. Not expert commentary.
+              A student&apos;s notes.
             </p>
             <Link href="/about" className="hub-mono flex items-center gap-2" style={{ color: 'var(--hub-accent)' }}>
               More about me <ArrowRight />

@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { ChatWidget } from '@/components/ChatWidget'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -204,7 +203,6 @@ function PinGate({ onUnlock }: { onUnlock: (pin: string) => void }) {
         </div>
       </motion.div>
 
-      <ChatWidget />
     </div>
   )
 }
@@ -217,7 +215,7 @@ export default function VoicePage() {
   const [lastTiming, setLastTiming] = useState<Timing | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [recordMode, setRecordMode] = useState<'hold' | 'tap'>('hold')
-  const [playbackSpeed] = useState(2.0)
+  const [playbackSpeed] = useState(1.0)
   const [voicePin, setVoicePin] = useState<string | null>(null)
   const [authChecked, setAuthChecked] = useState(false)
 
@@ -733,7 +731,6 @@ export default function VoicePage() {
 
       <audio ref={audioRef} className="hidden" />
 
-      <ChatWidget />
     </div>
   )
 }

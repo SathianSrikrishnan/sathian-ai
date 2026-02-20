@@ -79,8 +79,7 @@ async function logToNotion(firstMessage: string, page: string, messageCount: num
   }
 }
 
-// CORS headers for cross-origin chat widget
-const ALLOWED_ORIGINS = ['https://btc.sathian.ai', 'https://sathian.ai', 'https://toothfairy.sathian.ai']
+import { ALLOWED_ORIGINS } from '@/lib/constants'
 
 function corsHeaders(origin: string | null) {
   const headers: Record<string, string> = {
@@ -170,7 +169,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       message: responseText,
-      memoryUsed: memoryContext.sources,
     }, { headers: corsHeaders(origin) })
 
   } catch (error) {
