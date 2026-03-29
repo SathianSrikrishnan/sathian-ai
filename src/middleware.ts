@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { updateSupabaseSession } from '@/lib/supabase-auth'
 
 // Simple in-memory rate limiter (resets on deploy/restart — fine for Vercel serverless)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -30,16 +31,81 @@ setInterval(() => {
 
 import { ALLOWED_ORIGINS } from '@/lib/constants'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.headers.get('host') || ''
+
+  // ── Supabase session refresh for TFN app + API routes ──
+  // Captures the response so auth cookies propagate through domain rewrites.
+  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
+  const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
+  let supabaseResponse: NextResponse | null = null
+  if (isTfnApp || isTfnApi) {
+    supabaseResponse = await updateSupabaseSession(request)
+  }
+
+  // Helper: create a rewrite that preserves auth cookies from session refresh
+  const rewriteWithCookies = (dest: URL) => {
+    const res = NextResponse.rewrite(dest)
+    if (supabaseResponse) {
+      supabaseResponse.cookies.getAll().forEach(cookie => {
+        res.cookies.set(cookie.name, cookie.value)
+      })
+    }
+    return res
+  }
 
   // --- Subdomain routing: toothfairy.sathian.ai → /toothfairy/* ---
   if (hostname === 'toothfairy.sathian.ai') {
     // Don't rewrite static assets (images, videos, fonts, etc.)
     if (pathname.match(/\.\w+$/)) return NextResponse.next()
     const dest = pathname === '/' ? '/toothfairy/network' : `/toothfairy/network${pathname}`
-    return NextResponse.rewrite(new URL(dest, request.url))
+    return rewriteWithCookies(new URL(dest, request.url))
+  }
+
+  // --- Domain routing: toothfairy.network → /toothfairy/* ---
+  const isTfnDomain = hostname === 'toothfairy.network' || hostname === 'www.toothfairy.network'
+  if (isTfnDomain) {
+    if (pathname.match(/\.\w+$/)) return NextResponse.next()
+    if (pathname.startsWith('/api/')) return NextResponse.next() // API routes pass through
+    // Landing page at root
+    if (pathname === '/') {
+      return rewriteWithCookies(new URL('/toothfairy/network', request.url))
+    }
+    // App at /app
+    if (pathname === '/app') {
+      return rewriteWithCookies(new URL('/toothfairy/app', request.url))
+    }
+    // Dashboard
+    if (pathname === '/dashboard') {
+      return rewriteWithCookies(new URL('/toothfairy/app/dashboard', request.url))
+    }
+    // Child pages: /tooth/isa → /tooth/isa (pass through to app route)
+    if (pathname.startsWith('/tooth/')) {
+      return rewriteWithCookies(new URL(pathname, request.url))
+    }
+    // Gift links
+    if (pathname.startsWith('/gift/')) {
+      return rewriteWithCookies(new URL(`/toothfairy/app${pathname}`, request.url))
+    }
+    // About page
+    if (pathname === '/about') {
+      return rewriteWithCookies(new URL('/toothfairy/network/about', request.url))
+    }
+    // App sub-routes: /app/new, /app/dashboard, etc.
+    if (pathname.startsWith('/app/')) {
+      return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
+    }
+    // /network still works as alias
+    if (pathname === '/network' || pathname.startsWith('/network/')) {
+      return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
+    }
+    // Links already prefixed with /toothfairy/ — pass through without double-prefixing
+    if (pathname.startsWith('/toothfairy/')) {
+      return rewriteWithCookies(new URL(pathname, request.url))
+    }
+    // Everything else
+    return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
   }
 
   // --- Studio authentication ---
