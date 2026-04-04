@@ -26,6 +26,7 @@ yarn-error.log*
 # Local env files
 .env*.local
 .env
+.env.vercel-check
 
 # Vercel
 .vercel
@@ -39,3 +40,7 @@ public/*.mp4
 public/*.mp3
 public/v2-storyboard/
 public/media/
+
+# Test screenshots
+test-*.png
+tfn-*.png

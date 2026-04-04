@@ -167,7 +167,7 @@ export function MarketContent() {
                   The unit economics hypothesis
                 </p>
                 <div className="space-y-3 text-sm font-mono" style={{ color: C.muted }}>
-                  <div className="flex justify-between"><span>Cost per keepsake (Base L2 mint)</span><span style={{ color: C.text }}>~$0.08</span></div>
+                  <div className="flex justify-between"><span>Cost per keepsake (Solana mint)</span><span style={{ color: C.text }}>~$0.00025</span></div>
                   <div className="flex justify-between"><span>Avg milestones per family per year</span><span style={{ color: C.text }}>4&ndash;6</span></div>
                   <div className="flex justify-between"><span>Fee per exchange (hypothesis)</span><span style={{ color: C.text }}>$0.50&ndash;$1.00</span></div>
                   <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: "12px" }}>
@@ -176,7 +176,7 @@ export function MarketContent() {
                     <div className="flex justify-between mt-1"><span>At 1M families</span><span style={{ color: C.cyan }}>$2M&ndash;$6M / year</span></div>
                   </div>
                   <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: "12px" }}>
-                    <div className="flex justify-between"><span>Infrastructure cost at 100K families</span><span style={{ color: C.text }}>~$50K&ndash;$80K / year</span></div>
+                    <div className="flex justify-between"><span>Infrastructure cost at 100K families</span><span style={{ color: C.text }}>~$30K&ndash;$50K / year</span></div>
                     <div className="flex justify-between mt-1"><span>Break-even estimate</span><span style={{ color: C.emerald }}>~5,000&ndash;10,000 families</span></div>
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export function MarketContent() {
 
               <p className="text-base leading-relaxed mb-6" style={{ color: C.muted }}>
                 These are hypotheses, not projections. The point is that the cost floor is
-                extremely low (thanks to L2 economics), which means the business becomes viable
+                extremely low (thanks to Solana&apos;s economics), which means the business becomes viable
                 at a modest scale — not venture-scale. This can start as a sustainable small
                 product and grow.
               </p>
@@ -214,9 +214,9 @@ export function MarketContent() {
             <div className="rounded-xl p-8" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
               <div className="space-y-4 text-sm" style={{ color: C.muted }}>
                 <div>
-                  <strong style={{ color: C.text }}>L2 economics make it viable.</strong>{" "}
-                  Two years ago, minting a keepsake cost $20&ndash;$50 on Ethereum. On Base, it costs
-                  eight cents. Family-scale economics are now possible for the first time.
+                  <strong style={{ color: C.text }}>Solana economics make it viable.</strong>{" "}
+                  Minting a keepsake on Ethereum costs $5&ndash;$50. On Solana, it costs
+                  a fraction of a cent. Family-scale economics are now possible for the first time.
                 </div>
                 <div>
                   <strong style={{ color: C.text }}>Wallet abstraction removes friction.</strong>{" "}
@@ -257,7 +257,7 @@ export function MarketContent() {
                 <li>
                   <strong style={{ color: C.text }}>The blockchain barrier.</strong> Most parents
                   don&apos;t know what a wallet is. The onboarding has to be invisible — blockchain
-                  as infrastructure, not interface. If a parent has to understand gas fees, we&apos;ve
+                  as infrastructure, not interface. If a parent has to understand transaction fees, we&apos;ve
                   already failed.
                 </li>
                 <li>

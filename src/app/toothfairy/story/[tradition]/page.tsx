@@ -31,5 +31,15 @@ export default async function TraditionPage({ params }: Props) {
     notFound()
   }
 
-  return <StoryPlayer story={story} />
+  // Find the next available story for navigation
+  const available = ALL_STORIES.filter(s => s.available)
+  const currentIndex = available.findIndex(s => s.id === tradition)
+  const next = currentIndex >= 0 && currentIndex < available.length - 1
+    ? available[currentIndex + 1]
+    : available[0] // wrap around to first
+  const nextStory = next && next.id !== tradition
+    ? { id: next.id, title: next.title, region: next.region }
+    : null
+
+  return <StoryPlayer story={story} nextStory={nextStory} />
 }

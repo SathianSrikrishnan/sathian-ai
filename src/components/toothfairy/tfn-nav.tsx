@@ -4,22 +4,27 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { C } from "./tokens"
 
-type ActivePage = "story" | "technical" | "market"
+type ActivePage = "story" | "technical" | "market" | "app"
 
 export function TfnNav({ activePage }: { activePage: ActivePage }) {
   const [scrolled, setScrolled] = useState(false)
-  const [isSubdomain, setIsSubdomain] = useState(false)
+  const [isTfnDomain, setIsTfnDomain] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener("scroll", onScroll, { passive: true })
-    setIsSubdomain(window.location.hostname === "toothfairy.sathian.ai")
+    const host = window.location.hostname
+    setIsTfnDomain(host === "toothfairy.network" || host === "www.toothfairy.network" || host === "toothfairy.sathian.ai")
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const base = isSubdomain ? "" : "/toothfairy/network"
+  // On toothfairy.network: / = landing, /app = app, /network/technical = technical
+  // On sathian.ai: /toothfairy/network/ = landing, /toothfairy/app = app
+  const base = isTfnDomain ? "/network" : "/toothfairy/network"
+  const homeHref = isTfnDomain ? "/" : "/toothfairy/network"
+  const appHref = isTfnDomain ? "/app" : "/toothfairy/app"
+
   const links = [
-    { label: "Story", page: "story" as const, href: `${base}/` },
     { label: "Technical", page: "technical" as const, href: `${base}/technical` },
     { label: "Market", page: "market" as const, href: `${base}/market` },
   ]
@@ -34,8 +39,8 @@ export function TfnNav({ activePage }: { activePage: ActivePage }) {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href={`${base}/`} className="text-base font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-          <span className="hidden sm:inline">The Tooth Fairy Network</span>
+        <Link href={homeHref} className="text-base font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+          <span className="hidden sm:inline">Tooth Fairy Network</span>
           <span className="sm:hidden">TFN</span>
         </Link>
         <div className="flex items-center gap-1">
@@ -51,13 +56,13 @@ export function TfnNav({ activePage }: { activePage: ActivePage }) {
               {link.label}
             </Link>
           ))}
-          <a
-            href={activePage === "story" ? "#feedback" : `${base}/#feedback`}
+          <Link
+            href={appHref}
             className="ml-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-white transition-all duration-200 hover:opacity-90"
             style={{ background: C.rose }}
           >
-            Feedback
-          </a>
+            Try It Free
+          </Link>
         </div>
       </div>
     </nav>

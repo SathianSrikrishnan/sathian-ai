@@ -204,7 +204,7 @@ const cherokee: StoryConfig = {
       },
       isChoice: true,
       choiceText: "Start Your Keepsake",
-      choiceHref: "/toothfairy/app",
+      choiceHref: "/app",
     },
   ],
 }

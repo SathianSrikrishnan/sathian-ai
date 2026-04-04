@@ -68,9 +68,7 @@ export const articles: Article[] = [
     ],
     body: `In grade nine, I carved a Wu-Tang W out of a block of wood in Mr. Lovering's design and tech shop class. The look on his face when I showed him the finished piece — he had no idea what it was. But I did. I was starting to feel Wu-Tang's pull, my first real taste of how culture could grab you. Nine guys from Staten Island who threaded Shaolin sword philosophy into hip-hop, the first to weave Asian cinema and martial arts mythology into the music. The chess references, the Five Percenters theology, the raw Staten Island grit layered under something almost spiritual. I didn't just like the music. I respected what they were building.
 
-Last August at the Scotiabank Arena, I was one of maybe a handful of people in the entire building who lit up. Twenty years ago at a Wu-Tang show, that would've been the least notable thing happening. This time, I felt awkward about it — nine men in their fifties performing in Maple Leafs jerseys, for an audience that included families from suburban Ontario and an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M.
-
-I still did it.
+Last August at the Scotiabank Arena, I looked around and realized I didn't recognize the crowd anymore. Nine men in their fifties performing in Maple Leafs jerseys, for an audience that included families from suburban Ontario and an eleven-year-old kid from Sudbury losing his mind to C.R.E.A.M. Twenty years ago at a Wu-Tang show, the energy was different — raw, unpredictable, dangerous. This time, the edges were gone.
 
 Cash Rules Everything Around Me. The anthem of project kids in Staten Island, now soundtracking a corporate arena experience for small-town Ontario families.
 

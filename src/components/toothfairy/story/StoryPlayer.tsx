@@ -5,62 +5,80 @@ import { motion, AnimatePresence } from 'motion/react'
 import { StoryConfig } from '@/data/stories/types'
 import Link from 'next/link'
 
-// Particle component — golden dots floating upward
-function Particles() {
+// Firefly particles — static glowing dots scattered across the screen
+function Fireflies() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
-      {Array.from({ length: 25 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: `${2 + Math.random() * 3}px`,
-            height: `${2 + Math.random() * 3}px`,
-            left: `${Math.random() * 100}%`,
-            bottom: `-5%`,
-            backgroundColor: '#F0C456',
-          }}
-          animate={{
-            y: [0, -1200],
-            opacity: [0, 0.6, 0.4, 0],
-          }}
-          transition={{
-            duration: 5 + Math.random() * 4,
-            repeat: Infinity,
-            delay: Math.random() * 6,
-            ease: 'linear',
-          }}
-        />
-      ))}
+      {Array.from({ length: 30 }).map((_, i) => {
+        const size = 2 + Math.random() * 2
+        const left = Math.random() * 100
+        const top = Math.random() * 100
+        const isGold = Math.random() > 0.4
+        return (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${left}%`,
+              top: `${top}%`,
+              backgroundColor: isGold ? '#F0C456' : '#4FD1C5',
+              boxShadow: isGold
+                ? '0 0 6px 2px rgba(240, 196, 86, 0.4)'
+                : '0 0 6px 2px rgba(79, 209, 197, 0.3)',
+            }}
+            animate={{
+              opacity: [0.2, 0.7, 0.2],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: 'easeInOut',
+            }}
+          />
+        )
+      })}
     </div>
   )
 }
 
-// Network constellation background — subtle teal lines
-function NetworkBackground() {
+// Sparkle divider — decorative separator after story text
+function SparkleDivider() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1] opacity-20">
-      <svg width="100%" height="100%" className="absolute inset-0">
-        {Array.from({ length: 12 }).map((_, i) => {
-          const x1 = Math.random() * 100
-          const y1 = Math.random() * 100
-          const x2 = x1 + (Math.random() - 0.5) * 40
-          const y2 = y1 + (Math.random() - 0.5) * 40
-          return (
-            <g key={i}>
-              <line
-                x1={`${x1}%`} y1={`${y1}%`}
-                x2={`${x2}%`} y2={`${y2}%`}
-                stroke="#4FD1C5"
-                strokeWidth="0.5"
-                opacity="0.3"
-              />
-              <circle cx={`${x1}%`} cy={`${y1}%`} r="2" fill="#4FD1C5" opacity="0.4" />
-              <circle cx={`${x2}%`} cy={`${y2}%`} r="1.5" fill="#4FD1C5" opacity="0.3" />
-            </g>
-          )
-        })}
+    <div className="flex items-center justify-center gap-2 mt-4 opacity-40">
+      <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#F0C456]" />
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="#F0C456" opacity="0.6" />
       </svg>
+      <div className="h-px w-8 bg-gradient-to-l from-transparent to-[#F0C456]" />
+    </div>
+  )
+}
+
+// Instagram-style story progress bars
+function ProgressBars({ total, current }: { total: number; current: number }) {
+  return (
+    <div className="flex gap-1 w-full px-3">
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          className="flex-1 h-[2px] rounded-full overflow-hidden"
+          style={{ background: 'rgba(255,255,255,0.15)' }}
+        >
+          <motion.div
+            className="h-full rounded-full"
+            style={{ background: 'linear-gradient(90deg, #F0C456, #D4A843)' }}
+            initial={false}
+            animate={{
+              width: i < current ? '100%' : i === current ? '50%' : '0%',
+            }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          />
+        </div>
+      ))}
     </div>
   )
 }
@@ -119,18 +137,21 @@ function TypewriterText({ text, onComplete }: { text: string; onComplete: () => 
 
 interface StoryPlayerProps {
   story: StoryConfig
+  nextStory?: { id: string; title: string; region: string } | null
 }
 
-export default function StoryPlayer({ story }: StoryPlayerProps) {
+export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
   const [sceneIndex, setSceneIndex] = useState(0)
   const [typewriterDone, setTypewriterDone] = useState(false)
   const [prevBackground, setPrevBackground] = useState('')
-  const scene = story.scenes[sceneIndex]
-  const prevScene = sceneIndex > 0 ? story.scenes[sceneIndex - 1] : null
-  const isNewBackground = !prevScene || prevScene.background !== scene.background
+
+  const hasScenes = !!(story?.scenes && story.scenes.length > 0)
+  const scene = hasScenes ? story.scenes[sceneIndex] : null
+  const prevScene = hasScenes && sceneIndex > 0 ? story.scenes[sceneIndex - 1] : null
+  const isNewBackground = !prevScene || (scene && prevScene?.background !== scene.background)
 
   const advance = useCallback(() => {
-    if (!typewriterDone) return // let typewriter finish first
+    if (!typewriterDone || !scene) return
     if (scene.isChoice) return // CTA scene — don't advance on tap
 
     if (sceneIndex < story.scenes.length - 1) {
@@ -138,7 +159,7 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
       setSceneIndex(sceneIndex + 1)
       setTypewriterDone(false)
     }
-  }, [sceneIndex, story.scenes.length, typewriterDone, scene])
+  }, [sceneIndex, story?.scenes?.length, typewriterDone, scene])
 
   const goBack = useCallback(() => {
     if (sceneIndex > 0) {
@@ -163,16 +184,23 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
     return () => window.removeEventListener('keydown', handleKey)
   }, [advance, goBack])
 
+  if (!hasScenes || !scene) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1228] text-white">
+        <p className="text-lg opacity-60">This story is coming soon.</p>
+      </div>
+    )
+  }
+
   return (
     <div
       className="relative w-full h-[100dvh] max-w-[480px] mx-auto overflow-hidden select-none"
-      style={{ background: '#0B1026' }}
-      onClick={advance}
+      style={{
+        background: '#0d1228',
+        boxShadow: 'inset 0 0 150px rgba(0,0,0,0.6)',
+      }}
     >
-      {/* Network constellation background */}
-      <NetworkBackground />
-
-      {/* Background image with Ken Burns zoom + crossfade */}
+      {/* Full-bleed background image with Ken Burns zoom + crossfade */}
       <AnimatePresence mode="sync">
         <motion.div
           key={scene.background}
@@ -189,13 +217,67 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
             animate={{ scale: [1.0, 1.04] }}
             transition={{ duration: 12, ease: 'linear', repeat: Infinity, repeatType: 'reverse' }}
           />
-          {/* Dark gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1026] via-[#0B1026]/40 to-transparent" />
+          {/* Bottom gradient overlay for text readability */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to top, rgba(13, 18, 40, 0.95) 0%, rgba(13, 18, 40, 0.6) 50%, rgba(13, 18, 40, 0) 100%)',
+            }}
+          />
         </motion.div>
       </AnimatePresence>
 
-      {/* Particles */}
-      <Particles />
+      {/* Firefly particles */}
+      <Fireflies />
+
+      {/* Corner vignette overlay */}
+      <div
+        className="absolute inset-0 z-[11] pointer-events-none"
+        style={{ boxShadow: 'inset 0 0 150px rgba(0,0,0,0.6)' }}
+      />
+
+      {/* Top HUD: Progress bars + page counter + close button */}
+      <div className="absolute top-0 left-0 right-0 z-40 pt-[env(safe-area-inset-top,12px)] px-2">
+        {/* Progress bars */}
+        <div className="pt-3 pb-2">
+          <ProgressBars total={story.scenes.length} current={sceneIndex} />
+        </div>
+
+        {/* Page counter (glass pill) + Close button */}
+        <div className="flex items-center justify-between px-2 pb-1">
+          <div
+            className="text-xs px-3 py-1 rounded-full"
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'rgba(221, 225, 255, 0.7)',
+              fontFamily: 'var(--font-body), Manrope, sans-serif',
+            }}
+          >
+            Page {sceneIndex + 1} of {story.scenes.length}
+          </div>
+
+          <Link
+            href="/app"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center w-9 h-9 rounded-full no-underline"
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'rgba(221, 225, 255, 0.7)',
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="1" y1="1" x2="13" y2="13" />
+              <line x1="13" y1="1" x2="1" y2="13" />
+            </svg>
+          </Link>
+        </div>
+      </div>
 
       {/* Character sprite with float animation */}
       <AnimatePresence mode="wait">
@@ -249,7 +331,7 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
                 alt=""
                 className="w-full h-auto rounded-2xl"
                 style={{
-                  filter: 'drop-shadow(0 0 20px rgba(240, 196, 86, 0.3))',
+                  filter: 'drop-shadow(0 0 20px rgba(79, 209, 197, 0.4))',
                 }}
               />
             </motion.div>
@@ -257,8 +339,23 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
         )}
       </AnimatePresence>
 
-      {/* Dialogue box */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 p-4 pb-6">
+      {/* Tap zones: left 1/3 = back, right 2/3 = forward (invisible) */}
+      {/* Hidden on choice scenes so CTA buttons are clickable */}
+      {!scene.isChoice && (
+        <div className="absolute inset-0 z-[35] flex">
+          <div
+            className="w-1/3 h-full"
+            onClick={(e) => { e.stopPropagation(); goBack() }}
+          />
+          <div
+            className="w-2/3 h-full"
+            onClick={(e) => { e.stopPropagation(); advance() }}
+          />
+        </div>
+      )}
+
+      {/* Bottom content area — story text over gradient */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 p-5 pb-8">
         {scene.isChoice ? (
           /* CTA Button */
           <motion.div
@@ -270,40 +367,85 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
             <Link
               href={scene.choiceHref || '/toothfairy/app'}
               onClick={(e) => e.stopPropagation()}
-              className="px-8 py-4 rounded-full font-bold text-lg no-underline"
+              className="relative z-[40] px-8 py-4 rounded-full font-bold text-lg no-underline"
               style={{
                 background: `linear-gradient(135deg, ${story.color} 0%, ${story.color}cc 100%)`,
-                color: '#0B1026',
+                color: '#0d1228',
                 boxShadow: `0 0 30px ${story.color}40, 0 4px 20px rgba(0,0,0,0.3)`,
-                fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
+                fontFamily: "var(--font-headline), 'Plus Jakarta Sans', sans-serif",
               }}
             >
               {scene.choiceText || 'Start Your Keepsake'}
             </Link>
-            <p className="text-white/40 text-xs" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+            <p
+              className="text-xs"
+              style={{
+                color: 'rgba(221, 225, 255, 0.4)',
+                fontFamily: "var(--font-body), Manrope, sans-serif",
+              }}
+            >
               Free to create · Permanent · Shareable with family
             </p>
+
+            {/* Story navigation */}
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <Link
+                href="/story"
+                onClick={(e) => e.stopPropagation()}
+                className="text-xs no-underline hover:underline"
+                style={{ color: 'rgba(221, 225, 255, 0.5)' }}
+              >
+                ← All stories
+              </Link>
+              {nextStory && (
+                <Link
+                  href={`/story/${nextStory.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-xs no-underline hover:underline"
+                  style={{ color: '#4FD1C5' }}
+                >
+                  Next: {nextStory.title} →
+                </Link>
+              )}
+            </div>
           </motion.div>
         ) : (
-          /* Dialogue card */
+          /* Immersive story text — no card, just text over gradient */
           <motion.div
             key={scene.id}
-            className="rounded-2xl p-4 backdrop-blur-xl"
-            style={{
-              background: 'rgba(11, 16, 38, 0.85)',
-              border: '1px solid rgba(240, 196, 86, 0.1)',
-            }}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: isNewBackground ? 0.4 : 0.1 }}
           >
-            {/* Speaker name */}
+            {/* Tanda mascot floating bottom-left */}
+            <motion.div
+              className="mb-3"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 2.5, ease: 'easeInOut', repeat: Infinity }}
+            >
+              <div
+                className="w-[80px] h-[80px] rounded-full overflow-hidden"
+                style={{
+                  boxShadow: '0 0 24px 8px rgba(79, 209, 197, 0.25)',
+                  border: '2px solid rgba(79, 209, 197, 0.2)',
+                }}
+              >
+                <img
+                  src="/toothfairy/tanda.png"
+                  alt="Tanda"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            {/* Speaker name / story title in gold */}
             {scene.dialogue.speaker && (
               <motion.p
-                className="text-sm font-bold mb-1"
+                className="text-lg font-bold mb-2"
                 style={{
-                  color: scene.dialogue.speakerColor || story.color,
-                  fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
+                  color: '#F0C456',
+                  fontFamily: "var(--font-headline), 'Plus Jakarta Sans', sans-serif",
+                  textShadow: '0 0 20px rgba(240, 196, 86, 0.3)',
                 }}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -313,12 +455,12 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
               </motion.p>
             )}
 
-            {/* Dialogue text with typewriter */}
+            {/* Story text — Lora serif italic */}
             <p
-              className="text-base leading-relaxed"
+              className="text-2xl leading-relaxed italic"
               style={{
-                color: '#F5F0FF',
-                fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
+                color: 'rgba(245, 240, 255, 0.92)',
+                fontFamily: "var(--font-story), Lora, Georgia, serif",
                 minHeight: '3rem',
               }}
             >
@@ -329,50 +471,10 @@ export default function StoryPlayer({ story }: StoryPlayerProps) {
               />
             </p>
 
-            {/* Tap indicator */}
-            {typewriterDone && !scene.isChoice && (
-              <motion.div
-                className="flex justify-end mt-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.4 }}
-                transition={{ delay: 0.3 }}
-              >
-                <motion.span
-                  className="text-xs"
-                  style={{ color: '#F5F0FF', fontFamily: "'Quicksand', sans-serif" }}
-                  animate={{ opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  tap ▸
-                </motion.span>
-              </motion.div>
-            )}
+            {/* Sparkle divider */}
+            {typewriterDone && <SparkleDivider />}
           </motion.div>
         )}
-
-        {/* Scene counter + back button */}
-        <div className="flex justify-between items-center mt-2 px-1">
-          <button
-            onClick={(e) => { e.stopPropagation(); goBack() }}
-            className="text-xs px-2 py-1 rounded"
-            style={{
-              color: sceneIndex > 0 ? '#F5F0FF80' : 'transparent',
-              fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
-              background: 'transparent',
-              border: 'none',
-              cursor: sceneIndex > 0 ? 'pointer' : 'default',
-              pointerEvents: sceneIndex > 0 ? 'auto' : 'none',
-            }}
-          >
-            ← Back
-          </button>
-          <span
-            className="text-xs"
-            style={{ color: '#F5F0FF30', fontFamily: "'Quicksand', sans-serif" }}
-          >
-            {sceneIndex + 1} / {story.scenes.length}
-          </span>
-        </div>
       </div>
     </div>
   )

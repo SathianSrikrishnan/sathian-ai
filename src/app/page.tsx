@@ -173,28 +173,32 @@ export default function Home() {
       <section className="zone-primary relative" style={{ paddingTop: 140, paddingBottom: 80 }}>
         <div className="absolute inset-0 pointer-events-none hub-hero-glow-deep" />
         <div className="max-w-[1200px] mx-auto px-6 relative" style={{ zIndex: 1 }}>
-          <div className="hub-hero-split">
-            {/* Portrait */}
-            <div className="hub-hero-portrait">
-              <div className="hub-hero-portrait-frame">
+          <div className="hub-hero-welcome">
+            {/* Byline with inline portrait */}
+            <div className="hub-hero-byline">
+              <div className="hub-hero-avatar">
                 <Image
                   src="/sathian-profile.png"
-                  alt="Sathian S. — sketch portrait"
-                  width={340}
-                  height={340}
+                  alt="Sathian S."
+                  width={120}
+                  height={120}
                   priority
-                  className="hub-hero-portrait-img"
+                  className="hub-hero-avatar-img"
                 />
               </div>
+              <span className="hub-mono" style={{ color: 'var(--hub-text-muted)', fontSize: 13 }}>
+                Sathian S.
+              </span>
             </div>
 
-            {/* Text */}
+            {/* Welcome copy */}
             <div className="hub-hero-copy">
-              <h1 className="hub-hero-name mb-4">
-                What a time to be alive!
+              <h1 className="hub-hero-name mb-5">
+                Welcome to my workshop.
               </h1>
-              <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 460 }}>
-                Essays and experiments on the collision of human and digital systems.
+              <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 540, fontSize: 17, lineHeight: 1.7 }}>
+                Experimental builds, hackathon projects, and things I&apos;m learning — always
+                evolving. There&apos;s an AI chat at the bottom wired to what I know. Say hi.
               </p>
               {btcPrice && (
                 <span className="hub-price-badge">
@@ -258,7 +262,7 @@ export default function Home() {
 
           {/* Tooth Fairy Network — Observatory style */}
           <a
-            href="https://toothfairy.sathian.ai"
+            href="https://toothfairy.network"
             target="_blank"
             rel="noopener noreferrer"
             className="span-4 hub-card hub-card-glow-purple block"
@@ -274,7 +278,7 @@ export default function Home() {
                   letterSpacing: '0.08em',
                 }}
               >
-                Concept
+                Live
               </span>
             </div>
             <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
@@ -284,7 +288,7 @@ export default function Home() {
               Turn lost teeth into digital keepsakes and a child&apos;s first real savings.
             </p>
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#7C3AED' }}>
-              toothfairy.sathian.ai <ArrowRight />
+              toothfairy.network <ArrowRight />
             </div>
           </a>
         </div>
@@ -436,14 +440,15 @@ export default function Home() {
       </section>
       </ScrollReveal>
 
-      {/* ═══ Zone 6: About — teaser linking to /about ═════════════════════ */}
+      {/* ═══ Zone 6: About + Newsletter (2-column) ══════════════════════ */}
       <ScrollReveal>
       <section id="about" className="zone-primary hub-section relative">
         <div className="absolute inset-0 pointer-events-none hub-about-glow" />
         <div className="hub-container">
-          <div className="span-full max-w-2xl">
+          {/* Left: About */}
+          <div className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>About</div>
-            <h2 className="hub-section-heading mb-6">A lab for relearning</h2>
+            <h2 className="hub-section-heading mb-6" style={{ fontSize: 22 }}>A lab for relearning</h2>
             <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)' }}>
               Re-examining things I thought I understood &mdash; money, culture,
               sovereignty &mdash; through writing and code. Not expert commentary.
@@ -453,21 +458,13 @@ export default function Home() {
               More about me <ArrowRight />
             </Link>
           </div>
-        </div>
-      </section>
-      </ScrollReveal>
 
-      {/* ═══ Zone 7: Newsletter — real subscribe ═════════════════════════ */}
-      <ScrollReveal>
-      <section className="zone-alt hub-section relative">
-        <CornerDots color="#EAB308" />
-        <div className="absolute inset-0 pointer-events-none hub-newsletter-glow" />
-        <div className="hub-container relative" style={{ zIndex: 1 }}>
-          <div className="span-full max-w-lg">
+          {/* Right: Newsletter */}
+          <div className="span-6 hub-card" style={{ borderLeft: '3px solid #EAB308' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Newsletter</div>
-            <h2 className="hub-section-heading mb-3">Get notified when I publish</h2>
+            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Get notified when I publish</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              New essays and project updates. Nothing else.
+              New essays, project updates, and event invites. Nothing else.
             </p>
             <NewsletterForm />
           </div>
@@ -475,14 +472,54 @@ export default function Home() {
       </section>
       </ScrollReveal>
 
-      {/* ═══ Zone 8: Chat Teaser ════════════════════════════════════════════ */}
+      {/* ═══ Zone 7: Signal & Noise + Chat (2-column) ═══════════════════ */}
       <ScrollReveal>
-      <section id="chat" className="zone-primary hub-section relative">
+      <section className="zone-alt hub-section relative">
+        <CornerDots color="#22C55E" />
         <div className="absolute inset-0 pointer-events-none hub-chat-glow" />
         <div className="hub-container">
-          <div className="span-full max-w-lg">
+          {/* Left: Signal & Noise */}
+          <div className="span-6 hub-card hub-card-glow-cyan" style={{ borderLeft: '3px solid #22C55E' }}>
+            <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Events</div>
+            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Signal &amp; Noise</h2>
+            <p className="hub-body mb-4" style={{ color: 'var(--hub-text-secondary)' }}>
+              Small-table discussions at the intersection of AI, crypto, and the changing nature of institutions.
+              6 seats. No agenda. Downtown Toronto.
+            </p>
+            <div
+              className="hub-card mb-6"
+              style={{
+                background: 'rgba(34, 197, 94, 0.05)',
+                border: '1px solid rgba(34, 197, 94, 0.15)',
+                padding: '16px 20px',
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E' }} />
+                <span className="hub-mono" style={{ color: '#22C55E', fontSize: 12 }}>Next Event</span>
+              </div>
+              <p className="hub-mono" style={{ color: 'var(--hub-text-primary)', fontSize: 14, marginBottom: 4 }}>
+                Thursday, March 26 &middot; 6:00 PM
+              </p>
+              <p className="hub-mono" style={{ color: 'var(--hub-text-muted)', fontSize: 12 }}>
+                Downtown Toronto &middot; 6 seats
+              </p>
+            </div>
+            <a
+              href="https://luma.com/user/Sathians"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hub-mono flex items-center gap-2"
+              style={{ color: '#22C55E', textDecoration: 'none' }}
+            >
+              View on Luma <ArrowRight />
+            </a>
+          </div>
+
+          {/* Right: Chat */}
+          <div id="chat" className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Chat</div>
-            <h2 className="hub-section-heading mb-3">Ask me anything</h2>
+            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Ask me anything</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
               The projects, the writing, whatever. Try one of these or type your own.
             </p>
@@ -523,7 +560,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Projects</span>
                   <a href="https://btc.sathian.ai" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#F7931A', textDecoration: 'none' }}>btc.sathian.ai</a>
-                  <a href="https://toothfairy.sathian.ai" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#7C3AED', textDecoration: 'none' }}>toothfairy.sathian.ai</a>
+                  <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#7C3AED', textDecoration: 'none' }}>toothfairy.sathian.ai</a>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Social</span>

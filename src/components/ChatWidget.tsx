@@ -102,6 +102,11 @@ export function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  // Don't render on any toothfairy pages (TFN is a separate product)
+  // Check both internal paths AND the toothfairy.network domain
+  const isTfnDomain = typeof window !== 'undefined' && (window.location.hostname === 'toothfairy.network' || window.location.hostname === 'www.toothfairy.network' || window.location.hostname === 'toothfairy.sathian.ai')
+  if (pathname?.startsWith('/toothfairy') || pathname?.startsWith('/tooth/') || isTfnDomain) return null
+
   return (
     <>
       {/* Chat panel */}

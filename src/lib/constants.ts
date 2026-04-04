@@ -10,5 +10,7 @@ export const ALLOWED_ORIGINS = [
   'https://www.sathian.ai',
   'https://btc.sathian.ai',
   'https://toothfairy.sathian.ai',
+  'https://toothfairy.network',
+  'https://www.toothfairy.network',
   ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] : []),
 ]

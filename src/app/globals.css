@@ -328,10 +328,10 @@ h1, h2, h3 {
 
 .hub-hero-name {
   font-family: var(--font-display), 'Outfit', sans-serif;
-  font-size: 72px;
+  font-size: 52px;
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 
 .hub-section-heading {
@@ -722,43 +722,32 @@ h1, h2, h3 {
 
 /* ─── Observatory Hub: Hero Split Layout ─────────────────────────────── */
 
-.hub-hero-split {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 72px;
-  align-items: center;
+/* ─── Hero: Welcome layout ─────────────────────────────────────────────── */
+.hub-hero-welcome {
+  max-width: 620px;
 }
 
-.hub-hero-portrait {
+.hub-hero-byline {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  animation: heroTextIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
-.hub-hero-portrait-frame {
+.hub-hero-avatar {
   position: relative;
-  width: 320px;
-  height: 320px;
-  border-radius: 16px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
   overflow: hidden;
-  transform: rotate(-1.5deg);
   box-shadow:
-    0 25px 80px rgba(247, 147, 26, 0.14),
-    0 0 120px rgba(247, 147, 26, 0.06),
-    0 0 0 1px rgba(255, 255, 255, 0.06);
-  animation: heroPortraitIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    0 8px 32px rgba(247, 147, 26, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
 }
 
-.hub-hero-portrait-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hub-hero-portrait-img {
+.hub-hero-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -775,20 +764,9 @@ h1, h2, h3 {
   animation: heroTextIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .hub-hero-copy > *:nth-child(1) { animation-delay: 0.2s; }
-.hub-hero-copy > *:nth-child(2) { animation-delay: 0.3s; }
-.hub-hero-copy > *:nth-child(3) { animation-delay: 0.4s; }
-.hub-hero-copy > *:nth-child(4) { animation-delay: 0.5s; }
-
-@keyframes heroPortraitIn {
-  from {
-    opacity: 0;
-    transform: rotate(-3deg) translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(-1.5deg) translateY(0) scale(1);
-  }
-}
+.hub-hero-copy > *:nth-child(2) { animation-delay: 0.35s; }
+.hub-hero-copy > *:nth-child(3) { animation-delay: 0.45s; }
+.hub-hero-copy > *:nth-child(4) { animation-delay: 0.55s; }
 
 @keyframes heroTextIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -796,21 +774,13 @@ h1, h2, h3 {
 }
 
 @media (max-width: 768px) {
-  .hub-hero-split {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .hub-hero-welcome {
     text-align: center;
   }
 
-  .hub-hero-portrait-frame {
-    width: 240px;
-    height: 240px;
-    transform: rotate(0deg);
-  }
-
-  @keyframes heroPortraitIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+  .hub-hero-byline {
+    flex-direction: column;
+    gap: 12px;
   }
 
   .hub-hero-copy {

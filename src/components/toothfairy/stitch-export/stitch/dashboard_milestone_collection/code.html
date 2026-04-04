@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#333850",
+            "primary-fixed": "#ffdf98",
+            "secondary-fixed": "#79f7ea",
+            "on-tertiary-fixed": "#350e11",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed": "#ffdad9",
+            "on-surface": "#dde1ff",
+            "surface-container-high": "#242940",
+            "tertiary": "#ffdede",
+            "on-primary-container": "#6b5100",
+            "primary-container": "#f0c456",
+            "secondary-fixed-dim": "#5adace",
+            "background": "#0d1228",
+            "on-error": "#690005",
+            "on-secondary-fixed-variant": "#00504a",
+            "primary": "#ffe3a5",
+            "on-primary-fixed": "#251a00",
+            "inverse-surface": "#dde1ff",
+            "secondary-container": "#01a89d",
+            "tertiary-fixed-dim": "#fbb5b5",
+            "surface-tint": "#edc153",
+            "on-tertiary": "#4f2324",
+            "inverse-on-surface": "#2a2f47",
+            "surface-container-highest": "#2f334b",
+            "surface-container-lowest": "#080d22",
+            "error-container": "#93000a",
+            "surface-variant": "#2f334b",
+            "on-secondary-fixed": "#00201d",
+            "surface-dim": "#0d1228",
+            "on-tertiary-container": "#7b4647",
+            "on-secondary": "#003733",
+            "on-background": "#dde1ff",
+            "on-surface-variant": "#d1c5b0",
+            "inverse-primary": "#775a00",
+            "primary-fixed-dim": "#edc153",
+            "on-primary": "#3e2e00",
+            "tertiary-container": "#ffb8b8",
+            "surface-container": "#191e35",
+            "on-primary-fixed-variant": "#5a4300",
+            "on-secondary-container": "#003531",
+            "surface": "#0d1228",
+            "error": "#ffb4ab",
+            "outline-variant": "#4e4636",
+            "outline": "#9a907c",
+            "secondary": "#5adace",
+            "surface-container-low": "#151a31",
+            "on-tertiary-fixed-variant": "#6a3839"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Manrope"],
+            "label": ["Manrope"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    body {
+      background-color: #0d1228;
+      color: #dde1ff;
+      font-family: 'Manrope', sans-serif;
+    }
+    .glass-card {
+      background: rgba(47, 51, 75, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .stardust-gradient {
+      background: linear-gradient(135deg, #ffe3a5 0%, #f0c456 100%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-gradient-to-b from-[#151a31] to-transparent">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#f0c456]">arrow_back</span>
+<h1 class="font-['Plus_Jakarta_Sans'] text-lg font-bold tracking-tight text-[#f0c456] drop-shadow-[0_0_8px_rgba(240,196,86,0.4)]">Tooth Fairy Network</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-[#f0c456]/30">
+<img alt="fairy_avatar" class="w-full h-full object-cover" data-alt="Stylized fairy avatar with golden wings and a soft glowing aura against a deep purple background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFM0pAdC7Y8_TCerzwelERN9vGuqMMkl6w7KgPeut0CZd3MwG8alxQUml8h38Rkln3eBJ9PjVxKXfbYIQcQrFcfUxIMk11dHpSp0g7Y9rbn6E_-DT30vPrzzzX3_utgunwfU_bcKmtPa2iT7ZLncwq1sogcaiLb8qg_A-oMICIxIS2iIzFTRAxCpVR5oEEqD7uzkmHPGUsWCmeASn-OCJWP_bEJ4OMmPfiRACCQMr_mXeYQ-6z_8mv7KMpLixUiwMTfAK2FW0OOYw"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 px-6 space-y-8 max-w-[375px] mx-auto">
+<!-- Hero Counter: Luna's Magic Vault -->
+<section class="relative p-8 rounded-[2rem] overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent pointer-events-none"></div>
+<div class="relative z-10 text-center space-y-2">
+<p class="font-body text-sm font-medium text-primary/70 tracking-widest uppercase">Luna's Magic Vault</p>
+<div class="flex items-center justify-center gap-2">
+<span class="text-4xl font-headline font-extrabold text-primary tracking-tighter">12.45</span>
+<span class="text-xl font-headline font-bold text-secondary">SOL</span>
+</div>
+<div class="mt-4 flex flex-col items-center gap-1">
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-3/4 stardust-gradient relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_#fff]"></div>
+</div>
+</div>
+<p class="text-[10px] font-medium text-outline pt-2 uppercase tracking-widest">75% to Next Fairy Blessing</p>
+</div>
+</div>
+</section>
+<!-- Bento Grid of Milestones -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Milestone Card 1 -->
+<div class="glass-card p-4 rounded-3xl border border-[#4e4636]/15 space-y-3 flex flex-col">
+<div class="aspect-square rounded-2xl overflow-hidden bg-surface-container-highest relative">
+<img class="w-full h-full object-cover" data-alt="Whimsical digital art of a glowing tooth being carried by a tiny firefly through a moonlit forest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_2xPIj1owCmhj7aAJXr_QeoyMnp4i3x7hw9NV1YhoWKmDuy0b7yof0CIY2-bayUJnXkIrCdywW3oOPxGJFmac0GB4xWI63JWJnue0-rjjL9WGGqMebjjEGZ5t0D6UHad-fys4zQkipWjU_UOcmGqGLU58FUUdCNooOfpJ5TzQTbm8YrS3rX5bJ3ovVTi02lyo5GwOuG0uNsPO4WPnpPiuqQgTkGhPsLMpE8JVOX5GalVRo27U-nKOO8926gCAoCRv8FAGOBqyx9w"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-md p-1.5 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-[14px] text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+</div>
+<div>
+<h3 class="font-body text-xs font-bold text-on-surface">First Molar</h3>
+<p class="text-[10px] text-outline">Oct 12, 2023</p>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="text-xs font-bold">2.50</span>
+<span class="text-[10px] font-medium opacity-70">SOL</span>
+</div>
+</div>
+<!-- Milestone Card 2 -->
+<div class="glass-card p-4 rounded-3xl border border-[#4e4636]/15 space-y-3 flex flex-col">
+<div class="aspect-square rounded-2xl overflow-hidden bg-surface-container-highest relative">
+<img class="w-full h-full object-cover" data-alt="Sparkling iridescent tooth sitting on a velvet cushion with golden dust swirling around it in a celestial void" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJsxEmVvNjJ-P5JicyJuxiPcJXJsuN0DYpmCZ78vack9DX7KKKbAiUiPB9NsYNKaS1Xb0SoK-_3ISKIO4-KDRHyphcQLrxOrwwBn5BiXmP0ZlfftzYCbCF7EK5EVgNoVCThIuiUj04WQSJTgHPjmPTKNMXvKTDZ4acKtukSzRrwI-m_34kHXH4wWpLknqvg_YXbEvNhGJ0SIZidK5q9n0mgCN6r0fCTqJyXFKZCFs1U1Y1jrNnXrsT75GRVl35zCGVkd4RdahWJ0g"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-md p-1.5 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-[14px] text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+</div>
+<div>
+<h3 class="font-body text-xs font-bold text-on-surface">Canine Quest</h3>
+<p class="text-[10px] text-outline">Nov 04, 2023</p>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="text-xs font-bold">4.25</span>
+<span class="text-[10px] font-medium opacity-70">SOL</span>
+</div>
+</div>
+<!-- Milestone Card 3 (Asymmetric tall layout) -->
+<div class="col-span-2 glass-card p-4 rounded-3xl border border-[#4e4636]/15 flex gap-4 items-center">
+<div class="w-24 h-24 rounded-2xl overflow-hidden bg-surface-container-highest relative flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A small golden crown resting on a pearly white tooth, illuminated by soft moonlight from a high window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH9ywyb5trIs07wFjv4QakJYG-bPJiExuJDcDLSpHJuLwew4ybFLaNlL2OCxbHYn3cq_J_F5iSGqocK3nznR2hDiUWnif5O-JouN9JLgN4OM_FWpe3jcKsq7WA4uqKIoDqLPGvbRpruJMgxj_GhyVL1N5-NoF9sp-K-0y8gbjo3c5iUvjz5EIoG9v19zxFcDXVrC39JK5aWwn1ATCa3WVpYw0CpT3pJ4xP1cgmJ51WDvnDd3tnpHRHDfbovzioMsyXB2wABRNyTic"/>
+<div class="absolute bottom-1 right-1 bg-surface/80 backdrop-blur-md p-1 rounded-full">
+<span class="material-symbols-outlined text-[12px] text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body text-sm font-bold text-on-surface">Wisdom Prelude</h3>
+<span class="text-[10px] text-outline">Dec 20, 2023</span>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Early gift from the Northern Fairy Council for bravery during the big extraction.</p>
+<div class="flex items-center gap-1 text-secondary pt-1">
+<span class="text-sm font-extrabold tracking-tight">5.70</span>
+<span class="text-[10px] font-medium opacity-70">SOL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty Spacer for FAB -->
+<div class="h-20"></div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-28 right-6 w-14 h-14 rounded-full stardust-gradient shadow-[0_10px_30px_rgba(240,196,86,0.5)] flex items-center justify-center text-on-primary transition-transform active:scale-90 z-[60]">
+<span class="material-symbols-outlined font-bold text-3xl">add</span>
+<!-- FAB Title hidden but semantically "Mint New Milestone" -->
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#2f334b]/60 backdrop-blur-2xl rounded-t-[2rem] border-t border-[#4e4636]/15 shadow-[0_-20px_40px_rgba(0,0,0,0.4)]">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center text-[#f0c456] drop-shadow-[0_0_10px_rgba(90,218,206,0.2)] hover:text-[#ffe3a5] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-widest mt-1">Home</span>
+</a>
+<!-- Gallery (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#9ca3af] hover:text-[#ffe3a5] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome_motion">auto_awesome_motion</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-widest mt-1">Gallery</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#9ca3af] hover:text-[#ffe3a5] transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Manrope'] text-[10px] font-medium uppercase tracking-widest mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

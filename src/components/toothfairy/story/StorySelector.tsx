@@ -114,6 +114,33 @@ export default function StorySelector({ stories }: StorySelectorProps) {
           </div>
         </motion.div>
 
+        {/* Create Keepsake CTA */}
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <Link
+            href="/app"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold no-underline transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: 'linear-gradient(135deg, #F0C456, #E0A830)',
+              color: '#060B18',
+              boxShadow: '0 0 25px rgba(240,196,86,0.2)',
+              fontFamily: "var(--font-nunito), 'Nunito', sans-serif",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="#060B18" opacity="0.7" />
+            </svg>
+            Create Your Keepsake
+          </Link>
+          <p className="text-[10px] mt-2" style={{ color: '#F5F0FF50' }}>
+            Skip the stories — go straight to minting
+          </p>
+        </motion.div>
+
         {/* Section: Pick Your Tradition */}
         <motion.p
           className="text-center text-xs mb-4 font-medium"
@@ -122,7 +149,7 @@ export default function StorySelector({ stories }: StorySelectorProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Pick a tradition to begin
+          Or pick a tradition to begin
         </motion.p>
 
         {/* Available Stories Grid */}
@@ -135,7 +162,7 @@ export default function StorySelector({ stories }: StorySelectorProps) {
               transition={{ delay: 0.6 + i * 0.07, duration: 0.4 }}
             >
               <Link
-                href={`/toothfairy/story/${story.id}`}
+                href={`/story/${story.id}`}
                 className="block rounded-2xl overflow-hidden no-underline group"
                 style={{
                   background: 'rgba(11, 16, 38, 0.7)',

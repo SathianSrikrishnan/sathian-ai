@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Minting in Progress - Tooth Fairy Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#0d1228",
+              "surface-container-lowest": "#080d22",
+              "on-tertiary": "#4f2324",
+              "primary-fixed-dim": "#edc153",
+              "outline": "#9a907c",
+              "on-tertiary-fixed-variant": "#6a3839",
+              "surface-variant": "#2f334b",
+              "secondary": "#5adace",
+              "on-primary-fixed-variant": "#5a4300",
+              "tertiary": "#ffdede",
+              "on-surface-variant": "#d1c5b0",
+              "inverse-on-surface": "#2a2f47",
+              "surface": "#0d1228",
+              "primary": "#ffe3a5",
+              "on-surface": "#dde1ff",
+              "secondary-fixed": "#79f7ea",
+              "on-error-container": "#ffdad6",
+              "surface-container-highest": "#2f334b",
+              "inverse-surface": "#dde1ff",
+              "error": "#ffb4ab",
+              "on-tertiary-container": "#7b4647",
+              "secondary-fixed-dim": "#5adace",
+              "surface-container-low": "#151a31",
+              "on-secondary-fixed": "#00201d",
+              "surface-tint": "#edc153",
+              "tertiary-fixed": "#ffdad9",
+              "secondary-container": "#01a89d",
+              "on-error": "#690005",
+              "on-secondary-container": "#003531",
+              "inverse-primary": "#775a00",
+              "surface-container": "#191e35",
+              "on-primary": "#3e2e00",
+              "on-tertiary-fixed": "#350e11",
+              "primary-fixed": "#ffdf98",
+              "on-background": "#dde1ff",
+              "on-secondary": "#003733",
+              "on-primary-container": "#6b5100",
+              "background": "#0d1228",
+              "error-container": "#93000a",
+              "primary-container": "#f0c456",
+              "surface-container-high": "#242940",
+              "outline-variant": "#4e4636",
+              "on-secondary-fixed-variant": "#00504a",
+              "on-primary-fixed": "#251a00",
+              "tertiary-fixed-dim": "#fbb5b5",
+              "tertiary-container": "#ffb8b8",
+              "surface-bright": "#333850"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fairy-glow {
+            box-shadow: 0 0 60px 10px rgba(90, 218, 206, 0.2);
+        }
+        .stardust-shimmer {
+            background: linear-gradient(135deg, #ffe3a5 0%, #f0c456 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary/30 min-h-screen flex flex-col items-center overflow-hidden">
+<!-- Gold Progress Bar at Top -->
+<div class="fixed top-0 left-0 w-full h-1.5 bg-surface-container-highest z-[60]">
+<div class="h-full stardust-shimmer w-[65%] relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_white]"></div>
+</div>
+</div>
+<!-- Top App Bar (Suppressed Shell because Transactional Focus) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-gradient-to-b from-[#151a31] to-transparent">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/15">
+<span class="material-symbols-outlined text-primary text-sm">magic_button</span>
+</div>
+<span class="font-headline font-bold text-primary tracking-tight">Tooth Fairy Ledger</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<main class="flex-1 w-full max-w-[375px] px-6 pt-24 pb-12 flex flex-col items-center justify-center gap-12 text-center">
+<!-- Center Magical Animation Placeholder -->
+<div class="relative group">
+<!-- Outer Glow Rings -->
+<div class="absolute inset-0 rounded-full border border-secondary/10 animate-pulse scale-150"></div>
+<div class="absolute inset-0 rounded-full border border-primary/5 animate-pulse delay-700 scale-[2]"></div>
+<!-- Main Circular Visual -->
+<div class="w-56 h-56 rounded-full bg-surface-container-low flex items-center justify-center relative z-10 fairy-glow border border-outline-variant/10 overflow-hidden">
+<div class="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_50%_50%,_#5adace_0%,_transparent_70%)]"></div>
+<!-- Magical Fairy Placeholder Image -->
+<img alt="magical fairy silhouette" class="w-full h-full object-cover mix-blend-screen opacity-80" data-alt="ethereal silhouette of a tiny fairy flying in a cosmic night sky surrounded by glowing teal stardust and golden sparkles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATsrZQf_Yd2uuV12w5kOJ2A3ozFXZ-wxlSgU6urFsd-FvfBxfMOQqT7RGzxzNosLMxBPzSEHBSu9Ny71x-_6_caPTQ0lOD9NlsPhqXBkjv4MK4tCtc9mj65za1WSGA985kLXC6F1nSF8aISfZDuKO5_nxuEt2rLx2At66VDvUKspijl96LVI1tDexU7CefuY2fwIEjTz-0cT3FXx6mKMoL_3-xGZIFlH8FAj_cjWz-0ILS6DFzc_wr1Kr3wVQcPAJRiUCnEgXPGx0"/>
+<!-- Floating Sparkles (CSS only) -->
+<div class="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full shadow-[0_0_10px_white] animate-ping"></div>
+<div class="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_12px_#ffe3a5] animate-pulse delay-300"></div>
+<div class="absolute top-1/2 right-1/3 w-1 h-1 bg-secondary rounded-full shadow-[0_0_8px_#5adace] animate-bounce"></div>
+</div>
+</div>
+<!-- Descriptive Text -->
+<div class="space-y-3">
+<h1 class="font-headline text-2xl font-extrabold tracking-tight text-primary">
+                The Tooth Fairy is working her magic...
+            </h1>
+<p class="text-on-surface-variant body-sm px-4">
+                We're crafting a permanent digital record of this special milestone in the stars.
+            </p>
+</div>
+<!-- Checklist Bento Grid Layout -->
+<div class="w-full space-y-3">
+<!-- Uploading Artwork (Checked) -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="text-on-surface font-medium text-sm">Uploading artwork</span>
+</div>
+<!-- Creating on-chain memory (Checked) -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10">
+<div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="text-on-surface font-medium text-sm">Creating on-chain memory</span>
+</div>
+<!-- Securing your deposit (In-progress) -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-high border border-primary/20 shadow-[0_0_15px_rgba(240,196,86,0.05)]">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center animate-spin duration-[3000ms]">
+<span class="material-symbols-outlined text-primary text-sm">autorenew</span>
+</div>
+<div class="flex-1 text-left">
+<span class="text-primary font-bold text-sm">Securing your deposit</span>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full stardust-shimmer w-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Recording in the fairy ledger (Waiting) -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container/50 border border-outline-variant/5 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">pending</span>
+</div>
+<span class="text-on-surface-variant font-medium text-sm">Recording in the fairy ledger</span>
+</div>
+</div>
+</main>
+<!-- Background Decoration -->
+<div class="fixed inset-0 -z-10 pointer-events-none">
+<div class="absolute top-[-10%] left-[-20%] w-[100%] h-[100%] bg-[radial-gradient(circle_at_center,_#242940_0%,_transparent_50%)] opacity-30"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_#151a31_0%,_transparent_60%)] opacity-40"></div>
+<!-- Tiny stars -->
+<div class="absolute top-1/4 left-1/3 w-0.5 h-0.5 bg-white rounded-full opacity-20"></div>
+<div class="absolute top-1/2 right-1/4 w-0.5 h-0.5 bg-white rounded-full opacity-40"></div>
+<div class="absolute bottom-1/4 left-1/2 w-0.5 h-0.5 bg-white rounded-full opacity-10"></div>
+</div>
+</body></html>

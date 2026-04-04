@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json()
+    const { email, source } = await req.json()
 
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
@@ -15,26 +15,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Service unavailable' }, { status: 503 })
     }
 
-    // Insert into subscribers table (upsert to avoid duplicates)
-    const res = await fetch(`${supabaseUrl}/rest/v1/subscribers`, {
+    // Store in thoughts table (Brain) as a signup signal
+    const res = await fetch(`${supabaseUrl}/rest/v1/thoughts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`,
-        Prefer: 'resolution=merge-duplicates',
+        Prefer: 'return=minimal',
       },
       body: JSON.stringify({
-        email: email.toLowerCase().trim(),
-        source: 'sathian.ai',
-        subscribed_at: new Date().toISOString(),
+        content: `TFN email signup: ${email.toLowerCase().trim()}`,
+        source: source || 'tfn-landing',
+        category: 'signup',
+        created_at: new Date().toISOString(),
       }),
     })
 
     if (!res.ok) {
       const text = await res.text()
       console.error('Supabase error:', text)
-      return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 })
+      // Still return OK to user — log the email at minimum
+      console.log('EMAIL SIGNUP (fallback):', email.toLowerCase().trim())
     }
 
     return NextResponse.json({ ok: true })

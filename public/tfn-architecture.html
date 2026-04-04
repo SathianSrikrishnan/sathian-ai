@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooth Fairy Network — Architecture Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e8e4dc;
+    padding: 60px 40px;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 1400px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(240, 196, 86, 0.15);
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #F0C456, #e8a835);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: #8a8578;
+    font-weight: 400;
+  }
+  .header .program-id {
+    font-size: 11px;
+    color: #5a5548;
+    font-family: monospace;
+    margin-top: 12px;
+  }
+
+  /* Three Pillars */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .pillar {
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  /* Interface Pillar */
+  .pillar-interface {
+    background: linear-gradient(180deg, rgba(99, 179, 237, 0.08) 0%, rgba(99, 179, 237, 0.02) 100%);
+    border: 1px solid rgba(99, 179, 237, 0.15);
+  }
+  .pillar-interface::before { background: linear-gradient(90deg, #63b3ed, #4299e1); }
+  .pillar-interface .pillar-tag { color: #63b3ed; border-color: rgba(99, 179, 237, 0.3); }
+
+  /* Contract Pillar */
+  .pillar-contract {
+    background: linear-gradient(180deg, rgba(240, 196, 86, 0.08) 0%, rgba(240, 196, 86, 0.02) 100%);
+    border: 1px solid rgba(240, 196, 86, 0.2);
+  }
+  .pillar-contract::before { background: linear-gradient(90deg, #F0C456, #e8a835); }
+  .pillar-contract .pillar-tag { color: #F0C456; border-color: rgba(240, 196, 86, 0.3); }
+
+  /* Ledger Pillar */
+  .pillar-ledger {
+    background: linear-gradient(180deg, rgba(129, 230, 217, 0.08) 0%, rgba(129, 230, 217, 0.02) 100%);
+    border: 1px solid rgba(129, 230, 217, 0.15);
+  }
+  .pillar-ledger::before { background: linear-gradient(90deg, #81e6d9, #4fd1c5); }
+  .pillar-ledger .pillar-tag { color: #81e6d9; border-color: rgba(129, 230, 217, 0.3); }
+
+  .pillar-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.4;
+  }
+  .pillar h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .pillar .pillar-desc {
+    font-size: 13px;
+    color: #8a8578;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .pillar-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  /* Component blocks inside pillars */
+  .component {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .component:last-child { margin-bottom: 0; }
+  .component h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .component p, .component li {
+    font-size: 11.5px;
+    color: #8a8578;
+    line-height: 1.6;
+  }
+  .component ul {
+    list-style: none;
+    padding: 0;
+  }
+  .component li::before {
+    content: '›';
+    margin-right: 6px;
+    opacity: 0.5;
+  }
+
+  .mono {
+    font-family: monospace;
+    font-size: 10px;
+    color: #6a6558;
+    background: rgba(255,255,255,0.04);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Flow Arrows between pillars */
+  .flow-section {
+    margin-bottom: 48px;
+  }
+  .flow-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5a5548;
+    margin-bottom: 28px;
+  }
+
+  /* User Journey */
+  .journey {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .journey-step {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 20px 24px;
+    text-align: center;
+    min-width: 150px;
+    position: relative;
+  }
+  .journey-step .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: #F0C456;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .journey-step h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .journey-step p {
+    font-size: 11px;
+    color: #6a6558;
+  }
+  .journey-arrow {
+    font-size: 20px;
+    color: rgba(240, 196, 86, 0.3);
+    padding: 0 8px;
+  }
+
+  /* Fee Model */
+  .fee-section {
+    margin-bottom: 48px;
+  }
+  .fee-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .fee-card {
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .fee-card.deposit-fee {
+    background: linear-gradient(180deg, rgba(72, 187, 120, 0.08) 0%, rgba(72, 187, 120, 0.02) 100%);
+    border: 1px solid rgba(72, 187, 120, 0.15);
+  }
+  .fee-card.penalty-fee {
+    background: linear-gradient(180deg, rgba(237, 137, 54, 0.08) 0%, rgba(237, 137, 54, 0.02) 100%);
+    border: 1px solid rgba(237, 137, 54, 0.15);
+  }
+  .fee-card.refund-fee {
+    background: linear-gradient(180deg, rgba(159, 122, 234, 0.08) 0%, rgba(159, 122, 234, 0.02) 100%);
+    border: 1px solid rgba(159, 122, 234, 0.15);
+  }
+  .fee-pct {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .deposit-fee .fee-pct { color: #48bb78; }
+  .penalty-fee .fee-pct { color: #ed8936; }
+  .refund-fee .fee-pct { color: #9f7aea; }
+  .fee-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .fee-card p {
+    font-size: 11.5px;
+    color: #6a6558;
+    line-height: 1.5;
+  }
+
+  /* Money Flow */
+  .money-flow {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin-bottom: 48px;
+  }
+  .money-flow h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #F0C456;
+  }
+  .flow-example {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .flow-example:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .flow-example h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .flow-node.actor { background: rgba(99, 179, 237, 0.1); border: 1px solid rgba(99, 179, 237, 0.2); color: #63b3ed; }
+  .flow-node.contract { background: rgba(240, 196, 86, 0.1); border: 1px solid rgba(240, 196, 86, 0.2); color: #F0C456; }
+  .flow-node.treasury { background: rgba(72, 187, 120, 0.1); border: 1px solid rgba(72, 187, 120, 0.2); color: #48bb78; }
+  .flow-node.child { background: rgba(237, 137, 54, 0.1); border: 1px solid rgba(237, 137, 54, 0.2); color: #ed8936; }
+  .flow-node.depositor { background: rgba(159, 122, 234, 0.1); border: 1px solid rgba(159, 122, 234, 0.2); color: #9f7aea; }
+  .flow-arrow-sm {
+    padding: 0 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.15);
+  }
+  .flow-label {
+    font-size: 10px;
+    color: #5a5548;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .flow-arrow-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Roles */
+  .roles-section { margin-bottom: 48px; }
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .role-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px 20px;
+  }
+  .role-card .role-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .role-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .role-card p {
+    font-size: 11.5px;
+    color: #6a6558;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .role-actions {
+    list-style: none;
+    padding: 0;
+  }
+  .role-actions li {
+    font-size: 11px;
+    color: #8a8578;
+    padding: 3px 0;
+  }
+  .role-actions li::before {
+    content: '▸';
+    margin-right: 6px;
+    opacity: 0.4;
+  }
+
+  /* PDA Map */
+  .pda-section { margin-bottom: 48px; }
+  .pda-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .pda-level {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .pda-node {
+    background: rgba(240, 196, 86, 0.05);
+    border: 1px solid rgba(240, 196, 86, 0.12);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 180px;
+  }
+  .pda-node h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #F0C456;
+    margin-bottom: 4px;
+  }
+  .pda-node .pda-seeds {
+    font-family: monospace;
+    font-size: 10px;
+    color: #5a5548;
+    margin-bottom: 6px;
+  }
+  .pda-node p {
+    font-size: 11px;
+    color: #6a6558;
+  }
+  .pda-connector {
+    text-align: center;
+    padding: 8px 0;
+    color: rgba(240, 196, 86, 0.2);
+    font-size: 16px;
+    letter-spacing: 4px;
+  }
+
+  /* Roadmap */
+  .roadmap-section { margin-bottom: 48px; }
+  .roadmap-track {
+    position: relative;
+    padding-left: 32px;
+  }
+  .roadmap-track::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #F0C456 0%, rgba(240, 196, 86, 0.1) 100%);
+  }
+  .roadmap-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+  }
+  .roadmap-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 24px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #F0C456;
+    background: #0a0a0f;
+  }
+  .roadmap-item.done::before { background: #F0C456; }
+  .roadmap-item.active::before { background: #48bb78; border-color: #48bb78; box-shadow: 0 0 8px rgba(72, 187, 120, 0.4); }
+  .roadmap-phase {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .roadmap-item.done .roadmap-phase { color: #F0C456; }
+  .roadmap-item.active .roadmap-phase { color: #48bb78; }
+  .roadmap-item .roadmap-phase { color: #5a5548; }
+  .roadmap-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .roadmap-item p {
+    font-size: 12px;
+    color: #6a6558;
+    line-height: 1.5;
+  }
+  .roadmap-item .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .tag-done { background: rgba(240, 196, 86, 0.1); color: #F0C456; }
+  .tag-active { background: rgba(72, 187, 120, 0.1); color: #48bb78; }
+  .tag-next { background: rgba(99, 179, 237, 0.1); color: #63b3ed; }
+  .tag-future { background: rgba(255,255,255,0.04); color: #5a5548; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 60px;
+  }
+  .footer p {
+    font-size: 12px;
+    color: #3a3528;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5a5548;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  /* Tech stack badges */
+  .tech-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    color: #6a6558;
+    margin: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Tooth Fairy Network</h1>
+    <p class="subtitle">Smart Contract Architecture &amp; Business Model</p>
+    <p class="program-id">Escrow Program: FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC &nbsp;|&nbsp; Solana Mainnet</p>
+  </div>
+
+  <!-- Three Pillars -->
+  <div class="pillars">
+
+    <!-- PILLAR 1: Interface -->
+    <div class="pillar pillar-interface">
+      <div class="pillar-num">Pillar 1</div>
+      <h2>The Interface</h2>
+      <p class="pillar-desc">What users see and touch. The website that abstracts all blockchain complexity.</p>
+      <span class="pillar-tag">toothfairy.network</span>
+
+      <div class="component">
+        <h3>Frontend (Next.js on Vercel)</h3>
+        <ul>
+          <li>5-step mint flow: Photo &rarr; Draw &rarr; Auth &rarr; Mint &rarr; Save</li>
+          <li>Family dashboard with savings view</li>
+          <li>Gift links for family deposits</li>
+          <li>13 cultural tooth fairy stories</li>
+          <li>Mobile-first, no wallet required</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Backend (15 API Routes)</h3>
+        <ul>
+          <li><span class="mono">/onramp</span> Coinbase fiat &rarr; SOL</li>
+          <li><span class="mono">/mint</span> Server-side cNFT minting</li>
+          <li><span class="mono">/server-deposit</span> Escrow deposit</li>
+          <li><span class="mono">/escrow-setup</span> Child profile creation</li>
+          <li><span class="mono">/enhance</span> AI tooth art</li>
+          <li><span class="mono">/welcome-email</span> Notifications</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Database (Supabase)</h3>
+        <ul>
+          <li><span class="mono">tfn_children</span> Child profiles + auth</li>
+          <li><span class="mono">tfn-photos</span> Photo storage bucket</li>
+          <li>Google OAuth session management</li>
+          <li>Mirrors on-chain state for fast reads</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <span class="tech-badge">Next.js 14</span>
+        <span class="tech-badge">Vercel</span>
+        <span class="tech-badge">Supabase</span>
+        <span class="tech-badge">Google OAuth</span>
+        <span class="tech-badge">Coinbase CDP</span>
+      </div>
+    </div>
+
+    <!-- PILLAR 2: Smart Contract -->
+    <div class="pillar pillar-contract">
+      <div class="pillar-num">Pillar 2</div>
+      <h2>The Smart Contract</h2>
+      <p class="pillar-desc">The rules engine. Non-custodial escrow that holds funds, enforces time-locks, and collects fees. No human controls the lockboxes &mdash; only code.</p>
+      <span class="pillar-tag">Anchor / Rust</span>
+
+      <div class="component">
+        <h3>Core Instructions (8)</h3>
+        <ul>
+          <li><strong>initialize_child</strong> &mdash; Create child profile (guardian)</li>
+          <li><strong>create_milestone</strong> &mdash; Record a lost tooth (guardian)</li>
+          <li><strong>deposit</strong> &mdash; Send SOL with time-lock (anyone)</li>
+          <li><strong>claim_deposit</strong> &mdash; Release matured funds (guardian)</li>
+          <li><strong>early_withdraw</strong> &mdash; Break lock, 10% penalty (guardian)</li>
+          <li><strong>refund_deposit</strong> &mdash; 7-day refund window (depositor)</li>
+          <li><strong>transfer_guardianship</strong> &mdash; Change parent (guardian)</li>
+          <li><strong>withdraw_treasury</strong> &mdash; Claim fees (admin)</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>On-Chain Accounts (PDAs)</h3>
+        <ul>
+          <li><strong>Config</strong> &mdash; Global pause/unpause switch</li>
+          <li><strong>Treasury</strong> &mdash; Accumulated platform fees</li>
+          <li><strong>ChildProfile</strong> &mdash; One per child (max 20 milestones)</li>
+          <li><strong>Milestone</strong> &mdash; One per tooth (tracks deposits)</li>
+          <li><strong>Deposit</strong> &mdash; One per depositor per tooth (the vault)</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Access Control</h3>
+        <ul>
+          <li><strong>Anyone</strong> can deposit (family, friends)</li>
+          <li><strong>Guardian</strong> controls claims + child profile</li>
+          <li><strong>Admin</strong> can pause contract + withdraw fees</li>
+          <li><strong>Original depositor</strong> can refund (7 days)</li>
+          <li>No single party can steal funds</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Safety Features</h3>
+        <ul>
+          <li>Emergency pause (admin)</li>
+          <li>Time-lock enforcement (code, not humans)</li>
+          <li>Anti-spam minimum deposit (0.00001 SOL)</li>
+          <li>Max 20 milestones per child (20 baby teeth)</li>
+          <li>7-day refund grace period</li>
+          <li>Guardianship transfer (divorce, custody)</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <span class="tech-badge">Anchor</span>
+        <span class="tech-badge">Rust</span>
+        <span class="tech-badge">Solana BPF</span>
+        <span class="tech-badge">PDAs</span>
+      </div>
+    </div>
+
+    <!-- PILLAR 3: Ledger -->
+    <div class="pillar pillar-ledger">
+      <div class="pillar-num">Pillar 3</div>
+      <h2>The Ledger</h2>
+      <p class="pillar-desc">The permanent record. Solana blockchain stores every milestone and deposit. Arweave stores the art forever.</p>
+      <span class="pillar-tag">Solana Mainnet</span>
+
+      <div class="component">
+        <h3>Compressed NFTs (cNFTs)</h3>
+        <ul>
+          <li>Metaplex Bubblegum protocol</li>
+          <li>Merkle tree: 16,384 capacity</li>
+          <li>Cost: ~$0.001 per mint (vs $2+ regular NFT)</li>
+          <li>Displays in Phantom, Solflare, etc.</li>
+          <li>Child owns the NFT in their wallet</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Permanent Storage (Arweave)</h3>
+        <ul>
+          <li>Tooth art uploaded via Irys</li>
+          <li>200+ year storage guarantee</li>
+          <li>Immutable &mdash; no one can delete</li>
+          <li>Metadata JSON + image file</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Infrastructure</h3>
+        <ul>
+          <li><strong>RPC:</strong> Helius (mainnet, DAS API)</li>
+          <li><strong>Tx cost:</strong> ~$0.005 per deposit</li>
+          <li><strong>Finality:</strong> ~400ms</li>
+          <li><strong>Server wallet:</strong> Signs mints + deposits</li>
+          <li><strong>Deploy wallet:</strong> Program upgrades</li>
+        </ul>
+      </div>
+
+      <div class="component">
+        <h3>Key Addresses</h3>
+        <ul>
+          <li><span class="mono">FqCS...7RTC</span> Escrow program</li>
+          <li><span class="mono">BcXB...g76</span> Server wallet</li>
+          <li><span class="mono">5pip...sXq</span> Deploy wallet</li>
+          <li><span class="mono">AA4W...mbd</span> Merkle tree</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <span class="tech-badge">Solana</span>
+        <span class="tech-badge">Metaplex</span>
+        <span class="tech-badge">Arweave</span>
+        <span class="tech-badge">Helius</span>
+        <span class="tech-badge">Irys</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Journey -->
+  <div class="flow-section">
+    <div class="section-title">User Journey &mdash; Parent Flow</div>
+    <div class="journey">
+      <div class="journey-step">
+        <div class="step-num">Step 1</div>
+        <h4>Land</h4>
+        <p>toothfairy.network</p>
+      </div>
+      <div class="journey-arrow">&rarr;</div>
+      <div class="journey-step">
+        <div class="step-num">Step 2</div>
+        <h4>Photo + Draw</h4>
+        <p>Capture the tooth</p>
+      </div>
+      <div class="journey-arrow">&rarr;</div>
+      <div class="journey-step">
+        <div class="step-num">Step 3</div>
+        <h4>Sign In</h4>
+        <p>Google OAuth</p>
+      </div>
+      <div class="journey-arrow">&rarr;</div>
+      <div class="journey-step">
+        <div class="step-num">Step 4</div>
+        <h4>Mint</h4>
+        <p>cNFT created (free)</p>
+      </div>
+      <div class="journey-arrow">&rarr;</div>
+      <div class="journey-step">
+        <div class="step-num">Step 5</div>
+        <h4>Deposit</h4>
+        <p>Card / Apple Pay</p>
+      </div>
+      <div class="journey-arrow">&rarr;</div>
+      <div class="journey-step">
+        <div class="step-num">Step 6</div>
+        <h4>Share</h4>
+        <p>Family gift link</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles -->
+  <div class="roles-section">
+    <div class="section-title">Who Can Do What</div>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-icon">👨‍👩‍👧</div>
+        <h4>Anyone (Family)</h4>
+        <p>Parents, grandparents, friends &mdash; anyone with the link</p>
+        <ul class="role-actions">
+          <li>Deposit SOL to a milestone</li>
+          <li>Choose time-lock period</li>
+          <li>Refund within 7 days</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">🛡️</div>
+        <h4>Guardian (Parent)</h4>
+        <p>Controls child's profile and fund releases</p>
+        <ul class="role-actions">
+          <li>Create child profiles</li>
+          <li>Record milestones (teeth)</li>
+          <li>Claim matured deposits</li>
+          <li>Early withdraw (10% penalty)</li>
+          <li>Transfer guardianship</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">⚙️</div>
+        <h4>Platform Admin</h4>
+        <p>You (Sathian) &mdash; treasury + emergency controls</p>
+        <ul class="role-actions">
+          <li>Withdraw accrued fees</li>
+          <li>Pause / unpause contract</li>
+          <li>Initialize config + treasury</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">👶</div>
+        <h4>Child (Future)</h4>
+        <p>Receives funds when deposits mature</p>
+        <ul class="role-actions">
+          <li>Owns the cNFT</li>
+          <li>Receives claimed SOL</li>
+          <li>Wallet updatable by guardian</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fee Model -->
+  <div class="fee-section">
+    <div class="section-title">Revenue Model</div>
+    <div class="fee-grid">
+      <div class="fee-card deposit-fee">
+        <div class="fee-pct">2%</div>
+        <h4>Deposit Fee</h4>
+        <p>Taken on every deposit, sent to Treasury PDA immediately. Non-refundable even if depositor requests refund within 7 days.</p>
+      </div>
+      <div class="fee-card penalty-fee">
+        <div class="fee-pct">10%</div>
+        <h4>Early Withdrawal Penalty</h4>
+        <p>If guardian breaks a time-lock before maturity. 10% goes to Treasury, 90% goes to child. Incentivizes long-term saving.</p>
+      </div>
+      <div class="fee-card refund-fee">
+        <div class="fee-pct">7 days</div>
+        <h4>Refund Grace Period</h4>
+        <p>Original depositor can reclaim funds within 7 days. 2% fee is NOT returned. Prevents abuse while allowing mistakes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Money Flow Examples -->
+  <div class="money-flow">
+    <h3>Money Flow Examples</h3>
+
+    <div class="flow-example">
+      <h4>Grandma deposits $50, locked until child turns 18</h4>
+      <div class="flow-steps">
+        <div class="flow-node actor">Grandma<br><small>$50</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+        </div>
+        <div class="flow-node contract">Coinbase Onramp<br><small>Fiat &rarr; SOL</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+        </div>
+        <div class="flow-node contract">Escrow Contract<br><small>deposit()</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+          <div class="flow-label">2% ($1)</div>
+        </div>
+        <div class="flow-node treasury">Treasury PDA<br><small>Your revenue</small></div>
+      </div>
+      <div class="flow-steps" style="margin-top: 8px; padding-left: 0;">
+        <div style="width: 480px;"></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&darr;</div>
+          <div class="flow-label">98% ($49)</div>
+        </div>
+      </div>
+      <div class="flow-steps">
+        <div style="width: 406px;"></div>
+        <div class="flow-node contract">Deposit PDA<br><small>Locked until 2044</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+          <div class="flow-label">claim()</div>
+        </div>
+        <div class="flow-node child">Child's Wallet<br><small>$49 in 2044</small></div>
+      </div>
+    </div>
+
+    <div class="flow-example">
+      <h4>Parent needs money early (before time-lock expires)</h4>
+      <div class="flow-steps">
+        <div class="flow-node actor">Guardian<br><small>early_withdraw()</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+        </div>
+        <div class="flow-node contract">Deposit PDA<br><small>$49 locked</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+          <div class="flow-label">90% ($44.10)</div>
+        </div>
+        <div class="flow-node child">Child's Wallet</div>
+      </div>
+      <div class="flow-steps" style="margin-top: 8px;">
+        <div style="width: 318px;"></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&darr;</div>
+          <div class="flow-label">10% ($4.90)</div>
+        </div>
+      </div>
+      <div class="flow-steps">
+        <div style="width: 260px;"></div>
+        <div class="flow-node treasury">Treasury PDA<br><small>+ $4.90 penalty</small></div>
+      </div>
+    </div>
+
+    <div class="flow-example">
+      <h4>You withdraw your fees</h4>
+      <div class="flow-steps">
+        <div class="flow-node treasury">Treasury PDA<br><small>Accumulated fees</small></div>
+        <div class="flow-arrow-group">
+          <div class="flow-arrow-sm">&rarr;</div>
+          <div class="flow-label">withdraw_treasury()</div>
+        </div>
+        <div class="flow-node actor">Your Wallet<br><small>5pip...sXq</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDA Structure -->
+  <div class="pda-section">
+    <div class="section-title">On-Chain Account Structure (PDAs)</div>
+    <div class="pda-tree">
+      <div class="pda-level">
+        <div class="pda-node">
+          <h4>Config</h4>
+          <div class="pda-seeds">["config"]</div>
+          <p>Global singleton. Pause switch.</p>
+        </div>
+        <div class="pda-node">
+          <h4>Treasury</h4>
+          <div class="pda-seeds">["treasury"]</div>
+          <p>Fee accumulator. Your revenue.</p>
+        </div>
+      </div>
+      <div class="pda-connector">│</div>
+      <div class="pda-level">
+        <div class="pda-node">
+          <h4>ChildProfile</h4>
+          <div class="pda-seeds">["child_profile", child_wallet]</div>
+          <p>One per child. Tracks totals, guardian, up to 20 milestones.</p>
+        </div>
+      </div>
+      <div class="pda-connector">│</div>
+      <div class="pda-level">
+        <div class="pda-node">
+          <h4>Milestone</h4>
+          <div class="pda-seeds">["milestone", profile, index]</div>
+          <p>One per tooth. Tracks deposit totals.</p>
+        </div>
+        <div class="pda-node">
+          <h4>Milestone</h4>
+          <div class="pda-seeds">["milestone", profile, index]</div>
+          <p>Up to 20 per child (20 baby teeth).</p>
+        </div>
+      </div>
+      <div class="pda-connector">│</div>
+      <div class="pda-level">
+        <div class="pda-node">
+          <h4>Deposit</h4>
+          <div class="pda-seeds">["deposit", milestone, index]</div>
+          <p>Dad: 0.5 SOL, locked 10 years</p>
+        </div>
+        <div class="pda-node">
+          <h4>Deposit</h4>
+          <div class="pda-seeds">["deposit", milestone, index]</div>
+          <p>Grandma: 1 SOL, locked until 18</p>
+        </div>
+        <div class="pda-node">
+          <h4>Deposit</h4>
+          <div class="pda-seeds">["deposit", milestone, index]</div>
+          <p>Uncle: 0.2 SOL, available now</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <div class="roadmap-section">
+    <div class="section-title">Product Roadmap</div>
+    <div class="roadmap-track">
+      <div class="roadmap-item done">
+        <div class="roadmap-phase">Phase 1 — Foundation</div>
+        <h4>Smart Contract + cNFT Pipeline</h4>
+        <p>Anchor escrow contract deployed to mainnet. Compressed NFT minting via Metaplex Bubblegum. Arweave permanent storage via Irys. Server-subsidized minting (parents pay nothing).</p>
+        <span class="tag tag-done">Complete</span>
+      </div>
+      <div class="roadmap-item done">
+        <div class="roadmap-phase">Phase 2 — Interface</div>
+        <h4>Web App + Parent Flow</h4>
+        <p>5-step mint flow. Google OAuth. AI tooth art enhancement. Family dashboard. Gift links for family deposits. 13 cultural stories. Mobile-first design.</p>
+        <span class="tag tag-done">Complete</span>
+      </div>
+      <div class="roadmap-item active">
+        <div class="roadmap-phase">Phase 3 — Fiat Onramp</div>
+        <h4>Credit Card + Apple Pay Deposits</h4>
+        <p>Coinbase Onramp integration. Parents deposit with a credit card — never touch crypto. SOL delivered to server wallet, deposited to escrow automatically. KYC handled by Coinbase.</p>
+        <span class="tag tag-active">In Progress</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 4 — Distribution</div>
+        <h4>Solana Blinks + Social Sharing</h4>
+        <p>Shareable action links that work inside Twitter/X, Discord, and any Blink-enabled app. "Deposit a tooth" as a one-click action. Viral gift loop.</p>
+        <span class="tag tag-next">Next</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 5 — Scale</div>
+        <h4>Multi-Chain + Staking + Offramp</h4>
+        <p>Yield on locked deposits (DeFi integration). Fiat offramp so parents can cash out to bank. Multi-chain expansion (Base, Ethereum). Institutional custody option.</p>
+        <span class="tag tag-future">Future</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Tooth Fairy Network &mdash; Built by Sathian S. &nbsp;|&nbsp; toothfairy.network &nbsp;|&nbsp; Solana Mainnet &nbsp;|&nbsp; April 2026</p>
+  </div>
+
+</div>
+</body>
+</html>

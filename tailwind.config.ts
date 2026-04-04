@@ -51,6 +51,30 @@ const config: Config = {
           muted: '#9CA3AF',
         },
 
+        // Celestial Ledger (TFN Stitch export)
+        celestial: {
+          surface: "#0d1228",
+          "surface-low": "#151a31",
+          "surface-container": "#191e35",
+          "surface-high": "#242940",
+          "surface-highest": "#2f334b",
+          "surface-bright": "#333850",
+          "surface-lowest": "#080d22",
+          gold: "#f0c456",
+          "gold-light": "#ffe3a5",
+          "gold-dim": "#edc153",
+          teal: "#5adace",
+          "teal-container": "#01a89d",
+          "on-gold": "#3e2e00",
+          text: "#dde1ff",
+          "text-warm": "#FFF8F0",
+          muted: "#d1c5b0",
+          dim: "#9a907c",
+          outline: "#4e4636",
+          blush: "#fbb5b5",
+          error: "#ffb4ab",
+        },
+
         // Shared tooth fairy colors
         tooth: {
           healthy: '#FFFEF5',
@@ -63,6 +87,8 @@ const config: Config = {
         display: ['Outfit', 'system-ui', 'sans-serif'],
         sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        headline: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        story: ['Lora', 'serif'],
         article: ['Source Serif 4', 'Georgia', 'Times New Roman', 'serif'],
       },
       borderRadius: {
@@ -92,6 +118,7 @@ const config: Config = {
         'aurora-drift-reverse': 'auroraDrift 25s ease-in-out infinite reverse',
         'aurora-breathe': 'auroraBreathe 8s ease-in-out infinite',
         'glow-pulse': 'glowPulse 4s ease-in-out infinite alternate',
+        'float-up': 'floatUp 6s ease-in-out infinite',
       },
       keyframes: {
         sparkle: {
@@ -123,6 +150,11 @@ const config: Config = {
         auroraBreathe: {
           '0%, 100%': { opacity: '0.15' },
           '50%': { opacity: '0.25' },
+        },
+        floatUp: {
+          '0%': { transform: 'translateY(20px) scale(0.8)', opacity: '0' },
+          '50%': { opacity: '0.6' },
+          '100%': { transform: 'translateY(-100px) scale(1.1)', opacity: '0' },
         },
         glowPulse: {
           '0%': { boxShadow: '0 0 30px rgba(124,58,237,0.15), 0 0 60px rgba(6,182,212,0.08)' },

@@ -1,0 +1,228 @@
+/* TFN FAIRY GLOW — Design Tokens
+ * Feed this to your CLI agent for product UI styling
+ * These tokens create the same visual world as the video content
+ */
+
+:root {
+  /* === BACKGROUNDS (the sky) === */
+  --tfn-bg-primary: #0B1026;          /* deepest navy, main page bg */
+  --tfn-bg-secondary: #1A1040;        /* midnight purple, section bg */
+  --tfn-bg-card: #162447;             /* twilight blue, card interiors */
+  --tfn-bg-card-alpha: rgba(22, 36, 71, 0.7);  /* glassmorphism panels */
+
+  /* === ACCENTS (the magic) === */
+  --tfn-gold: #F0C456;                /* fairy gold — primary accent */
+  --tfn-gold-soft: rgba(240, 196, 86, 0.3);    /* glow borders */
+  --tfn-gold-glow: rgba(240, 196, 86, 0.1);    /* outer glow */
+  --tfn-teal: #4FD1C5;                /* stardust teal — secondary accent */
+  --tfn-teal-soft: rgba(79, 209, 197, 0.3);
+  --tfn-white: #F5F0FF;               /* moonlight white — text */
+
+  /* === WARM (the human) === */
+  --tfn-pearl: #FFF8F0;               /* tooth pearl — keepsake bg */
+  --tfn-blush: #FFB8B8;               /* blush pink — warmth */
+  --tfn-ember: #FF8C42;               /* ember orange — notifications */
+
+  /* === TYPOGRAPHY === */
+  --tfn-font-display: 'Nunito', 'Recoleta', sans-serif;
+  --tfn-font-body: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  --tfn-font-mono: 'JetBrains Mono', monospace;
+
+  /* === SPACING === */
+  --tfn-radius-sm: 8px;
+  --tfn-radius-md: 12px;
+  --tfn-radius-lg: 16px;
+  --tfn-radius-xl: 24px;
+  --tfn-radius-full: 9999px;
+
+  /* === GLOW SYSTEM === */
+  --tfn-glow-gold: 0 0 20px rgba(240, 196, 86, 0.1), 0 0 60px rgba(240, 196, 86, 0.05);
+  --tfn-glow-teal: 0 0 20px rgba(79, 209, 197, 0.1), 0 0 60px rgba(79, 209, 197, 0.05);
+  --tfn-glow-strong: 0 0 30px rgba(240, 196, 86, 0.2), 0 0 80px rgba(240, 196, 86, 0.1);
+}
+
+/* === COMPONENT PATTERNS === */
+
+/* Glassmorphism Card — the primary UI container */
+.fairy-card {
+  background: var(--tfn-bg-card-alpha);
+  border: 1px solid var(--tfn-gold-soft);
+  box-shadow: var(--tfn-glow-gold);
+  border-radius: var(--tfn-radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 20px;
+}
+
+/* Tooth Keepsake Card — each tooth in the gallery */
+.tooth-card {
+  background: var(--tfn-bg-card-alpha);
+  border: 1px solid var(--tfn-gold-soft);
+  box-shadow: var(--tfn-glow-gold);
+  border-radius: var(--tfn-radius-lg);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tooth-card:hover {
+  border-color: var(--tfn-gold);
+  box-shadow: var(--tfn-glow-strong);
+  transform: translateY(-2px);
+}
+
+/* Child's Photo Circle — hero element */
+.child-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--tfn-radius-full);
+  border: 2px solid var(--tfn-gold-soft);
+  box-shadow: var(--tfn-glow-strong);
+  object-fit: cover;
+}
+
+/* SOL Balance Display */
+.sol-balance {
+  font-family: var(--tfn-font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--tfn-gold);
+  text-shadow: 0 0 20px rgba(240, 196, 86, 0.3);
+}
+
+/* CTA Button */
+.fairy-button {
+  background: linear-gradient(135deg, var(--tfn-gold), #E0A830);
+  color: var(--tfn-bg-primary);
+  border: none;
+  border-radius: var(--tfn-radius-full);
+  padding: 12px 28px;
+  font-family: var(--tfn-font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(240, 196, 86, 0.2);
+  transition: all 0.3s ease;
+}
+
+.fairy-button:hover {
+  box-shadow: 0 0 30px rgba(240, 196, 86, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Secondary Button */
+.fairy-button-secondary {
+  background: transparent;
+  color: var(--tfn-teal);
+  border: 1px solid var(--tfn-teal-soft);
+  border-radius: var(--tfn-radius-full);
+  padding: 12px 28px;
+  font-family: var(--tfn-font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: var(--tfn-glow-teal);
+  transition: all 0.3s ease;
+}
+
+/* Page Background */
+.fairy-page {
+  background: var(--tfn-bg-primary);
+  background-image: radial-gradient(ellipse at 50% 0%, var(--tfn-bg-secondary) 0%, var(--tfn-bg-primary) 70%);
+  min-height: 100vh;
+  color: var(--tfn-white);
+  font-family: var(--tfn-font-body);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating Particles (CSS-only version) */
+.fairy-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(240, 196, 86, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 70%, rgba(79, 209, 197, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 40%, rgba(240, 196, 86, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 80%, rgba(79, 209, 197, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 10% 90%, rgba(240, 196, 86, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 20%, rgba(245, 240, 255, 0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 50%, rgba(240, 196, 86, 0.2) 0%, transparent 100%);
+  animation: fairy-drift 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes fairy-drift {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.6; }
+  25% { transform: translateY(-10px) translateX(5px); opacity: 0.8; }
+  50% { transform: translateY(-5px) translateX(-5px); opacity: 0.5; }
+  75% { transform: translateY(-15px) translateX(3px); opacity: 0.7; }
+}
+
+/* Lock badge — for "Locked until 2037" display */
+.lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(79, 209, 197, 0.1);
+  border: 1px solid var(--tfn-teal-soft);
+  border-radius: var(--tfn-radius-full);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  color: var(--tfn-teal);
+  font-family: var(--tfn-font-body);
+}
+
+/* Progress bar — teeth collected */
+.teeth-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.teeth-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tfn-gold), var(--tfn-teal));
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(240, 196, 86, 0.3);
+  transition: width 0.5s ease;
+}
+
+/* Family contributor row */
+.contributor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contributor-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--tfn-radius-full);
+  background: var(--tfn-bg-card);
+  border: 1px solid var(--tfn-gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* Section header */
+.section-label {
+  font-family: var(--tfn-font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(245, 240, 255, 0.5);
+  margin-bottom: 16px;
+}

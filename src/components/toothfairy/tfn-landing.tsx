@@ -64,14 +64,17 @@ export function TfnLanding() {
           Your child&apos;s lost tooth becomes a permanent keepsake and the start of their first savings.
         </p>
 
-        {/* Single CTA */}
-        <Link href="/app/new" className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-bold transition-all hover:scale-[1.02] active:scale-[0.98]" style={{
+        {/* Primary CTA — explore stories first */}
+        <Link href="/story" className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-bold transition-all hover:scale-[1.02] active:scale-[0.98]" style={{
           background: "linear-gradient(135deg, #F0C456, #E0A830)",
           color: "#060B18",
           boxShadow: "0 0 25px rgba(240,196,86,0.2)",
           fontFamily: "var(--font-nunito, 'Nunito', sans-serif)",
         }}>
-          <SparkleIcon size={16} /> Create a Keepsake
+          <SparkleIcon size={16} /> Explore the Stories
+        </Link>
+        <Link href="/app" className="block text-xs mt-3 hover:underline transition-opacity" style={{ color: "rgba(240,236,255,0.35)" }}>
+          or create a keepsake directly &rarr;
         </Link>
 
         {/* Footer note */}
