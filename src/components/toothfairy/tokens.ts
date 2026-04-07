@@ -24,7 +24,9 @@ export const C = {
 
   // Primary: Fairy Gold (the magic — CTAs, headlines, accents)
   gold: "#f0c456",                   // primary-container — solid gold accent
+  heroGold: "#ffe3a5",              // hero gold — shimmer text effects
   goldLight: "#ffe3a5",              // primary — light gold for text
+  primaryFixed: "#edc153",           // primary-fixed — secondary CTAs
   goldDim: "#edc153",                // primary-fixed-dim — dimmed gold
   goldSoft: "rgba(240, 196, 86, 0.15)",  // gold tint backgrounds
   goldGlow: "rgba(240, 196, 86, 0.1)",   // gold glow effect

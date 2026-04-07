@@ -57,11 +57,11 @@ export function TfnLanding() {
           animation: "shimmer-name 5s ease-in-out infinite",
           filter: "drop-shadow(0 0 16px rgba(240,196,86,0.2))",
         }}>
-          Every tooth tells a story
+          Welcome to the Tooth Fairy Network
         </h1>
 
         <p className="text-sm sm:text-base mb-10 leading-relaxed max-w-sm" style={{ color: "rgba(240,236,255,0.55)" }}>
-          Your child&apos;s lost tooth becomes a permanent keepsake and the start of their first savings.
+          Tooth fairy traditions from six continents. Every story ends with a keepsake your child owns forever.
         </p>
 
         {/* Primary CTA — explore stories first */}

@@ -130,10 +130,11 @@ export async function uploadMetadata(
   childName: string,
   toothType: string,
   toothNumber: number,
+  note?: string,
 ) {
   const { umi } = createMintUmi()
 
-  console.log(`[TFN] Uploading image (${imageBuffer.length} bytes) to Arweave...`)
+  // Uploading image to Arweave
 
   // Upload image first
   const imageFile = {
@@ -147,15 +148,16 @@ export async function uploadMetadata(
   }
 
   const [imageUri] = await umi.uploader.upload([imageFile])
-  console.log(`[TFN] Image uploaded: ${imageUri}`)
+  // Image uploaded
 
   // Upload metadata JSON
-  const metadata = {
+  const metadata: Record<string, any> = {
     name: `${childName}'s Tooth #${toothNumber}`,
     symbol: "TFN",
     description: `Tooth #${toothNumber} (${toothType}) — A childhood milestone recorded on the Tooth Fairy Network. This soulbound token marks a moment in ${childName}'s journey, permanently preserved on Solana.`,
     image: imageUri,
-    external_url: "https://sathian.ai/toothfairy/network",
+    ...(note && { note }),
+    external_url: "https://toothfairy.network",
     attributes: [
       { trait_type: "Child", value: childName },
       { trait_type: "Tooth Type", value: toothType },
@@ -171,7 +173,7 @@ export async function uploadMetadata(
   }
 
   const metadataUri = await umi.uploader.uploadJson(metadata)
-  console.log(`[TFN] Metadata uploaded: ${metadataUri}`)
+  // Metadata uploaded
   return { imageUri, metadataUri }
 }
 

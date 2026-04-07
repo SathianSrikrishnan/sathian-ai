@@ -59,7 +59,7 @@ export async function middleware(request: NextRequest) {
   if (hostname === 'toothfairy.sathian.ai') {
     // Don't rewrite static assets (images, videos, fonts, etc.)
     if (pathname.match(/\.\w+$/)) return NextResponse.next()
-    const dest = pathname === '/' ? '/toothfairy/network' : `/toothfairy/network${pathname}`
+    const dest = pathname === '/' ? '/toothfairy' : `/toothfairy${pathname}`
     return rewriteWithCookies(new URL(dest, request.url))
   }
 
@@ -70,7 +70,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/api/')) return NextResponse.next() // API routes pass through
     // Landing page at root
     if (pathname === '/') {
-      return rewriteWithCookies(new URL('/toothfairy/network', request.url))
+      return rewriteWithCookies(new URL('/toothfairy', request.url))
     }
     // App at /app
     if (pathname === '/app') {
@@ -96,8 +96,12 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/app/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
     }
-    // /network still works as alias
-    if (pathname === '/network' || pathname.startsWith('/network/')) {
+    // /network → redirect to root (chain animation is the new landing)
+    if (pathname === '/network') {
+      return NextResponse.redirect(new URL('/', request.url), 307)
+    }
+    // /network/about still works
+    if (pathname.startsWith('/network/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
     }
     // Links already prefixed with /toothfairy/ — pass through without double-prefixing

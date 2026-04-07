@@ -214,6 +214,7 @@ export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
             src={scene.background}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: 'center 30%' }}
             animate={{ scale: [1.0, 1.04] }}
             transition={{ duration: 12, ease: 'linear', repeat: Infinity, repeatType: 'reverse' }}
           />

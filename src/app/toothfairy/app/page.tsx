@@ -18,10 +18,15 @@ import { WalletButton } from "@/components/toothfairy/app/wallet-button"
 import { C, ds, gradients, glow, glass } from "@/components/toothfairy/tokens"
 import Link from "next/link"
 import { createBrowserSupabase } from "@/lib/supabase-auth"
+import { useViewMode } from "@/components/toothfairy/view-mode-context"
+import { ViewToggle } from "@/components/toothfairy/view-toggle"
+import ParentFlow from "@/components/toothfairy/app/parent-flow"
+import DrawingCanvas, { type DrawingCanvasRef } from "@/components/toothfairy/app/drawing-canvas"
 
 // Flow: setup → create → preview → deposit → minting → done
 // Steps 1-3 require NO wallet. Wallet connects at preview step.
 type Step = "setup" | "create" | "preview" | "deposit" | "minting" | "done"
+const CHILD_STEPS: Step[] = ["setup", "create", "preview", "deposit", "minting", "done"]
 type LockChoice = "now" | "eighteen" | "custom"
 
 function useIsMobile() {
@@ -40,12 +45,14 @@ export default function ToothFairyApp() {
   const { connection } = useConnection()
   const { setVisible } = useWalletModal()
   const isMobile = useIsMobile()
+  const { isChild, isParent } = useViewMode()
 
   // Flow state
   const [step, setStep] = useState<Step>("setup")
   const [childName, setChildName] = useState("")
   const [childDob, setChildDob] = useState("")
   const [photo, setPhoto] = useState<string | null>(null)
+  const [note, setNote] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [mintProgress, setMintProgress] = useState("")
   const [previewImage, setPreviewImage] = useState<string | null>(null)
@@ -112,10 +119,8 @@ export default function ToothFairyApp() {
   const [awaitingCardDeposit, setAwaitingCardDeposit] = useState(false)
 
   // Canvas
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const drawingCanvasRef = useRef<DrawingCanvasRef>(null)
   const fileRef = useRef<HTMLInputElement>(null)
-  const isDrawingRef = useRef(false)
-  const lastPosRef = useRef({ x: 0, y: 0 })
 
   // Anchor provider
   const anchorProvider = useMemo(() => {
@@ -195,114 +200,20 @@ export default function ToothFairyApp() {
     reader.readAsDataURL(file)
   }
 
-  // ── Canvas ──
-  const initCanvas = useCallback((canvas: HTMLCanvasElement | null) => {
-    if (!canvas) return
-    canvasRef.current = canvas
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-    canvas.width = 512; canvas.height = 512
-    ctx.fillStyle = "#0f0b1e"; ctx.fillRect(0, 0, 512, 512)
-    ctx.fillStyle = "#a78bfa"; ctx.font = "20px system-ui"; ctx.textAlign = "center"
-    ctx.fillText("Draw the tooth!", 256, 240)
-    ctx.font = "14px system-ui"; ctx.fillStyle = "#6b7280"
-    ctx.fillText("Use your finger or mouse", 256, 270)
-  }, [])
-
-  // Redraw photo onto canvas when photo changes
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas || !photo) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-    const img = new Image()
-    img.onload = () => {
-      ctx.fillStyle = "#0f0b1e"; ctx.fillRect(0, 0, 512, 512)
-      const scale = Math.max(512 / img.width, 512 / img.height)
-      const w = img.width * scale, h = img.height * scale
-      ctx.drawImage(img, (512 - w) / 2, (512 - h) / 2, w, h)
-    }
-    img.src = photo
-  }, [photo])
-
-  const getPos = (e: React.MouseEvent | React.TouchEvent) => {
-    const canvas = canvasRef.current
-    if (!canvas) return { x: 0, y: 0 }
-    const rect = canvas.getBoundingClientRect()
-    const sx = canvas.width / rect.width, sy = canvas.height / rect.height
-    if ("touches" in e) {
-      const t = e.touches[0]
-      return { x: (t.clientX - rect.left) * sx, y: (t.clientY - rect.top) * sy }
-    }
-    return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy }
-  }
-  const startDraw = (e: React.MouseEvent | React.TouchEvent) => { e.preventDefault(); isDrawingRef.current = true; lastPosRef.current = getPos(e) }
-  const draw = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault(); if (!isDrawingRef.current) return
-    const ctx = canvasRef.current?.getContext("2d"); if (!ctx) return
-    const pos = getPos(e)
-    ctx.beginPath(); ctx.moveTo(lastPosRef.current.x, lastPosRef.current.y)
-    ctx.lineTo(pos.x, pos.y); ctx.strokeStyle = "#f0e6ff"; ctx.lineWidth = 4
-    ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.stroke()
-    lastPosRef.current = pos
-  }
-  const endDraw = () => { isDrawingRef.current = false }
-
-  // AI enhance state
-  const [isEnhancing, setIsEnhancing] = useState(false)
-  const [enhanceRemaining, setEnhanceRemaining] = useState(3)
-
-  // Enhance drawing with AI
-  const handleEnhance = async () => {
-    if (!canvasRef.current || isEnhancing) return
-    setIsEnhancing(true)
-    setError(null)
-    try {
-      const imageBase64 = canvasRef.current.toDataURL("image/png").split(",")[1]
-      const res = await fetch("/api/toothfairy/enhance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageBase64 }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || "Enhancement failed")
-
-      setEnhanceRemaining(data.remaining ?? 0)
-
-      // Draw the enhanced image back onto the canvas
-      const img = new Image()
-      img.crossOrigin = "anonymous"
-      img.onload = () => {
-        const ctx = canvasRef.current?.getContext("2d")
-        if (!ctx || !canvasRef.current) return
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-        const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
-        const w = img.width * scale, h = img.height * scale
-        ctx.drawImage(img, (canvasRef.current.width - w) / 2, (canvasRef.current.height - h) / 2, w, h)
-        setIsEnhancing(false)
-      }
-      img.onerror = () => { setError("Failed to load enhanced image"); setIsEnhancing(false) }
-      img.src = data.imageUrl
-    } catch (err: any) {
-      setError(err.message)
-      setIsEnhancing(false)
-    }
-  }
-
   // Save canvas preview and advance to preview step
   const goToPreview = () => {
-    if (canvasRef.current) {
-      setPreviewImage(canvasRef.current.toDataURL("image/png"))
-    }
+    const dataUrl = drawingCanvasRef.current?.toDataURL()
+    if (dataUrl) setPreviewImage(dataUrl)
     setStep("preview")
   }
 
   // Auto-advance from preview to deposit when wallet connects (only if already minted)
+  // In child mode, skip deposit entirely
   useEffect(() => {
     if (step === "preview" && publicKey && mintSignature) {
-      setStep("deposit")
+      setStep(isChild ? "done" : "deposit")
     }
-  }, [publicKey, step, mintSignature])
+  }, [publicKey, step, mintSignature, isChild])
 
   // ── Server-Side Mint (NO wallet required) ──
   // The mint API uses the server keypair as temporary guardian.
@@ -331,6 +242,7 @@ export default function ToothFairyApp() {
           toothNumber: 1,
           imageBase64,
           imageMimeType: "image/png",
+          note: note || undefined,
           birthday: childDob || undefined,
           smilePhotoBase64: childPhoto ? childPhoto.split(",")[1] : undefined,
         }),
@@ -358,9 +270,9 @@ export default function ToothFairyApp() {
       // Clear flow state
       clearFlowState()
 
-      // Go to deposit step (card payment) instead of redirecting
+      // Go to deposit step (card payment) or skip to done in child mode
       await new Promise(r => setTimeout(r, 500))
-      setStep("deposit")
+      setStep(isChild ? "done" : "deposit")
     } catch (err: any) {
       console.error("Mint error:", err)
       setError(err.message || "Something went wrong. Please try again.")
@@ -531,6 +443,19 @@ export default function ToothFairyApp() {
   })()
 
   // ── Render ──
+
+  // Parent mode: render the dedicated parent flow with synced step
+  if (isParent) {
+    const childStepIndex = CHILD_STEPS.indexOf(step)
+    return (
+      <ParentFlow
+        stepIndex={childStepIndex}
+        onStepChange={(idx) => setStep(CHILD_STEPS[Math.min(idx, CHILD_STEPS.length - 1)])}
+        sharedChildName={childName}
+      />
+    )
+  }
+
   return (
     <div className="w-full max-w-md mx-auto min-h-screen relative" style={{ background: C.bg, color: C.text }}>
 
@@ -540,23 +465,28 @@ export default function ToothFairyApp() {
         <div className="absolute bottom-[20%] -right-10 w-80 h-80 rounded-full blur-[100px]" style={{ background: `${C.teal}08` }} />
       </div>
 
-      {/* ── Fixed Header (TopAppBar) ── */}
-      <header className="sticky top-0 w-full z-50 flex justify-between items-center px-6 h-16"
-        style={{ background: 'linear-gradient(to bottom, #151a31, #0d1228ee)' }}>
-        <div className="flex items-center gap-3">
+      {/* ── View Toggle Bar (full width, above header) ── */}
+      <div className="sticky top-0 w-full z-50 transition-colors duration-300"
+        style={{ background: '#151a31' }}>
+        <div className="flex justify-center py-2">
+          <ViewToggle />
+        </div>
+        {/* ── Header (TopAppBar) ── */}
+        <div className="flex justify-between items-center px-6 pb-2"
+          style={{ borderBottom: `1px solid ${'rgba(78,70,54,0.15)'}` }}>
           <h1 className="text-lg font-bold tracking-tight" style={{ color: C.gold, fontFamily: ds.fonts.headline, textShadow: '0 0 8px rgba(240,196,86,0.4)' }}>
             Tooth Fairy Network
           </h1>
+          <div className="flex items-center gap-2">
+            {publicKey && (
+              <Link href="/dashboard" className="px-3 py-1.5 rounded-xl text-xs hover:bg-white/10 transition-colors" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
+                Wallet
+              </Link>
+            )}
+            <WalletButton />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          {publicKey && (
-            <Link href="/dashboard" className="px-3 py-1.5 rounded-xl text-xs hover:bg-white/10 transition-colors" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
-              Wallet
-            </Link>
-          )}
-          <WalletButton />
-        </div>
-      </header>
+      </div>
 
       {/* ── Content area ── */}
       <div className="pb-24 px-6">
@@ -573,7 +503,7 @@ export default function ToothFairyApp() {
               </span>
             </div>
             <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: C.surfaceHighest }}>
-              <div className="h-full relative transition-all duration-500 ease-out" style={{ width: `${(currentStepNum / 5) * 100}%`, background: C.teal }}>
+              <div className="h-full relative transition-all duration-500 ease-out" style={{ width: `${(currentStepNum / 5) * 100}%`, background: 'linear-gradient(90deg, #f0c456, #5adace)', boxShadow: '0 0 10px rgba(240,196,86,0.3)' }}>
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full"
                   style={{ boxShadow: '0 0 8px #fff' }} />
               </div>
@@ -595,10 +525,10 @@ export default function ToothFairyApp() {
             {/* Hero text */}
             <div className="text-center py-4">
               <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
-                Create your child&apos;s first digital wallet
+                {isChild ? "Make something permanent together" : "Set up your child's profile"}
               </h2>
               <p className="text-xs mt-2" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                Start with a lost tooth. No wallet needed yet.
+                {isChild ? "Turn a lost tooth into something they'll own forever." : "We'll create a permanent digital keepsake from their lost tooth. This takes about 2 minutes."}
               </p>
             </div>
 
@@ -622,19 +552,19 @@ export default function ToothFairyApp() {
             </div>
 
             {/* Glass card with inputs */}
-            <div className="rounded-2xl p-6 space-y-5" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}` }}>
+            <div className="rounded-2xl p-6 space-y-5" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1.5px solid ${C.borderGold}` }}>
               <div>
                 <label className="block text-[10px] uppercase tracking-widest mb-2" style={{ color: C.goldDim, fontFamily: ds.fonts.body }}>Child&apos;s name</label>
                 <input type="text" value={childName} onChange={e => setChildName(e.target.value)} placeholder="e.g. Luna Star"
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: 'rgba(78, 70, 54, 0.3)', color: C.text, fontFamily: ds.fonts.body }} />
+                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none focus:[border-bottom-color:#5adace]"
+                  style={{ borderColor: childName ? C.teal : 'rgba(240,196,86,0.2)', color: C.text, fontFamily: ds.fonts.body }} />
               </div>
 
               <div>
                 <label className="block text-[10px] uppercase tracking-widest mb-2" style={{ color: C.goldDim, fontFamily: ds.fonts.body }}>Date of birth</label>
                 <input type="date" value={childDob} onChange={e => setChildDob(e.target.value)}
                   className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: 'rgba(78, 70, 54, 0.3)', color: C.text, fontFamily: ds.fonts.body }} />
+                  style={{ borderColor: childDob ? C.teal : 'rgba(240,196,86,0.2)', color: C.text, fontFamily: ds.fonts.body }} />
                 {childDob && eighteenthDate && (
                   <p className="mt-2 text-xs" style={{ color: C.teal }}>Turns 18 on {eighteenthDate}</p>
                 )}
@@ -643,9 +573,9 @@ export default function ToothFairyApp() {
 
             {/* Gold CTA */}
             <button onClick={() => setStep("create")} disabled={!childName.trim() || !childDob}
-              className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
-              style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}>
-              Continue the Magic
+              className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
+              style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
+              {isChild ? "Continue the Magic" : "Continue"}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
             </button>
           </div>
@@ -656,10 +586,13 @@ export default function ToothFairyApp() {
           <div className="space-y-5">
             <div className="text-center">
               <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
-                {photo ? "Great photo!" : "Capture the moment"}
+                {photo ? "Great photo!" : (isChild ? "Capture the tooth" : "Take a photo or draw the tooth together")}
               </h2>
               <p className="text-xs mt-2" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                This becomes {childName}&apos;s forever — saved on-chain
+                {isChild
+                  ? `This becomes ${childName}'s special keepsake — saved by the Tooth Fairy!`
+                  : "This artwork will be stored permanently — it can never be deleted or lost."
+                }
               </p>
             </div>
 
@@ -685,54 +618,62 @@ export default function ToothFairyApp() {
             {/* Use photo as-is — gold CTA */}
             {photo && (
               <button onClick={goToPreview}
-                className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}>
+                className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
                 Use this photo
               </button>
             )}
 
-            {/* Drawing canvas */}
-            <div className="rounded-2xl p-3" style={{ background: C.bgAlt, border: `1px dashed ${C.borderGold}` }}>
-              <canvas ref={initCanvas} className="rounded-xl touch-none" style={{ width: "100%", aspectRatio: "1" }}
-                onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
-                onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw} />
-            </div>
+            {/* Drawing canvas (shared component) */}
+            <DrawingCanvas ref={drawingCanvasRef} photo={photo} />
 
             {photo && (
               <p className="text-xs text-center" style={{ color: C.dim, fontFamily: ds.fonts.body }}>Or draw on the photo above, then continue</p>
             )}
 
-            {/* Action bar */}
+            {/* Back button */}
             <div className="flex gap-2">
               <button onClick={() => setStep("setup")}
                 className="px-4 py-2.5 rounded-xl text-xs transition-all"
                 style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
                 Back
               </button>
-              <button onClick={() => initCanvas(canvasRef.current)}
-                className="px-4 py-2.5 rounded-xl text-xs transition-all"
-                style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
-                Clear
-              </button>
-              <button
-                onClick={handleEnhance}
-                disabled={isEnhancing || enhanceRemaining <= 0}
-                className="px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex-1"
+            </div>
+
+            {/* Note to the Tooth Fairy */}
+            <div className="space-y-2">
+              <label className="text-xs font-medium" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
+                {isChild ? "Write a note to the Tooth Fairy" : `Add a message for ${childName}'s time capsule`}
+              </label>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value.slice(0, 500))}
+                placeholder={isChild ? "Tell the Tooth Fairy about your tooth..." : `Write something ${childName} will read when they're older...`}
+                maxLength={500}
+                spellCheck={false}
+                autoCorrect="off"
+                className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none focus:border-[rgba(240,196,86,0.5)]"
                 style={{
-                  background: isEnhancing ? C.tealGlow : C.tealGlow,
-                  border: `1px solid ${C.borderTeal}`,
-                  color: C.teal,
-                  opacity: enhanceRemaining <= 0 ? 0.4 : 1,
+                  background: C.bgAlt,
+                  border: `1px solid ${C.borderGold}`,
+                  color: C.text,
+                  fontFamily: ds.fonts.body,
+                  minHeight: "80px",
                 }}
-              >
-                {isEnhancing ? "Enhancing..." : `AI Enhance (${enhanceRemaining})`}
-              </button>
+                rows={3}
+              />
+              <div className="flex justify-between">
+                <p className="text-[10px]" style={{ color: C.dim }}>
+                  {isParent && "This note is saved permanently. It can never be edited or deleted."}
+                </p>
+                <p className="text-[10px]" style={{ color: C.dim }}>{note.length}/500</p>
+              </div>
             </div>
 
             {/* Continue button */}
             <button onClick={goToPreview}
-              className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-              style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}>
+              className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
+              style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
               {photo ? "Next with drawing" : "Next: Make it permanent"}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
             </button>
@@ -744,9 +685,14 @@ export default function ToothFairyApp() {
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
-                {childName}&apos;s milestone
+                {isChild ? "The Tooth Fairy is keeping this safe!" : `This is ${childName}'s — forever`}
               </h2>
-              <p className="text-xs mt-2" style={{ color: C.muted, fontFamily: ds.fonts.body }}>Your child owns this forever</p>
+              <p className="text-xs mt-2" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
+                {isChild
+                  ? "Your tooth picture is going to a magical place where it can never be lost!"
+                  : "No one can take it, change it, or delete it. It belongs to your child."
+                }
+              </p>
             </div>
 
             {/* NFT Preview card with fairy-frame glass border */}
@@ -756,7 +702,14 @@ export default function ToothFairyApp() {
                   <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
                 </div>
                 <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.goldLight }}>{childName}&apos;s Tooth</p>
-                <p className="text-xs mt-1" style={{ color: C.dim, fontFamily: ds.fonts.body }}>This will be saved permanently on-chain</p>
+                {note && (
+                  <p className="text-xs mt-2 italic leading-relaxed" style={{ color: C.muted, fontFamily: ds.fonts.story }}>
+                    &ldquo;{note}&rdquo;
+                  </p>
+                )}
+                <p className="text-xs mt-2" style={{ color: C.dim, fontFamily: ds.fonts.body }}>
+                  {isChild ? "Saved by the Tooth Fairy forever" : "This will be saved permanently"}
+                </p>
               </div>
             )}
 
@@ -766,9 +719,14 @@ export default function ToothFairyApp() {
                   {!isAuthenticated ? (
                     <>
                       {/* Not signed in — need Google auth before minting */}
-                      <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>Sign in to save {childName}&apos;s milestone</p>
+                      <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
+                        {isChild ? "A grown-up needs to help with this part!" : `Sign in to save ${childName}'s milestone`}
+                      </p>
                       <p className="text-xs" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                        We&apos;ll email you {childName}&apos;s page. No wallet or crypto knowledge needed.
+                        {isChild
+                          ? "Ask a parent to sign in so the Tooth Fairy knows where to send your keepsake."
+                          : `We'll email you ${childName}'s page. No wallet or crypto knowledge needed.`
+                        }
                       </p>
                       <button
                         onClick={handleGoogleSignIn}
@@ -787,16 +745,21 @@ export default function ToothFairyApp() {
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                         Signed in{authEmail ? ` as ${authEmail}` : ""}
                       </div>
-                      <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>Save {childName}&apos;s tooth forever</p>
+                      <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
+                        {isChild ? `Deposit ${childName}'s tooth!` : `Save ${childName}'s tooth forever`}
+                      </p>
                       <p className="text-xs" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                        One click. We handle everything. No wallet or crypto needed.
+                        {isChild
+                          ? "One click and the Tooth Fairy will keep it safe forever!"
+                          : "One click. We handle everything. No wallet or crypto needed."
+                        }
                       </p>
                       <button
                         onClick={handleServerMint}
-                        className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                        style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}
+                        className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                        style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}
                       >
-                        Save {childName}&apos;s Milestone
+                        {isChild ? "Send to the Tooth Fairy!" : `Save ${childName}'s Milestone`}
                       </button>
                       <p className="text-xs" style={{ color: C.dim, fontFamily: ds.fonts.body }}>
                         Free. Permanent. You can add savings later.
@@ -929,8 +892,8 @@ export default function ToothFairyApp() {
                     } finally { setEmailMinting(false) }
                   }}
                   disabled={!recipientEmail}
-                  className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
-                  style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}
+                  className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
+                  style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}
                 >
                   Save Milestone
                 </button>
@@ -1038,7 +1001,7 @@ export default function ToothFairyApp() {
               <label className="block text-[10px] uppercase tracking-widest mb-2" style={{ color: C.goldDim, fontFamily: ds.fonts.body }}>Your Name</label>
               <input type="text" value={depositorName} onChange={e => setDepositorName(e.target.value)} placeholder="Dad, Mom, Grandma..."
                 className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                style={{ borderColor: 'rgba(78, 70, 54, 0.3)', color: C.text, fontFamily: ds.fonts.body }} />
+                style={{ borderColor: depositorName ? C.teal : 'rgba(240,196,86,0.2)', color: C.text, fontFamily: ds.fonts.body }} />
             </div>
 
             {/* Awaiting card payment indicator */}
@@ -1054,8 +1017,8 @@ export default function ToothFairyApp() {
               <button
                 onClick={handleCardPayment}
                 disabled={cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
-                className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-30"
-                style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}>
+                className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-30"
+                style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
                 {cardPaymentLoading ? "Opening payment..." : awaitingCardDeposit ? "Waiting for payment..." : (
                   <>
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" /></svg>
@@ -1090,35 +1053,58 @@ export default function ToothFairyApp() {
 
         {/* ── STEP 5: Minting ── */}
         {step === "minting" && (
-          <div className="text-center py-16 space-y-6">
-            {/* Gold shimmer progress bar */}
-            <div className="h-1 w-full rounded-full overflow-hidden mb-8" style={{ background: C.surfaceHighest }}>
-              <div className="h-full rounded-full animate-pulse" style={{ width: '60%', background: gradients.stardust }} />
+          <div className="text-center py-12 space-y-6">
+            {/* Gold-to-teal shimmer progress bar */}
+            <div className="h-1.5 w-full rounded-full overflow-hidden mb-8" style={{ background: C.surfaceHighest }}>
+              <div className="h-full rounded-full animate-pulse" style={{ width: '75%', background: 'linear-gradient(90deg, #f0c456, #5adace)', boxShadow: '0 0 10px rgba(240,196,86,0.3)' }} />
             </div>
 
-            {/* Fairy glow circle with pulse rings */}
-            <div className="relative mx-auto w-20 h-20">
-              <div className="absolute inset-0 rounded-full animate-ping opacity-10" style={{ background: C.gold }} />
-              <div className="absolute inset-2 rounded-full animate-ping opacity-20" style={{ background: C.gold, animationDelay: '0.5s' }} />
-              <div className="absolute inset-4 rounded-full animate-pulse" style={{ background: gradients.stardust, boxShadow: glow.goldStrong }} />
+            {/* Center stage: pulsing rings + gold core (matches Stitch step 4) */}
+            <div className="relative mx-auto flex items-center justify-center" style={{ width: '200px', height: '200px' }}>
+              {/* Expansion rings — CSS animation via inline keyframes injected via style tag */}
+              <div className="absolute rounded-full border-2" style={{ width: '80px', height: '80px', borderColor: 'rgba(240,196,86,0.25)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite' }} />
+              <div className="absolute rounded-full border" style={{ width: '130px', height: '130px', borderColor: 'rgba(240,196,86,0.12)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite', animationDelay: '1s' }} />
+              <div className="absolute rounded-full border" style={{ width: '180px', height: '180px', borderColor: 'rgba(240,196,86,0.06)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite', animationDelay: '2s' }} />
+              {/* Golden core circle */}
+              <div className="relative z-10 rounded-full flex items-center justify-center" style={{ width: '56px', height: '56px', background: gradients.stardust, boxShadow: '0 0 40px rgba(240,196,86,0.6)' }}>
+                <svg className="w-7 h-7" style={{ color: C.onGold }} fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              </div>
             </div>
 
-            <h2 className="text-lg font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>Creating {childName}&apos;s wallet...</h2>
+            {/* Keyframe injection for pulsing rings */}
+            <style>{`@keyframes tfnPulseRing { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.1; transform: scale(1.15); } }`}</style>
+
+            <h2 className="text-lg font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
+              {isChild ? "The Tooth Fairy is working her magic..." : `Saving ${childName}'s keepsake...`}
+            </h2>
             <p className="text-sm animate-pulse" style={{ color: C.muted, fontFamily: ds.fonts.body }}>{mintProgress || "Preparing..."}</p>
 
-            {/* Checklist items */}
-            <div className="space-y-3 text-left max-w-[260px] mx-auto">
+            {/* Glassmorphic checklist items (matches Stitch step 4 bento style) */}
+            <div className="space-y-3 text-left max-w-[300px] mx-auto">
               {[
-                { label: "Saving artwork", done: mintProgress !== "" },
-                { label: "Creating wallet", done: mintProgress.includes("Almost") },
-                { label: "Finalizing", done: false },
+                { label: isChild ? "Finding a special place for your tooth" : "Storing artwork permanently", done: mintProgress !== "", active: mintProgress === "" },
+                { label: isChild ? "Adding fairy dust" : `Creating ${childName}'s profile`, done: mintProgress.includes("Almost"), active: mintProgress !== "" && !mintProgress.includes("Almost") },
+                { label: isChild ? "Almost done!" : "Finalizing", done: false, active: mintProgress.includes("Almost") },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm" style={{ color: item.done ? C.teal : C.dim, fontFamily: ds.fonts.body }}>
-                  {item.done ? (
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  ) : (
-                    <svg className="w-5 h-5 flex-shrink-0 animate-spin" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
-                  )}
+                <div key={i} className="flex items-center gap-3 p-3 rounded-xl text-sm transition-all"
+                  style={{
+                    background: item.done ? 'transparent' : item.active ? glass.card : C.bgAlt,
+                    backdropFilter: item.active ? `blur(${glass.blur})` : 'none',
+                    border: `1px solid ${item.done ? 'rgba(90,218,206,0.15)' : item.active ? 'rgba(240,196,86,0.15)' : 'transparent'}`,
+                    color: item.done ? C.teal : item.active ? C.goldLight : C.dim,
+                    fontFamily: ds.fonts.body,
+                    opacity: item.done || item.active ? 1 : 0.4,
+                  }}>
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                    style={{ background: item.done ? 'rgba(90,218,206,0.15)' : item.active ? 'rgba(240,196,86,0.12)' : 'rgba(154,144,124,0.15)' }}>
+                    {item.done ? (
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    ) : item.active ? (
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><circle cx="12" cy="12" r="9" /></svg>
+                    )}
+                  </div>
                   <span>{item.label}</span>
                 </div>
               ))}
@@ -1129,13 +1115,27 @@ export default function ToothFairyApp() {
         {/* ── STEP 6: Done — Wallet Created ── */}
         {step === "done" && (
           <div className="space-y-6">
-            {/* Success card */}
+            {/* Success card — large gold glow circle with sparkles (matches Stitch step 5) */}
             <div className="rounded-2xl p-6 text-center" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${C.borderGold}`, boxShadow: glow.gold }}>
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ background: gradients.stardust, boxShadow: glow.goldStrong }}>
-                <svg className="w-6 h-6" style={{ color: C.onGold }} fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+              {/* Glow + checkmark cluster */}
+              <div className="relative inline-block mb-4">
+                {/* Ambient glow behind the circle */}
+                <div className="absolute inset-0 rounded-full blur-2xl opacity-30" style={{ background: C.gold, transform: 'scale(1.4)' }} />
+                {/* Main circle */}
+                <div className="relative w-24 h-24 mx-auto rounded-full flex items-center justify-center border-4 border-white/20"
+                  style={{ background: gradients.stardust, boxShadow: '0 0 50px rgba(240,196,86,0.6)' }}>
+                  <svg className="w-12 h-12" style={{ color: C.onGold }} fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                </div>
+                {/* Sparkle decorations */}
+                <div className="absolute -top-3 -right-3" style={{ color: C.teal, fontSize: '20px' }}>✦</div>
+                <div className="absolute -bottom-2 -left-4" style={{ color: C.goldLight, fontSize: '14px' }}>★</div>
               </div>
-              <h2 className="text-xl font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>{childName}&apos;s Wallet Created</h2>
-              <p className="text-xs mt-1" style={{ color: C.muted, fontFamily: ds.fonts.body }}>Digital wallet live on Solana</p>
+              <h2 className="text-2xl font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>
+                {isChild ? "Your tooth is saved forever!" : `${childName}'s keepsake is live`}
+              </h2>
+              <p className="text-xs mt-1" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
+                {isChild ? "The Tooth Fairy is keeping it safe!" : "Permanently stored on the Solana blockchain"}
+              </p>
             </div>
 
             {previewImage && (
@@ -1171,19 +1171,30 @@ export default function ToothFairyApp() {
 
             <div className="space-y-3">
               <Link href="/dashboard"
-                className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                style={{ background: gradients.stardust, color: C.onGold, boxShadow: glow.ctaFloat, fontFamily: ds.fonts.headline }}>
-                View {childName}&apos;s Wallet
+                className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
+                {isChild ? "See Your Tooth Collection" : `View ${childName}'s Wallet`}
               </Link>
-              <button onClick={mintAnother} className="w-full px-4 py-3 rounded-2xl text-xs font-medium transition-all active:scale-95"
-                style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
+              <button onClick={mintAnother} className="w-full px-4 py-3 text-xs font-medium transition-all active:scale-95"
+                style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1.5px solid ${C.borderGold}`, color: C.muted, borderRadius: '9999px' }}>
                 Record Another Tooth
               </button>
             </div>
 
-            <p className="text-xs text-center" style={{ color: C.dim, fontFamily: ds.fonts.body }}>
-              NFT in Phantom Collectibles &middot; <a href={`https://solscan.io/tx/${mintSignature}`} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: C.teal }}>Solscan</a>
-            </p>
+            {isParent && (
+              <p className="text-xs text-center" style={{ color: C.dim, fontFamily: ds.fonts.body }}>
+                NFT in Phantom Collectibles &middot; <a href={`https://solscan.io/tx/${mintSignature}`} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: C.teal }}>Solscan</a>
+              </p>
+            )}
+
+            {/* Celebration sparkles row */}
+            <div className="flex justify-center gap-6 pt-2 opacity-50">
+              <span style={{ color: C.goldLight, fontSize: '24px' }}>✦</span>
+              <span style={{ color: C.teal, fontSize: '20px' }}>★</span>
+              <span style={{ color: C.goldLight, fontSize: '18px' }}>✦</span>
+              <span style={{ color: C.teal, fontSize: '24px' }}>✧</span>
+              <span style={{ color: C.goldLight, fontSize: '16px' }}>★</span>
+            </div>
           </div>
         )}
 

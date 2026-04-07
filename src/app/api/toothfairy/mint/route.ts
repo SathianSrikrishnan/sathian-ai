@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { childName, birthday, toothType, toothNumber, imageBase64, imageMimeType, smilePhotoBase64 } = body
+    const { childName, birthday, toothType, toothNumber, imageBase64, imageMimeType, smilePhotoBase64, note } = body
 
     // ── Generate unique slug (name + 4-char hex suffix) ──
     const { randomBytes } = await import("crypto")
@@ -201,6 +201,7 @@ export async function POST(request: NextRequest) {
             childName,
             toothType,
             toothNum,
+            note,
           )
           lastUploadError = null
           break

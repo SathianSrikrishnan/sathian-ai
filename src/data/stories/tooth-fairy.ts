@@ -168,42 +168,6 @@ const toothFairy: StoryConfig = {
     },
     {
       id: 'tf-16',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "Now here's the best part. You can show your keepsake to everyone who loves you.",
-      },
-    },
-    {
-      id: 'tf-17',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "Grandparents, aunts, uncles — each of them can add a little bit of love to your treasure.",
-      },
-    },
-    {
-      id: 'tf-18',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "It grows and grows, safe inside the Network, year after year...",
-      },
-    },
-    {
-      id: 'tf-19',
-      background: '/story-assets/shared/shared-finale-teenager.jpg',
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "And one day, when you're all grown up... all that love comes back to you.",
-      },
-    },
-    {
-      id: 'tf-20',
       background: '/story-assets/tooth-fairy/tf-05-fairy-facing.jpg',
       character: {
         image: '/story-assets/characters/char-tooth-fairy.jpg',
@@ -213,7 +177,7 @@ const toothFairy: StoryConfig = {
       dialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "Ready to start? Take a photo of your smile, and let's make YOUR keepsake.",
+        text: "Every tooth tells a story. Every story becomes something you own forever. Ready to make yours?",
       },
     },
     {

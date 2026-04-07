@@ -11,6 +11,7 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui"
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom"
 import { Plus_Jakarta_Sans, Manrope, Lora } from "next/font/google"
 
+import { ViewModeProvider, useViewMode } from "@/components/toothfairy/view-mode-context"
 import "@solana/wallet-adapter-react-ui/styles.css"
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -30,6 +31,21 @@ const lora = Lora({
   style: ["normal", "italic"],
 })
 
+function ThemedWrapper({ children, className }: { children: React.ReactNode; className: string }) {
+  const { isParent } = useViewMode()
+  return (
+    <div
+      className={`${className} font-[var(--font-body)] min-h-screen antialiased transition-colors duration-300`}
+      style={{
+        background: isParent ? "#FFFFFF" : "#0d1228",
+        color: isParent ? "#212529" : "#dde1ff",
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
 const RPC_ENDPOINT =
   process.env.NEXT_PUBLIC_SOLANA_RPC || "https://api.mainnet-beta.solana.com"
 
@@ -46,12 +62,11 @@ export default function ToothFairyAppLayout({
     <ConnectionProvider endpoint={RPC_ENDPOINT}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <div
-            className={`${plusJakarta.variable} ${manrope.variable} ${lora.variable} font-[var(--font-body)] min-h-screen antialiased`}
-            style={{ background: "#0d1228", color: "#dde1ff" }}
-          >
-            {children}
-          </div>
+          <ViewModeProvider>
+            <ThemedWrapper className={`${plusJakarta.variable} ${manrope.variable} ${lora.variable}`}>
+              {children}
+            </ThemedWrapper>
+          </ViewModeProvider>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

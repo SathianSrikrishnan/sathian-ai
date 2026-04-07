@@ -21,9 +21,9 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/toothfairy',
-        destination: '/toothfairy/network',
-        permanent: true,
+        source: '/toothfairy/network',
+        destination: '/toothfairy',
+        permanent: false, // 307 — avoid browser caching (old 301 caused issues)
       },
     ]
   },
