@@ -28,6 +28,9 @@ const nextConfig = {
     ]
   },
   // Subdomain routing handled by middleware.ts
+  turbopack: {
+    root: __dirname,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Polyfills for Solana/Anchor in browser

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Nunito, Plus_Jakarta_Sans, Quicksand } from 'next/font/google'
+import { Nunito, Plus_Jakarta_Sans, Quicksand, Playfair_Display, Lora } from 'next/font/google'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -17,6 +17,22 @@ const quicksand = Quicksand({
   subsets: ['latin'],
   variable: '--font-quicksand',
   display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-landing-serif',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+})
+
+const lora = Lora({
+  subsets: ['latin'],
+  variable: '--font-landing-body',
+  display: 'swap',
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
 })
 
 export const viewport: Viewport = {
@@ -47,5 +63,9 @@ export default function ToothFairyLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div className={`${nunito.variable} ${plusJakarta.variable} ${quicksand.variable}`}>{children}</div>
+  return (
+    <div className={`${nunito.variable} ${plusJakarta.variable} ${quicksand.variable} ${playfair.variable} ${lora.variable}`}>
+      {children}
+    </div>
+  )
 }

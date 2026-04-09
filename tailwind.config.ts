@@ -75,6 +75,22 @@ const config: Config = {
           error: "#ffb4ab",
         },
 
+        // Warm Landing Page (text-forward v1)
+        warm: {
+          bg: '#FDF8F0',
+          'bg-alt': '#FAF3E8',
+          surface: '#FFFFFF',
+          gold: '#C8952E',
+          'gold-light': '#E8B94A',
+          'gold-dim': '#A67A1E',
+          'gold-bg': '#FFF8E7',
+          text: '#2D2418',
+          'text-secondary': '#5C4D3C',
+          muted: '#8A7B6B',
+          border: '#E8DDD0',
+          'border-light': '#F0E8DB',
+        },
+
         // Shared tooth fairy colors
         tooth: {
           healthy: '#FFFEF5',
