@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" fill="#F5EFE0"/>
+  <circle cx="200" cy="160" r="45" fill="#D4A843" opacity="0.3"/>
+  <path d="M200 210 C200 210 170 240 170 260 C170 275 183 285 200 285 C217 285 230 275 230 260 C230 240 200 210 200 210Z" fill="#D4A843" opacity="0.25"/>
+  <text x="200" y="340" text-anchor="middle" font-family="serif" font-size="18" fill="#D4A843" opacity="0.6">Coming Soon</text>
+</svg>
