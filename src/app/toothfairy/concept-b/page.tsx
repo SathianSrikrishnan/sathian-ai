@@ -3,7 +3,20 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-/* ─── Fade-in on scroll ──────────────────────────────────────────────────── */
+/* ─── Color tokens (OKLCH, no pure black/white) ────────────────────────── */
+const c = {
+  cream:      'oklch(97.5% 0.01 80)',       // page base
+  creamDeep:  'oklch(95% 0.015 75)',         // section alternate
+  brown:      'oklch(30% 0.035 65)',         // primary text
+  brownSoft:  'oklch(42% 0.03 65)',          // secondary text
+  brownMuted: 'oklch(58% 0.025 65)',         // tertiary/footer
+  gold:       'oklch(72% 0.145 75)',         // CTA, accent
+  goldHover:  'oklch(62% 0.13 72)',          // CTA hover
+  goldLight:  'oklch(82% 0.1 78)',           // subtle accent
+  border:     'oklch(88% 0.015 75)',         // dividers
+};
+
+/* ─── Fade-in on scroll ─────────────────────────────────────────────────── */
 function useFadeIn(delay = 0) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -30,30 +43,41 @@ function useFadeIn(delay = 0) {
 function Fade({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useFadeIn(delay);
   return (
-    <div ref={ref} className={`opacity-0 translate-y-4 transition-all duration-700 ease-out ${className}`}>
+    <div
+      ref={ref}
+      className={`opacity-0 translate-y-4 ${className}`}
+      style={{
+        transition: 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
       {children}
     </div>
   );
 }
 
-/* ─── CTA Button ─────────────────────────────────────────────────────────── */
+/* ─── CTA Button ────────────────────────────────────────────────────────── */
 function CTA({ className = '' }: { className?: string }) {
   return (
     <a
       href="/toothfairy/app"
-      className={`inline-block px-10 py-4 bg-[#C8952E] text-white font-semibold text-lg rounded-full
-        hover:bg-[#A67A1E] transition-all duration-200 shadow-lg shadow-[#C8952E]/20
-        active:scale-[0.98] transform ${className}`}
-      style={{ fontFamily: 'var(--font-landing-sans)' }}
+      className={`inline-block px-10 py-4 text-lg font-semibold rounded-full active:scale-[0.98] ${className}`}
+      style={{
+        fontFamily: 'var(--font-body)',
+        background: c.gold,
+        color: 'oklch(98% 0.005 80)',
+        boxShadow: `0 4px 24px oklch(72% 0.145 75 / 0.2)`,
+        transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = c.goldHover; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = c.gold; }}
     >
       Make your child&apos;s first keepsake
     </a>
   );
 }
 
-/* ─── Page ───────────────────────────────────────────────────────────────── */
-export default function Concept2() {
-  /* Subtle parallax on hero image */
+/* ─── Page ──────────────────────────────────────────────────────────────── */
+export default function ToothFairyLanding() {
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -62,11 +86,13 @@ export default function Concept2() {
   }, []);
 
   return (
-    <main style={{ fontFamily: 'var(--font-landing-sans)' }} className="overflow-x-hidden">
+    <main
+      className="overflow-x-hidden"
+      style={{ fontFamily: 'var(--font-body)', color: c.brown }}
+    >
 
-      {/* ── HERO ───────────────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        {/* Background image */}
         <div className="absolute inset-0">
           <Image
             src="/toothfairy/concept-b/hero-bg.png"
@@ -76,35 +102,40 @@ export default function Concept2() {
             priority
             sizes="100vw"
           />
-          {/* Cream overlay for text readability */}
-          <div className="absolute inset-0 bg-[#FDF8F0]/70" />
-          {/* Left side stronger overlay so text pops */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FDF8F0]/90 via-[#FDF8F0]/60 to-transparent" />
+          <div className="absolute inset-0" style={{ background: `${c.cream}cc` }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to right, ${c.cream}e6, ${c.cream}99, transparent)`,
+            }}
+          />
         </div>
 
         <div className="relative z-10 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto w-full">
           <div className="grid md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center w-full py-16 md:py-0">
 
-            {/* Text */}
             <div className="order-2 md:order-1">
-              <p className="text-sm uppercase tracking-[0.2em] text-[#C8952E] mb-6" style={{ fontFamily: 'var(--font-landing-sans)' }}>
+              <p
+                className="text-sm uppercase tracking-[0.2em] mb-6 font-medium"
+                style={{ color: c.gold, fontFamily: 'var(--font-body)' }}
+              >
                 Tooth Fairy Network
               </p>
               <h1
-                className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.08] tracking-tight text-[#2D2418] mb-3"
-                style={{ fontFamily: 'var(--font-landing-serif)' }}
+                className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.08] tracking-tight mb-3"
+                style={{ fontFamily: 'var(--font-display)', color: c.brown }}
               >
                 Your child just lost a tooth.
               </h1>
               <h2
-                className="italic text-3xl sm:text-4xl lg:text-[2.6rem] leading-[1.12] text-[#C8952E] mb-8"
-                style={{ fontFamily: 'var(--font-landing-serif)' }}
+                className="italic text-3xl sm:text-4xl lg:text-[2.6rem] leading-[1.12] mb-8"
+                style={{ fontFamily: 'var(--font-display)', color: c.gold }}
               >
                 Let&apos;s make it the first thing they ever own.
               </h2>
               <p
-                className="text-lg sm:text-xl leading-relaxed text-[#5C4D3C] mb-10 max-w-lg"
-                style={{ fontFamily: 'var(--font-landing-body)' }}
+                className="text-lg sm:text-xl leading-relaxed mb-10"
+                style={{ color: c.brownSoft, maxWidth: '65ch' }}
               >
                 A photo. A story. A note from grandma. A few dollars from uncle.
                 All of it — theirs. Still there when they&apos;re 18.
@@ -112,11 +143,13 @@ export default function Concept2() {
               <CTA />
             </div>
 
-            {/* Hero photo */}
             <div className="order-1 md:order-2 flex justify-center">
               <div
-                className="relative w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl shadow-[#2D2418]/15"
-                style={{ transform: `translateY(${scrollY * -0.08}px)` }}
+                className="relative w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden"
+                style={{
+                  transform: `translateY(${scrollY * -0.08}px)`,
+                  boxShadow: `0 24px 48px oklch(30% 0.035 65 / 0.12)`,
+                }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -124,61 +157,69 @@ export default function Concept2() {
                   alt="A child smiling with a missing tooth"
                   className="w-full h-full object-cover"
                 />
-                {/* Soft bottom fade */}
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#FDF8F0]/30 to-transparent" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── EMOTIONAL CORE + TRADITIONS ─────────────────────────────────── */}
+      {/* ── EMOTIONAL CORE + TRADITIONS ────────────────────────────────── */}
       <section className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAF3E8] via-[#FDF8F0] to-[#FAF3E8]" />
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(to bottom, ${c.creamDeep}, ${c.cream}, ${c.creamDeep})` }}
+        />
 
-        <div className="relative max-w-3xl mx-auto">
+        <div className="relative max-w-[65ch] mx-auto">
           <Fade>
             <h3
-              className="text-2xl sm:text-3xl lg:text-4xl text-[#2D2418] mb-10"
-              style={{ fontFamily: 'var(--font-landing-serif)' }}
+              className="text-2xl sm:text-3xl lg:text-4xl mb-10"
+              style={{ fontFamily: 'var(--font-display)', color: c.brown }}
             >
               Every family on earth marks this moment.
             </h3>
           </Fade>
 
           <Fade delay={100}>
-            <p className="text-lg leading-[1.8] text-[#5C4D3C] mb-6" style={{ fontFamily: 'var(--font-landing-body)' }}>
+            <p className="text-lg leading-[1.85] mb-6" style={{ color: c.brownSoft }}>
               In Korea, children sing to magpies on rooftops. In Spain, a mouse collects teeth behind a bakery. In Jamaica, they shake tin cans under moonlight. Your family&apos;s version starts here.
             </p>
           </Fade>
 
           <Fade delay={200}>
-            <p className="text-lg leading-[1.8] text-[#5C4D3C] mb-6" style={{ fontFamily: 'var(--font-landing-body)' }}>
+            <p className="text-lg leading-[1.85] mb-6" style={{ color: c.brownSoft }}>
               Your child takes a photo of that gap-toothed smile, names the tooth, tells the story of how it fell out. Then the people who love them show up — grandma writes a note, uncle adds to their savings, dad sends a message. Every person who touches it makes it richer.
             </p>
           </Fade>
 
           <Fade delay={300}>
-            <p className="text-lg leading-[1.8] text-[#5C4D3C]" style={{ fontFamily: 'var(--font-landing-body)' }}>
+            <p className="text-lg leading-[1.85]" style={{ color: c.brownSoft }}>
               It&apos;s not stored on your phone where it gets lost in 10,000 photos. It&apos;s not in a drawer. It lives on a network no company controls, and when your child is ready, everything in it is theirs.
             </p>
           </Fade>
         </div>
 
-        {/* Traditions banner — full width, no crop */}
         <Fade delay={400} className="mt-16 max-w-5xl mx-auto">
-          <div className="relative w-full rounded-2xl overflow-hidden shadow-lg">
+          <div className="relative w-full rounded-2xl overflow-hidden" style={{ boxShadow: `0 16px 40px oklch(30% 0.035 65 / 0.1)` }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/toothfairy/concept-b/traditions-banner.png"
               alt="Tooth fairy traditions from around the world — Korea, Spain, Jamaica, Turkey"
               className="w-full h-auto block"
             />
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#FAF3E8]/80 to-transparent flex items-end justify-center pb-3">
+            <div
+              className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-center pb-3"
+              style={{ background: `linear-gradient(to top, ${c.creamDeep}cc, transparent)` }}
+            >
               <a
                 href="/toothfairy/stories"
-                className="inline-block px-5 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm text-[#C8952E] font-medium hover:bg-white transition-colors shadow-md"
-                style={{ fontFamily: 'var(--font-landing-sans)' }}
+                className="inline-block px-5 py-2 rounded-full text-sm font-medium"
+                style={{
+                  background: `${c.cream}e6`,
+                  color: c.gold,
+                  boxShadow: `0 2px 12px oklch(30% 0.035 65 / 0.08)`,
+                  transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
               >
                 Explore traditions from 50+ cultures &rarr;
               </a>
@@ -187,11 +228,14 @@ export default function Concept2() {
         </Fade>
       </section>
 
-      {/* ── KEEPSAKE + PARENT CONTROL ──────────────────────────────────── */}
+      {/* ── KEEPSAKE + PARENT CONTROL ─────────────────────────────────── */}
       <section className="py-20 md:py-28 px-6 md:px-12 lg:px-20">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
           <Fade>
-            <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-xl">
+            <div
+              className="relative w-full aspect-square rounded-3xl overflow-hidden"
+              style={{ boxShadow: `0 20px 44px oklch(30% 0.035 65 / 0.1)` }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/toothfairy/concept-b/keepsake-mockup.png"
@@ -204,12 +248,12 @@ export default function Concept2() {
           <Fade delay={150}>
             <div>
               <h3
-                className="text-2xl sm:text-3xl text-[#2D2418] mb-6"
-                style={{ fontFamily: 'var(--font-landing-serif)' }}
+                className="text-2xl sm:text-3xl mb-6"
+                style={{ fontFamily: 'var(--font-display)', color: c.brown }}
               >
                 You control it until they&apos;re ready.
               </h3>
-              <p className="text-lg leading-[1.8] text-[#5C4D3C] mb-6" style={{ fontFamily: 'var(--font-landing-body)' }}>
+              <p className="text-lg leading-[1.85] mb-6" style={{ color: c.brownSoft, maxWidth: '55ch' }}>
                 You choose what&apos;s locked, what&apos;s accessible, and when to hand it over. Your child&apos;s whole tribe — celebrating every milestone, securely, at their fingertips.
               </p>
               <div className="space-y-4 mb-8">
@@ -219,10 +263,11 @@ export default function Concept2() {
                   'Works on any phone, anywhere in the world',
                 ].map((line) => (
                   <div key={line} className="flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C8952E] flex-shrink-0" />
-                    <span className="text-[#5C4D3C]" style={{ fontFamily: 'var(--font-landing-body)' }}>
-                      {line}
-                    </span>
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: c.gold }}
+                    />
+                    <span style={{ color: c.brownSoft }}>{line}</span>
                   </div>
                 ))}
               </div>
@@ -232,11 +277,14 @@ export default function Concept2() {
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────────────────────────────────── */}
-      <footer className="border-t border-[#E8DDD0] py-10 px-6 text-center bg-[#FAF3E8]">
+      {/* ── FOOTER ────────────────────────────────────────────────────── */}
+      <footer
+        className="py-10 px-6 text-center"
+        style={{ borderTop: `1px solid ${c.border}`, background: c.creamDeep }}
+      >
         <p
-          className="text-[#8A7B6B] text-sm leading-relaxed max-w-md mx-auto"
-          style={{ fontFamily: 'var(--font-landing-body)' }}
+          className="text-sm leading-relaxed max-w-md mx-auto"
+          style={{ color: c.brownMuted }}
         >
           Your child&apos;s keepsake will be theirs forever. You hold the keys.
         </p>
