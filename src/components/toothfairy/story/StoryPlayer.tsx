@@ -1,89 +1,172 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { StoryConfig } from '@/data/stories/types'
+import { StoryConfig, StoryScene, StoryEffects } from '@/data/stories/types'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-// Firefly particles — static glowing dots scattered across the screen
-function Fireflies() {
+/* ─── Color tokens (OKLCH — child wonder palette) ───────────────────────── */
+const c = {
+  night:      'oklch(12% 0.04 270)',
+  nightDeep:  'oklch(8% 0.03 270)',
+  text:       'oklch(93% 0.01 80)',
+  textSoft:   'oklch(85% 0.015 80 / 0.7)',
+  gold:       'oklch(78% 0.14 80)',
+  goldGlow:   'oklch(78% 0.14 80 / 0.3)',
+  bar:        'oklch(93% 0.01 80 / 0.15)',
+  pill:       'oklch(93% 0.01 80 / 0.08)',
+  pillBorder: 'oklch(93% 0.01 80 / 0.1)',
+}
+
+/* ─── Easing ────────────────────────────────────────────────────────────── */
+const ease = {
+  out: [0.16, 1, 0.3, 1] as [number, number, number, number],
+  outBack: [0.34, 1.56, 0.64, 1] as [number, number, number, number],
+  spring: { type: 'spring' as const, stiffness: 300, damping: 24, mass: 0.8 },
+  springBouncy: { type: 'spring' as const, stiffness: 400, damping: 18, mass: 0.6 },
+  springGentle: { type: 'spring' as const, stiffness: 120, damping: 20, mass: 1 },
+}
+
+/* ─── Ambient Effects ───────────────────────────────────────────────────── */
+
+function Particles({ config }: { config: NonNullable<StoryEffects['particles']> }) {
+  const particles = useMemo(() =>
+    Array.from({ length: config.count }).map((_, i) => ({
+      size: config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin),
+      x: Math.random() * 100,
+      dur: config.durationMin + Math.random() * (config.durationMax - config.durationMin),
+      delay: Math.random() * 10,
+      drift: (Math.random() - 0.5) * config.drift * 2,
+      opacity: 0.3 + Math.random() * 0.4,
+    })), [config])
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
-      {Array.from({ length: 30 }).map((_, i) => {
-        const size = 2 + Math.random() * 2
-        const left = Math.random() * 100
-        const top = Math.random() * 100
-        const isGold = Math.random() > 0.4
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[5]">
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: p.size, height: p.size,
+            left: `${p.x}%`, top: -10,
+            background: config.glow
+              ? `radial-gradient(circle, ${config.color} 0%, transparent 70%)`
+              : config.color,
+            opacity: p.opacity,
+          }}
+          animate={{
+            y: [0, typeof window !== 'undefined' ? window.innerHeight + 20 : 900],
+            x: [0, p.drift],
+            rotate: [0, 360],
+          }}
+          transition={{
+            duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'linear',
+            x: { duration: p.dur * 0.7, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' },
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function Aurora({ config }: { config: NonNullable<StoryEffects['aurora']> }) {
+  const bands = config.bands || 3
+  return (
+    <div className="absolute top-0 left-0 right-0 h-[40%] overflow-hidden pointer-events-none z-[3]">
+      {Array.from({ length: bands }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-[200%] h-[120px]"
+          style={{
+            top: `${10 + i * 15}%`,
+            left: '-50%',
+            background: `linear-gradient(90deg, transparent 0%, ${config.colors[0]} 20%, ${config.colors[1] || config.colors[0]} 40%, ${config.colors[2] || config.colors[0]} 60%, ${config.colors[0]} 80%, transparent 100%)`,
+            filter: 'blur(30px)',
+          }}
+          animate={{
+            x: ['-10%', '10%', '-10%'],
+            opacity: [0.4, 0.7, 0.4],
+            scaleY: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: 8 + i * 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: i * 1.5,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function Sparkles({ active, color }: { active: boolean; color: string }) {
+  if (!active) return null
+  return (
+    <div className="absolute inset-0 pointer-events-none z-[6]">
+      {Array.from({ length: 12 }).map((_, i) => {
+        const angle = (i / 12) * Math.PI * 2
+        const dist = 60 + Math.random() * 80
         return (
           <motion.div
             key={i}
-            className="absolute rounded-full"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              left: `${left}%`,
-              top: `${top}%`,
-              backgroundColor: isGold ? '#F0C456' : '#4FD1C5',
-              boxShadow: isGold
-                ? '0 0 6px 2px rgba(240, 196, 86, 0.4)'
-                : '0 0 6px 2px rgba(79, 209, 197, 0.3)',
-            }}
+            className="absolute"
+            style={{ left: '50%', top: '50%', width: 6, height: 6 }}
+            initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
             animate={{
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.3, 1],
+              opacity: [0, 1, 0],
+              scale: [0, 1.2, 0],
+              x: Math.cos(angle) * dist,
+              y: Math.sin(angle) * dist,
             }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: 'easeInOut',
-            }}
-          />
+            transition={{ duration: 0.8, delay: i * 0.04, ease: ease.out }}
+          >
+            <svg width="8" height="8" viewBox="0 0 16 16" fill={color}>
+              <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" />
+            </svg>
+          </motion.div>
         )
       })}
     </div>
   )
 }
 
-// Sparkle divider — decorative separator after story text
-function SparkleDivider() {
+/* ─── Page Dots ─────────────────────────────────────────────────────────── */
+function PageDots({ total, current, color }: { total: number; current: number; color: string }) {
   return (
-    <div className="flex items-center justify-center gap-2 mt-4 opacity-40">
-      <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#F0C456]" />
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="#F0C456" opacity="0.6" />
-      </svg>
-      <div className="h-px w-8 bg-gradient-to-l from-transparent to-[#F0C456]" />
-    </div>
-  )
-}
-
-// Instagram-style story progress bars
-function ProgressBars({ total, current }: { total: number; current: number }) {
-  return (
-    <div className="flex gap-1 w-full px-3">
+    <div className="flex gap-2 items-center justify-center">
       {Array.from({ length: total }).map((_, i) => (
-        <div
+        <motion.div
           key={i}
-          className="flex-1 h-[2px] rounded-full overflow-hidden"
-          style={{ background: 'rgba(255,255,255,0.15)' }}
-        >
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: 'linear-gradient(90deg, #F0C456, #D4A843)' }}
-            initial={false}
-            animate={{
-              width: i < current ? '100%' : i === current ? '50%' : '0%',
-            }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          />
-        </div>
+          className="rounded-full"
+          style={{ background: i === current ? color : c.bar }}
+          animate={{
+            width: i === current ? 24 : 6,
+            height: 6,
+            opacity: i === current ? 1 : 0.4,
+          }}
+          transition={ease.spring}
+        />
       ))}
     </div>
   )
 }
 
-// Typewriter text effect
+/* ─── Sparkle Divider ───────────────────────────────────────────────────── */
+function SparkleDivider({ color }: { color: string }) {
+  return (
+    <div className="flex items-center justify-center gap-2 mt-4 opacity-40">
+      <div className="h-px w-8" style={{ background: `linear-gradient(to right, transparent, ${color})` }} />
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill={color} opacity="0.6" />
+      </svg>
+      <div className="h-px w-8" style={{ background: `linear-gradient(to left, transparent, ${color})` }} />
+    </div>
+  )
+}
+
+/* ─── Typewriter ────────────────────────────────────────────────────────── */
 function TypewriterText({ text, onComplete }: { text: string; onComplete: () => void }) {
   const [displayText, setDisplayText] = useState('')
   const [isComplete, setIsComplete] = useState(false)
@@ -93,7 +176,6 @@ function TypewriterText({ text, onComplete }: { text: string; onComplete: () => 
     setDisplayText('')
     setIsComplete(false)
     let index = 0
-
     intervalRef.current = setInterval(() => {
       if (index < text.length) {
         setDisplayText(text.slice(0, index + 1))
@@ -104,10 +186,7 @@ function TypewriterText({ text, onComplete }: { text: string; onComplete: () => 
         onComplete()
       }
     }, 28)
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
   }, [text])
 
   const skipToEnd = useCallback(() => {
@@ -123,216 +202,618 @@ function TypewriterText({ text, onComplete }: { text: string; onComplete: () => 
     <span onClick={skipToEnd} className="cursor-pointer">
       {displayText}
       {!isComplete && (
-        <motion.span
-          animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.5, repeat: Infinity }}
-          className="inline-block ml-0.5"
-        >
-          |
-        </motion.span>
+        <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }} className="inline-block ml-0.5">|</motion.span>
       )}
     </span>
   )
 }
 
-interface StoryPlayerProps {
-  story: StoryConfig
-  nextStory?: { id: string; title: string; region: string } | null
+/* ─── Scene Layout Renderers ────────────────────────────────────────────── */
+
+function CoverLayout({ scene, accentColor }: { scene: StoryScene; accentColor: string }) {
+  return (
+    <div className="relative z-20 flex flex-col items-center justify-center h-full px-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ ...ease.springGentle, delay: 0.2 }}
+      >
+        <h1
+          className="text-4xl sm:text-5xl font-bold leading-[1.15] whitespace-pre-line"
+          style={{
+            color: accentColor,
+            fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+            textShadow: `0 0 60px ${accentColor}66`,
+          }}
+        >
+          {scene.dialogue.text}
+        </h1>
+        {scene.dialogue.subtext && (
+          <motion.p
+            className="mt-6 text-base tracking-wide"
+            style={{ color: c.textSoft, fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif" }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6, ease: ease.out }}
+          >
+            {scene.dialogue.subtext}
+          </motion.p>
+        )}
+        <motion.div
+          className="mt-10 flex items-center gap-2 justify-center"
+          style={{ color: `${accentColor}80` }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+        >
+          <span className="text-xs tracking-widest uppercase">Tap to begin</span>
+          <motion.span animate={{ x: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>&rarr;</motion.span>
+        </motion.div>
+      </motion.div>
+    </div>
+  )
 }
 
-export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
-  const [sceneIndex, setSceneIndex] = useState(0)
-  const [typewriterDone, setTypewriterDone] = useState(false)
-  const [prevBackground, setPrevBackground] = useState('')
-
-  const hasScenes = !!(story?.scenes && story.scenes.length > 0)
-  const scene = hasScenes ? story.scenes[sceneIndex] : null
-  const prevScene = hasScenes && sceneIndex > 0 ? story.scenes[sceneIndex - 1] : null
-  const isNewBackground = !prevScene || (scene && prevScene?.background !== scene.background)
-
-  const advance = useCallback(() => {
-    if (!typewriterDone || !scene) return
-    if (scene.isChoice) return // CTA scene — don't advance on tap
-
-    if (sceneIndex < story.scenes.length - 1) {
-      setPrevBackground(scene.background)
-      setSceneIndex(sceneIndex + 1)
-      setTypewriterDone(false)
-    }
-  }, [sceneIndex, story?.scenes?.length, typewriterDone, scene])
-
-  const goBack = useCallback(() => {
-    if (sceneIndex > 0) {
-      setSceneIndex(sceneIndex - 1)
-      setTypewriterDone(false)
-    }
-  }, [sceneIndex])
-
-  // Keyboard support
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault()
-        advance()
-      }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault()
-        goBack()
-      }
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [advance, goBack])
-
-  if (!hasScenes || !scene) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0d1228] text-white">
-        <p className="text-lg opacity-60">This story is coming soon.</p>
-      </div>
-    )
-  }
+function CharacterLayout({ scene, accentColor }: { scene: StoryScene; accentColor: string }) {
+  const isLeft = scene.character?.position === 'left'
+  const speakerColor = scene.dialogue.speakerColor || accentColor
 
   return (
-    <div
-      className="relative w-full h-[100dvh] max-w-[480px] mx-auto overflow-hidden select-none"
-      style={{
-        background: '#0d1228',
-        boxShadow: 'inset 0 0 150px rgba(0,0,0,0.6)',
-      }}
-    >
-      {/* Full-bleed background image with Ken Burns zoom + crossfade */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={scene.background}
-          className="absolute inset-0 z-[2]"
-          initial={isNewBackground ? { opacity: 0, scale: 1.03 } : false}
-          animate={{ opacity: 1, scale: 1.0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-        >
-          <motion.img
-            src={scene.background}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: 'center 30%' }}
-            animate={{ scale: [1.0, 1.04] }}
-            transition={{ duration: 12, ease: 'linear', repeat: Infinity, repeatType: 'reverse' }}
-          />
-          {/* Bottom gradient overlay for text readability */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to top, rgba(13, 18, 40, 0.95) 0%, rgba(13, 18, 40, 0.6) 50%, rgba(13, 18, 40, 0) 100%)',
-            }}
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Firefly particles */}
-      <Fireflies />
-
-      {/* Corner vignette overlay */}
-      <div
-        className="absolute inset-0 z-[11] pointer-events-none"
-        style={{ boxShadow: 'inset 0 0 150px rgba(0,0,0,0.6)' }}
-      />
-
-      {/* Top HUD: Progress bars + page counter + close button */}
-      <div className="absolute top-0 left-0 right-0 z-40 pt-[env(safe-area-inset-top,12px)] px-2">
-        {/* Progress bars */}
-        <div className="pt-3 pb-2">
-          <ProgressBars total={story.scenes.length} current={sceneIndex} />
-        </div>
-
-        {/* Page counter (glass pill) + Close button */}
-        <div className="flex items-center justify-between px-2 pb-1">
-          <div
-            className="text-xs px-3 py-1 rounded-full"
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(221, 225, 255, 0.7)',
-              fontFamily: 'var(--font-body), Manrope, sans-serif',
-            }}
-          >
-            Page {sceneIndex + 1} of {story.scenes.length}
-          </div>
-
-          <Link
-            href="/app"
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center justify-center w-9 h-9 rounded-full no-underline"
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(221, 225, 255, 0.7)',
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <line x1="1" y1="1" x2="13" y2="13" />
-              <line x1="13" y1="1" x2="1" y2="13" />
-            </svg>
-          </Link>
-        </div>
-      </div>
-
-      {/* Character sprite with float animation */}
-      <AnimatePresence mode="wait">
-        {scene.character && (
+    <div className="relative z-20 flex flex-col h-full">
+      {scene.character && (
+        <div className={`flex-1 flex items-center ${isLeft ? 'justify-start pl-4' : 'justify-end pr-4'} pt-16`}>
           <motion.div
-            key={`char-${scene.id}`}
-            className="absolute z-20"
-            style={{
-              left: scene.character.position === 'left' ? '5%' :
-                    scene.character.position === 'right' ? '55%' : '15%',
-              top: '10%',
-              width: scene.character.position === 'center' ? '70%' : '40%',
-              maxHeight: '45%',
-            }}
-            initial={{
-              x: scene.character.enter === 'left' ? '-100%' :
-                 scene.character.enter === 'right' ? '100%' : 0,
-              y: scene.character.enter === 'top' ? '-100%' :
-                 scene.character.enter === 'bottom' ? '100%' : 0,
-              opacity: 0,
-              scale: 0.9,
-            }}
-            animate={{
-              x: 0,
-              y: 0,
-              opacity: 1,
-              scale: 1,
-            }}
-            exit={{
-              x: scene.character.exit === 'left' ? '-100%' :
-                 scene.character.exit === 'right' ? '100%' : 0,
-              y: scene.character.exit === 'top' ? '-80%' :
-                 scene.character.exit === 'bottom' ? '80%' : 0,
-              opacity: 0,
-              scale: 0.9,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 200,
-              damping: 25,
-              mass: 1,
-            }}
+            className="relative"
+            style={{ width: '55%', maxWidth: 240 }}
+            initial={{ opacity: 0, x: isLeft ? -80 : 80, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={ease.springBouncy}
           >
-            {/* Float animation wrapper */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, ease: 'easeInOut', repeat: Infinity }}
             >
               <img
                 src={scene.character.image}
-                alt=""
-                className="w-full h-auto rounded-2xl"
+                alt={scene.dialogue.speaker || ''}
+                className="w-full h-auto rounded-3xl"
                 style={{
-                  filter: 'drop-shadow(0 0 20px rgba(79, 209, 197, 0.4))',
+                  boxShadow: `0 8px 40px ${speakerColor}50`,
+                  border: `2px solid ${speakerColor}40`,
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+      )}
+      <div className="px-6 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5, ease: ease.out }}
+        >
+          {scene.dialogue.speaker && (
+            <p className="text-sm font-bold uppercase tracking-widest mb-2" style={{ color: speakerColor }}>
+              {scene.dialogue.speaker}
+            </p>
+          )}
+          <p
+            className="text-2xl sm:text-3xl font-bold leading-snug"
+            style={{
+              color: c.text,
+              fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+              textShadow: '0 2px 20px rgba(0,0,0,0.4)',
+            }}
+          >
+            {scene.dialogue.text}
+          </p>
+          {scene.dialogue.subtext && (
+            <motion.p
+              className="mt-3 text-sm leading-relaxed"
+              style={{ color: c.textSoft }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              {scene.dialogue.subtext}
+            </motion.p>
+          )}
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+function DramaticLayout({ scene, accentColor }: { scene: StoryScene; accentColor: string }) {
+  const speakerColor = scene.dialogue.speakerColor || accentColor
+  const secondColor = scene.secondDialogue?.speakerColor || accentColor
+
+  return (
+    <div className="relative z-20 flex flex-col justify-center h-full px-6">
+      <motion.p
+        className="text-2xl sm:text-3xl leading-relaxed text-center"
+        style={{
+          color: c.text,
+          fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+          fontStyle: 'italic',
+          textShadow: '0 2px 30px rgba(0,0,0,0.6)',
+        }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: ease.out }}
+      >
+        {scene.dialogue.text}
+      </motion.p>
+
+      {(scene.secondDialogue || scene.thirdDialogue) && (
+        <div className="mt-8 flex flex-col gap-4">
+          {scene.secondDialogue && (
+            <motion.div
+              className="self-start rounded-2xl px-4 py-3 max-w-[75%]"
+              style={{ background: `${speakerColor}30`, border: `1px solid ${speakerColor}40` }}
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6, ...ease.spring }}
+            >
+              {scene.secondDialogue.speaker && (
+                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: speakerColor }}>
+                  {scene.secondDialogue.speaker}
+                </p>
+              )}
+              <p className="text-base" style={{ color: c.text }}>{scene.secondDialogue.text}</p>
+            </motion.div>
+          )}
+          {scene.thirdDialogue && (
+            <motion.div
+              className="self-end rounded-2xl px-4 py-3 max-w-[75%]"
+              style={{ background: `${secondColor}15`, border: `1px solid ${secondColor}30` }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.0, ...ease.spring }}
+            >
+              {scene.thirdDialogue.speaker && (
+                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: secondColor }}>
+                  {scene.thirdDialogue.speaker}
+                </p>
+              )}
+              <p className="text-base" style={{ color: c.text }}>{scene.thirdDialogue.text}</p>
+            </motion.div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function VictoryLayout({ scene, accentColor }: { scene: StoryScene; accentColor: string }) {
+  return (
+    <div className="relative z-20 flex flex-col justify-center h-full px-6">
+      <motion.h2
+        className="text-3xl sm:text-4xl font-bold text-center mb-8"
+        style={{
+          color: c.gold,
+          fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+          textShadow: `0 0 40px ${c.goldGlow}`,
+        }}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={ease.springBouncy}
+      >
+        {scene.dialogue.text}
+      </motion.h2>
+
+      <div className="flex flex-col gap-3">
+        {scene.secondDialogue && (
+          <motion.div
+            className="self-end rounded-2xl px-4 py-3 max-w-[80%]"
+            style={{
+              background: `${scene.secondDialogue.speakerColor || accentColor}15`,
+              border: `1px solid ${scene.secondDialogue.speakerColor || accentColor}30`,
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, ease: ease.out }}
+          >
+            {scene.secondDialogue.speaker && (
+              <p className="text-xs font-bold mb-1" style={{ color: scene.secondDialogue.speakerColor || accentColor }}>
+                {scene.secondDialogue.speaker}
+              </p>
+            )}
+            <p className="text-base" style={{ color: c.text }}>{scene.secondDialogue.text}</p>
+          </motion.div>
+        )}
+        {scene.thirdDialogue && (
+          <motion.div
+            className="self-start rounded-2xl px-4 py-3 max-w-[80%]"
+            style={{
+              background: `${scene.thirdDialogue.speakerColor || accentColor}20`,
+              border: `1px solid ${scene.thirdDialogue.speakerColor || accentColor}30`,
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, ease: ease.out }}
+          >
+            {scene.thirdDialogue.speaker && (
+              <p className="text-xs font-bold mb-1" style={{ color: scene.thirdDialogue.speakerColor || accentColor }}>
+                {scene.thirdDialogue.speaker}
+              </p>
+            )}
+            <p className="text-base font-semibold" style={{ color: c.text }}>{scene.thirdDialogue.text}</p>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function NarrativeLayout({ scene, accentColor, typewriterDone, onTypewriterDone }: {
+  scene: StoryScene; accentColor: string; typewriterDone: boolean; onTypewriterDone: () => void
+}) {
+  const speakerColor = scene.dialogue.speakerColor || accentColor
+
+  return (
+    <div className="relative z-20 flex flex-col justify-end h-full px-6 pb-24">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: ease.out, delay: 0.3 }}
+      >
+        {scene.dialogue.speaker && (
+          <motion.p
+            className="text-lg font-bold mb-2"
+            style={{
+              color: speakerColor,
+              fontFamily: "var(--font-display, 'Alegreya'), serif",
+              textShadow: `0 0 20px ${speakerColor}4d`,
+            }}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.2, ease: ease.out }}
+          >
+            {scene.dialogue.speaker}
+          </motion.p>
+        )}
+        <p
+          className="text-xl sm:text-2xl leading-relaxed whitespace-pre-line"
+          style={{
+            color: c.text,
+            fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+            fontStyle: 'italic',
+            textShadow: '0 2px 20px rgba(0,0,0,0.5)',
+            lineHeight: 1.7,
+          }}
+        >
+          <TypewriterText
+            key={scene.id}
+            text={scene.dialogue.text}
+            onComplete={onTypewriterDone}
+          />
+        </p>
+        {scene.dialogue.subtext && typewriterDone && (
+          <motion.p
+            className="mt-3 text-sm leading-relaxed"
+            style={{ color: c.textSoft }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {scene.dialogue.subtext}
+          </motion.p>
+        )}
+        {typewriterDone && <SparkleDivider color={accentColor} />}
+      </motion.div>
+    </div>
+  )
+}
+
+function ProseLayout({ scene, accentColor }: { scene: StoryScene; accentColor: string }) {
+  return (
+    <div className="relative z-20 flex flex-col justify-end h-full px-5 pb-24">
+      <motion.div
+        className="overflow-y-auto"
+        style={{
+          maxHeight: '65%',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 4px, black calc(100% - 4px), transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 4px, black calc(100% - 4px), transparent 100%)',
+        }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: ease.out, delay: 0.15 }}
+      >
+        {scene.dialogue.speaker && (
+          <p className="text-sm font-bold uppercase tracking-widest mb-3"
+             style={{ color: scene.dialogue.speakerColor || accentColor }}>
+            {scene.dialogue.speaker}
+          </p>
+        )}
+        <p
+          className="text-[15px] sm:text-base leading-[1.85] whitespace-pre-line"
+          style={{
+            color: c.text,
+            fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+            textShadow: '0 1px 10px rgba(0,0,0,0.7)',
+          }}
+        >
+          {scene.dialogue.text}
+        </p>
+      </motion.div>
+    </div>
+  )
+}
+
+function CtaLayout({ scene, accentColor, nextStory, story }: {
+  scene: StoryScene; accentColor: string;
+  nextStory?: { id: string; title: string; region: string } | null;
+  story?: StoryConfig;
+}) {
+  const router = useRouter()
+
+  // Detect if this CTA is the "Draw a tooth for this story" entry point.
+  // We write story context to localStorage before navigating so the app flow
+  // can surface a banner even if the route query params are lost
+  // (Phantom mobile strips query strings on deep-link redirects).
+  const href = scene.choiceHref || '/toothfairy/app'
+  const isDrawCta = story && href.startsWith('/toothfairy/app/draw')
+
+  const handleDrawCtaClick = useCallback((e: React.MouseEvent) => {
+    if (!isDrawCta || !story) return
+    e.preventDefault()
+    try {
+      localStorage.setItem(
+        'tfn-story-context',
+        JSON.stringify({
+          traditionSlug: story.id,
+          storyId: story.id,
+          storyTitle: story.title,
+        })
+      )
+    } catch {
+      // localStorage unavailable (private browsing) — navigate anyway; banner just won't render
+    }
+    router.push(href)
+  }, [isDrawCta, story, href, router])
+
+  return (
+    <div className="relative z-20 flex flex-col items-center justify-center h-full px-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: ease.out }}
+      >
+        <motion.div
+          className="mb-6"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <svg width="56" height="56" viewBox="0 0 16 16" fill={c.gold}>
+            <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" />
+          </svg>
+        </motion.div>
+
+        {scene.dialogue.text && (
+          <p
+            className="text-xl sm:text-2xl leading-relaxed mb-8"
+            style={{
+              color: c.text,
+              fontFamily: "var(--font-display, 'Alegreya'), Georgia, serif",
+              fontStyle: 'italic',
+            }}
+          >
+            {scene.dialogue.text}
+          </p>
+        )}
+
+        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+          <Link
+            href={href}
+            onClick={isDrawCta ? handleDrawCtaClick : undefined}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg no-underline"
+            style={{
+              background: c.gold,
+              color: c.nightDeep,
+              boxShadow: `0 4px 30px ${c.goldGlow}, 0 0 60px oklch(78% 0.14 80 / 0.15)`,
+              fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill={c.nightDeep}>
+              <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" />
+            </svg>
+            {scene.choiceText || 'Create Your Keepsake'}
+          </Link>
+        </motion.div>
+
+        <motion.div
+          className="mt-8 flex items-center gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Link href="/toothfairy/story" className="text-xs no-underline" style={{ color: c.textSoft }}>
+            &larr; All stories
+          </Link>
+          {nextStory && (
+            <Link href={`/toothfairy/story/${nextStory.id}`} className="text-xs no-underline" style={{ color: accentColor }}>
+              Next: {nextStory.title} &rarr;
+            </Link>
+          )}
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
+/* ─── Main StoryPlayer ──────────────────────────────────────────────────── */
+interface StoryPlayerProps {
+  story: StoryConfig
+  nextStory?: { id: string; title: string; region: string } | null
+}
+
+export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
+  const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const [typewriterDone, setTypewriterDone] = useState(false)
+
+  const scene = story.scenes[current]
+  const accentColor = story.colors?.accent || story.color
+  const effects = story.effects
+
+  // Determine if current scene uses typewriter (narrative without special layout)
+  const layout = scene?.layout || 'narrative'
+  const needsTypewriter = layout === 'narrative'
+  const isProse = layout === 'prose'
+
+  const goNext = useCallback(() => {
+    if (needsTypewriter && !typewriterDone) return
+    if (layout === 'cta') return
+    if (current < story.scenes.length - 1) {
+      setDirection(1)
+      setCurrent(c => c + 1)
+      setTypewriterDone(false)
+    }
+  }, [current, story.scenes.length, typewriterDone, needsTypewriter, layout])
+
+  const goPrev = useCallback(() => {
+    if (current > 0) {
+      setDirection(-1)
+      setCurrent(c => c - 1)
+      setTypewriterDone(false)
+    }
+  }, [current])
+
+  useEffect(() => {
+    // Non-typewriter layouts auto-complete
+    if (!needsTypewriter || isProse) setTypewriterDone(true)
+  }, [current, needsTypewriter, isProse])
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); goNext() }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev() }
+    }
+    window.addEventListener('keydown', handle)
+    return () => window.removeEventListener('keydown', handle)
+  }, [goNext, goPrev])
+
+  if (!scene) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: c.night, color: c.text }}>
+        <p className="text-lg" style={{ opacity: 0.6 }}>This story is coming soon.</p>
+      </div>
+    )
+  }
+
+  const slideVariants = {
+    enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0, scale: 0.92 }),
+    center: { x: 0, opacity: 1, scale: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? '-30%' : '30%', opacity: 0, scale: 0.95 }),
+  }
+
+  // Should sparkles show?
+  const showSparkles = effects?.sparkleOn?.includes(layout) || false
+
+  function renderScene() {
+    switch (layout) {
+      case 'cover':
+        return <CoverLayout scene={scene} accentColor={accentColor} />
+      case 'character':
+        return <CharacterLayout scene={scene} accentColor={accentColor} />
+      case 'dramatic':
+        return <DramaticLayout scene={scene} accentColor={accentColor} />
+      case 'victory':
+        return <VictoryLayout scene={scene} accentColor={accentColor} />
+      case 'prose':
+        return <ProseLayout scene={scene} accentColor={accentColor} />
+      case 'cta':
+        return <CtaLayout scene={scene} accentColor={accentColor} nextStory={nextStory} story={story} />
+      default:
+        return (
+          <NarrativeLayout
+            scene={scene}
+            accentColor={accentColor}
+            typewriterDone={typewriterDone}
+            onTypewriterDone={() => setTypewriterDone(true)}
+          />
+        )
+    }
+  }
+
+  return (
+    <div
+      className="relative w-full h-[100dvh] max-w-[480px] mx-auto overflow-hidden select-none"
+      style={{ background: c.nightDeep }}
+    >
+      {/* Ambient effects */}
+      {effects?.aurora && <Aurora config={effects.aurora} />}
+      {effects?.particles && <Particles config={effects.particles} />}
+      <Sparkles active={showSparkles} color={accentColor} />
+
+      {/* Background image with crossfade */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={scene.background}
+          className="absolute inset-0 z-[1]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: ease.out }}
+        >
+          <img
+            src={scene.background}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: 'center 30%' }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isProse
+                ? `linear-gradient(to top, ${c.nightDeep} 0%, ${c.nightDeep}ee 35%, ${c.nightDeep}88 55%, ${c.nightDeep}44 75%, ${c.nightDeep}22 100%)`
+                : `linear-gradient(to top, ${c.nightDeep}f5 0%, ${c.nightDeep}cc 30%, ${c.nightDeep}66 60%, ${c.nightDeep}33 100%)`,
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Character sprite — renders on ANY scene that has a character, except 'character' layout (which renders its own) */}
+      <AnimatePresence mode="wait">
+        {scene.character && layout !== 'character' && layout !== 'cover' && layout !== 'cta' && (
+          <motion.div
+            key={`char-${scene.id}`}
+            className="absolute z-[12]"
+            style={{
+              left: scene.character.position === 'left' ? '5%' :
+                    scene.character.position === 'right' ? '55%' : '15%',
+              top: '8%',
+              width: scene.character.position === 'center' ? '70%' : '42%',
+              maxHeight: '40%',
+            }}
+            initial={{
+              x: scene.character.enter === 'left' ? '-100%' :
+                 scene.character.enter === 'right' ? '100%' : 0,
+              y: scene.character.enter === 'top' ? '-100%' :
+                 scene.character.enter === 'bottom' ? '100%' : 0,
+              opacity: 0, scale: 0.85,
+            }}
+            animate={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+            exit={{
+              x: scene.character.exit === 'left' ? '-100%' :
+                 scene.character.exit === 'right' ? '100%' : 0,
+              y: scene.character.exit === 'top' ? '-80%' :
+                 scene.character.exit === 'bottom' ? '80%' : 0,
+              opacity: 0, scale: 0.85,
+            }}
+            transition={ease.springBouncy}
+          >
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, ease: 'easeInOut', repeat: Infinity }}
+            >
+              <img
+                src={scene.character.image}
+                alt={scene.dialogue.speaker || ''}
+                className="w-full h-auto rounded-3xl"
+                style={{
+                  boxShadow: `0 8px 40px ${(scene.dialogue.speakerColor || accentColor)}50`,
+                  border: `2px solid ${(scene.dialogue.speakerColor || accentColor)}40`,
                 }}
               />
             </motion.div>
@@ -340,143 +821,43 @@ export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
         )}
       </AnimatePresence>
 
-      {/* Tap zones: left 1/3 = back, right 2/3 = forward (invisible) */}
-      {/* Hidden on choice scenes so CTA buttons are clickable */}
-      {!scene.isChoice && (
+      {/* Page content with slide animation */}
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={scene.id}
+          className="absolute inset-0 z-20"
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5, ease: ease.out }}
+        >
+          {renderScene()}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Tap zones */}
+      {layout !== 'cta' && (
         <div className="absolute inset-0 z-[35] flex">
-          <div
-            className="w-1/3 h-full"
-            onClick={(e) => { e.stopPropagation(); goBack() }}
-          />
-          <div
-            className="w-2/3 h-full"
-            onClick={(e) => { e.stopPropagation(); advance() }}
-          />
+          <div className="w-1/3 h-full" onClick={goPrev} />
+          <div className="w-2/3 h-full" onClick={goNext} />
         </div>
       )}
 
-      {/* Bottom content area — story text over gradient */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 p-5 pb-8">
-        {scene.isChoice ? (
-          /* CTA Button */
-          <motion.div
-            className="flex flex-col items-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Link
-              href={scene.choiceHref || '/toothfairy/app'}
-              onClick={(e) => e.stopPropagation()}
-              className="relative z-[40] px-8 py-4 rounded-full font-bold text-lg no-underline"
-              style={{
-                background: `linear-gradient(135deg, ${story.color} 0%, ${story.color}cc 100%)`,
-                color: '#0d1228',
-                boxShadow: `0 0 30px ${story.color}40, 0 4px 20px rgba(0,0,0,0.3)`,
-                fontFamily: "var(--font-headline), 'Plus Jakarta Sans', sans-serif",
-              }}
-            >
-              {scene.choiceText || 'Start Your Keepsake'}
-            </Link>
-            <p
-              className="text-xs"
-              style={{
-                color: 'rgba(221, 225, 255, 0.4)',
-                fontFamily: "var(--font-body), Manrope, sans-serif",
-              }}
-            >
-              Free to create · Permanent · Shareable with family
-            </p>
-
-            {/* Story navigation */}
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <Link
-                href="/story"
-                onClick={(e) => e.stopPropagation()}
-                className="text-xs no-underline hover:underline"
-                style={{ color: 'rgba(221, 225, 255, 0.5)' }}
-              >
-                ← All stories
-              </Link>
-              {nextStory && (
-                <Link
-                  href={`/story/${nextStory.id}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-xs no-underline hover:underline"
-                  style={{ color: '#4FD1C5' }}
-                >
-                  Next: {nextStory.title} →
-                </Link>
-              )}
-            </div>
-          </motion.div>
-        ) : (
-          /* Immersive story text — no card, just text over gradient */
-          <motion.div
-            key={scene.id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: isNewBackground ? 0.4 : 0.1 }}
-          >
-            {/* Tanda mascot floating bottom-left */}
-            <motion.div
-              className="mb-3"
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: 2.5, ease: 'easeInOut', repeat: Infinity }}
-            >
-              <div
-                className="w-[80px] h-[80px] rounded-full overflow-hidden"
-                style={{
-                  boxShadow: '0 0 24px 8px rgba(79, 209, 197, 0.25)',
-                  border: '2px solid rgba(79, 209, 197, 0.2)',
-                }}
-              >
-                <img
-                  src="/toothfairy/tanda.png"
-                  alt="Tanda"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            {/* Speaker name / story title in gold */}
-            {scene.dialogue.speaker && (
-              <motion.p
-                className="text-lg font-bold mb-2"
-                style={{
-                  color: '#F0C456',
-                  fontFamily: "var(--font-headline), 'Plus Jakarta Sans', sans-serif",
-                  textShadow: '0 0 20px rgba(240, 196, 86, 0.3)',
-                }}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {scene.dialogue.speaker}
-              </motion.p>
-            )}
-
-            {/* Story text — Lora serif italic */}
-            <p
-              className="text-2xl leading-relaxed italic"
-              style={{
-                color: 'rgba(245, 240, 255, 0.92)',
-                fontFamily: "var(--font-story), Lora, Georgia, serif",
-                minHeight: '3rem',
-              }}
-            >
-              <TypewriterText
-                key={scene.id}
-                text={scene.dialogue.text}
-                onComplete={() => setTypewriterDone(true)}
-              />
-            </p>
-
-            {/* Sparkle divider */}
-            {typewriterDone && <SparkleDivider />}
-          </motion.div>
-        )}
+      {/* Bottom: page dots + counter */}
+      <div className="absolute bottom-0 left-0 right-0 z-40 pb-6 flex flex-col items-center gap-2">
+        <PageDots total={story.scenes.length} current={current} color={accentColor} />
+        <p className="text-[10px] tracking-wider" style={{ color: `${c.textSoft}` }}>
+          {current + 1} / {story.scenes.length}
+        </p>
       </div>
+
+      {/* Corner vignette */}
+      <div
+        className="absolute inset-0 z-[15] pointer-events-none"
+        style={{ boxShadow: `inset 0 0 120px ${c.nightDeep}` }}
+      />
     </div>
   )
 }
