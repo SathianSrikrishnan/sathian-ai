@@ -143,7 +143,55 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { childName, birthday, toothType, toothNumber, imageBase64, imageMimeType, smilePhotoBase64, note } = body
+    const { childName, birthday, toothType, toothNumber, imageBase64, imageMimeType, smilePhotoBase64, note, toothStory: rawToothStory, traditionSlug: rawTraditionSlug } = body
+
+    // ── Normalize + validate traditionSlug (story this drawing belongs to) ──
+    // Written to tfn_tooth_stories sidecar so keepsake display + later analytics
+    // can surface which cultural story inspired the drawing. Lightweight string,
+    // not embedded in cNFT metadata (that stays fixed for provenance only).
+    let traditionSlug: string | null = null
+    if (typeof rawTraditionSlug === "string") {
+      const trimmed = rawTraditionSlug.trim()
+      if (trimmed.length > 64) {
+        return NextResponse.json(
+          { error: "Tradition slug must be 64 characters or fewer" },
+          { status: 400 }
+        )
+      }
+      // Allow only safe slug chars — prevents injection into anything downstream.
+      if (trimmed.length > 0 && !/^[a-z0-9-_]+$/i.test(trimmed)) {
+        return NextResponse.json(
+          { error: "Tradition slug contains invalid characters" },
+          { status: 400 }
+        )
+      }
+      traditionSlug = trimmed.length > 0 ? trimmed.toLowerCase() : null
+    } else if (rawTraditionSlug !== undefined && rawTraditionSlug !== null) {
+      return NextResponse.json(
+        { error: "Tradition slug must be a string" },
+        { status: 400 }
+      )
+    }
+
+    // ── Normalize + validate toothStory (Tell step narrative) ──
+    // Stored off-chain in Supabase tfn_tooth_stories (see 20260413_add_tooth_story.sql).
+    // Not embedded in cNFT metadata — that stays fixed/tamper-evident for provenance only.
+    let toothStory: string | null = null
+    if (typeof rawToothStory === "string") {
+      const trimmed = rawToothStory.trim()
+      if (trimmed.length > 500) {
+        return NextResponse.json(
+          { error: "Tooth story must be 500 characters or fewer" },
+          { status: 400 }
+        )
+      }
+      toothStory = trimmed.length > 0 ? trimmed : null
+    } else if (rawToothStory !== undefined && rawToothStory !== null) {
+      return NextResponse.json(
+        { error: "Tooth story must be a string" },
+        { status: 400 }
+      )
+    }
 
     // ── Generate unique slug (name + 4-char hex suffix) ──
     const { randomBytes } = await import("crypto")
@@ -351,6 +399,28 @@ export async function POST(request: NextRequest) {
       if (error) console.error("[mint] Supabase upsert error:", error)
       // Child record saved to Supabase
     })
+
+    // ── Persist Tell (toothStory) + tradition context keyed by milestone PDA ──
+    // Non-blocking: if this fails, the keepsake still renders without the Tell
+    // text. We write whenever EITHER field is present — traditionSlug alone is
+    // enough signal to surface "Drawn after reading <story>" on the keepsake.
+    if (toothStory || traditionSlug) {
+      await supabaseAdmin
+        .from("tfn_tooth_stories")
+        .upsert(
+          {
+            milestone_pda: milestonePda.toBase58(),
+            child_profile_pda: childProfilePda.toBase58(),
+            user_id: user.id,
+            tooth_story: toothStory,
+            tradition_slug: traditionSlug,
+          },
+          { onConflict: "milestone_pda" }
+        )
+        .then(({ error }) => {
+          if (error) console.error("[mint] tfn_tooth_stories upsert error:", error)
+        })
+    }
 
     // ── Send keepsake email (after mint confirmed + data saved) ──
     const profileUrl = `https://toothfairy.network/tooth/${childSlug}?g=${serverPubkey.toBase58()}`
