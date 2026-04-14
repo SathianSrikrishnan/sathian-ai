@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const metadata = {
     name: `${childName}'s Tooth #${toothNumber}`,
     symbol: "TFN",
-    description: `Tooth #${toothNumber} (${toothType}) — A childhood milestone recorded on the Tooth Fairy Network. This soulbound token marks a moment in ${childName}'s journey, permanently preserved on Solana.`,
+    description: `A childhood milestone from ${childName}'s journey, preserved on the Tooth Fairy Network.`,
     image: "https://sathian.ai/toothfairy/tooth-placeholder.svg",
     external_url: "https://toothfairy.network",
     attributes: [

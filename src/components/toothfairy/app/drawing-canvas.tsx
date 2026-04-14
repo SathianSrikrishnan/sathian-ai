@@ -32,6 +32,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     const [isEnhancing, setIsEnhancing] = useState(false)
     const [enhanceRemaining, setEnhanceRemaining] = useState(3)
     const [enhanceError, setEnhanceError] = useState<string | null>(null)
+    // Whether the canvas still shows only background (no strokes / photo / enhance).
+    // Placeholder is a DOM overlay, NOT drawn to the canvas — keeps export clean.
+    const [isPristine, setIsPristine] = useState(true)
 
     // Expose methods to parent
     useImperativeHandle(ref, () => ({
@@ -51,11 +54,12 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       if (!ctx) return
       canvas.width = 512; canvas.height = 512
       ctx.fillStyle = bgColor; ctx.fillRect(0, 0, 512, 512)
-      ctx.fillStyle = placeholderColor; ctx.font = "20px system-ui"; ctx.textAlign = "center"
-      ctx.fillText("Draw the tooth!", 256, 240)
-      ctx.font = "14px system-ui"; ctx.fillStyle = subColor
-      ctx.fillText("Use your finger or mouse", 256, 270)
-    }, [bgColor, placeholderColor, subColor])
+      // IMPORTANT: do NOT render placeholder text to the canvas. The canvas is
+      // the export surface — anything drawn here ends up baked into the keepsake
+      // via toDataURL(). The "Draw the tooth!" hint lives as a DOM overlay below.
+      setIsPristine(true)
+      undoStackRef.current = []
+    }, [bgColor])
 
     // Redraw photo onto canvas when photo changes
     useEffect(() => {
@@ -69,6 +73,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
         const scale = Math.max(512 / img.width, 512 / img.height)
         const w = img.width * scale, h = img.height * scale
         ctx.drawImage(img, (512 - w) / 2, (512 - h) / 2, w, h)
+        setIsPristine(false)
       }
       img.src = photo
     }, [photo, bgColor])
@@ -105,6 +110,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       saveUndoSnapshot()
       isDrawingRef.current = true
       lastPosRef.current = getPos(e)
+      if (isPristine) setIsPristine(false)
     }
 
     const draw = (e: React.MouseEvent | React.TouchEvent) => {
@@ -154,6 +160,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
           const w = img.width * scale, h = img.height * scale
           ctx.drawImage(img, (canvasRef.current.width - w) / 2, (canvasRef.current.height - h) / 2, w, h)
+          setIsPristine(false)
           setIsEnhancing(false)
         }
         img.onerror = () => { setEnhanceError("Failed to load enhanced image"); setIsEnhancing(false) }
@@ -193,7 +200,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           >
             <span
               className="flex items-center gap-2 text-sm font-bold"
-              style={{ color: PC.goldDark, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              style={{ color: PC.goldDark, fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif" }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 19l7-7 3 3-7 7-3-3z" />
@@ -227,14 +234,31 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
             </div>
           </div>
 
-          {/* Canvas */}
-          <canvas
-            ref={initCanvas}
-            className="touch-none"
-            style={{ width: "100%", aspectRatio: "1", display: "block" }}
-            onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
-            onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw}
-          />
+          {/* Canvas + DOM placeholder overlay (NEVER drawn to canvas) */}
+          <div style={{ position: "relative", width: "100%", aspectRatio: "1" }}>
+            <canvas
+              ref={initCanvas}
+              className="touch-none"
+              style={{ width: "100%", aspectRatio: "1", display: "block" }}
+              onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
+              onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw}
+            />
+            {isPristine && !photo && (
+              <div
+                aria-hidden
+                className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none"
+                style={{
+                  fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+                  color: placeholderColor,
+                }}
+              >
+                <span style={{ fontSize: 20, lineHeight: 1.2 }}>Draw the tooth!</span>
+                <span style={{ fontSize: 14, color: subColor, marginTop: 6 }}>
+                  Use your finger or mouse
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Color tray + brush sizes */}
           <div
@@ -332,13 +356,30 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     return (
       <div>
         <div className="rounded-2xl p-3" style={{ background: C.bgAlt, border: `1px dashed ${C.borderGold}` }}>
-          <canvas
-            ref={initCanvas}
-            className="rounded-xl touch-none"
-            style={{ width: "100%", aspectRatio: "1" }}
-            onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
-            onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw}
-          />
+          <div style={{ position: "relative", width: "100%", aspectRatio: "1" }}>
+            <canvas
+              ref={initCanvas}
+              className="rounded-xl touch-none"
+              style={{ width: "100%", aspectRatio: "1" }}
+              onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
+              onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw}
+            />
+            {isPristine && !photo && (
+              <div
+                aria-hidden
+                className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none"
+                style={{
+                  fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+                  color: placeholderColor,
+                }}
+              >
+                <span style={{ fontSize: 20, lineHeight: 1.2 }}>Draw the tooth!</span>
+                <span style={{ fontSize: 14, color: subColor, marginTop: 6 }}>
+                  Use your finger or mouse
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Drawing tools */}
           <div className="mt-3 space-y-2">
