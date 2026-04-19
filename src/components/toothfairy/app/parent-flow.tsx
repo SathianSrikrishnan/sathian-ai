@@ -45,6 +45,7 @@ export default function ParentFlow({
   const [customLockDate, setCustomLockDate] = useState("")
   const [depositAmount, setDepositAmount] = useState("20")
   const [fromName, setFromName] = useState("")
+  const [payLoading, setPayLoading] = useState(false)
 
   const childPhotoRef = useRef<HTMLInputElement>(null)
   const toothPhotoRef = useRef<HTMLInputElement>(null)
@@ -67,6 +68,39 @@ export default function ParentFlow({
     const reader = new FileReader()
     reader.onload = () => setToothPhoto(reader.result as string)
     reader.readAsDataURL(file)
+  }
+
+  const handlePayWithCard = async () => {
+    if (!depositAmount || !fromName.trim()) return
+    setPayLoading(true)
+    try {
+      const res = await fetch("/api/toothfairy/onramp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amountUsd: parseFloat(depositAmount),
+          lockChoice: lockChoice === "custom" ? customLockDate : lockChoice,
+          depositorName: fromName.trim(),
+          childProfilePda: "pending",
+          milestonePda: "pending",
+          childDob: birthDate || undefined,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to start payment")
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      if (isMobile) {
+        window.location.href = data.onrampUrl
+      } else {
+        window.open(data.onrampUrl, "coinbase-onramp", "width=460,height=720")
+      }
+    } catch (err: any) {
+      console.error("[pay-with-card]", err)
+      alert(err.message || "Payment failed to start")
+    } finally {
+      setPayLoading(false)
+    }
   }
 
   // Computed
@@ -1293,10 +1327,41 @@ export default function ParentFlow({
                 </p>
               </div>
 
+              {/* Fee breakdown */}
+              {depositAmount && (() => {
+                const amt = parseFloat(depositAmount)
+                const fee = amt * 0.02
+                const net = amt - fee
+                return (
+                  <div
+                    className="rounded-xl p-4 mb-5"
+                    style={{ background: PC.surfaceContainerLow, border: `1px solid ${PC.border}` }}
+                  >
+                    <div className="flex justify-between text-sm mb-1" style={{ color: PC.text }}>
+                      <span>You pay</span>
+                      <span style={{ fontFamily: "monospace" }}>${amt.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2" style={{ color: PC.muted }}>
+                      <span>Network fee (2%)</span>
+                      <span style={{ fontFamily: "monospace" }}>-${fee.toFixed(2)}</span>
+                    </div>
+                    <div
+                      className="flex justify-between text-sm font-bold pt-2"
+                      style={{ borderTop: `1px solid ${PC.border}`, color: PC.teal }}
+                    >
+                      <span>Saved for {name}</span>
+                      <span style={{ fontFamily: "monospace" }}>${net.toFixed(2)}</span>
+                    </div>
+                  </div>
+                )
+              })()}
+
               {/* CTAs */}
               <div className="flex flex-col gap-3 items-center">
                 <button
-                  className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform"
+                  onClick={handlePayWithCard}
+                  disabled={payLoading || !fromName.trim()}
+                  className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-50"
                   style={{
                     background: parentGradients.stardust,
                     color: PC.onGold,
@@ -1304,7 +1369,7 @@ export default function ParentFlow({
                     borderRadius: "0.75rem",
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     border: "none",
-                    cursor: "pointer",
+                    cursor: payLoading ? "wait" : "pointer",
                     fontSize: "1.125rem",
                   }}
                 >
@@ -1312,7 +1377,7 @@ export default function ParentFlow({
                     <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
                     <line x1="1" y1="10" x2="23" y2="10" />
                   </svg>
-                  Pay with Card
+                  {payLoading ? "Opening payment..." : "Pay with Card"}
                 </button>
                 <button
                   className="font-bold text-sm"
