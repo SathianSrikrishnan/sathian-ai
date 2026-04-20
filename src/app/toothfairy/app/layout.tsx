@@ -58,17 +58,21 @@ export default function ToothFairyAppLayout({
   // On desktop, Phantom also auto-registers via Wallet Standard
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [])
 
+  const CP = ConnectionProvider as React.ComponentType<{ endpoint: string; children: React.ReactNode }>
+  const WP = WalletProvider as React.ComponentType<{ wallets: ReturnType<typeof useMemo>; autoConnect?: boolean; children: React.ReactNode }>
+  const WMP = WalletModalProvider as React.ComponentType<{ children: React.ReactNode }>
+
   return (
-    <ConnectionProvider endpoint={RPC_ENDPOINT}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
+    <CP endpoint={RPC_ENDPOINT}>
+      <WP wallets={wallets} autoConnect>
+        <WMP>
           <ViewModeProvider>
             <ThemedWrapper className={`${plusJakarta.variable} ${manrope.variable} ${lora.variable}`}>
               {children}
             </ThemedWrapper>
           </ViewModeProvider>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+        </WMP>
+      </WP>
+    </CP>
   )
 }
