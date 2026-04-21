@@ -27,7 +27,7 @@ export async function GET() {
     const connection = new Connection(rpc, "confirmed")
     const provider = getReadOnlyProvider(connection)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const program = new Program(IDL as any, provider)
+    const program: any = new Program(IDL as any, provider)
 
     // Fetch all account types in parallel
     const [childProfiles, deposits, treasuryAccounts, configAccounts] = await Promise.all([
@@ -97,7 +97,7 @@ export async function GET() {
     })
 
     // Process profiles into a simpler format
-    const profiles = childProfiles.map((p) => {
+    const profiles = childProfiles.map((p: any) => {
       const acct = p.account
       return {
         pubkey: p.publicKey.toBase58(),
@@ -130,9 +130,9 @@ export async function GET() {
       : null
 
     // Summary stats
-    const activeDeposits = depositRows.filter((d) => d.status === "active")
-    const totalDepositedSol = depositRows.reduce((sum, d) => sum + d.amountSol, 0)
-    const totalActiveSOL = activeDeposits.reduce((sum, d) => sum + d.amountSol, 0)
+    const activeDeposits = depositRows.filter((d: any) => d.status === "active")
+    const totalDepositedSol = depositRows.reduce((sum: number, d: any) => sum + d.amountSol, 0)
+    const totalActiveSOL = activeDeposits.reduce((sum: number, d: any) => sum + d.amountSol, 0)
 
     return NextResponse.json({
       summary: {
