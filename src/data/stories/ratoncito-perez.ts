@@ -10,20 +10,39 @@ const ratoncitoPerez: StoryConfig = {
   characterName: 'Ratoncito Pérez',
   available: true,
   crossReferences: ['tooth-fairy', 'romania', 'korea'],
+  colors: {
+    accent: '#E8A820',
+  },
+  effects: {
+    particles: {
+      count: 15,
+      color: '#E8A820',
+      sizeMin: 1,
+      sizeMax: 2,
+      durationMin: 6,
+      durationMax: 10,
+      drift: 15,
+      glow: true,
+    },
+    sparkleOn: ['victory'],
+  },
   scenes: [
-    // ACT 1: THE FAMILIAR
+    // COVER
     {
       id: 'pz-01',
+      layout: 'cover',
       background: '/story-assets/perez/pz-01-bedroom.jpg',
       dialogue: {
-        text: "In a little house in Madrid, a tooth has been wobbling all day long.",
+        text: 'Ratoncito Pérez',
+        subtext: 'A bedtime story from Spain & Latin America',
       },
     },
+    // ACT 1: THE FAMILIAR
     {
       id: 'pz-02',
       background: '/story-assets/perez/pz-01-bedroom.jpg',
       dialogue: {
-        text: "And tonight... it finally fell out! Under the pillow it goes.",
+        text: "In a little house in Madrid, a tooth has been wobbling all day long. And tonight... it finally fell out! Under the pillow it goes.",
       },
     },
     {
@@ -36,6 +55,7 @@ const ratoncitoPerez: StoryConfig = {
     // ACT 2: THE REVEAL
     {
       id: 'pz-04',
+      layout: 'character',
       background: '/story-assets/perez/pz-02-madrid-bakery.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
@@ -46,36 +66,31 @@ const ratoncitoPerez: StoryConfig = {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
         text: "¡Buenas noches! I am Ratoncito Pérez — the Tooth Mouse of Spain.",
+        subtext: "Royal tooth collector since 1894, living behind the walls of a Madrid bakery",
       },
     },
     {
       id: 'pz-05',
+      layout: 'dramatic',
       background: '/story-assets/perez/pz-02-madrid-bakery.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
         position: 'left',
       },
       dialogue: {
+        speaker: 'Pérez',
+        speakerColor: '#E8A820',
+        text: "I've been doing this since the young King of Spain lost his first tooth and asked for ME.",
+      },
+      secondDialogue: {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
         text: "I live behind the walls of a bakery on Calle del Arenal. Very cozy. Very secret.",
       },
     },
+    // THE MISSION
     {
       id: 'pz-06',
-      background: '/story-assets/perez/pz-02-madrid-bakery.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'left',
-      },
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "I've been doing this since 1894 — when the young King of Spain lost his first tooth and asked for ME.",
-      },
-    },
-    {
-      id: 'pz-07',
       background: '/story-assets/perez/pz-03-sneaking-palace.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
@@ -85,24 +100,11 @@ const ratoncitoPerez: StoryConfig = {
       dialogue: {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
-        text: "Every night, I squeeze through tiny cracks... past sleeping cats... under creaky doors...",
+        text: "Every night, I squeeze through tiny cracks... past sleeping cats... under creaky doors... I must be VERY quiet. A mouse on a mission!",
       },
     },
     {
-      id: 'pz-08',
-      background: '/story-assets/perez/pz-03-sneaking-palace.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "I must be VERY quiet. A mouse on a mission!",
-      },
-    },
-    {
-      id: 'pz-09',
+      id: 'pz-07',
       background: '/story-assets/perez/pz-04-at-pillow.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
@@ -112,25 +114,11 @@ const ratoncitoPerez: StoryConfig = {
       dialogue: {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
-        text: "I find the tooth. I inspect it carefully — yes, this is a good one.",
+        text: "I find the tooth. I inspect it carefully — yes, this is a good one. I leave a shiny coin. And then I run — fast as my little legs can carry me!",
       },
     },
     {
-      id: 'pz-10',
-      background: '/story-assets/perez/pz-04-at-pillow.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'right',
-        exit: 'top',
-      },
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "I leave a shiny coin. And then I run — fast as my little legs can carry me!",
-      },
-    },
-    {
-      id: 'pz-11',
+      id: 'pz-08',
       background: '/story-assets/perez/pz-05-rooftop.jpg',
       dialogue: {
         speaker: 'Pérez',
@@ -138,8 +126,10 @@ const ratoncitoPerez: StoryConfig = {
         text: "Up through the rooftops of Madrid, past the stars, to a place you won't believe...",
       },
     },
+    // THE NETWORK
     {
-      id: 'pz-12',
+      id: 'pz-09',
+      layout: 'victory',
       background: '/story-assets/shared/shared-network-station.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
@@ -151,15 +141,7 @@ const ratoncitoPerez: StoryConfig = {
         speakerColor: '#E8A820',
         text: "The Tooth Fairy Network! Where ALL of us deliver — fairies, mice, crows, even a beaver!",
       },
-    },
-    {
-      id: 'pz-13',
-      background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'center',
-      },
-      dialogue: {
+      secondDialogue: {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
         text: "Your tooth becomes a keepsake here. A treasure no one can ever take.",
@@ -167,52 +149,16 @@ const ratoncitoPerez: StoryConfig = {
     },
     // ACT 3: THE INVITATION
     {
-      id: 'pz-14',
+      id: 'pz-10',
       background: '/story-assets/shared/shared-multiple-collectors.jpg',
       dialogue: {
         speaker: 'Pérez',
         speakerColor: '#E8A820',
-        text: "I'm not the only collector, you know. In North America, a fairy does this. In Romania, a crow carries teeth through the Carpathian Mountains! And in Korea, a magpie sings for them!",
+        text: "I'm not the only collector, you know. In North America, a fairy does this. In Romania, a crow carries teeth through the Carpathian Mountains! Your family — abuela, tío, prima — everyone who loves you can add their love to your keepsake. And one day, all that love comes back to you. That is the magic of Ratoncito Pérez!",
       },
     },
     {
-      id: 'pz-15',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "And the best part? Your family gets to see your keepsake.",
-      },
-    },
-    {
-      id: 'pz-16',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "Abuela, tío, prima — everyone who loves you can add their own love to it.",
-      },
-    },
-    {
-      id: 'pz-17',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "It grows bigger and bigger, safe in the Network...",
-      },
-    },
-    {
-      id: 'pz-18',
-      background: '/story-assets/shared/shared-finale-teenager.jpg',
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "And one day, when you are big and tall, all that love comes back to you. That is the magic of Ratoncito Pérez!",
-      },
-    },
-    {
-      id: 'pz-19',
+      id: 'pz-11',
       background: '/story-assets/perez/pz-05-rooftop.jpg',
       character: {
         image: '/story-assets/characters/char-perez.jpg',
@@ -225,15 +171,17 @@ const ratoncitoPerez: StoryConfig = {
         text: "Now then — shall we begin? Show me your smile!",
       },
     },
+    // CTA
     {
       id: 'pz-cta',
+      layout: 'cta',
       background: '/story-assets/perez/pz-05-rooftop.jpg',
       dialogue: {
-        text: "",
+        text: '',
       },
       isChoice: true,
-      choiceText: "Start Your Keepsake",
-      choiceHref: "/app",
+      choiceText: 'Now make yours ✦',
+      choiceHref: '/toothfairy/app',
     },
   ],
 }

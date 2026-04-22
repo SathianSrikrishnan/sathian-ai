@@ -46,11 +46,8 @@ export default function DrawPage() {
   }, []);
 
   const handleDone = (dataUrl: string) => {
-    try {
-      localStorage.setItem(LATEST_DRAWING_KEY, dataUrl);
-    } catch {
-      // localStorage may be unavailable in private browsing — navigate anyway
-    }
+    try { localStorage.setItem(LATEST_DRAWING_KEY, dataUrl) } catch {}
+    try { sessionStorage.setItem(LATEST_DRAWING_KEY, dataUrl) } catch {}
     router.push('/toothfairy/app/draw/preview');
   };
 

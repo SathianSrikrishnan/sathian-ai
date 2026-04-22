@@ -3,264 +3,337 @@
 import { motion } from 'motion/react'
 import Link from 'next/link'
 import { StoryConfig } from '@/data/stories/types'
+import { FEATURED_STORIES } from '@/data/stories'
+
+/* ─── Color tokens (OKLCH, matching landing page) ───────────────────────── */
+const c = {
+  cream:      'oklch(97.5% 0.01 80)',
+  creamDeep:  'oklch(95% 0.015 75)',
+  brown:      'oklch(30% 0.035 65)',
+  brownSoft:  'oklch(42% 0.03 65)',
+  brownMuted: 'oklch(58% 0.025 65)',
+  gold:       'oklch(72% 0.145 75)',
+  goldHover:  'oklch(62% 0.13 72)',
+  goldLight:  'oklch(85% 0.08 78)',
+  border:     'oklch(88% 0.015 75)',
+  cardBg:     'oklch(98% 0.008 80)',
+}
+
+/* ─── Easing ────────────────────────────────────────────────────────────── */
+const easeOutQuart = [0.16, 1, 0.3, 1] as [number, number, number, number]
+
+/* ─── Character image mapping ───────────────────────────────────────────── */
+const charImageMap: Record<string, string> = {
+  'tanda': 'char-tanda.png',
+  'hyena-story': 'char-hyena-story.png',
+  'anka-story': 'char-anka.png',
+  'tooth-fairy': 'char-tooth-fairy.jpg',
+  'ratoncito-perez': 'char-perez.jpg',
+  'finland': 'char-finish-fairy.jpg',
+  'north-africa': 'char-sun-spirit.jpg',
+  'jamaica': 'char-granny-jamaica.jpg',
+  'korea': 'char-magpie.jpg',
+  'romania': 'char-crow.jpg',
+  'japan': 'char-tooth-kami.jpg',
+  'ethiopia': 'char-hyena.jpg',
+  'cherokee': 'char-beaver.jpg',
+  'ireland': 'char-anna-bogle.jpg',
+  'italy': 'char-venice-trio.jpg',
+  'babylonia': 'char-tooth-worm.jpg',
+}
+
+const featuredIds = new Set(FEATURED_STORIES.map(s => s.id))
 
 interface StorySelectorProps {
   stories: StoryConfig[]
+  simple?: boolean
 }
 
-// Network constellation background
-function NetworkBg() {
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-15">
-      <svg width="100%" height="100%">
-        {Array.from({ length: 20 }).map((_, i) => {
-          const x1 = Math.random() * 100
-          const y1 = Math.random() * 100
-          const x2 = x1 + (Math.random() - 0.5) * 30
-          const y2 = y1 + (Math.random() - 0.5) * 30
-          return (
-            <g key={i}>
-              <line x1={`${x1}%`} y1={`${y1}%`} x2={`${x2}%`} y2={`${y2}%`} stroke="#4FD1C5" strokeWidth="0.5" opacity="0.3" />
-              <circle cx={`${x1}%`} cy={`${y1}%`} r="2" fill="#4FD1C5" opacity="0.4" />
-            </g>
-          )
-        })}
-      </svg>
-    </div>
-  )
-}
-
-// Floating particles
-function Particles() {
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-10">
-      {Array.from({ length: 15 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: `${2 + Math.random() * 2}px`,
-            height: `${2 + Math.random() * 2}px`,
-            left: `${Math.random() * 100}%`,
-            bottom: `-5%`,
-            backgroundColor: '#F0C456',
-          }}
-          animate={{
-            y: [0, -1200],
-            opacity: [0, 0.5, 0.3, 0],
-          }}
-          transition={{
-            duration: 6 + Math.random() * 4,
-            repeat: Infinity,
-            delay: Math.random() * 8,
-            ease: 'linear',
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
-export default function StorySelector({ stories }: StorySelectorProps) {
-  const available = stories.filter(s => s.available)
+export default function StorySelector({ stories, simple = false }: StorySelectorProps) {
+  const featured = simple ? [] : stories.filter(s => featuredIds.has(s.id) && s.available)
+  const regular = simple
+    ? stories.filter(s => s.available)
+    : stories.filter(s => !featuredIds.has(s.id) && s.available)
   const comingSoon = stories.filter(s => !s.available)
 
   return (
     <div
-      className="min-h-[100dvh] relative overflow-y-auto"
+      className="min-h-[100dvh]"
       style={{
-        background: 'linear-gradient(180deg, #0B1026 0%, #0F1A3E 40%, #1A0E2E 70%, #0B1026 100%)',
-        fontFamily: "var(--font-quicksand), 'Quicksand', sans-serif",
+        background: `linear-gradient(to bottom, ${c.cream}, ${c.creamDeep}, ${c.cream})`,
+        fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+        color: c.brown,
       }}
     >
-      <NetworkBg />
-      <Particles />
+      <div className="max-w-4xl mx-auto px-6 md:px-12 py-16 md:py-24">
 
-      <div className="relative z-20 max-w-xl mx-auto px-5 py-12">
-        {/* Hero */}
+        {/* ── Header ──────────────────────────────────────────────────── */}
         <motion.div
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: -15 }}
+          className="max-w-[55ch] mb-16"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1
-            className="text-3xl sm:text-4xl font-bold mb-4"
-            style={{
-              color: '#F0C456',
-              textShadow: '0 0 40px rgba(240, 196, 86, 0.3)',
-            }}
-          >
-            Tooth Fairy Network
-          </h1>
-
-          <p className="text-sm sm:text-base leading-relaxed mb-3" style={{ color: '#F5F0FFe6' }}>
-            Create your child&apos;s first digital keepsake — from the very first tooth they lose.
-          </p>
-
-          <p className="text-xs sm:text-sm leading-relaxed mb-4" style={{ color: '#F5F0FFaa' }}>
-            Thousands of years ago, Viking warriors paid children for their first lost tooth — calling it <em style={{ color: '#F0C456' }}>tand-fé</em>, the tooth fee. They wore the teeth on necklaces into battle for luck. That was the first Network. Today, <strong style={{ color: '#4FD1C5' }}>105 cultures</strong> continue the tradition — each in their own way.
-          </p>
-
-          <div
-            className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold"
-            style={{
-              background: 'rgba(79, 209, 197, 0.1)',
-              border: '1px solid rgba(79, 209, 197, 0.2)',
-              color: '#4FD1C5',
-            }}
-          >
-            13 traditions · 13 characters · 5 continents
-          </div>
-        </motion.div>
-
-        {/* Create Keepsake CTA */}
-        <motion.div
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ duration: 0.8, ease: easeOutQuart }}
         >
           <Link
-            href="/app"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold no-underline transition-all hover:scale-[1.02] active:scale-[0.98]"
+            href="/toothfairy"
+            className="inline-block text-sm font-medium mb-8 no-underline"
             style={{
-              background: 'linear-gradient(135deg, #F0C456, #E0A830)',
-              color: '#060B18',
-              boxShadow: '0 0 25px rgba(240,196,86,0.2)',
-              fontFamily: "var(--font-nunito), 'Nunito', sans-serif",
+              color: c.gold,
+              transition: 'opacity 0.2s',
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="#060B18" opacity="0.7" />
-            </svg>
-            Create Your Keepsake
+            &larr; Tooth Fairy Network
           </Link>
-          <p className="text-[10px] mt-2" style={{ color: '#F5F0FF50' }}>
-            Skip the stories — go straight to minting
-          </p>
+
+          <h1
+            className="text-3xl sm:text-4xl lg:text-5xl leading-[1.1] tracking-tight mb-6"
+            style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: c.brown }}
+          >
+            Every culture tells the story differently.
+          </h1>
+
+          {!simple && (
+            <>
+              <p
+                className="text-lg leading-[1.8] mb-4"
+                style={{ color: c.brownSoft }}
+              >
+                In North America, a hummingbird fairy carries an ancient satchel.
+                In Ethiopia, a hyena waits in the dark for children brave enough to come.
+                In Brazil, a jaguar only appears when you stop looking.
+                Pick a tradition — your child&apos;s story begins here.
+              </p>
+
+              <p
+                className="text-sm font-medium"
+                style={{ color: c.brownMuted }}
+              >
+                {stories.filter(s => s.available).length} traditions · 6 continents · Every one leads to a keepsake
+              </p>
+            </>
+          )}
         </motion.div>
 
-        {/* Section: Pick Your Tradition */}
-        <motion.p
-          className="text-center text-xs mb-4 font-medium"
-          style={{ color: '#F5F0FF80' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          Or pick a tradition to begin
-        </motion.p>
-
-        {/* Available Stories Grid */}
-        <div className="grid grid-cols-3 gap-3 mb-8">
-          {available.map((story, i) => (
-            <motion.div
-              key={story.id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + i * 0.07, duration: 0.4 }}
-            >
-              <Link
-                href={`/story/${story.id}`}
-                className="block rounded-2xl overflow-hidden no-underline group"
-                style={{
-                  background: 'rgba(11, 16, 38, 0.7)',
-                  border: `1px solid ${story.color}30`,
-                  backdropFilter: 'blur(8px)',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                {/* Character portrait */}
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={`/story-assets/characters/char-${story.id === 'tooth-fairy' ? 'tooth-fairy' :
-                      story.id === 'ratoncito-perez' ? 'perez' :
-                      story.id === 'finland' ? 'finish-fairy' :
-                      story.id === 'north-africa' ? 'sun-spirit' :
-                      story.id === 'jamaica' ? 'granny-jamaica' :
-                      story.id === 'korea' ? 'magpie' :
-                      story.id === 'romania' ? 'crow' :
-                      story.id === 'japan' ? 'tooth-kami' :
-                      story.id === 'ethiopia' ? 'hyena' :
-                      story.id === 'cherokee' ? 'beaver' :
-                      story.id === 'ireland' ? 'anna-bogle' :
-                      story.id === 'italy' ? 'venice-trio' :
-                      story.id === 'babylonia' ? 'tooth-worm' :
-                      'tooth-fairy'}.jpg`}
-                    alt={story.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* Info */}
-                <div className="p-2 text-center">
-                  <p className="text-xs font-bold leading-tight" style={{ color: story.color }}>
-                    {story.title}
-                  </p>
-                  <p className="text-[10px] mt-0.5" style={{ color: '#F5F0FF60' }}>
-                    {story.region}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Coming Soon */}
-        {comingSoon.length > 0 && (
+        {/* ── Featured Stories (Full-Length) ───────────────────────────── */}
+        {featured.length > 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
+            className="mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8, ease: easeOutQuart }}
           >
             <p
-              className="text-center text-[10px] mb-3 font-semibold uppercase tracking-widest"
-              style={{ color: '#F5F0FF40' }}
+              className="text-xs font-semibold uppercase tracking-[0.15em] mb-6"
+              style={{ color: c.gold }}
             >
-              Coming Soon
+              Featured Stories
             </p>
-            <div className="grid grid-cols-3 gap-2">
-              {comingSoon.map((story, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
+              {featured.map((story, i) => (
                 <motion.div
                   key={story.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.4 }}
-                  transition={{ delay: 1.3 + i * 0.04 }}
-                  className="flex flex-col items-center justify-center rounded-xl p-3"
-                  style={{
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.04)',
-                    minHeight: '70px',
-                  }}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: easeOutQuart }}
                 >
-                  <span className="text-xl mb-1" style={{ filter: 'grayscale(0.5)' }}>{story.emoji}</span>
-                  <span className="text-[10px] font-semibold text-center leading-tight" style={{ color: '#F5F0FF' }}>
-                    {story.title}
-                  </span>
-                  <span className="text-[9px] mt-0.5" style={{ color: '#4FD1C5' }}>
-                    {story.region}
-                  </span>
+                  <Link
+                    href={`/toothfairy/story/${story.id}`}
+                    className="block rounded-2xl overflow-hidden no-underline group"
+                    style={{
+                      background: c.cardBg,
+                      boxShadow: `0 4px 20px oklch(30% 0.035 65 / 0.1)`,
+                      transition: 'box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = `0 12px 40px oklch(30% 0.035 65 / 0.16)`
+                      e.currentTarget.style.transform = 'translateY(-6px)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = `0 4px 20px oklch(30% 0.035 65 / 0.1)`
+                      e.currentTarget.style.transform = 'translateY(0)'
+                    }}
+                  >
+                    <div className="aspect-[4/3] overflow-hidden" style={{ background: c.creamDeep }}>
+                      <img
+                        src={`/story-assets/characters/${charImageMap[story.id] || 'char-tooth-fairy.jpg'}`}
+                        alt={story.characterName}
+                        className="w-full h-full object-cover"
+                        style={{ transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+                      />
+                    </div>
+                    <div className="p-4 md:p-5">
+                      <p
+                        className="text-lg md:text-xl font-bold leading-tight mb-1"
+                        style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: c.brown }}
+                      >
+                        {story.title}
+                      </p>
+                      <p className="text-sm mb-2" style={{ color: c.brownMuted }}>
+                        {story.region} · {story.characterName}
+                      </p>
+                      <p className="text-xs leading-relaxed" style={{ color: c.brownSoft }}>
+                        {story.description}
+                      </p>
+                    </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>
           </motion.div>
         )}
 
-        {/* Footer */}
+        {/* ── More Traditions ─────────────────────────────────────────── */}
+        {regular.length > 0 && (
+          <motion.div
+            className="mb-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            {!simple && (
+              <p
+                className="text-xs font-semibold uppercase tracking-[0.15em] mb-6"
+                style={{ color: c.brownMuted }}
+              >
+                More Traditions
+              </p>
+            )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {regular.map((story, i) => (
+                <motion.div
+                  key={story.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + i * 0.04, duration: 0.6, ease: easeOutQuart }}
+                >
+                  <Link
+                    href={`/toothfairy/story/${story.id}`}
+                    className="block rounded-2xl overflow-hidden no-underline group"
+                    style={{
+                      background: c.cardBg,
+                      boxShadow: `0 2px 12px oklch(30% 0.035 65 / 0.06)`,
+                      transition: 'box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = `0 8px 32px oklch(30% 0.035 65 / 0.12)`
+                      e.currentTarget.style.transform = 'translateY(-4px)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = `0 2px 12px oklch(30% 0.035 65 / 0.06)`
+                      e.currentTarget.style.transform = 'translateY(0)'
+                    }}
+                  >
+                    <div className="aspect-square overflow-hidden" style={{ background: c.creamDeep }}>
+                      <img
+                        src={`/story-assets/characters/${charImageMap[story.id] || 'char-tooth-fairy.jpg'}`}
+                        alt={story.characterName}
+                        className="w-full h-full object-cover"
+                        style={{ transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+                      />
+                    </div>
+                    <div className="p-3 md:p-4">
+                      <p
+                        className="text-sm md:text-base font-bold leading-tight mb-1"
+                        style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: c.brown }}
+                      >
+                        {story.title}
+                      </p>
+                      <p className="text-xs md:text-sm" style={{ color: c.brownMuted }}>
+                        {story.region}
+                      </p>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── Coming Soon ─────────────────────────────────────────────── */}
+        {comingSoon.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+            className="mb-16"
+          >
+            <p
+              className="text-xs font-medium uppercase tracking-[0.15em] mb-6"
+              style={{ color: c.brownMuted }}
+            >
+              Coming soon
+            </p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+              {comingSoon.map((story) => (
+                <div
+                  key={story.id}
+                  className="flex flex-col items-center justify-center rounded-xl p-3 text-center"
+                  style={{
+                    background: c.creamDeep,
+                    border: `1px solid ${c.border}`,
+                    minHeight: '80px',
+                    opacity: 0.6,
+                  }}
+                >
+                  <span className="text-xl mb-1">{story.emoji}</span>
+                  <span
+                    className="text-[11px] font-semibold leading-tight"
+                    style={{ color: c.brownSoft }}
+                  >
+                    {story.title}
+                  </span>
+                  <span
+                    className="text-[10px] mt-0.5"
+                    style={{ color: c.brownMuted }}
+                  >
+                    {story.region}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── CTA ─────────────────────────────────────────────────────── */}
         <motion.div
-          className="text-center mt-10"
+          className="text-center py-12"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          transition={{ delay: 1.5 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          style={{ borderTop: `1px solid ${c.border}` }}
         >
-          <p className="text-[11px]" style={{ color: '#F5F0FF' }}>
-            Every story ends with a keepsake on the Solana blockchain
+          <p
+            className="text-lg mb-2"
+            style={{
+              fontFamily: "var(--font-display, 'Alegreya'), serif",
+              color: c.brown,
+            }}
+          >
+            Ready to skip ahead?
           </p>
-          <p className="text-[10px] mt-1" style={{ color: '#F5F0FF80' }}>
-            Free to create · Permanent · Shareable with family
+          <p className="text-sm mb-6" style={{ color: c.brownMuted }}>
+            Every story ends with a keepsake. You can make one right now.
           </p>
+          <Link
+            href="/toothfairy/app"
+            className="inline-block px-8 py-3.5 text-base font-semibold rounded-full no-underline active:scale-[0.98]"
+            style={{
+              background: c.gold,
+              color: 'oklch(98% 0.005 80)',
+              boxShadow: `0 4px 24px oklch(72% 0.145 75 / 0.2)`,
+              transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = c.goldHover }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = c.gold }}
+          >
+            Make your child&apos;s first keepsake
+          </Link>
         </motion.div>
+
       </div>
     </div>
   )

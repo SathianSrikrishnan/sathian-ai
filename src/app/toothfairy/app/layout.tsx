@@ -9,25 +9,21 @@ import { useMemo } from "react"
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react"
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui"
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom"
-import { Plus_Jakarta_Sans, Manrope, Lora } from "next/font/google"
+import { Alegreya, Alegreya_Sans } from "next/font/google"
 
 import { ViewModeProvider, useViewMode } from "@/components/toothfairy/view-mode-context"
 import "@solana/wallet-adapter-react-ui/styles.css"
 
-const plusJakarta = Plus_Jakarta_Sans({
+const alegreya = Alegreya({
   subsets: ["latin"],
-  variable: "--font-headline",
-  weight: ["700", "800"],
+  variable: "--font-display",
+  weight: ["400", "500", "700", "800"],
+  style: ["normal", "italic"],
 })
-const manrope = Manrope({
+const alegreyaSans = Alegreya_Sans({
   subsets: ["latin"],
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
-})
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-story",
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "700"],
   style: ["normal", "italic"],
 })
 
@@ -37,8 +33,8 @@ function ThemedWrapper({ children, className }: { children: React.ReactNode; cla
     <div
       className={`${className} font-[var(--font-body)] min-h-screen antialiased transition-colors duration-300`}
       style={{
-        background: isParent ? "#FFFFFF" : "#0d1228",
-        color: isParent ? "#212529" : "#dde1ff",
+        background: isParent ? 'oklch(97.5% 0.01 80)' : 'oklch(12% 0.04 270)',
+        color: isParent ? 'oklch(30% 0.035 65)' : 'oklch(93% 0.01 80)',
       }}
     >
       {children}
@@ -67,7 +63,7 @@ export default function ToothFairyAppLayout({
       <WP wallets={wallets} autoConnect>
         <WMP>
           <ViewModeProvider>
-            <ThemedWrapper className={`${plusJakarta.variable} ${manrope.variable} ${lora.variable}`}>
+            <ThemedWrapper className={`${alegreya.variable} ${alegreyaSans.variable}`}>
               {children}
             </ThemedWrapper>
           </ViewModeProvider>

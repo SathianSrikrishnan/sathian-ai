@@ -1,215 +1,259 @@
 import { StoryConfig } from './types'
 
+/**
+ * Tanda — The Origin (impeccable, April 2026)
+ * 14 Pixar frames. Mixed layouts (cover, narrative, prose, character, dramatic, victory, cta).
+ * Aurora on Network reveal. Sparkles on morning victory.
+ */
 const tanda: StoryConfig = {
   id: 'tanda',
-  title: 'The First Night',
-  region: 'North America',
+  title: 'Tanda',
+  region: 'The Origin',
   emoji: '\u{1FAB6}',
-  color: '#D4A574',
-  description: 'A hummingbird fairy discovers why every tooth carries a story',
+  color: '#F3C57A',
+  description: 'The origin of the Tooth Fairy Network — a boy, a tooth, and a sky full of gold',
   characterName: 'Tanda',
   available: true,
-  crossReferences: ['hyena-story', 'anka-story'],
+  crossReferences: ['hyena-story', 'anka-story', 'ratoncito-perez', 'korea'],
   colors: {
-    accent: '#D4A574',
-    secondary: '#6B7DB3',
+    accent: '#F3C57A',
+    accentGlow: '#F3C57A80',
+    secondary: '#E8A867',
+    secondaryGlow: '#E8A86780',
   },
   effects: {
     particles: {
-      count: 15,
-      color: '#D4A574',
+      color: '#F3C57A',
+      count: 26,
       sizeMin: 2,
-      sizeMax: 4,
+      sizeMax: 5,
       durationMin: 8,
-      durationMax: 15,
-      drift: 20,
+      durationMax: 16,
+      drift: 28,
       glow: true,
     },
+    aurora: {
+      colors: ['#F3C57A', '#E8A867', '#D4A574'],
+      bands: 3,
+    },
+    sparkleOn: ['victory'],
   },
   scenes: [
-    // COVER
+    /* ─── COVER ────────────────────────────────────────────────────── */
     {
       id: 'tanda-cover',
       layout: 'cover',
-      background: '/story-assets/tanda/f01-satchel.png',
+      background: '/story-assets/tanda/frame-04.png',
       dialogue: {
-        text: 'The First Night',
-        subtext: 'A Tooth Fairy Network Origin Story',
+        text: 'Tanda',
+        subtext: 'The Origin of the Tooth Fairy Network',
       },
     },
-    // FRAME 1 - THE SATCHEL
+
+    /* ─── ACT 1 · THE TOOTH ────────────────────────────────────────── */
     {
-      id: 'tanda-01',
-      layout: 'prose',
-      background: '/story-assets/tanda/f01-satchel.png',
-      dialogue: {
-        text: "There is a satchel that has crossed the Atlantic Ocean four hundred times.\n\nIt was stitched by a woman in Iceland eleven centuries ago from the hide of a goat her daughter had named. She carved counting marks along the strap. One for each year she'd been alive. She was twenty-three.\n\nThe satchel belongs now to a creature the size of a hummingbird with wings the color of old paper.\n\nHer name is Tanda. It comes from the Old Norse tannf\u00e9: the tooth fee. A thousand years ago, when a child lost their first tooth, the parents paid a fee. Not to the child. To the tooth. Because in those days, a child's tooth was worth something real. Warriors wore them on leather cords around their necks and went to war with a child's luck against their chest.",
-      },
-    },
-    // FRAME 2 - THE WIRE
-    {
-      id: 'tanda-02',
-      layout: 'prose',
-      background: '/story-assets/tanda/f02-wire.png',
-      dialogue: {
-        text: "Tonight Tanda sits on a telephone wire in Minneapolis and she is so tired her wings have dimmed to almost nothing.\n\nForty-seven teeth are waiting across six cities before sunrise. Her team is scattered. Flicker to Chicago. Brume to Detroit. Clink took the overnight to DC because Clink likes trains and because Tanda stopped questioning Clink's methods two hundred years ago.\n\nThat leaves Philadelphia, Baltimore, and New York for Tanda alone.\n\nShe opens the satchel. Nineteen teeth collected so far tonight. She should feel good about nineteen.\n\nShe does not feel good about nineteen.",
-      },
-    },
-    // FRAME 3 - THE MAP
-    {
-      id: 'tanda-03',
-      layout: 'prose',
-      background: '/story-assets/tanda/f03-map.png',
-      dialogue: {
-        text: "She carries a map that shows every family in her territory that still tells the story. Every house where a child loses a tooth and something happens. A coin. A whisper about the fairy who comes.\n\nThe map used to glow so thickly she couldn't read the street names through the gold. That was 1952.\n\nNow there are dark patches. Whole neighborhoods where children lose teeth and the tooth goes in the trash and nobody thinks twice. The patches are growing. And at their edges, something moves that Tanda does not look at directly.\n\nShe folds the map. She has work to do.\n\nAnd she has been skipping the most important part.",
-      },
-    },
-    // FRAME 4 - MAREN'S KITCHEN
-    {
-      id: 'tanda-04',
-      layout: 'prose',
-      background: '/story-assets/tanda/f04-maren-kitchen.png',
-      dialogue: {
-        text: "Maren's tooth came out yesterday while she was eating an apple, which she thought was hilarious and her mother thought was horrifying and her little brother thought was the single greatest event in human history.\n\n\"DO IT AGAIN,\" he said.\n\nMaren is six. She takes it seriously. Being six means she walks to the mailbox alone. She is learning words with two chunks. And she is the only person in her family who knows the real name of every bug in the garden.\n\nThe big beetle is General. She named him that because he walks like he's in charge of something.\n\nThe caterpillar on the basil plant is Sleeping Steven. He never moves, but every morning the basil has one less leaf.\n\nAnd the ant who always carries the biggest piece of everything, who drops it and picks it up and never stops: her name is Try Again.\n\nMaren doesn't know why she named her that. It just seemed right.",
-      },
-    },
-    // FRAME 5 - JAR NOTE
-    {
-      id: 'tanda-05',
-      layout: 'prose',
-      background: '/story-assets/tanda/f05-jar-note.png',
-      dialogue: {
-        text: "That night Maren puts the tooth in a jar because she doesn't trust the pillow method. Pillows move. You roll over. The tooth falls between the mattress and the wall. Then the whole thing is ruined.\n\nMaren is practical about these things.\n\nShe writes a note. She spells \"tooth\" wrong twice. She will be embarrassed about this later, but the misspelling is the most important detail of this entire story, because the note is now part of what the tooth carries.\n\nShe does not know this.\n\nShe turns off the frog lamp. She tries to stay awake.\n\nShe lasts eleven minutes.",
-      },
-    },
-    // FRAME 6 - TANDA AT THE WINDOW
-    {
-      id: 'tanda-06',
-      layout: 'prose',
-      background: '/story-assets/tanda/f06-tanda-window.png',
-      dialogue: {
-        text: "Tanda arrives at 3:47 AM.\n\nShe has already collected six teeth since Minneapolis. She did not read any of them.\n\nThis is the thing that has been growing for the last three years: she has been going faster. Collecting more. Skipping the readings. A tooth reading takes four minutes. You hold it to the moonlight, you let the story unspool, you watch the child's life play in miniature. Four minutes. That is the whole point of collecting.\n\nBut four minutes times forty-seven teeth is three hours. And she does not have three hours.\n\nSo she has started doing what she swore she would never do. She takes the tooth. She leaves the coin. She moves on. Nineteen teeth tonight. One read. Eighteen skipped.\n\nShe slips through the window.\n\nShe sees the jar. She sees the note.\n\nShe stops.",
-      },
-    },
-    // FRAME 7 - THE NOTE
-    {
-      id: 'tanda-07',
-      layout: 'prose',
-      background: '/story-assets/tanda/f07-toth-note.png',
-      dialogue: {
-        text: "DEAR TOTH FAIRY, THIS IS MY TOTH.\n\nShe reads the note three times. Not because it's complicated. Because this child named the tooth. Cloud, because it is wite. Most children don't write notes anymore. Most parents say \"put it under your pillow\" and the child does and in the morning there's a dollar and by Tuesday nobody remembers which tooth it was.\n\nBut this child wrote a note. This child named the tooth. This child cared enough to say: this happened to ME, and I want you to know about it.\n\nTanda takes the tooth from the jar. She is behind schedule. Philadelphia has eleven teeth waiting.\n\nShe holds the tooth to the window where the moonlight comes through.\n\nShe reads it.",
-      },
-    },
-    // FRAME 8 - THE TOOTH READING
-    {
-      id: 'tanda-08',
-      layout: 'prose',
-      background: '/story-assets/tanda/f08-tooth-reading.png',
-      dialogue: {
-        text: "The tooth shows her the garden first.\n\nA beetle crossing the patio. And behind it, a girl in sneakers. Not chasing. Following. There is a difference when you are six.\n\nThe beetle has a scratch on its left wing-case. The child noticed this. Every tooth remembers what the child paid attention to. Not what they were told to care about. Not what was on the test. What they actually, privately, for no reason at all, chose to watch.\n\nMaren watched General cross the patio every day for three weeks. She never picked him up. She never told anyone about him. He was hers in the way that something is yours when you're the only one who knows its name.",
-      },
-    },
-    // FRAMES 9+10 - BASIL + TRY AGAIN
-    {
-      id: 'tanda-09',
-      layout: 'prose',
-      background: '/story-assets/tanda/f10-try-again.png',
-      dialogue: {
-        text: "Then the basil plant. The caterpillar who never moved but ate a leaf every night. Maren pressed her face against the glass every morning and checked. Still there. Still fat. Still sleeping.\n\nShe drew a smiley face in her breath-fog on the window at 6 AM and she laughed and nobody heard her laugh because she was the only one awake.\n\nAnd then the ant.\n\nThe one who carries the biggest piece of everything. Who drops it and picks it up and drops it and picks it up. The one Maren named Try Again.\n\nThe tooth doesn't explain why she chose that name. Teeth don't explain. But Tanda has read enough teeth in eleven centuries to know what a name like that means. It means a six-year-old saw something in an ant that she needed. Not understood. Needed. And she gave the feeling a word so she wouldn't lose it.\n\nTanda holds the tooth for a long time after the story ends.\n\nShe is standing on a nightstand in St. Paul, Minnesota, holding a tooth that contains a beetle, a caterpillar, and an ant, and she is crying. Not because the story is sad.\n\nBecause the story will be gone.",
-      },
-    },
-    // FRAME 11 - DARKEST MOMENT
-    {
-      id: 'tanda-10',
-      layout: 'prose',
-      background: '/story-assets/tanda/f11-darkest.png',
-      dialogue: {
-        text: "Tomorrow Maren will tell her mother about the coin. Her mother will smile and say \"the tooth fairy came!\" and Maren will say \"I wrote her a note!\" and her mother will say \"that's so sweet\" and the note will go in a drawer and the jar will go back in the cupboard. In two weeks Maren won't remember which tooth it was, or that she named it Cloud, or that she spelled it TOTH because she was six and she tried so hard.\n\nAnd General and Sleeping Steven and Try Again will be sealed in a satchel, read by one creature, remembered by no one else.\n\nMaren will never know her tooth was read. She will never know that the smallest story in the world was beautiful enough to make an eleven-hundred-year-old fairy cry in the middle of the night.",
-      },
-    },
-    // FRAME 12 - GLIMPSES
-    {
-      id: 'tanda-11',
-      layout: 'prose',
-      background: '/story-assets/tanda/f12-glimpses.png',
-      dialogue: {
-        text: "She picks up another tooth. Holds it to the window. A boy who taught his dog to shake. One second of the story: the dog's paw in the boy's hand, both of them proud. She puts it back. No time.\n\nAnother. A girl who whispered secrets to a tree in her backyard. One second: her mouth close to the bark, breath fogging the cold wood. Back in the satchel.\n\nEighteen lives. Eighteen Try-Again-level stories. And Tanda collected them the way you collect mail.\n\nShe did the job. She missed the point.",
-      },
-    },
-    // FRAME 13 - THE MESSAGES
-    {
-      id: 'tanda-12',
-      layout: 'prose',
-      background: '/story-assets/tanda/f13-messages.png',
-      dialogue: {
-        text: "Tanda cannot collect every tooth herself. She has known this for decades. She has refused to admit it because admitting it means trusting strangers with children's stories.\n\nBut tonight she held Maren's tooth and felt what it carried. And she looked at the eighteen she didn't hold. And she understood: alone means stories get skipped. Skipped means lost.\n\nShe tears three pieces of parchment from the back of her map.\n\nShe writes to a magpie in Korea. She's never met this bird. She's heard she's loud and never stops talking. Loud is better than absent.\n\nShe writes to a mouse in Madrid. He is old. He is proud. He hasn't missed a tooth in a hundred and thirty years. He will think she is ridiculous for writing to him.\n\nShe writes to a hyena in East Africa. She doesn't know his name. She knows only this: children throw their teeth into the dark for him, and he comes. Every time.\n\nShe folds the three messages.",
-      },
-    },
-    // FRAME 14 - TRIPTYCH
-    {
-      id: 'tanda-13',
-      layout: 'prose',
-      background: '/story-assets/tanda/f14-triptych.png',
-      dialogue: {
-        text: "She gives one to Flicker. \"Korea. The magpie.\"\n\nFlicker's wings sputter. \"You don't even know her\u2014\"\n\n\"Go.\"\n\nShe throws the second into the wind. A trick from the Irish keepers, who swear the wind always delivers. The message spirals east toward Spain.\n\nThe third she places under a stone on Maren's windowsill, scratched with the old mark that means for the one who comes at night.",
-      },
-    },
-    // FRAME 15 - COIN IN JAR
-    {
-      id: 'tanda-14',
-      layout: 'prose',
-      background: '/story-assets/tanda/f15-coin-jar.png',
-      dialogue: {
-        text: "She places the coin in the jar. Not under the pillow. Maren used a jar. Systems matter. Children who build systems are children who care how things work, and the least Tanda can do is honor that.\n\nShe looks at Maren one more time.\n\nShe will not reach all forty-seven teeth tonight. Nineteen families will wake to find the tooth still under the pillow and decide, quietly, that the story doesn't matter.\n\nBut she read Maren's tooth. She read it fully. She knows about General and Sleeping Steven and Try Again. And that one tooth, read completely, is worth more than forty collected in silence.\n\nShe doesn't know if the magpie, the mouse, or the hyena will answer.\n\nShe sent the messages anyway.",
-      },
-    },
-    // FRAME 16 - MORNING NOTE
-    {
-      id: 'tanda-15',
-      layout: 'prose',
-      background: '/story-assets/tanda/f16-morning-note.png',
-      dialogue: {
-        text: "Maren wakes up. The coin is in the jar. She holds it up. Looks at it. Puts it down.\n\nShe picks up the note.\n\nShe stares at it for a while. Runs her thumb over the place where she erased and rewrote the TH. She wonders if the tooth fairy read it. She wonders if the tooth fairy knows about General.\n\nShe folds the note carefully, the way you fold something you plan to keep, and puts it in the drawer where she keeps the things she is not ready to explain to anyone.",
-      },
-    },
-    // FRAME 17 - KKACHI ON THE WIRE
-    {
-      id: 'tanda-16',
-      layout: 'prose',
-      background: '/story-assets/tanda/f17-kkachi-wire.png',
-      dialogue: {
-        text: "One week later, a magpie lands on the telephone wire.\n\nShe is loud. She has not stopped talking since she arrived from Seoul three hours ago.\n\nHer name is Kkachi.\n\n\"I got your message. Well, first I sang your message, because I sing everything, and then I read it, and then I sang it again with better notes, and THEN I decided to come, and what is this about a network? Because I've been doing rooftop collections in Korea for four hundred years and nobody has EVER written to me, which is frankly\u2014\"\n\nTanda holds up Maren's tooth.\n\n\"Let me show you something.\"\n\nShe holds it to the moonlight. The story plays.\n\nA beetle named General. A caterpillar named Sleeping Steven. An ant named Try Again.\n\nKkachi goes quiet.\n\nIt is the first time Kkachi has been quiet in four hundred years.\n\n\"That's hers,\" the magpie says softly. \"That child's. That's her whole\u2014\"\n\n\"Yes.\"\n\n\"And every tooth carries\u2014\"\n\n\"Every tooth. Every child. Every name they gave to something nobody else noticed.\"\n\nKkachi is quiet for almost ten seconds, which is a record.\n\n\"What happens to the stories?\" she asks.\n\n\"Right now? They disappear.\"\n\nThe magpie looks at the tooth for a long time. Her feathers flatten. Sleek. Not performing. Listening.\n\n\"What if they didn't?\" Kkachi says. \"What if the child could keep their own story?\"",
-      },
-    },
-    // FRAME 18 - FINALE
-    {
-      id: 'tanda-17',
-      layout: 'prose',
-      background: '/story-assets/tanda/f18-finale.png',
-      dialogue: {
-        text: "Tanda's wings glow. Not the steady gold of a century ago. But warm. The kind that means something just started.\n\nIn three days, the mouse in Madrid will write back with a fourteen-page letter about his organizational methods.\n\nThe hyena will not write back at all. But the stone on Maren's windowsill will be moved, just slightly, by something large that came in the night. A claw-mark next to her scratch. It means yes.\n\nTanda knows about Maren. She knows about an ant named Try Again.\n\nRight now that is enough to begin.",
-      },
-    },
-    // EPILOGUE
-    {
-      id: 'tanda-18',
+      id: 'tanda-01-open',
       layout: 'narrative',
-      background: '/story-assets/tanda/f18-finale.png',
+      background: '/story-assets/tanda/frame-01.png',
       dialogue: {
-        text: "In the morning, Maren goes to the garden.\n\nGeneral is on the patio. Sleeping Steven has eaten another leaf. Try Again is carrying something enormous across the concrete, struggling, dropping it, picking it up.\n\nMaren sits on the porch step. She watches the ant.\n\nTry Again drops the crumb. Picks it up. Keeps going.\n\nMaren smiles.",
+        text: "Every night, while you\u2019re asleep, someone is working.",
       },
     },
-    // CTA
+    {
+      id: 'tanda-01-intro',
+      layout: 'prose',
+      background: '/story-assets/tanda/frame-01.png',
+      dialogue: {
+        text: "Her name is Tanda. She\u2019s the Tooth Fairy. And she\u2019s been doing this job for a very, very long time.\n\nTonight, she has eleven stops. But one of them is special.\n\nA boy named Timmy just lost his first tooth \u2014 and word travels fast on the playground.",
+      },
+    },
+    {
+      id: 'tanda-02-note',
+      layout: 'prose',
+      background: '/story-assets/tanda/frame-02.png',
+      dialogue: {
+        text: "Timmy\u2019s friend Marcus had told him something at recess.\n\n\u201CWhen your tooth falls out, don\u2019t just put it under your pillow. Draw a picture of it. Write the story of how it fell out. The Tooth Fairy has this NETWORK, and if you do that, she keeps it forever. Like, FOREVER forever.\u201D\n\nTimmy wasn\u2019t sure he believed Marcus. But he wasn\u2019t sure he didn\u2019t.\n\nSo he sat at his desk. Drew his tooth \u2014 wobbly lines, a little lopsided, perfect. And underneath, he wrote:\n\n\u201CDear Tooth Fairy. My tooth fell out eating an apple at lunch. Everyone laughed but I didn\u2019t cry. Please keep this safe. I want to remember this day when I\u2019m old. \u2014 Timmy, age 6\u201D",
+      },
+    },
+    {
+      id: 'tanda-03-sleep',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-03.png',
+      dialogue: {
+        text: "He put the tooth on top of the drawing, tucked the note underneath, and slid the whole thing under his pillow.",
+        subtext: "Eyes shut. Too tight. The kind of shut where you\u2019re trying so hard to sleep that your whole face scrunches up.",
+      },
+      secondDialogue: {
+        text: "Five minutes later, he was actually asleep.\n\nThat\u2019s when the window opened.",
+      },
+    },
+
+    /* ─── ACT 2 · TANDA ARRIVES ────────────────────────────────────── */
+    {
+      id: 'tanda-04-arrival',
+      layout: 'character',
+      background: '/story-assets/tanda/frame-04.png',
+      character: {
+        image: '/story-assets/tanda/frame-06.png',
+        position: 'right',
+        enter: 'right',
+      },
+      dialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#F3C57A',
+        text: "She always came through windows. Never doors.",
+        subtext: "Tanda slipped through the glass like she was made of moonlight. She\u2019d done this a thousand times. Ten thousand. But she never rushed the entrance. The entrance mattered.",
+      },
+    },
+    {
+      id: 'tanda-05-drift',
+      layout: 'prose',
+      background: '/story-assets/tanda/frame-05.png',
+      dialogue: {
+        text: "She hovered above Timmy\u2019s bed. He was drooling slightly. One sock on, one sock off. A stuffed dinosaur wedged under his arm.\n\nShe smiled. They were always the same, and always completely different.\n\nShe drifted down. Slow. The sparkle trail behind her wasn\u2019t for show \u2014 every particle was a piece of a previous tooth\u2019s story, still glowing. She carried them everywhere. Thousands of children\u2019s moments, floating in her wake.\n\nShe reached the pillow. Lifted the edge.\n\nAnd stopped.",
+      },
+    },
+    {
+      id: 'tanda-06-memories',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-06.png',
+      dialogue: {
+        text: "The tooth was there. Small. White. Still warm.",
+        subtext: "She picked it up and held it close. And everything opened.",
+      },
+      secondDialogue: {
+        speaker: 'Memories',
+        speakerColor: '#E8A867',
+        text: "First apple. Lunchroom laughter. Timmy\u2019s face going red, then realizing they were laughing WITH him. His first bike ride. The word \u201Cdinosaur\u201D \u2014 the first big word he ever learned. A bedtime song his mother sang so many times the tooth had memorized it too.",
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#F3C57A',
+        text: "\u201COh. You held a LOT, little one.\u201D",
+      },
+    },
+    {
+      id: 'tanda-07-note',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-07.png',
+      dialogue: {
+        text: "Then she saw it. Under the tooth. A drawing.",
+        subtext: "Wobbly crayon lines. A tooth with a smiley face on it.",
+      },
+      secondDialogue: {
+        speaker: "Timmy\u2019s note",
+        speakerColor: '#6B8CAE',
+        text: "\u201CPlease keep this safe. I want to remember this day when I\u2019m old.\u201D",
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#F3C57A',
+        text: "\u201CMarcus told you about the Network, didn\u2019t he? Smart kid, that Marcus.\u201D",
+      },
+    },
+    {
+      id: 'tanda-08-seal',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-08.png',
+      dialogue: {
+        text: "She held the tooth up. And it began to change.",
+        subtext: "Not the tooth itself \u2014 what was AROUND it. Timmy\u2019s drawing wrapped itself in light. His words burned golden at the edges.",
+      },
+      secondDialogue: {
+        text: "The drawing, the note, the tooth, the memories \u2014 all of it fusing together into something that couldn\u2019t be deleted, couldn\u2019t be lost, couldn\u2019t fade.\n\nA keepsake. Permanent. Timmy\u2019s first chapter, sealed in light.",
+      },
+    },
+
+    /* ─── ACT 3 · THE NETWORK ──────────────────────────────────────── */
+    {
+      id: 'tanda-09-chain',
+      layout: 'prose',
+      background: '/story-assets/tanda/frame-09.png',
+      dialogue: {
+        text: "She carried it up. Through the ceiling. Through the sky. To the chain.\n\nThe chain isn\u2019t a place. It\u2019s a thread of golden light that stretches across the whole sky. Thousands of tiny glowing points \u2014 each one a tooth, each one a child\u2019s story, each one connected to the one before it and the one after it.\n\nSome glow warm gold. Some glow cool silver. Some pulse gently, like heartbeats. And the ones with drawings and notes? Those glow the brightest of all.\n\nTanda placed Timmy\u2019s tooth on the chain. It found its spot. Connected. And the glow spread \u2014 in both directions, lighting up teeth from children Timmy would never meet but was now permanently linked to.",
+      },
+    },
+    {
+      id: 'tanda-10-weight',
+      layout: 'prose',
+      background: '/story-assets/tanda/frame-10.png',
+      dialogue: {
+        text: "She paused at Timmy\u2019s window on the way back. Looked out at the sky. The chain was beautiful tonight.\n\nBut something weighed on her.\n\nEleven stops tonight. Tomorrow, eleven more. Every night, more children. More teeth. More moments that deserved to be kept. And she was carrying all of it \u2014 alone.\n\nNot because she had to. Because she always had. One fairy. One satchel. One sky.\n\nBut looking at Timmy\u2019s tooth glowing on the chain, she felt something shift. One tooth glowing alone is beautiful. A tooth connected to others \u2014 linked, permanent, part of something bigger \u2014 that was something else entirely.",
+      },
+    },
+    {
+      id: 'tanda-11-network',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-11.png',
+      dialogue: {
+        text: "She wasn\u2019t the only one doing this. She\u2019d never been the only one.",
+        subtext: "She\u2019d known it for a long time. But she\u2019d never acted on it.",
+      },
+      secondDialogue: {
+        speaker: 'Every continent',
+        speakerColor: '#E8A867',
+        text: "In Spain, a mouse named P\u00e9rez had been collecting teeth since 1894. In Korea, a magpie sang children\u2019s teeth off rooftops. In Ethiopia, children handed their teeth to a hyena in the dark. In Romania, a crow forged milk teeth into steel. In India, a peacock danced for the ones it deemed worthy.",
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#F3C57A',
+        text: "\u201CWhat if every tooth, from every tradition, from every child in the world, was connected? Not the same \u2014 connected. Each one glowing brighter because of the ones beside it.\u201D",
+      },
+    },
+
+    /* ─── ACT 4 · MORNING ──────────────────────────────────────────── */
+    {
+      id: 'tanda-12-coin',
+      layout: 'dramatic',
+      background: '/story-assets/tanda/frame-12.png',
+      dialogue: {
+        text: "She floated back to Timmy\u2019s bed. Looked at him one more time. Sock still off. Dinosaur still wedged.",
+        subtext: "She placed a coin beside his pillow. Not under \u2014 beside. Where he\u2019d see it first thing. And next to the coin, a note. Tiny. Golden handwriting.",
+      },
+      secondDialogue: {
+        speaker: 'Tanda\u2019s note',
+        speakerColor: '#F3C57A',
+        text: "\u201CDear Timmy. Your tooth was one of the brightest I\u2019ve ever carried. Your drawing made it glow even brighter. I\u2019m keeping it safe on the chain \u2014 forever, like you asked. And Timmy? Tell Marcus he was right. The Network is real. \u2014 Tanda\u201D",
+      },
+    },
+    {
+      id: 'tanda-13-wake',
+      layout: 'victory',
+      background: '/story-assets/tanda/frame-13.png',
+      dialogue: {
+        text: "Timmy woke up.",
+        subtext: "Reached under his pillow. The tooth was gone. The drawing was gone.\n\nBut beside his pillow: a coin. And a note. In handwriting so small and golden it looked like it was written with a sunbeam.",
+      },
+      secondDialogue: {
+        speaker: 'Timmy',
+        speakerColor: '#E8A867',
+        text: "\u201CMOM! MOM! She wrote BACK! She said Marcus was RIGHT! She said my drawing made it GLOW!\u201D",
+      },
+      thirdDialogue: {
+        text: "His mother came in. Read the note. Something in her face changed. She wasn\u2019t playing along anymore. This felt real.\n\nShe took a photo of Timmy\u2019s gap-toothed grin. And then she saw something on her phone \u2014 a page. Timmy\u2019s tooth. His drawing. His note. All of it, saved. Permanent. Glowing.\n\nShe sent it to Timmy\u2019s grandmother before she even finished her coffee.",
+      },
+    },
+    {
+      id: 'tanda-14-onward',
+      layout: 'narrative',
+      background: '/story-assets/tanda/frame-14.png',
+      dialogue: {
+        text: "Somewhere above the rooftops, Tanda was already moving. Ten more stops tonight. Three blank letters in her pocket \u2014 to a mouse, a magpie, a leprechaun who\u2019d been doing this longer than anyone.\n\nThe Network was already out there. It was time to connect it.",
+      },
+    },
+
+    /* ─── CTA ─────────────────────────────────────────────────────── */
     {
       id: 'tanda-cta',
       layout: 'cta',
-      background: '/story-assets/tanda/f18-finale.png',
+      background: '/story-assets/tanda/frame-14.png',
       dialogue: {
-        text: 'Every tooth carries a story. Every story deserves to be kept.',
+        text: 'Deposit your tooth, your photo, and your story.',
+        subtext: "Your child\u2019s first tooth is more than a tooth. Keep it forever.",
       },
       isChoice: true,
-      choiceText: 'Draw a tooth for this story',
-      choiceHref: '/toothfairy/app/draw?from=story&slug=tanda',
+      choiceText: 'See the keepsake \u2192',
+      choiceHref: '/toothfairy/keepsake/preview',
     },
   ],
 }
