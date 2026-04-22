@@ -77,8 +77,10 @@ export default function DrawPage() {
               : 'oklch(72% 0.145 75 / 0.15)',
             borderBottom: `1px solid ${accentColor || 'oklch(72% 0.145 75 / 0.35)'}`,
             color: 'oklch(30% 0.035 65)',
+            // Matches tfn app layout font var; fallback kept conservative.
             fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
-            fontSize: 13,
+            // Responsive micro-copy — 12px baseline, nudges up on wider viewports.
+            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
             letterSpacing: '0.01em',
             textAlign: 'center',
           }}
