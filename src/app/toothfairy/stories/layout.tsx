@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { StoriesThemeLock } from '@/components/toothfairy/nav/stories-theme-lock'
 
 export const metadata: Metadata = {
   title: 'Stories from Around the World | Tooth Fairy Network',
@@ -12,14 +13,9 @@ export default function StoriesLayout({
   children: React.ReactNode
 }) {
   return (
-    <div
-      style={{
-        background: 'oklch(12% 0.04 270)',
-        color: 'oklch(93% 0.01 80)',
-        minHeight: '100vh',
-      }}
-    >
+    <>
+      <StoriesThemeLock />
       {children}
-    </div>
+    </>
   )
 }

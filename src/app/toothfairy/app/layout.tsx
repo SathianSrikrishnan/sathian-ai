@@ -5,33 +5,32 @@ if (typeof window !== "undefined") {
   window.Buffer = window.Buffer || Buffer
 }
 
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react"
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui"
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom"
-import { Alegreya, Alegreya_Sans } from "next/font/google"
 
 import { ViewModeProvider, useViewMode } from "@/components/toothfairy/view-mode-context"
+import { useTheme } from "@/components/toothfairy/nav/theme-context"
 import "@solana/wallet-adapter-react-ui/styles.css"
 
-const alegreya = Alegreya({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400", "500", "700", "800"],
-  style: ["normal", "italic"],
-})
-const alegreyaSans = Alegreya_Sans({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["300", "400", "500", "700"],
-  style: ["normal", "italic"],
-})
+// Bridges the flow's view-mode toggle into the shared ThemeProvider so the
+// parent→child crossfade fires from the /toothfairy root. Keeps the local
+// ViewModeProvider intact so existing /app consumers keep working.
+function ThemeSync() {
+  const { mode } = useViewMode()
+  const { setMode } = useTheme()
+  useEffect(() => {
+    setMode(mode === "parent" ? "parent" : "child")
+  }, [mode, setMode])
+  return null
+}
 
-function ThemedWrapper({ children, className }: { children: React.ReactNode; className: string }) {
+function ThemedWrapper({ children }: { children: React.ReactNode }) {
   const { isParent } = useViewMode()
   return (
     <div
-      className={`${className} font-[var(--font-body)] min-h-screen antialiased transition-colors duration-300`}
+      className="font-[var(--font-body)] min-h-screen antialiased transition-colors duration-300"
       style={{
         background: isParent ? 'oklch(97.5% 0.01 80)' : 'oklch(12% 0.04 270)',
         color: isParent ? 'oklch(30% 0.035 65)' : 'oklch(93% 0.01 80)',
@@ -63,7 +62,8 @@ export default function ToothFairyAppLayout({
       <WP wallets={wallets} autoConnect>
         <WMP>
           <ViewModeProvider>
-            <ThemedWrapper className={`${alegreya.variable} ${alegreyaSans.variable}`}>
+            <ThemeSync />
+            <ThemedWrapper>
               {children}
             </ThemedWrapper>
           </ViewModeProvider>
