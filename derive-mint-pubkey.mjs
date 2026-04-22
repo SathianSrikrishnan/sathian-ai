@@ -1,0 +1,10 @@
+import { Keypair } from "@solana/web3.js";
+import { readFileSync } from "fs";
+const env = readFileSync(".env.local", "utf-8");
+const b64 = env.match(/TFN_MINT_SECRET_KEY=(.+)/)?.[1]?.trim();
+const bytes = new Uint8Array(Buffer.from(b64, "base64"));
+let kp;
+if (bytes.length === 64) kp = Keypair.fromSecretKey(bytes);
+else if (bytes.length === 32) kp = Keypair.fromSeed(bytes);
+else throw new Error(`Unexpected keypair length: ${bytes.length}`);
+console.log(kp.publicKey.toBase58());

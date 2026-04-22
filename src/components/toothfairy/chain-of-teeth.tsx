@@ -95,7 +95,14 @@ const KEEPSAKE_TITLES = [
   "The Big One", "Baby Tooth Goodbye", "Birthday Tooth", "School Day Tooth",
   "Sleepover Tooth", "Holiday Tooth", "Brave Day", "Morning Surprise",
   "Tooth #5", "The Wobbler", "Under the Pillow", "Big Kid Tooth",
-  "Recess Tooth", "Pizza Night Tooth", "Bedtime Surprise", "Camping Tooth"
+  "Recess Tooth", "Pizza Night Tooth", "Bedtime Surprise", "Camping Tooth",
+  "Swimming Lesson Tooth", "Dance Recital Tooth", "Grandma's House Tooth",
+  "Apple Bite Tooth", "Soccer Practice Tooth", "Snow Day Tooth",
+  "Road Trip Tooth", "Playground Tooth", "Science Fair Tooth",
+  "Movie Night Tooth", "Library Day Tooth", "First Day Tooth",
+  "Last Day Tooth", "Corn on the Cob Tooth", "Trampoline Tooth",
+  "Beach Day Tooth", "Halloween Tooth", "Thanksgiving Tooth",
+  "Spring Break Tooth", "Sunday Morning Tooth"
 ];
 
 const KEEPSAKE_DETAILS = [
@@ -104,7 +111,12 @@ const KEEPSAKE_DETAILS = [
   "Birthday Bonus — $30", "Love from Mom & Dad", "Nana's Surprise — $20",
   "Dad's Promise", "Grandma's Gift — $10", "Uncle John — $50",
   "Mom & Dad — $15", "Tooth Fairy Reward", "Special Delivery — $25",
-  "Grammy — $20", "Pop-Pop — $10", "Family Love — $35"
+  "Grammy — $20", "Pop-Pop — $10", "Family Love — $35",
+  "Abuela — $15", "Tía Rosa — $20", "From the Cousins — $10",
+  "Godmother — $25", "Papa — $30", "Mimi's Gift — $15",
+  "Aunt Sarah — $20", "Uncle Dev — $40", "Oma — $10",
+  "Great-Grandma — $25", "The Tooth Fairy — 0.5 SOL",
+  "Daddy — 1 SOL", "Mama — 2 SOL", "Grandpa Joe — $50",
 ];
 
 const WARM_PALETTES = [
@@ -116,33 +128,273 @@ const WARM_PALETTES = [
   ['#FDCB6E','#E17055','#00B894','#0984E3'],
   ['#FF6B6B','#FEC89A','#95D5B2','#8ECAE6'],
   ['#FFB5A7','#FCD5CE','#D8E2DC','#CCD5AE'],
+  ['#A8DADC','#457B9D','#F1FAEE','#E63946'],
+  ['#BDE0FE','#A2D2FF','#FFC8DD','#FFAFCC'],
+  ['#CDB4DB','#FFC8DD','#A2D2FF','#BDE0FE'],
+  ['#D4E09B','#F6F4D2','#CBDFBD','#F19C79'],
+  ['#264653','#2A9D8F','#E9C46A','#F4A261'],
+  ['#606C38','#DDA15E','#BC6C25','#FEFAE0'],
+  ['#7209B7','#B5179E','#F72585','#4361EE'],
+  ['#90BE6D','#F9C74F','#F8961E','#43AA8B'],
 ];
+
+// ─── Hero Cards — hand-crafted for the focus area ───────────────────────────
+interface HeroCardData {
+  name: string; title: string; detail: string; date: string;
+  artType: 'tooth-crown' | 'pizza-tooth' | 'gap-smile' | 'note-letter' | 'finger-paint' | 'robot-dog';
+}
+
+const HERO_CARDS: HeroCardData[] = [
+  { name: "Elias R.", title: '"Sparkle" — First Lost Tooth', detail: "From Dad — 2 SOL", date: "Mar 2026", artType: "tooth-crown" },
+  { name: "Mia K.", title: "Pizza Night Tooth", detail: "Grandma — $25", date: "Jan 2026", artType: "pizza-tooth" },
+  { name: "Noah T.", title: '"Sir Wobbly" — The Brave One', detail: "Uncle James — $50", date: "Feb 2026", artType: "gap-smile" },
+  { name: "Aria S.", title: "Birthday Tooth", detail: "Auntie Kim — $20", date: "Dec 2025", artType: "note-letter" },
+  { name: "Finn J.", title: "The Camping Tooth", detail: "Mom & Dad — $15", date: "Apr 2026", artType: "finger-paint" },
+  { name: "Liam W.", title: "My Next Tooth", detail: "Grandma — for your robot dog!", date: "Apr 2026", artType: "robot-dog" },
+];
+
+function generateHeroArt(hero: HeroCardData, artW: number, artH: number): HTMLCanvasElement {
+  const offscreen = document.createElement('canvas');
+  offscreen.width = artW; offscreen.height = artH;
+  const c = offscreen.getContext('2d')!;
+
+  switch (hero.artType) {
+    case 'tooth-crown': {
+      // Gold/teal background, big tooth with crown and wings
+      const grad = c.createLinearGradient(0, 0, artW, artH);
+      grad.addColorStop(0, '#1a1040'); grad.addColorStop(1, '#0d1228');
+      c.fillStyle = grad; c.fillRect(0, 0, artW, artH);
+      // Tooth
+      const tx = artW * 0.5, ty = artH * 0.45, ts = artW * 0.22;
+      c.fillStyle = '#FFFDF0'; c.strokeStyle = '#f0c456'; c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(tx - ts, ty - ts * 0.2);
+      c.quadraticCurveTo(tx - ts, ty - ts * 1.0, tx - ts * 0.3, ty - ts * 1.1);
+      c.quadraticCurveTo(tx, ty - ts * 1.3, tx + ts * 0.3, ty - ts * 1.1);
+      c.quadraticCurveTo(tx + ts, ty - ts * 1.0, tx + ts, ty - ts * 0.2);
+      c.quadraticCurveTo(tx + ts * 0.8, ty + ts * 0.6, tx + ts * 0.4, ty + ts * 1.0);
+      c.quadraticCurveTo(tx + ts * 0.1, ty + ts * 0.5, tx, ty + ts * 0.7);
+      c.quadraticCurveTo(tx - ts * 0.1, ty + ts * 0.5, tx - ts * 0.4, ty + ts * 1.0);
+      c.quadraticCurveTo(tx - ts * 0.8, ty + ts * 0.6, tx - ts, ty - ts * 0.2);
+      c.closePath(); c.fill(); c.stroke();
+      // Crown
+      c.fillStyle = '#f0c456';
+      c.beginPath();
+      c.moveTo(tx - ts * 0.5, ty - ts * 1.1);
+      c.lineTo(tx - ts * 0.4, ty - ts * 1.5);
+      c.lineTo(tx - ts * 0.15, ty - ts * 1.25);
+      c.lineTo(tx, ty - ts * 1.6);
+      c.lineTo(tx + ts * 0.15, ty - ts * 1.25);
+      c.lineTo(tx + ts * 0.4, ty - ts * 1.5);
+      c.lineTo(tx + ts * 0.5, ty - ts * 1.1);
+      c.closePath(); c.fill();
+      // Wings
+      c.globalAlpha = 0.3;
+      c.fillStyle = '#5adace';
+      c.beginPath(); c.ellipse(tx - ts * 1.3, ty - ts * 0.2, ts * 0.7, ts * 0.35, -0.3, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.ellipse(tx + ts * 1.3, ty - ts * 0.2, ts * 0.7, ts * 0.35, 0.3, 0, Math.PI * 2); c.fill();
+      c.globalAlpha = 1;
+      // Sparkles
+      for (let i = 0; i < 12; i++) {
+        const sx = Math.random() * artW, sy = Math.random() * artH;
+        drawMiniStar(c, sx, sy, 1.5 + Math.random() * 2, '#f0c456' + (Math.random() > 0.5 ? 'C0' : '80'));
+      }
+      break;
+    }
+    case 'pizza-tooth': {
+      // Warm background, tooth on a purple pillow with sparkle doodles
+      c.fillStyle = '#2a1a3a'; c.fillRect(0, 0, artW, artH);
+      // Pillow
+      c.fillStyle = '#9B7FBF';
+      c.beginPath();
+      c.roundRect(artW * 0.15, artH * 0.35, artW * 0.7, artH * 0.4, artW * 0.08);
+      c.fill();
+      c.fillStyle = '#B5A0D0';
+      c.beginPath();
+      c.roundRect(artW * 0.18, artH * 0.38, artW * 0.64, artH * 0.34, artW * 0.06);
+      c.fill();
+      // Small tooth on pillow
+      const tx2 = artW * 0.5, ty2 = artH * 0.52, ts2 = artW * 0.12;
+      c.fillStyle = '#FFFDF0'; c.strokeStyle = '#E0D5C5'; c.lineWidth = 1;
+      c.beginPath();
+      c.moveTo(tx2 - ts2, ty2); c.quadraticCurveTo(tx2, ty2 - ts2 * 1.5, tx2 + ts2, ty2);
+      c.quadraticCurveTo(tx2 + ts2 * 0.5, ty2 + ts2, tx2, ty2 + ts2 * 0.8);
+      c.quadraticCurveTo(tx2 - ts2 * 0.5, ty2 + ts2, tx2 - ts2, ty2);
+      c.closePath(); c.fill(); c.stroke();
+      // Purple sparkle doodles
+      c.strokeStyle = '#C4A8E0'; c.lineWidth = 2; c.lineCap = 'round';
+      for (let i = 0; i < 8; i++) {
+        const sx = artW * 0.1 + Math.random() * artW * 0.8;
+        const sy = artH * 0.05 + Math.random() * artH * 0.25;
+        drawMiniStar(c, sx, sy, 2 + Math.random() * 3, '#C4A8E0B0');
+      }
+      break;
+    }
+    case 'gap-smile': {
+      // Bright orange/yellow bg, stick figure with gap-tooth grin
+      c.fillStyle = '#FFF3E0'; c.fillRect(0, 0, artW, artH);
+      const cx = artW * 0.5, cy = artH * 0.4, r = artW * 0.2;
+      // Head
+      c.fillStyle = '#FFDAB9'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill();
+      // Eyes
+      c.fillStyle = '#4A3728';
+      c.beginPath(); c.arc(cx - r * 0.3, cy - r * 0.15, r * 0.08, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(cx + r * 0.3, cy - r * 0.15, r * 0.08, 0, Math.PI * 2); c.fill();
+      // Gap-tooth smile
+      c.strokeStyle = '#C0392B'; c.lineWidth = r * 0.08; c.lineCap = 'round';
+      c.beginPath(); c.arc(cx, cy + r * 0.05, r * 0.35, 0.1, Math.PI - 0.1); c.stroke();
+      // Gap (white rectangle over the smile)
+      c.fillStyle = '#FFF3E0';
+      c.fillRect(cx - r * 0.08, cy + r * 0.1, r * 0.16, r * 0.2);
+      // Blush
+      c.fillStyle = '#FFB6C150';
+      c.beginPath(); c.arc(cx - r * 0.5, cy + r * 0.15, r * 0.12, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(cx + r * 0.5, cy + r * 0.15, r * 0.12, 0, Math.PI * 2); c.fill();
+      // Hair (curly)
+      c.fillStyle = '#8B6B4A';
+      for (let h = 0; h < 9; h++) {
+        const angle = -Math.PI * 0.85 + (h / 8) * Math.PI * 0.7;
+        c.beginPath(); c.arc(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r * 0.85 - r * 0.15, r * 0.22, 0, Math.PI * 2); c.fill();
+      }
+      // Body
+      c.fillStyle = '#FF8C42';
+      c.beginPath(); c.ellipse(cx, cy + r * 1.6, r * 0.8, r * 0.5, 0, Math.PI, 0); c.fill();
+      // Stars
+      drawMiniStar(c, artW * 0.15, artH * 0.15, 4, '#FFD16690');
+      drawMiniStar(c, artW * 0.85, artH * 0.1, 3, '#06D6A090');
+      break;
+    }
+    case 'note-letter': {
+      // Notebook paper with kid handwriting
+      c.fillStyle = '#FFFDF7'; c.fillRect(0, 0, artW, artH);
+      c.strokeStyle = '#E8E0D8'; c.lineWidth = 0.5;
+      for (let l = 0; l < 7; l++) {
+        const ly = artH * 0.12 + l * artH * 0.12;
+        c.beginPath(); c.moveTo(artW * 0.08, ly); c.lineTo(artW * 0.92, ly); c.stroke();
+      }
+      // "Dear Tooth Fairy" in wobbly text
+      c.fillStyle = '#3A3025'; c.font = `bold ${Math.round(artW * 0.09)}px Georgia, serif`;
+      c.fillText("Dear Tooth Fairy,", artW * 0.1, artH * 0.2);
+      c.font = `${Math.round(artW * 0.07)}px Georgia, serif`;
+      c.fillStyle = '#5A5045';
+      c.fillText("I lost my tooth at", artW * 0.1, artH * 0.33);
+      c.fillText("my birthday party!", artW * 0.1, artH * 0.45);
+      c.fillText("It just went pop!", artW * 0.1, artH * 0.57);
+      // Small tooth doodle
+      c.fillStyle = '#f0c45660';
+      c.beginPath(); c.arc(artW * 0.78, artH * 0.7, artW * 0.08, 0, Math.PI * 2); c.fill();
+      drawMiniStar(c, artW * 0.78, artH * 0.7, 4, '#f0c456');
+      break;
+    }
+    case 'finger-paint': {
+      // Abstract finger painting — outdoorsy colors, white tooth shape center
+      const grad = c.createLinearGradient(0, 0, artW, artH);
+      grad.addColorStop(0, '#2d5016'); grad.addColorStop(0.5, '#1a3a0a'); grad.addColorStop(1, '#0a2a1a');
+      c.fillStyle = grad; c.fillRect(0, 0, artW, artH);
+      // Finger paint blobs
+      const colors = ['#4CAF50','#8BC34A','#795548','#2196F3','#FFEB3B','#FF9800'];
+      for (let i = 0; i < 20; i++) {
+        c.fillStyle = colors[Math.floor(Math.random() * colors.length)] + '80';
+        c.beginPath();
+        c.arc(Math.random() * artW, Math.random() * artH, 4 + Math.random() * 12, 0, Math.PI * 2);
+        c.fill();
+      }
+      // White tooth shape center
+      const tx3 = artW * 0.5, ty3 = artH * 0.45, ts3 = artW * 0.15;
+      c.fillStyle = '#FFFFFF'; c.globalAlpha = 0.9;
+      c.beginPath();
+      c.moveTo(tx3 - ts3, ty3); c.quadraticCurveTo(tx3, ty3 - ts3 * 1.5, tx3 + ts3, ty3);
+      c.quadraticCurveTo(tx3 + ts3 * 0.5, ty3 + ts3, tx3, ty3 + ts3 * 0.8);
+      c.quadraticCurveTo(tx3 - ts3 * 0.5, ty3 + ts3, tx3 - ts3, ty3);
+      c.closePath(); c.fill();
+      c.globalAlpha = 1;
+      break;
+    }
+    case 'robot-dog': {
+      // Dark blue bg, child's drawing of a robot dog
+      c.fillStyle = '#0d1228'; c.fillRect(0, 0, artW, artH);
+      // Robot dog body (boxy)
+      const bx = artW * 0.3, by = artH * 0.35, bw = artW * 0.4, bh = artH * 0.25;
+      c.fillStyle = '#A0A0B0'; c.strokeStyle = '#5adace'; c.lineWidth = 2;
+      c.fillRect(bx, by, bw, bh); c.strokeRect(bx, by, bw, bh);
+      // Head
+      c.fillRect(bx + bw - artW * 0.05, by - artH * 0.15, artW * 0.18, artH * 0.18);
+      c.strokeRect(bx + bw - artW * 0.05, by - artH * 0.15, artW * 0.18, artH * 0.18);
+      // Eyes (glowing)
+      c.fillStyle = '#5adace';
+      c.beginPath(); c.arc(bx + bw + artW * 0.02, by - artH * 0.06, 3, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(bx + bw + artW * 0.08, by - artH * 0.06, 3, 0, Math.PI * 2); c.fill();
+      // Legs
+      c.fillStyle = '#A0A0B0';
+      c.fillRect(bx + artW * 0.03, by + bh, artW * 0.06, artH * 0.15);
+      c.fillRect(bx + bw - artW * 0.09, by + bh, artW * 0.06, artH * 0.15);
+      c.strokeRect(bx + artW * 0.03, by + bh, artW * 0.06, artH * 0.15);
+      c.strokeRect(bx + bw - artW * 0.09, by + bh, artW * 0.06, artH * 0.15);
+      // Tail (antenna)
+      c.strokeStyle = '#f0c456'; c.lineWidth = 2; c.lineCap = 'round';
+      c.beginPath(); c.moveTo(bx, by + bh * 0.3);
+      c.quadraticCurveTo(bx - artW * 0.1, by - artH * 0.05, bx - artW * 0.05, by - artH * 0.1);
+      c.stroke();
+      c.fillStyle = '#f0c456'; c.beginPath(); c.arc(bx - artW * 0.05, by - artH * 0.1, 3, 0, Math.PI * 2); c.fill();
+      // Hearts around
+      c.fillStyle = '#EF476F80'; c.font = `${Math.round(artW * 0.1)}px sans-serif`;
+      c.fillText('♥', artW * 0.1, artH * 0.2); c.fillText('♥', artW * 0.75, artH * 0.15);
+      // Stars
+      drawMiniStar(c, artW * 0.15, artH * 0.8, 3, '#f0c45690');
+      drawMiniStar(c, artW * 0.85, artH * 0.75, 2, '#5adace90');
+      break;
+    }
+  }
+  return offscreen;
+}
 
 const SKIN_COLORS = ['#FFDAB9','#F5D0C5','#DEB887','#FFE4C4','#FFCBA4','#D2A679','#C68E5B','#8D5524','#A0522D'];
 const HAIR_COLORS = ['#4A3728','#8B6B4A','#2C1810','#D4A574','#1A1A2E','#C0392B','#E67E22','#2E1A0E'];
 
+// Legacy fairy styles (kept for intro fairy)
 const FAIRY_STYLES = [
   { hair: '#D4A574', dress1: '#2AB5A0', dress2: '#5adace', glowColor: 'rgba(240,196,86,0.6)', glowR: 'rgba(240,196,86,0)' },
   { hair: '#A0522D', dress1: '#9B7FBF', dress2: '#C4A8E0', glowColor: 'rgba(90,218,206,0.6)', glowR: 'rgba(90,218,206,0)' },
   { hair: '#1A1A2E', dress1: '#7ECDA0', dress2: '#B5EAD7', glowColor: 'rgba(240,196,86,0.5)', glowR: 'rgba(240,196,86,0)' }
 ];
 
-const DEPTH_ROWS = 18;
-const CARD_BASE_W = 80;
-const CARD_BASE_H = 108;
-const FAIRY_COUNT = 3;
+// 16 TFN Characters — graphic bold style, unique silhouettes
+interface CharStyle { name: string; primary: string; secondary: string; glow: string; glowEnd: string; }
+const CHARACTERS: CharStyle[] = [
+  { name: 'Tanda',        primary: '#f0c456', secondary: '#5adace', glow: 'rgba(240,196,86,0.6)',  glowEnd: 'rgba(240,196,86,0)' },
+  { name: 'Rolling Calf', primary: '#E74C3C', secondary: '#FF6B6B', glow: 'rgba(231,76,60,0.5)',   glowEnd: 'rgba(231,76,60,0)' },
+  { name: 'Peacock',      primary: '#5adace', secondary: '#2ECC71', glow: 'rgba(90,218,206,0.5)',  glowEnd: 'rgba(90,218,206,0)' },
+  { name: 'Magpie',       primary: '#3498DB', secondary: '#ECF0F1', glow: 'rgba(52,152,219,0.5)',  glowEnd: 'rgba(52,152,219,0)' },
+  { name: 'Pérez',        primary: '#E8A820', secondary: '#C0392B', glow: 'rgba(232,168,32,0.5)',  glowEnd: 'rgba(232,168,32,0)' },
+  { name: 'Hammaskeiju',  primary: '#7CC6FE', secondary: '#E8F4FD', glow: 'rgba(124,198,254,0.5)', glowEnd: 'rgba(124,198,254,0)' },
+  { name: 'Crow',         primary: '#2C3E50', secondary: '#f0c456', glow: 'rgba(240,196,86,0.3)',  glowEnd: 'rgba(240,196,86,0)' },
+  { name: 'Tooth Kami',   primary: '#F8C8DC', secondary: '#FFFFFF', glow: 'rgba(248,200,220,0.5)', glowEnd: 'rgba(248,200,220,0)' },
+  { name: 'Hyena',        primary: '#E67E22', secondary: '#F39C12', glow: 'rgba(230,126,34,0.5)',  glowEnd: 'rgba(230,126,34,0)' },
+  { name: 'Beaver',       primary: '#8B4513', secondary: '#D2691E', glow: 'rgba(139,69,19,0.4)',   glowEnd: 'rgba(139,69,19,0)' },
+  { name: 'Anna Bogle',   primary: '#2ECC71', secondary: '#27AE60', glow: 'rgba(46,204,113,0.5)', glowEnd: 'rgba(46,204,113,0)' },
+  { name: 'Venice Triple', primary: '#27AE60', secondary: '#3498DB', glow: 'rgba(39,174,96,0.4)', glowEnd: 'rgba(39,174,96,0)' },
+  { name: 'Tooth Worm',   primary: '#C0392B', secondary: '#E74C3C', glow: 'rgba(192,57,43,0.4)',   glowEnd: 'rgba(192,57,43,0)' },
+  { name: 'Banyan Tree',  primary: '#228B22', secondary: '#006400', glow: 'rgba(34,139,34,0.4)',   glowEnd: 'rgba(34,139,34,0)' },
+  { name: 'Crossroads',   primary: '#9B59B6', secondary: '#8E44AD', glow: 'rgba(155,89,182,0.5)', glowEnd: 'rgba(155,89,182,0)' },
+  { name: 'Sun',          primary: '#F39C12', secondary: '#F1C40F', glow: 'rgba(243,156,18,0.6)',  glowEnd: 'rgba(243,156,18,0)' },
+];
+
+const DEPTH_ROWS = 22;
+const CARD_BASE_W = 75;
+const CARD_BASE_H = 102;
+const FAIRY_COUNT = 8;
 const STAR_COUNT = 650;
 
 const TIMELINE = {
-  holdEnd: 0.5,
-  fairyEnter: 0.5,
-  fairyArrive: 2.0,
-  mintEnd: 3.5,
-  pauseEnd: 4.0,
-  zoomStart: 4.0,
-  zoomEnd: 10.0,
-  titleFade: 10.0,
-  ctaFade: 11.0
+  holdEnd: 0.3,
+  fairyEnter: 0.3,
+  fairyArrive: 1.0,
+  mintEnd: 1.8,
+  pauseEnd: 2.0,
+  zoomStart: 2.0,
+  zoomEnd: 4.0,
+  titleFade: 3.5,
+  ctaFade: 4.5
 };
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
@@ -172,11 +424,13 @@ function childDate(i: number) {
 }
 function getCardType(index: number) {
   const r = hashIdx(index + 999);
-  if (r < 0.30) return 'portrait';
-  if (r < 0.50) return 'tooth';
-  if (r < 0.70) return 'artwork';
-  if (r < 0.90) return 'note';
-  return 'photo';
+  if (r < 0.20) return 'portrait';
+  if (r < 0.35) return 'tooth';
+  if (r < 0.55) return 'artwork';
+  if (r < 0.70) return 'note';
+  if (r < 0.80) return 'photo';
+  if (r < 0.90) return 'landscape';
+  return 'abstract';
 }
 
 // ─── Card art generation ──────────────────────────────────────────────────────
@@ -202,7 +456,9 @@ function generateCardArt(index: number, artW: number, artH: number): HTMLCanvasE
   const palette = WARM_PALETTES[Math.floor(hashIdx(index + 100) * WARM_PALETTES.length)];
   const type = getCardType(index);
 
-  c.fillStyle = '#FFF8F0';
+  // Vary the background slightly per card to reduce duplicate feel
+  const bgVariants = ['#FFF8F0','#FFFDF7','#FFF5EB','#F8F4FF','#F0F7FF','#FFF0F5','#F5FFF0','#FFFFF0'];
+  c.fillStyle = bgVariants[index % bgVariants.length];
   c.fillRect(0, 0, artW, artH);
 
   let seed = index * 7919;
@@ -426,12 +682,100 @@ function generateCardArt(index: number, artW: number, artH: number): HTMLCanvasE
       const border = artW * 0.06;
       c.fillStyle = grad;
       c.fillRect(border, border, artW - border*2, artH - border*2);
-      c.globalAlpha = 0.4;
-      c.fillStyle = palette[3];
-      c.beginPath();
-      c.arc(artW * 0.4 + srand() * artW * 0.2, artH * 0.5, artW * 0.2, 0, Math.PI * 2);
-      c.fill();
+      // Varied shape overlays
+      c.globalAlpha = 0.35;
+      const shapeType = Math.floor(srand() * 3);
+      if (shapeType === 0) {
+        c.fillStyle = palette[3];
+        c.beginPath(); c.arc(artW * (0.3 + srand() * 0.4), artH * (0.3 + srand() * 0.4), artW * (0.12 + srand() * 0.15), 0, Math.PI * 2); c.fill();
+      } else if (shapeType === 1) {
+        c.fillStyle = palette[0];
+        c.fillRect(artW * 0.2, artH * 0.3, artW * 0.6, artH * 0.4);
+      } else {
+        c.fillStyle = palette[2];
+        c.beginPath();
+        c.moveTo(artW * 0.5, artH * 0.15);
+        c.lineTo(artW * 0.85, artH * 0.75);
+        c.lineTo(artW * 0.15, artH * 0.75);
+        c.closePath(); c.fill();
+      }
       c.globalAlpha = 1;
+      break;
+    }
+    case 'landscape': {
+      // Scenic child drawing — sky, hill, sun/moon, tree or house
+      const skyColor = srand() > 0.5 ? '#87CEEB' : '#1a1040';
+      const isNight = skyColor === '#1a1040';
+      c.fillStyle = skyColor; c.fillRect(0, 0, artW, artH);
+      // Ground
+      c.fillStyle = isNight ? '#1a3a0a' : '#90BE6D';
+      c.beginPath();
+      c.moveTo(0, artH * 0.65);
+      c.quadraticCurveTo(artW * 0.3, artH * (0.5 + srand() * 0.15), artW * 0.5, artH * 0.6);
+      c.quadraticCurveTo(artW * 0.7, artH * (0.55 + srand() * 0.15), artW, artH * 0.62);
+      c.lineTo(artW, artH); c.lineTo(0, artH); c.closePath(); c.fill();
+      // Sun or moon
+      if (isNight) {
+        c.fillStyle = '#FFFDE7'; c.beginPath();
+        c.arc(artW * 0.8, artH * 0.18, artW * 0.08, 0, Math.PI * 2); c.fill();
+        for (let s = 0; s < 15; s++) drawMiniStar(c, srand() * artW, srand() * artH * 0.5, 1 + srand() * 1.5, '#FFFDE7A0');
+      } else {
+        c.fillStyle = '#FFD166'; c.beginPath();
+        c.arc(artW * (0.2 + srand() * 0.6), artH * 0.15, artW * 0.1, 0, Math.PI * 2); c.fill();
+        // Rays
+        c.strokeStyle = '#FFD16680'; c.lineWidth = 1.5;
+        for (let r2 = 0; r2 < 8; r2++) {
+          const a = (r2 / 8) * Math.PI * 2;
+          c.beginPath(); c.moveTo(artW * 0.3 + Math.cos(a) * artW * 0.12, artH * 0.15 + Math.sin(a) * artW * 0.12);
+          c.lineTo(artW * 0.3 + Math.cos(a) * artW * 0.17, artH * 0.15 + Math.sin(a) * artW * 0.17); c.stroke();
+        }
+      }
+      // Tree or house
+      if (srand() > 0.5) {
+        const treeX = artW * (0.15 + srand() * 0.7);
+        c.fillStyle = '#795548'; c.fillRect(treeX - artW * 0.02, artH * 0.4, artW * 0.04, artH * 0.25);
+        c.fillStyle = palette[2] + 'C0'; c.beginPath(); c.arc(treeX, artH * 0.35, artW * 0.1, 0, Math.PI * 2); c.fill();
+      } else {
+        const hx = artW * (0.3 + srand() * 0.3);
+        c.fillStyle = palette[0] + 'B0'; c.fillRect(hx, artH * 0.45, artW * 0.2, artH * 0.2);
+        c.fillStyle = palette[1] + 'C0';
+        c.beginPath(); c.moveTo(hx - artW * 0.03, artH * 0.45); c.lineTo(hx + artW * 0.1, artH * 0.32); c.lineTo(hx + artW * 0.23, artH * 0.45); c.fill();
+      }
+      break;
+    }
+    case 'abstract': {
+      // Dots, spirals, or geometric patterns — finger painting style
+      const bgTint = palette[Math.floor(srand() * palette.length)];
+      c.fillStyle = bgTint + '15'; c.fillRect(0, 0, artW, artH);
+      const pattern = Math.floor(srand() * 3);
+      if (pattern === 0) {
+        // Dot field
+        for (let i = 0; i < 30; i++) {
+          c.fillStyle = palette[Math.floor(srand() * palette.length)] + (srand() > 0.5 ? 'A0' : '60');
+          c.beginPath(); c.arc(srand() * artW, srand() * artH, 2 + srand() * 8, 0, Math.PI * 2); c.fill();
+        }
+      } else if (pattern === 1) {
+        // Concentric circles
+        const cx2 = artW * (0.3 + srand() * 0.4), cy2 = artH * (0.3 + srand() * 0.4);
+        for (let r2 = 6; r2 > 0; r2--) {
+          c.fillStyle = palette[r2 % palette.length] + '50';
+          c.beginPath(); c.arc(cx2, cy2, artW * 0.06 * r2, 0, Math.PI * 2); c.fill();
+        }
+      } else {
+        // Spiral scribble
+        c.strokeStyle = palette[Math.floor(srand() * palette.length)] + '90';
+        c.lineWidth = 2 + srand() * 3; c.lineCap = 'round';
+        c.beginPath();
+        let angle = 0, radius = 3;
+        const cx3 = artW * 0.5, cy3 = artH * 0.5;
+        c.moveTo(cx3, cy3);
+        for (let i = 0; i < 60; i++) {
+          angle += 0.3 + srand() * 0.2;
+          radius += 0.8 + srand() * 0.5;
+          c.lineTo(cx3 + Math.cos(angle) * radius, cy3 + Math.sin(angle) * radius);
+        }
+        c.stroke();
+      }
       break;
     }
   }
@@ -469,7 +813,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
   const [showText, setShowText] = useState(false);
   const [showCta, setShowCta] = useState(false);
   const [showCounter, setShowCounter] = useState(false);
-  const [counterValue, setCounterValue] = useState(12847);
+  const [counterValue, setCounterValue] = useState(47);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -497,7 +841,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
       textShown: false,
       zoomOutComplete: false,
       fairyStartTime: 0,
-      counterValue: 12847,
+      counterValue: 47,
       lastCounterIncrement: 0,
       rafId: 0,
       initialized: false,
@@ -551,8 +895,8 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
         const alphaMax = lerp(0.38, 1.0, perspT);
         const cardW = CARD_BASE_W * scale;
         const cardH = CARD_BASE_H * scale;
-        const rowCols = Math.floor(lerp(38, 22, perspT));
-        const spacing = cardW * 1.15;
+        const rowCols = Math.floor(lerp(48, 28, perspT));
+        const spacing = cardW * 1.08;
         const totalRowWidth = rowCols * spacing;
         const startX = -totalRowWidth / 2;
         const rowCards: Card[] = [];
@@ -571,10 +915,27 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
 
           const artPixelW = Math.round(cardW * 1.5);
           const artPixelH = Math.round(cardH * 0.60 * 1.5);
-          const artCanvas = generateCardArt(cardIndex, artPixelW, artPixelH);
+
+          // Check if this card should be a hero card (center rows, center columns)
+          const isHeroRow = row >= 5 && row <= 8;
+          const isCenterCol = col >= Math.floor(rowCols / 2) - 3 && col <= Math.floor(rowCols / 2) + 3;
+          const heroSlotIndex = isHeroRow && isCenterCol
+            ? HERO_CARDS.findIndex((_, hi) => {
+                // Map hero cards to specific positions: focus=0, right=1, left=2, above-left=3, above-right=4, robot-dog=5
+                const targetRow = hi < 3 ? 6 : hi < 5 ? 5 : 7;
+                const centerCol = Math.floor(rowCols / 2);
+                const targetCol = hi === 0 ? centerCol : hi === 1 ? centerCol + 1 : hi === 2 ? centerCol - 1 : hi === 3 ? centerCol - 1 : hi === 4 ? centerCol + 1 : centerCol + 2;
+                return row === targetRow && col === targetCol;
+              })
+            : -1;
+          const hero = heroSlotIndex >= 0 ? HERO_CARDS[heroSlotIndex] : null;
+
+          const artCanvas = hero
+            ? generateHeroArt(hero, artPixelW, artPixelH)
+            : generateCardArt(cardIndex, artPixelW, artPixelH);
           const ctype = getCardType(cardIndex);
           const tintPalette = WARM_PALETTES[Math.floor(hashIdx(cardIndex + 100) * WARM_PALETTES.length)];
-          const borderColor = tintPalette[0];
+          const borderColor = hero ? '#f0c456' : tintPalette[0];
 
           const card: Card = {
             baseX: baseX + jitterX,
@@ -588,10 +949,10 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
             row, col,
             index: cardIndex,
             artCanvas,
-            name: childName(cardIndex),
-            title: keepsakeTitle(cardIndex),
-            detail: keepsakeDetail(cardIndex),
-            date: childDate(cardIndex),
+            name: hero ? hero.name : childName(cardIndex),
+            title: hero ? hero.title : keepsakeTitle(cardIndex),
+            detail: hero ? hero.detail : keepsakeDetail(cardIndex),
+            date: hero ? hero.date : childDate(cardIndex),
             cardType: ctype,
             borderColor,
             tilt: (hashIdx(cardIndex * 5 + 3) - 0.5) * 0.07,
@@ -819,20 +1180,20 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
       const avgY = (from.y + to.y) / 2;
       const distFromCenter = Math.sqrt(avgX * avgX + avgY * avgY);
       const nearBoost = clamp(1 - distFromCenter / 1200, 0, 1);
-      const threadAlpha = 0.35 + nearBoost * 0.5;
+      const threadAlpha = 0.5 + nearBoost * 0.5;
 
       ctx.save();
-      ctx.globalAlpha = alpha * threadAlpha * 0.25;
+      ctx.globalAlpha = alpha * threadAlpha * 0.35;
       ctx.strokeStyle = '#f0c456';
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 10;
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
       ctx.quadraticCurveTo(cpx, cpy, to.x, to.y);
       ctx.stroke();
 
-      ctx.globalAlpha = alpha * threadAlpha * 0.45;
+      ctx.globalAlpha = alpha * threadAlpha * 0.6;
       ctx.strokeStyle = '#f0c456';
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 5;
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
       ctx.quadraticCurveTo(cpx, cpy, to.x, to.y);
@@ -880,132 +1241,304 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
 
     function drawFairyCharacter(x: number, y: number, wingAngle: number, alpha: number, carrying: string | null, styleIndex: number, fairyScale: number) {
       if (alpha < 0.02) return;
-      const s = FAIRY_STYLES[styleIndex % 3];
+      const ch = CHARACTERS[styleIndex % CHARACTERS.length];
       const sz = fairyScale || 1;
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(sz, sz);
       ctx.globalAlpha = alpha;
 
-      const glowR = 25;
+      // Glow aura
+      const glowR = 22;
       const grd = ctx.createRadialGradient(0, -2, 3, 0, -2, glowR);
-      grd.addColorStop(0, s.glowColor);
-      grd.addColorStop(0.5, s.glowColor.replace(/[\d.]+\)$/, '0.15)'));
-      grd.addColorStop(1, s.glowR);
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(0, -2, glowR, 0, Math.PI * 2);
-      ctx.fill();
+      grd.addColorStop(0, ch.glow); grd.addColorStop(0.6, ch.glow.replace(/[\d.]+\)$/, '0.1)')); grd.addColorStop(1, ch.glowEnd);
+      ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(0, -2, glowR, 0, Math.PI * 2); ctx.fill();
 
       const wf = Math.sin(wingAngle) * 0.4 + 0.6;
-      ctx.globalAlpha = alpha * 0.45;
-
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.strokeStyle = s.dress1 + '60';
-      ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      ctx.ellipse(-9 * wf, -8, 10 * wf, 5, -0.25, 0, Math.PI * 2);
-      ctx.fill(); ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.15)';
-      ctx.beginPath();
-      ctx.ellipse(-7 * wf, -9, 6 * wf, 3, -0.25, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.strokeStyle = s.dress1 + '60';
-      ctx.beginPath();
-      ctx.ellipse(9 * wf, -8, 10 * wf, 5, 0.25, 0, Math.PI * 2);
-      ctx.fill(); ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.15)';
-      ctx.beginPath();
-      ctx.ellipse(7 * wf, -9, 6 * wf, 3, 0.25, 0, Math.PI * 2);
-      ctx.fill();
-
       ctx.globalAlpha = alpha;
-      ctx.strokeStyle = '#FFDAB9';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(-2, 8); ctx.lineTo(-3, 13);
-      ctx.moveTo(2, 8); ctx.lineTo(3, 13);
-      ctx.stroke();
 
-      const dressGrad = ctx.createLinearGradient(0, -2, 0, 9);
-      dressGrad.addColorStop(0, s.dress1);
-      dressGrad.addColorStop(1, s.dress2);
-      ctx.fillStyle = dressGrad;
-      ctx.beginPath();
-      ctx.moveTo(-2, -2);
-      ctx.quadraticCurveTo(-6, 4, -5, 9);
-      ctx.lineTo(5, 9);
-      ctx.quadraticCurveTo(6, 4, 2, -2);
-      ctx.closePath();
-      ctx.fill();
+      // Dispatch by character index for unique silhouettes
+      const ci = styleIndex % CHARACTERS.length;
 
-      ctx.strokeStyle = '#FFDAB9';
-      ctx.lineWidth = 1.2;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-4, 1);
-      ctx.quadraticCurveTo(-6, 5, -3, 8);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(4, 1);
-      ctx.quadraticCurveTo(6, 5, 3, 8);
-      ctx.stroke();
+      if (ci === 0) {
+        // TANDA — gold fairy, teal wings, star crown
+        ctx.globalAlpha = alpha * 0.4;
+        ctx.fillStyle = ch.secondary + '60';
+        ctx.beginPath(); ctx.ellipse(-9 * wf, -8, 10 * wf, 5, -0.25, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(9 * wf, -8, 10 * wf, 5, 0.25, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = '#FFDAB9'; ctx.beginPath(); ctx.arc(0, -6, 4.5, 0, Math.PI * 2); ctx.fill();
+        const dg = ctx.createLinearGradient(0, -2, 0, 9); dg.addColorStop(0, ch.primary); dg.addColorStop(1, ch.primary + 'A0');
+        ctx.fillStyle = dg; ctx.beginPath(); ctx.moveTo(-2, -2); ctx.quadraticCurveTo(-6, 4, -5, 9); ctx.lineTo(5, 9); ctx.quadraticCurveTo(6, 4, 2, -2); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#2C1810'; ctx.beginPath(); ctx.arc(-1.5, -6, 0.7, 0, Math.PI * 2); ctx.arc(1.5, -6, 0.7, 0, Math.PI * 2); ctx.fill();
+        // Star crown
+        drawMiniStar(ctx, -2, -12, 2, ch.primary); drawMiniStar(ctx, 0, -13, 2.5, ch.primary); drawMiniStar(ctx, 2, -12, 2, ch.primary);
+      } else if (ci === 1) {
+        // ROLLING CALF — muscular bull, chains, fire eyes
+        ctx.fillStyle = '#1a1a1a'; ctx.beginPath(); ctx.ellipse(0, 0, 8, 6, 0, 0, Math.PI * 2); ctx.fill(); // body
+        ctx.beginPath(); ctx.arc(6, -5, 4, 0, Math.PI * 2); ctx.fill(); // head
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.arc(7, -6, 1, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(9, -6, 1, 0, Math.PI * 2); ctx.fill(); // fire eyes
+        // Horns
+        ctx.strokeStyle = '#888'; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(5, -8); ctx.lineTo(3, -12); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(8, -8); ctx.lineTo(10, -12); ctx.stroke();
+        // Chains
+        ctx.strokeStyle = '#AAA'; ctx.lineWidth = 0.8;
+        for (let c2 = 0; c2 < 4; c2++) { ctx.beginPath(); ctx.arc(-4 + c2 * 3, 5 + Math.sin(wingAngle + c2) * 1.5, 1.5, 0, Math.PI * 2); ctx.stroke(); }
+        // Legs
+        ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(-5, 5); ctx.lineTo(-6, 12); ctx.moveTo(-2, 5); ctx.lineTo(-2, 12); ctx.moveTo(2, 5); ctx.lineTo(2, 12); ctx.moveTo(5, 5); ctx.lineTo(6, 12); ctx.stroke();
+      } else if (ci === 2) {
+        // PEACOCK — jewel feather fan, proud stance
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.ellipse(0, 2, 4, 5, 0, 0, Math.PI * 2); ctx.fill(); // body
+        ctx.beginPath(); ctx.arc(0, -4, 3, 0, Math.PI * 2); ctx.fill(); // head
+        ctx.fillStyle = '#2C1810'; ctx.beginPath(); ctx.arc(-0.8, -4.5, 0.5, 0, Math.PI * 2); ctx.arc(0.8, -4.5, 0.5, 0, Math.PI * 2); ctx.fill(); // eyes
+        // Feather fan
+        const featherColors = ['#5adace', '#2ECC71', '#3498DB', '#9B59B6', '#f0c456', '#E74C3C', '#FF6B6B'];
+        for (let f = 0; f < 9; f++) {
+          const angle = -Math.PI * 0.7 + (f / 8) * Math.PI * 0.4 - Math.PI / 2;
+          const len = 14 + Math.sin(wingAngle + f * 0.5) * 2;
+          const fx = Math.cos(angle) * len, fy = Math.sin(angle) * len - 2;
+          ctx.fillStyle = featherColors[f % featherColors.length] + 'B0';
+          ctx.beginPath(); ctx.ellipse(fx, fy, 3, 1.5, angle, 0, Math.PI * 2); ctx.fill();
+          // Eye dot on feather
+          ctx.fillStyle = '#0d1228'; ctx.beginPath(); ctx.arc(fx, fy, 1, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = ch.secondary + '80'; ctx.beginPath(); ctx.arc(fx - 0.3, fy - 0.3, 0.5, 0, Math.PI * 2); ctx.fill();
+        }
+        // Beak
+        ctx.fillStyle = '#E8A820'; ctx.beginPath(); ctx.moveTo(0, -3); ctx.lineTo(2, -2); ctx.lineTo(0, -1.5); ctx.closePath(); ctx.fill();
+        // Legs
+        ctx.strokeStyle = '#666'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(-1, 6); ctx.lineTo(-2, 12); ctx.moveTo(1, 6); ctx.lineTo(2, 12); ctx.stroke();
+      } else if (ci === 3) {
+        // MAGPIE — black and white bird, long tail
+        ctx.fillStyle = '#1a1a2e'; ctx.beginPath(); ctx.ellipse(0, 0, 5, 4, 0, 0, Math.PI * 2); ctx.fill(); // body
+        ctx.fillStyle = '#ECF0F1'; ctx.beginPath(); ctx.ellipse(0, 1, 3, 2.5, 0, 0, Math.PI * 2); ctx.fill(); // white belly
+        ctx.fillStyle = '#1a1a2e'; ctx.beginPath(); ctx.arc(3, -3, 3, 0, Math.PI * 2); ctx.fill(); // head
+        ctx.fillStyle = '#ECF0F1'; ctx.beginPath(); ctx.arc(4, -3.5, 0.8, 0, Math.PI * 2); ctx.fill(); // eye white
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(4.2, -3.5, 0.4, 0, Math.PI * 2); ctx.fill(); // pupil
+        // Beak
+        ctx.fillStyle = '#2C3E50'; ctx.beginPath(); ctx.moveTo(5.5, -3); ctx.lineTo(8, -2.5); ctx.lineTo(5.5, -2); ctx.closePath(); ctx.fill();
+        // Long tail
+        ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(-4, 2); ctx.quadraticCurveTo(-10, 6, -12, 10 + Math.sin(wingAngle) * 2); ctx.stroke();
+        ctx.strokeStyle = ch.primary + '60'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(-4, 2); ctx.quadraticCurveTo(-9, 7, -11, 11 + Math.sin(wingAngle) * 2); ctx.stroke();
+        // Wing
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.fillStyle = '#1a1a2e'; ctx.beginPath(); ctx.ellipse(-2 * wf, -2, 6 * wf, 3, -0.2, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = alpha;
+      } else if (ci === 4) {
+        // RATONCITO PÉREZ — small upright mouse, red cape, satchel
+        ctx.fillStyle = '#C4A882'; ctx.beginPath(); ctx.ellipse(0, 2, 4, 5, 0, 0, Math.PI * 2); ctx.fill(); // body
+        ctx.beginPath(); ctx.arc(0, -4, 3.5, 0, Math.PI * 2); ctx.fill(); // head
+        // Ears
+        ctx.beginPath(); ctx.ellipse(-3, -7, 2.5, 3, -0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(3, -7, 2.5, 3, 0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#FFB6C1'; ctx.beginPath(); ctx.ellipse(-3, -7, 1.5, 2, -0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(3, -7, 1.5, 2, 0.3, 0, Math.PI * 2); ctx.fill();
+        // Eyes + nose
+        ctx.fillStyle = '#2C1810'; ctx.beginPath(); ctx.arc(-1.2, -4.5, 0.7, 0, Math.PI * 2); ctx.arc(1.2, -4.5, 0.7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#FF6B6B'; ctx.beginPath(); ctx.arc(0, -3, 0.8, 0, Math.PI * 2); ctx.fill(); // nose
+        // Cape
+        ctx.fillStyle = ch.secondary; ctx.beginPath(); ctx.moveTo(-3, -1); ctx.quadraticCurveTo(-7, 4, -5, 10); ctx.lineTo(-2, 6); ctx.closePath(); ctx.fill();
+        // Satchel
+        ctx.fillStyle = '#8B4513'; ctx.beginPath(); ctx.roundRect(2, 1, 5, 4, 1); ctx.fill();
+        ctx.strokeStyle = '#654321'; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.roundRect(2, 1, 5, 4, 1); ctx.stroke();
+        // Whiskers
+        ctx.strokeStyle = '#888'; ctx.lineWidth = 0.4;
+        ctx.beginPath(); ctx.moveTo(-2, -3); ctx.lineTo(-7, -4); ctx.moveTo(-2, -2.5); ctx.lineTo(-6, -1.5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(2, -3); ctx.lineTo(7, -4); ctx.moveTo(2, -2.5); ctx.lineTo(6, -1.5); ctx.stroke();
+      } else if (ci === 5) {
+        // HAMMASKEIJU — ice fairy, crystalline wings, frost
+        ctx.globalAlpha = alpha * 0.4;
+        ctx.fillStyle = '#FFFFFF40'; ctx.beginPath(); ctx.ellipse(-8 * wf, -7, 9 * wf, 4, -0.2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(8 * wf, -7, 9 * wf, 4, 0.2, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = '#E8F4FD'; ctx.beginPath(); ctx.arc(0, -5, 4, 0, Math.PI * 2); ctx.fill(); // head
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.moveTo(-2, -2); ctx.quadraticCurveTo(-5, 3, -4, 8); ctx.lineTo(4, 8); ctx.quadraticCurveTo(5, 3, 2, -2); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#2C1810'; ctx.beginPath(); ctx.arc(-1.3, -5.5, 0.6, 0, Math.PI * 2); ctx.arc(1.3, -5.5, 0.6, 0, Math.PI * 2); ctx.fill();
+        // Frost sparkles
+        for (let s = 0; s < 5; s++) { drawMiniStar(ctx, (Math.sin(wingAngle + s * 1.2) * 12), -8 + s * 3, 1.5, '#FFFFFFA0'); }
+      } else if (ci === 6) {
+        // CROW — angular black bird, sharp, gold eye
+        ctx.fillStyle = '#1a1a2e'; ctx.beginPath(); ctx.ellipse(0, 0, 6, 4.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(4, -4, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ch.secondary; ctx.beginPath(); ctx.arc(5.5, -4.5, 1, 0, Math.PI * 2); ctx.fill(); // gold eye
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(5.7, -4.5, 0.4, 0, Math.PI * 2); ctx.fill();
+        // Sharp beak
+        ctx.fillStyle = '#2C3E50'; ctx.beginPath(); ctx.moveTo(7, -4); ctx.lineTo(11, -3); ctx.lineTo(7, -2.5); ctx.closePath(); ctx.fill();
+        // Angular wings
+        ctx.globalAlpha = alpha * 0.8;
+        ctx.fillStyle = '#0d0d1a';
+        ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(-10 * wf, -10); ctx.lineTo(-6 * wf, 0); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(-8 * wf, -6); ctx.lineTo(-4 * wf, 2); ctx.closePath(); ctx.fill();
+        ctx.globalAlpha = alpha;
+        // Tail
+        ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.moveTo(-5, 2); ctx.lineTo(-10, 6); ctx.stroke();
+      } else if (ci === 7) {
+        // TOOTH KAMI — ethereal shrine spirit, floating, pink glow
+        ctx.globalAlpha = alpha * 0.3;
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.ellipse(0, 0, 12, 15, 0, 0, Math.PI * 2); ctx.fill(); // ethereal aura
+        ctx.globalAlpha = alpha * 0.8;
+        // Torii gate silhouette
+        ctx.fillStyle = '#E74C3C60'; ctx.fillRect(-8, -10, 2, 14); ctx.fillRect(6, -10, 2, 14); ctx.fillRect(-10, -12, 20, 2); ctx.fillRect(-9, -9, 18, 1);
+        ctx.globalAlpha = alpha;
+        // Spirit orb
+        ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(0, -2, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.arc(0, -2, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(-0.8, -3, 1, 0, Math.PI * 2); ctx.fill();
+      } else if (ci === 8) {
+        // HYENA — spotted, wide grin, running
+        ctx.fillStyle = '#D4A843'; ctx.beginPath(); ctx.ellipse(0, 0, 7, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(6, -4, 4, 0, Math.PI * 2); ctx.fill(); // head
+        // Spots
+        ctx.fillStyle = '#8B6B3A'; for (let sp = 0; sp < 5; sp++) { ctx.beginPath(); ctx.arc(-3 + sp * 2.5, -1 + (sp % 2) * 2, 1.2, 0, Math.PI * 2); ctx.fill(); }
+        // Ears
+        ctx.fillStyle = '#D4A843'; ctx.beginPath(); ctx.moveTo(4, -7); ctx.lineTo(3, -11); ctx.lineTo(6, -8); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(8, -7); ctx.lineTo(9, -11); ctx.lineTo(10, -8); ctx.fill();
+        // Eyes
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.arc(5, -5, 1, 0, Math.PI * 2); ctx.arc(8, -5, 1, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(5.2, -5, 0.5, 0, Math.PI * 2); ctx.arc(8.2, -5, 0.5, 0, Math.PI * 2); ctx.fill();
+        // Wide grin
+        ctx.strokeStyle = '#FFF'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(7, -2, 3, 0, Math.PI * 0.6); ctx.stroke();
+        // Legs
+        ctx.strokeStyle = '#D4A843'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(-4, 4); ctx.lineTo(-5, 11); ctx.moveTo(-1, 4); ctx.lineTo(0, 11); ctx.moveTo(3, 4); ctx.lineTo(3, 11); ctx.moveTo(6, 3); ctx.lineTo(7, 10); ctx.stroke();
+      } else if (ci === 9) {
+        // BEAVER — round body, flat tail, determined
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.ellipse(0, 0, 6, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(3, -5, 3.5, 0, Math.PI * 2); ctx.fill(); // head
+        // Flat tail
+        ctx.fillStyle = ch.secondary; ctx.beginPath(); ctx.roundRect(-10, 2, 8, 3, 1.5); ctx.fill();
+        // Eyes
+        ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(3.5, -5.5, 1.2, 0, Math.PI * 2); ctx.arc(5.5, -5.5, 1.2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2C1810'; ctx.beginPath(); ctx.arc(3.8, -5.5, 0.6, 0, Math.PI * 2); ctx.arc(5.8, -5.5, 0.6, 0, Math.PI * 2); ctx.fill();
+        // Buck teeth
+        ctx.fillStyle = '#FFF'; ctx.fillRect(3.5, -3, 1.2, 2); ctx.fillRect(5, -3, 1.2, 2);
+        // Nose
+        ctx.fillStyle = '#4A3728'; ctx.beginPath(); ctx.arc(4.5, -4, 0.8, 0, Math.PI * 2); ctx.fill();
+        // Legs
+        ctx.strokeStyle = ch.primary; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-3, 4); ctx.lineTo(-3, 10); ctx.moveTo(3, 4); ctx.lineTo(3, 10); ctx.stroke();
+      } else if (ci === 10) {
+        // ANNA BOGLE — small round leprechaun, green hat, gap-tooth grin
+        ctx.fillStyle = '#FFDAB9'; ctx.beginPath(); ctx.arc(0, -4, 5, 0, Math.PI * 2); ctx.fill(); // big round head
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.moveTo(-2, 0); ctx.quadraticCurveTo(-5, 4, -4, 9); ctx.lineTo(4, 9); ctx.quadraticCurveTo(5, 4, 2, 0); ctx.closePath(); ctx.fill(); // body
+        // Hat
+        ctx.fillStyle = ch.secondary; ctx.fillRect(-5, -10, 10, 3);
+        ctx.fillStyle = ch.primary; ctx.fillRect(-4, -14, 8, 5);
+        ctx.fillStyle = '#1a1a2e'; ctx.fillRect(-3, -10, 6, 1); // hat band
+        // Eyes (cheerful)
+        ctx.fillStyle = '#2ECC71'; ctx.beginPath(); ctx.arc(-1.8, -5, 1, 0, Math.PI * 2); ctx.arc(1.8, -5, 1, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-1.8, -5, 0.5, 0, Math.PI * 2); ctx.arc(1.8, -5, 0.5, 0, Math.PI * 2); ctx.fill();
+        // Gap-tooth grin
+        ctx.strokeStyle = '#C0392B'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(0, -2.5, 2.5, 0.1, Math.PI - 0.1); ctx.stroke();
+        ctx.fillStyle = '#FFDAB9'; ctx.fillRect(-0.5, -2.5, 1, 1.5); // the gap
+        // Rosy cheeks
+        ctx.fillStyle = '#FFB6C150'; ctx.beginPath(); ctx.arc(-3.5, -3, 1.5, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(3.5, -3, 1.5, 0, Math.PI * 2); ctx.fill();
+      } else if (ci === 11) {
+        // VENICE TRIPLE — gondola with 3 tiny figures
+        ctx.fillStyle = '#2C1810';
+        ctx.beginPath(); ctx.moveTo(-14, 4); ctx.quadraticCurveTo(-8, 8, 0, 7); ctx.quadraticCurveTo(8, 8, 14, 4);
+        ctx.quadraticCurveTo(8, 6, 0, 5); ctx.quadraticCurveTo(-8, 6, -14, 4); ctx.closePath(); ctx.fill(); // gondola
+        // Prow
+        ctx.strokeStyle = ch.primary; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(12, 3); ctx.quadraticCurveTo(16, 0, 14, -4); ctx.stroke();
+        // 3 figures
+        ctx.fillStyle = '#FFDAB9'; ctx.beginPath(); ctx.arc(-5, -1, 2.5, 0, Math.PI * 2); ctx.fill(); // saint head
+        ctx.fillStyle = '#9B59B6'; ctx.fillRect(-6.5, 1, 3, 4); // saint robe
+        ctx.fillStyle = '#FFDAB9'; ctx.beginPath(); ctx.arc(0, -2, 2, 0, Math.PI * 2); ctx.fill(); // fairy head
+        ctx.fillStyle = ch.primary; ctx.fillRect(-1, 0, 2, 3); // fairy dress
+        ctx.fillStyle = '#C4A882'; ctx.beginPath(); ctx.arc(5, 0, 1.5, 0, Math.PI * 2); ctx.fill(); // mouse
+        ctx.fillStyle = '#FFB6C1'; ctx.beginPath(); ctx.ellipse(4, -2, 1, 1.5, -0.2, 0, Math.PI * 2); ctx.fill(); // mouse ear
+        ctx.beginPath(); ctx.ellipse(6, -2, 1, 1.5, 0.2, 0, Math.PI * 2); ctx.fill();
+      } else if (ci === 12) {
+        // TOOTH WORM — curled ancient worm, expressive
+        ctx.fillStyle = ch.primary;
+        ctx.beginPath();
+        ctx.moveTo(-6, 4);
+        for (let w = 0; w < 8; w++) {
+          const wx = -6 + w * 2;
+          const wy = 4 + Math.sin(wingAngle + w * 0.8) * 3;
+          ctx.lineTo(wx, wy);
+        }
+        ctx.lineTo(10, 2); ctx.lineTo(10, 6);
+        for (let w = 7; w >= 0; w--) {
+          const wx = -6 + w * 2;
+          const wy = 8 + Math.sin(wingAngle + w * 0.8) * 2;
+          ctx.lineTo(wx, wy);
+        }
+        ctx.closePath(); ctx.fill();
+        // Head
+        ctx.beginPath(); ctx.arc(10, 3, 4, 0, Math.PI * 2); ctx.fill();
+        // Eyes
+        ctx.fillStyle = '#FFF'; ctx.beginPath(); ctx.arc(11, 1.5, 1.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(11.3, 1.5, 0.7, 0, Math.PI * 2); ctx.fill();
+        // Goofy smile
+        ctx.strokeStyle = '#FFB6C1'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(10, 4, 2, 0, Math.PI * 0.7); ctx.stroke();
+      } else if (ci === 13) {
+        // BANYAN TREE — wide trunk, aerial roots, face in bark
+        ctx.fillStyle = '#228B22';
+        // Canopy
+        ctx.beginPath(); ctx.ellipse(0, -10, 14, 8, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#006400'; ctx.beginPath(); ctx.ellipse(-4, -8, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(5, -9, 7, 5, 0, 0, Math.PI * 2); ctx.fill();
+        // Trunk
+        ctx.fillStyle = '#5D4037'; ctx.fillRect(-3, -4, 6, 14);
+        // Aerial roots
+        ctx.strokeStyle = '#795548'; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(-8, -6); ctx.quadraticCurveTo(-7, 2, -6, 10); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(8, -5); ctx.quadraticCurveTo(7, 3, 6, 10); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-5, -3); ctx.quadraticCurveTo(-5, 4, -4, 10); ctx.stroke();
+        // Face in bark
+        ctx.fillStyle = '#3E2723'; ctx.beginPath(); ctx.arc(-0.5, 0, 0.6, 0, Math.PI * 2); ctx.arc(1.5, 0, 0.6, 0, Math.PI * 2); ctx.fill(); // eyes
+        ctx.strokeStyle = '#3E2723'; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.arc(0.5, 2, 1.5, 0.1, Math.PI - 0.1); ctx.stroke(); // gentle smile
+      } else if (ci === 14) {
+        // CROSSROADS — cloaked guide spirit, purple, pointing
+        ctx.fillStyle = ch.primary;
+        ctx.beginPath(); ctx.moveTo(0, -12); ctx.lineTo(-7, 10); ctx.lineTo(7, 10); ctx.closePath(); ctx.fill(); // cloak
+        ctx.fillStyle = ch.secondary; ctx.beginPath(); ctx.moveTo(0, -12); ctx.lineTo(-5, 8); ctx.lineTo(5, 8); ctx.closePath(); ctx.fill(); // inner cloak
+        // Hood
+        ctx.fillStyle = ch.primary; ctx.beginPath(); ctx.arc(0, -8, 5, Math.PI, 0); ctx.fill();
+        // Eyes (glowing)
+        ctx.fillStyle = '#F1C40F'; ctx.beginPath(); ctx.arc(-1.5, -7, 0.8, 0, Math.PI * 2); ctx.arc(1.5, -7, 0.8, 0, Math.PI * 2); ctx.fill();
+        // Pointing arm
+        ctx.strokeStyle = ch.primary; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(4, 0); ctx.lineTo(12, -4); ctx.stroke();
+        ctx.fillStyle = '#FFDAB9'; ctx.beginPath(); ctx.arc(12, -4, 1.5, 0, Math.PI * 2); ctx.fill(); // hand
+      } else {
+        // SUN — radiating circle, warm rays, serene face
+        ctx.fillStyle = ch.primary;
+        // Rays
+        for (let r2 = 0; r2 < 12; r2++) {
+          const angle = (r2 / 12) * Math.PI * 2 + wingAngle * 0.2;
+          const inner = 8, outer = 14 + Math.sin(wingAngle + r2) * 2;
+          ctx.strokeStyle = ch.secondary + '80'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(angle) * inner, Math.sin(angle) * inner);
+          ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer);
+          ctx.stroke();
+        }
+        // Sun circle
+        ctx.beginPath(); ctx.arc(0, 0, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ch.secondary; ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI * 2); ctx.fill();
+        // Serene face
+        ctx.fillStyle = '#5D4037'; ctx.beginPath(); ctx.arc(-2, -1, 0.8, 0, Math.PI * 2); ctx.arc(2, -1, 0.8, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#5D4037'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(0, 1.5, 2, 0.1, Math.PI - 0.1); ctx.stroke();
+      }
 
-      ctx.fillStyle = '#FFDAB9';
-      ctx.beginPath();
-      ctx.arc(0, -6, 4.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = s.hair;
-      ctx.lineWidth = 1.8;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.arc(0, -7.5, 4.5, -Math.PI * 0.85, -Math.PI * 0.15);
-      ctx.stroke();
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(-3, -9); ctx.quadraticCurveTo(-5, -11, -4, -12);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, -10); ctx.quadraticCurveTo(1, -12, 0, -13);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(3, -9); ctx.quadraticCurveTo(5, -11, 4, -12);
-      ctx.stroke();
-
-      ctx.fillStyle = '#2C1810';
-      ctx.beginPath();
-      ctx.arc(-1.5, -6, 0.7, 0, Math.PI * 2);
-      ctx.arc(1.5, -6, 0.7, 0, Math.PI * 2);
-      ctx.fill();
-
+      // Carried item (shared across all characters)
       if (carrying === 'card') {
         ctx.globalAlpha = alpha * 0.85;
-        ctx.beginPath();
-        ctx.roundRect(-5, 11, 10, 13, 1.5);
-        ctx.fillStyle = '#FFF8F0';
-        ctx.strokeStyle = '#E0D5C5';
-        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.roundRect(-5, 11, 10, 13, 1.5);
+        ctx.fillStyle = '#FFF8F0'; ctx.strokeStyle = '#E0D5C5'; ctx.lineWidth = 0.5;
         ctx.fill(); ctx.stroke();
-        ctx.fillStyle = s.dress1 + '80';
-        ctx.fillRect(-3, 13, 6, 5);
-        ctx.fillStyle = 'rgba(90,70,50,0.3)';
-        ctx.fillRect(-3, 20, 6, 0.8);
-        ctx.fillRect(-3, 21.5, 4, 0.8);
+        ctx.fillStyle = ch.primary + '80'; ctx.fillRect(-3, 13, 6, 5);
+        ctx.fillStyle = 'rgba(90,70,50,0.3)'; ctx.fillRect(-3, 20, 6, 0.8); ctx.fillRect(-3, 21.5, 4, 0.8);
       } else if (carrying === 'coin') {
         ctx.globalAlpha = alpha * 0.9;
-        ctx.fillStyle = '#f0c456';
-        ctx.shadowColor = '#f0c456';
-        ctx.shadowBlur = 6;
-        ctx.beginPath();
-        ctx.arc(0, 14, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.beginPath();
-        ctx.arc(-1.5, 12.5, 1.5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = '#f0c456'; ctx.shadowColor = '#f0c456'; ctx.shadowBlur = 6;
+        ctx.beginPath(); ctx.arc(0, 14, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.beginPath(); ctx.arc(-1.5, 12.5, 1.5, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
       }
 
@@ -1288,6 +1821,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
           }
           if (!fairy.active && fairy._restartAt > 0 && now > fairy._restartAt) {
             fairy._restartAt = 0;
+            fairy.index = (fairy.index + FAIRY_COUNT) % CHARACTERS.length; // Rotate to next character
             startFairyRun(fairy);
           }
           if (!fairy.active) continue;
@@ -1506,7 +2040,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
             backdropFilter: 'blur(8px)',
           }}
         >
-          Deposit your tooth. Join the chain. Yours forever.
+          Turn a lost tooth into something permanent. Your child makes it. The network keeps it. Yours forever.
         </div>
       </div>
 
@@ -1544,7 +2078,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           }}
         >
-          Deposit Your First Tooth
+          Make yours
         </button>
         <button
           onClick={onStoriesClick}
@@ -1563,7 +2097,7 @@ export default function ChainOfTeeth({ onDepositClick, onStoriesClick }: ChainOf
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           }}
         >
-          Read the Stories
+          Explore the stories
         </button>
       </div>
 

@@ -1,0 +1,95 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - link "← Tooth Fairy Network" [ref=e6]:
+        - /url: /toothfairy
+      - heading "Every culture tells the story differently." [level=1] [ref=e7]
+    - generic [ref=e9]:
+      - link "Tanda Tanda The Origin" [ref=e11]:
+        - /url: /toothfairy/story/tanda
+        - img "Tanda" [ref=e13]
+        - generic [ref=e14]:
+          - paragraph [ref=e15]: Tanda
+          - paragraph [ref=e16]: The Origin
+      - link "Ratoncito Pérez Ratoncito Pérez Spain & Latin America" [ref=e18]:
+        - /url: /toothfairy/story/ratoncito-perez
+        - img "Ratoncito Pérez" [ref=e20]
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: Ratoncito Pérez
+          - paragraph [ref=e23]: Spain & Latin America
+      - link "Hammaskeiju Hammaskeiju vs. Hammaspeikko Finland" [ref=e25]:
+        - /url: /toothfairy/story/finland
+        - img "Hammaskeiju" [ref=e27]
+        - generic [ref=e28]:
+          - paragraph [ref=e29]: Hammaskeiju vs. Hammaspeikko
+          - paragraph [ref=e30]: Finland
+      - link "The Sun The Sun Prayer North Africa / MENA" [ref=e32]:
+        - /url: /toothfairy/story/north-africa
+        - img "The Sun" [ref=e34]
+        - generic [ref=e35]:
+          - paragraph [ref=e36]: The Sun Prayer
+          - paragraph [ref=e37]: North Africa / MENA
+      - link "Granny The Rolling Calf Jamaica / Caribbean" [ref=e39]:
+        - /url: /toothfairy/story/jamaica
+        - img "Granny" [ref=e41]
+        - generic [ref=e42]:
+          - paragraph [ref=e43]: The Rolling Calf
+          - paragraph [ref=e44]: Jamaica / Caribbean
+      - link "Magpie The Magpie Song South Korea" [ref=e46]:
+        - /url: /toothfairy/story/korea
+        - img "Magpie" [ref=e48]
+        - generic [ref=e49]:
+          - paragraph [ref=e50]: The Magpie Song
+          - paragraph [ref=e51]: South Korea
+      - link "The Crow The Crow Romania / Eastern Europe" [ref=e53]:
+        - /url: /toothfairy/story/romania
+        - img "The Crow" [ref=e55]
+        - generic [ref=e56]:
+          - paragraph [ref=e57]: The Crow
+          - paragraph [ref=e58]: Romania / Eastern Europe
+      - link "Tooth Kami The Tooth Kami Japan" [ref=e60]:
+        - /url: /toothfairy/story/japan
+        - img "Tooth Kami" [ref=e62]
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: The Tooth Kami
+          - paragraph [ref=e65]: Japan
+      - link "Hyena The Hyena's Bargain Ethiopia / East Africa" [ref=e67]:
+        - /url: /toothfairy/story/ethiopia
+        - img "Hyena" [ref=e69]
+        - generic [ref=e70]:
+          - paragraph [ref=e71]: The Hyena's Bargain
+          - paragraph [ref=e72]: Ethiopia / East Africa
+      - link "Beaver The Beaver Circuit Cherokee Nation / Indigenous Americas" [ref=e74]:
+        - /url: /toothfairy/story/cherokee
+        - img "Beaver" [ref=e76]
+        - generic [ref=e77]:
+          - paragraph [ref=e78]: The Beaver Circuit
+          - paragraph [ref=e79]: Cherokee Nation / Indigenous Americas
+      - link "Anna Bogle Anna Bogle Ireland" [ref=e81]:
+        - /url: /toothfairy/story/ireland
+        - img "Anna Bogle" [ref=e83]
+        - generic [ref=e84]:
+          - paragraph [ref=e85]: Anna Bogle
+          - paragraph [ref=e86]: Ireland
+      - link "Apollonia, Fatina & Topolino The Venice Triple Italy" [ref=e88]:
+        - /url: /toothfairy/story/italy
+        - img "Apollonia, Fatina & Topolino" [ref=e90]
+        - generic [ref=e91]:
+          - paragraph [ref=e92]: The Venice Triple
+          - paragraph [ref=e93]: Italy
+      - link "The Tooth Worm The Tooth Worm Babylonia (Ancient Mesopotamia)" [ref=e95]:
+        - /url: /toothfairy/story/babylonia
+        - img "The Tooth Worm" [ref=e97]
+        - generic [ref=e98]:
+          - paragraph [ref=e99]: The Tooth Worm
+          - paragraph [ref=e100]: Babylonia (Ancient Mesopotamia)
+    - generic [ref=e101]:
+      - paragraph [ref=e102]: Ready to skip ahead?
+      - paragraph [ref=e103]: Every story ends with a keepsake. You can make one right now.
+      - link "Make your child's first keepsake" [ref=e104]:
+        - /url: /toothfairy/app
+  - alert [ref=e105]
+```

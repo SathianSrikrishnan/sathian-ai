@@ -10,46 +10,59 @@ const toothFairy: StoryConfig = {
   characterName: 'Tooth Fairy',
   available: true,
   crossReferences: ['ratoncito-perez', 'finland', 'jamaica'],
+  colors: {
+    accent: '#F0C456',
+  },
+  effects: {
+    particles: {
+      count: 20,
+      color: '#F0C456',
+      sizeMin: 1,
+      sizeMax: 3,
+      durationMin: 4,
+      durationMax: 8,
+      drift: 20,
+      glow: true,
+    },
+    sparkleOn: ['victory'],
+  },
   scenes: [
-    // ACT 1: THE FAMILIAR
+    // COVER
     {
       id: 'tf-01',
+      layout: 'cover',
       background: '/story-assets/tooth-fairy/tf-01-bedroom.jpg',
       dialogue: {
-        text: "It's nighttime. The house is quiet. Everyone is fast asleep.",
+        text: 'The Tooth Fairy',
+        subtext: 'A bedtime story from North America',
       },
     },
+    // ACT 1: THE FAMILIAR
     {
       id: 'tf-02',
       background: '/story-assets/tooth-fairy/tf-01-bedroom.jpg',
       dialogue: {
-        text: "But under your pillow, something special is waiting. A tiny tooth — YOUR tooth.",
+        text: "It's nighttime. The house is quiet, everyone fast asleep. But under your pillow, something special is waiting — a tiny tooth, YOUR tooth. You wiggled it and wiggled it, and today it finally came out!",
       },
     },
     {
       id: 'tf-03',
       background: '/story-assets/tooth-fairy/tf-01-bedroom.jpg',
       dialogue: {
-        text: "You wiggled it and wiggled it, and today it finally came out!",
-      },
-    },
-    {
-      id: 'tf-04',
-      background: '/story-assets/tooth-fairy/tf-01-bedroom.jpg',
-      dialogue: {
-        text: "Have you ever wondered what happens next?",
+        text: 'Have you ever wondered what happens next?',
       },
     },
     // ACT 2: THE REVEAL
     {
-      id: 'tf-05',
+      id: 'tf-04',
       background: '/story-assets/tooth-fairy/tf-02-fairy-window.jpg',
       dialogue: {
-        text: "A shimmer of gold dances through the window...",
+        text: 'A shimmer of gold dances through the window...',
       },
     },
     {
-      id: 'tf-06',
+      id: 'tf-05',
+      layout: 'character',
       background: '/story-assets/shared/shared-night-sky.jpg',
       character: {
         image: '/story-assets/characters/char-tooth-fairy.jpg',
@@ -60,36 +73,31 @@ const toothFairy: StoryConfig = {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
         text: "Hello, little one. I've been waiting for this moment.",
+        subtext: 'Guardian of children\'s teeth for thousands of years',
       },
     },
+    {
+      id: 'tf-06',
+      layout: 'dramatic',
+      background: '/story-assets/shared/shared-night-sky.jpg',
+      character: {
+        image: '/story-assets/characters/char-tooth-fairy.jpg',
+        position: 'center',
+      },
+      dialogue: {
+        speaker: 'Tooth Fairy',
+        speakerColor: '#F0C456',
+        text: "I'm the Tooth Fairy. Every night, all around the world, collectors like me visit children just like you.",
+      },
+      secondDialogue: {
+        speaker: 'Tooth Fairy',
+        speakerColor: '#F0C456',
+        text: "And tonight... it's your turn.",
+      },
+    },
+    // THE COLLECTION
     {
       id: 'tf-07',
-      background: '/story-assets/shared/shared-night-sky.jpg',
-      character: {
-        image: '/story-assets/characters/char-tooth-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "I'm the Tooth Fairy. I've been visiting children for thousands of years.",
-      },
-    },
-    {
-      id: 'tf-08',
-      background: '/story-assets/shared/shared-night-sky.jpg',
-      character: {
-        image: '/story-assets/characters/char-tooth-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "Every night, all around the world, collectors like me visit children just like you.",
-      },
-    },
-    {
-      id: 'tf-09',
       background: '/story-assets/tooth-fairy/tf-03-lifting-tooth.jpg',
       character: {
         image: '/story-assets/characters/char-tooth-fairy.jpg',
@@ -97,27 +105,22 @@ const toothFairy: StoryConfig = {
         exit: 'top',
       },
       dialogue: {
-        text: "The Fairy reaches under the pillow... and your tooth begins to glow.",
+        text: 'The Fairy reaches under the pillow... and your tooth begins to glow.',
       },
     },
     {
-      id: 'tf-10',
+      id: 'tf-08',
       background: '/story-assets/tooth-fairy/tf-04-stardust-trail.jpg',
       dialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "I carry your tooth up, up, up through the sky...",
+        text: 'I carry your tooth up, up, up through the sky... a trail of stardust following us across the night.',
       },
     },
+    // THE NETWORK
     {
-      id: 'tf-11',
-      background: '/story-assets/tooth-fairy/tf-04-stardust-trail.jpg',
-      dialogue: {
-        text: "A trail of stardust follows the Fairy across the night...",
-      },
-    },
-    {
-      id: 'tf-12',
+      id: 'tf-09',
+      layout: 'victory',
       background: '/story-assets/shared/shared-network-station.jpg',
       character: {
         image: '/story-assets/characters/char-tooth-fairy.jpg',
@@ -127,47 +130,26 @@ const toothFairy: StoryConfig = {
       dialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "Welcome to the Tooth Fairy Network!",
+        text: 'Welcome to the Tooth Fairy Network!',
       },
-    },
-    {
-      id: 'tf-13',
-      background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
-        image: '/story-assets/characters/char-tooth-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
+      secondDialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "This is where every tooth from every child in the world becomes something special.",
-      },
-    },
-    {
-      id: 'tf-14',
-      background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
-        image: '/story-assets/characters/char-tooth-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Tooth Fairy',
-        speakerColor: '#F0C456',
-        text: "We turn your tooth into a keepsake — a treasure that can never be lost.",
+        text: 'This is where every tooth from every child in the world becomes a keepsake — a treasure that can never be lost.',
       },
     },
     // ACT 3: THE INVITATION
     {
-      id: 'tf-15',
+      id: 'tf-10',
       background: '/story-assets/shared/shared-multiple-collectors.jpg',
       dialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "I'm not the only one. Did you know in Spain, a little mouse collects teeth? In Finland, a fairy battles a troll! And in Jamaica, children shake tin cans to scare away a bull!",
+        text: "I'm not the only one. In Spain, a little mouse collects teeth. In Jamaica, children shake tin cans to scare away a bull! Every tooth tells a story. Every story becomes something you own forever.",
       },
     },
     {
-      id: 'tf-16',
+      id: 'tf-11',
       background: '/story-assets/tooth-fairy/tf-05-fairy-facing.jpg',
       character: {
         image: '/story-assets/characters/char-tooth-fairy.jpg',
@@ -177,18 +159,20 @@ const toothFairy: StoryConfig = {
       dialogue: {
         speaker: 'Tooth Fairy',
         speakerColor: '#F0C456',
-        text: "Every tooth tells a story. Every story becomes something you own forever. Ready to make yours?",
+        text: 'Ready to make yours?',
       },
     },
+    // CTA
     {
       id: 'tf-cta',
+      layout: 'cta',
       background: '/story-assets/tooth-fairy/tf-05-fairy-facing.jpg',
       dialogue: {
-        text: "",
+        text: '',
       },
       isChoice: true,
-      choiceText: "Start Your Keepsake",
-      choiceHref: "/app",
+      choiceText: 'Now make yours ✦',
+      choiceHref: '/toothfairy/app',
     },
   ],
 }

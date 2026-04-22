@@ -29,7 +29,7 @@ export function TxStatus({ status, message, txSignature }: TxStatusProps) {
       <p>{message}</p>
       {txSignature && (
         <a
-          href={`https://explorer.solana.com/tx/${txSignature}?cluster=devnet`}
+          href={`https://solscan.io/tx/${txSignature}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs underline mt-1 inline-block opacity-80 hover:opacity-100"

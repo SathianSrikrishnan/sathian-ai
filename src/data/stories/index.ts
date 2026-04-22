@@ -1,4 +1,7 @@
 import { StoryConfig } from './types'
+import tanda from './tanda'
+import hyenaStory from './hyena-story'
+import ankaStory from './anka-story'
 import toothFairy from './tooth-fairy'
 import ratoncitoPerez from './ratoncito-perez'
 import finland from './finland'
@@ -13,7 +16,17 @@ import ireland from './ireland'
 import italy from './italy'
 import babylonia from './babylonia'
 
+/** Featured full-length stories (Phase 1 trilogy) */
+export const FEATURED_STORIES: StoryConfig[] = [
+  tanda,
+  hyenaStory,
+  ankaStory,
+]
+
 export const ALL_STORIES: StoryConfig[] = [
+  tanda,
+  hyenaStory,
+  ankaStory,
   toothFairy,
   ratoncitoPerez,
   finland,

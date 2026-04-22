@@ -1,0 +1,737 @@
+'use client';
+
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import {
+  BRUSH_DEFAULT_SIZE_INDEX,
+  BRUSH_SIZES,
+  type BrushSizeIndex,
+  type BrushTool,
+  type Point,
+  eraserStroke,
+  strokeForTool,
+} from '@/lib/toothfairy/brush-tools';
+import { exportDrawing, type ExportedDrawing } from '@/lib/toothfairy/canvas-export';
+
+const c = {
+  cream:      'oklch(97.5% 0.01 80)',
+  creamDeep:  'oklch(95% 0.015 75)',
+  brown:      'oklch(30% 0.035 65)',
+  brownSoft:  'oklch(42% 0.03 65)',
+  brownMuted: 'oklch(58% 0.025 65)',
+  gold:       'oklch(72% 0.145 75)',
+  goldLight:  'oklch(82% 0.1 78)',
+  goldSoft:   'oklch(72% 0.145 75 / 0.15)',
+  border:     'oklch(88% 0.015 75)',
+  shadow:     'oklch(30% 0.035 65 / 0.08)',
+};
+
+const SWATCHES = [
+  { name: 'cream',    hex: '#fdf8ee' },
+  { name: 'magenta',  hex: '#d8388a' },
+  { name: 'gold',     hex: '#d9a44a' },
+  { name: 'sky',      hex: '#4aa8d9' },
+  { name: 'mint',     hex: '#5dd9a5' },
+  { name: 'lavender', hex: '#a487d9' },
+  { name: 'coral',    hex: '#f17855' },
+  { name: 'white',    hex: '#ffffff' },
+  { name: 'black',    hex: '#1a1410' },
+  { name: 'pink',     hex: '#f4a6c8' },
+];
+
+const TOOL_ORDER: BrushTool[] = ['pencil', 'crayon', 'marker'];
+
+export interface DrawingCanvasV2Ref {
+  toDataURL: () => string | null;
+  exportDrawing: () => ExportedDrawing | null;
+  clear: () => void;
+  hasStrokes: () => boolean;
+}
+
+export interface DrawingCanvasV2Props {
+  onDone: (dataUrl: string) => void;
+  onBack?: () => void;
+  initialBackground?: string | null;
+}
+
+interface Sparkle {
+  id: number;
+  x: number; // pixels relative to the canvas element (client coords)
+  y: number;
+  createdAt: number;
+}
+
+const SPARKLE_LIFETIME_MS = 800;
+const SPARKLE_CAP = 10;
+
+type PointerId = number;
+
+const CANVAS_RESOLUTION = 1024;
+const UNDO_CAP = 30;
+
+const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
+  function DrawingCanvasV2({ onDone, onBack, initialBackground }, ref) {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const activePointerRef = useRef<PointerId | null>(null);
+    const lastPosRef = useRef<Point | null>(null);
+    const undoStackRef = useRef<ImageData[]>([]);
+    const strokeCountRef = useRef(0);
+
+    const [tool, setTool] = useState<BrushTool>('pencil');
+    const [sizeIndex, setSizeIndex] = useState<BrushSizeIndex>(
+      BRUSH_DEFAULT_SIZE_INDEX.pencil
+    );
+    const [color, setColor] = useState<string>(SWATCHES[8].hex);
+    const [eraser, setEraser] = useState(false);
+    const [hasStrokes, setHasStrokes] = useState(false);
+    const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+    const [doneAnimating, setDoneAnimating] = useState(false);
+    const sparkleIdRef = useRef(0);
+    const reducedMotionRef = useRef(false);
+
+    useEffect(() => {
+      if (typeof window !== 'undefined' && window.matchMedia) {
+        reducedMotionRef.current = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches;
+      }
+    }, []);
+
+    const spawnSparkles = useCallback(
+      (clientX: number, clientY: number, containerEl: HTMLDivElement) => {
+        if (reducedMotionRef.current) return;
+        const rect = containerEl.getBoundingClientRect();
+        const localX = clientX - rect.left;
+        const localY = clientY - rect.top;
+        const count = 1 + Math.floor(Math.random() * 2); // 1 or 2 per stroke
+        const next: Sparkle[] = [];
+        for (let i = 0; i < count; i++) {
+          next.push({
+            id: ++sparkleIdRef.current,
+            x: localX + (Math.random() - 0.5) * 8,
+            y: localY + (Math.random() - 0.5) * 8,
+            createdAt: Date.now(),
+          });
+        }
+        setSparkles((prev) => {
+          const merged = [...prev, ...next];
+          const now = Date.now();
+          const filtered = merged.filter(
+            (s) => now - s.createdAt < SPARKLE_LIFETIME_MS
+          );
+          return filtered.slice(-SPARKLE_CAP);
+        });
+      },
+      []
+    );
+
+    // GC sparkles on a tick (animations continue via CSS but we need to remove stale ones)
+    useEffect(() => {
+      if (sparkles.length === 0) return;
+      const timer = setTimeout(() => {
+        const now = Date.now();
+        setSparkles((prev) =>
+          prev.filter((s) => now - s.createdAt < SPARKLE_LIFETIME_MS)
+        );
+      }, SPARKLE_LIFETIME_MS + 50);
+      return () => clearTimeout(timer);
+    }, [sparkles]);
+
+    // Current brush size derived from tool + size index
+    const currentSize = BRUSH_SIZES[tool][sizeIndex];
+
+    // ── Canvas init ─────────────────────────────────────────────
+    const fillBackground = useCallback((ctx: CanvasRenderingContext2D) => {
+      ctx.save();
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = c.cream;
+      ctx.fillRect(0, 0, CANVAS_RESOLUTION, CANVAS_RESOLUTION);
+      ctx.restore();
+    }, []);
+
+    const initCanvas = useCallback(
+      (canvas: HTMLCanvasElement | null) => {
+        if (!canvas) return;
+        canvas.width = CANVAS_RESOLUTION;
+        canvas.height = CANVAS_RESOLUTION;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        fillBackground(ctx);
+        undoStackRef.current = [];
+        strokeCountRef.current = 0;
+        setHasStrokes(false);
+      },
+      [fillBackground]
+    );
+
+    useEffect(() => {
+      initCanvas(canvasRef.current);
+    }, [initCanvas]);
+
+    // Optional initial background image
+    useEffect(() => {
+      if (!initialBackground) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        fillBackground(ctx);
+        const scale = Math.max(
+          CANVAS_RESOLUTION / img.width,
+          CANVAS_RESOLUTION / img.height
+        );
+        const w = img.width * scale;
+        const h = img.height * scale;
+        ctx.drawImage(img, (CANVAS_RESOLUTION - w) / 2, (CANVAS_RESOLUTION - h) / 2, w, h);
+      };
+      img.src = initialBackground;
+    }, [initialBackground, fillBackground]);
+
+    // ── Imperative API ──────────────────────────────────────────
+    useImperativeHandle(ref, () => ({
+      toDataURL: () => canvasRef.current?.toDataURL('image/png') ?? null,
+      exportDrawing: () =>
+        canvasRef.current ? exportDrawing(canvasRef.current) : null,
+      clear: () => initCanvas(canvasRef.current),
+      hasStrokes: () => strokeCountRef.current > 0,
+    }));
+
+    // ── Pointer → canvas coord mapping ──────────────────────────
+    const getCanvasPos = (clientX: number, clientY: number): Point | null => {
+      const canvas = canvasRef.current;
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * CANVAS_RESOLUTION;
+      const y = ((clientY - rect.top) / rect.height) * CANVAS_RESOLUTION;
+      return { x, y };
+    };
+
+    // ── Palm rejection guard ────────────────────────────────────
+    const shouldRejectPointer = (e: React.PointerEvent): boolean => {
+      // Reject if pointer is touch AND width/height suggest a palm (>40px contact)
+      if (e.pointerType === 'touch') {
+        if (e.width > 40 || e.height > 40) return true;
+        if (e.pressure === 0) return true;
+      }
+      return false;
+    };
+
+    const pushUndo = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      try {
+        const snapshot = ctx.getImageData(0, 0, CANVAS_RESOLUTION, CANVAS_RESOLUTION);
+        undoStackRef.current.push(snapshot);
+        if (undoStackRef.current.length > UNDO_CAP) {
+          undoStackRef.current.shift();
+        }
+      } catch {
+        // getImageData can throw on tainted canvas — ignore, user loses undo for this stroke
+      }
+    };
+
+    const handleUndo = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const snapshot = undoStackRef.current.pop();
+      if (snapshot) {
+        ctx.putImageData(snapshot, 0, 0);
+        strokeCountRef.current = Math.max(0, strokeCountRef.current - 1);
+        setHasStrokes(strokeCountRef.current > 0);
+      }
+    };
+
+    const handleClear = () => {
+      initCanvas(canvasRef.current);
+    };
+
+    // ── Pointer handlers ────────────────────────────────────────
+    const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (shouldRejectPointer(e)) return;
+      if (activePointerRef.current !== null) return; // already tracking a pointer
+
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      try {
+        canvas.setPointerCapture(e.pointerId);
+      } catch {
+        // capture failure is non-fatal
+      }
+      activePointerRef.current = e.pointerId;
+
+      const pos = getCanvasPos(e.clientX, e.clientY);
+      if (!pos) return;
+
+      pushUndo();
+      lastPosRef.current = pos;
+
+      // Draw a tiny dot at the start so a single-tap is visible
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        if (eraser) {
+          eraserStroke(ctx, pos, pos, currentSize);
+        } else {
+          strokeForTool(tool, ctx, pos, pos, currentSize, color);
+        }
+      }
+    };
+
+    const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (activePointerRef.current !== e.pointerId) return;
+      if (shouldRejectPointer(e)) return;
+
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const pos = getCanvasPos(e.clientX, e.clientY);
+      if (!pos) return;
+
+      const from = lastPosRef.current ?? pos;
+      if (eraser) {
+        eraserStroke(ctx, from, pos, currentSize);
+      } else {
+        strokeForTool(tool, ctx, from, pos, currentSize, color);
+      }
+      lastPosRef.current = pos;
+    };
+
+    const finishStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (activePointerRef.current !== e.pointerId) return;
+      activePointerRef.current = null;
+      lastPosRef.current = null;
+      strokeCountRef.current += 1;
+      setHasStrokes(true);
+      try {
+        canvasRef.current?.releasePointerCapture(e.pointerId);
+      } catch {
+        // non-fatal
+      }
+      // Sparkle feedback at the stroke end point
+      if (containerRef.current && !eraser) {
+        spawnSparkles(e.clientX, e.clientY, containerRef.current);
+      }
+    };
+
+    // ── Done button ─────────────────────────────────────────────
+    const handleDone = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      // Brief celebration: gold pulse + subtle scale on the canvas frame,
+      // then export + navigate.
+      if (reducedMotionRef.current) {
+        const exported = exportDrawing(canvas);
+        onDone(exported.dataUrl);
+        return;
+      }
+
+      setDoneAnimating(true);
+      window.setTimeout(() => {
+        const exported = exportDrawing(canvas);
+        onDone(exported.dataUrl);
+      }, 1200);
+    };
+
+    // ── Render ──────────────────────────────────────────────────
+    return (
+      <div
+        ref={containerRef}
+        className="fixed inset-0 flex flex-col"
+        style={{ background: c.creamDeep, touchAction: 'none' }}
+      >
+        {/* Top bar */}
+        <header
+          className="flex items-center justify-between px-4"
+          style={{
+            height: 64,
+            background: c.cream,
+            borderBottom: `1px solid ${c.border}`,
+          }}
+        >
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Back"
+            className="flex items-center justify-center rounded-full active:scale-95"
+            style={{
+              width: 48,
+              height: 48,
+              background: 'transparent',
+              color: c.brown,
+              fontSize: 24,
+              lineHeight: 1,
+              border: 'none',
+            }}
+          >
+            ←
+          </button>
+          <h1
+            className="text-lg"
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.brown,
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            Draw your tooth
+          </h1>
+          <div style={{ width: 48 }} aria-hidden />
+        </header>
+
+        {/* Canvas area */}
+        <div
+          className="flex-1 flex items-center justify-center p-3 relative"
+          style={{ background: c.creamDeep, touchAction: 'none' }}
+        >
+          <div
+            className="relative"
+            style={{
+              width: '100%',
+              height: '100%',
+              maxWidth: '100%',
+              maxHeight: '100%',
+              aspectRatio: '1 / 1',
+              borderRadius: 16,
+              overflow: 'visible',
+              transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
+              transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: doneAnimating
+                ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
+                : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
+              animation: doneAnimating
+                ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                : undefined,
+            }}
+          >
+            <canvas
+              ref={canvasRef}
+              className="w-full h-full rounded-2xl select-none"
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                background: c.cream,
+                touchAction: 'none',
+                imageRendering: 'crisp-edges',
+                cursor: 'crosshair',
+                borderRadius: 16,
+              }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={finishStroke}
+              onPointerCancel={finishStroke}
+              onPointerLeave={finishStroke}
+            />
+          </div>
+
+          {/* Sparkle overlay — absolute positioned relative to the full canvas area */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            aria-hidden
+          >
+            {sparkles.map((s) => (
+              <span
+                key={s.id}
+                style={{
+                  position: 'absolute',
+                  left: s.x - 6,
+                  top: s.y - 6,
+                  width: 12,
+                  height: 12,
+                  color: c.gold,
+                  animation: 'tfn-sparkle 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                  filter: 'drop-shadow(0 0 4px oklch(72% 0.145 75 / 0.6))',
+                  pointerEvents: 'none',
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path
+                    d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            ))}
+          </div>
+
+          <style jsx>{`
+            @keyframes tfn-sparkle {
+              0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.6);
+              }
+              15% {
+                opacity: 1;
+                transform: translateY(-6px) scale(1.1);
+              }
+              100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(1);
+              }
+            }
+            @keyframes tfn-done-fade {
+              0% {
+                opacity: 1;
+              }
+              70% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0.85;
+              }
+            }
+          `}</style>
+        </div>
+
+        {/* Tools bar */}
+        <div
+          className="px-3 pt-3 pb-4"
+          style={{
+            background: c.cream,
+            borderTop: `1px solid ${c.border}`,
+          }}
+        >
+          {/* Row 1: tools + sizes */}
+          <div className="flex items-center justify-between gap-3 mb-3">
+            {/* Tool picker */}
+            <div className="flex items-center gap-2">
+              {TOOL_ORDER.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => {
+                    setTool(t);
+                    setSizeIndex(BRUSH_DEFAULT_SIZE_INDEX[t]);
+                    setEraser(false);
+                  }}
+                  aria-label={`${t} tool`}
+                  aria-pressed={tool === t && !eraser}
+                  className="rounded-2xl active:scale-95"
+                  style={{
+                    width: 64,
+                    height: 64,
+                    background: tool === t && !eraser ? c.goldSoft : c.cream,
+                    border: `2px solid ${tool === t && !eraser ? c.gold : c.border}`,
+                    color: c.brown,
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 11,
+                    fontWeight: 500,
+                    textTransform: 'capitalize',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                  }}
+                >
+                  <ToolIcon tool={t} active={tool === t && !eraser} />
+                </button>
+              ))}
+            </div>
+
+            {/* Size picker */}
+            <div className="flex items-center gap-2">
+              {[0, 1, 2].map((i) => {
+                const s = BRUSH_SIZES[tool][i as BrushSizeIndex];
+                const isActive = sizeIndex === i && !eraser;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => {
+                      setSizeIndex(i as BrushSizeIndex);
+                      setEraser(false);
+                    }}
+                    aria-label={`Size ${s} pixels`}
+                    aria-pressed={isActive}
+                    className="rounded-full active:scale-95 flex items-center justify-center"
+                    style={{
+                      width: 56,
+                      height: 56,
+                      background: c.cream,
+                      border: `2px solid ${isActive ? c.gold : c.border}`,
+                      padding: 0,
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: 'block',
+                        width: Math.min(32, s),
+                        height: Math.min(32, s),
+                        borderRadius: '50%',
+                        background: color,
+                      }}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Row 2: color swatches */}
+          <div className="flex items-center justify-center gap-2 mb-3 flex-wrap">
+            {SWATCHES.map((s) => (
+              <button
+                key={s.name}
+                type="button"
+                onClick={() => setColor(s.hex)}
+                aria-label={`Color ${s.name}`}
+                aria-pressed={color === s.hex}
+                className="rounded-full active:scale-95"
+                style={{
+                  width: 44,
+                  height: 44,
+                  background: s.hex,
+                  border:
+                    color === s.hex
+                      ? `3px solid ${c.gold}`
+                      : `2px solid ${c.border}`,
+                  padding: 0,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Row 3: eraser + undo + done */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setEraser((e) => !e)}
+              aria-pressed={eraser}
+              className="rounded-full active:scale-95"
+              style={{
+                width: 56,
+                height: 56,
+                background: eraser ? c.goldSoft : c.cream,
+                border: `2px solid ${eraser ? c.gold : c.border}`,
+                color: c.brown,
+                fontFamily: 'var(--font-body)',
+                fontSize: 11,
+                fontWeight: 500,
+                padding: 0,
+              }}
+              aria-label="Eraser"
+            >
+              Erase
+            </button>
+            <button
+              type="button"
+              onClick={handleUndo}
+              className="rounded-full active:scale-95"
+              style={{
+                width: 56,
+                height: 56,
+                background: c.cream,
+                border: `2px solid ${c.border}`,
+                color: c.brown,
+                fontFamily: 'var(--font-body)',
+                fontSize: 11,
+                fontWeight: 500,
+                padding: 0,
+              }}
+              aria-label="Undo"
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              onClick={handleClear}
+              className="rounded-full active:scale-95"
+              style={{
+                width: 56,
+                height: 56,
+                background: c.cream,
+                border: `2px solid ${c.border}`,
+                color: c.brown,
+                fontFamily: 'var(--font-body)',
+                fontSize: 11,
+                fontWeight: 500,
+                padding: 0,
+              }}
+              aria-label="Clear canvas"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={handleDone}
+              disabled={!hasStrokes}
+              className="flex-1 rounded-full active:scale-[0.98]"
+              style={{
+                height: 64,
+                background: hasStrokes ? c.gold : c.border,
+                color: c.cream,
+                fontFamily: 'var(--font-display)',
+                fontSize: 18,
+                fontWeight: 500,
+                letterSpacing: '-0.01em',
+                border: 'none',
+                padding: 0,
+                transition: 'background 0.2s, opacity 0.2s',
+                opacity: hasStrokes ? 1 : 0.6,
+                cursor: hasStrokes ? 'pointer' : 'not-allowed',
+              }}
+              aria-label="I'm done drawing"
+            >
+              I&apos;m done drawing
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+export default DrawingCanvasV2;
+
+function ToolIcon({ tool, active }: { tool: BrushTool; active: boolean }) {
+  const stroke = active ? c.gold : c.brown;
+  if (tool === 'pencil') {
+    return (
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <path
+          d="M6 30 L10 26 L24 12 L28 16 L14 30 Z"
+          stroke={stroke}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M24 12 L28 16" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (tool === 'crayon') {
+    return (
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect x="12" y="8" width="12" height="18" rx="2" stroke={stroke} strokeWidth="2" />
+        <path d="M14 26 L18 32 L22 26" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <line x1="12" y1="14" x2="24" y2="14" stroke={stroke} strokeWidth="1.5" />
+      </svg>
+    );
+  }
+  // marker
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <rect x="10" y="6" width="16" height="14" rx="2" stroke={stroke} strokeWidth="2" />
+      <path d="M14 20 L18 30 L22 20 Z" stroke={stroke} strokeWidth="2" strokeLinejoin="round" />
+    </svg>
+  );
+}

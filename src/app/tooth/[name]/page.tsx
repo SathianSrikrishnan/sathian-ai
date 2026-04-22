@@ -7,6 +7,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { AnchorProvider } from "@coral-xyz/anchor"
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { C } from "@/components/toothfairy/tokens"
+import { useSolPrice } from "@/lib/toothfairy/use-sol-price"
 import { FairyWorld } from "@/components/toothfairy/fairy-world"
 import { MagicalBirthday } from "@/components/toothfairy/magical-birthday"
 import { ToothIcon, SparkleIcon, LockIcon } from "@/components/toothfairy/fairy-icons"
@@ -28,6 +29,7 @@ function seedColors(seed: string) {
 
 export default function ToothChildPage() {
   const params = useParams()
+  const solPrice = useSolPrice()
   const rawName = (params?.name as string) || ""
   const slugName = decodeURIComponent(rawName).replace(/-/g, " ")
   // Display name: prefer clean name from Supabase, fall back to slug-derived name
@@ -655,7 +657,7 @@ export default function ToothChildPage() {
                           </div>
                           <div className="text-right">
                             <p className="text-sm font-mono font-bold" style={{ color: "#F0C456" }}>{d.amountSol.toFixed(2)} SOL</p>
-                            <p className="text-[11px] font-mono" style={{ color: "rgba(245,240,255,0.3)" }}>≈ ${(d.amountSol * 130).toFixed(0)}</p>
+                            <p className="text-[11px] font-mono" style={{ color: "rgba(245,240,255,0.3)" }}>≈ ${(d.amountSol * solPrice).toFixed(0)}</p>
                           </div>
                         </div>
                       ))}

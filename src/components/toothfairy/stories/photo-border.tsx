@@ -150,7 +150,7 @@ function Thumb({ t, size }: { t: PhotoBorderThumbnail; size: number }) {
 
   return (
     <Link
-      href={`/toothfairy/stories/${t.slug}`}
+      href={`/toothfairy/explore/${t.slug}`}
       className="group block shrink-0 transition-all duration-300 hover:scale-105"
       style={{
         width: size,

@@ -7,6 +7,7 @@ import { AnchorProvider } from "@coral-xyz/anchor"
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { WalletButton } from "@/components/toothfairy/app/wallet-button"
 import { C } from "@/components/toothfairy/tokens"
+import { useSolPrice } from "@/lib/toothfairy/use-sol-price"
 import {
   getEscrowProgram,
   fetchChildProfile,
@@ -38,6 +39,7 @@ export default function WalletDashboard() {
   const { connection } = useConnection()
   const { setVisible } = useWalletModal()
 
+  const solPrice = useSolPrice()
   const [loading, setLoading] = useState(true)
   const [childWallets, setChildWallets] = useState<string[]>([])
   const [profiles, setProfiles] = useState<ChildProfileData[]>([])
@@ -270,7 +272,7 @@ export default function WalletDashboard() {
                 {totalEscrowed.toFixed(4)} <span className="text-lg font-normal">SOL</span>
               </div>
               <p className="text-sm mt-1 font-mono" style={{ color: C.muted }}>
-                ≈ ${(totalEscrowed * 130).toFixed(2)} USD
+                ≈ ${(totalEscrowed * solPrice).toFixed(2)} USD
               </p>
               <p className="text-xs mt-1" style={{ color: C.dim }}>
                 Total savings held on-chain
@@ -307,7 +309,7 @@ export default function WalletDashboard() {
                   <div key={d.pda} className="flex items-center justify-between py-2">
                     <div>
                       <span className="text-sm font-medium">{d.depositorName}</span>
-                      <div className="text-xs font-mono" style={{ color: C.muted }}>{d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>≈ ${(d.amountSol * 130).toFixed(2)}</span></div>
+                      <div className="text-xs font-mono" style={{ color: C.muted }}>{d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</span></div>
                     </div>
                     <button
                       onClick={() => milestone && handleClaim(milestone.pda, d.pda)}
@@ -340,7 +342,7 @@ export default function WalletDashboard() {
                   </div>
                   <div className="text-right">
                     <span className="font-mono">{d.amountSol.toFixed(4)} SOL</span>
-                    <div className="text-xs font-mono" style={{ color: C.dim }}>≈ ${(d.amountSol * 130).toFixed(2)}</div>
+                    <div className="text-xs font-mono" style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</div>
                   </div>
                 </div>
               ))}

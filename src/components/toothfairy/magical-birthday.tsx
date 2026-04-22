@@ -22,7 +22,7 @@ export function MagicalBirthday({ dateStr }: { dateStr: string }) {
         textTransform: "uppercase",
         letterSpacing: "2.5px",
         color: "#4FD1C5",
-        fontFamily: "var(--font-jakarta, 'Plus Jakarta Sans', sans-serif)",
+        fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
       }}>
         {month} {year}
       </span>
@@ -32,14 +32,14 @@ export function MagicalBirthday({ dateStr }: { dateStr: string }) {
         color: "#F5F0FF",
         lineHeight: 1,
         textShadow: "0 0 18px rgba(245, 240, 255, 0.12)",
-        fontFamily: "var(--font-nunito, 'Nunito', sans-serif)",
+        fontFamily: "var(--font-display, 'Alegreya'), serif",
       }}>
         {day}
       </span>
       <span style={{
         fontSize: 8,
         color: "rgba(245, 240, 255, 0.3)",
-        fontFamily: "var(--font-jakarta, 'Plus Jakarta Sans', sans-serif)",
+        fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
         letterSpacing: "1.5px",
         textTransform: "uppercase",
       }}>

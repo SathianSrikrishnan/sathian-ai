@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
   // ── Supabase session refresh for TFN app + API routes ──
   // Captures the response so auth cookies propagate through domain rewrites.
-  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
+  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname === '/app' || pathname.startsWith('/app/')
   const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
   let supabaseResponse: NextResponse | null = null
   if (isTfnApp || isTfnApi) {
@@ -96,7 +96,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/app/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
     }
-    // /network → redirect to root (chain animation is the new landing)
+    // /network → redirect to root (warm landing page is the front door)
     if (pathname === '/network') {
       return NextResponse.redirect(new URL('/', request.url), 307)
     }

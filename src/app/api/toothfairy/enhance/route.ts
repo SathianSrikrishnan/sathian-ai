@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
-import { enhanceDrawing } from "@/lib/toothfairy/ai-enhance"
+import {
+  enhanceDrawing,
+  type EnhanceCharm,
+  type EnhanceTradition,
+} from "@/lib/toothfairy/ai-enhance"
 
-// Separate rate limiter for AI generations (more restrictive)
-const AI_MAX_PER_HOUR = 3 // 3 enhancements per IP per hour
+const AI_MAX_PER_HOUR = 10
 const windowMs = 60 * 60 * 1000
 const hits = new Map<string, { count: number; resetAt: number }>()
 
-function checkAiRateLimit(ip: string): { allowed: boolean; remaining: number } {
+function checkAiRateLimit(ip: string): {
+  allowed: boolean
+  remaining: number
+  retryAfter?: number
+} {
   const now = Date.now()
   const entry = hits.get(ip)
   if (!entry || now > entry.resetAt) {
@@ -14,13 +21,13 @@ function checkAiRateLimit(ip: string): { allowed: boolean; remaining: number } {
     return { allowed: true, remaining: AI_MAX_PER_HOUR - 1 }
   }
   if (entry.count >= AI_MAX_PER_HOUR) {
-    return { allowed: false, remaining: 0 }
+    const retryAfter = Math.ceil((entry.resetAt - now) / 1000)
+    return { allowed: false, remaining: 0, retryAfter }
   }
   entry.count++
   return { allowed: true, remaining: AI_MAX_PER_HOUR - entry.count }
 }
 
-// Cleanup stale entries
 setInterval(() => {
   const now = Date.now()
   hits.forEach((entry, ip) => {
@@ -28,48 +35,115 @@ setInterval(() => {
   })
 }, 10 * 60 * 1000)
 
+const VALID_TRADITIONS = new Set<EnhanceTradition>([
+  "tanda",
+  "anna-bogle",
+  "raton-perez",
+  "kkachi",
+  "ethiopian-hyena",
+  "mayil",
+  "hazara",
+  "finland",
+  "anka",
+  "default",
+])
+
+const VALID_CHARMS = new Set<EnhanceCharm>(["sparkle", "glow", "magic"])
+
 export async function POST(req: NextRequest) {
   try {
-    // Origin check
     const origin = req.headers.get("origin") || ""
-    const allowed = ["https://toothfairy.network", "http://localhost:3000", "http://localhost:3001"]
+    const allowed = [
+      "https://toothfairy.network",
+      "http://localhost:3000",
+      "http://localhost:3001",
+    ]
     if (!allowed.some((o) => origin.startsWith(o))) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    // Rate limit
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
-    const { allowed: ok, remaining } = checkAiRateLimit(ip)
-    if (!ok) {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
+    const rateLimit = checkAiRateLimit(ip)
+    if (!rateLimit.allowed) {
       return NextResponse.json(
-        { error: "Rate limited — 3 AI enhancements per hour. Try again later." },
-        { status: 429 },
+        {
+          error: "rate_limit",
+          retryAfter: rateLimit.retryAfter,
+        },
+        { status: 429 }
       )
     }
 
     const body = await req.json()
-    const { imageBase64, prompt } = body
+    const { drawingDataUrl, tradition, charms } = body
 
-    if (!imageBase64 || typeof imageBase64 !== "string") {
-      return NextResponse.json({ error: "imageBase64 is required" }, { status: 400 })
+    if (!drawingDataUrl || typeof drawingDataUrl !== "string") {
+      return NextResponse.json(
+        { error: "invalid_input", detail: "Drawing data is missing. Please go back and redraw." },
+        { status: 400 }
+      )
     }
 
-    // Max ~2MB base64 (prevents abuse)
-    if (imageBase64.length > 2_800_000) {
-      return NextResponse.json({ error: "Image too large" }, { status: 400 })
+    if (!drawingDataUrl.startsWith("data:image/")) {
+      return NextResponse.json(
+        { error: "invalid_input", detail: "Drawing data is corrupted. Please go back and redraw." },
+        { status: 400 }
+      )
     }
 
-    const result = await enhanceDrawing(imageBase64, prompt)
+    if (drawingDataUrl.length > 4_000_000) {
+      return NextResponse.json(
+        { error: "invalid_input", detail: "Image is too large (max ~3MB). Try a simpler drawing." },
+        { status: 400 }
+      )
+    }
+
+    const resolvedTradition: EnhanceTradition = VALID_TRADITIONS.has(tradition)
+      ? tradition
+      : "default"
+
+    const resolvedCharms: EnhanceCharm[] = Array.isArray(charms)
+      ? charms.filter((c: string) => VALID_CHARMS.has(c as EnhanceCharm))
+      : []
+
+    const result = await enhanceDrawing({
+      imageDataUrl: drawingDataUrl,
+      tradition: resolvedTradition,
+      charms: resolvedCharms,
+    })
+
+    // Log latency + tradition (NOT the drawing data URL)
+    console.log(
+      `[enhance] tradition=${resolvedTradition} charms=${resolvedCharms.join(",")} latency=${result.generationMs}ms`
+    )
 
     return NextResponse.json({
-      imageUrl: result.imageUrl,
-      remaining,
+      enhancedImageUrl: result.imageUrl,
+      traditionUsed: resolvedTradition,
+      charmsUsed: resolvedCharms,
+      generationMs: result.generationMs,
+      remaining: rateLimit.remaining,
     })
-  } catch (err: any) {
-    console.error("[enhance] Error:", err.message)
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "AI enhancement failed"
+    const isModeration =
+      message.includes("moderation") ||
+      message.includes("safety") ||
+      message.includes("content")
+
+    if (isModeration) {
+      return NextResponse.json(
+        { error: "moderation_block", fallback: "original" },
+        { status: 503 }
+      )
+    }
+
+    console.error("[enhance] Error:", message)
     return NextResponse.json(
-      { error: err.message || "AI enhancement failed" },
-      { status: 500 },
+      { error: "service_unavailable", detail: message },
+      { status: 503 }
     )
   }
 }

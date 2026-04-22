@@ -15,7 +15,7 @@ export default function ConceptBLayout({
   children: React.ReactNode
 }) {
   return (
-    <div style={{ background: '#FDF8F0', color: '#2D2418', minHeight: '100vh' }}>
+    <div style={{ background: 'oklch(97.5% 0.01 80)', color: 'oklch(30% 0.035 65)', minHeight: '100vh' }}>
       {children}
     </div>
   )

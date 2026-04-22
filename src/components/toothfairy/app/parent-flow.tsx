@@ -91,7 +91,7 @@ export default function ParentFlow({
   return (
     <div
       className="w-full max-w-md mx-auto min-h-screen relative"
-      style={{ background: PC.bg, color: PC.text, fontFamily: "'Manrope', sans-serif" }}
+      style={{ background: PC.bg, color: PC.text, fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif" }}
     >
       {/* ── Sticky Header ── */}
       <div
@@ -108,22 +108,22 @@ export default function ParentFlow({
             className="text-lg font-bold tracking-tight"
             style={{
               color: PC.gold,
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "var(--font-display, 'Alegreya'), serif",
             }}
           >
             Tooth Fairy Network
           </h1>
           <button
             style={{
-              background: `linear-gradient(135deg, ${PC.goldDark}, ${PC.gold})`,
-              color: "#fff",
+              background: PC.gold,
+              color: PC.onGold,
               border: "none",
               borderRadius: "0.75rem",
               padding: "0.5rem 1rem",
               fontSize: "0.8125rem",
               fontWeight: 600,
               cursor: "pointer",
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "var(--font-display, 'Alegreya'), serif",
             }}
           >
             Connect Wallet
@@ -141,7 +141,7 @@ export default function ParentFlow({
                 className="text-[10px] uppercase tracking-widest"
                 style={{
                   color: PC.goldDark,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
                   fontWeight: 800,
                   letterSpacing: "0.15em",
                 }}
@@ -152,7 +152,7 @@ export default function ParentFlow({
                 className="text-[10px] uppercase tracking-widest"
                 style={{
                   color: PC.muted,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
                   fontWeight: 800,
                   letterSpacing: "0.15em",
                 }}
@@ -214,7 +214,7 @@ export default function ParentFlow({
             <div className="text-center py-4">
               <h2
                 className="text-xl font-bold tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
               >
                 Set up your child&apos;s profile
               </h2>
@@ -287,7 +287,7 @@ export default function ParentFlow({
             <div
               className="rounded-2xl p-6 space-y-5"
               style={{
-                background: "#ffffff",
+                background: PC.bgAlt,
                 border: `1px solid ${PC.border}`,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
               }}
@@ -308,7 +308,7 @@ export default function ParentFlow({
                   style={{
                     borderColor: childName ? PC.teal : PC.border,
                     color: PC.text,
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
                     borderTop: "none",
                     borderLeft: "none",
                     borderRight: "none",
@@ -331,7 +331,7 @@ export default function ParentFlow({
                   style={{
                     borderColor: birthDate ? PC.teal : PC.border,
                     color: PC.text,
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
                     borderTop: "none",
                     borderLeft: "none",
                     borderRight: "none",
@@ -350,7 +350,7 @@ export default function ParentFlow({
                 color: PC.onGold,
                 boxShadow: parentGlow.ctaFloat,
                 borderRadius: "9999px",
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "var(--font-display, 'Alegreya'), serif",
                 border: "none",
                 cursor: "pointer",
                 fontSize: "1rem",
@@ -381,7 +381,7 @@ export default function ParentFlow({
                 </svg>
                 <h3
                   className="font-bold mb-1"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text, fontSize: "0.875rem" }}
+                  style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text, fontSize: "0.875rem" }}
                 >
                   Encrypted Ledger
                 </h3>
@@ -407,7 +407,7 @@ export default function ParentFlow({
                 </svg>
                 <h3
                   className="font-bold mb-1"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text, fontSize: "0.875rem" }}
+                  style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text, fontSize: "0.875rem" }}
                 >
                   Privacy First
                 </h3>
@@ -427,7 +427,7 @@ export default function ParentFlow({
             <div className="text-center">
               <h2
                 className="text-xl font-bold tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
               >
                 {toothPhoto ? "Great photo!" : "Take a photo or draw the tooth together"}
               </h2>
@@ -507,7 +507,7 @@ export default function ParentFlow({
                   color: PC.onGold,
                   boxShadow: parentGlow.ctaFloat,
                   borderRadius: "9999px",
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
                   border: "none",
                   cursor: "pointer",
                   fontSize: "1rem",
@@ -524,14 +524,14 @@ export default function ParentFlow({
             <div
               className="rounded-2xl p-5"
               style={{
-                background: "#ffffff",
+                background: PC.bgAlt,
                 border: `1px solid ${PC.border}`,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
               }}
             >
               <label
                 className="block text-sm font-bold mb-3"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
               >
                 Add a message for {name}&apos;s time capsule
               </label>
@@ -546,7 +546,7 @@ export default function ParentFlow({
                   background: PC.surfaceContainerLow,
                   border: `1px solid ${PC.border}`,
                   color: PC.text,
-                  fontFamily: "'Manrope', sans-serif",
+                  fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
                 }}
               />
               <div className="flex justify-end mt-2">
@@ -598,7 +598,7 @@ export default function ParentFlow({
                 color: PC.onGold,
                 boxShadow: parentGlow.ctaFloat,
                 borderRadius: "9999px",
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "var(--font-display, 'Alegreya'), serif",
                 border: "none",
                 cursor: "pointer",
                 fontSize: "1rem",
@@ -620,7 +620,7 @@ export default function ParentFlow({
             <div className="text-center">
               <h2
                 className="text-xl font-bold tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
               >
                 This is {name}&apos;s — forever
               </h2>
@@ -633,7 +633,7 @@ export default function ParentFlow({
             <div
               className="rounded-2xl overflow-hidden"
               style={{
-                background: "#ffffff",
+                background: PC.bgAlt,
                 border: `1px solid ${PC.border}`,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 transform: "rotate(1deg)",
@@ -664,7 +664,7 @@ export default function ParentFlow({
                 {/* Overlay info */}
                 <div
                   className="absolute bottom-0 left-0 right-0 p-4"
-                  style={{ background: "linear-gradient(to top, rgba(24,28,32,0.4), transparent)" }}
+                  style={{ background: `linear-gradient(to top, oklch(30% 0.035 65 / 0.3), transparent)` }}
                 >
                   <div
                     className="rounded-xl p-3"
@@ -672,7 +672,7 @@ export default function ParentFlow({
                   >
                     <p
                       className="font-bold text-lg mb-1"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                      style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
                     >
                       {name}&apos;s First Tooth Drawing
                     </p>
@@ -693,13 +693,13 @@ export default function ParentFlow({
                 <div className="flex items-center gap-2">
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                    style={{ background: PC.gold, color: "#fff" }}
+                    style={{ background: PC.gold, color: PC.onGold }}
                   >
                     {name.charAt(0)}
                   </div>
                   <span
                     className="text-xs font-bold"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    style={{ fontFamily: "var(--font-display, 'Alegreya'), serif" }}
                   >
                     {name}
                   </span>
@@ -756,14 +756,14 @@ export default function ParentFlow({
                 >
                   <span
                     className="text-2xl font-bold leading-none"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.teal }}
+                    style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.teal }}
                   >
                     {num}
                   </span>
                   <div>
                     <h3
                       className="font-bold mb-1"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                      style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
                     >
                       {title}
                     </h3>
@@ -789,7 +789,7 @@ export default function ParentFlow({
                   color: PC.onGold,
                   boxShadow: parentGlow.ctaFloat,
                   borderRadius: "0.75rem",
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
                   border: "none",
                   cursor: "pointer",
                   fontSize: "1.125rem",
@@ -800,10 +800,10 @@ export default function ParentFlow({
               <button
                 className="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-base font-bold transition-all"
                 style={{
-                  background: "#ffffff",
+                  background: PC.bgAlt,
                   color: PC.text,
                   border: `1px solid ${PC.border}`,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
                   cursor: "pointer",
                 }}
               >
@@ -856,7 +856,7 @@ export default function ParentFlow({
 
             <h2
               className="text-2xl font-bold"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+              style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
             >
               Saving {name}&apos;s keepsake...
             </h2>
@@ -971,63 +971,31 @@ export default function ParentFlow({
         )}
 
         {/* ══════════════════════════════════════════════════════════════
-            STEP 5: Done — Success + Savings + Share + Founder Message
+            STEP 5: Done — The Unveiling
            ══════════════════════════════════════════════════════════════ */}
         {step === "done" && (
-          <div className="space-y-6">
-            {/* Success header */}
-            <div className="flex flex-col items-center text-center">
+          <div className="space-y-8">
+            {/* ── The Keepsake Card (the star of the show) ── */}
+            <div className="pt-4">
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                className="rounded-3xl overflow-hidden"
                 style={{
-                  background: "#ffffff",
-                  boxShadow: "0 8px 32px rgba(24,28,32,0.04)",
+                  background: PC.bgAlt,
+                  border: `2px solid ${PC.borderGold}`,
+                  boxShadow: parentGlow.ctaFloat,
                 }}
               >
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke={PC.teal}
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              </div>
-              <h2
-                className="text-2xl font-bold mb-1"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
-              >
-                {name}&apos;s keepsake is live
-              </h2>
-              <p className="font-medium" style={{ color: PC.muted }}>
-                Permanently stored on the Solana blockchain
-              </p>
-            </div>
-
-            {/* Preview card */}
-            <div
-              className="rounded-2xl p-5 overflow-hidden"
-              style={{
-                background: "#ffffff",
-                border: `1px solid ${PC.border}`,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-              }}
-            >
-              <div className="flex flex-col gap-4">
-                {/* Image placeholder */}
+                {/* Child&apos;s creation */}
                 <div
-                  className="w-full rounded-xl overflow-hidden flex items-center justify-center"
+                  className="flex items-center justify-center"
                   style={{
-                    aspectRatio: "1 / 1",
+                    aspectRatio: "4 / 3",
                     background: PC.surfaceContainerLow,
+                    overflow: "hidden",
                   }}
                 >
                   {toothPhoto ? (
-                    <img src={toothPhoto} alt="Artwork" className="w-full h-full object-cover" />
+                    <img src={toothPhoto} alt={`${name}'s creation`} className="w-full h-full object-cover" />
                   ) : (
                     <div style={{ textAlign: "center", opacity: 0.3 }}>
                       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={PC.text} strokeWidth="1">
@@ -1035,463 +1003,187 @@ export default function ParentFlow({
                         <circle cx="8.5" cy="8.5" r="1.5" />
                         <polyline points="21 15 16 10 5 21" />
                       </svg>
-                      <p style={{ fontSize: "0.75rem", fontWeight: 600, marginTop: "0.5rem" }}>
-                        Child&apos;s Artwork
-                      </p>
+                      <p style={{ fontSize: "0.75rem", fontWeight: 600, marginTop: "0.5rem" }}>{name}&apos;s artwork</p>
                     </div>
                   )}
                 </div>
 
-                {/* Details */}
-                <div>
-                  <div
-                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 mb-3"
+                {/* The note */}
+                <div className="p-5">
+                  <p
+                    className="text-lg italic leading-relaxed mb-4"
                     style={{
-                      background: PC.tealSoft,
-                      color: PC.teal,
-                      fontSize: "0.6875rem",
-                      fontWeight: 700,
+                      fontFamily: "var(--font-display, 'Alegreya'), serif",
+                      color: PC.text,
                     }}
                   >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill={PC.teal} stroke="none">
-                      <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                      <polyline
-                        points="22 4 12 14.01 9 11.01"
-                        stroke={PC.teal}
-                        fill="none"
-                        strokeWidth="3"
-                      />
-                    </svg>
-                    VERIFIED BLOCKCHAIN ASSET
-                  </div>
-                  <h3
-                    className="text-xl font-bold mb-2"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    First Lost Tooth
-                  </h3>
-                  <p style={{ color: PC.muted, fontSize: "0.875rem", lineHeight: 1.6, marginBottom: "1rem" }}>
-                    {note ||
-                      `"To the tooth fairy, here is my favorite drawing for you. Please leave a gold coin!"`}{" "}
-                    — {name}, Age 6
+                    {note || `"My first tooth fell out and I drew this for the fairy!"`}
                   </p>
-                  <div className="flex items-center gap-3 pt-3">
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold"
-                      style={{ background: PC.gold, color: "#fff" }}
-                    >
-                      {name.charAt(0)}
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
+                        style={{ background: PC.gold, color: PC.onGold }}
+                      >
+                        {photo ? (
+                          <img src={photo} alt={name} className="w-full h-full object-cover rounded-full" />
+                        ) : name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold" style={{ color: PC.text }}>
+                          {name}
+                        </p>
+                        <p className="text-xs" style={{ color: PC.muted }}>
+                          April 2026
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold" style={{ color: PC.text }}>
-                        {name}
-                      </p>
-                      <p style={{ fontSize: "0.625rem", color: PC.muted, fontFamily: "monospace" }}>
-                        SOL: 7xR...w9K
-                      </p>
+                    <div
+                      className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full"
+                      style={{ background: PC.goldSoft, color: PC.goldDark }}
+                    >
+                      Permanent
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ── Add Savings Section ── */}
+            {/* ── The message ── */}
+            <div className="text-center px-4">
+              <h2
+                className="text-2xl font-bold mb-2"
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
+              >
+                {name}&apos;s first keepsake is planted
+              </h2>
+              <p className="text-base leading-relaxed" style={{ color: PC.muted, maxWidth: '45ch', margin: '0 auto' }}>
+                This is the beginning. Every person who loves {name} can add to it — a note, a gift, a memory. It grows year after year, and one day, everything in it is theirs.
+              </p>
+            </div>
+
+            {/* ── Share — the primary action ── */}
+            <div className="flex flex-col gap-3">
+              <button
+                className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95"
+                style={{
+                  background: PC.gold,
+                  color: PC.onGold,
+                  boxShadow: parentGlow.ctaFloat,
+                  borderRadius: "0.75rem",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "1.125rem",
+                  transition: "transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Share with family
+              </button>
+              <p className="text-xs text-center" style={{ color: PC.muted }}>
+                Grandma, uncle, cousin — anyone can see it and add to it
+              </p>
+            </div>
+
+            {/* ── Add savings (secondary) ── */}
             <div
               className="rounded-2xl p-5"
-              style={{
-                background: "#ffffff",
-                border: `1px solid ${PC.border}`,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-              }}
+              style={{ background: PC.surfaceContainerLow }}
             >
               <h3
-                className="text-lg font-bold mb-1"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
+                className="text-base font-bold mb-1"
+                style={{ fontFamily: "var(--font-display, 'Alegreya'), serif", color: PC.text }}
               >
-                Add savings to {name}&apos;s keepsake
+                Plant a seed — add savings
               </h3>
-              <p className="text-sm mb-5" style={{ color: PC.muted }}>
-                {name}&apos;s milestone is saved. Add savings to their wallet.
+              <p className="text-sm mb-4" style={{ color: PC.muted }}>
+                Start {name}&apos;s savings with a small gift. It&apos;s held safely until they&apos;re ready.
               </p>
 
-              {/* Lock period selector */}
-              <div className="mb-5">
-                <label
-                  className="block text-[10px] uppercase tracking-widest mb-3"
-                  style={{ color: PC.goldDark, fontWeight: 700 }}
-                >
-                  Select Lock Period
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {([
-                    { key: "now" as LockChoice, label: "Gift Now" },
-                    { key: "eighteen" as LockChoice, label: "Until 18th Birthday" },
-                    { key: "custom" as LockChoice, label: "Pick a Date" },
-                  ]).map(({ key, label }) => (
+              <div className="grid grid-cols-4 gap-2 mb-4">
+                {[
+                  { label: "$5", val: "5" },
+                  { label: "$10", val: "10" },
+                  { label: "$20", val: "20" },
+                  { label: "$50", val: "50" },
+                ].map(({ label, val }) => {
+                  const selected = depositAmount === val
+                  return (
                     <button
-                      key={key}
-                      onClick={() => setLockChoice(key)}
-                      className="relative rounded-xl py-3 px-2 text-center transition-all"
+                      key={val}
+                      onClick={() => setDepositAmount(val)}
+                      className="flex items-center justify-center py-3 rounded-xl"
                       style={{
-                        background: "#ffffff",
-                        border: lockChoice === key
-                          ? `2px solid ${PC.gold}`
-                          : `1px solid ${PC.border}`,
-                        boxShadow: lockChoice === key ? parentGlow.gold : "none",
+                        background: selected ? PC.goldSoft : PC.bgAlt,
+                        border: selected ? `2px solid ${PC.gold}` : `1px solid ${PC.border}`,
                         cursor: "pointer",
+                        transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
                       }}
                     >
-                      {key === "eighteen" && (
-                        <div
-                          className="absolute -top-2.5 right-2 rounded-full px-2 py-0.5"
-                          style={{
-                            background: PC.goldDark,
-                            color: "#fff",
-                            fontSize: "0.5rem",
-                            fontWeight: 700,
-                            letterSpacing: "0.05em",
-                          }}
-                        >
-                          RECOMMENDED
-                        </div>
-                      )}
                       <span
-                        className="text-xs font-bold leading-tight"
+                        className="text-base font-bold"
                         style={{
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
-                          color: lockChoice === key ? PC.goldDark : PC.text,
+                          fontFamily: "var(--font-display, 'Alegreya'), serif",
+                          color: selected ? PC.goldDark : PC.text,
                         }}
                       >
                         {label}
                       </span>
                     </button>
-                  ))}
-                </div>
-                {lockChoice === "custom" && (
-                  <div className="mt-3">
-                    <input
-                      type="date"
-                      value={customLockDate}
-                      onChange={(e) => setCustomLockDate(e.target.value)}
-                      min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
-                      className="bg-transparent border-b py-2 px-1 text-base w-full outline-none"
-                      style={{
-                        borderColor: PC.border,
-                        color: PC.text,
-                        fontFamily: "'Manrope', sans-serif",
-                        borderTop: "none",
-                        borderLeft: "none",
-                        borderRight: "none",
-                      }}
-                    />
-                  </div>
-                )}
+                  )
+                })}
               </div>
 
-              {/* Amount presets */}
-              <div className="mb-5">
-                <label
-                  className="block text-[10px] uppercase tracking-widest mb-3"
-                  style={{ color: PC.goldDark, fontWeight: 700 }}
-                >
-                  Choose Amount
-                </label>
-                <div className="grid grid-cols-4 gap-2">
-                  {[
-                    { label: "$5", sub: "0.1 SOL", val: "5" },
-                    { label: "$10", sub: "0.5 SOL", val: "10" },
-                    { label: "$20", sub: "1 SOL", val: "20" },
-                    { label: "$50", sub: "5 SOL", val: "50" },
-                  ].map(({ label, sub, val }) => {
-                    const selected = depositAmount === val
-                    return (
-                      <button
-                        key={val}
-                        onClick={() => setDepositAmount(val)}
-                        className="flex flex-col items-center justify-center py-3 rounded-xl transition-all"
-                        style={{
-                          background: "#ffffff",
-                          border: selected
-                            ? `2px solid ${PC.goldDark}`
-                            : `1px solid ${PC.border}`,
-                          cursor: "pointer",
-                        }}
-                      >
-                        <span
-                          className="text-lg font-bold"
-                          style={{
-                            fontFamily: "'Plus Jakarta Sans', sans-serif",
-                            color: selected ? PC.goldDark : PC.text,
-                          }}
-                        >
-                          {label}
-                        </span>
-                        <span
-                          className="text-[10px] mt-0.5"
-                          style={{
-                            fontFamily: "monospace",
-                            color: selected ? PC.goldDark : PC.muted,
-                            opacity: selected ? 0.7 : 0.5,
-                          }}
-                        >
-                          {sub}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* From name */}
-              <div className="mb-5">
-                <label
-                  className="block text-[10px] uppercase tracking-widest mb-2"
-                  style={{ color: PC.goldDark, fontWeight: 700 }}
-                >
-                  From (Your Name)
-                </label>
-                <input
-                  type="text"
-                  value={fromName}
-                  onChange={(e) => setFromName(e.target.value)}
-                  placeholder="e.g., Dad, Mom"
-                  className="bg-transparent border-b py-2 px-1 text-base w-full outline-none"
-                  style={{
-                    borderColor: fromName ? PC.teal : PC.border,
-                    color: PC.text,
-                    fontFamily: "'Manrope', sans-serif",
-                    borderTop: "none",
-                    borderLeft: "none",
-                    borderRight: "none",
-                  }}
-                />
-              </div>
-
-              {/* Info */}
-              <div
-                className="flex gap-3 items-start rounded-xl p-4 mb-5"
-                style={{ background: PC.surfaceContainer }}
+              <button
+                className="w-full py-3 font-bold flex items-center justify-center gap-2 rounded-xl"
+                style={{
+                  background: PC.gold,
+                  color: PC.onGold,
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
+                  transition: "transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke={PC.teal}
-                  strokeWidth="2"
-                  className="flex-shrink-0 mt-0.5"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4" />
-                  <path d="M12 8h.01" />
-                </svg>
-                <p style={{ fontSize: "0.8125rem", lineHeight: 1.6, color: `${PC.text}cc` }}>
-                  <strong>How this works:</strong> Your deposit goes into a smart contract on the
-                  Solana blockchain. Funds are cryptographically held until {name} turns 18.{" "}
-                  <span style={{ fontWeight: 600, color: PC.teal }}>2% network fee</span> applies to
-                  maintain the ledger.
-                </p>
-              </div>
-
-              {/* CTAs */}
-              <div className="flex flex-col gap-3 items-center">
-                <button
-                  className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform"
-                  style={{
-                    background: parentGradients.stardust,
-                    color: PC.onGold,
-                    boxShadow: parentGlow.ctaFloat,
-                    borderRadius: "0.75rem",
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: "1.125rem",
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-                    <line x1="1" y1="10" x2="23" y2="10" />
-                  </svg>
-                  Pay with Card
-                </button>
-                <button
-                  className="font-bold text-sm"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: PC.teal,
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    cursor: "pointer",
-                  }}
-                >
-                  I already have a Solana wallet
-                </button>
-                <button
-                  className="text-sm mt-2"
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: `${PC.text}66`,
-                    cursor: "pointer",
-                  }}
-                >
-                  Not right now — add savings later
-                </button>
-              </div>
+                Add ${depositAmount} to {name}&apos;s keepsake
+              </button>
+              <button
+                className="w-full text-sm mt-3 text-center"
+                style={{ background: "none", border: "none", color: PC.muted, cursor: "pointer" }}
+              >
+                Not right now
+              </button>
             </div>
 
-            {/* ── Founder Message ── */}
-            <div
-              className="rounded-2xl p-6 relative"
-              style={{
-                background: "#FFF8F0",
-                border: `1px solid ${PC.borderGold}`,
-              }}
-            >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill={`${PC.goldDark}33`}
-                stroke="none"
-                className="absolute top-4 right-5"
+            {/* ── View page ── */}
+            <div className="flex flex-col gap-3 items-center">
+              <button
+                onClick={() => onComplete?.()}
+                className="w-full py-4 font-bold flex items-center justify-center gap-2 rounded-xl"
+                style={{
+                  background: PC.bgAlt,
+                  color: PC.text,
+                  border: `1px solid ${PC.border}`,
+                  cursor: "pointer",
+                  fontFamily: "var(--font-display, 'Alegreya'), serif",
+                  fontSize: "1rem",
+                  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
               >
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-              </svg>
-              <p
-                className="italic leading-relaxed mb-5"
-                style={{ color: PC.text, fontSize: "0.9375rem" }}
-              >
-                &ldquo;Thank you for trusting us with your family&apos;s history. Everything here is
-                stored on the Solana blockchain to ensure {name}&apos;s memories remain accessible and
-                immutable for decades to come. As a father, I built this to preserve what matters
-                most.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center font-bold"
-                  style={{
-                    background: PC.surfaceContainerLow,
-                    border: "2px solid #fff",
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-                    color: PC.goldDark,
-                    fontSize: "0.875rem",
-                  }}
-                >
-                  SS
-                </div>
-                <div>
-                  <p
-                    className="font-bold"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.goldDark }}
-                  >
-                    Sathian S.
-                  </p>
-                  <p className="text-xs" style={{ color: PC.muted }}>
-                    Founder & Father
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Transparency Report ── */}
-            <div
-              className="rounded-2xl p-5"
-              style={{ background: PC.surfaceContainerLow }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h4
-                  className="text-sm font-bold"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.text }}
-                >
-                  Transparency Report
-                </h4>
-                <span
-                  style={{
-                    fontSize: "0.625rem",
-                    fontWeight: 700,
-                    color: PC.teal,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  Live Node Status: Active
-                </span>
-              </div>
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between items-end">
-                  <span className="text-sm" style={{ color: PC.muted }}>
-                    Maintenance Protocol
-                  </span>
-                  <span
-                    className="font-bold"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.goldDark }}
-                  >
-                    ~$1 / year
-                  </span>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="text-sm" style={{ color: PC.muted }}>
-                    Blockchain Storage Fee
-                  </span>
-                  <span
-                    className="font-bold"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: PC.goldDark }}
-                  >
-                    Pre-paid (Life)
-                  </span>
-                </div>
-                <div
-                  className="flex justify-between items-end pt-3 mt-3"
-                  style={{ borderTop: `1px solid ${PC.border}` }}
-                >
-                  <span className="text-sm font-bold" style={{ color: PC.text }}>
-                    Vault Status
-                  </span>
-                  <span style={{ fontSize: "0.75rem", fontFamily: "monospace", color: PC.teal }}>
-                    DECENTRALIZED
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Footer CTAs ── */}
-            <button
-              onClick={() => onComplete?.()}
-              className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-              style={{
-                background: parentGradients.stardust,
-                color: PC.onGold,
-                boxShadow: parentGlow.ctaFloat,
-                borderRadius: "0.75rem",
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "1.125rem",
-              }}
-            >
-              View {name}&apos;s page
-            </button>
-
-            <div className="flex flex-col gap-3 items-center mt-2">
-              <a
-                href="#"
-                className="text-sm font-medium"
-                style={{ color: PC.muted, textDecoration: "none" }}
-              >
-                Learn more about our archival process
-              </a>
-              <a
-                href="#"
-                className="text-sm font-bold flex items-center gap-1"
-                style={{ color: PC.teal, textDecoration: "none" }}
-              >
-                View on blockchain
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                View {name}&apos;s keepsake page
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
-              </a>
+              </button>
             </div>
           </div>
         )}

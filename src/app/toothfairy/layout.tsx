@@ -1,37 +1,19 @@
 import type { Metadata, Viewport } from 'next'
-import { Nunito, Plus_Jakarta_Sans, Quicksand, Playfair_Display, Lora } from 'next/font/google'
+import { Alegreya, Alegreya_Sans } from 'next/font/google'
 
-const nunito = Nunito({
+const alegreya = Alegreya({
   subsets: ['latin'],
-  variable: '--font-nunito',
+  variable: '--font-display',
   display: 'swap',
-})
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-jakarta',
-  display: 'swap',
-})
-
-const quicksand = Quicksand({
-  subsets: ['latin'],
-  variable: '--font-quicksand',
-  display: 'swap',
-})
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-landing-serif',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '700', '800'],
   style: ['normal', 'italic'],
 })
 
-const lora = Lora({
+const alegreyaSans = Alegreya_Sans({
   subsets: ['latin'],
-  variable: '--font-landing-body',
+  variable: '--font-body',
   display: 'swap',
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '700'],
   style: ['normal', 'italic'],
 })
 
@@ -64,7 +46,7 @@ export default function ToothFairyLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className={`${nunito.variable} ${plusJakarta.variable} ${quicksand.variable} ${playfair.variable} ${lora.variable}`}>
+    <div className={`${alegreya.variable} ${alegreyaSans.variable}`}>
       {children}
     </div>
   )

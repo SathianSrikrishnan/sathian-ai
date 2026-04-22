@@ -52,6 +52,33 @@ function isInPhantomBrowser() {
   return !!(window as any).phantom?.solana?.isPhantom
 }
 
+// Shrink + re-encode a data URL so the mint POST stays under Vercel's
+// 4.5MB body limit. Pass-through for http(s) URLs. Output is JPEG.
+async function compressImageDataUrl(
+  dataUrl: string,
+  maxDim = 1280,
+  quality = 0.85,
+): Promise<string> {
+  if (!dataUrl.startsWith("data:")) return dataUrl
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height))
+      const w = Math.round(img.width * scale)
+      const h = Math.round(img.height * scale)
+      const canvas = document.createElement("canvas")
+      canvas.width = w
+      canvas.height = h
+      const ctx = canvas.getContext("2d")
+      if (!ctx) return reject(new Error("Canvas unavailable"))
+      ctx.drawImage(img, 0, 0, w, h)
+      resolve(canvas.toDataURL("image/jpeg", quality))
+    }
+    img.onerror = () => reject(new Error("Image decode failed"))
+    img.src = dataUrl
+  })
+}
+
 export default function ToothFairyApp() {
   // Wallet hooks are instantiated for both modes (they're cheap / provider-bound),
   // but every wallet UI surface is gated on `isParent` below. Child mode never
@@ -85,13 +112,18 @@ export default function ToothFairyApp() {
   const [depositMessage, setDepositMessage] = useState("")
 
   // Auth state (Supabase session — required for wallet mint path)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [authLoading, setAuthLoading] = useState(true)
-  const [authEmail, setAuthEmail] = useState<string | null>(null)
+  // E2E tests set NEXT_PUBLIC_TEST_MODE=true to bypass the Supabase auth gate.
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "true"
+  const [isAuthenticated, setIsAuthenticated] = useState(isTestMode)
+  const [authLoading, setAuthLoading] = useState(!isTestMode)
+  const [authEmail, setAuthEmail] = useState<string | null>(
+    isTestMode ? "test@example.com" : null
+  )
   const supabase = useMemo(() => createBrowserSupabase(), [])
 
   // Check auth session on mount and listen for changes
   useEffect(() => {
+    if (isTestMode) return
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session?.user)
       setAuthEmail(session?.user?.email ?? null)
@@ -105,7 +137,7 @@ export default function ToothFairyApp() {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase])
+  }, [supabase, isTestMode])
 
   // Handle returning from OAuth redirect
   useEffect(() => {
@@ -163,7 +195,7 @@ export default function ToothFairyApp() {
   // ── Persist/restore flow state for mobile Phantom deep link ──
   const FLOW_STORAGE_KEY = "tfn-flow-state"
 
-  // Restore state on mount (survives Phantom deep link redirect)
+  // Restore state on mount (survives Google auth + Phantom deep link redirect)
   useEffect(() => {
     try {
       const saved = localStorage.getItem(FLOW_STORAGE_KEY)
@@ -172,21 +204,32 @@ export default function ToothFairyApp() {
       if (state.childName) setChildName(state.childName)
       if (state.childDob) setChildDob(state.childDob)
       if (state.childPhoto) setChildPhoto(state.childPhoto)
-      if (state.previewImage) setPreviewImage(state.previewImage)
+      // previewImage/photo are no longer in the flow blob (too large for quota).
+      // Fall back to the dedicated drawing keys that DrawingCanvas manages.
+      if (state.previewImage) {
+        setPreviewImage(state.previewImage)
+      } else {
+        const enhanced = localStorage.getItem(LATEST_ENHANCED_KEY)
+        const drawing = localStorage.getItem(LATEST_DRAWING_KEY)
+        if (enhanced) setPreviewImage(enhanced)
+        else if (drawing) setPreviewImage(drawing)
+      }
       if (state.photo) setPhoto(state.photo)
-      // Resume at preview step so wallet connection triggers auto-advance to deposit
       if (state.step === "preview" || state.step === "deposit") setStep("preview")
     } catch { /* ignore corrupt localStorage */ }
   }, [])
 
-  // Save flow state before Phantom redirect (called by the deep link click)
+  // Save flow state before redirect (Google auth or Phantom deep link).
+  // Deliberately excludes previewImage and photo (base64 data URLs) because
+  // they easily exceed localStorage's ~5 MB quota. Instead we persist them
+  // under their own dedicated keys which DrawingCanvas already manages.
   const saveFlowState = useCallback(() => {
     try {
       localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify({
-        childName, childDob, childPhoto, previewImage, photo, step: "preview",
+        childName, childDob, childPhoto, step: "preview",
       }))
     } catch { /* localStorage full or unavailable */ }
-  }, [childName, childDob, childPhoto, previewImage, photo])
+  }, [childName, childDob, childPhoto])
 
   // Clear saved flow state (after mint completes or user starts over)
   const clearFlowState = useCallback(() => {
@@ -248,7 +291,10 @@ export default function ToothFairyApp() {
   // narrative while the drawing is fresh in their head.
   const goToPreview = () => {
     const dataUrl = drawingCanvasRef.current?.toDataURL()
-    if (dataUrl) setPreviewImage(dataUrl)
+    if (dataUrl) {
+      setPreviewImage(dataUrl)
+      try { localStorage.setItem(LATEST_DRAWING_KEY, dataUrl) } catch {}
+    }
     setStep("tell")
   }
 
@@ -282,16 +328,17 @@ export default function ToothFairyApp() {
   // The mint API uses the server keypair as temporary guardian.
   // User's Phantom wallet is NOT needed until they want to deposit SOL.
   const handleServerMint = async () => {
-    // Pre-flight auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session?.user) {
-      setError("Your session expired. Please sign in again to continue.")
-      setIsAuthenticated(false)
-      return
+    // Pre-flight auth check (skipped in E2E test mode)
+    if (!isTestMode) {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.user) {
+        setError("Your session expired. Please sign in again to continue.")
+        setIsAuthenticated(false)
+        return
+      }
     }
 
     setError(null); setStep("minting")
-    const imageBase64 = previewImage ? previewImage.split(",")[1] : undefined
 
     // Pull Tell + story context from localStorage at submit time so any
     // inline edits between Tell step and mint click aren't lost.
@@ -310,6 +357,23 @@ export default function ToothFairyApp() {
     } catch { /* ignore */ }
 
     try {
+      // Compress drawing + smile photo client-side so the JSON POST body
+      // stays under Vercel's 4.5MB serverless limit. Vercel rejects larger
+      // payloads at the edge with HTTP 413 before the route ever runs.
+      setMintProgress("Preparing images...")
+      const compressedPreview = previewImage
+        ? await compressImageDataUrl(previewImage, 1280, 0.85)
+        : null
+      const compressedPhoto = childPhoto
+        ? await compressImageDataUrl(childPhoto, 1024, 0.85)
+        : null
+      const imageBase64 = compressedPreview
+        ? compressedPreview.split(",")[1]
+        : undefined
+      const smilePhotoBase64 = compressedPhoto
+        ? compressedPhoto.split(",")[1]
+        : undefined
+
       // Step 1: Mint cNFT + create escrow profile (all server-side, no wallet needed)
       setMintProgress("Saving artwork permanently...")
       const mintRes = await fetch("/api/toothfairy/mint", {
@@ -320,10 +384,10 @@ export default function ToothFairyApp() {
           toothType: "UpperRightCentralIncisor",
           toothNumber: 1,
           imageBase64,
-          imageMimeType: "image/png",
+          imageMimeType: "image/jpeg",
           note: note || undefined,
           birthday: childDob || undefined,
-          smilePhotoBase64: childPhoto ? childPhoto.split(",")[1] : undefined,
+          smilePhotoBase64,
           toothStory: toothStoryForMint,
           traditionSlug: traditionSlugForMint,
         }),

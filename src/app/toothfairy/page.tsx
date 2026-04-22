@@ -142,6 +142,23 @@ export default function ToothFairyLanding() {
                   All of it — theirs. Still there when they&apos;re 18.
                 </p>
                 <CTA />
+                <div className="mt-5">
+                  <a
+                    href="/toothfairy/story/tanda"
+                    className="inline-flex items-center gap-2 text-base font-medium"
+                    style={{
+                      color: c.gold,
+                      fontFamily: 'var(--font-body)',
+                      borderBottom: `1px solid ${c.goldLight}`,
+                      paddingBottom: '2px',
+                      transition: 'color 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = c.goldHover; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = c.gold; }}
+                  >
+                    Or read the origin story first &rarr;
+                  </a>
+                </div>
               </div>
 
               <div className="order-1 md:order-2 flex justify-center">
@@ -208,24 +225,25 @@ export default function ToothFairyLanding() {
                 alt="Tooth fairy traditions from around the world — Korea, Spain, Jamaica, and the classic fairy"
                 className="w-full h-auto block"
               />
-              <div
-                className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-center pb-3"
-                style={{ background: `linear-gradient(to top, ${c.creamDeep}cc, transparent)` }}
-              >
-                <a
-                  href="/toothfairy/stories"
-                  className="inline-block px-5 py-2 rounded-full text-sm font-medium"
-                  style={{
-                    background: `${c.cream}e6`,
-                    color: c.gold,
-                    boxShadow: `0 2px 12px oklch(30% 0.035 65 / 0.08)`,
-                    transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                >
-                  Explore traditions from 50+ cultures &rarr;
-                </a>
-              </div>
             </div>
+          </Fade>
+
+          <Fade delay={500} className="mt-10 flex justify-center">
+            <a
+              href="/toothfairy/stories"
+              className="inline-block px-10 py-4 text-lg font-semibold rounded-full active:scale-[0.98]"
+              style={{
+                fontFamily: 'var(--font-body)',
+                background: c.gold,
+                color: 'oklch(98% 0.005 80)',
+                boxShadow: `0 4px 24px oklch(72% 0.145 75 / 0.2)`,
+                transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = c.goldHover; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = c.gold; }}
+            >
+              Read the stories
+            </a>
           </Fade>
         </section>
 

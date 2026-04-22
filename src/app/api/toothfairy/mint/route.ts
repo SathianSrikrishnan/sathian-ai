@@ -92,6 +92,27 @@ async function getAuthUser(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Test mode short-circuit (E2E tests only) ──
+  // Gated by NEXT_PUBLIC_TEST_MODE=true — never set in production.
+  // Returns deterministic stub values so Playwright doesn't need real Solana/Arweave/Supabase.
+  if (process.env.NEXT_PUBLIC_TEST_MODE === "true") {
+    return NextResponse.json({
+      success: true,
+      signature: "test-sig",
+      explorerUrl: "https://solscan.io/tx/test-sig",
+      metadataUri: "https://example.test/metadata.json",
+      imageUri: "https://example.test/image.png",
+      childSlug: "test-child-0000",
+      guardianPublicKey: "test-guardian",
+      childWalletPubkey: "test-child-wallet",
+      childProfilePda: "test-profile",
+      milestonePda: "test-pda",
+      milestoneIndex: 0,
+      isServerGuardian: true,
+      smilePhotoUrl: null,
+    })
+  }
+
   // ── Origin check ──
   const origin = request.headers.get("origin")
   if (origin && !ALLOWED_ORIGINS.includes(origin)) {

@@ -30,7 +30,7 @@ export function StoriesLegend({ stories }: StoriesLegendProps) {
 function LegendCard({ story }: { story: WallCard }) {
   const href = story.linkedFullStory
     ? `/toothfairy/story/${story.linkedFullStory}`
-    : `/toothfairy/stories/${story.slug}`
+    : `/toothfairy/explore/${story.slug}`
 
   return (
     <Link

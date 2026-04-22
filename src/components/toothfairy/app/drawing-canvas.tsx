@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect, useImperativeHandle, forwardR
 import { useViewMode } from "../view-mode-context"
 import { C, ds, glass } from "../tokens"
 import { PC } from "../parent-theme"
+import { callEnhance } from "@/lib/toothfairy/enhance-client"
 
 // ─── Types ──────────────────────────────────────────────────────────
 export interface DrawingCanvasRef {
@@ -141,15 +142,16 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       setIsEnhancing(true)
       setEnhanceError(null)
       try {
-        const imageBase64 = canvasRef.current.toDataURL("image/png").split(",")[1]
-        const res = await fetch("/api/toothfairy/enhance", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageBase64 }),
+        const drawingDataUrl = canvasRef.current.toDataURL("image/png")
+        const outcome = await callEnhance({
+          drawingDataUrl,
+          tradition: "default",
+          charms: [],
         })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.error || "Enhancement failed")
-        setEnhanceRemaining(data.remaining ?? 0)
+        if (!outcome.ok) {
+          throw new Error(outcome.detail || "Enhancement failed")
+        }
+        setEnhanceRemaining(outcome.result.remaining ?? 0)
 
         const img = new Image()
         img.crossOrigin = "anonymous"
@@ -164,7 +166,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           setIsEnhancing(false)
         }
         img.onerror = () => { setEnhanceError("Failed to load enhanced image"); setIsEnhancing(false) }
-        img.src = data.imageUrl
+        img.src = outcome.result.enhancedImageUrl
       } catch (err: any) {
         setEnhanceError(err.message)
         setIsEnhancing(false)

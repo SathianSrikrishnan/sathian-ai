@@ -100,7 +100,7 @@ function Header() {
       }}
     >
       <Link
-        href="/toothfairy/stories"
+        href="/toothfairy/explore"
         style={{
           fontFamily: ds.fonts.body,
           fontSize: '0.9rem',
@@ -366,7 +366,7 @@ function RelatedTraditions({ currentSlug }: { currentSlug: string }) {
         {picks.map((t) => (
           <Link
             key={t.slug}
-            href={`/toothfairy/stories/${t.slug}`}
+            href={`/toothfairy/explore/${t.slug}`}
             style={{
               display: 'block',
               padding: '1rem',

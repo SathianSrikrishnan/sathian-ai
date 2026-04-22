@@ -10,32 +10,63 @@ const finland: StoryConfig = {
   characterName: 'Hammaskeiju',
   available: true,
   crossReferences: ['ratoncito-perez', 'north-africa', 'jamaica'],
+  colors: {
+    accent: '#7CC6FE',
+    accentGlow: '#7CC6FE80',
+    secondary: '#8B3A62',
+    secondaryGlow: '#8B3A6280',
+  },
+  effects: {
+    particles: {
+      color: '#FFFFFF',
+      count: 40,
+      sizeMin: 2,
+      sizeMax: 6,
+      durationMin: 5,
+      durationMax: 13,
+      drift: 30,
+    },
+    aurora: {
+      colors: ['#00FF88', '#7CC6FE', '#A855F7'],
+    },
+    sparkleOn: ['victory'],
+  },
   scenes: [
-    // ACT 1: THE FAMILIAR
+    // Scene 1 — Cover
     {
       id: 'fi-01',
+      layout: 'cover',
       background: '/story-assets/finland/fi-01-bedroom.jpg',
       dialogue: {
-        text: "Deep in Finland, where the northern lights paint the sky, a tooth just fell out.",
+        text: 'Hammaskeiju\nvs.\nHammaspeikko',
+        subtext: 'A Finnish Tooth Fairy Tale',
       },
     },
+
+    // Scene 2 — Setting the stage
     {
       id: 'fi-02',
+      layout: 'narrative',
       background: '/story-assets/finland/fi-01-bedroom.jpg',
       dialogue: {
-        text: "Under the pillow it goes. But in Finland, it's not just ONE visitor who comes tonight...",
+        text: 'Deep in Finland, where the northern lights paint the sky, a tooth just fell out.',
       },
     },
+
+    // Scene 3 — The twist: two visitors
     {
       id: 'fi-03',
+      layout: 'narrative',
       background: '/story-assets/finland/fi-01-bedroom.jpg',
       dialogue: {
-        text: "It's TWO. And they're racing.",
+        text: "Pop! Under the pillow it goes.\n\nBut in Finland, it's not just ONE visitor who comes tonight.\n\nIt's TWO.\n\nAnd they're racing.",
       },
     },
-    // ACT 2: THE CHASE
+
+    // Scene 4 — Troll introduction
     {
       id: 'fi-04',
+      layout: 'character',
       background: '/story-assets/finland/fi-02-troll-forest.jpg',
       character: {
         image: '/story-assets/characters/char-finnish-troll.jpg',
@@ -43,210 +74,89 @@ const finland: StoryConfig = {
         enter: 'left',
       },
       dialogue: {
-        speaker: 'Troll',
+        speaker: 'Hammaspeikko',
         speakerColor: '#8B3A62',
-        text: "Heheheh... I smell a fresh tooth!",
+        text: 'Heheheh... I smell a fresh tooth!',
+        subtext: 'The Tooth Troll. He LOVES dirty teeth. The dirtier, the better. If he gets there first, he drills little holes in the next one.',
       },
     },
+
+    // Scene 5 — Fairy introduction
     {
       id: 'fi-05',
-      background: '/story-assets/finland/fi-02-troll-forest.jpg',
+      layout: 'character',
+      background: '/story-assets/finland/fi-03-fairy-aurora.jpg',
       character: {
-        image: '/story-assets/characters/char-finnish-troll.jpg',
-        position: 'left',
+        image: '/story-assets/characters/char-finish-fairy.jpg',
+        position: 'right',
+        enter: 'right',
       },
       dialogue: {
-        text: "The Hammaspeikko — the Tooth Troll. He LOVES dirty teeth. The dirtier, the better.",
+        speaker: 'Hammaskeiju',
+        speakerColor: '#7CC6FE',
+        text: 'Not tonight, Troll.',
+        subtext: "The Tooth Fairy of Finland. She's fast, she's brave, and she NEVER lets the Troll win.",
       },
     },
+
+    // Scene 6 — The race (dramatic: two dialogue bubbles)
     {
       id: 'fi-06',
-      background: '/story-assets/finland/fi-02-troll-forest.jpg',
-      character: {
-        image: '/story-assets/characters/char-finnish-troll.jpg',
-        position: 'left',
-        exit: 'right',
-      },
+      layout: 'dramatic',
+      background: '/story-assets/finland/fi-04-the-race.jpg',
       dialogue: {
         speaker: 'Troll',
         speakerColor: '#8B3A62',
-        text: "If I get there first, I'll drill little holes in the next one. Cavities are my FAVORITE!",
+        text: 'Catch me if you can, Fairy!',
+      },
+      secondDialogue: {
+        speaker: 'Fairy',
+        speakerColor: '#7CC6FE',
+        text: 'This child brushed every single night. That tooth is MINE.',
       },
     },
+
+    // Scene 7 — Fairy wins (victory: dialogue exchange)
     {
       id: 'fi-07',
-      background: '/story-assets/finland/fi-03-fairy-aurora.jpg',
+      layout: 'victory',
+      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
       character: {
         image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'right',
-        enter: 'right',
+        position: 'center',
+        enter: 'top',
       },
       dialogue: {
+        text: 'The Fairy reaches the pillow first!',
+      },
+      secondDialogue: {
         speaker: 'Fairy',
         speakerColor: '#7CC6FE',
-        text: "Not tonight, Troll.",
+        text: 'Got it! A perfect, clean tooth.',
+      },
+      thirdDialogue: {
+        speaker: 'Troll',
+        speakerColor: '#8B3A62',
+        text: "Grrrr... FINE. But tell that child \u2014 if they ever SKIP brushing...",
       },
     },
+
+    // Scene 8 — Network station
     {
       id: 'fi-08',
-      background: '/story-assets/finland/fi-03-fairy-aurora.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'right',
-      },
-      dialogue: {
-        text: "The Hammaskeiju — the Tooth Fairy of Finland! She's fast, she's brave, and she NEVER lets the Troll win.",
-      },
-    },
-    {
-      id: 'fi-09',
-      background: '/story-assets/finland/fi-03-fairy-aurora.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'right',
-      },
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "This child brushed every single night. That tooth is MINE.",
-      },
-    },
-    {
-      id: 'fi-10',
-      background: '/story-assets/finland/fi-04-the-race.jpg',
-      dialogue: {
-        speaker: 'Troll',
-        speakerColor: '#8B3A62',
-        text: "Catch me if you can, Fairy!",
-      },
-    },
-    {
-      id: 'fi-11',
-      background: '/story-assets/finland/fi-04-the-race.jpg',
-      dialogue: {
-        text: "They race across the frozen sky — over pine trees, under the northern lights...",
-      },
-    },
-    {
-      id: 'fi-12',
-      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'center',
-        enter: 'top',
-      },
-      dialogue: {
-        text: "The Fairy reaches the pillow first!",
-      },
-    },
-    {
-      id: 'fi-13',
-      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "Got it! A perfect, clean tooth.",
-      },
-    },
-    {
-      id: 'fi-14',
-      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
-      character: {
-        image: '/story-assets/characters/char-finnish-troll.jpg',
-        position: 'left',
-        enter: 'left',
-      },
-      dialogue: {
-        speaker: 'Troll',
-        speakerColor: '#8B3A62',
-        text: "Grrrr... FINE. But tell that child — if they ever SKIP brushing...",
-      },
-    },
-    {
-      id: 'fi-15',
-      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'right',
-        enter: 'right',
-      },
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "They won't. Because children who brush always win.",
-      },
-    },
-    // ACT 2B: THE NETWORK
-    {
-      id: 'fi-16',
+      layout: 'narrative',
       background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'center',
-        enter: 'top',
-      },
       dialogue: {
         speaker: 'Fairy',
         speakerColor: '#7CC6FE',
-        text: "I carry the tooth to the Tooth Fairy Network — safe from trolls forever.",
+        text: 'Your tooth becomes a keepsake in the Tooth Fairy Network \u2014 safe from trolls forever.',
       },
     },
+
+    // Scene 9 — CTA
     {
-      id: 'fi-17',
-      background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
-        image: '/story-assets/characters/char-finish-fairy.jpg',
-        position: 'center',
-      },
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "Your tooth becomes a keepsake. The Troll can never reach it here.",
-      },
-    },
-    // ACT 3: THE INVITATION
-    {
-      id: 'fi-18',
-      background: '/story-assets/shared/shared-multiple-collectors.jpg',
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "We're not alone. In Spain, a brave little mouse does this! In Egypt, children throw their tooth to the SUN! And in Jamaica, there's a demon bull — but the children outsmart it every time!",
-      },
-    },
-    {
-      id: 'fi-19',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "Your family can see your keepsake — and each of them can add their love to it.",
-      },
-    },
-    {
-      id: 'fi-20',
-      background: '/story-assets/shared/shared-family-connected.jpg',
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "It grows, safe from trolls, year after year...",
-      },
-    },
-    {
-      id: 'fi-21',
-      background: '/story-assets/shared/shared-finale-teenager.jpg',
-      dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "And one day, all that love comes back to you. The Troll never wins.",
-      },
-    },
-    {
-      id: 'fi-22',
+      id: 'fi-cta',
+      layout: 'cta',
       background: '/story-assets/finland/fi-05-fairy-wins.jpg',
       character: {
         image: '/story-assets/characters/char-finish-fairy.jpg',
@@ -254,20 +164,11 @@ const finland: StoryConfig = {
         enter: 'bottom',
       },
       dialogue: {
-        speaker: 'Fairy',
-        speakerColor: '#7CC6FE',
-        text: "Ready? Take your photo, and let me carry YOUR tooth to the Network!",
-      },
-    },
-    {
-      id: 'fi-cta',
-      background: '/story-assets/finland/fi-05-fairy-wins.jpg',
-      dialogue: {
-        text: "",
+        text: 'Ready? Let the Fairy carry YOUR tooth to the Network!',
       },
       isChoice: true,
-      choiceText: "Start Your Keepsake",
-      choiceHref: "/app",
+      choiceText: 'Now make yours',
+      choiceHref: '/toothfairy/app',
     },
   ],
 }
