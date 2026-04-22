@@ -17,6 +17,9 @@ interface TfnGlobeProps {
   size?: number
 }
 
+// RGB tuples (normalized 0-1) for Cobe's WebGL marker rendering.
+// Cobe's API requires RGB-normalized, not hex/oklch — these mirror C.gold
+// (#f0c456) and a dimmed variant. Keep in visual sync if C.gold shifts.
 const GOLD: [number, number, number] = [0.94, 0.77, 0.34]
 const GOLD_DIM: [number, number, number] = [0.55, 0.45, 0.2]
 
