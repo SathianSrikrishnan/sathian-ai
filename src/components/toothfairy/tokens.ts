@@ -100,6 +100,24 @@ export const stagger = (i: number) => ({
   transition: { ...fadeUp.transition, delay: i * 0.1 },
 })
 
+// Reusable spring rhythm — entrance fades, card hovers, charm toggles.
+// CSS-friendly string and a Framer-Motion-friendly object.
+export const motionSpringFast = {
+  // Framer Motion / typed animations
+  duration: 0.4,
+  ease: [0.22, 1, 0.36, 1] as const,
+  // CSS transition string (for inline style.transition)
+  css: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+} as const
+
+// Interactive shadow rhythm — lift-on-hover for cards, keepsake, legend tiles.
+// C theme = dark indigo background, shadow lands warmer/gold.
+// PC theme = cream background, shadow lands soft brown-gold.
+export const shadowKeepsake = {
+  c: "0 6px 20px oklch(78% 0.14 80 / 0.12)",
+  pc: "0 4px 12px oklch(72% 0.145 75 / 0.15)",
+} as const
+
 // Design system constants
 export const ds = {
   maxWidth: "375px",                  // mobile-first focal width

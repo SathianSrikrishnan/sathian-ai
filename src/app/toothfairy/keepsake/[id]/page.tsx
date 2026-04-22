@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { KeepsakeData } from '@/lib/toothfairy/keepsake-data';
 import { KeepsakeCard } from '@/components/toothfairy/keepsake/keepsake-card';
 import { ShareButtons } from '@/components/toothfairy/keepsake/share-buttons';
+import { motionSpringFast } from '@/components/toothfairy/tokens';
 
 const c = {
   cream:      'oklch(97.5% 0.01 80)',
@@ -26,11 +27,15 @@ export default function KeepsakePage() {
   const id = params?.id ?? '';
   const [state, setState] = useState<FetchState>({ kind: 'loading' });
   const [origin, setOrigin] = useState<string>('');
+  const [entered, setEntered] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setOrigin(window.location.origin);
     }
+    // Entrance fade — awww-moment tuning: springy, not abrupt
+    const t = setTimeout(() => setEntered(true), 60);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -62,7 +67,12 @@ export default function KeepsakePage() {
   return (
     <main
       className="min-h-screen w-full"
-      style={{ background: c.creamDeep }}
+      style={{
+        background: c.creamDeep,
+        opacity: entered ? 1 : 0,
+        transform: entered ? 'translateY(0)' : 'translateY(8px)',
+        transition: `opacity 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')}), transform 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')})`,
+      }}
     >
       <div className="max-w-2xl mx-auto px-5 py-10 md:py-16">
         {/* Wordmark */}
