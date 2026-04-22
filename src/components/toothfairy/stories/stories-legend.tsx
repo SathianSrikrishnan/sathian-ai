@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { C, ds } from "@/components/toothfairy/tokens"
+import { C, ds, motionSpringFast, shadowKeepsake } from "@/components/toothfairy/tokens"
 import type { WallCard } from "@/data/wall-cards"
 
 interface StoriesLegendProps {
@@ -35,13 +35,15 @@ function LegendCard({ story }: { story: WallCard }) {
   return (
     <Link
       href={href}
-      className="group block transition-all duration-300"
+      className="group block"
       style={{
         background: C.surface,
         border: `1px solid ${C.border}`,
         borderRadius: ds.borderRadius.md,
         padding: 8,
         textDecoration: "none",
+        // Shared spring rhythm for hover lift / shadow
+        transition: motionSpringFast.css,
       }}
       aria-label={`Read story: ${story.title} from ${story.region}`}
     >
@@ -113,12 +115,12 @@ function LegendCard({ story }: { story: WallCard }) {
         </div>
       </div>
 
-      {/* Hover styles */}
+      {/* Hover styles — lift + shadowKeepsake for C theme */}
       <style jsx>{`
         a:hover {
           border-color: ${C.gold} !important;
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px oklch(78% 0.14 80 / 0.12);
+          box-shadow: ${shadowKeepsake.c};
         }
         a:focus-visible {
           outline: 2px solid ${C.gold};
