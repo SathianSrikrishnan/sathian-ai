@@ -143,9 +143,11 @@ export function PhotoBorder({
 }
 
 function Thumb({ t, size }: { t: PhotoBorderThumbnail; size: number }) {
+  // Both derive from C.gold — active = 35% alpha (stronger presence),
+  // dim = 10% alpha (near-ghost). Palette changes cascade through color-mix.
   const borderColor = t.active
-    ? "oklch(78% 0.14 80 / 0.35)"
-    : "oklch(78% 0.14 80 / 0.08)"
+    ? `color-mix(in oklch, ${C.gold} 35%, transparent)`
+    : `color-mix(in oklch, ${C.gold} 10%, transparent)`
   const opacity = t.active ? 1 : 0.55
 
   return (
