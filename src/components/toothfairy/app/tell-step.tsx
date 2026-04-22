@@ -17,6 +17,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { PC } from '../parent-theme';
 
+// Single source of truth for TFN app font stacks.
+// var(--font-body/-display) are set by the tfn app layout (Alegreya Sans/Alegreya).
+// Keep the fallback chain conservative — layout shift is worse than generic sans.
+const FONT_BODY = "var(--font-body, 'Alegreya Sans'), sans-serif";
+const FONT_DISPLAY = "var(--font-display), 'Alegreya', serif";
+
 // ── Types ─────────────────────────────────────────────────────────────
 
 export interface TellStepProps {
@@ -292,7 +298,7 @@ export default function TellStep({
       style={{
         background: PC.bg,
         color: PC.text,
-        fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+        fontFamily: FONT_BODY,
         padding: '24px 20px 32px',
       }}
     >
@@ -301,7 +307,7 @@ export default function TellStep({
         <h1
           className="leading-tight"
           style={{
-            fontFamily: "var(--font-display), 'Alegreya', serif",
+            fontFamily: FONT_DISPLAY,
             color: PC.textWarm,
             fontSize: 'clamp(28px, 7vw, 36px)',
             fontWeight: 500,
@@ -347,7 +353,7 @@ export default function TellStep({
               outline: 'none',
               resize: 'none',
               padding: '16px 16px 40px',
-              fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+              fontFamily: FONT_BODY,
               fontSize: 17,
               lineHeight: 1.5,
               color: PC.text,
@@ -386,7 +392,7 @@ export default function TellStep({
               background: recording ? PC.gold : PC.surfaceContainer,
               color: recording ? PC.onGold : PC.text,
               border: `2px solid ${recording ? PC.gold : PC.border}`,
-              fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+              fontFamily: FONT_BODY,
               fontSize: 16,
               fontWeight: 500,
               cursor: 'pointer',
@@ -430,7 +436,7 @@ export default function TellStep({
               background: 'transparent',
               color: PC.muted,
               border: `1px solid ${PC.border}`,
-              fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+              fontFamily: FONT_BODY,
               fontSize: 15,
               fontWeight: 500,
               cursor: 'pointer',
@@ -449,7 +455,7 @@ export default function TellStep({
               background: PC.gold,
               color: PC.onGold,
               border: 'none',
-              fontFamily: "var(--font-display), 'Alegreya', serif",
+              fontFamily: FONT_DISPLAY,
               fontSize: 17,
               fontWeight: 500,
               letterSpacing: '-0.01em',
