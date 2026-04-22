@@ -167,7 +167,8 @@ function Bullet() {
         width: 4,
         height: 4,
         borderRadius: '50%',
-        background: 'oklch(78% 0.14 80 / 0.5)',
+        // Accent bullet — C.gold at ~50% alpha (`color-mix` keeps it in-token)
+        background: `color-mix(in oklch, ${C.gold} 50%, transparent)`,
         margin: '0 0.75rem',
         verticalAlign: 'middle',
       }}
