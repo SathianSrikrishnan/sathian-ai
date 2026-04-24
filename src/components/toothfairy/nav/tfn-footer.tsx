@@ -1,10 +1,5 @@
 "use client"
 
-// ─── TFN Unified Footer ──────────────────────────────────────────────────
-// Minimal theme-adaptive footer — gold rule top border is the stable
-// throughline across parent/child mode swaps. Centered copyright +
-// two secondary links. No social row yet (keep Phase 6 scope tight).
-
 import Link from "next/link"
 
 export function TFNFooter() {
@@ -14,7 +9,6 @@ export function TFNFooter() {
     <footer
       className="w-full"
       style={{
-        // Gold rule stays identical across themes — the anchor line
         borderTop: "1px solid var(--tfn-gold)",
         backgroundColor: "var(--tfn-surface-alt)",
         color: "var(--tfn-ink-muted)",
@@ -29,15 +23,7 @@ export function TFNFooter() {
         }}
       >
         <p className="text-[12px] sm:text-[13px]" style={{ lineHeight: 1.5 }}>
-          © {year} Tooth Fairy Network. Built by{" "}
-          <Link
-            href="https://sathian.ai"
-            className="underline-offset-4 hover:underline"
-            style={{ color: "var(--tfn-gold)" }}
-          >
-            sathian.ai
-          </Link>
-          .
+          © {year} Tooth Fairy Network.
         </p>
 
         <div className="flex items-center gap-5 text-[12px] sm:text-[13px]">
