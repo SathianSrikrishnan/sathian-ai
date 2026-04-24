@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { ChatWidget } from '@/components/ChatWidget'
 import './globals.css'
@@ -67,11 +68,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const host = headers().get('host') ?? ''
+  const isTfnDomain =
+    host === 'toothfairy.network' ||
+    host === 'www.toothfairy.network' ||
+    host === 'toothfairy.sathian.ai'
+
   return (
     <html lang="en" data-theme="dark" className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} ${sourceSerif.variable}`}>
       <body className="font-sans antialiased">
         {children}
-        <ChatWidget />
+        {!isTfnDomain && <ChatWidget />}
       </body>
     </html>
   )
