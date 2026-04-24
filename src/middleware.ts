@@ -100,9 +100,18 @@ export async function middleware(request: NextRequest) {
     if (pathname === '/network') {
       return NextResponse.redirect(new URL('/', request.url), 307)
     }
+    // /stories → redirect to homepage trilogy (explore archived during trilogy launch)
+    if (pathname === '/stories' || pathname.startsWith('/stories/')) {
+      return NextResponse.redirect(new URL('/#stories', request.url), 307)
+    }
     // /network/about still works
     if (pathname.startsWith('/network/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
+    }
+    // Bare /toothfairy on TFN domain → redirect to root (clean URL, and
+    // prevents the catch-all from double-prefixing to /toothfairy/toothfairy)
+    if (pathname === '/toothfairy') {
+      return NextResponse.redirect(new URL('/', request.url), 307)
     }
     // Links already prefixed with /toothfairy/ — pass through without double-prefixing
     if (pathname.startsWith('/toothfairy/')) {
