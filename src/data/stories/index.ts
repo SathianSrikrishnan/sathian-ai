@@ -1,45 +1,23 @@
 import { StoryConfig } from './types'
 import tanda from './tanda'
-import hyenaStory from './hyena-story'
-import ankaStory from './anka-story'
-import toothFairy from './tooth-fairy'
+import vikingOrigin from './viking-origin'
 import ratoncitoPerez from './ratoncito-perez'
-import finland from './finland'
-import northAfrica from './north-africa'
-import jamaica from './jamaica'
-import korea from './korea'
-import romania from './romania'
-import japan from './japan'
-import ethiopia from './ethiopia'
-import cherokee from './cherokee'
-import ireland from './ireland'
-import italy from './italy'
-import babylonia from './babylonia'
 
-/** Featured full-length stories (Phase 1 trilogy) */
+/** Featured trilogy — the three stories on the home page, in order.
+ *  Tanda (converter) → Viking Origin (lore) → Ratoncito Pérez (broadener). */
 export const FEATURED_STORIES: StoryConfig[] = [
   tanda,
-  hyenaStory,
-  ankaStory,
+  vikingOrigin,
+  ratoncitoPerez,
 ]
 
+/** ALL_STORIES is currently scoped to the trilogy only — the other 14 story
+ *  files remain on disk for future re-activation, but aren't surfaced anywhere
+ *  until the trilogy has proven the loop end-to-end. */
 export const ALL_STORIES: StoryConfig[] = [
   tanda,
-  hyenaStory,
-  ankaStory,
-  toothFairy,
+  vikingOrigin,
   ratoncitoPerez,
-  finland,
-  northAfrica,
-  jamaica,
-  korea,
-  romania,
-  japan,
-  ethiopia,
-  cherokee,
-  ireland,
-  italy,
-  babylonia,
 ]
 
 export function getStoryById(id: string): StoryConfig | undefined {

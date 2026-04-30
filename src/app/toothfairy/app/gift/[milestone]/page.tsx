@@ -111,6 +111,25 @@ export default function GiftPage() {
       const deps = await fetchDepositsForMilestone(program, new PublicKey(milestonePda))
       setDeposits(deps)
       setSuccess(`${depositAmount} SOL deposited!`)
+
+      // Fire-and-forget deposit email to the child's guardian.
+      // The route resolves the guardian email server-side from childProfilePda.
+      const feeSol = amount * 0.02
+      const netSol = amount - feeSol
+      fetch("/api/toothfairy/deposit-email", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          childProfilePda,
+          depositorName: depositorName.trim(),
+          amountSol: amount,
+          feeSol,
+          netSol,
+          lockChoice,
+          txSignature: null,
+        }),
+      }).catch((err) => console.error("[gift] deposit-email dispatch failed:", err))
+
       setDepositAmount("0.1"); setDepositorName("")
     } catch (err: any) {
       setError(err.message || "Deposit failed")

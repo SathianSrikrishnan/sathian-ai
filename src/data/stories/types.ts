@@ -7,6 +7,11 @@ export interface StoryScene {
     enter?: 'left' | 'right' | 'top' | 'bottom' | 'fade'
     exit?: 'left' | 'right' | 'top' | 'bottom' | 'fade'
   }
+  /** Small circular portrait shown beside speaker name — the "face pops up" pattern */
+  characterAvatar?: {
+    image: string
+    alt?: string
+  }
   dialogue: {
     speaker?: string
     speakerColor?: string
@@ -14,7 +19,7 @@ export interface StoryScene {
     subtext?: string
   }
   /** Scene layout type — controls rendering in StoryPlayer */
-  layout?: 'narrative' | 'character' | 'dramatic' | 'cover' | 'victory' | 'cta' | 'prose'
+  layout?: 'narrative' | 'character' | 'dramatic' | 'cover' | 'victory' | 'cta' | 'prose' | 'interactive'
   /** Optional second dialogue for dramatic/victory scenes */
   secondDialogue?: {
     speaker?: string
@@ -26,6 +31,17 @@ export interface StoryScene {
     speaker?: string
     speakerColor?: string
     text: string
+  }
+  /** Interactive input that captures user answer into localStorage for downstream flows */
+  interactive?: {
+    prompt: string
+    placeholder: string
+    /** localStorage key to write to on submit */
+    storageKey: string
+    /** optional second key (e.g. tfn-story-context) — written with { storyId, sceneId } metadata */
+    contextKey?: string
+    ctaLabel: string
+    skipLabel?: string
   }
   isChoice?: boolean
   choiceText?: string

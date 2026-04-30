@@ -10,27 +10,27 @@ import {
   fetchDepositsForMilestone,
   calculateFee,
   calculateEighteenthBirthday,
-  deriveChildWallet,
   type DepositData,
 } from "@/lib/toothfairy/escrow"
 import { PublicKey } from "@solana/web3.js"
 import { WalletButton } from "@/components/toothfairy/app/wallet-button"
-import { C, ds, gradients, glow, glass } from "@/components/toothfairy/tokens"
 import Link from "next/link"
 import { createBrowserSupabase } from "@/lib/supabase-auth"
-import { useViewMode } from "@/components/toothfairy/view-mode-context"
-import { ViewToggle } from "@/components/toothfairy/view-toggle"
 import DrawingCanvas, { type DrawingCanvasRef } from "@/components/toothfairy/app/drawing-canvas"
-import { PC, parentGradients, parentGlow } from "@/components/toothfairy/parent-theme"
 import TellStep from "@/components/toothfairy/app/tell-step"
 import { useRouter } from "next/navigation"
 
-// Flow:
-//   child mode:  setup → create → tell → preview → minting → done (done redirects to keepsake)
-//   parent mode: setup → create → tell → preview → deposit → minting → done (deposit skippable)
-// The Tell step captures the child's narrative about this tooth. It's the
-// single most defensible data TFN collects — a photo app saves images, we
-// save the story. Always inserted between the creation and mint.
+// Apr 2026 Impeccable rewrite:
+//   - No child/parent toggle; single cohesive voice.
+//   - WalletButton lives in the sticky header (top-right).
+//   - Editorial Alegreya typography, cream/brown/gold palette via CSS vars.
+//   - All business logic (state, handlers, mint/deposit/onramp) unchanged.
+//
+// Flow (single path):
+//   setup → create → tell → preview → deposit → minting → done
+// The deposit step is always skippable — mint creates the keepsake whether
+// or not SOL is added.
+
 type Step = "setup" | "create" | "tell" | "preview" | "deposit" | "minting" | "done"
 type LockChoice = "now" | "eighteen" | "custom"
 
@@ -41,15 +41,12 @@ const LATEST_DRAWING_KEY = "toothfairy-latest-drawing"
 const LATEST_ENHANCED_KEY = "toothfairy-latest-enhanced"
 const LATEST_TRADITION_KEY = "toothfairy-latest-tradition"
 
+const SPRING = "cubic-bezier(0.16, 1, 0.3, 1)"
+
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => { setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) }, [])
   return isMobile
-}
-
-function isInPhantomBrowser() {
-  if (typeof window === "undefined") return false
-  return !!(window as any).phantom?.solana?.isPhantom
 }
 
 // Shrink + re-encode a data URL so the mint POST stays under Vercel's
@@ -79,15 +76,197 @@ async function compressImageDataUrl(
   })
 }
 
+/* ─── Shared layout primitives (Impeccable) ─────────────────────────── */
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="text-[11px] uppercase font-medium"
+      style={{
+        color: "var(--tfn-gold)",
+        letterSpacing: "0.28em",
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+      }}
+    >
+      {children}
+    </p>
+  )
+}
+
+function StepTitle({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="text-center max-w-[48ch] mx-auto">
+      <h2
+        className="leading-[1.1] tracking-tight"
+        style={{
+          fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+          color: "var(--tfn-ink)",
+          fontSize: "clamp(1.85rem, 4vw, 2.6rem)",
+          fontWeight: 500,
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          className="mt-4 italic leading-[1.55]"
+          style={{
+            fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+            color: "var(--tfn-ink-soft)",
+            fontSize: "clamp(1rem, 1.8vw, 1.15rem)",
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
+      <div
+        className="mx-auto mt-6 h-[2px] w-12 rounded-full"
+        style={{ background: "var(--tfn-gold)" }}
+        aria-hidden
+      />
+    </div>
+  )
+}
+
+function PaperCard({
+  children,
+  className = "",
+  padded = true,
+}: {
+  children: React.ReactNode
+  className?: string
+  padded?: boolean
+}) {
+  return (
+    <div
+      className={`rounded-[22px] ${padded ? "p-6 md:p-8" : ""} ${className}`}
+      style={{
+        background: "var(--tfn-surface-alt)",
+        border: "1px solid var(--tfn-border)",
+        boxShadow: "0 2px 12px oklch(30% 0.035 65 / 0.06), 0 1px 3px oklch(30% 0.035 65 / 0.04)",
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+function InputRow({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div>
+      <label
+        className="block text-[10px] uppercase mb-3 font-semibold"
+        style={{
+          color: "var(--tfn-ink-muted)",
+          letterSpacing: "0.22em",
+          fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+        }}
+      >
+        {label}
+      </label>
+      {children}
+    </div>
+  )
+}
+
+function UnderlineInput(
+  props: React.InputHTMLAttributes<HTMLInputElement> & { filled?: boolean }
+) {
+  const { filled, style, ...rest } = props
+  return (
+    <input
+      {...rest}
+      className={`bg-transparent border-b py-2.5 px-0 text-lg w-full outline-none transition-colors ${rest.className ?? ""}`}
+      style={{
+        borderColor: filled ? "var(--tfn-gold)" : "var(--tfn-border)",
+        color: "var(--tfn-ink)",
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+        ...style,
+      }}
+    />
+  )
+}
+
+function GoldCTA({
+  onClick,
+  disabled,
+  children,
+  ariaLabel,
+  type = "button",
+}: {
+  onClick?: () => void
+  disabled?: boolean
+  children: React.ReactNode
+  ariaLabel?: string
+  type?: "button" | "submit"
+}) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className="w-full rounded-full py-4 text-base font-semibold inline-flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+      style={{
+        background: "var(--tfn-gold)",
+        color: "oklch(98% 0.005 80)",
+        boxShadow: "0 8px 24px oklch(72% 0.145 75 / 0.28)",
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+        transition: `background 0.2s ${SPRING}, transform 0.15s ${SPRING}`,
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) e.currentTarget.style.background = "var(--tfn-gold-hover)"
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) e.currentTarget.style.background = "var(--tfn-gold)"
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
+function GhostButton({
+  onClick,
+  children,
+  disabled,
+}: {
+  onClick?: () => void
+  children: React.ReactNode
+  disabled?: boolean
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="w-full rounded-full py-3 text-sm font-medium transition-opacity hover:opacity-80 disabled:opacity-40"
+      style={{
+        background: "transparent",
+        border: "1px solid var(--tfn-border)",
+        color: "var(--tfn-ink-soft)",
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
+/* ─── Page ───────────────────────────────────────────────────────────── */
+
 export default function ToothFairyApp() {
-  // Wallet hooks are instantiated for both modes (they're cheap / provider-bound),
-  // but every wallet UI surface is gated on `isParent` below. Child mode never
-  // sees WalletButton, connect prompts, or the deposit step.
   const { publicKey, signTransaction, signAllTransactions } = useWallet()
   const { connection } = useConnection()
   const { setVisible } = useWalletModal()
   const isMobile = useIsMobile()
-  const { isChild, isParent } = useViewMode()
   const router = useRouter()
 
   // Flow state
@@ -111,8 +290,7 @@ export default function ToothFairyApp() {
   const [depositorName, setDepositorName] = useState("")
   const [depositMessage, setDepositMessage] = useState("")
 
-  // Auth state (Supabase session — required for wallet mint path)
-  // E2E tests set NEXT_PUBLIC_TEST_MODE=true to bypass the Supabase auth gate.
+  // Auth state
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "true"
   const [isAuthenticated, setIsAuthenticated] = useState(isTestMode)
   const [authLoading, setAuthLoading] = useState(!isTestMode)
@@ -121,7 +299,6 @@ export default function ToothFairyApp() {
   )
   const supabase = useMemo(() => createBrowserSupabase(), [])
 
-  // Check auth session on mount and listen for changes
   useEffect(() => {
     if (isTestMode) return
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -139,12 +316,10 @@ export default function ToothFairyApp() {
     return () => subscription.unsubscribe()
   }, [supabase, isTestMode])
 
-  // Handle returning from OAuth redirect
   useEffect(() => {
     if (typeof window === "undefined") return
     const params = new URLSearchParams(window.location.search)
     if (params.get("returning") === "auth") {
-      // Clean up URL without triggering navigation
       const url = new URL(window.location.href)
       url.searchParams.delete("returning")
       window.history.replaceState({}, "", url.toString())
@@ -195,7 +370,6 @@ export default function ToothFairyApp() {
   // ── Persist/restore flow state for mobile Phantom deep link ──
   const FLOW_STORAGE_KEY = "tfn-flow-state"
 
-  // Restore state on mount (survives Google auth + Phantom deep link redirect)
   useEffect(() => {
     try {
       const saved = localStorage.getItem(FLOW_STORAGE_KEY)
@@ -204,8 +378,6 @@ export default function ToothFairyApp() {
       if (state.childName) setChildName(state.childName)
       if (state.childDob) setChildDob(state.childDob)
       if (state.childPhoto) setChildPhoto(state.childPhoto)
-      // previewImage/photo are no longer in the flow blob (too large for quota).
-      // Fall back to the dedicated drawing keys that DrawingCanvas manages.
       if (state.previewImage) {
         setPreviewImage(state.previewImage)
       } else {
@@ -219,10 +391,6 @@ export default function ToothFairyApp() {
     } catch { /* ignore corrupt localStorage */ }
   }, [])
 
-  // Save flow state before redirect (Google auth or Phantom deep link).
-  // Deliberately excludes previewImage and photo (base64 data URLs) because
-  // they easily exceed localStorage's ~5 MB quota. Instead we persist them
-  // under their own dedicated keys which DrawingCanvas already manages.
   const saveFlowState = useCallback(() => {
     try {
       localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify({
@@ -231,13 +399,10 @@ export default function ToothFairyApp() {
     } catch { /* localStorage full or unavailable */ }
   }, [childName, childDob, childPhoto])
 
-  // Clear saved flow state (after mint completes or user starts over)
   const clearFlowState = useCallback(() => {
     try { localStorage.removeItem(FLOW_STORAGE_KEY) } catch {}
   }, [])
 
-  // Clear every flow-level localStorage key so the next session starts clean.
-  // Called immediately before the keepsake redirect.
   const clearAllFlowKeys = useCallback(() => {
     const keys = [
       FLOW_STORAGE_KEY,
@@ -252,15 +417,11 @@ export default function ToothFairyApp() {
     }
   }, [])
 
-  // Keepsake is the terminal destination. Mint API is synchronous wrt
-  // Arweave + Supabase writes, so by the time we land here the keepsake
-  // row can be read back without a race.
   const redirectToKeepsake = useCallback((milestonePda: string) => {
     clearAllFlowKeys()
     router.replace(`/toothfairy/keepsake/${milestonePda}`)
   }, [clearAllFlowKeys, router])
 
-  // Sign in with Google — direct OAuth, no Supabase intermediary
   const handleGoogleSignIn = useCallback(() => {
     saveFlowState()
     const hostname = typeof window !== "undefined" ? window.location.hostname : "toothfairy.network"
@@ -269,7 +430,7 @@ export default function ToothFairyApp() {
     window.location.href = `/api/auth/google?next=${encodeURIComponent(nextPath)}`
   }, [saveFlowState])
 
-  // ── Photo ──
+  // ── Photo handlers ──
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -286,9 +447,6 @@ export default function ToothFairyApp() {
     reader.readAsDataURL(file)
   }
 
-  // Save canvas preview and advance to the Tell step.
-  // Tell sits between creation and preview so the child captures their
-  // narrative while the drawing is fresh in their head.
   const goToPreview = () => {
     const dataUrl = drawingCanvasRef.current?.toDataURL()
     if (dataUrl) {
@@ -298,8 +456,6 @@ export default function ToothFairyApp() {
     setStep("tell")
   }
 
-  // Tell handlers — persist via localStorage so mint payload can read the
-  // final text regardless of re-renders. Empty string on skip.
   const handleTellContinue = useCallback((text: string) => {
     const final = (text || "").trim()
     setTellText(final)
@@ -316,19 +472,14 @@ export default function ToothFairyApp() {
     setStep("preview")
   }, [])
 
-  // Auto-advance from preview to deposit when wallet connects (only if already minted)
-  // In child mode, skip deposit entirely
   useEffect(() => {
     if (step === "preview" && publicKey && mintSignature) {
-      setStep(isChild ? "done" : "deposit")
+      setStep("deposit")
     }
-  }, [publicKey, step, mintSignature, isChild])
+  }, [publicKey, step, mintSignature])
 
-  // ── Server-Side Mint (NO wallet required) ──
-  // The mint API uses the server keypair as temporary guardian.
-  // User's Phantom wallet is NOT needed until they want to deposit SOL.
+  // ── Server-Side Mint ──
   const handleServerMint = async () => {
-    // Pre-flight auth check (skipped in E2E test mode)
     if (!isTestMode) {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session?.user) {
@@ -340,8 +491,6 @@ export default function ToothFairyApp() {
 
     setError(null); setStep("minting")
 
-    // Pull Tell + story context from localStorage at submit time so any
-    // inline edits between Tell step and mint click aren't lost.
     let toothStoryForMint: string | undefined
     let traditionSlugForMint: string | undefined
     try {
@@ -357,9 +506,6 @@ export default function ToothFairyApp() {
     } catch { /* ignore */ }
 
     try {
-      // Compress drawing + smile photo client-side so the JSON POST body
-      // stays under Vercel's 4.5MB serverless limit. Vercel rejects larger
-      // payloads at the edge with HTTP 413 before the route ever runs.
       setMintProgress("Preparing images...")
       const compressedPreview = previewImage
         ? await compressImageDataUrl(previewImage, 1280, 0.85)
@@ -374,7 +520,6 @@ export default function ToothFairyApp() {
         ? compressedPhoto.split(",")[1]
         : undefined
 
-      // Step 1: Mint cNFT + create escrow profile (all server-side, no wallet needed)
       setMintProgress("Saving artwork permanently...")
       const mintRes = await fetch("/api/toothfairy/mint", {
         method: "POST",
@@ -407,22 +552,14 @@ export default function ToothFairyApp() {
 
       setMintProgress("Almost done...")
 
-      // Save metadata to localStorage (NOT base64 images — they exceed quota)
       const nameKey = childName.toLowerCase().trim()
       if (childDob) localStorage.setItem(`tfn-child-dob-${nameKey}`, childDob)
       if (mintData.imageUri) localStorage.setItem(`tfn-child-art-${nameKey}`, mintData.imageUri)
 
-      // Clear restart-resume state (flow-level keys cleared on redirect below)
       clearFlowState()
 
       await new Promise(r => setTimeout(r, 500))
 
-      // Child mode: keepsake IS the terminal destination. No deposit UI.
-      // Parent mode: surface deposit step — still skippable from its UI.
-      if (isChild) {
-        redirectToKeepsake(mintData.milestonePda)
-        return
-      }
       setStep("deposit")
     } catch (err: any) {
       console.error("Mint error:", err)
@@ -431,7 +568,7 @@ export default function ToothFairyApp() {
     }
   }
 
-  // ── Deposit (REQUIRES wallet — separate from minting) ──
+  // ── Deposit (REQUIRES wallet) ──
   const handleDeposit = async () => {
     if (!publicKey || !signTransaction || !anchorProvider || !escrowInfo) return
     setError(null)
@@ -453,24 +590,20 @@ export default function ToothFairyApp() {
     } catch (err: any) {
       console.error("Deposit error:", err)
       setError(err.message || "Deposit failed. Your child's milestone was already saved.")
-      // Deposit failed but mint succeeded — keepsake still exists, send user there.
       if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
       else setStep("done")
     }
   }
 
-  // ── Card Payment (Coinbase Onramp → server-side escrow deposit) ──
+  // ── Card Payment (Coinbase Onramp) ──
   const handleCardPayment = async () => {
     if (!escrowInfo) return
     setError(null); setCardPaymentLoading(true)
 
     try {
-      // Convert SOL deposit amount to approximate USD
-      // For hackathon demo, use preset USD amounts
       const usdPresets: Record<string, number> = { "0.1": 5, "0.5": 10, "1": 20, "5": 50 }
       const amountUsd = usdPresets[depositAmount] || Math.max(5, Math.round(parseFloat(depositAmount) * 150))
 
-      // Get Coinbase Onramp session from our API
       const res = await fetch("/api/toothfairy/onramp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -491,19 +624,16 @@ export default function ToothFairyApp() {
 
       const { onrampUrl } = await res.json()
 
-      // Open Coinbase Onramp in popup
       const popup = window.open(onrampUrl, "coinbase-onramp", "width=460,height=700,left=200,top=100")
       setOnrampWindow(popup)
       setAwaitingCardDeposit(true)
       setCardPaymentLoading(false)
 
-      // Listen for postMessage events from Coinbase widget
       const handleMessage = async (event: MessageEvent) => {
         if (event.origin !== "https://pay.coinbase.com") return
         const { eventName } = event.data || {}
 
         if (eventName === "onramp_api.polling_success" || eventName === "onramp_api.commit_success") {
-          // Payment completed — trigger server-side escrow deposit
           window.removeEventListener("message", handleMessage)
           popup?.close()
           setAwaitingCardDeposit(false)
@@ -529,13 +659,10 @@ export default function ToothFairyApp() {
               throw new Error(d.error || "Deposit failed")
             }
 
-            const depositData = await depositRes.json()
+            await depositRes.json()
             setDepositSuccess(`$${amountUsd} deposited for ${childName}!`)
-            if (escrowInfo) {
-              redirectToKeepsake(escrowInfo.milestonePda)
-            } else {
-              setStep("done")
-            }
+            if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
+            else setStep("done")
           } catch (err: any) {
             setError(err.message || "Deposit to escrow failed after payment")
             if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
@@ -557,13 +684,10 @@ export default function ToothFairyApp() {
 
       window.addEventListener("message", handleMessage)
 
-      // Also poll for popup close (user might close manually)
       const pollClosed = setInterval(() => {
         if (popup?.closed) {
           clearInterval(pollClosed)
-          if (awaitingCardDeposit) {
-            setAwaitingCardDeposit(false)
-          }
+          if (awaitingCardDeposit) setAwaitingCardDeposit(false)
         }
       }, 1000)
     } catch (err: any) {
@@ -582,326 +706,330 @@ export default function ToothFairyApp() {
   }
 
   // ── Render helpers ──
-  // Step ordering per mode for the top progress bar. Child mode has no
-  // deposit step, so "preview" is the last pre-mint step (4 of 5).
-  const stepOrder = isParent
-    ? ["setup", "create", "tell", "preview", "deposit"]
-    : ["setup", "create", "tell", "preview"]
-  const totalSteps = stepOrder.length + 1 // +1 for the terminal minting/done
+  const stepOrder: Step[] = ["setup", "create", "tell", "preview", "deposit"]
+  const totalSteps = stepOrder.length + 1
   const currentStepNum = (() => {
     if (step === "minting" || step === "done") return totalSteps
     const idx = stepOrder.indexOf(step)
     return idx >= 0 ? idx + 1 : 1
   })()
-  const stepLabel = (() => {
-    switch (step) {
-      case "setup": return "Child Details"
-      case "create": return "Capture Moment"
-      case "tell": return "Tell the Story"
-      case "preview": return "Preview & Save"
-      case "deposit": return "Fund Wallet"
-      case "minting": return "Creating..."
-      case "done": return "Complete"
-      default: return ""
-    }
-  })()
 
-  // ── Render ── (unified: both child and parent skins)
-
-  // Theme-aware helpers
-  const bg = isParent ? PC.bg : C.bg
-  const textColor = isParent ? PC.text : C.text
-  const headlineColor = isParent ? PC.text : C.textWarm
-  const mutedColor = isParent ? PC.muted : C.muted
-  const dimColor = isParent ? PC.dim : C.dim
-  const goldAccent = isParent ? PC.goldDark : C.goldDim
-  const tealAccent = isParent ? PC.teal : C.teal
-  const cardBg = isParent ? "#ffffff" : glass.card
-  const cardBorder = isParent ? PC.border : glass.cardBorder
-  const cardBlur = isParent ? "none" : `blur(${glass.blur})`
-  const ctaGradient = isParent ? parentGradients.stardust : gradients.stardust
-  const ctaTextColor = isParent ? PC.onGold : C.onGold
-  const ctaShadow = isParent ? parentGlow.ctaFloat : '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)'
-  const ctaRadius = isParent ? "0.75rem" : "9999px"
-  const inputBorderDefault = isParent ? PC.border : 'rgba(240,196,86,0.2)'
-  const inputBorderActive = isParent ? PC.teal : C.teal
-
-  // Display name for the tooth
   const toothDisplayName = toothName ? `"${toothName}"` : `${childName}'s Tooth`
 
   return (
-    <div className="w-full max-w-md mx-auto min-h-screen relative transition-colors duration-300" style={{ background: bg, color: textColor }}>
+    <div
+      className="min-h-screen relative"
+      style={{
+        background: "var(--tfn-surface)",
+        color: "var(--tfn-ink)",
+      }}
+    >
+      {/* ── Sticky wallet + progress bar ── */}
+      <div
+        className="sticky top-0 z-40 w-full backdrop-blur-md"
+        style={{
+          background: "color-mix(in oklch, var(--tfn-surface) 82%, transparent)",
+          borderBottom: "1px solid var(--tfn-border)",
+        }}
+      >
+        <div className="max-w-2xl mx-auto flex items-center justify-between gap-4 px-6 py-3">
+          {/* Left: step dots */}
+          {step !== "minting" && step !== "done" ? (
+            <div className="flex items-center gap-1.5">
+              {stepOrder.map((_, i) => {
+                const active = i + 1 === currentStepNum
+                const done = i + 1 < currentStepNum
+                return (
+                  <span
+                    key={i}
+                    aria-hidden
+                    className="rounded-full"
+                    style={{
+                      width: active ? 20 : 6,
+                      height: 6,
+                      background: done || active ? "var(--tfn-gold)" : "var(--tfn-border)",
+                      transition: `width 0.35s ${SPRING}, background 0.35s ${SPRING}`,
+                    }}
+                  />
+                )
+              })}
+            </div>
+          ) : (
+            <span />
+          )}
 
-      {/* Background decorative glow orbs (child only) */}
-      {isChild && (
-        <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-          <div className="absolute top-[10%] -left-10 w-64 h-64 rounded-full blur-[80px]" style={{ background: `${C.goldLight}08` }} />
-          <div className="absolute bottom-[20%] -right-10 w-80 h-80 rounded-full blur-[100px]" style={{ background: `${C.teal}08` }} />
-        </div>
-      )}
-
-      {/* ── View Toggle Bar + Header ── */}
-      <div className="sticky top-0 w-full z-50 transition-colors duration-300"
-        style={{ background: isParent ? PC.bg : '#151a31', borderBottom: `1px solid ${isParent ? PC.border : 'rgba(78,70,54,0.15)'}` }}>
-        <div className="flex justify-center py-2">
-          <ViewToggle />
-        </div>
-        <div className="flex justify-between items-center px-6 pb-2">
-          <h1 className="text-lg font-bold tracking-tight" style={{ color: isParent ? PC.goldDark : C.gold, fontFamily: ds.fonts.headline, textShadow: isParent ? 'none' : '0 0 8px rgba(240,196,86,0.4)' }}>
-            Tooth Fairy Network
-          </h1>
-          <div className="flex items-center gap-2">
-            {/* Wallet UI is parent-mode only. Child mode runs a fully
-                custodial flow (server mint + optional deposit later) and
-                must never see a Connect Wallet affordance. */}
-            {isParent && publicKey && (
-              <Link href="/dashboard" className="px-3 py-1.5 rounded-xl text-xs transition-colors"
-                style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${cardBorder}`, color: mutedColor }}>
+          {/* Right: Wallet */}
+          <div className="flex items-center gap-3">
+            {publicKey && (
+              <Link
+                href="/dashboard"
+                className="text-sm transition-opacity hover:opacity-80 hidden sm:inline"
+                style={{
+                  color: "var(--tfn-ink-soft)",
+                  fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                }}
+              >
                 Wallet
               </Link>
             )}
-            {isParent && <WalletButton />}
+            <WalletButton />
           </div>
         </div>
       </div>
 
-      {/* ── Content area ── */}
-      <div className="pb-24 px-6">
+      {/* ── Content ── */}
+      <main className="max-w-2xl mx-auto px-6 pb-24 pt-10 md:pt-16">
 
-        {/* ── Progress Indicator ── */}
-        {step !== "minting" && step !== "done" && (
-          <div className="mb-8">
-            <div className="flex justify-between items-end mb-2">
-              <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline, letterSpacing: "0.15em" }}>
-                Step {currentStepNum} of {totalSteps}
-              </span>
-              <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: mutedColor, fontFamily: ds.fonts.headline, letterSpacing: "0.15em" }}>
-                {stepLabel}
-              </span>
-            </div>
-            <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: isParent ? PC.surfaceContainer : C.surfaceHighest }}>
-              <div className="h-full relative transition-all duration-500 ease-out" style={{ width: `${(currentStepNum / totalSteps) * 100}%`, background: isParent ? PC.gold : 'linear-gradient(90deg, #f0c456, #5adace)', borderRadius: '9999px' }}>
-                {isChild && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full" style={{ boxShadow: '0 0 8px #fff' }} />}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Error display ── */}
+        {/* Error banner */}
         {error && (
-          <div className="mb-6 p-4 rounded-2xl text-sm" style={{ background: 'rgba(255,180,171,0.1)', border: '1px solid rgba(255,180,171,0.2)', color: C.error }}>
-            {error}
-            <button onClick={() => setError(null)} className="ml-2 underline text-xs opacity-70">dismiss</button>
-          </div>
-        )}
-
-        {/* ── STEP 1: Setup (NO wallet needed) ── */}
-        {step === "setup" && (
-          <div className="space-y-6">
-            {/* Hero text */}
-            <div className="text-center py-4">
-              <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                {isChild ? "Let's make something amazing" : "Set up your child's profile"}
-              </h2>
-              <p className="text-sm mt-2 leading-relaxed" style={{ color: mutedColor, fontFamily: isChild ? ds.fonts.story : ds.fonts.body, fontStyle: isChild ? 'italic' : 'normal' }}>
-                {isChild
-                  ? "Your tooth has a story — and now it gets its own spot in the Tooth Fairy Network, forever."
-                  : "Your child is about to create something unique. This page gets them started."
-                }
-              </p>
-            </div>
-
-            {/* Photo upload circle */}
-            <div className="flex justify-center">
-              <input ref={childPhotoRef} type="file" accept="image/*" onChange={handleChildPhoto} className="hidden" />
-              {childPhoto ? (
-                <div className="relative">
-                  <div className="w-24 h-24 rounded-full overflow-hidden" style={{ border: `2px solid ${isParent ? PC.border : 'rgba(240,196,86,0.4)'}`, boxShadow: isParent ? 'none' : glow.goldPhoto }}>
-                    <img src={childPhoto} alt="Child" className="w-full h-full object-cover" />
-                  </div>
-                  <button onClick={() => setChildPhoto(null)} className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: isParent ? PC.errorContainer : C.errorContainer, color: isParent ? PC.error : C.error }}>x</button>
-                  <p className="text-[10px] text-center mt-2" style={{ color: mutedColor }}>Appears on their page</p>
-                </div>
-              ) : (
-                <button onClick={() => childPhotoRef.current?.click()} className="w-24 h-24 rounded-full border-2 border-dashed flex flex-col items-center justify-center transition-all hover:border-opacity-60" style={{ borderColor: isParent ? PC.border : 'rgba(240,196,86,0.3)', background: isParent ? PC.surfaceContainerLow : 'transparent' }}>
-                  <svg className="w-6 h-6 mb-1" style={{ color: isParent ? PC.muted : C.goldDim }} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg>
-                  <span className="text-[9px]" style={{ color: isParent ? PC.muted : C.goldDim }}>{isChild ? "Add a photo of yourself!" : "Child's photo"}</span>
-                </button>
-              )}
-            </div>
-
-            {/* Form card with inputs */}
-            <div className="rounded-2xl p-6 space-y-5" style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${isParent ? PC.border : C.borderGold}`, boxShadow: isParent ? '0 2px 8px rgba(0,0,0,0.04)' : 'none' }}>
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest mb-2 font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline }}>{isChild ? "What's your name?" : "CHILD'S NAME"}</label>
-                <input type="text" value={childName} onChange={e => setChildName(e.target.value)} placeholder={isChild ? "e.g. Luna" : "Enter name"}
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: childName ? inputBorderActive : inputBorderDefault, color: textColor, fontFamily: ds.fonts.body }} />
-              </div>
-
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest mb-2 font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline }}>{isChild ? "When's your birthday?" : "DATE OF BIRTH"}</label>
-                <input type="date" value={childDob} onChange={e => setChildDob(e.target.value)}
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: childDob ? inputBorderActive : inputBorderDefault, color: textColor, fontFamily: ds.fonts.body }} />
-                {childDob && eighteenthDate && (
-                  <p className="mt-2 text-xs" style={{ color: tealAccent }}>Turns 18 on {eighteenthDate}</p>
-                )}
-              </div>
-
-              {/* Tooth naming */}
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest mb-2 font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline }}>{isChild ? "Name your tooth!" : "TOOTH'S NAME (optional)"}</label>
-                <input type="text" value={toothName} onChange={e => setToothName(e.target.value)} placeholder={isChild ? "e.g. Sparkle, Chomper, Sir Wobbly" : "Your child can name it"}
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: toothName ? inputBorderActive : inputBorderDefault, color: textColor, fontFamily: ds.fonts.body }} />
-              </div>
-            </div>
-
-            {/* Info cards */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl p-4" style={{ background: isParent ? PC.surfaceContainerLow : C.surface, border: isParent ? 'none' : `1px solid ${C.border}` }}>
-                <h3 className="font-bold text-xs mb-1" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                  {isChild ? "Make it yours" : "Their creation, their way"}
-                </h3>
-                <p className="text-[11px] leading-relaxed" style={{ color: mutedColor }}>
-                  {isChild
-                    ? "Name your tooth. Draw it. Color it. Tell its story. Use all the tools — there's no wrong way to do this."
-                    : "Your child can draw, photograph, color, and name their tooth. Give them the time to make something they're proud of."
-                  }
-                </p>
-              </div>
-              <div className="rounded-2xl p-4" style={{ background: isParent ? PC.surfaceContainerLow : C.surface, border: isParent ? 'none' : `1px solid ${C.border}` }}>
-                <h3 className="font-bold text-xs mb-1" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                  {isChild ? "Take your time" : "We'll guide you through"}
-                </h3>
-                <p className="text-[11px] leading-relaxed" style={{ color: mutedColor }}>
-                  {isChild
-                    ? "The best ones take a little while. The fairies can wait."
-                    : "The whole process takes a few minutes. Everything is free."
-                  }
-                </p>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <button onClick={() => setStep("create")} disabled={!childName.trim() || !childDob}
-              className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
-              style={{ background: ctaGradient, color: ctaTextColor, boxShadow: ctaShadow, borderRadius: ctaRadius, fontFamily: ds.fonts.headline, border: 'none', cursor: 'pointer' }}>
-              {isChild ? "Let's go!" : "Continue"}
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          <div
+            className="mb-8 rounded-[18px] px-5 py-4 text-sm flex items-start justify-between gap-4"
+            style={{
+              background: "oklch(95% 0.025 30 / 0.6)",
+              border: "1px solid oklch(82% 0.08 30 / 0.4)",
+              color: "oklch(42% 0.1 30)",
+              fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+            }}
+          >
+            <span>{error}</span>
+            <button
+              onClick={() => setError(null)}
+              className="underline text-xs opacity-70 shrink-0"
+            >
+              dismiss
             </button>
           </div>
         )}
 
-        {/* ── STEP 2: Create — Photo + Draw (NO wallet needed) ── */}
-        {step === "create" && (
-          <div className="space-y-5">
-            <div className="text-center">
-              <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                {isChild ? "Time to make your masterpiece" : "This is their moment"}
-              </h2>
-              <p className="text-sm mt-2 leading-relaxed" style={{ color: mutedColor, fontFamily: isChild ? ds.fonts.story : ds.fonts.body, fontStyle: isChild ? 'italic' : 'normal' }}>
-                {isChild
-                  ? "Use the camera, the canvas, the colors — whatever you want. Make something you're really proud of. This is what you're sending to the Tooth Fairy Network."
-                  : "Let your child take the lead here. They can photograph their tooth, draw on it, color it in — whatever they want. There's no rush."
-                }
+        {/* ── STEP 1: Setup ── */}
+        {step === "setup" && (
+          <div className="space-y-12">
+            <div className="space-y-5">
+              <div className="text-center">
+                <Eyebrow>Begin</Eyebrow>
+              </div>
+              <StepTitle
+                title="A tooth has fallen."
+                subtitle="Before the fairies come, there's a small story to tell."
+              />
+            </div>
+
+            {/* Child photo */}
+            <div className="flex flex-col items-center gap-3">
+              <input ref={childPhotoRef} type="file" accept="image/*" onChange={handleChildPhoto} className="hidden" />
+              {childPhoto ? (
+                <div className="relative">
+                  <div
+                    className="w-28 h-28 rounded-full overflow-hidden"
+                    style={{
+                      border: "2px solid var(--tfn-gold)",
+                      boxShadow: "0 4px 18px oklch(72% 0.145 75 / 0.25)",
+                    }}
+                  >
+                    <img src={childPhoto} alt="Child" className="w-full h-full object-cover" />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setChildPhoto(null)}
+                    aria-label="Remove photo"
+                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{ background: "var(--tfn-surface-alt)", border: "1px solid var(--tfn-border)", color: "var(--tfn-ink-soft)" }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => childPhotoRef.current?.click()}
+                  className="w-28 h-28 rounded-full flex flex-col items-center justify-center transition-all hover:scale-[1.02]"
+                  style={{
+                    border: "1.5px dashed var(--tfn-border)",
+                    background: "var(--tfn-accent-soft)",
+                    color: "var(--tfn-ink-muted)",
+                    fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                  }}
+                >
+                  <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  </svg>
+                  <span className="text-[10px] uppercase" style={{ letterSpacing: "0.2em" }}>Add photo</span>
+                </button>
+              )}
+              <p className="text-xs italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}>
+                Their smiling face — appears on the keepsake
               </p>
             </div>
 
-            {/* Photo upload area */}
+            {/* Details card */}
+            <PaperCard className="space-y-7">
+              <InputRow label="Child's name">
+                <UnderlineInput
+                  type="text"
+                  value={childName}
+                  onChange={(e) => setChildName(e.target.value)}
+                  placeholder="e.g. Luna"
+                  filled={!!childName}
+                />
+              </InputRow>
+
+              <InputRow label="Date of birth">
+                <UnderlineInput
+                  type="date"
+                  value={childDob}
+                  onChange={(e) => setChildDob(e.target.value)}
+                  filled={!!childDob}
+                />
+                {childDob && eighteenthDate && (
+                  <p
+                    className="mt-3 text-sm italic"
+                    style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), 'Alegreya', serif" }}
+                  >
+                    Turns 18 on {eighteenthDate}.
+                  </p>
+                )}
+              </InputRow>
+
+              <InputRow label="Name of the tooth (optional)">
+                <UnderlineInput
+                  type="text"
+                  value={toothName}
+                  onChange={(e) => setToothName(e.target.value)}
+                  placeholder="e.g. Sparkle, Chomper, Sir Wobbly"
+                  filled={!!toothName}
+                />
+              </InputRow>
+            </PaperCard>
+
+            <GoldCTA
+              onClick={() => setStep("create")}
+              disabled={!childName.trim() || !childDob}
+            >
+              Continue
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </GoldCTA>
+          </div>
+        )}
+
+        {/* ── STEP 2: Create ── */}
+        {step === "create" && (
+          <div className="space-y-10">
+            <div className="space-y-5">
+              <div className="text-center">
+                <Eyebrow>The portrait</Eyebrow>
+              </div>
+              <StepTitle
+                title="Draw the tooth."
+                subtitle="Use the camera, the canvas, the colors — whatever feels right. Take your time."
+              />
+            </div>
+
+            {/* Photo upload */}
             {!photo && (
-              <button onClick={() => fileRef.current?.click()}
-                className="w-full py-6 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:border-opacity-50"
-                style={{ borderColor: isParent ? PC.borderGold : C.borderGold, background: isParent ? PC.goldSoft : C.goldGlow }}>
-                <svg className="w-8 h-8 mb-2" style={{ color: goldAccent }} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" /><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" /></svg>
-                <p className="text-xs" style={{ color: mutedColor, fontFamily: ds.fonts.body }}>{isChild ? "Snap a photo of your tooth!" : "Tap to photograph the tooth"}</p>
-              </button>
+              <PaperCard padded={false}>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  className="w-full py-10 flex flex-col items-center justify-center transition-opacity hover:opacity-85"
+                >
+                  <svg className="w-8 h-8 mb-3" style={{ color: "var(--tfn-gold)" }} fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  </svg>
+                  <p
+                    className="text-sm"
+                    style={{ color: "var(--tfn-ink-soft)", fontFamily: "var(--font-body), 'Alegreya Sans', serif" }}
+                  >
+                    Photograph the tooth
+                  </p>
+                  <p
+                    className="text-xs mt-1 italic"
+                    style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}
+                  >
+                    Or skip and draw from memory
+                  </p>
+                </button>
+              </PaperCard>
             )}
+
             {photo && (
               <div className="flex justify-center">
                 <div className="relative">
-                  <img src={photo} alt="Preview" className="w-20 h-20 rounded-2xl object-cover" style={{ border: `1px solid ${isParent ? PC.borderGold : C.borderGold}` }} />
-                  <button onClick={() => setPhoto(null)} className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: isParent ? PC.errorContainer : C.errorContainer, color: isParent ? PC.error : C.error }}>x</button>
+                  <img
+                    src={photo}
+                    alt="Preview"
+                    className="w-24 h-24 rounded-2xl object-cover"
+                    style={{ border: "1px solid var(--tfn-border)" }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPhoto(null)}
+                    aria-label="Remove"
+                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{ background: "var(--tfn-surface-alt)", border: "1px solid var(--tfn-border)", color: "var(--tfn-ink-soft)" }}
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
             )}
             <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} className="hidden" />
 
-            {/* Use photo as-is CTA */}
-            {photo && (
-              <button onClick={goToPreview}
-                className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                style={{ background: ctaGradient, color: ctaTextColor, boxShadow: ctaShadow, borderRadius: ctaRadius, fontFamily: ds.fonts.headline, border: 'none', cursor: 'pointer' }}>
-                Use this photo
-              </button>
-            )}
-
-            {/* Drawing canvas (shared component) */}
+            {/* Drawing canvas */}
             <DrawingCanvas ref={drawingCanvasRef} photo={photo} />
 
             {photo && (
-              <p className="text-xs text-center" style={{ color: dimColor, fontFamily: ds.fonts.body }}>Or draw on the photo above, then continue</p>
+              <p className="text-xs text-center italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}>
+                Draw over the photo, or continue with it as-is.
+              </p>
             )}
 
-            {/* Back button */}
-            <div className="flex gap-2">
-              <button onClick={() => setStep("setup")}
-                className="px-4 py-2.5 rounded-xl text-xs transition-all"
-                style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${cardBorder}`, color: mutedColor }}>
-                Back
-              </button>
-            </div>
-
             {/* Note */}
-            <div className="space-y-2">
-              <label className="text-xs font-medium" style={{ color: isChild ? C.gold : PC.text, fontFamily: ds.fonts.body }}>
-                {isChild ? "What do you want the fairies to know?" : `Add a note for ${childName}'s time capsule`}
-              </label>
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value.slice(0, 500))}
-                placeholder={isChild ? "How did your tooth fall out? What should the fairies know about you? What's your favorite thing right now?" : `Write something ${childName} will read when they're older...`}
-                maxLength={500}
-                spellCheck={false}
-                autoCorrect="off"
-                className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none"
-                style={{
-                  background: isParent ? PC.surfaceContainerLow : C.bgAlt,
-                  border: `1px solid ${isParent ? PC.border : C.borderGold}`,
-                  color: textColor,
-                  fontFamily: ds.fonts.body,
-                  minHeight: "80px",
-                }}
-                rows={3}
-              />
-              <div className="flex justify-between">
-                <p className="text-[10px] leading-relaxed max-w-[70%]" style={{ color: dimColor }}>
-                  {isChild
-                    ? "This gets saved with your creation — so make it good!"
-                    : `This note is saved permanently alongside the artwork. One day, ${childName} will show this to their own children.`
-                  }
+            <PaperCard className="space-y-4">
+              <InputRow label={`A note for ${childName || "later"}`}>
+                <textarea
+                  value={note}
+                  onChange={(e) => setNote(e.target.value.slice(0, 500))}
+                  placeholder={childName ? `Something ${childName} will read when they're older…` : "Something they will read when they're older…"}
+                  maxLength={500}
+                  spellCheck={false}
+                  className="w-full rounded-[14px] px-4 py-3 text-base outline-none resize-none"
+                  style={{
+                    background: "var(--tfn-surface)",
+                    border: "1px solid var(--tfn-border)",
+                    color: "var(--tfn-ink)",
+                    fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                    minHeight: "96px",
+                  }}
+                  rows={3}
+                />
+              </InputRow>
+              <div className="flex items-center justify-between">
+                <p className="text-[11px]" style={{ color: "var(--tfn-ink-muted)" }}>
+                  Saved permanently alongside the artwork.
                 </p>
-                <p className="text-[10px]" style={{ color: dimColor }}>{note.length}/500</p>
+                <p className="text-[11px] font-mono" style={{ color: "var(--tfn-ink-muted)" }}>
+                  {note.length}/500
+                </p>
               </div>
+            </PaperCard>
+
+            <div className="space-y-3">
+              <GoldCTA onClick={goToPreview}>
+                Continue
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </GoldCTA>
+              <GhostButton onClick={() => setStep("setup")}>Back</GhostButton>
             </div>
-
-            {/* "Free" note removed — felt suspicious upstream of the reveal */}
-
-            {/* Continue button */}
-            <button onClick={goToPreview}
-              className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-              style={{ background: ctaGradient, color: ctaTextColor, boxShadow: ctaShadow, borderRadius: ctaRadius, fontFamily: ds.fonts.headline, border: 'none', cursor: 'pointer' }}>
-              {isChild ? "I'm proud of this! →" : "Next →"}
-            </button>
           </div>
         )}
 
-        {/* ── STEP: Tell (between Create and Preview) ──
-            The child's narrative about this tooth. Captured here so the
-            mint payload carries it as `toothStory` and the keepsake page
-            renders the "In their words" block. Skippable — empty string
-            short-circuits the off-chain tfn_tooth_stories write. */}
+        {/* ── STEP 2.5: Tell ── */}
         {step === "tell" && (
           <TellStep
             value={tellText}
@@ -911,421 +1039,426 @@ export default function ToothFairyApp() {
           />
         )}
 
-        {/* ── STEP 3: Preview + Auth + Mint (NO wallet needed) ── */}
+        {/* ── STEP 3: Preview ── */}
         {step === "preview" && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                {isChild ? "Look what you made!" : "Ready to save"}
-              </h2>
-              <p className="text-sm mt-2 leading-relaxed" style={{ color: mutedColor, fontFamily: isChild ? ds.fonts.story : ds.fonts.body, fontStyle: isChild ? 'italic' : 'normal' }}>
-                {isChild
-                  ? "This is about to go somewhere really special."
-                  : `${childName} made something worth keeping. Let's put it somewhere it can't be lost.`
-                }
-              </p>
+          <div className="space-y-10">
+            <div className="space-y-5">
+              <div className="text-center">
+                <Eyebrow>Ready</Eyebrow>
+              </div>
+              <StepTitle
+                title={childName ? `${childName}'s keepsake` : "The keepsake"}
+                subtitle="This is what will live on the network — forever."
+              />
             </div>
 
-            {/* Preview card */}
+            {/* Preview storybook cover */}
             {previewImage && (
-              <div className="rounded-2xl p-6 text-center" style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${isParent ? PC.border : C.borderGold}`, boxShadow: isParent ? '0 2px 8px rgba(0,0,0,0.06)' : glow.gold }}>
-                <div className="rounded-2xl overflow-hidden mx-auto w-48 h-48 mb-4" style={{ border: `2px solid ${isParent ? PC.borderGold : C.borderGold}` }}>
-                  <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
+              <div className="flex justify-center">
+                <div
+                  className="relative w-full max-w-[280px] aspect-[9/12] rounded-[22px] overflow-hidden"
+                  style={{
+                    boxShadow: "0 24px 60px oklch(30% 0.035 65 / 0.18), 0 4px 12px oklch(30% 0.035 65 / 0.10)",
+                  }}
+                >
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: "linear-gradient(to top, oklch(30% 0.035 65 / 0.78) 0%, oklch(30% 0.035 65 / 0.2) 40%, transparent 60%)",
+                    }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <p
+                      className="text-base font-semibold"
+                      style={{
+                        fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                        color: "oklch(98% 0.005 80)",
+                        textShadow: "0 2px 16px rgba(0,0,0,0.45)",
+                      }}
+                    >
+                      {toothDisplayName}
+                    </p>
+                    {note && (
+                      <p
+                        className="text-xs italic mt-1 line-clamp-2"
+                        style={{
+                          fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                          color: "oklch(92% 0.02 80)",
+                          textShadow: "0 1px 8px rgba(0,0,0,0.6)",
+                        }}
+                      >
+                        &ldquo;{note}&rdquo;
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: isParent ? PC.text : C.goldLight }}>{toothDisplayName}</p>
-                {note && (
-                  <p className="text-xs mt-2 italic leading-relaxed" style={{ color: mutedColor, fontFamily: ds.fonts.story }}>
-                    &ldquo;{note}&rdquo;
-                  </p>
-                )}
-                {isParent && (
-                  <p className="text-[10px] mt-3 uppercase tracking-widest" style={{ color: dimColor, opacity: 0.4 }}>SOLANA MAINNET</p>
-                )}
               </div>
             )}
 
-            {/* Parent: transparency card */}
-            {isParent && (
-              <div className="rounded-2xl p-6" style={{ background: PC.surfaceContainerLow }}>
+            {/* Transparency */}
+            <PaperCard>
+              <div className="space-y-5">
                 {[
-                  { num: "01", title: "Stored permanently", desc: "Distributed across decentralized nodes. The data can never disappear." },
-                  { num: "02", title: "On the blockchain", desc: "A cryptographic hash locks this creation into the public ledger." },
-                  { num: "03", title: `${childName} owns it`, desc: `Issued directly to ${childName}'s identity, managed by you. You control the wallet — they get a link to their page.` },
+                  { num: "i", title: "Stored permanently", desc: "Distributed across decentralized nodes. The data cannot disappear." },
+                  { num: "ii", title: "On the blockchain", desc: "A cryptographic hash locks this creation into the public ledger." },
+                  { num: "iii", title: `${childName || "Your child"} owns it`, desc: `Issued to ${childName || "your child"}'s identity, managed by you. You control the wallet — they receive a keepsake link.` },
                 ].map(({ num, title, desc }, i) => (
-                  <div key={num} className="flex gap-4" style={{ paddingTop: i > 0 ? "1.25rem" : 0, marginTop: i > 0 ? "1.25rem" : 0, ...(i > 0 ? { borderTop: `1px solid ${PC.border}` } : {}) }}>
-                    <span className="text-2xl font-bold leading-none" style={{ fontFamily: ds.fonts.headline, color: PC.teal }}>{num}</span>
+                  <div
+                    key={num}
+                    className="flex gap-5"
+                    style={{
+                      paddingTop: i > 0 ? "1.25rem" : 0,
+                      borderTop: i > 0 ? "1px solid var(--tfn-border)" : "none",
+                    }}
+                  >
+                    <span
+                      className="text-xl leading-none italic shrink-0"
+                      style={{
+                        fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                        color: "var(--tfn-gold)",
+                        minWidth: "1.5rem",
+                      }}
+                    >
+                      {num}.
+                    </span>
                     <div>
-                      <h3 className="font-bold mb-1 text-sm" style={{ fontFamily: ds.fonts.headline, color: PC.text }}>{title}</h3>
-                      <p className="text-xs leading-relaxed" style={{ color: PC.muted }}>{desc}</p>
+                      <h3
+                        className="font-semibold mb-1 text-base"
+                        style={{
+                          fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                          color: "var(--tfn-ink)",
+                        }}
+                      >
+                        {title}
+                      </h3>
+                      <p className="text-sm leading-relaxed" style={{ color: "var(--tfn-ink-soft)" }}>
+                        {desc}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
+            </PaperCard>
 
-            {!useEmailMint ? (
-              <>
-                <div className="rounded-2xl p-6 text-center space-y-4" style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${cardBorder}` }}>
-                  {authLoading ? (
-                    /* Auth loading skeleton — fixes the flash */
-                    <div className="space-y-3 animate-pulse">
-                      <div className="h-4 w-32 mx-auto rounded" style={{ background: isParent ? PC.surfaceContainer : C.surfaceHighest }} />
-                      <div className="h-3 w-48 mx-auto rounded" style={{ background: isParent ? PC.surfaceContainer : C.surfaceHighest }} />
-                      <div className="h-10 w-40 mx-auto rounded-2xl" style={{ background: isParent ? PC.surfaceContainer : C.surfaceHighest }} />
-                    </div>
-                  ) : !isAuthenticated ? (
-                    <>
-                      <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                        {isChild ? "A grown-up needs to help with this part!" : "Sign in to continue"}
-                      </p>
-                      <p className="text-xs" style={{ color: mutedColor, fontFamily: ds.fonts.body }}>
-                        {isChild
-                          ? "To save your masterpiece, we need a parent to sign in."
-                          : "Free. No wallet or crypto knowledge needed."
-                        }
-                      </p>
-                      <button
-                        onClick={handleGoogleSignIn}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-medium transition-all hover:opacity-90"
-                        style={{ background: "white", color: "#1f2937", boxShadow: isParent ? '0 2px 8px rgba(0,0,0,0.1)' : glow.ambient, border: isParent ? `1px solid ${PC.border}` : 'none' }}
-                      >
-                        <svg className="w-4 h-4" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                        {isChild ? "Get a grown-up →" : "Continue with Google"}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center justify-center gap-2 text-xs" style={{ color: tealAccent }}>
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                        {isChild ? "A grown-up said yes!" : `Signed in as ${authEmail || ""}`}
-                      </div>
-                      <button
-                        onClick={handleServerMint}
-                        className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                        style={{ background: ctaGradient, color: ctaTextColor, boxShadow: ctaShadow, borderRadius: ctaRadius, fontFamily: ds.fonts.headline, border: 'none', cursor: 'pointer' }}
-                      >
-                        {isChild ? "Send it to the fairies! ✦" : `Save ${childName}'s creation`}
-                      </button>
-                      <p className="text-xs" style={{ color: dimColor, fontFamily: ds.fonts.body }}>
-                        {isChild ? "Free. The fairies handle the rest." : "Free. No wallet or crypto knowledge needed."}
-                      </p>
-                    </>
-                  )}
+            {/* Auth + Mint */}
+            <PaperCard className="space-y-5 text-center">
+              {authLoading ? (
+                <div className="space-y-3 animate-pulse py-4">
+                  <div className="h-3 w-40 mx-auto rounded" style={{ background: "var(--tfn-border)" }} />
+                  <div className="h-10 w-48 mx-auto rounded-full" style={{ background: "var(--tfn-border)" }} />
                 </div>
-              </>
-            ) : emailMintDone ? (
-              <div className="space-y-6">
-                <div className="rounded-2xl p-6 text-center" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${C.borderGold}`, boxShadow: glow.gold }}>
-                  <div className="w-12 h-12 mx-auto mb-3 rounded-full" style={{ background: gradients.stardust, boxShadow: glow.goldStrong }} />
-                  <h2 className="text-xl font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>{childName}&apos;s Milestone Saved</h2>
-                  <p className="text-xs mt-1" style={{ color: C.muted, fontFamily: ds.fonts.body }}>{childName} owns this forever &middot; Sent to {recipientEmail}</p>
-                </div>
-
-                {previewImage && (
-                  <div className="flex justify-center">
-                    <img src={previewImage} alt="Tooth art" className="w-40 h-40 rounded-2xl" style={{ border: `1px solid ${C.borderGold}`, boxShadow: glow.gold }} />
+              ) : !isAuthenticated ? (
+                <>
+                  <p
+                    className="text-lg"
+                    style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
+                  >
+                    Sign in to save the keepsake.
+                  </p>
+                  <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
+                    Free. No wallet or crypto knowledge required.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-90"
+                    style={{
+                      background: "white",
+                      color: "#1f2937",
+                      border: "1px solid var(--tfn-border)",
+                      boxShadow: "0 2px 10px oklch(30% 0.035 65 / 0.08)",
+                      fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                    }}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="inline-flex items-center gap-2 text-xs"
+                    style={{ color: "var(--tfn-ink-muted)" }}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    Signed in as {authEmail || ""}
                   </div>
-                )}
-
-                <div className="rounded-2xl p-4 text-center space-y-2" style={{ background: C.tealGlow, border: `1px solid ${C.borderTeal}` }}>
-                  <p className="text-sm font-medium" style={{ color: C.teal }}>Check your email for the NFT link</p>
-                  <p className="text-xs" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                    You&apos;ll receive a link from Crossmint to view {childName}&apos;s page.
+                  <GoldCTA onClick={handleServerMint}>
+                    Save {childName ? `${childName}'s` : "the"} creation
+                  </GoldCTA>
+                  <p className="text-xs" style={{ color: "var(--tfn-ink-muted)" }}>
+                    Free. We handle the rest.
                   </p>
-                </div>
+                </>
+              )}
+            </PaperCard>
 
-                {escrowInfo && (
-                  <>
-                    <button onClick={() => {
-                      const url = `${window.location.origin}/gift/${escrowInfo.milestonePda}`
-                      navigator.clipboard.writeText(url).then(() => alert("Family link copied!")).catch(() => prompt("Copy:", url))
-                    }} className="w-full px-4 py-3 rounded-2xl text-sm font-medium transition-all active:scale-95"
-                      style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
-                      Share with family — they can add to {childName}&apos;s savings
-                    </button>
-                    <p className="text-xs text-center" style={{ color: C.dim, fontFamily: ds.fonts.body }}>
-                      Family members with a Solana wallet can deposit SOL to {childName}&apos;s locked savings
-                    </p>
-                  </>
-                )}
-
-                <div className="rounded-2xl p-4 text-center space-y-2" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}` }}>
-                  <p className="text-xs font-medium" style={{ color: C.gold }}>Want to add savings yourself?</p>
-                  <p className="text-xs" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                    Connect a Solana wallet (like <a href="https://phantom.app/download" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: C.teal }}>Phantom</a>) to deposit SOL into {childName}&apos;s time-locked savings.
-                  </p>
-                </div>
-
-                <button onClick={mintAnother} className="w-full px-4 py-3 rounded-2xl text-xs font-medium transition-all active:scale-95"
-                  style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}`, color: C.muted }}>
-                  Record Another Tooth
-                </button>
-              </div>
-            ) : emailMinting ? (
-              <div className="text-center py-16 space-y-4">
-                <div className="relative mx-auto w-16 h-16">
-                  <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ background: C.gold }} />
-                  <div className="absolute inset-2 rounded-full animate-pulse" style={{ background: gradients.stardust, boxShadow: glow.goldStrong }} />
-                </div>
-                <h2 className="text-lg font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>Saving {childName}&apos;s milestone...</h2>
-                <p className="text-sm animate-pulse" style={{ color: C.muted, fontFamily: ds.fonts.body }}>{emailMintProgress || "Preparing..."}</p>
-                <div className="flex justify-center gap-1.5">
-                  {[0, 1, 2, 3, 4].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: C.teal, animationDelay: `${i * 0.15}s` }} />)}
-                </div>
-              </div>
-            ) : (
-              <div className="rounded-2xl p-6 space-y-5" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}` }}>
-                <div className="text-center">
-                  <p className="text-sm font-bold" style={{ fontFamily: ds.fonts.headline, color: C.textWarm }}>Save with your email</p>
-                  <p className="text-xs mt-1" style={{ color: C.muted, fontFamily: ds.fonts.body }}>
-                    No wallet needed — we&apos;ll create {childName}&apos;s page and savings wallet. Free.
-                  </p>
-                </div>
-                <input
-                  type="email"
-                  value={recipientEmail}
-                  onChange={(e) => setRecipientEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: 'rgba(78, 70, 54, 0.3)', color: C.text, fontFamily: ds.fonts.body }}
-                />
-                <button
-                  onClick={async () => {
-                    if (!recipientEmail || !previewImage) return
-                    setEmailMinting(true); setError(null)
-                    const imageBase64 = previewImage.split(",")[1]
-
-                    try {
-                      // Step 1: Upload to Arweave + mint via Crossmint
-                      setEmailMintProgress("Uploading artwork to Arweave...")
-                      const mintRes = await fetch("/api/toothfairy/crossmint-mint", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          email: recipientEmail,
-                          childName,
-                          imageBase64,
-                          imageMimeType: "image/png",
-                          toothNumber: 1,
-                        }),
-                      })
-                      const mintData = await mintRes.json()
-                      if (!mintRes.ok) throw new Error(mintData.error)
-
-                      // Step 2: Create escrow (server-side, server wallet signs)
-                      setEmailMintProgress("Creating savings wallet...")
-                      const escrowRes = await fetch("/api/toothfairy/email-escrow-setup", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          email: recipientEmail,
-                          childName,
-                          toothType: "upperRightCentralIncisor",
-                          metadataUri: mintData.metadataUri || mintData.imageUrl || "https://toothfairy.network",
-                        }),
-                      })
-                      const escrowData = await escrowRes.json()
-                      if (!escrowRes.ok) throw new Error(escrowData.error)
-
-                      setEscrowInfo(escrowData)
-                      setEmailMintDone(true)
-                    } catch (err: any) {
-                      setError(err.message)
-                    } finally { setEmailMinting(false) }
-                  }}
-                  disabled={!recipientEmail}
-                  className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
-                  style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}
-                >
-                  Save Milestone
-                </button>
-                <button onClick={() => setUseEmailMint(false)} className="w-full text-xs text-center py-1 transition-colors hover:underline" style={{ color: C.dim }}>
-                  Back to Google sign-in
-                </button>
-              </div>
-            )}
-
-            <button onClick={() => setStep("create")} className="w-full text-xs text-center py-1 transition-colors hover:underline" style={{ color: C.dim }}>
+            <button
+              type="button"
+              onClick={() => setStep("create")}
+              className="w-full text-xs text-center py-2 underline transition-opacity hover:opacity-80"
+              style={{ color: "var(--tfn-ink-muted)" }}
+            >
               Back to drawing
             </button>
           </div>
         )}
 
-        {/* ── STEP 4: Deposit (card payment primary, wallet secondary) ── */}
+        {/* ── STEP 4: Deposit ── */}
         {step === "deposit" && (
-          <div className="space-y-6">
-            {/* Show the preview at top */}
+          <div className="space-y-10">
             {previewImage && (
               <div className="flex justify-center">
-                <div className="rounded-2xl overflow-hidden w-24 h-24" style={{ border: `1px solid ${C.borderGold}`, boxShadow: glow.gold }}>
-                  <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
-                </div>
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="w-24 h-24 rounded-[18px] object-cover"
+                  style={{ border: "1px solid var(--tfn-border)", boxShadow: "0 6px 20px oklch(72% 0.145 75 / 0.20)" }}
+                />
               </div>
             )}
 
-            <div className="text-center">
-              <h2 className="text-xl font-bold tracking-tight" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                Add savings to {childName}&apos;s creation
-              </h2>
-              <p className="text-sm mt-2 leading-relaxed" style={{ color: mutedColor, fontFamily: ds.fonts.body }}>
-                {childName}&apos;s creation is saved and it&apos;s free. If you&apos;d like, you can also lock real savings into their wallet.
-              </p>
+            <div className="space-y-5">
+              <div className="text-center">
+                <Eyebrow>Add savings</Eyebrow>
+              </div>
+              <StepTitle
+                title={`A gift for ${childName || "them"}.`}
+                subtitle={`The keepsake is already saved. If you'd like, lock real savings into ${childName || "their"} wallet — to open on a day you choose.`}
+              />
             </div>
 
-            {/* Context block — honest business model */}
-            <div className="rounded-2xl p-5" style={{ background: isParent ? PC.surfaceContainerLow : C.surface, border: isParent ? 'none' : `1px solid ${C.border}` }}>
-              <h3 className="text-sm font-bold mb-3" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>How the network works</h3>
-              <p className="text-xs leading-relaxed mb-3" style={{ color: mutedColor }}>
-                Creating {childName}&apos;s keepsake was free. Storing it on the blockchain is real infrastructure with real costs — and we think you should know exactly what those are.
-              </p>
+            {/* How it works */}
+            <PaperCard>
+              <h3
+                className="text-base font-semibold mb-4"
+                style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
+              >
+                How it works
+              </h3>
               <div className="space-y-2">
                 {[
                   { label: "Creating & saving", value: "Free" },
                   { label: "Network maintenance", value: "~$1 / year" },
                   { label: "Deposit fee", value: "2%" },
                 ].map(({ label, value }) => (
-                  <div key={label} className="flex justify-between text-xs" style={{ color: mutedColor }}>
+                  <div
+                    key={label}
+                    className="flex justify-between text-sm"
+                    style={{ color: "var(--tfn-ink-soft)" }}
+                  >
                     <span>{label}</span>
-                    <span className="font-bold" style={{ color: goldAccent }}>{value}</span>
+                    <span className="font-medium" style={{ color: "var(--tfn-gold)" }}>{value}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-[10px] mt-3" style={{ color: dimColor }}>Everything is on-chain and verifiable. There are no hidden fees.</p>
-            </div>
+              <p className="text-xs mt-4 italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
+                Everything on-chain and verifiable. No hidden fees.
+              </p>
+            </PaperCard>
 
-            {/* Lock period selector */}
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}` }}>
-              <label className="block text-[10px] uppercase tracking-widest mb-1" style={{ color: C.goldDim, fontFamily: ds.fonts.body }}>When can {childName} access it?</label>
-
-              <div className="space-y-2">
-                <button onClick={() => setLockChoice("now")}
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm transition-all"
-                  style={{ background: lockChoice === "now" ? C.tealGlow : 'transparent', border: `1.5px solid ${lockChoice === "now" ? C.teal : C.border}`, color: lockChoice === "now" ? C.teal : C.muted }}>
-                  <span style={{ fontFamily: ds.fonts.body }}>Gift Now</span>
-                  {lockChoice === "now" && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
-                </button>
-                <button onClick={() => setLockChoice("eighteen")}
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm transition-all relative"
-                  style={{ background: lockChoice === "eighteen" ? C.goldSoft : 'transparent', border: `1.5px solid ${lockChoice === "eighteen" ? C.gold : C.border}`, color: lockChoice === "eighteen" ? C.gold : C.muted }}>
-                  <span style={{ fontFamily: ds.fonts.body }}>Until 18th Birthday</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: C.goldSoft, color: C.goldDim, fontFamily: ds.fonts.body }}>Recommended</span>
-                    {lockChoice === "eighteen" && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
-                  </div>
-                </button>
-                <button onClick={() => setLockChoice("custom")}
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm transition-all"
-                  style={{ background: lockChoice === "custom" ? C.goldSoft : 'transparent', border: `1.5px solid ${lockChoice === "custom" ? C.gold : C.border}`, color: lockChoice === "custom" ? C.gold : C.muted }}>
-                  <span style={{ fontFamily: ds.fonts.body }}>Pick a Date</span>
-                  {lockChoice === "custom" && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
-                </button>
-              </div>
+            {/* Lock period */}
+            <PaperCard className="space-y-4">
+              <InputRow label={`When can ${childName || "they"} unlock it?`}>
+                <div className="space-y-2 mt-2">
+                  {[
+                    { id: "now" as LockChoice, label: "Gift now" },
+                    { id: "eighteen" as LockChoice, label: "Until 18th birthday", badge: "Recommended" },
+                    { id: "custom" as LockChoice, label: "Pick a date" },
+                  ].map((opt) => {
+                    const active = lockChoice === opt.id
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setLockChoice(opt.id)}
+                        className="w-full flex items-center justify-between px-5 py-3.5 rounded-[14px] text-sm transition-colors"
+                        style={{
+                          background: active ? "var(--tfn-gold-soft)" : "transparent",
+                          border: `1.5px solid ${active ? "var(--tfn-gold)" : "var(--tfn-border)"}`,
+                          color: active ? "var(--tfn-gold-hover)" : "var(--tfn-ink-soft)",
+                          fontFamily: "var(--font-body), 'Alegreya Sans', serif",
+                        }}
+                      >
+                        <span>{opt.label}</span>
+                        <span className="flex items-center gap-2">
+                          {opt.badge && (
+                            <span
+                              className="text-[9px] uppercase px-2 py-0.5 rounded-full"
+                              style={{
+                                background: "var(--tfn-gold-soft)",
+                                color: "var(--tfn-gold-hover)",
+                                letterSpacing: "0.12em",
+                              }}
+                            >
+                              {opt.badge}
+                            </span>
+                          )}
+                          {active && (
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                          )}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </InputRow>
 
               {lockChoice === "eighteen" && eighteenthDate && (
-                <p className="text-xs text-center" style={{ color: C.teal }}>Unlocks {eighteenthDate}</p>
+                <p className="text-sm italic text-center" style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}>
+                  Unlocks {eighteenthDate}
+                </p>
               )}
               {lockChoice === "custom" && (
-                <div>
-                  <input type="date" value={customLockDate} onChange={e => setCustomLockDate(e.target.value)}
+                <div className="mt-2">
+                  <UnderlineInput
+                    type="date"
+                    value={customLockDate}
+                    onChange={(e) => setCustomLockDate(e.target.value)}
                     min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
-                    className="bg-transparent border-0 border-b py-2 px-1 text-base transition-colors focus:ring-0 w-full outline-none"
-                    style={{ borderColor: 'rgba(78, 70, 54, 0.3)', color: C.text, fontFamily: ds.fonts.body }} />
+                    filled={!!customLockDate}
+                  />
                   {customLockDate && (
-                    <p className="mt-2 text-xs text-center" style={{ color: C.teal }}>
-                      Unlocks {new Date(customLockDate + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                    <p className="mt-2 text-sm text-center italic" style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}>
+                      Unlocks{" "}
+                      {new Date(customLockDate + "T00:00:00").toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </p>
                   )}
                 </div>
               )}
-            </div>
+            </PaperCard>
 
-            {/* Deposit amount — USD presets for card, SOL shown below */}
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${glass.cardBorder}` }}>
-              <label className="block text-[10px] uppercase tracking-widest mb-1" style={{ color: C.goldDim, fontFamily: ds.fonts.body }}>How much to save?</label>
-              <div className="grid grid-cols-4 gap-2 mb-3">
-                {[
-                  { usd: "$5", sol: "0.1" },
-                  { usd: "$10", sol: "0.5" },
-                  { usd: "$20", sol: "1" },
-                  { usd: "$50", sol: "5" },
-                ].map(({ usd, sol }) => (
-                  <button key={sol} onClick={() => setDepositAmount(sol)}
-                    className="px-2 py-3 rounded-xl text-sm font-medium transition-all flex flex-col items-center gap-0.5"
-                    style={{ background: depositAmount === sol ? C.goldSoft : 'transparent', border: `1.5px solid ${depositAmount === sol ? C.gold : C.border}`, color: depositAmount === sol ? C.gold : C.muted }}>
-                    <span style={{ fontFamily: ds.fonts.body }}>{usd}</span>
-                    <span className="text-[10px] font-mono opacity-60">{sol} SOL</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* Amount */}
+            <PaperCard>
+              <InputRow label="How much to save?">
+                <div className="grid grid-cols-4 gap-2 mt-3">
+                  {[
+                    { usd: "$5", sol: "0.1" },
+                    { usd: "$10", sol: "0.5" },
+                    { usd: "$20", sol: "1" },
+                    { usd: "$50", sol: "5" },
+                  ].map(({ usd, sol }) => {
+                    const active = depositAmount === sol
+                    return (
+                      <button
+                        key={sol}
+                        type="button"
+                        onClick={() => setDepositAmount(sol)}
+                        className="py-3 rounded-[14px] text-sm font-medium flex flex-col items-center transition-colors"
+                        style={{
+                          background: active ? "var(--tfn-gold-soft)" : "transparent",
+                          border: `1.5px solid ${active ? "var(--tfn-gold)" : "var(--tfn-border)"}`,
+                          color: active ? "var(--tfn-gold-hover)" : "var(--tfn-ink-soft)",
+                          fontFamily: "var(--font-body), 'Alegreya Sans', serif",
+                        }}
+                      >
+                        <span>{usd}</span>
+                        <span className="text-[10px] font-mono mt-0.5 opacity-60">{sol} SOL</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </InputRow>
+            </PaperCard>
 
-            {/* From name + message */}
-            <div className="rounded-2xl p-6 space-y-4" style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${cardBorder}` }}>
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest mb-2 font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline }}>FROM (YOUR NAME)</label>
-                <input type="text" value={depositorName} onChange={e => setDepositorName(e.target.value)} placeholder="e.g., Dad, Mom"
-                  className="bg-transparent border-b py-2 px-1 text-lg transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: depositorName ? inputBorderActive : inputBorderDefault, color: textColor, fontFamily: ds.fonts.body }} />
-              </div>
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest mb-2 font-bold" style={{ color: goldAccent, fontFamily: ds.fonts.headline }}>ADD A MESSAGE *(optional)*</label>
-                <input type="text" value={depositMessage} onChange={e => setDepositMessage(e.target.value)} placeholder="With love from Dad"
-                  className="bg-transparent border-b py-2 px-1 text-base transition-colors focus:ring-0 w-full outline-none"
-                  style={{ borderColor: depositMessage ? inputBorderActive : inputBorderDefault, color: textColor, fontFamily: ds.fonts.body }} />
-              </div>
-            </div>
+            {/* Gifter + message */}
+            <PaperCard className="space-y-6">
+              <InputRow label="From (your name)">
+                <UnderlineInput
+                  type="text"
+                  value={depositorName}
+                  onChange={(e) => setDepositorName(e.target.value)}
+                  placeholder="e.g. Dad, Mom, Grandma"
+                  filled={!!depositorName}
+                />
+              </InputRow>
+              <InputRow label="Message (optional)">
+                <UnderlineInput
+                  type="text"
+                  value={depositMessage}
+                  onChange={(e) => setDepositMessage(e.target.value)}
+                  placeholder="With love, from Dad"
+                  filled={!!depositMessage}
+                />
+              </InputRow>
+            </PaperCard>
 
-            {/* Awaiting card payment indicator */}
             {awaitingCardDeposit && (
-              <div className="rounded-2xl p-4 text-center animate-pulse" style={{ background: C.goldSoft, border: `1px solid ${C.borderGold}` }}>
-                <p className="text-sm font-medium" style={{ color: C.gold, fontFamily: ds.fonts.body }}>Complete payment in the Coinbase window...</p>
-                <p className="text-xs mt-1" style={{ color: C.muted }}>Don&apos;t close this page</p>
-              </div>
+              <PaperCard>
+                <p
+                  className="text-sm font-medium text-center"
+                  style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}
+                >
+                  Complete payment in the Coinbase window…
+                </p>
+                <p className="text-xs mt-1 text-center" style={{ color: "var(--tfn-ink-muted)" }}>
+                  Don&apos;t close this page.
+                </p>
+              </PaperCard>
             )}
 
-            {/* Primary CTA: Pay with Card */}
+            {/* Actions */}
             <div className="space-y-3">
-              <button
+              <GoldCTA
                 onClick={handleCardPayment}
                 disabled={cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
-                className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-30"
-                style={{ background: gradients.stardust, color: C.onGold, boxShadow: '0 0 30px rgba(240,196,86,0.2), 0 10px 30px rgba(240,196,86,0.2)', borderRadius: '9999px', fontFamily: ds.fonts.headline }}>
-                {cardPaymentLoading ? "Opening payment..." : awaitingCardDeposit ? "Waiting for payment..." : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" /></svg>
-                    Pay with Card
-                  </>
-                )}
-              </button>
+              >
+                {cardPaymentLoading
+                  ? "Opening payment…"
+                  : awaitingCardDeposit
+                    ? "Waiting for payment…"
+                    : (
+                      <>
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                        </svg>
+                        Pay with card
+                      </>
+                    )}
+              </GoldCTA>
 
-              {/* Secondary: Wallet deposit (for crypto-native users) */}
               {publicKey ? (
-                <button onClick={handleDeposit} disabled={!depositorName.trim() || !parseFloat(depositAmount)}
-                  className="w-full py-3 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-30"
-                  style={{ background: 'transparent', border: `1.5px solid ${C.border}`, color: C.muted }}>
-                  Deposit {depositAmount} SOL from Wallet
-                </button>
+                <GhostButton
+                  onClick={handleDeposit}
+                  disabled={!depositorName.trim() || !parseFloat(depositAmount)}
+                >
+                  Deposit {depositAmount} SOL from wallet
+                </GhostButton>
               ) : (
-                <button onClick={() => setVisible(true)}
-                  className="w-full py-3 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 transition-all"
-                  style={{ background: 'transparent', border: `1.5px solid ${C.border}`, color: C.dim }}>
+                <GhostButton onClick={() => setVisible(true)}>
                   I already have a Solana wallet
-                </button>
+                </GhostButton>
               )}
 
-              {/* Skip deposit — the mint is done, the keepsake exists; the
-                  escrow just doesn't get extra SOL on top. User can deposit
-                  later from the keepsake page. */}
               <button
+                type="button"
                 onClick={() => {
                   if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
                   else setStep("done")
                 }}
-                className="w-full px-3 py-2 rounded-xl text-xs transition-all hover:underline"
-                style={{ color: dimColor }}
+                className="w-full text-center text-xs py-2 underline transition-opacity hover:opacity-80"
+                style={{ color: "var(--tfn-ink-muted)" }}
                 aria-label="Skip deposit for now"
               >
-                Skip deposit — add later from the keepsake page
+                Skip — add savings later from the keepsake page
               </button>
             </div>
           </div>
@@ -1333,177 +1466,157 @@ export default function ToothFairyApp() {
 
         {/* ── STEP 5: Minting ── */}
         {step === "minting" && (
-          <div className="text-center py-12 space-y-6">
-            {/* Gold-to-teal shimmer progress bar */}
-            <div className="h-1.5 w-full rounded-full overflow-hidden mb-8" style={{ background: C.surfaceHighest }}>
-              <div className="h-full rounded-full animate-pulse" style={{ width: '75%', background: 'linear-gradient(90deg, #f0c456, #5adace)', boxShadow: '0 0 10px rgba(240,196,86,0.3)' }} />
-            </div>
-
-            {/* Center stage: pulsing rings + gold core (matches Stitch step 4) */}
-            <div className="relative mx-auto flex items-center justify-center" style={{ width: '200px', height: '200px' }}>
-              {/* Expansion rings — CSS animation via inline keyframes injected via style tag */}
-              <div className="absolute rounded-full border-2" style={{ width: '80px', height: '80px', borderColor: 'rgba(240,196,86,0.25)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite' }} />
-              <div className="absolute rounded-full border" style={{ width: '130px', height: '130px', borderColor: 'rgba(240,196,86,0.12)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite', animationDelay: '1s' }} />
-              <div className="absolute rounded-full border" style={{ width: '180px', height: '180px', borderColor: 'rgba(240,196,86,0.06)', animation: 'tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite', animationDelay: '2s' }} />
-              {/* Golden core circle */}
-              <div className="relative z-10 rounded-full flex items-center justify-center" style={{ width: '56px', height: '56px', background: gradients.stardust, boxShadow: '0 0 40px rgba(240,196,86,0.6)' }}>
-                <svg className="w-7 h-7" style={{ color: C.onGold }} fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          <div className="text-center py-20 space-y-8">
+            <div className="relative mx-auto flex items-center justify-center" style={{ width: 200, height: 200 }}>
+              <div
+                className="absolute rounded-full border"
+                style={{
+                  width: 88,
+                  height: 88,
+                  borderColor: "var(--tfn-gold)",
+                  opacity: 0.25,
+                  animation: "tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite",
+                }}
+              />
+              <div
+                className="absolute rounded-full border"
+                style={{
+                  width: 136,
+                  height: 136,
+                  borderColor: "var(--tfn-gold)",
+                  opacity: 0.12,
+                  animation: "tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite",
+                  animationDelay: "1s",
+                }}
+              />
+              <div
+                className="absolute rounded-full border"
+                style={{
+                  width: 184,
+                  height: 184,
+                  borderColor: "var(--tfn-gold)",
+                  opacity: 0.06,
+                  animation: "tfnPulseRing 3s cubic-bezier(0.4,0,0.6,1) infinite",
+                  animationDelay: "2s",
+                }}
+              />
+              <div
+                className="relative z-10 rounded-full flex items-center justify-center"
+                style={{
+                  width: 60,
+                  height: 60,
+                  background: "var(--tfn-gold)",
+                  boxShadow: "0 0 40px oklch(72% 0.145 75 / 0.5)",
+                }}
+              >
+                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" style={{ color: "oklch(98% 0.005 80)" }}>
+                  <path d="M12 2l2.39 7.36H22l-6.2 4.5 2.38 7.34L12 16.9l-6.18 4.3 2.38-7.34L2 9.36h7.61z" />
+                </svg>
               </div>
             </div>
 
-            {/* Keyframe injection for pulsing rings */}
-            <style>{`@keyframes tfnPulseRing { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.1; transform: scale(1.15); } }`}</style>
+            <style>{`
+              @keyframes tfnPulseRing {
+                0%, 100% { opacity: var(--o, 0.3); transform: scale(1); }
+                50% { opacity: calc(var(--o, 0.3) * 0.5); transform: scale(1.15); }
+              }
+            `}</style>
 
-            <h2 className="text-lg font-bold" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-              {isChild ? "The fairies are on it..." : `Saving ${childName}'s creation...`}
-            </h2>
-            <p className="text-sm animate-pulse" style={{ color: mutedColor, fontFamily: isChild ? ds.fonts.story : ds.fonts.body, fontStyle: isChild ? 'italic' : 'normal' }}>{mintProgress || (isChild ? "Hold tight!" : "This takes a few seconds.")}</p>
-
-            {/* Glassmorphic checklist items (matches Stitch step 4 bento style) */}
-            <div className="space-y-3 text-left max-w-[300px] mx-auto">
-              {[
-                { label: isChild ? "Found the perfect spot in the network" : "Artwork stored permanently", done: mintProgress !== "", active: mintProgress === "" },
-                { label: isChild ? "The fairies are working..." : `Creating ${childName}'s profile`, done: mintProgress.includes("Almost"), active: mintProgress !== "" && !mintProgress.includes("Almost") },
-                { label: isChild ? "Almost there!" : "Finalizing", done: false, active: mintProgress.includes("Almost") },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-xl text-sm transition-all"
-                  style={{
-                    background: item.done ? 'transparent' : item.active ? glass.card : C.bgAlt,
-                    backdropFilter: item.active ? `blur(${glass.blur})` : 'none',
-                    border: `1px solid ${item.done ? 'rgba(90,218,206,0.15)' : item.active ? 'rgba(240,196,86,0.15)' : 'transparent'}`,
-                    color: item.done ? C.teal : item.active ? C.goldLight : C.dim,
-                    fontFamily: ds.fonts.body,
-                    opacity: item.done || item.active ? 1 : 0.4,
-                  }}>
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ background: item.done ? 'rgba(90,218,206,0.15)' : item.active ? 'rgba(240,196,86,0.12)' : 'rgba(154,144,124,0.15)' }}>
-                    {item.done ? (
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                    ) : item.active ? (
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
-                    ) : (
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><circle cx="12" cy="12" r="9" /></svg>
-                    )}
-                  </div>
-                  <span>{item.label}</span>
-                </div>
-              ))}
+            <div>
+              <StepTitle
+                title={childName ? `Saving ${childName}'s keepsake…` : "Saving the keepsake…"}
+                subtitle={mintProgress || "It takes just a few seconds."}
+              />
             </div>
           </div>
         )}
 
-        {/* ── STEP 6: Done — Wallet Created ── */}
+        {/* ── STEP 6: Done ── */}
         {step === "done" && (
-          <div className="space-y-6">
-            {/* Success card — large gold glow circle with sparkles (matches Stitch step 5) */}
-            <div className="rounded-2xl p-6 text-center" style={{ background: glass.card, backdropFilter: `blur(${glass.blur})`, border: `1px solid ${C.borderGold}`, boxShadow: glow.gold }}>
-              {/* Glow + checkmark cluster */}
-              <div className="relative inline-block mb-4">
-                {/* Ambient glow behind the circle */}
-                <div className="absolute inset-0 rounded-full blur-2xl opacity-30" style={{ background: C.gold, transform: 'scale(1.4)' }} />
-                {/* Main circle */}
-                <div className="relative w-24 h-24 mx-auto rounded-full flex items-center justify-center border-4 border-white/20"
-                  style={{ background: gradients.stardust, boxShadow: '0 0 50px rgba(240,196,86,0.6)' }}>
-                  <svg className="w-12 h-12" style={{ color: C.onGold }} fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                </div>
-                {/* Sparkle decorations */}
-                <div className="absolute -top-3 -right-3" style={{ color: C.teal, fontSize: '20px' }}>✦</div>
-                <div className="absolute -bottom-2 -left-4" style={{ color: C.goldLight, fontSize: '14px' }}>★</div>
+          <div className="space-y-10">
+            <div className="space-y-5">
+              <div className="text-center">
+                <Eyebrow>Saved forever</Eyebrow>
               </div>
-              <h2 className="text-2xl font-bold" style={{ fontFamily: ds.fonts.headline, color: headlineColor }}>
-                {isChild ? "Your first digital asset." : `${childName}'s creation is live`}
-              </h2>
-              <p className="text-sm mt-1 leading-relaxed" style={{ color: mutedColor, fontFamily: isChild ? ds.fonts.story : ds.fonts.body, fontStyle: isChild ? 'italic' : 'normal' }}>
-                {isChild
-                  ? "You made it, you own it, and nobody can take it away. Not even us. It's on the Tooth Fairy Network forever."
-                  : `Permanently stored on the Tooth Fairy Network. When ${childName} is your age, this will still be here.`
-                }
-              </p>
+              <StepTitle
+                title={childName ? `${childName}'s keepsake is live.` : "The keepsake is live."}
+                subtitle={`Permanently stored on the Tooth Fairy Network. When ${childName || "they're"} your age, this will still be here.`}
+              />
             </div>
 
             {previewImage && (
               <div className="flex justify-center">
-                <img src={previewImage} alt="Tooth art" className="w-40 h-40 rounded-2xl" style={{ border: `2px solid ${C.borderGold}`, boxShadow: glow.goldStrong }} />
+                <img
+                  src={previewImage}
+                  alt="Keepsake"
+                  className="w-48 h-48 rounded-[22px] object-cover"
+                  style={{
+                    border: "1px solid var(--tfn-gold)",
+                    boxShadow: "0 24px 60px oklch(72% 0.145 75 / 0.25)",
+                  }}
+                />
               </div>
             )}
 
             {depositSuccess && (
-              <div className="rounded-2xl p-4 text-center" style={{ background: C.tealGlow, border: `1px solid ${C.borderTeal}` }}>
-                <p className="text-sm font-medium" style={{ color: C.teal }}>{depositSuccess}</p>
-                {lockChoice === "eighteen" && eighteenthDate && <p className="text-xs mt-1" style={{ color: C.muted }}>Locked until {eighteenthDate}</p>}
-                <p className="text-xs mt-1" style={{ color: C.muted }}>{feeInfo.net.toFixed(4)} SOL in wallet (2% fee: {feeInfo.fee.toFixed(4)} SOL)</p>
-              </div>
-            )}
-
-            {!depositSuccess && (
-              <p className="text-[10px] text-center uppercase tracking-widest font-bold" style={{ color: isParent ? PC.teal : C.teal, opacity: 0.5 }}>
-                {isChild ? "On the Tooth Fairy Network" : `${childName}'s creation is saved`}
-              </p>
+              <PaperCard>
+                <p
+                  className="text-sm font-medium text-center"
+                  style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}
+                >
+                  {depositSuccess}
+                </p>
+                {lockChoice === "eighteen" && eighteenthDate && (
+                  <p className="text-xs mt-1 text-center italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
+                    Locked until {eighteenthDate}
+                  </p>
+                )}
+                <p className="text-xs mt-2 text-center" style={{ color: "var(--tfn-ink-muted)" }}>
+                  {feeInfo.net.toFixed(4)} SOL in wallet (2% fee: {feeInfo.fee.toFixed(4)} SOL)
+                </p>
+              </PaperCard>
             )}
 
             {escrowInfo && (
-              <button onClick={() => {
-                const url = `${window.location.origin}/gift/${escrowInfo.milestonePda}`
-                const shareText = isChild
-                  ? `Check out what I made on the Tooth Fairy Network! 🦷✨`
-                  : `${childName} made their first digital asset on the Tooth Fairy Network! See it and add to their savings:`
-                if (navigator.share) {
-                  navigator.share({ title: `${childName}'s Tooth Fairy Network`, text: shareText, url }).catch(() => {})
-                } else {
-                  navigator.clipboard.writeText(`${shareText}\n${url}`).then(() => alert("Link copied!")).catch(() => prompt("Copy this link:", url))
-                }
-              }} className="w-full px-4 py-3 rounded-2xl text-sm font-medium transition-all active:scale-95 flex items-center justify-center gap-2"
-                style={{ background: ctaGradient, color: ctaTextColor, boxShadow: ctaShadow, borderRadius: ctaRadius, fontFamily: ds.fonts.headline, border: 'none', cursor: 'pointer' }}>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" /></svg>
-                {isChild ? "Share with grandma, grandpa, or anyone!" : "Share with family →"}
-              </button>
+              <GoldCTA
+                onClick={() => {
+                  const url = `${window.location.origin}/gift/${escrowInfo.milestonePda}`
+                  const shareText = `${childName} made their first digital keepsake on the Tooth Fairy Network. See it and add to their savings:`
+                  if (navigator.share) {
+                    navigator.share({ title: `${childName}'s Tooth Fairy Network`, text: shareText, url }).catch(() => {})
+                  } else {
+                    navigator.clipboard.writeText(`${shareText}\n${url}`).then(() => alert("Link copied!")).catch(() => prompt("Copy this link:", url))
+                  }
+                }}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+                </svg>
+                Share with family
+              </GoldCTA>
             )}
 
-            <div className="space-y-3">
-              <Link href="/dashboard"
-                className="w-full py-4 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                style={{ background: cardBg, backdropFilter: cardBlur, border: `1px solid ${cardBorder}`, color: headlineColor, borderRadius: ctaRadius, fontFamily: ds.fonts.headline }}>
-                {isChild ? "See your collection" : `View ${childName}'s page`}
-              </Link>
-            </div>
+            <GhostButton onClick={() => router.push("/dashboard")}>
+              View {childName ? `${childName}'s` : "the"} page
+            </GhostButton>
 
-            {isParent && mintSignature && (
-              <p className="text-xs text-center" style={{ color: dimColor, fontFamily: ds.fonts.body }}>
-                <a href={`https://solscan.io/tx/${mintSignature}`} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: tealAccent }}>View on blockchain →</a>
+            {mintSignature && (
+              <p className="text-xs text-center" style={{ color: "var(--tfn-ink-muted)" }}>
+                <a
+                  href={`https://solscan.io/tx/${mintSignature}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                  style={{ color: "var(--tfn-gold)" }}
+                >
+                  View on blockchain →
+                </a>
               </p>
             )}
-
-            {/* Celebration sparkles row */}
-            <div className="flex justify-center gap-6 pt-2 opacity-50">
-              <span style={{ color: C.goldLight, fontSize: '24px' }}>✦</span>
-              <span style={{ color: C.teal, fontSize: '20px' }}>★</span>
-              <span style={{ color: C.goldLight, fontSize: '18px' }}>✦</span>
-              <span style={{ color: C.teal, fontSize: '24px' }}>✧</span>
-              <span style={{ color: C.goldLight, fontSize: '16px' }}>★</span>
-            </div>
           </div>
         )}
 
-        {/* Spacer for bottom nav */}
-        <div className="h-24" />
-      </div>
-
-      {/* ── Fixed Bottom Nav ── */}
-      <nav className="sticky bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 rounded-t-[2rem]"
-        style={{ background: 'rgba(47, 51, 75, 0.6)', backdropFilter: 'blur(24px)', borderTop: `1px solid ${glass.cardBorder}`, boxShadow: '0 -20px 40px rgba(0,0,0,0.4)' }}>
-        <div className="flex flex-col items-center gap-0.5">
-          <svg className="w-5 h-5" style={{ color: C.gold }} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
-          <span className="text-[9px]" style={{ color: C.gold, fontFamily: ds.fonts.body }}>Home</span>
-        </div>
-        <Link href="/dashboard" className="flex flex-col items-center gap-0.5">
-          <svg className="w-5 h-5" style={{ color: C.dim }} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m-15 0A2.246 2.246 0 003 11.25V15a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 15v-3.75c0-.708-.327-1.34-.838-1.752m-15.324 0h15.324" /></svg>
-          <span className="text-[9px]" style={{ color: C.dim, fontFamily: ds.fonts.body }}>Gallery</span>
-        </Link>
-        <div className="flex flex-col items-center gap-0.5">
-          <svg className="w-5 h-5" style={{ color: C.dim }} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-          <span className="text-[9px]" style={{ color: C.dim, fontFamily: ds.fonts.body }}>Settings</span>
-        </div>
-      </nav>
+      </main>
     </div>
   )
 }

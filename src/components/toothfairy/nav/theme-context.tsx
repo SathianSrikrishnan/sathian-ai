@@ -60,29 +60,32 @@ export function useTheme() {
 // These maps power ThemeTransition's inline CSS custom properties.
 // Gold keys are identical across modes on purpose — they are the anchor.
 
+// Apr 2026 Impeccable unification — both palettes share the cream/brown/gold
+// system. The parent/child distinction is now UX-only (different flows in
+// /app), not a visual theme swap. Child mode picks up slightly warmer
+// backing (cream-deep surface, cream-alt alt) so the storybook feel reads
+// a touch cozier without departing from the Impeccable language.
 export const THEME_PALETTES: Record<ThemeMode, Record<string, string>> = {
   parent: {
-    "--tfn-surface": "oklch(97.5% 0.01 80)", // cream page base
+    "--tfn-surface": "oklch(97.5% 0.01 80)",    // cream
     "--tfn-surface-alt": "oklch(95% 0.015 75)", // cream deep
-    "--tfn-ink": "oklch(30% 0.035 65)", // warm brown
+    "--tfn-ink": "oklch(30% 0.035 65)",         // warm brown
     "--tfn-ink-soft": "oklch(42% 0.03 65)",
     "--tfn-ink-muted": "oklch(58% 0.025 65)",
     "--tfn-border": "oklch(88% 0.015 75)",
     "--tfn-accent-soft": "oklch(72% 0.145 75 / 0.1)",
-    // Gold is the throughline — identical in both modes
     "--tfn-gold": "oklch(72% 0.145 75)",
     "--tfn-gold-hover": "oklch(62% 0.13 72)",
     "--tfn-gold-soft": "oklch(72% 0.145 75 / 0.15)",
   },
   child: {
-    "--tfn-surface": "oklch(12% 0.04 270)", // deep indigo
-    "--tfn-surface-alt": "oklch(16% 0.045 270)",
-    "--tfn-ink": "oklch(93% 0.01 80)", // pearl
-    "--tfn-ink-soft": "oklch(82% 0.015 80)",
-    "--tfn-ink-muted": "oklch(65% 0.02 80)",
-    "--tfn-border": "oklch(30% 0.04 270)",
+    "--tfn-surface": "oklch(95% 0.015 75)",     // cream deep — cozier
+    "--tfn-surface-alt": "oklch(91% 0.02 75)",  // cream alt
+    "--tfn-ink": "oklch(30% 0.035 65)",
+    "--tfn-ink-soft": "oklch(42% 0.03 65)",
+    "--tfn-ink-muted": "oklch(58% 0.025 65)",
+    "--tfn-border": "oklch(86% 0.02 75)",
     "--tfn-accent-soft": "oklch(72% 0.145 75 / 0.15)",
-    // Gold — identical anchor
     "--tfn-gold": "oklch(72% 0.145 75)",
     "--tfn-gold-hover": "oklch(62% 0.13 72)",
     "--tfn-gold-soft": "oklch(72% 0.145 75 / 0.15)",

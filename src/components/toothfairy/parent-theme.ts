@@ -1,53 +1,69 @@
-// ─── TFN Parent (Grown-Up) Theme ──────────────────────────────────────
-// Clean, light, trustworthy — a parent talking to another parent
+// ─── TFN Parent Theme (Impeccable Aligned) ─────────────────────────────
+// Apr 2026 unification: parent theme now matches the Impeccable landing
+// palette exactly. Keys preserved so existing /app code reading PC.gold
+// / PC.goldDark / etc. keeps compiling. Values remapped to OKLCH-derived
+// hex mirrors of the cream/brown/gold system.
+
+const _cream = "#FBF7EE"       // oklch(97.5% 0.01 80)
+const _creamDeep = "#F5EFE2"   // oklch(95% 0.015 75)
+const _creamAlt = "#EFE7D4"    // oklch(91% 0.02 75)
+const _brown = "#4B3A20"       // oklch(30% 0.035 65)
+const _brownSoft = "#6B5637"   // oklch(42% 0.03 65)
+const _brownMuted = "#9A8363"  // oklch(58% 0.025 65)
+const _gold = "#D8A43C"        // oklch(72% 0.145 75)
+const _goldDark = "#B6871F"    // oklch(62% 0.13 72)
+const _goldLight = "#EFCF7C"   // oklch(82% 0.1 78)
+const _border = "#E3D9C4"      // oklch(88% 0.015 75)
 
 export const PC = {
-  // Surfaces (Stitch "Ethereal Trust" palette)
-  bg: "#f7f9ff",
-  bgAlt: "#ffffff",                      // surface-container-lowest
-  surface: "#f7f9ff",                    // surface
-  surfaceContainerLow: "#f1f4f9",        // surface-container-low
-  surfaceContainer: "#ebeef3",           // surface-container
-  surfaceHigh: "#e5e8ee",               // surface-container-high
-  surfaceHighest: "#e0e3e8",            // surface-container-highest
+  // Surfaces
+  bg: _cream,
+  bgAlt: _creamDeep,
+  surface: _cream,
+  surfaceContainerLow: _creamDeep,
+  surfaceContainer: _creamDeep,
+  surfaceHigh: _creamAlt,
+  surfaceHighest: _creamAlt,
 
-  // Text
-  text: "#181c20",                       // almost black
-  textWarm: "#1a1a2e",
-  muted: "#4e4636",                      // warm muted
-  dim: "#ADB5BD",
+  // Text — warm brown hierarchy
+  text: _brown,
+  textWarm: _brown,
+  muted: _brownSoft,
+  dim: _brownMuted,
 
-  // Accents (muted versions of the child theme)
-  gold: "#d4a843",                       // gold container — buttons, badges
-  goldDark: "#795900",                   // dark gold — text/headlines
-  goldLight: "#E8C566",
-  goldSoft: "rgba(212, 168, 67, 0.1)",
-  teal: "#006a63",                       // institutional darker teal
-  tealSoft: "rgba(0, 106, 99, 0.1)",
+  // Accents — matches landing gold exactly now
+  gold: _gold,
+  goldDark: _goldDark,
+  goldLight: _goldLight,
+  goldSoft: "rgba(216, 164, 60, 0.12)",
+  // The old parent theme had an institutional teal; Impeccable has no teal.
+  // Mapped to a soft gold so existing references still render on-palette.
+  teal: _goldDark,
+  tealSoft: "rgba(216, 164, 60, 0.15)",
 
   // Borders
-  border: "rgba(0, 0, 0, 0.08)",
-  borderGold: "rgba(212, 168, 67, 0.2)",
+  border: _border,
+  borderGold: "rgba(216, 164, 60, 0.22)",
 
-  // On-gold (text on gold buttons)
+  // On-gold text (for buttons with gold background)
   onGold: "#FFFFFF",
 
   // Error
-  error: "#DC3545",
-  errorContainer: "#FFF5F5",
+  error: "#C4523A",
+  errorContainer: "#F7E4DC",
 }
 
 export const parentGlass = {
-  card: "rgba(247, 249, 255, 0.8)",
-  cardBorder: "rgba(0, 0, 0, 0.06)",
-  blur: "12px",
+  card: "rgba(251, 247, 238, 0.82)",
+  cardBorder: _border,
+  blur: "10px",
 }
 
 export const parentGlow = {
-  gold: "0 2px 8px rgba(212, 168, 67, 0.15)",
-  ctaFloat: "0 4px 12px rgba(212, 168, 67, 0.2)",
+  gold: "0 2px 10px rgba(216, 164, 60, 0.2)",
+  ctaFloat: "0 6px 18px rgba(216, 164, 60, 0.28)",
 }
 
 export const parentGradients = {
-  stardust: "linear-gradient(135deg, #D4A843 0%, #E8C566 100%)",
+  stardust: `linear-gradient(135deg, ${_gold} 0%, ${_goldLight} 100%)`,
 }

@@ -124,13 +124,13 @@ export default function KeepsakePage() {
             className="text-xs"
             style={{
               fontFamily: 'var(--font-body)',
-              color: c.brownMuted,
+              color: 'var(--tfn-ink-muted)',
               letterSpacing: '0.05em',
             }}
           >
             Made with love on{' '}
             <Link
-              href="/toothfairy/concept-b"
+              href="/toothfairy"
               style={{ color: c.gold, textDecoration: 'none' }}
             >
               Tooth Fairy Network
@@ -198,12 +198,12 @@ function ErrorState() {
         The tooth fairy may not have visited yet, or this link may have expired.
       </p>
       <Link
-        href="/toothfairy/concept-b"
-        className="inline-block px-6 py-3 rounded-full"
+        href="/toothfairy"
+        className="inline-block px-6 py-3 rounded-full font-semibold"
         style={{
           background: c.gold,
-          color: c.cream,
-          fontWeight: 500,
+          color: 'oklch(98% 0.005 80)',
+          boxShadow: '0 6px 18px oklch(72% 0.145 75 / 0.28)',
           textDecoration: 'none',
         }}
       >

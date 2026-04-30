@@ -40,11 +40,21 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
-      // Email now fires from the mint route (after keepsake is confirmed)
-      // No email here — avoids sending a welcome before the mint succeeds
+      // Fire the welcome email (Tanda's intro + "read the three stories" CTA).
+      // Fire-and-forget — we don't want auth return blocked on Resend latency.
+      // Distinct from the post-mint keepsake email fired by /api/toothfairy/mint.
+      const email = data.session?.user?.email
+      const name = (data.session?.user?.user_metadata?.full_name as string | undefined) ?? undefined
+      if (email) {
+        fetch(`${origin}/api/toothfairy/welcome-email`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email, name }),
+        }).catch((err) => console.error("[auth.callback] welcome-email dispatch failed:", err))
+      }
       return response
     }
   }

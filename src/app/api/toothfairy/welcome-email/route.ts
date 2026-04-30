@@ -3,9 +3,13 @@
  *
  * Sends a welcome email via Resend when a user signs up.
  * Called from the auth callback (fire-and-forget).
+ *
+ * Impeccable template: cream + gold + Alegreya. Tanda speaks.
  */
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
+
+const SITE = "https://toothfairy.network"
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,43 +31,8 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: "Tooth Fairy Network <noreply@toothfairy.network>",
       to: email,
-      subject: "Welcome to the Tooth Fairy Network! ✨",
-      html: `
-        <div style="font-family: 'Nunito', -apple-system, sans-serif; max-width: 520px; margin: 0 auto; background: #0B1026; color: #F0ECFF; padding: 40px 24px; border-radius: 16px;">
-          <div style="text-align: center; margin-bottom: 24px;">
-            <span style="font-size: 48px;">🧚‍♀️</span>
-          </div>
-
-          <h1 style="color: #F0C456; text-align: center; font-size: 24px; margin-bottom: 8px;">
-            Welcome, ${firstName}!
-          </h1>
-
-          <p style="text-align: center; color: #A0AEC0; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
-            You've joined the Tooth Fairy Network — where every lost tooth becomes a permanent digital keepsake and savings account for your child.
-          </p>
-
-          <div style="background: rgba(240,196,86,0.08); border: 1px solid rgba(240,196,86,0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-            <h3 style="color: #F0C456; margin: 0 0 8px 0; font-size: 14px;">What happens next?</h3>
-            <ul style="color: #CBD5E0; font-size: 14px; line-height: 1.8; padding-left: 20px; margin: 0;">
-              <li>Your child's tooth art is permanently stored on Arweave</li>
-              <li>A digital keepsake (cNFT) was minted on Solana</li>
-              <li>Connect a wallet to start saving SOL for their future</li>
-              <li>Share the profile link — family can gift SOL too!</li>
-            </ul>
-          </div>
-
-          <div style="text-align: center;">
-            <a href="https://toothfairy.network/app"
-               style="display: inline-block; background: linear-gradient(135deg, #F0C456, #E0A830); color: #0B1026; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 15px;">
-              Visit Your Dashboard →
-            </a>
-          </div>
-
-          <p style="text-align: center; color: #4A5568; font-size: 12px; margin-top: 32px;">
-            Tooth Fairy Network — Turning milestones into permanent treasures
-          </p>
-        </div>
-      `,
+      subject: "Welcome — Tanda's expecting you",
+      html: renderWelcome({ firstName }),
     })
 
     return NextResponse.json({ success: true })
@@ -71,4 +40,73 @@ export async function POST(request: NextRequest) {
     console.error("Welcome email error:", error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+}
+
+function renderWelcome({ firstName }: { firstName: string }) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Welcome to the Tooth Fairy Network</title>
+</head>
+<body style="margin:0;padding:0;background:#F6F2E8;font-family:'Alegreya Sans',Helvetica,Arial,sans-serif;color:#3D2F22;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F6F2E8;padding:32px 16px;">
+  <tr><td align="center">
+    <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background:#FBF7EE;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(61,47,34,0.08);">
+      <tr><td style="padding:36px 36px 12px;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#B8903A;font-weight:600;">Tooth Fairy Network</p>
+      </td></tr>
+      <tr><td align="center" style="padding:16px 36px 8px;">
+        <img src="${SITE}/story-assets/characters/char-tooth-fairy.jpg" alt="Tanda" width="120" height="120" style="width:120px;height:120px;object-fit:cover;border-radius:50%;border:3px solid #C99A3A;box-shadow:0 6px 28px rgba(201,154,58,0.3);display:block;">
+      </td></tr>
+      <tr><td style="padding:24px 36px 8px;">
+        <h1 style="margin:0;font-family:'Alegreya',Georgia,serif;font-size:32px;line-height:1.15;color:#3D2F22;font-weight:700;text-align:center;">
+          Welcome, ${firstName}.
+        </h1>
+        <p style="margin:12px 0 0;font-family:'Alegreya',Georgia,serif;font-size:20px;line-height:1.35;color:#C99A3A;font-style:italic;text-align:center;">
+          Tanda is already expecting you.
+        </p>
+      </td></tr>
+      <tr><td style="padding:24px 36px 4px;">
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#5A4A3A;">
+          She's the one who has been slipping through windows for a thousand years. And tonight she's pretty excited — you just joined the network that lets her keep every tooth permanent.
+        </p>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#5A4A3A;">
+          Here's how it works. It takes about three minutes:
+        </p>
+      </td></tr>
+      <tr><td style="padding:8px 36px 24px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td style="padding:10px 0;font-size:15px;line-height:1.6;color:#5A4A3A;">
+            <span style="color:#C99A3A;font-weight:700;">1.</span>&nbsp;&nbsp;Read one of the three bedtime stories with your child.
+          </td></tr>
+          <tr><td style="padding:10px 0;font-size:15px;line-height:1.6;color:#5A4A3A;">
+            <span style="color:#C99A3A;font-weight:700;">2.</span>&nbsp;&nbsp;When they lose a tooth, take a photo of the smile and write the story of how it fell out.
+          </td></tr>
+          <tr><td style="padding:10px 0;font-size:15px;line-height:1.6;color:#5A4A3A;">
+            <span style="color:#C99A3A;font-weight:700;">3.</span>&nbsp;&nbsp;Family anywhere in the world can add a note, a gift, a few dollars. All of it — theirs when they're 18.
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td align="center" style="padding:8px 36px 36px;">
+        <a href="${SITE}/toothfairy" style="display:inline-block;background:#C99A3A;color:#FBF7EE;text-decoration:none;padding:16px 36px;border-radius:999px;font-weight:700;font-size:16px;letter-spacing:0.02em;box-shadow:0 6px 24px rgba(201,154,58,0.35);">
+          Read the three stories &rarr;
+        </a>
+        <p style="margin:20px 0 0;font-size:13px;color:#8A7560;">
+          Takes 12 minutes together. Tanda's first. Then her origin. Then the mouse in Madrid.
+        </p>
+      </td></tr>
+      <tr><td style="padding:0 36px 28px;">
+        <div style="height:1px;background:#E6DDC8;"></div>
+        <p style="margin:20px 0 0;font-size:12px;line-height:1.6;color:#8A7560;text-align:center;">
+          Tooth Fairy Network &middot; Permanent keepsakes for the children they are right now<br>
+          <a href="${SITE}" style="color:#C99A3A;text-decoration:none;">toothfairy.network</a>
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`
 }

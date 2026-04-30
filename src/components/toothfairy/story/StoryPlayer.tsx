@@ -330,6 +330,19 @@ function DramaticLayout({ scene, accentColor }: { scene: StoryScene; accentColor
 
   return (
     <div className="relative z-20 flex flex-col justify-center h-full px-6">
+      {scene.dialogue.speaker && scene.characterAvatar && (
+        <motion.div
+          className="flex items-center gap-2.5 justify-center mb-4"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: ease.out, delay: 0.1 }}
+        >
+          <SpeakerAvatar image={scene.characterAvatar.image} color={speakerColor} alt={scene.characterAvatar.alt} />
+          <p className="text-sm font-bold uppercase tracking-widest" style={{ color: speakerColor }}>
+            {scene.dialogue.speaker}
+          </p>
+        </motion.div>
+      )}
       <motion.p
         className="text-2xl sm:text-3xl leading-relaxed text-center"
         style={{
@@ -344,6 +357,17 @@ function DramaticLayout({ scene, accentColor }: { scene: StoryScene; accentColor
       >
         {scene.dialogue.text}
       </motion.p>
+      {scene.dialogue.subtext && (
+        <motion.p
+          className="mt-4 text-base leading-relaxed text-center"
+          style={{ color: c.textSoft, fontStyle: 'italic' }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: ease.out }}
+        >
+          {scene.dialogue.subtext}
+        </motion.p>
+      )}
 
       {(scene.secondDialogue || scene.thirdDialogue) && (
         <div className="mt-8 flex flex-col gap-4">
@@ -446,6 +470,26 @@ function VictoryLayout({ scene, accentColor }: { scene: StoryScene; accentColor:
   )
 }
 
+/** Small circular portrait shown beside a speaker name. */
+function SpeakerAvatar({ image, color, alt }: { image: string; color: string; alt?: string }) {
+  return (
+    <motion.div
+      className="rounded-full overflow-hidden flex-shrink-0"
+      style={{
+        width: 36,
+        height: 36,
+        border: `2px solid ${color}`,
+        boxShadow: `0 0 18px ${color}66, 0 2px 10px rgba(0,0,0,0.4)`,
+      }}
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ ...ease.springBouncy, delay: 0.15 }}
+    >
+      <img src={image} alt={alt || ''} className="w-full h-full object-cover" />
+    </motion.div>
+  )
+}
+
 function NarrativeLayout({ scene, accentColor, typewriterDone, onTypewriterDone }: {
   scene: StoryScene; accentColor: string; typewriterDone: boolean; onTypewriterDone: () => void
 }) {
@@ -459,19 +503,30 @@ function NarrativeLayout({ scene, accentColor, typewriterDone, onTypewriterDone 
         transition={{ duration: 0.7, ease: ease.out, delay: 0.3 }}
       >
         {scene.dialogue.speaker && (
-          <motion.p
-            className="text-lg font-bold mb-2"
-            style={{
-              color: speakerColor,
-              fontFamily: "var(--font-display, 'Alegreya'), serif",
-              textShadow: `0 0 20px ${speakerColor}4d`,
-            }}
+          <motion.div
+            className="flex items-center gap-2.5 mb-2"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2, ease: ease.out }}
           >
-            {scene.dialogue.speaker}
-          </motion.p>
+            {scene.characterAvatar && (
+              <SpeakerAvatar
+                image={scene.characterAvatar.image}
+                color={speakerColor}
+                alt={scene.characterAvatar.alt}
+              />
+            )}
+            <p
+              className="text-lg font-bold"
+              style={{
+                color: speakerColor,
+                fontFamily: "var(--font-display, 'Alegreya'), serif",
+                textShadow: `0 0 20px ${speakerColor}4d`,
+              }}
+            >
+              {scene.dialogue.speaker}
+            </p>
+          </motion.div>
         )}
         <p
           className="text-xl sm:text-2xl leading-relaxed whitespace-pre-line"
@@ -535,6 +590,161 @@ function ProseLayout({ scene, accentColor }: { scene: StoryScene; accentColor: s
         >
           {scene.dialogue.text}
         </p>
+      </motion.div>
+    </div>
+  )
+}
+
+/** Interactive layout — asks the reader a question, captures answer to localStorage,
+ *  then advances the story. Used for Tanda Scene 8 "The Question". */
+function InteractiveLayout({
+  scene, accentColor, storyId, onAdvance,
+}: {
+  scene: StoryScene
+  accentColor: string
+  storyId: string
+  onAdvance: () => void
+}) {
+  const [answer, setAnswer] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const speakerColor = scene.dialogue.speakerColor || accentColor
+  const ix = scene.interactive
+  if (!ix) return null
+
+  const handleSubmit = () => {
+    const trimmed = answer.trim()
+    try {
+      if (trimmed.length > 0) {
+        localStorage.setItem(ix.storageKey, trimmed)
+      }
+      if (ix.contextKey) {
+        localStorage.setItem(
+          ix.contextKey,
+          JSON.stringify({
+            traditionSlug: storyId,
+            storyId,
+            sceneId: scene.id,
+            sourcedFromStory: true,
+          })
+        )
+      }
+    } catch {
+      // localStorage unavailable — continue anyway
+    }
+    setSubmitted(true)
+    // short pause for the "saved" beat, then advance
+    setTimeout(onAdvance, 900)
+  }
+
+  const handleSkip = () => {
+    setSubmitted(true)
+    setTimeout(onAdvance, 200)
+  }
+
+  return (
+    <div className="relative z-20 flex flex-col justify-between h-full px-5 pt-20 pb-8">
+      {/* Top: Tanda avatar + speaker */}
+      <motion.div
+        className="flex flex-col items-center gap-3"
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: ease.out }}
+      >
+        {scene.characterAvatar && (
+          <div style={{ transform: 'scale(1.4)' }}>
+            <SpeakerAvatar image={scene.characterAvatar.image} color={speakerColor} alt={scene.characterAvatar.alt} />
+          </div>
+        )}
+        {scene.dialogue.speaker && (
+          <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: speakerColor }}>
+            {scene.dialogue.speaker}
+          </p>
+        )}
+      </motion.div>
+
+      {/* Middle: Tanda's question */}
+      <motion.div
+        className="text-center px-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15, ease: ease.out }}
+      >
+        <p
+          className="text-xl sm:text-2xl leading-snug mb-3"
+          style={{
+            color: c.text,
+            fontFamily: "var(--font-display, 'Alegreya'), serif",
+            fontStyle: 'italic',
+          }}
+        >
+          {scene.dialogue.text}
+        </p>
+        {scene.dialogue.subtext && (
+          <p className="text-[15px] leading-relaxed" style={{ color: c.textSoft }}>
+            {scene.dialogue.subtext}
+          </p>
+        )}
+      </motion.div>
+
+      {/* Bottom: input + CTAs */}
+      <motion.div
+        className="w-full flex flex-col gap-3"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4, ease: ease.out }}
+      >
+        <label className="text-xs uppercase tracking-widest" style={{ color: `${c.textSoft}` }}>
+          {ix.prompt}
+        </label>
+        <textarea
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          placeholder={ix.placeholder}
+          rows={3}
+          disabled={submitted}
+          className="w-full rounded-2xl px-4 py-3 text-base resize-none outline-none"
+          style={{
+            background: c.pill,
+            border: `1.5px solid ${submitted ? speakerColor : c.pillBorder}`,
+            color: c.text,
+            fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+            boxShadow: submitted ? `0 0 0 3px ${speakerColor}22` : 'none',
+            transition: 'border-color 0.3s, box-shadow 0.3s',
+          }}
+          maxLength={500}
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={handleSubmit}
+            disabled={submitted}
+            className="flex-1 rounded-full py-3.5 text-base font-bold"
+            style={{
+              background: speakerColor,
+              color: c.nightDeep,
+              boxShadow: `0 4px 22px ${speakerColor}55`,
+              opacity: submitted ? 0.6 : 1,
+              cursor: submitted ? 'default' : 'pointer',
+              fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+            }}
+          >
+            {submitted ? 'Saved — Tanda has it' : ix.ctaLabel}
+          </button>
+          {!submitted && ix.skipLabel && (
+            <button
+              onClick={handleSkip}
+              className="rounded-full px-5 py-3.5 text-sm font-medium"
+              style={{
+                background: 'transparent',
+                color: c.textSoft,
+                border: `1px solid ${c.pillBorder}`,
+                fontFamily: "var(--font-body, 'Alegreya Sans'), sans-serif",
+              }}
+            >
+              {ix.skipLabel}
+            </button>
+          )}
+        </div>
       </motion.div>
     </div>
   )
@@ -664,12 +874,21 @@ export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
   const goNext = useCallback(() => {
     if (needsTypewriter && !typewriterDone) return
     if (layout === 'cta') return
+    if (layout === 'interactive') return // interactive scene advances via its own buttons
     if (current < story.scenes.length - 1) {
       setDirection(1)
       setCurrent(c => c + 1)
       setTypewriterDone(false)
     }
   }, [current, story.scenes.length, typewriterDone, needsTypewriter, layout])
+
+  const advanceFromInteractive = useCallback(() => {
+    if (current < story.scenes.length - 1) {
+      setDirection(1)
+      setCurrent(c => c + 1)
+      setTypewriterDone(false)
+    }
+  }, [current, story.scenes.length])
 
   const goPrev = useCallback(() => {
     if (current > 0) {
@@ -724,6 +943,8 @@ export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
         return <ProseLayout scene={scene} accentColor={accentColor} />
       case 'cta':
         return <CtaLayout scene={scene} accentColor={accentColor} nextStory={nextStory} story={story} />
+      case 'interactive':
+        return <InteractiveLayout scene={scene} accentColor={accentColor} storyId={story.id} onAdvance={advanceFromInteractive} />
       default:
         return (
           <NarrativeLayout
@@ -837,8 +1058,8 @@ export default function StoryPlayer({ story, nextStory }: StoryPlayerProps) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Tap zones */}
-      {layout !== 'cta' && (
+      {/* Tap zones — suppressed on CTA + interactive scenes (they have their own controls) */}
+      {layout !== 'cta' && layout !== 'interactive' && (
         <div className="absolute inset-0 z-[35] flex">
           <div className="w-1/3 h-full" onClick={goPrev} />
           <div className="w-2/3 h-full" onClick={goNext} />

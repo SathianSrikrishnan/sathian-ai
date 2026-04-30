@@ -9,6 +9,7 @@ import {
   type ComingSoonTradition,
   type WallCard,
 } from '@/data/wall-cards'
+import { getStoryById } from '@/data/stories'
 import { C, ds } from '@/components/toothfairy/tokens'
 
 interface Props {
@@ -44,8 +45,15 @@ export default async function ComingSoonStoryPage({ params }: Props) {
     notFound()
   }
 
-  // Active full story → redirect to /toothfairy/story/[id]
-  if (found.type === 'wall-card' && found.data.linkedFullStory) {
+  // Active full story → redirect to /toothfairy/story/[id], BUT only when
+  // the target story is actually registered in ALL_STORIES. Otherwise the
+  // wall-card's `linkedFullStory` points at a slug that 404s, so we fall
+  // through and render the mini-story coming-soon view instead.
+  if (
+    found.type === 'wall-card' &&
+    found.data.linkedFullStory &&
+    getStoryById(found.data.linkedFullStory)
+  ) {
     redirect(`/toothfairy/story/${found.data.linkedFullStory}`)
   }
 
