@@ -19,7 +19,7 @@ export interface ShareButtonsProps {
   childName: string;
 }
 
-// Simple inline SVGs — no new icon dep pulled in.
+// Simple inline SVGs so this share surface stays dependency-light.
 function CopyIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -88,7 +88,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     );
   }, []);
 
-  const shareText = `${childName}'s tooth — a little moment preserved forever`;
+  const shareText = `${childName}'s tooth fairy keepsake and Smile Fund`;
   const shareBody = `${shareText} ${keepsakeUrl}`;
 
   const handleCopy = async () => {
@@ -110,14 +110,14 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch {
-        // give up — user can long-press to copy
+        // give up; user can long-press to copy
       }
       document.body.removeChild(input);
     }
   };
 
   // On touch devices with Web Share API, prefer the native sheet for everything
-  // except copy-link (which we keep explicit because it's the highest-trust path).
+  // except copy-link, which we keep explicit because it is the highest-trust path.
   const tryNativeShare = async (): Promise<boolean> => {
     if (!canNativeShare) return false;
     try {
@@ -128,7 +128,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       });
       return true;
     } catch {
-      // User cancelled or share failed — fall through to per-platform URL.
+      // User cancelled or share failed; fall through to per-platform URL.
       return false;
     }
   };
@@ -147,7 +147,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         url = `https://wa.me/?text=${encodeURIComponent(shareBody)}`;
         break;
       case 'sms':
-        // iOS uses `&body=`, Android uses `?body=` — using `?body=` with no
+        // iOS uses `&body=`, Android uses `?body=`. Using `?body=` with no
         // number works on both. `sms:` is a link navigation, not a popup.
         window.location.href = `sms:?body=${encodeURIComponent(shareBody)}`;
         return;
@@ -192,7 +192,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
 
   return (
     <div className="w-full flex flex-col items-stretch gap-3">
-      {/* Copy Link — primary, always full-width on mobile */}
+      {/* Copy link: primary, always full-width on mobile */}
       <button
         type="button"
         onClick={handleCopy}
@@ -220,7 +220,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
           <CopyIcon />
-          {copied ? 'Copied!' : 'Copy Link'}
+          {copied ? 'Copied!' : 'Copy family link'}
         </span>
       </button>
 

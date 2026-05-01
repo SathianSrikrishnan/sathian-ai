@@ -34,6 +34,18 @@ interface SupabaseChild {
   is_server_guardian: boolean
 }
 
+const page = {
+  cream: "oklch(97.5% 0.01 80)",
+  creamDeep: "oklch(95% 0.015 75)",
+  paper: "oklch(100% 0 0 / 0.62)",
+  ink: "oklch(30% 0.035 65)",
+  inkSoft: "oklch(42% 0.03 65)",
+  muted: "oklch(58% 0.025 65)",
+  gold: "oklch(72% 0.145 75)",
+  purple: "#6d45a8",
+  border: "oklch(88% 0.015 75)",
+}
+
 export default function WalletDashboard() {
   const { publicKey, signTransaction, signAllTransactions } = useWallet()
   const { connection } = useConnection()
@@ -139,18 +151,61 @@ export default function WalletDashboard() {
   const claimedDeposits = allDepositsList.filter(d => d.claimed)
 
   return (
-    <div className="max-w-lg mx-auto px-6 py-8">
-      {/* Header */}
-      <header className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Tooth Fairy Network</h1>
-          <p className="text-xs" style={{ color: C.muted }}>Your child&apos;s digital wallet</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/" className="px-3 py-1.5 rounded-lg text-xs hover:bg-white/10" style={{ border: `1px solid ${C.border}`, color: C.muted }}>
-            + New Tooth
-          </Link>
-          <WalletButton />
+    <main
+      className="min-h-screen px-4 py-8 md:py-12"
+      style={{
+        background: `linear-gradient(180deg, ${page.creamDeep}, ${page.cream})`,
+        color: page.ink,
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+      }}
+    >
+      <div className="mx-auto w-full max-w-5xl">
+      <header
+        className="mb-8 overflow-hidden rounded-3xl px-6 py-7 md:px-8"
+        style={{
+          background:
+            "radial-gradient(circle at 86% 12%, oklch(72% 0.145 75 / 0.18), transparent 16rem), oklch(100% 0 0 / 0.62)",
+          border: `1px solid ${page.border}`,
+          boxShadow: "0 24px 70px oklch(30% 0.035 65 / 0.08)",
+        }}
+      >
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p
+              className="text-xs uppercase"
+              style={{ color: page.gold, letterSpacing: "0.18em", fontWeight: 800 }}
+            >
+              Parent control room
+            </p>
+            <h1
+              className="mt-3 text-4xl leading-tight md:text-5xl"
+              style={{
+                color: page.ink,
+                fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                fontWeight: 700,
+              }}
+            >
+              Smile Fund dashboard
+            </h1>
+            <p className="mt-3 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
+              Track tooth memories, family gifts, and the savings balance that
+              becomes your child&apos;s first digital-money lesson.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+            <Link
+              href="/toothfairy/app"
+              className="rounded-full px-5 py-3 text-center text-sm font-bold"
+              style={{
+                background: page.gold,
+                color: "white",
+                boxShadow: "0 10px 26px oklch(72% 0.145 75 / 0.22)",
+              }}
+            >
+              Record a tooth
+            </Link>
+            <WalletButton />
+          </div>
         </div>
       </header>
 
@@ -187,7 +242,7 @@ export default function WalletDashboard() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold" style={{ color: C.text }}>{child.child_name}</p>
                     <p className="text-xs" style={{ color: C.muted }}>
-                      {child.is_server_guardian ? "Tap to claim with wallet" : "View profile →"}
+                      {child.is_server_guardian ? "Tap to claim with wallet" : "View profile"}
                     </p>
                   </div>
                   {child.is_server_guardian && (
@@ -204,14 +259,81 @@ export default function WalletDashboard() {
 
       {/* No wallet connected and no Supabase children */}
       {!publicKey && supabaseChildren.length === 0 && (
-        <div className="text-center py-20 space-y-4">
-          <div className="w-14 h-14 mx-auto rounded-full" style={{ background: "linear-gradient(135deg, #f43f5e, #F0C456)" }} />
-          <h2 className="text-xl font-medium">Connect to view your child&apos;s wallet</h2>
-          <p className="text-sm" style={{ color: C.muted }}>See their milestones and savings.</p>
-          <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: C.rose }}>
-            Connect Wallet
-          </button>
-        </div>
+        <section className="grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
+          <div
+            className="rounded-3xl p-6 md:p-8"
+            style={{ background: page.paper, border: `1px solid ${page.border}` }}
+          >
+            <p
+              className="text-xs uppercase"
+              style={{ color: page.muted, letterSpacing: "0.14em", fontWeight: 800 }}
+            >
+              What parents see
+            </p>
+            <h2
+              className="mt-3 text-3xl leading-tight"
+              style={{
+                color: page.ink,
+                fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                fontWeight: 700,
+              }}
+            >
+              One place for the keepsake, the family link, and the balance.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed" style={{ color: page.inkSoft }}>
+              Connect the guardian wallet to load live child profiles from the
+              smart contract. In the customer demo, this is the page a parent
+              returns to after sharing the gift link.
+            </p>
+            <button
+              onClick={() => setVisible(true)}
+              className="mt-6 rounded-full px-6 py-3 text-sm font-bold text-white"
+              style={{ background: page.purple }}
+            >
+              Connect guardian wallet
+            </button>
+          </div>
+
+          <div
+            className="rounded-3xl p-5"
+            style={{
+              background: "linear-gradient(145deg, oklch(100% 0 0 / 0.68), oklch(96% 0.018 75 / 0.72))",
+              border: `1px solid ${page.border}`,
+            }}
+          >
+            <div className="rounded-2xl p-5" style={{ background: page.cream }}>
+              <p className="text-sm font-bold" style={{ color: page.ink }}>Little Smile Fund</p>
+              <p className="mt-1 text-xs" style={{ color: page.muted }}>Preview balance</p>
+              <div className="mt-5 text-4xl font-black" style={{ color: page.ink }}>
+                12.45 <span className="text-lg font-semibold" style={{ color: page.muted }}>SOL</span>
+              </div>
+              <div className="mt-5 flex h-24 items-end gap-2">
+                {[28, 42, 35, 54, 62, 58, 73, 88].map((height, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 rounded-t-full"
+                    style={{
+                      height: `${height}%`,
+                      background: `linear-gradient(180deg, ${page.gold}, oklch(86% 0.08 78))`,
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="mt-5 grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["5", "memories"],
+                  ["23", "gifts"],
+                  ["age 10", "default"],
+                ].map(([value, label]) => (
+                  <div key={label} className="rounded-xl py-3" style={{ background: "oklch(100% 0 0 / 0.58)" }}>
+                    <p className="text-sm font-bold">{value}</p>
+                    <p className="text-[11px]" style={{ color: page.muted }}>{label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       {publicKey && loading && (
@@ -222,12 +344,12 @@ export default function WalletDashboard() {
 
       {/* Empty state */}
       {publicKey && !loading && profiles.length === 0 && (
-        <div className="text-center py-16 space-y-4">
-          <div className="text-4xl">🦷</div>
-          <h2 className="text-xl font-medium">No wallets yet</h2>
-          <p className="text-sm" style={{ color: C.muted }}>Create your child&apos;s first digital wallet by recording a tooth.</p>
-          <Link href="/" className="inline-block px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: C.rose }}>
-            Create Wallet
+        <div className="rounded-3xl px-6 py-16 text-center" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold" style={{ background: "oklch(72% 0.145 75 / 0.14)", color: page.gold }}>TFN</div>
+          <h2 className="text-2xl font-bold">No Smile Fund yet</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Mint the first tooth memory to create the keepsake, the family gift link, and the parent dashboard.</p>
+          <Link href="/toothfairy/app" className="mt-5 inline-block px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
+            Mint first memory
           </Link>
         </div>
       )}
@@ -260,8 +382,8 @@ export default function WalletDashboard() {
           <div className="rounded-2xl p-6 space-y-5" style={{ background: "linear-gradient(135deg, rgba(240,196,86,0.1) 0%, rgba(16,185,129,0.05) 100%)", border: `1px solid rgba(240,196,86,0.2)` }}>
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold">{activeProfile.childName}&apos;s Wallet</h2>
-                <p className="text-xs mt-0.5" style={{ color: C.dim }}>Tooth Fairy Digital Wallet</p>
+                <h2 className="text-xl font-bold">{activeProfile.childName}&apos;s Smile Fund</h2>
+                <p className="text-xs mt-0.5" style={{ color: C.dim }}>Tooth memories and family savings</p>
               </div>
               <div className="w-9 h-9 rounded-full" style={{ background: "linear-gradient(135deg, #f43f5e, #F0C456)" }} />
             </div>
@@ -272,7 +394,7 @@ export default function WalletDashboard() {
                 {totalEscrowed.toFixed(4)} <span className="text-lg font-normal">SOL</span>
               </div>
               <p className="text-sm mt-1 font-mono" style={{ color: C.muted }}>
-                ≈ ${(totalEscrowed * solPrice).toFixed(2)} USD
+                ~ ${(totalEscrowed * solPrice).toFixed(2)} USD
               </p>
               <p className="text-xs mt-1" style={{ color: C.dim }}>
                 Total savings held on-chain
@@ -309,7 +431,9 @@ export default function WalletDashboard() {
                   <div key={d.pda} className="flex items-center justify-between py-2">
                     <div>
                       <span className="text-sm font-medium">{d.depositorName}</span>
-                      <div className="text-xs font-mono" style={{ color: C.muted }}>{d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</span></div>
+                      <div className="text-xs font-mono" style={{ color: C.muted }}>
+                        {d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>~ ${(d.amountSol * solPrice).toFixed(2)}</span>
+                      </div>
                     </div>
                     <button
                       onClick={() => milestone && handleClaim(milestone.pda, d.pda)}
@@ -342,12 +466,12 @@ export default function WalletDashboard() {
                   </div>
                   <div className="text-right">
                     <span className="font-mono">{d.amountSol.toFixed(4)} SOL</span>
-                    <div className="text-xs font-mono" style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</div>
+                    <div className="text-xs font-mono" style={{ color: C.dim }}>~ ${(d.amountSol * solPrice).toFixed(2)}</div>
                   </div>
                 </div>
               ))}
               <p className="text-xs pt-2" style={{ color: C.dim }}>
-                Held securely on-chain. Cannot be withdrawn until the unlock date. Early withdrawal available with 10% penalty.
+                Held securely on-chain until the unlock date. Early withdrawal terms should be reviewed before launch.
               </p>
             </div>
           )}
@@ -364,7 +488,7 @@ export default function WalletDashboard() {
                 const total = deps.reduce((s, d) => s + (d.claimed ? 0 : d.amountSol), 0)
                 return (
                   <div key={m.pda} className="rounded-xl p-3 text-center" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
-                    <div className="text-lg">🦷</div>
+                    <div className="text-lg">T</div>
                     <div className="text-xs font-medium mt-1">#{m.milestoneIndex + 1}</div>
                     {total > 0 && <div className="text-xs font-mono mt-0.5" style={{ color: "#F0C456" }}>{total.toFixed(2)}</div>}
                   </div>
@@ -373,8 +497,8 @@ export default function WalletDashboard() {
               {/* Empty slots */}
               {Array.from({ length: Math.max(0, 4 - milestones.length) }).map((_, i) => (
                 <div key={`empty-${i}`} className="rounded-xl p-3 text-center opacity-20" style={{ background: C.surface, border: `1px dashed ${C.border}` }}>
-                  <div className="text-lg">🦷</div>
-                  <div className="text-xs mt-1">—</div>
+                  <div className="text-lg">T</div>
+                  <div className="text-xs mt-1">-</div>
                 </div>
               ))}
             </div>
@@ -386,7 +510,7 @@ export default function WalletDashboard() {
               <h3 className="text-sm font-medium" style={{ color: C.muted }}>History</h3>
               {claimedDeposits.map(d => (
                 <div key={d.pda} className="flex justify-between text-xs py-1.5" style={{ color: C.dim }}>
-                  <span>{d.depositorName} — released {d.claimedAt ? new Date(d.claimedAt * 1000).toLocaleDateString() : ""}</span>
+                  <span>{d.depositorName} - released {d.claimedAt ? new Date(d.claimedAt * 1000).toLocaleDateString() : ""}</span>
                   <span className="font-mono">{d.amountSol.toFixed(4)} SOL</span>
                 </div>
               ))}
@@ -399,17 +523,17 @@ export default function WalletDashboard() {
               onClick={() => {
                 // Use the first milestone's gift link for sharing
                 const milestonePda = milestones.length > 0 ? milestones[0].pda : activeProfile.pda
-                const url = `${window.location.origin}/gift/${milestonePda}`
+                const url = `${window.location.origin}/toothfairy/app/gift/${milestonePda}`
                 navigator.clipboard.writeText(url)
-                  .then(() => alert("Family link copied! Anyone with this link can view the wallet and add SOL."))
+                  .then(() => alert("Family link copied! Anyone with this link can view the keepsake and add to the Smile Fund."))
                   .catch(() => prompt("Copy this link:", url))
               }}
               className="w-full px-4 py-3 rounded-xl text-sm font-medium"
               style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.muted }}
             >
-              Share {activeProfile.childName}&apos;s wallet with family
+              Share {activeProfile.childName}&apos;s Smile Fund with family
             </button>
-            <Link href="/"
+            <Link href="/toothfairy/app"
               className="block w-full px-4 py-3 rounded-xl text-sm font-medium text-white text-center"
               style={{ background: C.rose }}>
               Record Another Tooth
@@ -428,9 +552,10 @@ export default function WalletDashboard() {
         </div>
       )}
 
-      <footer className="mt-12 pt-4 border-t text-center" style={{ borderColor: C.border }}>
+      <footer className="mt-12 pt-4 border-t text-center" style={{ borderColor: page.border }}>
         <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network &middot; Your child&apos;s first digital wallet</p>
       </footer>
     </div>
+    </main>
   )
 }

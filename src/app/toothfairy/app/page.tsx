@@ -9,7 +9,7 @@ import {
   deposit as escrowDeposit,
   fetchDepositsForMilestone,
   calculateFee,
-  calculateEighteenthBirthday,
+  calculateUnlockBirthday,
   type DepositData,
 } from "@/lib/toothfairy/escrow"
 import { PublicKey } from "@solana/web3.js"
@@ -32,7 +32,7 @@ import { useRouter } from "next/navigation"
 // or not SOL is added.
 
 type Step = "setup" | "create" | "tell" | "preview" | "deposit" | "minting" | "done"
-type LockChoice = "now" | "eighteen" | "custom"
+type LockChoice = "now" | "ageTen" | "custom"
 
 // Flow-level localStorage keys — cleared on successful mint.
 const TELL_TEXT_KEY = "tfn-tell-text"
@@ -149,6 +149,64 @@ function PaperCard({
     >
       {children}
     </div>
+  )
+}
+
+function ProductPromiseCard() {
+  const items = [
+    {
+      title: "Create the keepsake",
+      body: "Save the photo, drawing, and little story while the moment is still fresh.",
+    },
+    {
+      title: "Share with family",
+      body: "Send one simple link so grandparents and loved ones can add a gift or note.",
+    },
+    {
+      title: "Start the Smile Fund",
+      body: "A parent-controlled account helps the child see how small things can grow by age 10.",
+    },
+  ]
+
+  return (
+    <PaperCard className="grid gap-3 md:grid-cols-3" padded={false}>
+      {items.map((item, index) => (
+        <div
+          key={item.title}
+          className="p-4 md:p-5"
+          style={{
+            borderLeft: index > 0 ? "1px solid var(--tfn-border)" : "none",
+          }}
+        >
+          <p
+            className="mb-2 text-[10px] font-bold uppercase"
+            style={{
+              color: "var(--tfn-gold)",
+              letterSpacing: "0.14em",
+              fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+            }}
+          >
+            0{index + 1}
+          </p>
+          <h3
+            className="text-lg leading-tight"
+            style={{
+              color: "var(--tfn-ink)",
+              fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+              fontWeight: 700,
+            }}
+          >
+            {item.title}
+          </h3>
+          <p
+            className="mt-2 text-sm leading-relaxed"
+            style={{ color: "var(--tfn-ink-soft)" }}
+          >
+            {item.body}
+          </p>
+        </div>
+      ))}
+    </PaperCard>
   )
 }
 
@@ -282,9 +340,9 @@ export default function ToothFairyApp() {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
   // Deposit state
-  const [lockChoice, setLockChoice] = useState<LockChoice>("eighteen")
+  const [lockChoice, setLockChoice] = useState<LockChoice>("ageTen")
   const [customLockDate, setCustomLockDate] = useState("")
-  const [depositAmount, setDepositAmount] = useState("1")
+  const [depositAmount, setDepositAmount] = useState("0.1")
   const [childPhoto, setChildPhoto] = useState<string | null>(null)
   const childPhotoRef = useRef<HTMLInputElement>(null)
   const [depositorName, setDepositorName] = useState("")
@@ -355,15 +413,15 @@ export default function ToothFairyApp() {
   }, [publicKey, signTransaction, signAllTransactions, connection])
 
   // Computed
-  const eighteenthBirthday = useMemo(() => {
+  const suggestedUnlockBirthday = useMemo(() => {
     if (!childDob) return null
-    return calculateEighteenthBirthday(new Date(childDob + "T00:00:00"))
+    return calculateUnlockBirthday(new Date(childDob + "T00:00:00"), 10)
   }, [childDob])
 
-  const eighteenthDate = useMemo(() => {
-    if (!eighteenthBirthday) return ""
-    return new Date(eighteenthBirthday * 1000).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
-  }, [eighteenthBirthday])
+  const suggestedUnlockDate = useMemo(() => {
+    if (!suggestedUnlockBirthday) return ""
+    return new Date(suggestedUnlockBirthday * 1000).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+  }, [suggestedUnlockBirthday])
 
   const feeInfo = useMemo(() => calculateFee(parseFloat(depositAmount) || 0), [depositAmount])
 
@@ -579,7 +637,7 @@ export default function ToothFairyApp() {
       const program = getEscrowProgram(anchorProvider)
       const lockPeriod = lockChoice === "now" ? "immediate" as const : "untilTimestamp" as const
       let lockTimestamp: number | undefined
-      if (lockChoice === "eighteen" && eighteenthBirthday) lockTimestamp = eighteenthBirthday
+      if (lockChoice === "ageTen" && suggestedUnlockBirthday) lockTimestamp = suggestedUnlockBirthday
       if (lockChoice === "custom" && customLockDate) lockTimestamp = Math.floor(new Date(customLockDate + "T00:00:00").getTime() / 1000)
       await escrowDeposit(program, publicKey, new PublicKey(escrowInfo.childProfilePda), new PublicKey(escrowInfo.milestonePda), parseFloat(depositAmount), lockPeriod, depositorName.trim(), lockTimestamp)
       setDepositSuccess(`${depositAmount} SOL deposited for ${childName}!`)
@@ -601,7 +659,7 @@ export default function ToothFairyApp() {
     setError(null); setCardPaymentLoading(true)
 
     try {
-      const usdPresets: Record<string, number> = { "0.1": 5, "0.5": 10, "1": 20, "5": 50 }
+      const usdPresets: Record<string, number> = { "0.05": 5, "0.1": 10, "0.25": 25, "0.5": 50 }
       const amountUsd = usdPresets[depositAmount] || Math.max(5, Math.round(parseFloat(depositAmount) * 150))
 
       const res = await fetch("/api/toothfairy/onramp", {
@@ -762,7 +820,7 @@ export default function ToothFairyApp() {
           <div className="flex items-center gap-3">
             {publicKey && (
               <Link
-                href="/dashboard"
+                href="/toothfairy/app/dashboard"
                 className="text-sm transition-opacity hover:opacity-80 hidden sm:inline"
                 style={{
                   color: "var(--tfn-ink-soft)",
@@ -809,10 +867,12 @@ export default function ToothFairyApp() {
                 <Eyebrow>Begin</Eyebrow>
               </div>
               <StepTitle
-                title="A tooth has fallen."
-                subtitle="Before the fairies come, there's a small story to tell."
+                title="Start their first tooth memory."
+                subtitle="In a few minutes you can turn one lost tooth into a keepsake, a family gift link, and a small age-10 money lesson."
               />
             </div>
+
+            <ProductPromiseCard />
 
             {/* Child photo */}
             <div className="flex flex-col items-center gap-3">
@@ -881,12 +941,12 @@ export default function ToothFairyApp() {
                   onChange={(e) => setChildDob(e.target.value)}
                   filled={!!childDob}
                 />
-                {childDob && eighteenthDate && (
+                {childDob && suggestedUnlockDate && (
                   <p
                     className="mt-3 text-sm italic"
                     style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), 'Alegreya', serif" }}
                   >
-                    Turns 18 on {eighteenthDate}.
+                    Suggested unlock age 10: {suggestedUnlockDate}.
                   </p>
                 )}
               </InputRow>
@@ -906,7 +966,7 @@ export default function ToothFairyApp() {
               onClick={() => setStep("create")}
               disabled={!childName.trim() || !childDob}
             >
-              Continue
+              Begin the memory
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
@@ -922,8 +982,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>The portrait</Eyebrow>
               </div>
               <StepTitle
-                title="Draw the tooth."
-                subtitle="Use the camera, the canvas, the colors — whatever feels right. Take your time."
+                title="Make the memory."
+                subtitle="Add the tooth photo, drawing, and note. This becomes the keepsake your family can receive."
               />
             </div>
 
@@ -993,7 +1053,7 @@ export default function ToothFairyApp() {
                 <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value.slice(0, 500))}
-                  placeholder={childName ? `Something ${childName} will read when they're older…` : "Something they will read when they're older…"}
+                  placeholder={childName ? `Something ${childName} will read when they're older...` : "Something they will read when they're older..."}
                   maxLength={500}
                   spellCheck={false}
                   className="w-full rounded-[14px] px-4 py-3 text-base outline-none resize-none"
@@ -1048,7 +1108,7 @@ export default function ToothFairyApp() {
               </div>
               <StepTitle
                 title={childName ? `${childName}'s keepsake` : "The keepsake"}
-                subtitle="This is what will live on the network — forever."
+                subtitle="This becomes the shareable family page: keepsake first, Smile Fund second, blockchain quietly underneath."
               />
             </div>
 
@@ -1104,9 +1164,9 @@ export default function ToothFairyApp() {
             <PaperCard>
               <div className="space-y-5">
                 {[
-                  { num: "i", title: "Stored permanently", desc: "Distributed across decentralized nodes. The data cannot disappear." },
-                  { num: "ii", title: "On the blockchain", desc: "A cryptographic hash locks this creation into the public ledger." },
-                  { num: "iii", title: `${childName || "Your child"} owns it`, desc: `Issued to ${childName || "your child"}'s identity, managed by you. You control the wallet — they receive a keepsake link.` },
+                  { num: "i", title: "A real family keepsake", desc: "The drawing, note, and tooth moment stay together on one page your family can revisit." },
+                  { num: "ii", title: "A Smile Fund link", desc: "After minting, you can share a contribution page with grandparents and loved ones." },
+                  { num: "iii", title: "Parent controlled", desc: `You manage the wallet and unlock settings. ${childName || "Your child"} receives the story, the memory, and the first lesson in ownership.` },
                 ].map(({ num, title, desc }, i) => (
                   <div
                     key={num}
@@ -1235,8 +1295,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Add savings</Eyebrow>
               </div>
               <StepTitle
-                title={`A gift for ${childName || "them"}.`}
-                subtitle={`The keepsake is already saved. If you'd like, lock real savings into ${childName || "their"} wallet — to open on a day you choose.`}
+                title={`Start ${childName || "their"} Smile Fund.`}
+                subtitle="The keepsake is saved. Now you can add an optional first gift, or skip and share the family link later."
               />
             </div>
 
@@ -1251,8 +1311,8 @@ export default function ToothFairyApp() {
               <div className="space-y-2">
                 {[
                   { label: "Creating & saving", value: "Free" },
-                  { label: "Network maintenance", value: "~$1 / year" },
-                  { label: "Deposit fee", value: "2%" },
+                    { label: "Network maintenance", value: "Tiny network cost" },
+                  { label: "Current contract fee", value: "2%" },
                 ].map(({ label, value }) => (
                   <div
                     key={label}
@@ -1265,7 +1325,7 @@ export default function ToothFairyApp() {
                 ))}
               </div>
               <p className="text-xs mt-4 italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
-                Everything on-chain and verifiable. No hidden fees.
+                Parent-controlled for launch. Target fee is 1% before broad release; current deployed contract is 2%.
               </p>
             </PaperCard>
 
@@ -1275,7 +1335,7 @@ export default function ToothFairyApp() {
                 <div className="space-y-2 mt-2">
                   {[
                     { id: "now" as LockChoice, label: "Gift now" },
-                    { id: "eighteen" as LockChoice, label: "Until 18th birthday", badge: "Recommended" },
+                    { id: "ageTen" as LockChoice, label: "Until age 10", badge: "Recommended" },
                     { id: "custom" as LockChoice, label: "Pick a date" },
                   ].map((opt) => {
                     const active = lockChoice === opt.id
@@ -1318,9 +1378,9 @@ export default function ToothFairyApp() {
                 </div>
               </InputRow>
 
-              {lockChoice === "eighteen" && eighteenthDate && (
+              {lockChoice === "ageTen" && suggestedUnlockDate && (
                 <p className="text-sm italic text-center" style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}>
-                  Unlocks {eighteenthDate}
+                  Unlocks {suggestedUnlockDate}
                 </p>
               )}
               {lockChoice === "custom" && (
@@ -1351,10 +1411,10 @@ export default function ToothFairyApp() {
               <InputRow label="How much to save?">
                 <div className="grid grid-cols-4 gap-2 mt-3">
                   {[
-                    { usd: "$5", sol: "0.1" },
-                    { usd: "$10", sol: "0.5" },
-                    { usd: "$20", sol: "1" },
-                    { usd: "$50", sol: "5" },
+                    { usd: "$5", sol: "0.05" },
+                    { usd: "$10", sol: "0.1" },
+                    { usd: "$25", sol: "0.25" },
+                    { usd: "$50", sol: "0.5" },
                   ].map(({ usd, sol }) => {
                     const active = depositAmount === sol
                     return (
@@ -1407,7 +1467,7 @@ export default function ToothFairyApp() {
                   className="text-sm font-medium text-center"
                   style={{ color: "var(--tfn-gold)", fontFamily: "var(--font-display), serif" }}
                 >
-                  Complete payment in the Coinbase window…
+                  Complete payment in the secure checkout...
                 </p>
                 <p className="text-xs mt-1 text-center" style={{ color: "var(--tfn-ink-muted)" }}>
                   Don&apos;t close this page.
@@ -1422,9 +1482,9 @@ export default function ToothFairyApp() {
                 disabled={cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
               >
                 {cardPaymentLoading
-                  ? "Opening payment…"
+                  ? "Opening payment..."
                   : awaitingCardDeposit
-                    ? "Waiting for payment…"
+                    ? "Waiting for payment..."
                     : (
                       <>
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -1458,7 +1518,7 @@ export default function ToothFairyApp() {
                 style={{ color: "var(--tfn-ink-muted)" }}
                 aria-label="Skip deposit for now"
               >
-                Skip — add savings later from the keepsake page
+                Skip - share the keepsake first
               </button>
             </div>
           </div>
@@ -1524,7 +1584,7 @@ export default function ToothFairyApp() {
 
             <div>
               <StepTitle
-                title={childName ? `Saving ${childName}'s keepsake…` : "Saving the keepsake…"}
+                title={childName ? `Saving ${childName}'s keepsake...` : "Saving the keepsake..."}
                 subtitle={mintProgress || "It takes just a few seconds."}
               />
             </div>
@@ -1566,13 +1626,13 @@ export default function ToothFairyApp() {
                 >
                   {depositSuccess}
                 </p>
-                {lockChoice === "eighteen" && eighteenthDate && (
+                {lockChoice === "ageTen" && suggestedUnlockDate && (
                   <p className="text-xs mt-1 text-center italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
-                    Locked until {eighteenthDate}
+                    Locked until {suggestedUnlockDate}
                   </p>
                 )}
                 <p className="text-xs mt-2 text-center" style={{ color: "var(--tfn-ink-muted)" }}>
-                  {feeInfo.net.toFixed(4)} SOL in wallet (2% fee: {feeInfo.fee.toFixed(4)} SOL)
+                  {feeInfo.net.toFixed(4)} SOL in wallet (current 2% fee: {feeInfo.fee.toFixed(4)} SOL)
                 </p>
               </PaperCard>
             )}
@@ -1580,7 +1640,7 @@ export default function ToothFairyApp() {
             {escrowInfo && (
               <GoldCTA
                 onClick={() => {
-                  const url = `${window.location.origin}/gift/${escrowInfo.milestonePda}`
+                  const url = `${window.location.origin}/toothfairy/app/gift/${escrowInfo.milestonePda}`
                   const shareText = `${childName} made their first digital keepsake on the Tooth Fairy Network. See it and add to their savings:`
                   if (navigator.share) {
                     navigator.share({ title: `${childName}'s Tooth Fairy Network`, text: shareText, url }).catch(() => {})
@@ -1596,7 +1656,7 @@ export default function ToothFairyApp() {
               </GoldCTA>
             )}
 
-            <GhostButton onClick={() => router.push("/dashboard")}>
+            <GhostButton onClick={() => router.push("/toothfairy/app/dashboard")}>
               View {childName ? `${childName}'s` : "the"} page
             </GhostButton>
 

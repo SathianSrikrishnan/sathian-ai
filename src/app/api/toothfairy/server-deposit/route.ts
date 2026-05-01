@@ -9,8 +9,8 @@
  *   childProfilePda, milestonePda, amountSol, lockChoice, depositorName, childDob?
  * }
  *
- * lockChoice: "now" | "eighteen" | "custom"
- * childDob: ISO date string (required if lockChoice = "eighteen")
+ * lockChoice: "now" | "ageTen" | "eighteen" | "custom"
+ * childDob: ISO date string (used for suggested age unlock choices)
  */
 import { NextRequest, NextResponse } from "next/server"
 import {
@@ -73,7 +73,15 @@ function toLockPeriodArg(lockChoice: string, childDob?: string) {
 
   let lockTimestamp: number
 
-  if (lockChoice === "eighteen" && childDob) {
+  if ((lockChoice === "ageTen" || lockChoice === "ten") && childDob) {
+    const dob = new Date(childDob + "T00:00:00")
+    const unlockDate = new Date(dob)
+    unlockDate.setFullYear(unlockDate.getFullYear() + 10)
+    lockTimestamp = Math.floor(unlockDate.getTime() / 1000)
+  } else if (lockChoice === "ageTen" || lockChoice === "ten") {
+    // Fallback: 10 years from now
+    lockTimestamp = Math.floor(Date.now() / 1000) + Math.floor(10 * 365.25 * 24 * 60 * 60)
+  } else if (lockChoice === "eighteen" && childDob) {
     const dob = new Date(childDob + "T00:00:00")
     const eighteenth = new Date(dob)
     eighteenth.setFullYear(eighteenth.getFullYear() + 18)

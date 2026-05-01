@@ -2,7 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Article fonts loaded via next/font/google in article layout */
+/* Local fallback font variables keep builds independent of remote font fetches. */
+:root {
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-body: 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Cascadia Mono', Consolas, monospace;
+  --font-serif-display: Georgia, 'Times New Roman', serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-nunito: 'Segoe UI', system-ui, sans-serif;
+  --font-jakarta: 'Segoe UI', system-ui, sans-serif;
+  --font-quicksand: 'Segoe UI', system-ui, sans-serif;
+  --font-landing-serif: Georgia, 'Times New Roman', serif;
+  --font-landing-body: Georgia, 'Times New Roman', serif;
+}
 
 /* ─── Observatory Hub Design System ──────────────────────────────────────── */
 

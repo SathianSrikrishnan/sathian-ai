@@ -15,6 +15,8 @@ const c = {
   brownSoft:  'oklch(42% 0.03 65)',
   brownMuted: 'oklch(58% 0.025 65)',
   gold:       'oklch(72% 0.145 75)',
+  goldSoft:   'oklch(72% 0.145 75 / 0.12)',
+  border:     'oklch(88% 0.015 75)',
 };
 
 type FetchState =
@@ -33,7 +35,7 @@ export default function KeepsakePage() {
     if (typeof window !== 'undefined') {
       setOrigin(window.location.origin);
     }
-    // Entrance fade — awww-moment tuning: springy, not abrupt
+    // Entrance fade: warm enough to feel celebratory without slowing the page.
     const t = setTimeout(() => setEntered(true), 60);
     return () => clearTimeout(t);
   }, []);
@@ -96,6 +98,41 @@ export default function KeepsakePage() {
 
         {state.kind === 'success' && (
           <>
+            <section className="text-center max-w-xl mx-auto mb-8">
+              <p
+                className="text-xs uppercase mb-3"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: c.gold,
+                  letterSpacing: '0.18em',
+                  fontWeight: 600,
+                }}
+              >
+                A memory is live
+              </p>
+              <h1
+                className="text-3xl md:text-5xl leading-tight"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  color: c.brown,
+                  fontWeight: 600,
+                }}
+              >
+                {state.data.childName}&apos;s tooth fairy keepsake
+              </h1>
+              <p
+                className="mt-4 text-base md:text-lg"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: c.brownSoft,
+                  lineHeight: 1.6,
+                }}
+              >
+                A tiny milestone, saved as a family memory and connected to a
+                parent-controlled Smile Fund.
+              </p>
+            </section>
+
             <div className="mb-10">
               <KeepsakeCard
                 childName={state.data.childName}
@@ -110,7 +147,22 @@ export default function KeepsakePage() {
               />
             </div>
 
+            <div className="max-w-md mx-auto mb-6">
+              <SmileFundPanel data={state.data} milestoneId={id} />
+            </div>
+
             <div className="max-w-md mx-auto">
+              <p
+                className="text-center text-xs uppercase mb-3"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: c.brownMuted,
+                  letterSpacing: '0.16em',
+                  fontWeight: 600,
+                }}
+              >
+                Share with family
+              </p>
               <ShareButtons
                 keepsakeUrl={origin ? `${origin}/toothfairy/keepsake/${id}` : ''}
                 childName={state.data.childName}
@@ -159,7 +211,7 @@ function LoadingState() {
           animation: 'keepsakePulse 2.2s ease-in-out infinite',
         }}
       >
-        Loading keepsake…
+        Loading keepsake...
       </span>
       <style jsx>{`
         @keyframes keepsakePulse {
@@ -168,6 +220,108 @@ function LoadingState() {
         }
       `}</style>
     </div>
+  );
+}
+
+function SmileFundPanel({
+  data,
+  milestoneId,
+}: {
+  data: KeepsakeData;
+  milestoneId: string;
+}) {
+  const lockedCount = data.deposits.filter((deposit) => deposit.locked).length;
+  const contributionCount = data.deposits.length;
+  const total =
+    data.totalEscrowed ??
+    data.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+
+  return (
+    <section
+      className="rounded-3xl p-6 md:p-7"
+      style={{
+        background: c.cream,
+        border: `1px solid ${c.border}`,
+        boxShadow: '0 18px 40px oklch(30% 0.035 65 / 0.08)',
+      }}
+    >
+      <div className="flex items-start justify-between gap-5">
+        <div>
+          <p
+            className="text-xs uppercase mb-2"
+            style={{
+              fontFamily: 'var(--font-body)',
+              color: c.brownMuted,
+              letterSpacing: '0.14em',
+              fontWeight: 600,
+            }}
+          >
+            Smile Fund
+          </p>
+          <h2
+            className="text-3xl leading-none"
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.brown,
+              fontWeight: 600,
+            }}
+          >
+            {total.toFixed(total >= 1 ? 2 : 3)} SOL
+          </h2>
+          <p
+            className="mt-2 text-sm"
+            style={{
+              fontFamily: 'var(--font-body)',
+              color: c.brownSoft,
+              lineHeight: 1.5,
+            }}
+          >
+            {contributionCount > 0
+              ? `${contributionCount} family gift${contributionCount === 1 ? '' : 's'} saved for this milestone.`
+              : 'No family gifts yet. Invite someone to add the first one.'}
+          </p>
+        </div>
+        <div
+          className="rounded-2xl px-3 py-2 text-center"
+          style={{ background: c.goldSoft, color: c.gold }}
+        >
+          <div
+            className="text-xl"
+            style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}
+          >
+            {lockedCount}
+          </div>
+          <div className="text-[10px] uppercase" style={{ letterSpacing: '0.12em' }}>
+            locked
+          </div>
+        </div>
+      </div>
+
+      <Link
+        href={`/toothfairy/app/gift/${milestoneId}`}
+        className="mt-6 flex w-full items-center justify-center rounded-full px-6 py-4 text-sm font-semibold"
+        style={{
+          background: c.gold,
+          color: c.cream,
+          fontFamily: 'var(--font-body)',
+          textDecoration: 'none',
+          boxShadow: '0 10px 26px oklch(72% 0.145 75 / 0.22)',
+        }}
+      >
+        Add a gift to the Smile Fund
+      </Link>
+
+      <p
+        className="mt-3 text-center text-xs"
+        style={{
+          fontFamily: 'var(--font-body)',
+          color: c.brownMuted,
+          lineHeight: 1.5,
+        }}
+      >
+        Preview mode: family gifts currently use Phantom. Card checkout comes next.
+      </p>
+    </section>
   );
 }
 

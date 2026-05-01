@@ -1,374 +1,833 @@
-'use client';
+"use client"
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FEATURED_STORIES } from '@/data/stories';
+import Image from "next/image"
+import Link from "next/link"
+import { FEATURED_STORIES } from "@/data/stories"
 
-/* ─── Color tokens (OKLCH, no pure black/white) ────────────────────────── */
-const c = {
-  cream:      'oklch(97.5% 0.01 80)',       // page base
-  creamDeep:  'oklch(95% 0.015 75)',         // section alternate
-  brown:      'oklch(30% 0.035 65)',         // primary text
-  brownSoft:  'oklch(42% 0.03 65)',          // secondary text
-  brownMuted: 'oklch(58% 0.025 65)',         // tertiary/footer
-  gold:       'oklch(72% 0.145 75)',         // CTA, accent
-  goldHover:  'oklch(62% 0.13 72)',          // CTA hover
-  goldLight:  'oklch(82% 0.1 78)',           // subtle accent
-  border:     'oklch(88% 0.015 75)',         // dividers
-};
-
-/* ─── Fade-in on scroll ─────────────────────────────────────────────────── */
-function useFadeIn(delay = 0) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            el.classList.add('opacity-100', 'translate-y-0');
-            el.classList.remove('opacity-0', 'translate-y-4');
-          }, delay);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.05, rootMargin: '50px' }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [delay]);
-  return ref;
+const storyImages: Record<string, string> = {
+  tanda: "/story-assets/tanda/tf-05-tanda.png",
+  "viking-origin": "/story-assets/viking-origin/vo-01-village.png",
+  "ratoncito-perez": "/story-assets/ratoncito-perez/rp-02-mouse.png",
 }
 
-function Fade({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useFadeIn(delay);
-  return (
-    <div
-      ref={ref}
-      className={`opacity-0 translate-y-4 ${className}`}
-      style={{
-        transition: 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+const trustStats = [
+  { value: "3 min", label: "to create" },
+  { value: "Age 10", label: "suggested unlock" },
+  { value: "Family", label: "gift link" },
+  { value: "Solana", label: "transparent rails" },
+]
 
-/* ─── CTA Button ────────────────────────────────────────────────────────── */
-function CTA({ className = '' }: { className?: string }) {
-  return (
-    <a
-      href="/toothfairy/app"
-      className={`inline-block px-10 py-4 text-lg font-semibold rounded-full active:scale-[0.98] ${className}`}
-      style={{
-        fontFamily: 'var(--font-body)',
-        background: c.gold,
-        color: 'oklch(98% 0.005 80)',
-        boxShadow: `0 4px 24px oklch(72% 0.145 75 / 0.2)`,
-        transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = c.goldHover; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = c.gold; }}
-    >
-      Make your child&apos;s first keepsake
-    </a>
-  );
-}
+const steps = [
+  {
+    title: "Capture the tooth",
+    body: "Add a smile photo, a drawing, and a note while the moment is fresh.",
+  },
+  {
+    title: "Mint the memory",
+    body: "Create a shareable keepsake page that belongs to the family.",
+  },
+  {
+    title: "Invite the village",
+    body: "Grandparents and loved ones can add gifts to the Smile Fund.",
+  },
+]
 
-/* ─── Page ──────────────────────────────────────────────────────────────── */
+const reasons = [
+  "Preserve the moment",
+  "Turn gifting into saving",
+  "Invite grandparents",
+  "Teach ownership early",
+]
+
 export default function ToothFairyLanding() {
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const tales = FEATURED_STORIES.slice(0, 3)
 
   return (
-    <div style={{ background: c.cream, minHeight: '100vh' }}>
-      <main
-        className="overflow-x-hidden"
-        style={{ fontFamily: 'var(--font-body)', color: c.brown }}
-      >
+    <main className="tfn-page min-h-screen overflow-hidden">
+      <section className="hero">
+        <Image
+          src="/toothfairy/concept-b/hero-bg.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-bg object-cover"
+        />
+        <div className="network-lines" aria-hidden>
+          <span className="node node-a" />
+          <span className="node node-b" />
+          <span className="node node-c" />
+          <span className="line line-a" />
+          <span className="line line-b" />
+        </div>
 
-        {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-          <div className="absolute inset-0">
-            <Image
-              src="/toothfairy/concept-b/hero-bg.png"
-              alt=""
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
-            <div className="absolute inset-0" style={{ background: `${c.cream}cc` }} />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `linear-gradient(to right, ${c.cream}e6, ${c.cream}99, transparent)`,
-              }}
-            />
-          </div>
+        <div className="hero-inner mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-16">
+          <div className="hero-copy-wrap">
+            <p className="eyebrow">Tooth Fairy Network</p>
+            <h1>
+              Mint a memory.
+              <span>Start their Smile Fund.</span>
+            </h1>
+            <p className="hero-copy">
+              A child loses a tooth. You save the story, mint a keepsake, and
+              share one simple link so family can contribute to a
+              parent-controlled fund they can grow into by age 10.
+            </p>
 
-          <div className="relative z-10 px-6 md:px-12 lg:px-20 max-w-6xl mx-auto w-full">
-            <div className="grid md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center w-full py-16 md:py-0">
-
-              <div className="order-2 md:order-1">
-                <p
-                  className="text-sm uppercase tracking-[0.2em] mb-6 font-medium"
-                  style={{ color: c.gold, fontFamily: 'var(--font-body)' }}
-                >
-                  Tooth Fairy Network
-                </p>
-                <h1
-                  className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.08] tracking-tight mb-3"
-                  style={{ fontFamily: 'var(--font-display)', color: c.brown }}
-                >
-                  Your child just lost a tooth.
-                </h1>
-                <h2
-                  className="italic text-3xl sm:text-4xl lg:text-[2.6rem] leading-[1.12] mb-10"
-                  style={{ fontFamily: 'var(--font-display)', color: c.gold }}
-                >
-                  Every culture in the world has a story for this.
-                </h2>
-                <CTA />
-              </div>
-
-              <div className="order-1 md:order-2 flex justify-center">
-                <div
-                  className="relative w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden"
-                  style={{
-                    transform: `translateY(${scrollY * -0.08}px)`,
-                    boxShadow: `0 24px 48px oklch(30% 0.035 65 / 0.12)`,
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/toothfairy/concept-b/hero.png"
-                    alt="A child smiling with a missing tooth"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── THREE DOORWAYS ─────────────────────────────────────────────── */}
-        <section
-          id="stories"
-          className="relative py-20 md:py-28 px-6 md:px-12 lg:px-20 overflow-hidden"
-          style={{ scrollMarginTop: '80px' }}
-        >
-          <div
-            className="absolute inset-0"
-            style={{ background: `linear-gradient(to bottom, ${c.cream}, ${c.creamDeep} 20%, ${c.creamDeep})` }}
-          />
-
-          <div className="relative max-w-5xl mx-auto">
-            <Fade>
-              <p
-                className="text-xs uppercase tracking-[0.32em] mb-16 md:mb-20 font-medium text-center"
-                style={{ color: c.gold }}
-              >
-                Tonight&apos;s bedtime stories
-              </p>
-            </Fade>
-            <div className="space-y-20 md:space-y-28">
-              {FEATURED_STORIES.map((story, i) => {
-                const reverse = i % 2 === 1;
-                const meta = [
-                  { cover: '/story-assets/tanda/tf-05-tanda.png',           minutes: '4 min read together' },
-                  { cover: '/story-assets/viking-origin/vo-01-village.png', minutes: '5 min read together' },
-                  { cover: '/story-assets/ratoncito-perez/rp-02-mouse.png', minutes: '4 min read together' },
-                ][i] || { cover: story.scenes[0]?.background || '', minutes: '' };
-
-                return (
-                  <Fade key={story.id} delay={100}>
-                    <article
-                      className={`grid md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] gap-10 md:gap-16 items-center ${reverse ? 'md:[direction:rtl]' : ''}`}
-                    >
-                      {/* Storybook cover — click-through */}
-                      <Link
-                        href={`/toothfairy/story/${story.id}`}
-                        className="group block md:[direction:ltr]"
-                        aria-label={`Begin reading ${story.title}`}
-                      >
-                        <div
-                          className="storybook-cover relative w-full aspect-[9/16] max-h-[640px] mx-auto rounded-[28px] overflow-hidden"
-                          style={{
-                            boxShadow: `0 28px 70px oklch(30% 0.035 65 / 0.2), 0 4px 14px oklch(30% 0.035 65 / 0.12)`,
-                            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-8px) rotate(-0.5deg) scale(1.015)';
-                            e.currentTarget.style.boxShadow = `0 40px 90px oklch(30% 0.035 65 / 0.26), 0 8px 24px oklch(30% 0.035 65 / 0.14)`;
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0) rotate(0deg) scale(1)';
-                            e.currentTarget.style.boxShadow = `0 28px 70px oklch(30% 0.035 65 / 0.2), 0 4px 14px oklch(30% 0.035 65 / 0.12)`;
-                          }}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={meta.cover}
-                            alt={`${story.title} — ${story.region}`}
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                          {/* Bottom gradient for legibility of title */}
-                          <div
-                            className="absolute inset-0"
-                            style={{
-                              background: `linear-gradient(to top, ${c.brown}e0 0%, ${c.brown}66 30%, transparent 55%)`,
-                            }}
-                          />
-                          {/* Bottom: title on the cover itself */}
-                          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                            <h3
-                              className="text-3xl md:text-4xl leading-[1.05] mb-2"
-                              style={{
-                                fontFamily: 'var(--font-display)',
-                                color: 'oklch(98% 0.005 80)',
-                                textShadow: '0 2px 24px rgba(0,0,0,0.5)',
-                                fontWeight: 700,
-                              }}
-                            >
-                              {story.title}
-                            </h3>
-                            <p
-                              className="text-sm italic"
-                              style={{
-                                color: 'oklch(92% 0.02 80)',
-                                textShadow: '0 1px 10px rgba(0,0,0,0.6)',
-                                fontFamily: 'var(--font-display)',
-                              }}
-                            >
-                              {story.region}
-                            </p>
-                          </div>
-                        </div>
-                      </Link>
-
-                      {/* Text column */}
-                      <div className="md:[direction:ltr]">
-                        <p
-                          className="text-xs uppercase tracking-[0.24em] mb-4 font-semibold"
-                          style={{ color: c.gold }}
-                        >
-                          {story.region}
-                        </p>
-                        <h4
-                          className="text-4xl sm:text-5xl leading-[1.05] mb-5"
-                          style={{ fontFamily: 'var(--font-display)', color: c.brown }}
-                        >
-                          {story.title}
-                        </h4>
-                        <p
-                          className="text-lg leading-[1.75] mb-7"
-                          style={{ color: c.brownSoft, maxWidth: '48ch' }}
-                        >
-                          {story.description}
-                        </p>
-                        <div className="flex items-center gap-5 flex-wrap">
-                          <Link
-                            href={`/toothfairy/story/${story.id}`}
-                            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-base font-semibold active:scale-[0.98]"
-                            style={{
-                              background: c.gold,
-                              color: 'oklch(98% 0.005 80)',
-                              boxShadow: `0 8px 24px oklch(72% 0.145 75 / 0.3)`,
-                              fontFamily: 'var(--font-body)',
-                              transition: 'background 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
-                            }}
-                            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = c.goldHover; }}
-                            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = c.gold; }}
-                          >
-                            Begin reading
-                            <span aria-hidden>&rarr;</span>
-                          </Link>
-                          {meta.minutes && (
-                            <span
-                              className="text-sm"
-                              style={{ color: c.brownMuted, fontFamily: 'var(--font-body)' }}
-                            >
-                              &middot; {meta.minutes}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </article>
-                  </Fade>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ── THE WORLD BEHIND ─────────────────────────────────────────── */}
-        <section className="py-24 md:py-32 px-6 md:px-12 lg:px-20">
-          <div className="max-w-[54ch] mx-auto text-center">
-            <Fade>
-              <p
-                className="text-xs uppercase tracking-[0.32em] mb-8 font-medium"
-                style={{ color: c.gold }}
-              >
-                A world of traditions
-              </p>
-            </Fade>
-            <Fade delay={120}>
-              <h3
-                className="text-3xl sm:text-4xl leading-[1.2] mb-7"
-                style={{ fontFamily: 'var(--font-display)', color: c.brown }}
-              >
-                Three stories tonight. Dozens more across the world.
-              </h3>
-            </Fade>
-            <Fade delay={240}>
-              <p
-                className="text-lg sm:text-xl leading-[1.75] mb-10 italic"
-                style={{ fontFamily: 'var(--font-display)', color: c.brownSoft }}
-              >
-                In Spain, a mouse. In Korea, a magpie. In Ethiopia, a hyena.
-                One ritual, a hundred shapes. Tanda knows them all &mdash; and one day, so will your child.
-              </p>
-            </Fade>
-            <Fade delay={360}>
-              <Link
-                href="/toothfairy/stories"
-                className="inline-flex items-center gap-2 text-base font-medium"
-                style={{
-                  color: c.gold,
-                  fontFamily: 'var(--font-body)',
-                  transition: 'gap 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = '0.75rem'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = '0.5rem'; }}
-              >
-                Enter the world
-                <span aria-hidden>&rarr;</span>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/toothfairy/app" className="primary-cta">
+                Mint their first memory
+                <span aria-hidden>{"->"}</span>
               </Link>
-            </Fade>
-          </div>
-        </section>
+              <Link href="#how-it-works" className="secondary-cta">
+                See how it works
+              </Link>
+            </div>
 
-        {/* ── FOOTER ────────────────────────────────────────────────────── */}
-        <footer
-          className="py-10 px-6 text-center"
-          style={{ borderTop: `1px solid ${c.border}`, background: c.creamDeep }}
-        >
-          <p
-            className="text-sm leading-relaxed max-w-md mx-auto"
-            style={{ color: c.brownMuted }}
-          >
-            Every tooth tells a story. This is where they&apos;re kept.
+            <div className="stat-strip">
+              {trustStats.map((item) => (
+                <div key={item.label}>
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hero-stage" aria-label="Tooth Fairy Network preview">
+            <div className="photo-frame">
+              <Image
+                src="/toothfairy/concept-b/hero.png"
+                alt="A smiling child showing a newly lost tooth"
+                fill
+                priority
+                sizes="(min-width: 1024px) 560px, 92vw"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="tanda">
+              <Image
+                src="/story-assets/refs/ref-01-tanda.jpg"
+                alt="Tanda, the Tooth Fairy Network guide"
+                fill
+                sizes="160px"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="memory-card">
+              <p>Tooth Memory</p>
+              <strong>#1024</strong>
+              <span>Saved on Solana</span>
+            </div>
+
+            <div className="fund-card">
+              <p>Little Smile Fund</p>
+              <strong>12.45 SOL</strong>
+              <span>Family gifts and notes</span>
+              <div className="chart" aria-hidden>
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" className="band">
+        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 lg:py-16">
+          <div className="section-heading">
+            <p className="eyebrow">The product</p>
+            <h2>One tooth becomes one first lesson in ownership.</h2>
+          </div>
+
+          <div className="mt-9 grid gap-4 md:grid-cols-3">
+            {steps.map((step, index) => (
+              <article key={step.title} className="step">
+                <span>0{index + 1}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:py-16">
+        <div className="section-heading left">
+          <p className="eyebrow">Smile Fund</p>
+          <h2>A gift page grandparents can understand.</h2>
+          <p>
+            The launch version should feel like a birthday card, not a crypto
+            dashboard. Family sees the keepsake, adds a gift, leaves a note,
+            and the parent remains in control.
           </p>
-        </footer>
-      </main>
-    </div>
-  );
+          <Link href="/toothfairy/app" className="text-link">
+            Start the first memory <span aria-hidden>{"->"}</span>
+          </Link>
+        </div>
+
+        <div className="product-preview">
+          <div className="keepsake-image">
+            <Image
+              src="/toothfairy/concept-b/keepsake-mockup.png"
+              alt="A sample Tooth Fairy Network keepsake"
+              fill
+              sizes="(min-width: 1024px) 300px, 90vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="preview-panel">
+            <p>Little Smile Fund</p>
+            <strong>12.45 SOL</strong>
+            <span>23 family gifts</span>
+            <div className="wide-chart" aria-hidden>
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <div className="preview-row">
+              <span>Suggested unlock</span>
+              <strong>Age 10</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="story-callout">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-16">
+          <div>
+            <p className="eyebrow">The story layer</p>
+            <h2>Tanda makes the financial product feel magical.</h2>
+            <p>
+              The product is simple: a keepsake and a small savings account.
+              The universe around it makes it memorable: fairies, mice, birds,
+              and guardians around the world all connected by the Network.
+            </p>
+          </div>
+          <div className="network-image">
+            <Image
+              src="/story-assets/shared/shared-network-station.jpg"
+              alt="A glowing Tooth Fairy Network station"
+              fill
+              sizes="(min-width: 1024px) 460px, 90vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="band">
+        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 lg:py-16">
+          <div className="section-heading">
+            <p className="eyebrow">Why parents love it</p>
+            <h2>A familiar ritual with a useful next step.</h2>
+          </div>
+
+          <div className="reason-strip">
+            {reasons.map((reason) => (
+              <div key={reason}>{reason}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="cultural-tales" className="mx-auto max-w-6xl px-5 py-14 sm:px-6 lg:py-16">
+        <div className="section-heading">
+          <p className="eyebrow">Cultural tales</p>
+          <h2>Stories that make families come back.</h2>
+          <p>
+            The first stories introduce Tanda and the global traditions that
+            will make the Network feel alive.
+          </p>
+        </div>
+
+        <div className="mt-9 grid gap-4 md:grid-cols-3">
+          {tales.map((story) => (
+            <Link
+              key={story.id}
+              href={`/toothfairy/story/${story.id}`}
+              className="tale"
+            >
+              <span className="tale-img">
+                <Image
+                  src={storyImages[story.id] || story.scenes[0]?.background || "/toothfairy/concept-b/hero-bg.png"}
+                  alt={story.title}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 90vw"
+                  className="object-cover"
+                />
+              </span>
+              <span className="tale-copy">
+                <strong>{story.title}</strong>
+                <em>{story.region}</em>
+                <span>{story.description}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link href="/toothfairy/stories" className="secondary-cta">
+            Explore more tales
+          </Link>
+        </div>
+      </section>
+
+      <style jsx>{`
+        .tfn-page {
+          background: var(--tfn-surface);
+          color: var(--tfn-ink);
+          font-family: var(--font-body), "Alegreya Sans", system-ui, sans-serif;
+        }
+
+        .hero {
+          position: relative;
+          overflow: hidden;
+          border-bottom: 1px solid var(--tfn-border);
+          background: var(--tfn-surface);
+        }
+
+        .hero-bg {
+          opacity: 0.28;
+          filter: saturate(0.9);
+        }
+
+        .hero:after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, var(--tfn-surface) 0%, oklch(97.5% 0.01 80 / 0.88) 44%, oklch(97.5% 0.01 80 / 0.34) 100%),
+            linear-gradient(180deg, transparent 0%, var(--tfn-surface) 100%);
+          pointer-events: none;
+        }
+
+        .hero-inner {
+          position: relative;
+          z-index: 2;
+        }
+
+        .network-lines {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          pointer-events: none;
+          opacity: 0.52;
+        }
+
+        .node,
+        .line {
+          position: absolute;
+          display: block;
+        }
+
+        .node {
+          width: 9px;
+          height: 9px;
+          border-radius: 999px;
+          background: var(--tfn-gold);
+          box-shadow: 0 0 24px oklch(72% 0.145 75 / 0.5);
+        }
+
+        .node-a { left: 58%; top: 22%; }
+        .node-b { left: 76%; top: 36%; }
+        .node-c { left: 88%; top: 54%; }
+
+        .line {
+          height: 1px;
+          background: linear-gradient(90deg, transparent, oklch(72% 0.145 75 / 0.5), transparent);
+          transform-origin: left center;
+        }
+
+        .line-a { left: 58%; top: 23%; width: 260px; transform: rotate(24deg); }
+        .line-b { left: 76%; top: 37%; width: 220px; transform: rotate(35deg); }
+
+        .eyebrow {
+          margin: 0 0 0.8rem;
+          color: var(--tfn-gold-hover);
+          font-size: 0.72rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .hero-copy-wrap h1,
+        .section-heading h2,
+        .story-callout h2 {
+          margin: 0;
+          color: var(--tfn-ink);
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          letter-spacing: 0;
+        }
+
+        .hero-copy-wrap h1 {
+          max-width: 10em;
+          font-size: clamp(3rem, 7vw, 5.8rem);
+          font-weight: 800;
+          line-height: 0.94;
+        }
+
+        .hero-copy-wrap h1 span {
+          display: block;
+          color: #6d45a8;
+        }
+
+        .hero-copy {
+          max-width: 36rem;
+          margin-top: 1.25rem;
+          color: var(--tfn-ink-soft);
+          font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+          line-height: 1.68;
+        }
+
+        .primary-cta,
+        .secondary-cta {
+          display: inline-flex;
+          min-height: 46px;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          border-radius: 999px;
+          padding: 0.88rem 1.35rem;
+          font-weight: 900;
+          text-decoration: none;
+        }
+
+        .primary-cta {
+          background: linear-gradient(135deg, #6d45a8, #8a5cc5);
+          color: #fffaf1;
+          box-shadow: 0 14px 34px oklch(37% 0.11 302 / 0.22);
+        }
+
+        .secondary-cta {
+          border: 1px solid var(--tfn-border);
+          color: var(--tfn-ink);
+          background: oklch(100% 0 0 / 0.45);
+        }
+
+        .stat-strip {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 1px;
+          max-width: 620px;
+          margin-top: 2rem;
+          overflow: hidden;
+          border: 1px solid var(--tfn-border);
+          border-radius: 8px;
+          background: var(--tfn-border);
+        }
+
+        .stat-strip div {
+          min-height: 84px;
+          padding: 0.9rem;
+          background: oklch(100% 0 0 / 0.68);
+        }
+
+        .stat-strip strong {
+          display: block;
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: 1.16rem;
+          line-height: 1;
+        }
+
+        .stat-strip span {
+          display: block;
+          margin-top: 0.4rem;
+          color: var(--tfn-ink-muted);
+          font-size: 0.8rem;
+          line-height: 1.25;
+        }
+
+        .hero-stage {
+          position: relative;
+          min-height: 590px;
+        }
+
+        .photo-frame {
+          position: absolute;
+          inset: 0 5% 4% 13%;
+          overflow: hidden;
+          border-radius: 8px;
+          box-shadow: 0 34px 80px oklch(30% 0.035 65 / 0.18);
+        }
+
+        .tanda {
+          position: absolute;
+          left: 0;
+          top: 12%;
+          width: 156px;
+          height: 196px;
+          overflow: hidden;
+          border: 1px solid oklch(100% 0 0 / 0.78);
+          border-radius: 8px;
+          box-shadow: 0 24px 60px oklch(37% 0.11 302 / 0.22);
+        }
+
+        .memory-card,
+        .fund-card,
+        .step,
+        .product-preview,
+        .reason-strip div,
+        .tale {
+          border: 1px solid var(--tfn-border);
+          border-radius: 8px;
+          box-shadow: 0 12px 30px oklch(30% 0.035 65 / 0.06);
+        }
+
+        .memory-card,
+        .fund-card {
+          position: absolute;
+          background: oklch(99% 0.006 82 / 0.94);
+          backdrop-filter: blur(14px);
+        }
+
+        .memory-card {
+          right: 0;
+          top: 18%;
+          width: 158px;
+          padding: 1rem;
+          color: var(--tfn-ink);
+        }
+
+        .memory-card p,
+        .fund-card p {
+          margin: 0;
+          color: var(--tfn-ink-muted);
+          font-size: 0.75rem;
+          font-weight: 800;
+        }
+
+        .memory-card strong,
+        .fund-card strong {
+          display: block;
+          margin-top: 0.35rem;
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: 1.28rem;
+          line-height: 1;
+        }
+
+        .memory-card span,
+        .fund-card span {
+          display: block;
+          margin-top: 0.35rem;
+          color: var(--tfn-ink-muted);
+          font-size: 0.76rem;
+        }
+
+        .fund-card {
+          right: 7%;
+          bottom: 2%;
+          width: min(260px, 62vw);
+          padding: 1rem;
+        }
+
+        .chart,
+        .wide-chart {
+          display: flex;
+          align-items: end;
+          gap: 7px;
+        }
+
+        .chart {
+          height: 56px;
+          margin-top: 0.85rem;
+        }
+
+        .chart i,
+        .wide-chart i {
+          flex: 1;
+          border-radius: 999px 999px 0 0;
+          background: linear-gradient(180deg, #4fb891, #dff4e8);
+        }
+
+        .chart i:nth-child(1) { height: 24%; }
+        .chart i:nth-child(2) { height: 40%; }
+        .chart i:nth-child(3) { height: 36%; }
+        .chart i:nth-child(4) { height: 64%; }
+        .chart i:nth-child(5) { height: 92%; }
+
+        .band {
+          border-bottom: 1px solid var(--tfn-border);
+          border-top: 1px solid var(--tfn-border);
+          background: linear-gradient(180deg, var(--tfn-surface-alt), var(--tfn-surface));
+        }
+
+        .section-heading {
+          max-width: 690px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .section-heading.left {
+          margin: 0;
+          text-align: left;
+        }
+
+        .section-heading h2,
+        .story-callout h2 {
+          font-size: clamp(2rem, 4vw, 3.25rem);
+          line-height: 1;
+        }
+
+        .section-heading p:not(.eyebrow),
+        .story-callout p:not(.eyebrow) {
+          margin-top: 1rem;
+          color: var(--tfn-ink-soft);
+          font-size: 1.05rem;
+          line-height: 1.65;
+        }
+
+        .step {
+          min-height: 210px;
+          padding: 1.25rem;
+          background: oklch(100% 0 0 / 0.58);
+        }
+
+        .step span {
+          color: var(--tfn-gold-hover);
+          font-size: 0.72rem;
+          font-weight: 900;
+          letter-spacing: 0.14em;
+        }
+
+        .step h3 {
+          margin: 0.9rem 0 0.55rem;
+          color: var(--tfn-ink);
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: 1.45rem;
+          line-height: 1;
+        }
+
+        .step p {
+          color: var(--tfn-ink-soft);
+          line-height: 1.58;
+        }
+
+        .text-link {
+          display: inline-flex;
+          gap: 0.4rem;
+          margin-top: 1.4rem;
+          color: #6d45a8;
+          font-weight: 900;
+          text-decoration: none;
+        }
+
+        .product-preview {
+          display: grid;
+          gap: 1rem;
+          padding: 1rem;
+          background: linear-gradient(135deg, oklch(100% 0 0 / 0.64), oklch(96% 0.018 75 / 0.75));
+        }
+
+        .keepsake-image,
+        .network-image {
+          position: relative;
+          min-height: 270px;
+          overflow: hidden;
+          border: 1px solid var(--tfn-border);
+          border-radius: 8px;
+        }
+
+        .preview-panel {
+          border: 1px solid var(--tfn-border);
+          border-radius: 8px;
+          background: oklch(100% 0 0 / 0.72);
+          padding: 1.1rem;
+        }
+
+        .preview-panel p {
+          margin: 0;
+          color: var(--tfn-ink-soft);
+          font-weight: 900;
+        }
+
+        .preview-panel > strong {
+          display: block;
+          margin-top: 0.45rem;
+          color: var(--tfn-ink);
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: clamp(2.2rem, 4vw, 3.2rem);
+          line-height: 1;
+        }
+
+        .preview-panel > span {
+          color: var(--tfn-ink-muted);
+        }
+
+        .wide-chart {
+          height: 112px;
+          margin-top: 1.25rem;
+          border-bottom: 1px solid var(--tfn-border);
+        }
+
+        .wide-chart i:nth-child(1) { height: 20%; }
+        .wide-chart i:nth-child(2) { height: 34%; }
+        .wide-chart i:nth-child(3) { height: 48%; }
+        .wide-chart i:nth-child(4) { height: 66%; }
+        .wide-chart i:nth-child(5) { height: 78%; }
+        .wide-chart i:nth-child(6) { height: 96%; }
+
+        .preview-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          margin-top: 1rem;
+          color: var(--tfn-ink-muted);
+          font-size: 0.9rem;
+        }
+
+        .preview-row strong {
+          color: var(--tfn-ink);
+        }
+
+        .story-callout {
+          background:
+            radial-gradient(circle at 88% 10%, oklch(72% 0.145 75 / 0.18), transparent 20rem),
+            linear-gradient(135deg, #241142, #311c58);
+          color: #fffaf1;
+        }
+
+        .story-callout .eyebrow {
+          color: #f3d88d;
+        }
+
+        .story-callout h2 {
+          color: #fffaf1;
+        }
+
+        .story-callout p:not(.eyebrow) {
+          color: #efe5ff;
+        }
+
+        .network-image {
+          border-color: oklch(100% 0 0 / 0.18);
+          box-shadow: 0 22px 60px oklch(16% 0.05 296 / 0.24);
+        }
+
+        .reason-strip {
+          display: grid;
+          gap: 1rem;
+          margin-top: 2rem;
+        }
+
+        .reason-strip div {
+          min-height: 76px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: oklch(100% 0 0 / 0.58);
+          color: var(--tfn-ink);
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: 1.25rem;
+          font-weight: 700;
+          text-align: center;
+        }
+
+        .tale {
+          display: block;
+          overflow: hidden;
+          color: inherit;
+          text-decoration: none;
+          background: oklch(100% 0 0 / 0.6);
+        }
+
+        .tale-img {
+          position: relative;
+          display: block;
+          height: 178px;
+        }
+
+        .tale-copy {
+          display: block;
+          padding: 1rem;
+        }
+
+        .tale-copy strong {
+          display: block;
+          color: var(--tfn-ink);
+          font-family: var(--font-display), "Alegreya", Georgia, serif;
+          font-size: 1.35rem;
+          line-height: 1;
+        }
+
+        .tale-copy em {
+          display: block;
+          margin-top: 0.25rem;
+          color: var(--tfn-gold-hover);
+          font-size: 0.88rem;
+          font-style: normal;
+          font-weight: 900;
+        }
+
+        .tale-copy span {
+          display: block;
+          margin-top: 0.75rem;
+          color: var(--tfn-ink-soft);
+          line-height: 1.55;
+        }
+
+        @media (min-width: 768px) {
+          .product-preview {
+            grid-template-columns: 0.78fr 1.22fr;
+          }
+
+          .reason-strip {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 1023px) {
+          .hero-stage {
+            min-height: 560px;
+          }
+
+          .photo-frame {
+            inset: 4% 0 0 8%;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .stat-strip {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .hero-stage {
+            min-height: 510px;
+          }
+
+          .photo-frame {
+            inset: 7% 0 0 0;
+          }
+
+          .tanda {
+            left: 0;
+            top: 0;
+            width: 126px;
+            height: 158px;
+          }
+
+          .memory-card {
+            right: 0;
+            top: 8%;
+            width: 138px;
+          }
+
+          .fund-card {
+            left: 5%;
+            right: auto;
+            bottom: 0;
+          }
+        }
+      `}</style>
+    </main>
+  )
 }

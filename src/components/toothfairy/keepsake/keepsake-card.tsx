@@ -81,9 +81,9 @@ export interface KeepsakeCardProps {
   deposits: KeepsakeDeposit[];
   message?: string;
   /**
-   * The Tell — child's narrative about this specific tooth.
+   * The Tell: child's narrative about this specific tooth.
    * Rendered below the drawing in italic with a soft cream card background.
-   * When null/absent/empty: render nothing (silence is the right empty state — no "no story yet" fallback).
+   * When null/absent/empty: render nothing; silence is the right empty state.
    */
   toothStory?: string | null;
 }
@@ -123,7 +123,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         boxShadow: '0 20px 44px oklch(30% 0.035 65 / 0.1)',
       }}
     >
-      {/* Header — child's name */}
+      {/* Header: child's name */}
       <Fade delay={0} className="px-8 pt-10 pb-6" as="header">
         <h1
           className="text-4xl md:text-5xl leading-none"
@@ -191,7 +191,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </div>
       </Fade>
 
-      {/* The Tell — child's narrative about this tooth */}
+      {/* The Tell: child's narrative about this tooth */}
       {hasToothStory && (
         <Fade delay={200} className="px-8 pb-6">
           <div
@@ -240,7 +240,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </p>
       </Fade>
 
-      {/* Family contributions — gift-card signatures, not a table */}
+      {/* Family contributions: gift-card signatures, not a table */}
       {deposits.length > 0 && (
         <Fade delay={350} className="px-8 pb-6">
           <div
@@ -288,10 +288,15 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
                   {deposit.locked && (
                     <span
                       className="ml-2"
-                      style={{ color: c.goldLight, fontSize: '0.7rem' }}
+                      style={{
+                        color: c.goldLight,
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                      }}
                       aria-label="locked"
                     >
-                      ◆
+                      locked
                     </span>
                   )}
                 </span>

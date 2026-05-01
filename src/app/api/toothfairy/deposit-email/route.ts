@@ -55,8 +55,8 @@ export async function POST(request: NextRequest) {
     const lockLabel =
       lockChoice === "now" || lockChoice === "immediate"
         ? "Available now — gift to open today"
-        : lockChoice === "eighteen"
-          ? `Locked until ${kidName} turns 18`
+        : lockChoice === "ageTen" || lockChoice === "ten"
+          ? `Locked until ${kidName} turns 10`
           : `Locked until ${lockChoice}`
 
     const solscanUrl = txSignature ? `https://solscan.io/tx/${txSignature}` : null
