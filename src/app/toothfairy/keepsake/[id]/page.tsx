@@ -11,9 +11,10 @@ import { motionSpringFast } from '@/components/toothfairy/tokens';
 const c = {
   cream:      'oklch(97.5% 0.01 80)',
   creamDeep:  'oklch(95% 0.015 75)',
-  brown:      'oklch(30% 0.035 65)',
-  brownSoft:  'oklch(42% 0.03 65)',
-  brownMuted: 'oklch(58% 0.025 65)',
+  ink:        '#11234a',
+  inkSoft:    '#334260',
+  inkMuted:   '#6b7280',
+  purple:     '#6d45a8',
   gold:       'oklch(72% 0.145 75)',
   goldSoft:   'oklch(72% 0.145 75 / 0.12)',
   border:     'oklch(88% 0.015 75)',
@@ -70,13 +71,14 @@ export default function KeepsakePage() {
     <main
       className="min-h-screen w-full"
       style={{
-        background: c.creamDeep,
+        background:
+          'radial-gradient(circle at 84% 4%, rgba(216,164,60,0.16), transparent 16rem), radial-gradient(circle at 14% 0%, rgba(109,69,168,0.10), transparent 14rem), ' + c.creamDeep,
         opacity: entered ? 1 : 0,
         transform: entered ? 'translateY(0)' : 'translateY(8px)',
         transition: `opacity 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')}), transform 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')})`,
       }}
     >
-      <div className="max-w-2xl mx-auto px-5 py-10 md:py-16">
+      <div className="max-w-3xl mx-auto px-5 py-10 md:py-16">
         {/* Wordmark */}
         <header className="text-center pb-10">
           <p
@@ -114,7 +116,7 @@ export default function KeepsakePage() {
                 className="text-3xl md:text-5xl leading-tight"
                 style={{
                   fontFamily: 'var(--font-display)',
-                  color: c.brown,
+                  color: c.ink,
                   fontWeight: 600,
                 }}
               >
@@ -124,7 +126,7 @@ export default function KeepsakePage() {
                 className="mt-4 text-base md:text-lg"
                 style={{
                   fontFamily: 'var(--font-body)',
-                  color: c.brownSoft,
+                  color: c.inkSoft,
                   lineHeight: 1.6,
                 }}
               >
@@ -156,7 +158,7 @@ export default function KeepsakePage() {
                 className="text-center text-xs uppercase mb-3"
                 style={{
                   fontFamily: 'var(--font-body)',
-                  color: c.brownMuted,
+                  color: c.inkMuted,
                   letterSpacing: '0.16em',
                   fontWeight: 600,
                 }}
@@ -200,7 +202,7 @@ function LoadingState() {
       className="w-full max-w-md mx-auto py-24 text-center"
       style={{
         fontFamily: 'var(--font-display)',
-        color: c.brownSoft,
+        color: c.inkSoft,
         fontSize: '1.125rem',
         fontStyle: 'italic',
       }}
@@ -238,7 +240,7 @@ function SmileFundPanel({
 
   return (
     <section
-      className="rounded-3xl p-6 md:p-7"
+      className="rounded-lg p-6 md:p-7"
       style={{
         background: c.cream,
         border: `1px solid ${c.border}`,
@@ -251,7 +253,7 @@ function SmileFundPanel({
             className="text-xs uppercase mb-2"
             style={{
               fontFamily: 'var(--font-body)',
-              color: c.brownMuted,
+              color: c.inkMuted,
               letterSpacing: '0.14em',
               fontWeight: 600,
             }}
@@ -262,7 +264,7 @@ function SmileFundPanel({
             className="text-3xl leading-none"
             style={{
               fontFamily: 'var(--font-display)',
-              color: c.brown,
+              color: c.ink,
               fontWeight: 600,
             }}
           >
@@ -272,7 +274,7 @@ function SmileFundPanel({
             className="mt-2 text-sm"
             style={{
               fontFamily: 'var(--font-body)',
-              color: c.brownSoft,
+              color: c.inkSoft,
               lineHeight: 1.5,
             }}
           >
@@ -282,7 +284,7 @@ function SmileFundPanel({
           </p>
         </div>
         <div
-          className="rounded-2xl px-3 py-2 text-center"
+          className="rounded-lg px-3 py-2 text-center"
           style={{ background: c.goldSoft, color: c.gold }}
         >
           <div
@@ -301,11 +303,11 @@ function SmileFundPanel({
         href={`/toothfairy/app/gift/${milestoneId}`}
         className="mt-6 flex w-full items-center justify-center rounded-full px-6 py-4 text-sm font-semibold"
         style={{
-          background: c.gold,
+          background: c.purple,
           color: c.cream,
           fontFamily: 'var(--font-body)',
           textDecoration: 'none',
-          boxShadow: '0 10px 26px oklch(72% 0.145 75 / 0.22)',
+          boxShadow: '0 10px 26px rgba(109, 69, 168, 0.22)',
         }}
       >
         Add a gift to the Smile Fund
@@ -315,7 +317,7 @@ function SmileFundPanel({
         className="mt-3 text-center text-xs"
         style={{
           fontFamily: 'var(--font-body)',
-          color: c.brownMuted,
+          color: c.inkMuted,
           lineHeight: 1.5,
         }}
       >
@@ -328,18 +330,18 @@ function SmileFundPanel({
 function ErrorState() {
   return (
     <div
-      className="w-full max-w-md mx-auto rounded-3xl px-8 py-16 text-center"
+      className="w-full max-w-md mx-auto rounded-lg px-8 py-16 text-center"
       style={{
         background: c.cream,
         border: '1px solid oklch(88% 0.015 75)',
         fontFamily: 'var(--font-body)',
-        color: c.brownSoft,
+        color: c.inkSoft,
       }}
     >
       <p
         style={{
           fontFamily: 'var(--font-display)',
-          color: c.brown,
+          color: c.ink,
           fontSize: '1.5rem',
           fontWeight: 500,
           marginBottom: '1rem',

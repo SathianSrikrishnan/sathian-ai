@@ -22,9 +22,10 @@ import Link from "next/link"
 const page = {
   cream: "oklch(97.5% 0.01 80)",
   creamDeep: "oklch(95% 0.015 75)",
-  ink: "oklch(30% 0.035 65)",
-  inkSoft: "oklch(42% 0.03 65)",
-  muted: "oklch(58% 0.025 65)",
+  paper: "oklch(100% 0 0 / 0.72)",
+  ink: "#11234a",
+  inkSoft: "#334260",
+  muted: "#6b7280",
   gold: "oklch(72% 0.145 75)",
   purple: "#6d45a8",
   border: "oklch(88% 0.015 75)",
@@ -195,17 +196,32 @@ export default function GiftPage() {
         fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
       }}
     >
-    <div className="max-w-lg mx-auto px-6 py-8">
-      <header className="flex items-center justify-between mb-8">
-        <div>
-          <h1
-            className="text-xl font-bold tracking-tight"
-            style={{ fontFamily: "var(--font-display), 'Alegreya', Georgia, serif" }}
+    <div className="mx-auto max-w-5xl px-5 py-8 md:py-12">
+      <header className="mb-8 flex items-center justify-between gap-4">
+        <Link href="/toothfairy" className="flex items-center gap-3 no-underline">
+          <span
+            className="flex h-10 w-10 items-center justify-center rounded-full"
+            style={{
+              background: "rgba(109, 69, 168, 0.08)",
+              color: page.purple,
+              border: `1px solid ${page.border}`,
+            }}
+            aria-hidden
           >
-            Tooth Fairy Network
-          </h1>
-          <p className="text-xs" style={{ color: page.muted }}>Add to the Smile Fund</p>
-        </div>
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+            </svg>
+          </span>
+          <div>
+            <h1
+              className="text-xl font-bold tracking-tight"
+              style={{ fontFamily: "var(--font-display), 'Alegreya', Georgia, serif", color: page.ink }}
+            >
+              Tooth Fairy Network
+            </h1>
+            <p className="text-xs" style={{ color: page.muted }}>Family gift link</p>
+          </div>
+        </Link>
         <WalletButton />
       </header>
 
@@ -223,23 +239,24 @@ export default function GiftPage() {
       )}
 
       {!pageLoading && (
-        <div className="space-y-6">
+        <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
           <div
-            className="rounded-3xl px-6 py-8 text-center"
+            className="overflow-hidden rounded-lg px-6 py-7 md:px-8"
             style={{
-              background: "oklch(100% 0 0 / 0.64)",
+              background:
+                "radial-gradient(circle at 90% 10%, rgba(216,164,60,0.18), transparent 13rem), radial-gradient(circle at 12% 0%, rgba(109,69,168,0.10), transparent 14rem), oklch(100% 0 0 / 0.70)",
               border: `1px solid ${page.border}`,
               boxShadow: "0 18px 44px oklch(30% 0.035 65 / 0.08)",
             }}
           >
             <p
-              className="text-xs uppercase mb-3"
+              className="text-xs font-black uppercase"
               style={{ color: page.gold, letterSpacing: "0.18em", fontWeight: 800 }}
             >
               Family gift link
             </p>
             <h2
-              className="text-3xl leading-none"
+              className="mt-3 text-4xl leading-tight md:text-5xl"
               style={{
                 color: page.ink,
                 fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
@@ -248,15 +265,55 @@ export default function GiftPage() {
             >
               Add to {displayChildName}&apos;s Smile Fund
             </h2>
-            <p className="text-base mt-4 leading-relaxed" style={{ color: page.inkSoft }}>
-              Someone shared a tooth fairy keepsake with you. Add a small gift
-              and become part of the story they will revisit when they are older.
+            <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
+              A tooth memory was shared with you. Add a small gift and your name
+              becomes part of the story they can revisit as they learn how little
+              things grow.
             </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
+              <div
+                className="flex min-h-48 items-center justify-center overflow-hidden rounded-lg"
+                style={{ background: page.cream, border: `1px solid ${page.border}` }}
+              >
+                {keepsakeData?.drawingUrl || keepsakeData?.smilePhotoUrl ? (
+                  <img
+                    src={keepsakeData.drawingUrl || keepsakeData.smilePhotoUrl || ""}
+                    alt={`${displayChildName}'s tooth keepsake`}
+                    className="h-full max-h-64 w-full object-cover"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full" style={{ background: "rgba(216,164,60,0.14)", color: page.gold }}>
+                      <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                      </svg>
+                    </div>
+                    <p className="mt-3 text-sm font-bold" style={{ color: page.ink }}>Keepsake preview</p>
+                    <p className="mt-1 text-xs" style={{ color: page.muted }}>Connect a wallet to load live chain details.</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  [totalEscrowed.toFixed(totalEscrowed >= 1 ? 2 : 3), "SOL saved"],
+                  [String(liveDeposits.filter(d => !d.claimed).length), "family gifts"],
+                  ["age 10", "default"],
+                ].map(([value, label]) => (
+                  <div key={label} className="rounded-lg px-3 py-4" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
+                    <p className="text-lg font-black" style={{ color: page.ink }}>{value}</p>
+                    <p className="mt-1 text-[11px]" style={{ color: page.muted }}>{label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Existing deposits */}
-          {liveDeposits.length > 0 && (
-            <div className="rounded-2xl p-4 space-y-1" style={{ background: "oklch(100% 0 0 / 0.58)", border: `1px solid ${page.border}` }}>
+          <section className="rounded-lg p-5 md:p-6" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
+            {/* Existing deposits */}
+            {liveDeposits.length > 0 && (
+            <div className="mb-5 rounded-lg p-4 space-y-1" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
               <p className="text-xs font-bold uppercase mb-2" style={{ color: page.muted, letterSpacing: "0.14em" }}>
                 {liveDeposits.length} gift{liveDeposits.length > 1 ? "s" : ""} &middot; {totalEscrowed.toFixed(2)} SOL saved
               </p>
@@ -267,12 +324,12 @@ export default function GiftPage() {
                 </div>
               ))}
             </div>
-          )}
+            )}
 
           {/* Success */}
           {success && (
-            <div className="rounded-xl p-4 text-center" style={{ background: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.3)" }}>
-              <div className="text-2xl mb-1">Saved</div>
+            <div className="mb-5 rounded-lg p-4 text-center" style={{ background: "rgba(79, 184, 145, 0.12)", border: "1px solid rgba(79, 184, 145, 0.28)" }}>
+              <div className="mb-1 text-sm font-black uppercase" style={{ color: page.ink }}>Saved</div>
               <p className="text-sm font-medium" style={{ color: C.emerald }}>{success}</p>
               <p className="text-xs mt-1" style={{ color: C.muted }}>Your gift is held in escrow on Solana.</p>
             </div>
@@ -280,7 +337,7 @@ export default function GiftPage() {
 
           {/* Connect wallet prompt */}
           {!publicKey && (
-            <div className="rounded-2xl p-5 space-y-4" style={{ background: "oklch(100% 0 0 / 0.58)", border: `1px solid ${page.border}` }}>
+            <div className="space-y-4">
               <div>
                 <p className="text-sm font-bold" style={{ color: page.ink }}>Choose a gift amount</p>
                 <div className="grid grid-cols-4 gap-2 mt-3">
@@ -289,7 +346,7 @@ export default function GiftPage() {
                       key={preset.label}
                       type="button"
                       disabled
-                      className="rounded-xl px-3 py-3 text-sm font-bold"
+                      className="rounded-lg px-3 py-3 text-sm font-bold"
                       style={{
                         background: page.cream,
                         border: `1px solid ${page.border}`,
@@ -302,8 +359,8 @@ export default function GiftPage() {
                 </div>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                Card checkout is the next integration. For this local preview,
-                the live contribution path uses Phantom and SOL.
+                Card checkout is the next integration. For this preview, the
+                live contribution path uses Phantom and SOL.
               </p>
               <button onClick={() => setVisible(true)} className="w-full px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
                 Continue with Phantom preview
@@ -313,7 +370,7 @@ export default function GiftPage() {
 
           {/* Deposit form */}
           {publicKey && childProfilePda && (
-            <div className="rounded-2xl p-5 space-y-4" style={{ background: "oklch(100% 0 0 / 0.58)", border: `1px solid ${page.border}` }}>
+            <div className="space-y-4">
               <p className="text-sm font-bold">Add your gift for {displayChildName}</p>
               <div className="grid grid-cols-4 gap-2">
                 {amountPresets.map((preset) => (
@@ -321,7 +378,7 @@ export default function GiftPage() {
                     key={preset.label}
                     type="button"
                     onClick={() => setDepositAmount(preset.amount)}
-                    className="rounded-xl px-3 py-3 text-sm font-bold"
+                    className="rounded-lg px-3 py-3 text-sm font-bold"
                     style={{
                       background: depositAmount === preset.amount ? page.gold : page.cream,
                       border: `1px solid ${depositAmount === preset.amount ? page.gold : page.border}`,
@@ -362,8 +419,8 @@ export default function GiftPage() {
 
               {/* Early withdrawal warning */}
               {lockChoice === "ageTen" && (
-                <div className="rounded-lg p-3" style={{ background: "rgba(244,63,94,0.06)", border: "1px solid rgba(244,63,94,0.15)" }}>
-                  <p className="text-xs" style={{ color: "rgba(244,63,94,0.8)" }}>
+                <div className="rounded-lg p-3" style={{ background: "rgba(216,164,60,0.10)", border: "1px solid rgba(216,164,60,0.24)" }}>
+                  <p className="text-xs" style={{ color: page.inkSoft }}>
                     Funds will be locked in a smart contract until the suggested age 10 date. Early withdrawal terms should be confirmed before broad launch.
                   </p>
                 </div>
@@ -389,6 +446,7 @@ export default function GiftPage() {
           <div className="text-center pt-2">
             <Link href="/toothfairy" className="text-xs underline" style={{ color: page.muted }}>What is Tooth Fairy Network?</Link>
           </div>
+          </section>
         </div>
       )}
 

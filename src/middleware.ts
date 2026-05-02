@@ -39,8 +39,12 @@ export async function middleware(request: NextRequest) {
   // Captures the response so auth cookies propagate through domain rewrites.
   const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
   const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
+  const hasSupabaseConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
   let supabaseResponse: NextResponse | null = null
-  if (isTfnApp || isTfnApi) {
+  if ((isTfnApp || isTfnApi) && hasSupabaseConfig) {
     supabaseResponse = await updateSupabaseSession(request)
   }
 

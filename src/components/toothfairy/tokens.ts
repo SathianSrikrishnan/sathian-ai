@@ -12,9 +12,10 @@
 const _cream = "#FBF7EE"      // oklch(97.5% 0.01 80)
 const _creamDeep = "#F5EFE2"  // oklch(95% 0.015 75)
 const _creamAlt = "#EFE7D4"   // oklch(91% 0.02 75)
-const _brown = "#4B3A20"      // oklch(30% 0.035 65)
-const _brownSoft = "#6B5637"  // oklch(42% 0.03 65)
-const _brownMuted = "#9A8363" // oklch(58% 0.025 65)
+const _ink = "#11234A"
+const _inkSoft = "#334260"
+const _inkMuted = "#6B7280"
+const _purple = "#6D45A8"
 const _gold = "#D8A43C"       // oklch(72% 0.145 75)
 const _goldDark = "#B6871F"   // oklch(62% 0.13 72)
 const _goldLight = "#EFCF7C"  // oklch(82% 0.1 78)
@@ -32,11 +33,11 @@ export const C = {
   bgSecondary: _creamDeep,
 
   // Text — brown hierarchy replacing moonlight whites
-  text: _brown,
-  textWarm: _brown,
-  muted: _brownSoft,
-  dim: _brownMuted,
-  softGrey: _brownMuted,
+  text: _ink,
+  textWarm: _ink,
+  muted: _inkSoft,
+  dim: _inkMuted,
+  softGrey: _inkMuted,
 
   // Primary: Fairy Gold (unchanged role, unified hex)
   gold: _gold,
@@ -72,7 +73,7 @@ export const C = {
   errorContainer: "#F7E4DC",
 
   // Legacy aliases (existing /app page.tsx reads C.rose for the primary CTA)
-  rose: _gold,
+  rose: _purple,
   cyan: _goldLight,
   amber: _goldLight,
   emerald: _goldDark,

@@ -26,7 +26,7 @@ const timmy = {
     { name: 'Mom & Dad', amount: 0.1, locked: false },
   ],
   message:
-    "One of the brightest teeth I\u2019ve ever carried. Your drawing made it glow even brighter. I\u2019m keeping it safe on the chain \u2014 forever, like you asked. \u2014Tanda",
+    "One of the brightest teeth I\u2019ve ever carried. Your drawing made it glow even brighter. I\u2019m keeping this memory safe until you are ready to learn what it can become. \u2014Tanda",
 };
 
 export default function KeepsakePreviewPage() {
@@ -53,7 +53,7 @@ export default function KeepsakePreviewPage() {
             className="text-base sm:text-lg leading-[1.75] mx-auto"
             style={{ color: c.brownSoft, maxWidth: '42ch' }}
           >
-            A permanent keepsake. His drawing, his story, his family&rsquo;s love &mdash; all in one place. Still there when he&rsquo;s eighteen.
+            A permanent keepsake. His drawing, his story, his family&rsquo;s love &mdash; all in one place. Still there when he reaches the age-10 milestone.
           </p>
         </header>
 
@@ -85,7 +85,7 @@ export default function KeepsakePreviewPage() {
         style={{ borderTop: `1px solid ${c.border}`, background: c.cream }}
       >
         <p className="text-sm max-w-md mx-auto" style={{ color: c.brownMuted }}>
-          Your child&rsquo;s keepsake will be theirs forever. You hold the keys.
+          Your child&rsquo;s keepsake can become their first lesson in ownership. You stay in control while they grow into it.
         </p>
       </footer>
     </main>

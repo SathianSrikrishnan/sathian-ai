@@ -69,11 +69,11 @@ export const THEME_PALETTES: Record<ThemeMode, Record<string, string>> = {
   parent: {
     "--tfn-surface": "oklch(97.5% 0.01 80)",    // cream
     "--tfn-surface-alt": "oklch(95% 0.015 75)", // cream deep
-    "--tfn-ink": "oklch(30% 0.035 65)",         // warm brown
-    "--tfn-ink-soft": "oklch(42% 0.03 65)",
-    "--tfn-ink-muted": "oklch(58% 0.025 65)",
+    "--tfn-ink": "#11234a",
+    "--tfn-ink-soft": "#334260",
+    "--tfn-ink-muted": "#6b7280",
     "--tfn-border": "oklch(88% 0.015 75)",
-    "--tfn-accent-soft": "oklch(72% 0.145 75 / 0.1)",
+    "--tfn-accent-soft": "rgba(109, 69, 168, 0.09)",
     "--tfn-gold": "oklch(72% 0.145 75)",
     "--tfn-gold-hover": "oklch(62% 0.13 72)",
     "--tfn-gold-soft": "oklch(72% 0.145 75 / 0.15)",
@@ -81,11 +81,11 @@ export const THEME_PALETTES: Record<ThemeMode, Record<string, string>> = {
   child: {
     "--tfn-surface": "oklch(95% 0.015 75)",     // cream deep — cozier
     "--tfn-surface-alt": "oklch(91% 0.02 75)",  // cream alt
-    "--tfn-ink": "oklch(30% 0.035 65)",
-    "--tfn-ink-soft": "oklch(42% 0.03 65)",
-    "--tfn-ink-muted": "oklch(58% 0.025 65)",
+    "--tfn-ink": "#11234a",
+    "--tfn-ink-soft": "#334260",
+    "--tfn-ink-muted": "#6b7280",
     "--tfn-border": "oklch(86% 0.02 75)",
-    "--tfn-accent-soft": "oklch(72% 0.145 75 / 0.15)",
+    "--tfn-accent-soft": "rgba(109, 69, 168, 0.1)",
     "--tfn-gold": "oklch(72% 0.145 75)",
     "--tfn-gold-hover": "oklch(62% 0.13 72)",
     "--tfn-gold-soft": "oklch(72% 0.145 75 / 0.15)",

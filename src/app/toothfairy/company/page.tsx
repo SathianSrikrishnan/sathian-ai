@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
-export default function NetworkAboutPage() {
+export default function CompanyPage() {
   redirect("/toothfairy/about")
 }

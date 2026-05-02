@@ -42,6 +42,11 @@ const LATEST_ENHANCED_KEY = "toothfairy-latest-enhanced"
 const LATEST_TRADITION_KEY = "toothfairy-latest-tradition"
 
 const SPRING = "cubic-bezier(0.16, 1, 0.3, 1)"
+const FIAT_ONRAMP_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_FIAT_ONRAMP === "true"
+const HAS_SUPABASE_CONFIG = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false)
@@ -140,7 +145,7 @@ function PaperCard({
 }) {
   return (
     <div
-      className={`rounded-[22px] ${padded ? "p-6 md:p-8" : ""} ${className}`}
+      className={`rounded-lg ${padded ? "p-6 md:p-8" : ""} ${className}`}
       style={{
         background: "var(--tfn-surface-alt)",
         border: "1px solid var(--tfn-border)",
@@ -351,14 +356,22 @@ export default function ToothFairyApp() {
   // Auth state
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "true"
   const [isAuthenticated, setIsAuthenticated] = useState(isTestMode)
-  const [authLoading, setAuthLoading] = useState(!isTestMode)
+  const [authLoading, setAuthLoading] = useState(!isTestMode && HAS_SUPABASE_CONFIG)
   const [authEmail, setAuthEmail] = useState<string | null>(
     isTestMode ? "test@example.com" : null
   )
-  const supabase = useMemo(() => createBrowserSupabase(), [])
+  const supabase = useMemo(
+    () => (HAS_SUPABASE_CONFIG ? createBrowserSupabase() : null),
+    []
+  )
 
   useEffect(() => {
     if (isTestMode) return
+    if (!supabase) {
+      setAuthLoading(false)
+      setIsAuthenticated(false)
+      return
+    }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session?.user)
       setAuthEmail(session?.user?.email ?? null)
@@ -397,7 +410,7 @@ export default function ToothFairyApp() {
   const [escrowInfo, setEscrowInfo] = useState<{ childProfilePda: string; milestonePda: string } | null>(null)
   const [depositSuccess, setDepositSuccess] = useState<string | null>(null)
 
-  // Card payment state (Coinbase Onramp)
+  // Card payment state (legacy onramp is gated until the Stripe/Crossmint rail is ready)
   const [cardPaymentLoading, setCardPaymentLoading] = useState(false)
   const [onrampWindow, setOnrampWindow] = useState<Window | null>(null)
   const [awaitingCardDeposit, setAwaitingCardDeposit] = useState(false)
@@ -481,6 +494,10 @@ export default function ToothFairyApp() {
   }, [clearAllFlowKeys, router])
 
   const handleGoogleSignIn = useCallback(() => {
+    if (!HAS_SUPABASE_CONFIG) {
+      setError("Minting login is not connected in this preview yet. Add Supabase preview env vars before testing a real mint.")
+      return
+    }
     saveFlowState()
     const hostname = typeof window !== "undefined" ? window.location.hostname : "toothfairy.network"
     const isTfnDomain = hostname === "toothfairy.network" || hostname === "www.toothfairy.network"
@@ -539,6 +556,10 @@ export default function ToothFairyApp() {
   // ── Server-Side Mint ──
   const handleServerMint = async () => {
     if (!isTestMode) {
+      if (!supabase) {
+        setError("Minting infrastructure is not connected in this preview yet. Add Supabase preview env vars, then run the health check.")
+        return
+      }
       const { data: { session } } = await supabase.auth.getSession()
       if (!session?.user) {
         setError("Your session expired. Please sign in again to continue.")
@@ -653,9 +674,13 @@ export default function ToothFairyApp() {
     }
   }
 
-  // ── Card Payment (Coinbase Onramp) ──
+  // ── Card Payment (fiat onramp) ──
   const handleCardPayment = async () => {
     if (!escrowInfo) return
+    if (!FIAT_ONRAMP_ENABLED) {
+      setError("Card gifts are being connected for preview. Use a Solana wallet gift for this build.")
+      return
+    }
     setError(null); setCardPaymentLoading(true)
 
     try {
@@ -841,7 +866,7 @@ export default function ToothFairyApp() {
         {/* Error banner */}
         {error && (
           <div
-            className="mb-8 rounded-[18px] px-5 py-4 text-sm flex items-start justify-between gap-4"
+            className="mb-8 rounded-lg px-5 py-4 text-sm flex items-start justify-between gap-4"
             style={{
               background: "oklch(95% 0.025 30 / 0.6)",
               border: "1px solid oklch(82% 0.08 30 / 0.4)",
@@ -867,8 +892,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Begin</Eyebrow>
               </div>
               <StepTitle
-                title="Start their first tooth memory."
-                subtitle="In a few minutes you can turn one lost tooth into a keepsake, a family gift link, and a small age-10 money lesson."
+                title="Mint their first memory."
+                subtitle="A lost tooth becomes a keepsake, a family gift link, and a first savings lesson by age 10."
               />
             </div>
 
@@ -966,7 +991,7 @@ export default function ToothFairyApp() {
               onClick={() => setStep("create")}
               disabled={!childName.trim() || !childDob}
             >
-              Begin the memory
+              Start the keepsake
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
@@ -982,8 +1007,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>The portrait</Eyebrow>
               </div>
               <StepTitle
-                title="Make the memory."
-                subtitle="Add the tooth photo, drawing, and note. This becomes the keepsake your family can receive."
+                title="Make the keepsake."
+                subtitle="Add the tooth photo, a drawing, and a short note. This is the moment your family will see first."
               />
             </div>
 
@@ -1021,7 +1046,7 @@ export default function ToothFairyApp() {
                   <img
                     src={photo}
                     alt="Preview"
-                    className="w-24 h-24 rounded-2xl object-cover"
+                    className="w-24 h-24 rounded-lg object-cover"
                     style={{ border: "1px solid var(--tfn-border)" }}
                   />
                   <button
@@ -1056,7 +1081,7 @@ export default function ToothFairyApp() {
                   placeholder={childName ? `Something ${childName} will read when they're older...` : "Something they will read when they're older..."}
                   maxLength={500}
                   spellCheck={false}
-                  className="w-full rounded-[14px] px-4 py-3 text-base outline-none resize-none"
+                    className="w-full rounded-lg px-4 py-3 text-base outline-none resize-none"
                   style={{
                     background: "var(--tfn-surface)",
                     border: "1px solid var(--tfn-border)",
@@ -1108,7 +1133,7 @@ export default function ToothFairyApp() {
               </div>
               <StepTitle
                 title={childName ? `${childName}'s keepsake` : "The keepsake"}
-                subtitle="This becomes the shareable family page: keepsake first, Smile Fund second, blockchain quietly underneath."
+                subtitle="This becomes the shareable family page: memory first, Smile Fund second, blockchain quietly underneath."
               />
             </div>
 
@@ -1116,7 +1141,7 @@ export default function ToothFairyApp() {
             {previewImage && (
               <div className="flex justify-center">
                 <div
-                  className="relative w-full max-w-[280px] aspect-[9/12] rounded-[22px] overflow-hidden"
+                  className="relative w-full max-w-[280px] aspect-[9/12] rounded-lg overflow-hidden"
                   style={{
                     boxShadow: "0 24px 60px oklch(30% 0.035 65 / 0.18), 0 4px 12px oklch(30% 0.035 65 / 0.10)",
                   }}
@@ -1212,6 +1237,18 @@ export default function ToothFairyApp() {
                   <div className="h-3 w-40 mx-auto rounded" style={{ background: "var(--tfn-border)" }} />
                   <div className="h-10 w-48 mx-auto rounded-full" style={{ background: "var(--tfn-border)" }} />
                 </div>
+              ) : !HAS_SUPABASE_CONFIG && !isTestMode ? (
+                <>
+                  <p
+                    className="text-lg"
+                    style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
+                  >
+                    Minting preview not connected yet.
+                  </p>
+                  <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
+                    Add the Supabase preview environment variables, then run the health check before testing a real keepsake.
+                  </p>
+                </>
               ) : !isAuthenticated ? (
                 <>
                   <p
@@ -1256,7 +1293,7 @@ export default function ToothFairyApp() {
                     Signed in as {authEmail || ""}
                   </div>
                   <GoldCTA onClick={handleServerMint}>
-                    Save {childName ? `${childName}'s` : "the"} creation
+                    Save the keepsake
                   </GoldCTA>
                   <p className="text-xs" style={{ color: "var(--tfn-ink-muted)" }}>
                     Free. We handle the rest.
@@ -1284,7 +1321,7 @@ export default function ToothFairyApp() {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-24 h-24 rounded-[18px] object-cover"
+                  className="w-24 h-24 rounded-lg object-cover"
                   style={{ border: "1px solid var(--tfn-border)", boxShadow: "0 6px 20px oklch(72% 0.145 75 / 0.20)" }}
                 />
               </div>
@@ -1310,8 +1347,8 @@ export default function ToothFairyApp() {
               </h3>
               <div className="space-y-2">
                 {[
-                  { label: "Creating & saving", value: "Free" },
-                    { label: "Network maintenance", value: "Tiny network cost" },
+                  { label: "Create the keepsake", value: "Free" },
+                  { label: "Network cost", value: "Small Solana fee" },
                   { label: "Current contract fee", value: "2%" },
                 ].map(({ label, value }) => (
                   <div
@@ -1344,7 +1381,7 @@ export default function ToothFairyApp() {
                         key={opt.id}
                         type="button"
                         onClick={() => setLockChoice(opt.id)}
-                        className="w-full flex items-center justify-between px-5 py-3.5 rounded-[14px] text-sm transition-colors"
+                        className="w-full flex items-center justify-between px-5 py-3.5 rounded-lg text-sm transition-colors"
                         style={{
                           background: active ? "var(--tfn-gold-soft)" : "transparent",
                           border: `1.5px solid ${active ? "var(--tfn-gold)" : "var(--tfn-border)"}`,
@@ -1422,7 +1459,7 @@ export default function ToothFairyApp() {
                         key={sol}
                         type="button"
                         onClick={() => setDepositAmount(sol)}
-                        className="py-3 rounded-[14px] text-sm font-medium flex flex-col items-center transition-colors"
+                        className="py-3 rounded-lg text-sm font-medium flex flex-col items-center transition-colors"
                         style={{
                           background: active ? "var(--tfn-gold-soft)" : "transparent",
                           border: `1.5px solid ${active ? "var(--tfn-gold)" : "var(--tfn-border)"}`,
@@ -1477,20 +1514,22 @@ export default function ToothFairyApp() {
 
             {/* Actions */}
             <div className="space-y-3">
-              <GoldCTA
-                onClick={handleCardPayment}
-                disabled={cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
-              >
-                {cardPaymentLoading
-                  ? "Opening payment..."
-                  : awaitingCardDeposit
-                    ? "Waiting for payment..."
-                    : (
-                      <>
+                <GoldCTA
+                 onClick={handleCardPayment}
+                 disabled={!FIAT_ONRAMP_ENABLED || cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
+                >
+                 {cardPaymentLoading
+                   ? "Opening payment..."
+                   : awaitingCardDeposit
+                     ? "Waiting for payment..."
+                     : !FIAT_ONRAMP_ENABLED
+                       ? "Card gifts connecting next"
+                      : (
+                        <>
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                         </svg>
-                        Pay with card
+                        Add a card gift
                       </>
                     )}
               </GoldCTA>
@@ -1518,7 +1557,7 @@ export default function ToothFairyApp() {
                 style={{ color: "var(--tfn-ink-muted)" }}
                 aria-label="Skip deposit for now"
               >
-                Skip - share the keepsake first
+                Skip for now and share the keepsake
               </button>
             </div>
           </div>
@@ -1600,7 +1639,7 @@ export default function ToothFairyApp() {
               </div>
               <StepTitle
                 title={childName ? `${childName}'s keepsake is live.` : "The keepsake is live."}
-                subtitle={`Permanently stored on the Tooth Fairy Network. When ${childName || "they're"} your age, this will still be here.`}
+                subtitle={`Saved on the Tooth Fairy Network. When ${childName || "they're"} older, this can become their first lesson in ownership.`}
               />
             </div>
 
@@ -1609,7 +1648,7 @@ export default function ToothFairyApp() {
                 <img
                   src={previewImage}
                   alt="Keepsake"
-                  className="w-48 h-48 rounded-[22px] object-cover"
+                  className="w-48 h-48 rounded-lg object-cover"
                   style={{
                     border: "1px solid var(--tfn-gold)",
                     boxShadow: "0 24px 60px oklch(72% 0.145 75 / 0.25)",
@@ -1669,7 +1708,7 @@ export default function ToothFairyApp() {
                   className="underline"
                   style={{ color: "var(--tfn-gold)" }}
                 >
-                  View on blockchain →
+                  View on blockchain {"->"}
                 </a>
               </p>
             )}

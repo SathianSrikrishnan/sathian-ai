@@ -38,9 +38,9 @@ const page = {
   cream: "oklch(97.5% 0.01 80)",
   creamDeep: "oklch(95% 0.015 75)",
   paper: "oklch(100% 0 0 / 0.62)",
-  ink: "oklch(30% 0.035 65)",
-  inkSoft: "oklch(42% 0.03 65)",
-  muted: "oklch(58% 0.025 65)",
+  ink: "#11234a",
+  inkSoft: "#334260",
+  muted: "#6b7280",
   gold: "oklch(72% 0.145 75)",
   purple: "#6d45a8",
   border: "oklch(88% 0.015 75)",
@@ -161,10 +161,10 @@ export default function WalletDashboard() {
     >
       <div className="mx-auto w-full max-w-5xl">
       <header
-        className="mb-8 overflow-hidden rounded-3xl px-6 py-7 md:px-8"
+        className="mb-8 overflow-hidden rounded-lg px-6 py-7 md:px-8"
         style={{
           background:
-            "radial-gradient(circle at 86% 12%, oklch(72% 0.145 75 / 0.18), transparent 16rem), oklch(100% 0 0 / 0.62)",
+            "radial-gradient(circle at 86% 12%, rgba(216,164,60,0.18), transparent 16rem), radial-gradient(circle at 6% 0%, rgba(109,69,168,0.09), transparent 14rem), oklch(100% 0 0 / 0.68)",
           border: `1px solid ${page.border}`,
           boxShadow: "0 24px 70px oklch(30% 0.035 65 / 0.08)",
         }}
@@ -225,9 +225,9 @@ export default function WalletDashboard() {
               <Link
                 key={child.child_slug}
                 href={`/tooth/${child.child_slug}`}
-                className="block rounded-xl p-4 transition-all hover:translate-y-[-1px]"
+                className="block rounded-lg p-4 transition-all hover:translate-y-[-1px]"
                 style={{
-                  background: "rgba(22,36,71,0.7)",
+                  background: "oklch(100% 0 0 / 0.68)",
                   border: `1px solid ${C.border}`,
                 }}
               >
@@ -246,7 +246,7 @@ export default function WalletDashboard() {
                     </p>
                   </div>
                   {child.is_server_guardian && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(79,209,197,0.1)", color: C.teal, border: "1px solid rgba(79,209,197,0.2)" }}>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(109,69,168,0.08)", color: page.purple, border: "1px solid rgba(109,69,168,0.18)" }}>
                       Unclaimed
                     </span>
                   )}
@@ -261,7 +261,7 @@ export default function WalletDashboard() {
       {!publicKey && supabaseChildren.length === 0 && (
         <section className="grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
           <div
-            className="rounded-3xl p-6 md:p-8"
+            className="rounded-lg p-6 md:p-8"
             style={{ background: page.paper, border: `1px solid ${page.border}` }}
           >
             <p
@@ -295,13 +295,13 @@ export default function WalletDashboard() {
           </div>
 
           <div
-            className="rounded-3xl p-5"
+            className="rounded-lg p-5"
             style={{
               background: "linear-gradient(145deg, oklch(100% 0 0 / 0.68), oklch(96% 0.018 75 / 0.72))",
               border: `1px solid ${page.border}`,
             }}
           >
-            <div className="rounded-2xl p-5" style={{ background: page.cream }}>
+            <div className="rounded-lg p-5" style={{ background: page.cream }}>
               <p className="text-sm font-bold" style={{ color: page.ink }}>Little Smile Fund</p>
               <p className="mt-1 text-xs" style={{ color: page.muted }}>Preview balance</p>
               <div className="mt-5 text-4xl font-black" style={{ color: page.ink }}>
@@ -325,7 +325,7 @@ export default function WalletDashboard() {
                   ["23", "gifts"],
                   ["age 10", "default"],
                 ].map(([value, label]) => (
-                  <div key={label} className="rounded-xl py-3" style={{ background: "oklch(100% 0 0 / 0.58)" }}>
+                  <div key={label} className="rounded-lg py-3" style={{ background: "oklch(100% 0 0 / 0.58)" }}>
                     <p className="text-sm font-bold">{value}</p>
                     <p className="text-[11px]" style={{ color: page.muted }}>{label}</p>
                   </div>
@@ -344,7 +344,7 @@ export default function WalletDashboard() {
 
       {/* Empty state */}
       {publicKey && !loading && profiles.length === 0 && (
-        <div className="rounded-3xl px-6 py-16 text-center" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
+          <div className="rounded-lg px-6 py-16 text-center" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold" style={{ background: "oklch(72% 0.145 75 / 0.14)", color: page.gold }}>TFN</div>
           <h2 className="text-2xl font-bold">No Smile Fund yet</h2>
           <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Mint the first tooth memory to create the keepsake, the family gift link, and the parent dashboard.</p>
@@ -368,8 +368,8 @@ export default function WalletDashboard() {
                     className="px-4 py-2 rounded-lg text-sm"
                     style={{
                       background: i === activeChild ? "rgba(171, 159, 242, 0.15)" : C.surface,
-                      border: `2px solid ${i === activeChild ? "#F0C456" : C.border}`,
-                      color: i === activeChild ? "#F0C456" : C.muted,
+                      border: `2px solid ${i === activeChild ? page.gold : C.border}`,
+                      color: i === activeChild ? page.gold : C.muted,
                     }}>
                     {label}
                   </button>
@@ -379,18 +379,22 @@ export default function WalletDashboard() {
           )}
 
           {/* ── Wallet Card ── */}
-          <div className="rounded-2xl p-6 space-y-5" style={{ background: "linear-gradient(135deg, rgba(240,196,86,0.1) 0%, rgba(16,185,129,0.05) 100%)", border: `1px solid rgba(240,196,86,0.2)` }}>
+          <div className="rounded-lg p-6 space-y-5" style={{ background: "linear-gradient(135deg, rgba(216,164,60,0.12) 0%, rgba(109,69,168,0.08) 100%)", border: `1px solid ${page.border}`, boxShadow: "0 18px 44px oklch(30% 0.035 65 / 0.08)" }}>
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold">{activeProfile.childName}&apos;s Smile Fund</h2>
                 <p className="text-xs mt-0.5" style={{ color: C.dim }}>Tooth memories and family savings</p>
               </div>
-              <div className="w-9 h-9 rounded-full" style={{ background: "linear-gradient(135deg, #f43f5e, #F0C456)" }} />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(109,69,168,0.10)", color: page.purple }}>
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6}>
+                  <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                </svg>
+              </div>
             </div>
 
             {/* Balance */}
             <div className="text-center py-4">
-              <div className="text-4xl font-bold" style={{ color: "#F0C456" }}>
+              <div className="text-4xl font-bold" style={{ color: page.ink }}>
                 {totalEscrowed.toFixed(4)} <span className="text-lg font-normal">SOL</span>
               </div>
               <p className="text-sm mt-1 font-mono" style={{ color: C.muted }}>
@@ -404,25 +408,25 @@ export default function WalletDashboard() {
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{milestones.length}</div>
                 <div className="text-xs" style={{ color: C.muted }}>Teeth</div>
               </div>
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{claimableDeposits.reduce((s, d) => s + d.amountSol, 0).toFixed(2)}</div>
                 <div className="text-xs" style={{ color: C.emerald }}>Available SOL</div>
               </div>
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{lockedDeposits.reduce((s, d) => s + d.amountSol, 0).toFixed(2)}</div>
-                <div className="text-xs" style={{ color: "#F0C456" }}>Locked SOL</div>
+                <div className="text-xs" style={{ color: page.gold }}>Locked SOL</div>
               </div>
             </div>
           </div>
 
           {/* ── Available Deposits ── */}
           {claimableDeposits.length > 0 && (
-            <div className="rounded-xl p-4 space-y-3" style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
-              <h3 className="text-sm font-medium" style={{ color: C.emerald }}>
+            <div className="rounded-lg p-4 space-y-3" style={{ background: "rgba(79,184,145,0.08)", border: "1px solid rgba(79,184,145,0.22)" }}>
+              <h3 className="text-sm font-medium" style={{ color: page.ink }}>
                 Available Savings
               </h3>
               {claimableDeposits.map(d => {
@@ -439,7 +443,7 @@ export default function WalletDashboard() {
                       onClick={() => milestone && handleClaim(milestone.pda, d.pda)}
                       disabled={claimingPda === d.pda}
                       className="text-xs px-3 py-1.5 rounded-full font-medium transition-all hover:opacity-80 disabled:opacity-50"
-                      style={{ background: "rgba(20,241,149,0.15)", color: C.emerald }}
+                      style={{ background: "rgba(79,184,145,0.15)", color: "#2f7d62" }}
                     >
                       {claimingPda === d.pda ? "Claiming..." : "Withdraw"}
                     </button>
@@ -454,8 +458,8 @@ export default function WalletDashboard() {
 
           {/* ── Locked Savings ── */}
           {lockedDeposits.length > 0 && (
-            <div className="rounded-xl p-4 space-y-3" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
-              <h3 className="text-sm font-medium" style={{ color: "#F0C456" }}>
+            <div className="rounded-lg p-4 space-y-3" style={{ background: page.paper, border: `1px solid ${C.border}` }}>
+              <h3 className="text-sm font-medium" style={{ color: page.ink }}>
                 Locked Savings
               </h3>
               {lockedDeposits.map(d => (
@@ -487,18 +491,26 @@ export default function WalletDashboard() {
                 const deps = allDeposits.get(m.pda) || []
                 const total = deps.reduce((s, d) => s + (d.claimed ? 0 : d.amountSol), 0)
                 return (
-                  <div key={m.pda} className="rounded-xl p-3 text-center" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
-                    <div className="text-lg">T</div>
+                  <div key={m.pda} className="rounded-lg p-3 text-center" style={{ background: page.paper, border: `1px solid ${C.border}` }}>
+                    <div className="mx-auto flex h-6 w-6 items-center justify-center" style={{ color: page.gold }} aria-hidden>
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                        <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                      </svg>
+                    </div>
                     <div className="text-xs font-medium mt-1">#{m.milestoneIndex + 1}</div>
-                    {total > 0 && <div className="text-xs font-mono mt-0.5" style={{ color: "#F0C456" }}>{total.toFixed(2)}</div>}
+                    {total > 0 && <div className="text-xs font-mono mt-0.5" style={{ color: page.gold }}>{total.toFixed(2)}</div>}
                   </div>
                 )
               })}
               {/* Empty slots */}
               {Array.from({ length: Math.max(0, 4 - milestones.length) }).map((_, i) => (
-                <div key={`empty-${i}`} className="rounded-xl p-3 text-center opacity-20" style={{ background: C.surface, border: `1px dashed ${C.border}` }}>
-                  <div className="text-lg">T</div>
-                  <div className="text-xs mt-1">-</div>
+                <div key={`empty-${i}`} className="rounded-lg p-3 text-center opacity-40" style={{ background: page.paper, border: `1px dashed ${C.border}` }}>
+                  <div className="mx-auto flex h-6 w-6 items-center justify-center" style={{ color: page.muted }} aria-hidden>
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                      <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                    </svg>
+                  </div>
+                  <div className="text-xs mt-1">open</div>
                 </div>
               ))}
             </div>
@@ -528,14 +540,14 @@ export default function WalletDashboard() {
                   .then(() => alert("Family link copied! Anyone with this link can view the keepsake and add to the Smile Fund."))
                   .catch(() => prompt("Copy this link:", url))
               }}
-              className="w-full px-4 py-3 rounded-xl text-sm font-medium"
-              style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.muted }}
+              className="w-full px-4 py-3 rounded-lg text-sm font-medium"
+              style={{ background: page.paper, border: `1px solid ${C.border}`, color: page.inkSoft }}
             >
               Share {activeProfile.childName}&apos;s Smile Fund with family
             </button>
             <Link href="/toothfairy/app"
-              className="block w-full px-4 py-3 rounded-xl text-sm font-medium text-white text-center"
-              style={{ background: C.rose }}>
+              className="block w-full px-4 py-3 rounded-lg text-sm font-medium text-white text-center"
+              style={{ background: page.purple }}>
               Record Another Tooth
             </Link>
           </div>
