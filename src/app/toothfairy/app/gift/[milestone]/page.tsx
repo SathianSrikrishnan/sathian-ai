@@ -5,6 +5,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react"
 import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { AnchorProvider } from "@coral-xyz/anchor"
 import { PublicKey } from "@solana/web3.js"
+import { PhantomWalletName } from "@solana/wallet-adapter-phantom"
 import { useParams } from "next/navigation"
 import {
   getEscrowProgram,
@@ -46,7 +47,15 @@ export default function GiftPage() {
   const params = useParams()
   const milestonePda = params.milestone as string
 
-  const { publicKey, signTransaction, signAllTransactions } = useWallet()
+  const {
+    publicKey,
+    signTransaction,
+    signAllTransactions,
+    select,
+    connect,
+    connecting,
+    wallet,
+  } = useWallet()
   const { connection } = useConnection()
   const { setVisible } = useWalletModal()
 
@@ -61,6 +70,8 @@ export default function GiftPage() {
   const [keepsakeData, setKeepsakeData] = useState<KeepsakeData | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [walletConnectError, setWalletConnectError] = useState<string | null>(null)
+  const [connectIntent, setConnectIntent] = useState(false)
   const [pageLoading, setPageLoading] = useState(true)
 
   const anchorProvider = useMemo(() => {
@@ -116,6 +127,50 @@ export default function GiftPage() {
     if (anchorProvider) return // already loading with wallet
     setPageLoading(false)
   }, [anchorProvider])
+
+  useEffect(() => {
+    if (!connectIntent || publicKey || connecting) return
+
+    if (!wallet) {
+      select(PhantomWalletName)
+      setVisible(true)
+      return
+    }
+
+    let cancelled = false
+    ;(async () => {
+      try {
+        await connect()
+        if (!cancelled) {
+          setConnectIntent(false)
+          setWalletConnectError(null)
+        }
+      } catch {
+        if (!cancelled) {
+          setConnectIntent(false)
+          setWalletConnectError(
+            "Phantom opened but did not finish connecting. Unlock Phantom, approve toothfairy.network, then try again."
+          )
+          setVisible(true)
+        }
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [connect, connectIntent, connecting, publicKey, select, setVisible, wallet])
+
+  useEffect(() => {
+    if (!connectIntent || publicKey) return
+    const timer = window.setTimeout(() => {
+      setConnectIntent(false)
+      setWalletConnectError(
+        "Wallet connection timed out. Open Phantom, unlock it, then try again."
+      )
+    }, 30000)
+    return () => window.clearTimeout(timer)
+  }, [connectIntent, publicKey])
 
   const handleDeposit = async () => {
     if (!publicKey || !anchorProvider || !childProfilePda) return
@@ -191,6 +246,16 @@ export default function GiftPage() {
       ? deposits.reduce((s, d) => s + (d.claimed ? 0 : d.amountSol), 0)
       : keepsakeData?.totalEscrowed || 0
   const giftVerb = lockChoice === "ageTen" ? "Save" : "Gift"
+
+  const requestWalletConnection = () => {
+    setError(null)
+    setWalletConnectError(null)
+    setConnectIntent(true)
+    if (!wallet) {
+      select(PhantomWalletName)
+      setVisible(true)
+    }
+  }
 
   return (
     <div
@@ -384,9 +449,20 @@ export default function GiftPage() {
                   Solana wallet gifts are available for controlled live testing.
                 </p>
               </div>
-              <button onClick={() => setVisible(true)} className="w-full px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}>
-                Use a Solana wallet
+              <button
+                type="button"
+                onClick={requestWalletConnection}
+                disabled={connecting || connectIntent}
+                className="w-full rounded-full px-6 py-3 text-sm font-bold text-white disabled:opacity-60"
+                style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}
+              >
+                {connecting || connectIntent ? "Connecting wallet..." : "Use a Solana wallet"}
               </button>
+              {walletConnectError && (
+                <p className="text-center text-xs leading-relaxed" style={{ color: C.rose }}>
+                  {walletConnectError}
+                </p>
+              )}
               <Link href={`/toothfairy/keepsake/${milestonePda}`} className="block text-center text-xs underline" style={{ color: page.muted }}>
                 Back to the keepsake
               </Link>

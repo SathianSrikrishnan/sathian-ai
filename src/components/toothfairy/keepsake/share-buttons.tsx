@@ -76,6 +76,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -86,15 +87,31 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     setCanNativeShare(
       typeof navigator !== 'undefined' && typeof navigator.share === 'function'
     );
+    setCurrentUrl(window.location.href);
   }, []);
 
+  const resolvedUrl = keepsakeUrl || currentUrl;
   const shareText = `${childName}'s tooth fairy keepsake and Smile Fund`;
-  const shareBody = `${shareText} ${keepsakeUrl}`;
+  const shareBody = `${shareText} ${resolvedUrl}`;
+  const shareLinks = {
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(shareBody)}`,
+    sms: `sms:?body=${encodeURIComponent(shareBody)}`,
+    email: `mailto:?subject=${encodeURIComponent(
+      `${childName}'s tooth fairy keepsake`
+    )}&body=${encodeURIComponent(shareBody)}`,
+    x: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      resolvedUrl
+    )}&text=${encodeURIComponent(shareText)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      resolvedUrl
+    )}`,
+  };
 
   const handleCopy = async () => {
+    if (!resolvedUrl) return;
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(keepsakeUrl);
+        await navigator.clipboard.writeText(resolvedUrl);
       } else {
         throw new Error('clipboard unavailable');
       }
@@ -102,7 +119,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       const input = document.createElement('input');
-      input.value = keepsakeUrl;
+      input.value = resolvedUrl;
       document.body.appendChild(input);
       input.select();
       try {
@@ -119,12 +136,12 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   // On touch devices with Web Share API, prefer the native sheet for everything
   // except copy-link, which we keep explicit because it is the highest-trust path.
   const tryNativeShare = async (): Promise<boolean> => {
-    if (!canNativeShare) return false;
+    if (!canNativeShare || !resolvedUrl) return false;
     try {
       await navigator.share({
         title: `${childName}'s tooth`,
         text: shareText,
-        url: keepsakeUrl,
+        url: resolvedUrl,
       });
       return true;
     } catch {
@@ -133,43 +150,18 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     }
   };
 
-  const handleShare = async (key: Exclude<ShareKey, 'copy'>) => {
+  const handleShare = async (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    key: Exclude<ShareKey, 'copy'>
+  ) => {
     // Mobile-first: try the native share sheet if available. Users get WhatsApp,
     // iMessage, Mail, Messenger, and everything else they've installed.
     if (canNativeShare && isTouch) {
+      event.preventDefault();
       const ok = await tryNativeShare();
       if (ok) return;
+      window.location.href = shareLinks[key];
     }
-
-    let url = '';
-    switch (key) {
-      case 'whatsapp':
-        url = `https://wa.me/?text=${encodeURIComponent(shareBody)}`;
-        break;
-      case 'sms':
-        // iOS uses `&body=`, Android uses `?body=`. Using `?body=` with no
-        // number works on both. `sms:` is a link navigation, not a popup.
-        window.location.href = `sms:?body=${encodeURIComponent(shareBody)}`;
-        return;
-      case 'email':
-        url = `mailto:?subject=${encodeURIComponent(
-          `${childName}'s tooth fairy keepsake`
-        )}&body=${encodeURIComponent(shareBody)}`;
-        window.location.href = url;
-        return;
-      case 'x':
-        url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          keepsakeUrl
-        )}&text=${encodeURIComponent(shareText)}`;
-        break;
-      case 'facebook':
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          keepsakeUrl
-        )}`;
-        break;
-    }
-
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const iconBtnStyle: React.CSSProperties = {
@@ -230,57 +222,63 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         role="group"
         aria-label="Share keepsake"
       >
-        <button
-          type="button"
-          onClick={() => handleShare('whatsapp')}
+        <a
+          href={shareLinks.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'whatsapp')}
           style={iconBtnStyle}
           aria-label={`Share ${childName}'s keepsake on WhatsApp`}
         >
           <WhatsAppIcon />
           <span className="hidden sm:inline">WhatsApp</span>
-        </button>
+        </a>
 
         {isTouch && (
-          <button
-            type="button"
-            onClick={() => handleShare('sms')}
+          <a
+            href={shareLinks.sms}
+            onClick={(event) => handleShare(event, 'sms')}
             style={iconBtnStyle}
             aria-label={`Share ${childName}'s keepsake via Messages`}
           >
             <MessageIcon />
             <span className="hidden sm:inline">Messages</span>
-          </button>
+          </a>
         )}
 
-        <button
-          type="button"
-          onClick={() => handleShare('email')}
+        <a
+          href={shareLinks.email}
+          onClick={(event) => handleShare(event, 'email')}
           style={iconBtnStyle}
           aria-label={`Email ${childName}'s keepsake`}
         >
           <EmailIcon />
           <span className="hidden sm:inline">Email</span>
-        </button>
+        </a>
 
-        <button
-          type="button"
-          onClick={() => handleShare('x')}
+        <a
+          href={shareLinks.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'x')}
           style={iconBtnStyle}
           aria-label={`Share ${childName}'s keepsake on X`}
         >
           <XIcon />
           <span className="hidden sm:inline">X</span>
-        </button>
+        </a>
 
-        <button
-          type="button"
-          onClick={() => handleShare('facebook')}
+        <a
+          href={shareLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'facebook')}
           style={iconBtnStyle}
           aria-label={`Share ${childName}'s keepsake on Facebook`}
         >
           <FacebookIcon />
           <span className="hidden sm:inline">Facebook</span>
-        </button>
+        </a>
       </div>
     </div>
   );
