@@ -115,7 +115,7 @@ export async function callEnhance(
           error: "provider_unconfigured",
           detail:
             body.detail ??
-            "AI Enhance is not connected in this preview. Continue with the original artwork.",
+            "Magic polish is not connected yet. Continue with the original artwork.",
         }
       }
       return {

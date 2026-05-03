@@ -44,8 +44,8 @@ const proofItems = [
   },
   {
     icon: "book" as const,
-    title: "Story led",
-    body: "Tanda and global traditions make the ritual worth revisiting.",
+    title: "Magical stories",
+    body: "Tanda and global traditions make the ritual worth sharing.",
   },
   {
     icon: "wallet" as const,
@@ -91,7 +91,7 @@ const parentReasons = [
   },
   {
     icon: "family" as const,
-    title: "Bring the tribe in",
+    title: "Invite loved ones",
     body: "Aunts, uncles, grandparents, and close friends get one simple place to participate.",
   },
   {
@@ -150,7 +150,7 @@ const faqItems = [
   },
   {
     q: "Is the keepsake public?",
-    a: "Only people with the family link can find it easily. We will tighten privacy controls before broad launch.",
+    a: "The keepsake is built around a family link: easy to share with people you choose, without making crypto the center of the experience.",
   },
 ]
 
@@ -350,7 +350,7 @@ export default function ToothFairyLanding() {
           <p>
             Fairies, mice, birds, sun spirits, and family rituals from around
             the world become one connected folklore network. The Smile Fund is
-            the modern ritual underneath.
+            the small modern ritual underneath.
           </p>
           <Link href="/toothfairy/stories" className="button gold">
             Explore the stories
@@ -395,7 +395,7 @@ export default function ToothFairyLanding() {
         <Image src={assets.storyNetwork} alt="" fill sizes="100vw" className="object-cover" />
         <div className="final-shade" />
         <div className="final-copy">
-          <h2>Every tooth is a memory. Every gift is a little skin in the game.</h2>
+          <h2>Every tooth is a memory. Every small gift can become their first lesson in growth.</h2>
           <Link href="/toothfairy/app" className="button gold">
             Mint their first memory
             <span aria-hidden>{"->"}</span>

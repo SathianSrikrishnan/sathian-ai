@@ -225,14 +225,14 @@ export default function GiftPage() {
             >
               Tooth Fairy Network
             </h1>
-            <p className="text-xs" style={{ color: page.muted }}>Family Smile Fund link</p>
+            <p className="text-xs" style={{ color: page.muted }}>Smile Fund gift link</p>
           </div>
         </Link>
         <WalletButton />
       </header>
 
       {error && (
-        <div className="mb-6 p-3 rounded-lg text-sm" style={{ background: "rgba(244, 63, 94, 0.1)", color: C.rose }}>
+        <div className="mb-6 rounded-lg p-3 text-sm" style={{ background: "rgba(244, 63, 94, 0.1)", color: C.rose }}>
           {error}
           <button onClick={() => setError(null)} className="ml-2 underline text-xs">dismiss</button>
         </div>
@@ -247,7 +247,7 @@ export default function GiftPage() {
       {!pageLoading && (
         <div className="grid gap-5 lg:grid-cols-[1.02fr_0.98fr]">
           <div
-            className="overflow-hidden rounded-2xl px-6 py-7 md:px-8"
+            className="overflow-hidden rounded-lg px-6 py-7 md:px-8"
             style={{
               background:
                 "radial-gradient(circle at 90% 10%, rgba(216,164,60,0.18), transparent 13rem), radial-gradient(circle at 12% 0%, rgba(109,69,168,0.10), transparent 14rem), oklch(100% 0 0 / 0.70)",
@@ -269,17 +269,17 @@ export default function GiftPage() {
                 fontWeight: 700,
               }}
             >
-              Help start {displayChildName}&apos;s Smile Fund.
+              Add a small gift to {displayChildName}&apos;s Smile Fund.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              A tooth memory was shared with you. Add a small gift, leave a
-              trace of love, and help turn one tiny milestone into a first
+              A tooth memory was shared with you. See the keepsake first, then add a
+              small gift if you want to help turn one tiny milestone into a first
               lesson in ownership.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
               <div
-                className="flex min-h-48 items-center justify-center overflow-hidden rounded-2xl"
+                className="flex min-h-48 items-center justify-center overflow-hidden rounded-lg"
                 style={{ background: page.cream, border: `1px solid ${page.border}` }}
               >
                 {keepsakeData?.drawingUrl || keepsakeData?.smilePhotoUrl ? (
@@ -307,7 +307,7 @@ export default function GiftPage() {
                   [String(liveDeposits.filter(d => !d.claimed).length), "family gifts", page.purpleSoft, page.purple],
                   ["age 10", "default hold", page.tealSoft, page.teal],
                 ].map(([value, label, bg, color]) => (
-                  <div key={label} className="rounded-2xl px-3 py-4" style={{ background: bg, border: `1px solid ${page.border}` }}>
+                  <div key={label} className="rounded-lg px-3 py-4" style={{ background: bg, border: `1px solid ${page.border}` }}>
                     <p className="text-lg font-black" style={{ color: color as string }}>{value}</p>
                     <p className="mt-1 text-[11px]" style={{ color: page.muted }}>{label}</p>
                   </div>
@@ -319,9 +319,9 @@ export default function GiftPage() {
               {[
                 ["Memory first", "See the keepsake before giving."],
                 ["Parent controlled", "The parent keeps access and timing."],
-                ["On-ramp ready", "Wallet gifts work now; card gifts are next."],
+                ["Card gifts next", "MoonPay checkout is the next rail."],
               ].map(([title, body]) => (
-                <div key={title} className="rounded-xl px-4 py-3" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
+                <div key={title} className="rounded-lg px-4 py-3" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
                   <p className="text-xs font-bold" style={{ color: page.ink }}>{title}</p>
                   <p className="mt-1 text-xs leading-relaxed" style={{ color: page.muted }}>{body}</p>
                 </div>
@@ -329,10 +329,10 @@ export default function GiftPage() {
             </div>
           </div>
 
-          <section className="rounded-2xl p-5 md:p-6" style={{ background: page.paper, border: `1px solid ${page.border}`, boxShadow: "0 18px 44px oklch(30% 0.035 65 / 0.08)" }}>
+          <section className="rounded-lg p-5 md:p-6" style={{ background: page.paper, border: `1px solid ${page.border}`, boxShadow: "0 18px 44px oklch(30% 0.035 65 / 0.08)" }}>
             {/* Existing deposits */}
             {liveDeposits.length > 0 && (
-            <div className="mb-5 rounded-2xl p-4 space-y-1" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
+            <div className="mb-5 space-y-1 rounded-lg p-4" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
               <p className="text-xs font-bold uppercase mb-2" style={{ color: page.muted, letterSpacing: "0.14em" }}>
                 {liveDeposits.length} gift{liveDeposits.length > 1 ? "s" : ""} &middot; {totalEscrowed.toFixed(2)} SOL saved
               </p>
@@ -377,20 +377,24 @@ export default function GiftPage() {
                   ))}
                 </div>
               </div>
-              <div className="rounded-2xl p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
+              <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
                 <p className="text-sm font-semibold" style={{ color: page.ink }}>Card checkout is being connected.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  For controlled production testing, use Phantom and SOL. Public card gifts come after the MoonPay on-ramp is switched on.
+                  MoonPay will let loved ones use a card here. Until that switch is on,
+                  Solana wallet gifts are available for controlled live testing.
                 </p>
               </div>
               <button onClick={() => setVisible(true)} className="w-full px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}>
-                Connect Phantom for this test
+                Use a Solana wallet
               </button>
+              <Link href={`/toothfairy/keepsake/${milestonePda}`} className="block text-center text-xs underline" style={{ color: page.muted }}>
+                Back to the keepsake
+              </Link>
             </div>
           )}
 
           {publicKey && !childProfilePda && !error && (
-            <div className="rounded-2xl p-5 text-center" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
+            <div className="rounded-lg p-5 text-center" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
               <p className="text-sm font-bold" style={{ color: page.ink }}>Loading the live gift account...</p>
               <p className="mt-1 text-xs" style={{ color: page.muted }}>This takes a moment after the wallet connects.</p>
             </div>
@@ -400,8 +404,8 @@ export default function GiftPage() {
           {publicKey && childProfilePda && (
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Wallet gift</p>
-                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Add your SOL gift for {displayChildName}</p>
+                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Solana gift</p>
+                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Add a small gift for {displayChildName}</p>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {amountPresets.map((preset) => (
@@ -409,7 +413,7 @@ export default function GiftPage() {
                     key={preset.label}
                     type="button"
                     onClick={() => setDepositAmount(preset.amount)}
-                    className="rounded-xl px-3 py-3 text-sm font-bold"
+                    className="rounded-lg px-3 py-3 text-sm font-bold"
                     style={{
                       background: depositAmount === preset.amount ? page.gold : page.cream,
                       border: `1px solid ${depositAmount === preset.amount ? page.gold : page.border}`,
@@ -424,12 +428,12 @@ export default function GiftPage() {
                 <div>
                   <label className="block text-xs mb-1" style={{ color: page.muted }}>Your name</label>
                   <input type="text" value={depositorName} onChange={e => setDepositorName(e.target.value)} placeholder="Dad"
-                    className="w-full px-3 py-2.5 rounded-xl text-sm border outline-none" style={{ borderColor: page.border, color: page.ink, background: page.cream }} />
+                    className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none" style={{ borderColor: page.border, color: page.ink, background: page.cream }} />
                 </div>
                 <div>
                   <label className="block text-xs mb-1" style={{ color: page.muted }}>Gift amount (SOL)</label>
                   <input type="number" value={depositAmount} onChange={e => setDepositAmount(e.target.value)} min="0.01" step="0.05"
-                    className="w-full px-3 py-2.5 rounded-xl text-sm border outline-none" style={{ borderColor: page.border, color: page.ink, background: page.cream }} />
+                    className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none" style={{ borderColor: page.border, color: page.ink, background: page.cream }} />
                 </div>
               </div>
 
@@ -437,11 +441,11 @@ export default function GiftPage() {
               <div>
                 <label className="block text-xs mb-2" style={{ color: page.muted }}>When can the child access it?</label>
                 <div className="grid grid-cols-2 gap-2">
-                  <button onClick={() => setLockChoice("now")} className="px-3 py-3 rounded-xl text-sm font-medium transition-all"
+                  <button onClick={() => setLockChoice("now")} className="rounded-lg px-3 py-3 text-sm font-medium transition-all"
                     style={{ background: lockChoice === "now" ? "oklch(72% 0.145 75 / 0.12)" : page.cream, border: `2px solid ${lockChoice === "now" ? page.gold : page.border}`, color: lockChoice === "now" ? page.gold : page.muted }}>
                     Gift now
                   </button>
-                  <button onClick={() => setLockChoice("ageTen")} className="px-3 py-3 rounded-xl text-sm font-medium transition-all"
+                  <button onClick={() => setLockChoice("ageTen")} className="rounded-lg px-3 py-3 text-sm font-medium transition-all"
                     style={{ background: lockChoice === "ageTen" ? "oklch(72% 0.145 75 / 0.12)" : page.cream, border: `2px solid ${lockChoice === "ageTen" ? page.gold : page.border}`, color: lockChoice === "ageTen" ? page.gold : page.muted }}>
                     Hold until age 10
                   </button>
@@ -450,9 +454,10 @@ export default function GiftPage() {
 
               {/* Early withdrawal warning */}
               {lockChoice === "ageTen" && (
-                <div className="rounded-2xl p-3" style={{ background: "rgba(216,164,60,0.10)", border: "1px solid rgba(216,164,60,0.24)" }}>
+                <div className="rounded-lg p-3" style={{ background: "rgba(216,164,60,0.10)", border: "1px solid rgba(216,164,60,0.24)" }}>
                   <p className="text-xs" style={{ color: page.inkSoft }}>
-                    This uses the current deployed contract. Public launch copy will spell out fees and early-withdrawal terms before families add card gifts.
+                    Age-10 gifts are held by the current escrow program. Public card checkout
+                    will spell out fees and early-withdrawal terms before payment.
                   </p>
                 </div>
               )}

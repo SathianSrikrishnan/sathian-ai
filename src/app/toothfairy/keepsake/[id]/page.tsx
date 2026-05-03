@@ -122,7 +122,7 @@ export default function KeepsakePage() {
         transition: `opacity 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')}), transform 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')})`,
       }}
     >
-      <div className="mx-auto max-w-6xl px-5 py-8 md:py-14">
+      <div className="mx-auto max-w-7xl px-5 py-8 md:py-14">
         {state.kind === 'loading' && <LoadingState />}
         {state.kind === 'error' && <ErrorState />}
         {state.kind === 'success' && (
@@ -169,9 +169,9 @@ function KeepsakeExperience({
   const lockedCount = data.deposits.filter((deposit) => deposit.locked).length;
   const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
 
-  const headline = `${data.childName}'s tooth fairy keepsake.`;
+  const headline = `${data.childName}'s tooth fairy keepsake`;
   const subhead =
-    'A tiny milestone, saved as a memory, a family link, and the beginning of a parent-controlled Smile Fund.';
+    'A tiny milestone, saved for their age-10 moment. Memory first, Smile Fund second, blockchain quietly underneath.';
 
   const promiseItems = useMemo(
     () => [
@@ -196,7 +196,7 @@ function KeepsakeExperience({
 
   return (
     <>
-      <section className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      <section className="grid gap-8 lg:grid-cols-[minmax(0,0.96fr)_minmax(430px,1.04fr)] lg:items-center">
         <div className="order-2 lg:order-2">
           <div className="flex flex-wrap gap-2">
             <Pill>Family keepsake</Pill>
@@ -234,7 +234,7 @@ function KeepsakeExperience({
           </p>
 
           <div
-            className="mt-7 rounded-2xl p-5"
+            className="mt-7 rounded-lg p-5"
             style={{
               background: c.paper,
               border: `1px solid ${c.border}`,
@@ -256,8 +256,8 @@ function KeepsakeExperience({
               className="mt-3 text-lg leading-relaxed"
               style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
             >
-              What a bright and brave smile you are growing, {data.childName}.
-              Keep this memory close, and let the little things grow.
+              What a bright and beautiful smile you are growing, {data.childName}.
+              Keep this memory close. Little things can become big things.
             </p>
           </div>
 
@@ -273,7 +273,7 @@ function KeepsakeExperience({
                 boxShadow: '0 16px 36px rgba(109, 69, 168, 0.24)',
               }}
             >
-              Add a gift to the Smile Fund
+              Add a gift
             </Link>
             <a
               href="#share"
@@ -286,19 +286,19 @@ function KeepsakeExperience({
                 textDecoration: 'none',
               }}
             >
-              Send the family link
+              Share with family
             </a>
           </div>
 
           <div className="mt-5 grid max-w-xl grid-cols-3 gap-3">
             <Metric value={`${formatSol(total)} SOL`} label="saved" tone="gold" />
-            <Metric value={String(contributionCount)} label="family gifts" tone="purple" />
-            <Metric value={lockedCount > 0 ? String(lockedCount) : 'age 10'} label="default" tone="teal" />
+            <Metric value={String(contributionCount)} label="loved gifts" tone="purple" />
+            <Metric value={lockedCount > 0 ? String(lockedCount) : 'age 10'} label="unlock" tone="teal" />
           </div>
         </div>
 
         <div className="order-1 lg:order-1">
-          <div className="relative mx-auto max-w-md">
+          <div className="relative mx-auto max-w-xl">
             <div
               className="absolute -left-10 top-10 hidden h-36 w-36 rounded-full md:block"
               style={{ background: c.goldSoft, filter: 'blur(4px)' }}
@@ -326,11 +326,11 @@ function KeepsakeExperience({
         </div>
       </section>
 
-      <section className="mt-10 grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+      <section className="mt-10 grid gap-5 lg:grid-cols-[0.96fr_1.04fr]">
         <SmileFundPanel data={data} milestoneId={milestoneId} />
         <section
           id="share"
-          className="rounded-2xl p-6 md:p-8"
+          className="rounded-lg p-6 md:p-8"
           style={{
             background: c.paper,
             border: `1px solid ${c.border}`,
@@ -346,7 +346,7 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Share the ritual
+            Family link
           </p>
           <h2
             className="mt-3 text-3xl leading-tight md:text-4xl"
@@ -356,14 +356,14 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Invite loved ones into {data.childName}&apos;s first digital piggy bank.
+            Let loved ones see the memory before they give.
           </h2>
           <p
             className="mt-3 text-base leading-relaxed"
             style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
           >
-            Send one link. Family can see the memory first, then add a small gift when the
-            card checkout path is connected.
+            Send one link. They can open the keepsake, read the note, and add a small
+            gift through the wallet path now. MoonPay card gifts come next.
           </p>
           <div className="mt-6">
             <ShareButtons keepsakeUrl={keepsakeUrl} childName={data.childName} />
@@ -375,7 +375,7 @@ function KeepsakeExperience({
         {promiseItems.map((item, index) => (
           <div
             key={item.label}
-            className="rounded-2xl p-5"
+            className="rounded-lg p-5"
             style={{
               background: c.paper,
               border: `1px solid ${c.border}`,
@@ -424,7 +424,7 @@ function Metric({
 
   return (
     <div
-      className="rounded-2xl px-4 py-4"
+      className="rounded-lg px-4 py-4"
       style={{ background: c.paper, border: `1px solid ${c.border}` }}
     >
       <div
@@ -459,7 +459,7 @@ function SmileFundPanel({
 
   return (
     <section
-      className="rounded-2xl p-6 md:p-8"
+      className="rounded-lg p-6 md:p-8"
       style={{
         background: c.paper,
         border: `1px solid ${c.border}`,
@@ -497,7 +497,7 @@ function SmileFundPanel({
           </p>
         </div>
         <div
-          className="rounded-2xl px-4 py-3 text-center"
+          className="rounded-lg px-4 py-3 text-center"
           style={{ background: c.goldSoft, color: c.gold }}
         >
           <div
@@ -526,7 +526,7 @@ function SmileFundPanel({
           {data.deposits.slice(0, 4).map((deposit, index) => (
             <div
               key={`${deposit.name}-${index}`}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-sm"
+              className="flex items-center justify-between rounded-lg px-4 py-3 text-sm"
               style={{ background: c.cream, border: `1px solid ${c.border}` }}
             >
               <span style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>
@@ -561,7 +561,7 @@ function SmileFundPanel({
           color: c.inkMuted,
         }}
       >
-        Preview note: wallet gifts work now. Card gifts are being connected next.
+        Wallet gifts work now. MoonPay card gifts are the next rail.
       </p>
     </section>
   );
@@ -594,7 +594,7 @@ function LoadingState() {
 function ErrorState() {
   return (
     <div
-      className="mx-auto w-full max-w-md rounded-2xl px-8 py-16 text-center"
+      className="mx-auto w-full max-w-md rounded-lg px-8 py-16 text-center"
       style={{
         background: c.paper,
         border: `1px solid ${c.border}`,
