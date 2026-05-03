@@ -24,17 +24,9 @@ import {
 import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor"
 import idl from "@/lib/toothfairy/escrow-idl.json"
 import { createServerClient } from "@supabase/ssr"
+import { isAllowedOrigin } from "@/lib/constants"
 
 export const maxDuration = 60
-
-const ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "https://sathian.ai",
-  "https://www.sathian.ai",
-  "https://toothfairy.network",
-  "https://www.toothfairy.network",
-]
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024
 const PROGRAM_ID = new PublicKey("FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC")
@@ -115,7 +107,7 @@ export async function POST(request: NextRequest) {
 
   // ── Origin check ──
   const origin = request.headers.get("origin")
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json(
       { error: "Unauthorized origin" },
       { status: 403 }

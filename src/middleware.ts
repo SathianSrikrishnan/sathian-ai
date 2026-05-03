@@ -29,7 +29,7 @@ setInterval(() => {
   keysToDelete.forEach(key => rateLimitMap.delete(key))
 }, 60_000)
 
-import { ALLOWED_ORIGINS } from '@/lib/constants'
+import { ALLOWED_ORIGINS, isAllowedOrigin } from '@/lib/constants'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -148,7 +148,7 @@ export async function middleware(request: NextRequest) {
 
   // --- CORS check ---
   const origin = request.headers.get('origin')
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json(
       { error: 'Not allowed' },
       { status: 403 }
@@ -174,7 +174,7 @@ export async function middleware(request: NextRequest) {
   // --- Add CORS + security headers to response ---
   const response = NextResponse.next()
 
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+  if (origin && isAllowedOrigin(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
