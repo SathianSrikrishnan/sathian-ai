@@ -9,22 +9,22 @@ export const metadata: Metadata = {
 
 const paths = [
   {
-    title: "I minted with a wallet",
-    body: "Connect the same guardian wallet and open the technical recovery tool to scan child profiles, milestones, and unclaimed deposits.",
+    title: "I used a wallet",
+    body: "Connect the same guardian wallet to find your child's keepsakes and any gifts that are ready to withdraw.",
     href: "/toothfairy/app/recover",
-    cta: "Open wallet recovery",
+    cta: "Find keepsakes",
   },
   {
-    title: "I minted with email",
-    body: "Email-assisted recovery depends on the production server guardian and Supabase record. This path should be verified during preview before customer use.",
+    title: "I used Google sign-in",
+    body: "Open the parent dashboard with the same Google account you used when saving the keepsake.",
     href: "/toothfairy/faq",
-    cta: "Read recovery FAQ",
+    cta: "Read account FAQ",
   },
   {
-    title: "I am testing V2",
-    body: "Before moving the live domain, run the health check in Vercel preview and perform one controlled mint with a known test child.",
+    title: "I have a family link",
+    body: "Paste or open the keepsake link your family received. You do not need a wallet just to view a child's tooth story.",
     href: "/toothfairy/architecture",
-    cta: "Review security",
+    cta: "How it works",
   },
 ]
 
@@ -33,11 +33,11 @@ export default function RecoverLandingPage() {
     <main className="recover-page">
       <section className="hero">
         <p className="eyebrow">Recovery</p>
-        <h1>Keep recovery boring, clear, and parent controlled.</h1>
+        <h1>Find a child&apos;s keepsake.</h1>
         <p>
-          The public recovery page should help a parent understand the paths
-          without exposing them to internal tooling first. The advanced wallet
-          recovery tool still exists, but it is now one step deeper.
+          If a parent comes back later, this page should help them find the
+          memory first. Wallet tools are still here, but they sit one step
+          behind the family language.
         </p>
       </section>
 
@@ -52,12 +52,11 @@ export default function RecoverLandingPage() {
       </section>
 
       <section className="note">
-        <h2>Before customer testing</h2>
+        <h2>For preview testing</h2>
         <p>
-          Recovery must be tested with the exact production environment: Vercel
-          preview, real Supabase records, real Solana RPC, the server mint
-          keypair, and the deployed escrow program. Do not move the live domain
-          until `/api/toothfairy/health` passes in preview.
+          The recovery path should be tested with the same preview environment
+          used for minting: real Supabase records, Solana RPC, the server mint
+          keypair, and the deployed escrow program.
         </p>
       </section>
 

@@ -188,8 +188,8 @@ export default function WalletDashboard() {
               Smile Fund dashboard
             </h1>
             <p className="mt-3 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              Track tooth memories, family gifts, and the savings balance that
-              becomes your child&apos;s first digital-money lesson.
+              Revisit tooth memories, share family links, and track the small
+              gifts that become your child&apos;s first ownership lesson.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
@@ -281,9 +281,8 @@ export default function WalletDashboard() {
               One place for the keepsake, the family link, and the balance.
             </h2>
             <p className="mt-4 text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              Connect the guardian wallet to load live child profiles from the
-              smart contract. In the customer demo, this is the page a parent
-              returns to after sharing the gift link.
+              This is where a parent comes back after the first tooth: one page
+              for the keepsakes, the family gift links, and the Smile Fund.
             </p>
             <button
               onClick={() => setVisible(true)}
@@ -347,7 +346,7 @@ export default function WalletDashboard() {
           <div className="rounded-lg px-6 py-16 text-center" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold" style={{ background: "oklch(72% 0.145 75 / 0.14)", color: page.gold }}>TFN</div>
           <h2 className="text-2xl font-bold">No Smile Fund yet</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Mint the first tooth memory to create the keepsake, the family gift link, and the parent dashboard.</p>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Save the first tooth story to create the keepsake, the family link, and the Smile Fund.</p>
           <Link href="/toothfairy/app" className="mt-5 inline-block px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
             Mint first memory
           </Link>
@@ -565,7 +564,7 @@ export default function WalletDashboard() {
       )}
 
       <footer className="mt-12 pt-4 border-t text-center" style={{ borderColor: page.border }}>
-        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network &middot; Your child&apos;s first digital wallet</p>
+        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network &middot; A first digital piggy bank, wrapped in a family ritual</p>
       </footer>
     </div>
     </main>

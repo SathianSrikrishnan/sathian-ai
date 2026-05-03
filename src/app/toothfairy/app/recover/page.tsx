@@ -163,15 +163,15 @@ export default function RecoverPage() {
     <div className="max-w-2xl mx-auto px-6 py-8" style={{ background: C.bg, color: C.text, minHeight: "100vh" }}>
       <header className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-xl font-bold">TFN Recovery Tool</h1>
-          <p className="text-xs" style={{ color: C.muted }}>Scan &amp; claim all unclaimed deposits</p>
+          <h1 className="text-xl font-bold">Find my keepsakes</h1>
+          <p className="text-xs" style={{ color: C.muted }}>Connect the guardian wallet used for this child.</p>
         </div>
         <WalletButton />
       </header>
 
       {!publicKey && (
         <div className="text-center py-20 space-y-4">
-          <p className="text-sm" style={{ color: C.muted }}>Connect your Phantom wallet to scan for deposits.</p>
+          <p className="text-sm" style={{ color: C.muted }}>Connect your wallet to find saved tooth stories and available gifts.</p>
           <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: "#9945FF" }}>
             Connect Wallet
           </button>
@@ -180,7 +180,7 @@ export default function RecoverPage() {
 
       {loading && (
         <div className="text-center py-20">
-          <p className="text-sm animate-pulse" style={{ color: C.muted }}>Scanning all on-chain accounts...</p>
+          <p className="text-sm animate-pulse" style={{ color: C.muted }}>Looking for keepsakes...</p>
         </div>
       )}
 
@@ -284,7 +284,7 @@ export default function RecoverPage() {
       )}
 
       <footer className="mt-12 pt-4 text-center" style={{ borderTop: `1px solid ${C.border}` }}>
-        <p className="text-xs" style={{ color: C.dim }}>TFN Recovery · Scans all on-chain accounts for your guardian wallet</p>
+        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network recovery &middot; Parent-controlled wallet access</p>
       </footer>
     </div>
   )

@@ -110,7 +110,7 @@ export default function KeepsakePage() {
                   fontWeight: 600,
                 }}
               >
-                A memory is live
+                Family keepsake
               </p>
               <h1
                 className="text-3xl md:text-5xl leading-tight"
@@ -120,7 +120,7 @@ export default function KeepsakePage() {
                   fontWeight: 600,
                 }}
               >
-                {state.data.childName}&apos;s tooth fairy keepsake
+                {state.data.childName}&apos;s tooth story
               </h1>
               <p
                 className="mt-4 text-base md:text-lg"
@@ -130,8 +130,8 @@ export default function KeepsakePage() {
                   lineHeight: 1.6,
                 }}
               >
-                A tiny milestone, saved as a family memory and connected to a
-                parent-controlled Smile Fund.
+                A tiny milestone saved as a memory, a family link, and the
+                beginning of a parent-controlled Smile Fund.
               </p>
             </section>
 
@@ -163,7 +163,7 @@ export default function KeepsakePage() {
                   fontWeight: 600,
                 }}
               >
-                Share with family
+                Send the family link
               </p>
               <ShareButtons
                 keepsakeUrl={origin ? `${origin}/toothfairy/keepsake/${id}` : ''}
@@ -321,7 +321,7 @@ function SmileFundPanel({
           lineHeight: 1.5,
         }}
       >
-        Preview mode: family gifts currently use Phantom. Card checkout comes next.
+        Card gifts are being connected. Wallet gifts work now for controlled testing.
       </p>
     </section>
   );
