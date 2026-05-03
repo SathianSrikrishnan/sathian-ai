@@ -149,7 +149,23 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           charms: [],
         })
         if (!outcome.ok) {
-          throw new Error(outcome.detail || "Enhancement failed")
+          if (outcome.error === "rate_limit") {
+            setEnhanceError(outcome.detail || "Enhancement is cooling down. Try again in a moment.")
+          } else if (outcome.error === "moderation_block") {
+            setEnhanceError("Enhancement skipped this drawing. Continue with the original artwork.")
+          } else if (outcome.error === "provider_unconfigured") {
+            setEnhanceRemaining(0)
+            setEnhanceError(
+              outcome.detail ||
+                "AI Enhance is not connected in this preview. Continue with the original artwork."
+            )
+          } else if (outcome.error === "invalid_input") {
+            setEnhanceError(outcome.detail || "This image could not be enhanced. Continue with the original artwork.")
+          } else {
+            setEnhanceError("Enhancement is unavailable right now. Continue with the original artwork.")
+          }
+          setIsEnhancing(false)
+          return
         }
         setEnhanceRemaining(outcome.result.remaining ?? 0)
 

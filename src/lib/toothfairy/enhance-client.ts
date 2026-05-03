@@ -32,6 +32,7 @@ type EnhanceOutcome =
       error:
         | "rate_limit"
         | "moderation_block"
+        | "provider_unconfigured"
         | "service_unavailable"
         | "invalid_input"
         | "network"
@@ -107,6 +108,15 @@ export async function callEnhance(
     if (res.status === 503) {
       if (body.error === "moderation_block") {
         return { ok: false, error: "moderation_block" }
+      }
+      if (body.error === "provider_unconfigured") {
+        return {
+          ok: false,
+          error: "provider_unconfigured",
+          detail:
+            body.detail ??
+            "AI Enhance is not connected in this preview. Continue with the original artwork.",
+        }
       }
       return {
         ok: false,

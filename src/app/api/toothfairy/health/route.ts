@@ -116,6 +116,17 @@ export async function GET() {
     allOk = false
   }
 
+  // 7. Optional AI enhancement provider config. Minting can still work without it.
+  if (process.env.FAL_KEY) {
+    checks.push({ name: "AI Enhance", status: "ok", detail: "Configured" })
+  } else {
+    checks.push({
+      name: "AI Enhance",
+      status: "warn",
+      detail: "FAL_KEY not set in this environment; minting still works",
+    })
+  }
+
   const statusCode = allOk ? 200 : 503
 
   return NextResponse.json(

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import type { KeepsakeData } from '@/lib/toothfairy/keepsake-data';
@@ -9,15 +9,20 @@ import { ShareButtons } from '@/components/toothfairy/keepsake/share-buttons';
 import { motionSpringFast } from '@/components/toothfairy/tokens';
 
 const c = {
-  cream:      'oklch(97.5% 0.01 80)',
-  creamDeep:  'oklch(95% 0.015 75)',
-  ink:        '#11234a',
-  inkSoft:    '#334260',
-  inkMuted:   '#6b7280',
-  purple:     '#6d45a8',
-  gold:       'oklch(72% 0.145 75)',
-  goldSoft:   'oklch(72% 0.145 75 / 0.12)',
-  border:     'oklch(88% 0.015 75)',
+  cream: 'oklch(97.5% 0.01 80)',
+  creamDeep: 'oklch(95% 0.015 75)',
+  paper: 'oklch(99% 0.006 82 / 0.82)',
+  ink: '#11234a',
+  inkSoft: '#334260',
+  inkMuted: '#6b7280',
+  purple: '#6d45a8',
+  purpleSoft: 'rgba(109, 69, 168, 0.10)',
+  teal: '#178f7b',
+  tealSoft: 'rgba(23, 143, 123, 0.10)',
+  gold: 'oklch(72% 0.145 75)',
+  goldHover: 'oklch(62% 0.13 72)',
+  goldSoft: 'oklch(72% 0.145 75 / 0.12)',
+  border: 'oklch(88% 0.015 75)',
 };
 
 type FetchState =
@@ -25,18 +30,54 @@ type FetchState =
   | { kind: 'success'; data: KeepsakeData }
   | { kind: 'error' };
 
+function formatSol(amount: number) {
+  if (amount >= 1) return amount.toFixed(2);
+  if (amount > 0) return amount.toFixed(3);
+  return '0.000';
+}
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function SparkleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
+      <path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8L12 2Zm7 10 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3ZM5 13l.8 2.2L8 16l-2.2.8L5 19l-.8-2.2L2 16l2.2-.8L5 13Z" />
+    </svg>
+  );
+}
+
+function Pill({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold"
+      style={{
+        background: c.paper,
+        border: `1px solid ${c.border}`,
+        color: c.inkSoft,
+        fontFamily: 'var(--font-body)',
+      }}
+    >
+      <SparkleIcon />
+      {children}
+    </span>
+  );
+}
+
 export default function KeepsakePage() {
   const params = useParams<{ id: string }>();
   const id = params?.id ?? '';
   const [state, setState] = useState<FetchState>({ kind: 'loading' });
-  const [origin, setOrigin] = useState<string>('');
+  const [origin, setOrigin] = useState('');
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setOrigin(window.location.origin);
-    }
-    // Entrance fade: warm enough to feel celebratory without slowing the page.
+    if (typeof window !== 'undefined') setOrigin(window.location.origin);
     const t = setTimeout(() => setEntered(true), 60);
     return () => clearTimeout(t);
   }, []);
@@ -47,6 +88,7 @@ export default function KeepsakePage() {
       setState({ kind: 'error' });
       return;
     }
+
     (async () => {
       try {
         const res = await fetch(`/api/toothfairy/keepsake/${id}`);
@@ -62,6 +104,7 @@ export default function KeepsakePage() {
         if (!cancelled) setState({ kind: 'error' });
       }
     })();
+
     return () => {
       cancelled = true;
     };
@@ -69,124 +112,38 @@ export default function KeepsakePage() {
 
   return (
     <main
-      className="min-h-screen w-full"
+      className="min-h-screen w-full overflow-hidden"
       style={{
         background:
-          'radial-gradient(circle at 84% 4%, rgba(216,164,60,0.16), transparent 16rem), radial-gradient(circle at 14% 0%, rgba(109,69,168,0.10), transparent 14rem), ' + c.creamDeep,
+          'radial-gradient(circle at 86% 2%, rgba(216,164,60,0.18), transparent 17rem), radial-gradient(circle at 10% 0%, rgba(109,69,168,0.11), transparent 16rem), radial-gradient(circle at 50% 34%, rgba(23,143,123,0.06), transparent 26rem), ' +
+          c.creamDeep,
         opacity: entered ? 1 : 0,
         transform: entered ? 'translateY(0)' : 'translateY(8px)',
         transition: `opacity 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')}), transform 0.6s cubic-bezier(${motionSpringFast.ease.join(', ')})`,
       }}
     >
-      <div className="max-w-3xl mx-auto px-5 py-10 md:py-16">
-        {/* Wordmark */}
-        <header className="text-center pb-10">
-          <p
-            className="text-xs uppercase"
-            style={{
-              fontFamily: 'var(--font-body)',
-              color: c.gold,
-              letterSpacing: '0.2em',
-              fontWeight: 500,
-            }}
-          >
-            Tooth Fairy Network
-          </p>
-        </header>
-
+      <div className="mx-auto max-w-6xl px-5 py-8 md:py-14">
         {state.kind === 'loading' && <LoadingState />}
-
         {state.kind === 'error' && <ErrorState />}
-
         {state.kind === 'success' && (
-          <>
-            <section className="text-center max-w-xl mx-auto mb-8">
-              <p
-                className="text-xs uppercase mb-3"
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  color: c.gold,
-                  letterSpacing: '0.18em',
-                  fontWeight: 600,
-                }}
-              >
-                Family keepsake
-              </p>
-              <h1
-                className="text-3xl md:text-5xl leading-tight"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  color: c.ink,
-                  fontWeight: 600,
-                }}
-              >
-                {state.data.childName}&apos;s tooth story
-              </h1>
-              <p
-                className="mt-4 text-base md:text-lg"
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  color: c.inkSoft,
-                  lineHeight: 1.6,
-                }}
-              >
-                A tiny milestone saved as a memory, a family link, and the
-                beginning of a parent-controlled Smile Fund.
-              </p>
-            </section>
-
-            <div className="mb-10">
-              <KeepsakeCard
-                childName={state.data.childName}
-                toothType={state.data.toothType}
-                storyOrigin={state.data.storyOrigin}
-                drawingUrl={state.data.drawingUrl}
-                smilePhotoUrl={state.data.smilePhotoUrl}
-                mintDate={state.data.mintDate}
-                deposits={state.data.deposits}
-                message={state.data.message}
-                toothStory={state.data.toothStory}
-              />
-            </div>
-
-            <div className="max-w-md mx-auto mb-6">
-              <SmileFundPanel data={state.data} milestoneId={id} />
-            </div>
-
-            <div className="max-w-md mx-auto">
-              <p
-                className="text-center text-xs uppercase mb-3"
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  color: c.inkMuted,
-                  letterSpacing: '0.16em',
-                  fontWeight: 600,
-                }}
-              >
-                Send the family link
-              </p>
-              <ShareButtons
-                keepsakeUrl={origin ? `${origin}/toothfairy/keepsake/${id}` : ''}
-                childName={state.data.childName}
-              />
-            </div>
-          </>
+          <KeepsakeExperience
+            data={state.data}
+            milestoneId={id}
+            keepsakeUrl={origin ? `${origin}/toothfairy/keepsake/${id}` : ''}
+          />
         )}
 
-        <footer className="text-center pt-16 pb-4">
+        <footer className="pt-12 pb-4 text-center">
           <p
             className="text-xs"
             style={{
               fontFamily: 'var(--font-body)',
-              color: 'var(--tfn-ink-muted)',
-              letterSpacing: '0.05em',
+              color: c.inkMuted,
+              letterSpacing: '0.03em',
             }}
           >
             Made with love on{' '}
-            <Link
-              href="/toothfairy"
-              style={{ color: c.gold, textDecoration: 'none' }}
-            >
+            <Link href="/toothfairy" style={{ color: c.gold, textDecoration: 'none' }}>
               Tooth Fairy Network
             </Link>
           </p>
@@ -196,31 +153,264 @@ export default function KeepsakePage() {
   );
 }
 
-function LoadingState() {
+function KeepsakeExperience({
+  data,
+  milestoneId,
+  keepsakeUrl,
+}: {
+  data: KeepsakeData;
+  milestoneId: string;
+  keepsakeUrl: string;
+}) {
+  const total =
+    data.totalEscrowed ??
+    data.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+  const contributionCount = data.deposits.length;
+  const lockedCount = data.deposits.filter((deposit) => deposit.locked).length;
+  const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
+
+  const headline = `${data.childName} saved a tooth memory.`;
+  const subhead =
+    'A tiny childhood ritual is now one family page: the memory, a gift link for loved ones, and the beginning of a parent-controlled Smile Fund.';
+
+  const promiseItems = useMemo(
+    () => [
+      {
+        label: 'Memory',
+        title: 'The tooth story stays here',
+        body: 'The drawing, note, and date live together on a page your family can revisit.',
+      },
+      {
+        label: 'Smile Fund',
+        title: 'Loved ones can add small gifts',
+        body: 'The first digital piggy bank starts with simple family contributions.',
+      },
+      {
+        label: 'Ownership',
+        title: 'Parent controlled until they are ready',
+        body: 'Age 10 is the default learning milestone. Parents stay in charge.',
+      },
+    ],
+    []
+  );
+
+  return (
+    <>
+      <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+        <div className="order-2 lg:order-1">
+          <div className="flex flex-wrap gap-2">
+            <Pill>Family keepsake</Pill>
+            <Pill>Built on Solana</Pill>
+            <Pill>Parent controlled</Pill>
+          </div>
+
+          <p
+            className="mt-10 text-xs uppercase"
+            style={{
+              fontFamily: 'var(--font-body)',
+              color: c.gold,
+              letterSpacing: '0.22em',
+              fontWeight: 700,
+            }}
+          >
+            Tooth Fairy Network
+          </p>
+          <h1
+            className="mt-4 max-w-2xl text-4xl leading-[1.02] md:text-6xl"
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.ink,
+              fontWeight: 700,
+              letterSpacing: '0',
+            }}
+          >
+            {headline}
+          </h1>
+          <p
+            className="mt-5 max-w-[39rem] text-lg leading-relaxed md:text-xl"
+            style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
+          >
+            {subhead}
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href={`/toothfairy/app/gift/${milestoneId}`}
+              className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
+              style={{
+                background: c.purple,
+                color: c.cream,
+                fontFamily: 'var(--font-body)',
+                textDecoration: 'none',
+                boxShadow: '0 16px 36px rgba(109, 69, 168, 0.24)',
+              }}
+            >
+              Add a small gift
+            </Link>
+            <a
+              href="#share"
+              className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
+              style={{
+                background: c.paper,
+                border: `1px solid ${c.border}`,
+                color: c.ink,
+                fontFamily: 'var(--font-body)',
+                textDecoration: 'none',
+              }}
+            >
+              Send the family link
+            </a>
+          </div>
+
+          <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
+            <Metric value={`${formatSol(total)} SOL`} label="saved" tone="gold" />
+            <Metric value={String(contributionCount)} label="family gifts" tone="purple" />
+            <Metric value={lockedCount > 0 ? String(lockedCount) : 'age 10'} label="default" tone="teal" />
+          </div>
+        </div>
+
+        <div className="order-1 lg:order-2">
+          <div className="relative mx-auto max-w-md">
+            <div
+              className="absolute -left-10 top-10 hidden h-36 w-36 rounded-full md:block"
+              style={{ background: c.goldSoft, filter: 'blur(4px)' }}
+              aria-hidden
+            />
+            <div
+              className="absolute -right-10 bottom-16 hidden h-28 w-28 rounded-full md:block"
+              style={{ background: c.purpleSoft, filter: 'blur(4px)' }}
+              aria-hidden
+            />
+            <div className="relative">
+              <KeepsakeCard
+                childName={data.childName}
+                toothType={data.toothType}
+                storyOrigin={data.storyOrigin}
+                drawingUrl={data.drawingUrl}
+                smilePhotoUrl={data.smilePhotoUrl}
+                mintDate={mintDate}
+                deposits={data.deposits}
+                message={data.message}
+                toothStory={data.toothStory}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-10 grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+        <SmileFundPanel data={data} milestoneId={milestoneId} />
+        <section
+          id="share"
+          className="rounded-2xl p-6 md:p-8"
+          style={{
+            background: c.paper,
+            border: `1px solid ${c.border}`,
+            boxShadow: '0 18px 44px oklch(30% 0.035 65 / 0.06)',
+          }}
+        >
+          <p
+            className="text-xs uppercase"
+            style={{
+              fontFamily: 'var(--font-body)',
+              color: c.gold,
+              letterSpacing: '0.18em',
+              fontWeight: 700,
+            }}
+          >
+            Share the ritual
+          </p>
+          <h2
+            className="mt-3 text-3xl leading-tight md:text-4xl"
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.ink,
+              fontWeight: 700,
+            }}
+          >
+            Invite loved ones into {data.childName}&apos;s first digital piggy bank.
+          </h2>
+          <p
+            className="mt-3 text-base leading-relaxed"
+            style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
+          >
+            Send one link. Family can see the memory first, then add a small gift when the
+            card checkout path is connected.
+          </p>
+          <div className="mt-6">
+            <ShareButtons keepsakeUrl={keepsakeUrl} childName={data.childName} />
+          </div>
+        </section>
+      </section>
+
+      <section className="mt-5 grid gap-3 md:grid-cols-3">
+        {promiseItems.map((item, index) => (
+          <div
+            key={item.label}
+            className="rounded-2xl p-5"
+            style={{
+              background: c.paper,
+              border: `1px solid ${c.border}`,
+              boxShadow: '0 10px 28px oklch(30% 0.035 65 / 0.04)',
+            }}
+          >
+            <p
+              className="text-[10px] font-bold uppercase"
+              style={{ color: c.gold, letterSpacing: '0.16em', fontFamily: 'var(--font-body)' }}
+            >
+              0{index + 1} / {item.label}
+            </p>
+            <h3
+              className="mt-3 text-xl leading-tight"
+              style={{ color: c.ink, fontFamily: 'var(--font-display)', fontWeight: 700 }}
+            >
+              {item.title}
+            </h3>
+            <p
+              className="mt-2 text-sm leading-relaxed"
+              style={{ color: c.inkSoft, fontFamily: 'var(--font-body)' }}
+            >
+              {item.body}
+            </p>
+          </div>
+        ))}
+      </section>
+    </>
+  );
+}
+
+function Metric({
+  value,
+  label,
+  tone,
+}: {
+  value: string;
+  label: string;
+  tone: 'gold' | 'purple' | 'teal';
+}) {
+  const toneStyles = {
+    gold: { background: c.goldSoft, color: c.gold },
+    purple: { background: c.purpleSoft, color: c.purple },
+    teal: { background: c.tealSoft, color: c.teal },
+  }[tone];
+
   return (
     <div
-      className="w-full max-w-md mx-auto py-24 text-center"
-      style={{
-        fontFamily: 'var(--font-display)',
-        color: c.inkSoft,
-        fontSize: '1.125rem',
-        fontStyle: 'italic',
-      }}
+      className="rounded-2xl px-4 py-4"
+      style={{ background: c.paper, border: `1px solid ${c.border}` }}
     >
-      <span
-        className="inline-block"
-        style={{
-          animation: 'keepsakePulse 2.2s ease-in-out infinite',
-        }}
+      <div
+        className="mb-3 inline-flex rounded-full px-2 py-1 text-[10px] font-bold uppercase"
+        style={{ ...toneStyles, letterSpacing: '0.09em', fontFamily: 'var(--font-body)' }}
       >
-        Loading keepsake...
-      </span>
-      <style jsx>{`
-        @keyframes keepsakePulse {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 1; }
-        }
-      `}</style>
+        {label}
+      </div>
+      <p
+        className="text-xl leading-none"
+        style={{ color: c.ink, fontFamily: 'var(--font-display)', fontWeight: 800 }}
+      >
+        {value}
+      </p>
     </div>
   );
 }
@@ -237,103 +427,149 @@ function SmileFundPanel({
   const total =
     data.totalEscrowed ??
     data.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+  const hasDeposits = contributionCount > 0;
 
   return (
     <section
-      className="rounded-lg p-6 md:p-7"
+      className="rounded-2xl p-6 md:p-8"
       style={{
-        background: c.cream,
+        background: c.paper,
         border: `1px solid ${c.border}`,
-        boxShadow: '0 18px 40px oklch(30% 0.035 65 / 0.08)',
+        boxShadow: '0 18px 44px oklch(30% 0.035 65 / 0.06)',
       }}
     >
-      <div className="flex items-start justify-between gap-5">
+      <p
+        className="text-xs uppercase"
+        style={{
+          fontFamily: 'var(--font-body)',
+          color: c.gold,
+          letterSpacing: '0.18em',
+          fontWeight: 700,
+        }}
+      >
+        Smile Fund
+      </p>
+      <div className="mt-4 flex items-start justify-between gap-5">
         <div>
-          <p
-            className="text-xs uppercase mb-2"
-            style={{
-              fontFamily: 'var(--font-body)',
-              color: c.inkMuted,
-              letterSpacing: '0.14em',
-              fontWeight: 600,
-            }}
-          >
-            Smile Fund
-          </p>
           <h2
-            className="text-3xl leading-none"
+            className="text-5xl leading-none"
             style={{
               fontFamily: 'var(--font-display)',
               color: c.ink,
-              fontWeight: 600,
+              fontWeight: 800,
             }}
           >
-            {total.toFixed(total >= 1 ? 2 : 3)} SOL
+            {formatSol(total)}
           </h2>
           <p
-            className="mt-2 text-sm"
-            style={{
-              fontFamily: 'var(--font-body)',
-              color: c.inkSoft,
-              lineHeight: 1.5,
-            }}
+            className="mt-1 text-sm font-semibold uppercase"
+            style={{ color: c.inkMuted, letterSpacing: '0.12em', fontFamily: 'var(--font-body)' }}
           >
-            {contributionCount > 0
-              ? `${contributionCount} family gift${contributionCount === 1 ? '' : 's'} saved for this milestone.`
-              : 'No family gifts yet. Invite someone to add the first one.'}
+            SOL saved
           </p>
         </div>
         <div
-          className="rounded-lg px-3 py-2 text-center"
+          className="rounded-2xl px-4 py-3 text-center"
           style={{ background: c.goldSoft, color: c.gold }}
         >
           <div
-            className="text-xl"
-            style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}
+            className="text-2xl"
+            style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
           >
-            {lockedCount}
+            {lockedCount || '10'}
           </div>
           <div className="text-[10px] uppercase" style={{ letterSpacing: '0.12em' }}>
-            locked
+            {lockedCount ? 'locked' : 'age default'}
           </div>
         </div>
       </div>
 
+      <p
+        className="mt-5 text-base leading-relaxed"
+        style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
+      >
+        {hasDeposits
+          ? `${contributionCount} loved one${contributionCount === 1 ? '' : 's'} helped start this fund.`
+          : 'No gifts yet. The keepsake is ready; the first gift can come later.'}
+      </p>
+
+      {hasDeposits && (
+        <div className="mt-5 space-y-2">
+          {data.deposits.slice(0, 4).map((deposit, index) => (
+            <div
+              key={`${deposit.name}-${index}`}
+              className="flex items-center justify-between rounded-xl px-4 py-3 text-sm"
+              style={{ background: c.cream, border: `1px solid ${c.border}` }}
+            >
+              <span style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>
+                {deposit.name}
+              </span>
+              <span style={{ color: deposit.locked ? c.gold : c.inkSoft, fontFamily: 'var(--font-body)', fontWeight: 700 }}>
+                {formatSol(deposit.amount)} SOL
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
       <Link
         href={`/toothfairy/app/gift/${milestoneId}`}
-        className="mt-6 flex w-full items-center justify-center rounded-full px-6 py-4 text-sm font-semibold"
+        className="mt-6 flex min-h-14 w-full items-center justify-center rounded-full px-6 text-base font-semibold"
         style={{
           background: c.purple,
           color: c.cream,
           fontFamily: 'var(--font-body)',
           textDecoration: 'none',
-          boxShadow: '0 10px 26px rgba(109, 69, 168, 0.22)',
+          boxShadow: '0 12px 30px rgba(109, 69, 168, 0.22)',
         }}
       >
-        Add a gift to the Smile Fund
+        Add a small gift
       </Link>
 
       <p
-        className="mt-3 text-center text-xs"
+        className="mt-3 text-center text-xs leading-relaxed"
         style={{
           fontFamily: 'var(--font-body)',
           color: c.inkMuted,
-          lineHeight: 1.5,
         }}
       >
-        Card gifts are being connected. Wallet gifts work now for controlled testing.
+        Preview note: wallet gifts work now. Card gifts are being connected next.
       </p>
     </section>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div
+      className="mx-auto w-full max-w-md py-24 text-center"
+      style={{
+        fontFamily: 'var(--font-display)',
+        color: c.inkSoft,
+        fontSize: '1.125rem',
+        fontStyle: 'italic',
+      }}
+    >
+      <span className="inline-block" style={{ animation: 'keepsakePulse 2.2s ease-in-out infinite' }}>
+        Loading keepsake...
+      </span>
+      <style jsx>{`
+        @keyframes keepsakePulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+    </div>
   );
 }
 
 function ErrorState() {
   return (
     <div
-      className="w-full max-w-md mx-auto rounded-lg px-8 py-16 text-center"
+      className="mx-auto w-full max-w-md rounded-2xl px-8 py-16 text-center"
       style={{
-        background: c.cream,
-        border: '1px solid oklch(88% 0.015 75)',
+        background: c.paper,
+        border: `1px solid ${c.border}`,
         fontFamily: 'var(--font-body)',
         color: c.inkSoft,
       }}
@@ -343,7 +579,7 @@ function ErrorState() {
           fontFamily: 'var(--font-display)',
           color: c.ink,
           fontSize: '1.5rem',
-          fontWeight: 500,
+          fontWeight: 700,
           marginBottom: '1rem',
           lineHeight: 1.3,
         }}
@@ -351,11 +587,11 @@ function ErrorState() {
         This keepsake is still on its way.
       </p>
       <p className="mb-8" style={{ lineHeight: 1.6 }}>
-        The tooth fairy may not have visited yet, or this link may have expired.
+        The link may still be saving, or it may have expired.
       </p>
       <Link
         href="/toothfairy"
-        className="inline-block px-6 py-3 rounded-full font-semibold"
+        className="inline-block rounded-full px-6 py-3 font-semibold"
         style={{
           background: c.gold,
           color: 'oklch(98% 0.005 80)',

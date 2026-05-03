@@ -339,6 +339,7 @@ export default function ToothFairyApp() {
   const [childDob, setChildDob] = useState("")
   const [photo, setPhoto] = useState<string | null>(null)
   const [note, setNote] = useState("")
+  const [showNote, setShowNote] = useState(false)
   const [toothName, setToothName] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [mintProgress, setMintProgress] = useState("")
@@ -1012,7 +1013,7 @@ export default function ToothFairyApp() {
               </div>
               <StepTitle
                 title="Capture the moment."
-                subtitle="Use the tooth photo, a drawing, and a few words. Rough is fine; the point is that it is theirs."
+                subtitle="Use a tooth photo or drawing. Add words only if they help. Rough is fine; the point is that it is theirs."
               />
             </div>
 
@@ -1076,35 +1077,66 @@ export default function ToothFairyApp() {
               </p>
             )}
 
-            {/* Note */}
-            <PaperCard className="space-y-4">
-              <InputRow label={`A note for ${childName || "later"}`}>
-                <textarea
-                  value={note}
-                  onChange={(e) => setNote(e.target.value.slice(0, 500))}
-                  placeholder={childName ? `A few words ${childName} can read when they're older...` : "A few words they can read when they're older..."}
-                  maxLength={500}
-                  spellCheck={false}
-                    className="w-full rounded-lg px-4 py-3 text-base outline-none resize-none"
-                  style={{
-                    background: "var(--tfn-surface)",
-                    border: "1px solid var(--tfn-border)",
-                    color: "var(--tfn-ink)",
-                    fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
-                    minHeight: "96px",
-                  }}
-                  rows={3}
-                />
-              </InputRow>
-              <div className="flex items-center justify-between">
-                <p className="text-[11px]" style={{ color: "var(--tfn-ink-muted)" }}>
-                  This note appears with the keepsake.
-                </p>
-                <p className="text-[11px] font-mono" style={{ color: "var(--tfn-ink-muted)" }}>
-                  {note.length}/500
-                </p>
-              </div>
-            </PaperCard>
+            {/* Optional note */}
+            {showNote || note ? (
+              <PaperCard className="space-y-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <InputRow label={`Optional note for ${childName || "later"}`}>
+                      <textarea
+                        value={note}
+                        onChange={(e) => setNote(e.target.value.slice(0, 500))}
+                        placeholder={childName ? `A few words ${childName} can read when they're older...` : "A few words they can read when they're older..."}
+                        maxLength={500}
+                        spellCheck={false}
+                        className="w-full rounded-lg px-4 py-3 text-base outline-none resize-none"
+                        style={{
+                          background: "var(--tfn-surface)",
+                          border: "1px solid var(--tfn-border)",
+                          color: "var(--tfn-ink)",
+                          fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                          minHeight: "96px",
+                        }}
+                        rows={3}
+                      />
+                    </InputRow>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNote("")
+                      setShowNote(false)
+                    }}
+                    className="text-xs underline transition-opacity hover:opacity-80"
+                    style={{ color: "var(--tfn-ink-muted)" }}
+                  >
+                    Skip
+                  </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-[11px]" style={{ color: "var(--tfn-ink-muted)" }}>
+                    Optional. The keepsake works without it.
+                  </p>
+                  <p className="text-[11px] font-mono" style={{ color: "var(--tfn-ink-muted)" }}>
+                    {note.length}/500
+                  </p>
+                </div>
+              </PaperCard>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowNote(true)}
+                className="w-full rounded-full py-3 text-sm font-medium transition-opacity hover:opacity-85"
+                style={{
+                  border: "1px solid var(--tfn-border)",
+                  color: "var(--tfn-ink-soft)",
+                  background: "var(--tfn-surface-alt)",
+                  fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                }}
+              >
+                Add a few words (optional)
+              </button>
+            )}
 
             <div className="space-y-3">
               <GoldCTA onClick={goToPreview}>
@@ -1193,7 +1225,7 @@ export default function ToothFairyApp() {
             <PaperCard>
               <div className="space-y-5">
                 {[
-                  { num: "i", title: "One page for the memory", desc: "The drawing, note, and tooth moment stay together on a page your family can revisit." },
+                  { num: "i", title: "One page for the memory", desc: "The drawing, optional note, and tooth moment stay together on a page your family can revisit." },
                   { num: "ii", title: "One link for loved ones", desc: "After saving, you can send a simple link for family to see the keepsake and add a gift later." },
                   { num: "iii", title: "Parent controlled", desc: `You manage access and unlock timing. ${childName || "Your child"} gets the story, the memory, and the first lesson in ownership.` },
                 ].map(({ num, title, desc }, i) => (
@@ -1360,7 +1392,7 @@ export default function ToothFairyApp() {
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: "Memory saved", value: "Photo, drawing, note" },
+                  { label: "Memory saved", value: note ? "Photo, drawing, note" : "Photo and drawing" },
                   { label: "Family page created", value: "Ready to share" },
                   { label: "Age-10 default", value: suggestedUnlockDate || "Set from birthday" },
                 ].map(({ label, value }) => (

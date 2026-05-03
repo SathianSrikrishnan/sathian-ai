@@ -103,6 +103,17 @@ export async function POST(req: NextRequest) {
       ? charms.filter((c: string) => VALID_CHARMS.has(c as EnhanceCharm))
       : []
 
+    if (!process.env.FAL_KEY) {
+      return NextResponse.json(
+        {
+          error: "provider_unconfigured",
+          detail:
+            "AI Enhance is not connected in this preview. Continue with the original artwork.",
+        },
+        { status: 503 }
+      )
+    }
+
     const result = await enhanceDrawing({
       imageDataUrl: drawingDataUrl,
       tradition: resolvedTradition,
@@ -128,10 +139,27 @@ export async function POST(req: NextRequest) {
       message.includes("moderation") ||
       message.includes("safety") ||
       message.includes("content")
+    const isProviderAuth =
+      message.toLowerCase().includes("unauthorized") ||
+      message.includes("401") ||
+      message.toLowerCase().includes("api key") ||
+      message.toLowerCase().includes("credential")
 
     if (isModeration) {
       return NextResponse.json(
         { error: "moderation_block", fallback: "original" },
+        { status: 503 }
+      )
+    }
+
+    if (isProviderAuth) {
+      console.error("[enhance] Provider auth/config error:", message)
+      return NextResponse.json(
+        {
+          error: "provider_unconfigured",
+          detail:
+            "AI Enhance is not authorized in this preview. Continue with the original artwork.",
+        },
         { status: 503 }
       )
     }
