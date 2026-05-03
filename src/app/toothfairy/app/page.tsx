@@ -20,11 +20,8 @@ import DrawingCanvas, { type DrawingCanvasRef } from "@/components/toothfairy/ap
 import TellStep from "@/components/toothfairy/app/tell-step"
 import { useRouter } from "next/navigation"
 
-// Apr 2026 Impeccable rewrite:
-//   - No child/parent toggle; single cohesive voice.
-//   - WalletButton lives in the sticky header (top-right).
-//   - Editorial Alegreya typography, cream/brown/gold palette via CSS vars.
-//   - All business logic (state, handlers, mint/deposit/onramp) unchanged.
+// Parent-facing ritual flow.
+// Every step should feel like preserving a keepsake first and touching crypto second.
 //
 // Flow (single path):
 //   setup → create → tell → preview → deposit → minting → done
@@ -398,7 +395,7 @@ export default function ToothFairyApp() {
     }
   }, [])
 
-  // Email mint state (Crossmint)
+  // Email mint state
   const [useEmailMint, setUseEmailMint] = useState(false)
   const [recipientEmail, setRecipientEmail] = useState("")
   const [emailMinting, setEmailMinting] = useState(false)
@@ -411,7 +408,7 @@ export default function ToothFairyApp() {
   const [escrowInfo, setEscrowInfo] = useState<{ childProfilePda: string; milestonePda: string } | null>(null)
   const [depositSuccess, setDepositSuccess] = useState<string | null>(null)
 
-  // Card payment state (legacy onramp is gated until the Stripe/Crossmint rail is ready)
+  // Card payment state (gated until the MoonPay/card on-ramp is ready)
   const [cardPaymentLoading, setCardPaymentLoading] = useState(false)
   const [onrampWindow, setOnrampWindow] = useState<Window | null>(null)
   const [awaitingCardDeposit, setAwaitingCardDeposit] = useState(false)
@@ -496,7 +493,7 @@ export default function ToothFairyApp() {
 
   const handleGoogleSignIn = useCallback(() => {
     if (!HAS_SUPABASE_CONFIG) {
-      setError("Minting login is not connected in this preview yet. Add Supabase preview env vars before testing a real mint.")
+      setError("Parent sign-in is not connected on this domain yet. Check the Supabase and Google OAuth settings, then try again.")
       return
     }
     saveFlowState()
@@ -558,7 +555,7 @@ export default function ToothFairyApp() {
   const handleServerMint = async () => {
     if (!isTestMode) {
       if (!supabase) {
-        setError("Minting infrastructure is not connected in this preview yet. Add Supabase preview env vars, then run the health check.")
+        setError("Minting is not connected on this domain yet. Run the health check and confirm the production environment variables before testing.")
         return
       }
       const { data: { session } } = await supabase.auth.getSession()
@@ -679,7 +676,7 @@ export default function ToothFairyApp() {
   const handleCardPayment = async () => {
     if (!escrowInfo) return
     if (!FIAT_ONRAMP_ENABLED) {
-      setError("Card gifts are being connected for preview. Use a Solana wallet gift for this build.")
+      setError("MoonPay card gifts are being connected next. For this test, open the keepsake or use a Solana wallet gift.")
       return
     }
     setError(null); setCardPaymentLoading(true)
@@ -708,7 +705,7 @@ export default function ToothFairyApp() {
 
       const { onrampUrl } = await res.json()
 
-      const popup = window.open(onrampUrl, "coinbase-onramp", "width=460,height=700,left=200,top=100")
+      const popup = window.open(onrampUrl, "tfn-onramp", "width=460,height=700,left=200,top=100")
       setOnrampWindow(popup)
       setAwaitingCardDeposit(true)
       setCardPaymentLoading(false)
@@ -1012,8 +1009,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>The portrait</Eyebrow>
               </div>
               <StepTitle
-                title="Capture the moment."
-                subtitle="Use a tooth photo or drawing. Add words only if they help. Rough is fine; the point is that it is theirs."
+                title="Make the keepsake."
+                subtitle="Use the tooth photo, a drawing, and a few words if they help. Rough is fine; the point is that it is theirs."
               />
             </div>
 
@@ -1082,11 +1079,11 @@ export default function ToothFairyApp() {
               <PaperCard className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <InputRow label={`Optional note for ${childName || "later"}`}>
+                    <InputRow label={`A note for ${childName || "later"} (optional)`}>
                       <textarea
                         value={note}
                         onChange={(e) => setNote(e.target.value.slice(0, 500))}
-                        placeholder={childName ? `A few words ${childName} can read when they're older...` : "A few words they can read when they're older..."}
+                        placeholder={childName ? `A sentence ${childName} can read when they're older...` : "A sentence they can read when they're older..."}
                         maxLength={500}
                         spellCheck={false}
                         className="w-full rounded-lg px-4 py-3 text-base outline-none resize-none"
@@ -1134,13 +1131,13 @@ export default function ToothFairyApp() {
                   fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
                 }}
               >
-                Add a few words (optional)
+                Add a note (optional)
               </button>
             )}
 
             <div className="space-y-3">
               <GoldCTA onClick={goToPreview}>
-                Preview the keepsake
+                See the family page
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
@@ -1169,7 +1166,7 @@ export default function ToothFairyApp() {
               </div>
               <StepTitle
                 title={childName ? `${childName}'s keepsake` : "The keepsake"}
-                subtitle="This is the family page: the memory first, the Smile Fund second, and the blockchain quietly underneath."
+                subtitle="This becomes the shareable family page: memory first, Smile Fund second, blockchain quietly underneath."
               />
             </div>
 
@@ -1225,9 +1222,9 @@ export default function ToothFairyApp() {
             <PaperCard>
               <div className="space-y-5">
                 {[
-                  { num: "i", title: "One page for the memory", desc: "The drawing, optional note, and tooth moment stay together on a page your family can revisit." },
-                  { num: "ii", title: "One link for loved ones", desc: "After saving, you can send a simple link for family to see the keepsake and add a gift later." },
-                  { num: "iii", title: "Parent controlled", desc: `You manage access and unlock timing. ${childName || "Your child"} gets the story, the memory, and the first lesson in ownership.` },
+                  { num: "i", title: "The memory stays together", desc: "The tooth photo, drawing, and optional note live on one page your family can revisit." },
+                  { num: "ii", title: "Loved ones get one link", desc: "After saving, send the page to grandparents, friends, and your wider family circle." },
+                  { num: "iii", title: "You stay in charge", desc: `You manage access, gifting, and unlock timing. ${childName || "Your child"} gets the memory and a first lesson in ownership.` },
                 ].map(({ num, title, desc }, i) => (
                   <div
                     key={num}
@@ -1279,10 +1276,10 @@ export default function ToothFairyApp() {
                     className="text-lg"
                     style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
                   >
-                    Minting preview not connected yet.
+                    Saving is not connected on this domain yet.
                   </p>
                   <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
-                    Add the Supabase preview environment variables, then run the health check before testing a real keepsake.
+                    Check the production environment variables and health check before testing a real keepsake.
                   </p>
                 </>
               ) : !isAuthenticated ? (
@@ -1291,10 +1288,10 @@ export default function ToothFairyApp() {
                     className="text-lg"
                     style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
                   >
-                    Sign in to save it.
+                    Sign in to save the keepsake.
                   </p>
                   <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
-                    This creates your parent account for the keepsake. No wallet or crypto knowledge required.
+                    This creates the parent account for this memory. No wallet or crypto knowledge required.
                   </p>
                   <button
                     type="button"
@@ -1368,8 +1365,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Keepsake saved</Eyebrow>
               </div>
               <StepTitle
-                title="Open the family page."
-                subtitle={`The memory is saved. Share ${childName || "the child"}'s keepsake now, or add a small first gift before you send it.`}
+                title="Start the Smile Fund, or share now."
+                subtitle={`The memory is saved. Add an optional first gift, or open ${childName || "the child"}'s family page and send it to loved ones.`}
               />
             </div>
 
@@ -1413,7 +1410,7 @@ export default function ToothFairyApp() {
 
             {/* Lock period */}
             <PaperCard className="space-y-4">
-              <InputRow label="Optional first gift timing">
+              <InputRow label="When should the first gift unlock?">
                 <div className="space-y-2 mt-2">
                   {[
                     { id: "now" as LockChoice, label: "Available now" },
@@ -1519,7 +1516,7 @@ export default function ToothFairyApp() {
                   })}
                 </div>
                 <p className="mt-3 text-xs leading-relaxed" style={{ color: "var(--tfn-ink-muted)" }}>
-                  Preview terms: current deployed contract fee is 2%. Target public launch fee is 1%.
+                  Current deployed contract fee is 2%. Target public launch fee is 1%. Public card gifts will show final terms before payment.
                 </p>
               </InputRow>
             </PaperCard>
@@ -1571,7 +1568,7 @@ export default function ToothFairyApp() {
                    : awaitingCardDeposit
                      ? "Waiting for payment..."
                      : !FIAT_ONRAMP_ENABLED
-                       ? "Card gifts are connecting next"
+                       ? "MoonPay card gifts are connecting next"
                       : (
                         <>
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -1591,7 +1588,7 @@ export default function ToothFairyApp() {
                 </GhostButton>
               ) : (
                 <GhostButton onClick={() => setVisible(true)}>
-                  I already have a Solana wallet
+                  Use a Solana wallet for a test gift
                 </GhostButton>
               )}
 

@@ -136,7 +136,13 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
 
     const endDraw = () => { isDrawingRef.current = false }
 
-    // ── AI Enhance ──
+    const enhanceLabel = isEnhancing
+      ? "Polishing..."
+      : enhanceRemaining <= 0
+        ? "Original artwork saved"
+        : `Magic polish (${enhanceRemaining})`
+
+    // ── Optional magic polish ──
     const handleEnhance = async () => {
       if (!canvasRef.current || isEnhancing) return
       setIsEnhancing(true)
@@ -150,19 +156,19 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
         })
         if (!outcome.ok) {
           if (outcome.error === "rate_limit") {
-            setEnhanceError(outcome.detail || "Enhancement is cooling down. Try again in a moment.")
+            setEnhanceError(outcome.detail || "Magic polish is cooling down. Try again in a moment.")
           } else if (outcome.error === "moderation_block") {
-            setEnhanceError("Enhancement skipped this drawing. Continue with the original artwork.")
+            setEnhanceError("Magic polish skipped this drawing. Continue with the original artwork.")
           } else if (outcome.error === "provider_unconfigured") {
             setEnhanceRemaining(0)
             setEnhanceError(
               outcome.detail ||
-                "AI Enhance is not connected in this preview. Continue with the original artwork."
+                "Magic polish is not connected yet. Continue with the original artwork."
             )
           } else if (outcome.error === "invalid_input") {
-            setEnhanceError(outcome.detail || "This image could not be enhanced. Continue with the original artwork.")
+            setEnhanceError(outcome.detail || "This image could not be polished. Continue with the original artwork.")
           } else {
-            setEnhanceError("Enhancement is unavailable right now. Continue with the original artwork.")
+            setEnhanceError("Magic polish is unavailable right now. Continue with the original artwork.")
           }
           setIsEnhancing(false)
           return
@@ -181,10 +187,14 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           setIsPristine(false)
           setIsEnhancing(false)
         }
-        img.onerror = () => { setEnhanceError("Failed to load enhanced image"); setIsEnhancing(false) }
+        img.onerror = () => { setEnhanceError("Magic polish could not load. Continue with the original artwork."); setIsEnhancing(false) }
         img.src = outcome.result.enhancedImageUrl
       } catch (err: any) {
-        setEnhanceError(err.message)
+        setEnhanceError(
+          err?.message === "Unauthorized" || err?.message?.startsWith("HTTP")
+            ? "Magic polish is unavailable on this deployment. Continue with the original artwork."
+            : err?.message || "Magic polish is unavailable right now. Continue with the original artwork."
+        )
         setIsEnhancing(false)
       }
     }
@@ -342,7 +352,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
             </button>
           </div>
 
-          {/* AI Enhance bar */}
+          {/* Optional magic polish bar */}
           <div className="flex items-center gap-2 px-4 py-3" style={{ borderTop: `1px solid ${PC.border}` }}>
             <button
               onClick={handleEnhance}
@@ -359,7 +369,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
               </svg>
-              {isEnhancing ? "Enhancing..." : `AI Enhance (${enhanceRemaining})`}
+              {enhanceLabel}
             </button>
           </div>
 
@@ -489,7 +499,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               opacity: enhanceRemaining <= 0 ? 0.4 : 1,
             }}
           >
-            {isEnhancing ? "Enhancing..." : `AI Enhance (${enhanceRemaining})`}
+            {enhanceLabel}
           </button>
         </div>
 

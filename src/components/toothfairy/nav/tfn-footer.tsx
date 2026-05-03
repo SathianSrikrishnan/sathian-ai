@@ -8,8 +8,8 @@ const columns = [
     links: [
       { href: "/toothfairy#how-it-works", label: "How It Works" },
       { href: "/toothfairy/app", label: "Mint Keepsake" },
-      { href: "/toothfairy/app/dashboard", label: "Smile Fund" },
-      { href: "/toothfairy/keepsake/preview", label: "NFT Keepsake" },
+      { href: "/toothfairy/keepsake/preview", label: "Keepsake Preview" },
+      { href: "/toothfairy/app/dashboard", label: "Family Dashboard" },
     ],
   },
   {
@@ -18,7 +18,7 @@ const columns = [
       { href: "/toothfairy/stories", label: "Cultural Tales" },
       { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
       { href: "/toothfairy/network", label: "The Network" },
-      { href: "/toothfairy/architecture", label: "Security" },
+      { href: "/toothfairy/faq", label: "Parent FAQ" },
     ],
   },
   {
@@ -26,17 +26,17 @@ const columns = [
     links: [
       { href: "/toothfairy/about", label: "About" },
       { href: "/toothfairy/company", label: "Company" },
-      { href: "/toothfairy/visual-system", label: "Visual System" },
       { href: "/toothfairy/faq", label: "FAQ" },
+      { href: "/toothfairy/recover", label: "Recover Access" },
     ],
   },
   {
     title: "Support",
     links: [
       { href: "/toothfairy/recover", label: "Recover" },
-      { href: "/toothfairy/architecture", label: "Security" },
+      { href: "/toothfairy/faq", label: "Security" },
       { href: "/toothfairy/faq", label: "Help Center" },
-      { href: "/toothfairy/app/recover", label: "Wallet Tool" },
+      { href: "/toothfairy/app", label: "Start" },
     ],
   },
 ]
@@ -69,7 +69,7 @@ export function TFNFooter() {
             <span>toothfairy.network</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-6" style={{ color: "#23365f" }}>
-            Where tooth fairy magic meets family savings, stories, and early digital ownership.
+            A child's first digital piggy bank, disguised as a magical family ritual.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <span className="social-dot">X</span>

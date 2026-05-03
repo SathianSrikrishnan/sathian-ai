@@ -225,7 +225,7 @@ export default function GiftPage() {
             >
               Tooth Fairy Network
             </h1>
-            <p className="text-xs" style={{ color: page.muted }}>Smile Fund gift link</p>
+            <p className="text-xs" style={{ color: page.muted }}>Family Smile Fund link</p>
           </div>
         </Link>
         <WalletButton />
@@ -269,12 +269,12 @@ export default function GiftPage() {
                 fontWeight: 700,
               }}
             >
-              Add a small gift to {displayChildName}&apos;s Smile Fund.
+              Help start {displayChildName}&apos;s Smile Fund.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              A tooth memory was shared with you. Your gift becomes part of the
-              family story they can revisit later: a little proof that small
-              things can grow.
+              A tooth memory was shared with you. Add a small gift, leave a
+              trace of love, and help turn one tiny milestone into a first
+              lesson in ownership.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
@@ -319,7 +319,7 @@ export default function GiftPage() {
               {[
                 ["Memory first", "See the keepsake before giving."],
                 ["Parent controlled", "The parent keeps access and timing."],
-                ["Preview rails", "Wallet gifts work; card gifts are next."],
+                ["On-ramp ready", "Wallet gifts work now; card gifts are next."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-xl px-4 py-3" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
                   <p className="text-xs font-bold" style={{ color: page.ink }}>{title}</p>
@@ -380,11 +380,11 @@ export default function GiftPage() {
               <div className="rounded-2xl p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
                 <p className="text-sm font-semibold" style={{ color: page.ink }}>Card checkout is being connected.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  For controlled preview testing, use Phantom and SOL. Public card gifts come after the Stripe/Crossmint rail is switched on.
+                  For controlled production testing, use Phantom and SOL. Public card gifts come after the MoonPay on-ramp is switched on.
                 </p>
               </div>
               <button onClick={() => setVisible(true)} className="w-full px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}>
-                Use Phantom for preview test
+                Connect Phantom for this test
               </button>
             </div>
           )}
@@ -400,8 +400,8 @@ export default function GiftPage() {
           {publicKey && childProfilePda && (
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Preview wallet gift</p>
-                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Add your gift for {displayChildName}</p>
+                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Wallet gift</p>
+                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Add your SOL gift for {displayChildName}</p>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {amountPresets.map((preset) => (
@@ -452,7 +452,7 @@ export default function GiftPage() {
               {lockChoice === "ageTen" && (
                 <div className="rounded-2xl p-3" style={{ background: "rgba(216,164,60,0.10)", border: "1px solid rgba(216,164,60,0.24)" }}>
                   <p className="text-xs" style={{ color: page.inkSoft }}>
-                    This preview uses the current deployed contract. The public launch copy will spell out fees and early-withdrawal terms before families add card gifts.
+                    This uses the current deployed contract. Public launch copy will spell out fees and early-withdrawal terms before families add card gifts.
                   </p>
                 </div>
               )}

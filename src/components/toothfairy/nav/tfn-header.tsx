@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation"
 
 const LINKS = [
   { href: "/toothfairy#how-it-works", label: "How It Works" },
-  { href: "/toothfairy#cultural-tales", label: "Cultural Tales" },
-  { href: "/toothfairy/about", label: "About" },
-  { href: "/toothfairy/faq", label: "FAQ" },
-  { href: "/toothfairy/app/dashboard", label: "Dashboard" },
+  { href: "/toothfairy/keepsake/preview", label: "Savings" },
+  { href: "/toothfairy/stories", label: "Stories" },
+  { href: "/toothfairy/about", label: "For Families" },
 ] as const
 
 export function TFNHeader() {
@@ -65,7 +64,7 @@ export function TFNHeader() {
             Built on Solana
           </span>
           <Link href="/toothfairy/app" className="header-cta">
-            Start their journey
+            Join the Network
           </Link>
         </div>
 

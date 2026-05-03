@@ -169,9 +169,9 @@ function KeepsakeExperience({
   const lockedCount = data.deposits.filter((deposit) => deposit.locked).length;
   const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
 
-  const headline = `${data.childName} saved a tooth memory.`;
+  const headline = `${data.childName}'s tooth fairy keepsake.`;
   const subhead =
-    'A tiny childhood ritual is now one family page: the memory, a gift link for loved ones, and the beginning of a parent-controlled Smile Fund.';
+    'A tiny milestone, saved as a memory, a family link, and the beginning of a parent-controlled Smile Fund.';
 
   const promiseItems = useMemo(
     () => [
@@ -196,8 +196,8 @@ function KeepsakeExperience({
 
   return (
     <>
-      <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
-        <div className="order-2 lg:order-1">
+      <section className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <div className="order-2 lg:order-2">
           <div className="flex flex-wrap gap-2">
             <Pill>Family keepsake</Pill>
             <Pill>Built on Solana</Pill>
@@ -213,7 +213,7 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Tooth Fairy Network
+            Family keepsake
           </p>
           <h1
             className="mt-4 max-w-2xl text-4xl leading-[1.02] md:text-6xl"
@@ -233,7 +233,35 @@ function KeepsakeExperience({
             {subhead}
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div
+            className="mt-7 rounded-2xl p-5"
+            style={{
+              background: c.paper,
+              border: `1px solid ${c.border}`,
+              boxShadow: '0 16px 36px oklch(30% 0.035 65 / 0.06)',
+            }}
+          >
+            <p
+              className="text-xs uppercase"
+              style={{
+                color: c.gold,
+                letterSpacing: '0.16em',
+                fontFamily: 'var(--font-body)',
+                fontWeight: 700,
+              }}
+            >
+              Tanda's note
+            </p>
+            <p
+              className="mt-3 text-lg leading-relaxed"
+              style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
+            >
+              What a bright and brave smile you are growing, {data.childName}.
+              Keep this memory close, and let the little things grow.
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <Link
               href={`/toothfairy/app/gift/${milestoneId}`}
               className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
@@ -245,7 +273,7 @@ function KeepsakeExperience({
                 boxShadow: '0 16px 36px rgba(109, 69, 168, 0.24)',
               }}
             >
-              Add a small gift
+              Add a gift to the Smile Fund
             </Link>
             <a
               href="#share"
@@ -262,14 +290,14 @@ function KeepsakeExperience({
             </a>
           </div>
 
-          <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
+          <div className="mt-5 grid max-w-xl grid-cols-3 gap-3">
             <Metric value={`${formatSol(total)} SOL`} label="saved" tone="gold" />
             <Metric value={String(contributionCount)} label="family gifts" tone="purple" />
             <Metric value={lockedCount > 0 ? String(lockedCount) : 'age 10'} label="default" tone="teal" />
           </div>
         </div>
 
-        <div className="order-1 lg:order-2">
+        <div className="order-1 lg:order-1">
           <div className="relative mx-auto max-w-md">
             <div
               className="absolute -left-10 top-10 hidden h-36 w-36 rounded-full md:block"
