@@ -334,12 +334,11 @@ export default function GiftPage() {
                 fontWeight: 700,
               }}
             >
-              Add a small gift to {displayChildName}&apos;s Smile Fund.
+              You were invited to {displayChildName}&apos;s tooth memory.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              A tooth memory was shared with you. See the keepsake first, then add a
-              small gift if you want to help turn one tiny milestone into a first
-              lesson in ownership.
+              See the keepsake first. Add a small gift only if you want; the parent
+              keeps control of the Smile Fund until the child is ready.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
@@ -380,17 +379,14 @@ export default function GiftPage() {
               </div>
             </div>
 
-            <div className="mt-5 grid gap-2 md:grid-cols-3">
-              {[
-                ["Memory first", "See the keepsake before giving."],
-                ["Parent controlled", "The parent keeps access and timing."],
-                ["Card gifts next", "MoonPay checkout is the next rail."],
-              ].map(([title, body]) => (
-                <div key={title} className="rounded-lg px-4 py-3" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
-                  <p className="text-xs font-bold" style={{ color: page.ink }}>{title}</p>
-                  <p className="mt-1 text-xs leading-relaxed" style={{ color: page.muted }}>{body}</p>
-                </div>
-              ))}
+            <div
+              className="mt-5 rounded-lg px-4 py-3"
+              style={{ background: page.cream, border: `1px solid ${page.border}` }}
+            >
+              <p className="text-sm font-bold" style={{ color: page.ink }}>Memory first. Gifts optional.</p>
+              <p className="mt-1 text-sm leading-relaxed" style={{ color: page.muted }}>
+                Start with the memory; the gift can come later.
+              </p>
             </div>
           </div>
 
@@ -423,30 +419,22 @@ export default function GiftPage() {
           {!publicKey && (
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-bold" style={{ color: page.ink }}>Choose a gift amount</p>
-                <div className="grid grid-cols-4 gap-2 mt-3">
-                  {amountPresets.map((preset) => (
-                    <button
-                      key={preset.label}
-                      type="button"
-                      disabled
-                      className="rounded-xl px-3 py-3 text-sm font-bold"
-                      style={{
-                        background: page.cream,
-                        border: `1px solid ${page.border}`,
-                        color: page.muted,
-                      }}
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
-                </div>
+                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Gift options</p>
+                <h3
+                  className="mt-2 text-3xl leading-tight"
+                  style={{ color: page.ink, fontFamily: "var(--font-display), 'Alegreya', Georgia, serif", fontWeight: 700 }}
+                >
+                  Add a small gift.
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
+                  Wallet gifts work now. Card checkout is being connected so family can use dollars soon.
+                </p>
               </div>
               <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
-                <p className="text-sm font-semibold" style={{ color: page.ink }}>Card checkout is being connected.</p>
+                <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts are coming next.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  MoonPay will let loved ones use a card here. Until that switch is on,
-                  Solana wallet gifts are available for controlled live testing.
+                  MoonPay will let loved ones use a card here. For now, use a Solana wallet
+                  or go back to the keepsake.
                 </p>
               </div>
               <button
@@ -456,7 +444,7 @@ export default function GiftPage() {
                 className="w-full rounded-full px-6 py-3 text-sm font-bold text-white disabled:opacity-60"
                 style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}
               >
-                {connecting || connectIntent ? "Connecting wallet..." : "Use a Solana wallet"}
+                {connecting || connectIntent ? "Connecting wallet..." : "Use Solana wallet"}
               </button>
               {walletConnectError && (
                 <p className="text-center text-xs leading-relaxed" style={{ color: C.rose }}>
@@ -481,7 +469,7 @@ export default function GiftPage() {
             <div className="space-y-4">
               <div>
                 <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Solana gift</p>
-                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Add a small gift for {displayChildName}</p>
+                <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Save a small gift for {displayChildName}</p>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {amountPresets.map((preset) => (
@@ -519,7 +507,7 @@ export default function GiftPage() {
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => setLockChoice("now")} className="rounded-lg px-3 py-3 text-sm font-medium transition-all"
                     style={{ background: lockChoice === "now" ? "oklch(72% 0.145 75 / 0.12)" : page.cream, border: `2px solid ${lockChoice === "now" ? page.gold : page.border}`, color: lockChoice === "now" ? page.gold : page.muted }}>
-                    Gift now
+                    Available now
                   </button>
                   <button onClick={() => setLockChoice("ageTen")} className="rounded-lg px-3 py-3 text-sm font-medium transition-all"
                     style={{ background: lockChoice === "ageTen" ? "oklch(72% 0.145 75 / 0.12)" : page.cream, border: `2px solid ${lockChoice === "ageTen" ? page.gold : page.border}`, color: lockChoice === "ageTen" ? page.gold : page.muted }}>
@@ -532,15 +520,15 @@ export default function GiftPage() {
               {lockChoice === "ageTen" && (
                 <div className="rounded-lg p-3" style={{ background: "rgba(216,164,60,0.10)", border: "1px solid rgba(216,164,60,0.24)" }}>
                   <p className="text-xs" style={{ color: page.inkSoft }}>
-                    Age-10 gifts are held by the current escrow program. Public card checkout
-                    will spell out fees and early-withdrawal terms before payment.
+                    Age-10 gifts are held in the Tooth Fairy escrow program. Public card
+                    checkout will spell out fees and early-withdrawal terms before payment.
                   </p>
                 </div>
               )}
 
               <button onClick={handleDeposit} disabled={loading || !depositorName.trim()}
                 className="w-full px-4 py-3 rounded-full text-sm font-bold text-white disabled:opacity-30 transition-all hover:opacity-90" style={{ background: page.purple, color: "white", boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}>
-                {loading ? "Saving gift..." : `${giftVerb} ${depositAmount} SOL${lockChoice === "ageTen" ? " until age 10" : ""}`}
+                {loading ? "Saving gift..." : `${giftVerb} ${depositAmount} SOL for ${displayChildName}`}
               </button>
               <p className="text-xs text-center" style={{ color: page.muted }}>Approve in Phantom. SOL is held in the Tooth Fairy escrow program.</p>
             </div>

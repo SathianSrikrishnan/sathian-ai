@@ -91,8 +91,8 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   }, []);
 
   const resolvedUrl = keepsakeUrl || currentUrl;
-  const shareText = `${childName}'s tooth fairy keepsake and Smile Fund`;
-  const shareBody = `${shareText} ${resolvedUrl}`;
+  const shareText = `${childName}'s tooth fairy keepsake`;
+  const shareBody = `I wanted to share ${shareText}: ${resolvedUrl}`;
   const shareLinks = {
     whatsapp: `https://wa.me/?text=${encodeURIComponent(shareBody)}`,
     sms: `sms:?body=${encodeURIComponent(shareBody)}`,
@@ -212,7 +212,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
           <CopyIcon />
-          {copied ? 'Copied!' : 'Copy family link'}
+          {copied ? 'Copied!' : 'Copy link'}
         </span>
       </button>
 

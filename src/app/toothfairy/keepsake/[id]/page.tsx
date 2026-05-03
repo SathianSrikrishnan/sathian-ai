@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import type { KeepsakeData } from '@/lib/toothfairy/keepsake-data';
@@ -162,37 +162,11 @@ function KeepsakeExperience({
   milestoneId: string;
   keepsakeUrl: string;
 }) {
-  const total =
-    data.totalEscrowed ??
-    data.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
-  const contributionCount = data.deposits.length;
-  const lockedCount = data.deposits.filter((deposit) => deposit.locked).length;
   const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
 
   const headline = `${data.childName}'s tooth fairy keepsake`;
   const subhead =
-    'A tiny milestone, saved for their age-10 moment. Memory first, Smile Fund second, blockchain quietly underneath.';
-
-  const promiseItems = useMemo(
-    () => [
-      {
-        label: 'Memory',
-        title: 'The tooth story stays here',
-        body: 'The drawing, note, and date live together on a page your family can revisit.',
-      },
-      {
-        label: 'Smile Fund',
-        title: 'Loved ones can add small gifts',
-        body: 'The first digital piggy bank starts with simple family contributions.',
-      },
-      {
-        label: 'Ownership',
-        title: 'Parent controlled until they are ready',
-        body: 'Age 10 is the default learning milestone. Parents stay in charge.',
-      },
-    ],
-    []
-  );
+    'A lost tooth, a little note, and a drawing saved for your family to revisit.';
 
   return (
     <>
@@ -200,7 +174,6 @@ function KeepsakeExperience({
         <div className="order-2 lg:order-2">
           <div className="flex flex-wrap gap-2">
             <Pill>Family keepsake</Pill>
-            <Pill>Built on Solana</Pill>
             <Pill>Parent controlled</Pill>
           </div>
 
@@ -257,13 +230,13 @@ function KeepsakeExperience({
               style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
             >
               What a bright and beautiful smile you are growing, {data.childName}.
-              Keep this memory close. Little things can become big things.
+              Keep this memory close. Small things can become big things.
             </p>
           </div>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <Link
-              href={`/toothfairy/app/gift/${milestoneId}`}
+            <a
+              href="#share"
               className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
               style={{
                 background: c.purple,
@@ -273,10 +246,10 @@ function KeepsakeExperience({
                 boxShadow: '0 16px 36px rgba(109, 69, 168, 0.24)',
               }}
             >
-              Add a gift
-            </Link>
-            <a
-              href="#share"
+              Share with family
+            </a>
+            <Link
+              href={`/toothfairy/app/gift/${milestoneId}`}
               className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
               style={{
                 background: c.paper,
@@ -286,14 +259,8 @@ function KeepsakeExperience({
                 textDecoration: 'none',
               }}
             >
-              Share with family
-            </a>
-          </div>
-
-          <div className="mt-5 grid max-w-xl grid-cols-3 gap-3">
-            <Metric value={`${formatSol(total)} SOL`} label="saved" tone="gold" />
-            <Metric value={String(contributionCount)} label="loved gifts" tone="purple" />
-            <Metric value={lockedCount > 0 ? String(lockedCount) : 'age 10'} label="unlock" tone="teal" />
+              Add a gift
+            </Link>
           </div>
         </div>
 
@@ -327,7 +294,6 @@ function KeepsakeExperience({
       </section>
 
       <section className="mt-10 grid gap-5 lg:grid-cols-[0.96fr_1.04fr]">
-        <SmileFundPanel data={data} milestoneId={milestoneId} />
         <section
           id="share"
           className="rounded-lg p-6 md:p-8"
@@ -356,90 +322,22 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Let loved ones see the memory before they give.
+            Share the keepsake first.
           </h2>
           <p
             className="mt-3 text-base leading-relaxed"
             style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
           >
-            Send one link. They can open the keepsake, read the note, and add a small
-            gift through the wallet path now. MoonPay card gifts come next.
+            Send one link to grandparents and loved ones. They can see the memory,
+            read the note, and add a small gift only if they want to.
           </p>
           <div className="mt-6">
             <ShareButtons keepsakeUrl={keepsakeUrl} childName={data.childName} />
           </div>
         </section>
-      </section>
-
-      <section className="mt-5 grid gap-3 md:grid-cols-3">
-        {promiseItems.map((item, index) => (
-          <div
-            key={item.label}
-            className="rounded-lg p-5"
-            style={{
-              background: c.paper,
-              border: `1px solid ${c.border}`,
-              boxShadow: '0 10px 28px oklch(30% 0.035 65 / 0.04)',
-            }}
-          >
-            <p
-              className="text-[10px] font-bold uppercase"
-              style={{ color: c.gold, letterSpacing: '0.16em', fontFamily: 'var(--font-body)' }}
-            >
-              0{index + 1} / {item.label}
-            </p>
-            <h3
-              className="mt-3 text-xl leading-tight"
-              style={{ color: c.ink, fontFamily: 'var(--font-display)', fontWeight: 700 }}
-            >
-              {item.title}
-            </h3>
-            <p
-              className="mt-2 text-sm leading-relaxed"
-              style={{ color: c.inkSoft, fontFamily: 'var(--font-body)' }}
-            >
-              {item.body}
-            </p>
-          </div>
-        ))}
+        <SmileFundPanel data={data} milestoneId={milestoneId} />
       </section>
     </>
-  );
-}
-
-function Metric({
-  value,
-  label,
-  tone,
-}: {
-  value: string;
-  label: string;
-  tone: 'gold' | 'purple' | 'teal';
-}) {
-  const toneStyles = {
-    gold: { background: c.goldSoft, color: c.gold },
-    purple: { background: c.purpleSoft, color: c.purple },
-    teal: { background: c.tealSoft, color: c.teal },
-  }[tone];
-
-  return (
-    <div
-      className="rounded-lg px-4 py-4"
-      style={{ background: c.paper, border: `1px solid ${c.border}` }}
-    >
-      <div
-        className="mb-3 inline-flex rounded-full px-2 py-1 text-[10px] font-bold uppercase"
-        style={{ ...toneStyles, letterSpacing: '0.09em', fontFamily: 'var(--font-body)' }}
-      >
-        {label}
-      </div>
-      <p
-        className="text-xl leading-none"
-        style={{ color: c.ink, fontFamily: 'var(--font-display)', fontWeight: 800 }}
-      >
-        {value}
-      </p>
-    </div>
   );
 }
 
@@ -518,7 +416,7 @@ function SmileFundPanel({
       >
         {hasDeposits
           ? `${contributionCount} loved one${contributionCount === 1 ? '' : 's'} helped start this fund.`
-          : 'No gifts yet. The keepsake is ready; the first gift can come later.'}
+          : 'No gifts yet. Share the keepsake first; the fund can grow whenever family is ready.'}
       </p>
 
       {hasDeposits && (
@@ -551,7 +449,7 @@ function SmileFundPanel({
           boxShadow: '0 12px 30px rgba(109, 69, 168, 0.22)',
         }}
       >
-        Add a small gift
+        {hasDeposits ? 'Add another gift' : 'Add first gift'}
       </Link>
 
       <p
@@ -561,7 +459,7 @@ function SmileFundPanel({
           color: c.inkMuted,
         }}
       >
-        Wallet gifts work now. MoonPay card gifts are the next rail.
+        Parent-controlled. Default unlock: age 10.
       </p>
     </section>
   );
