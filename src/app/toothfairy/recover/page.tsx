@@ -52,11 +52,12 @@ export default function RecoverLandingPage() {
       </section>
 
       <section className="note">
-        <h2>For preview testing</h2>
+        <h2>For controlled testing</h2>
         <p>
-          The recovery path should be tested with the same preview environment
+          The recovery path should be tested with the same live infrastructure
           used for minting: real Supabase records, Solana RPC, the server mint
-          keypair, and the deployed escrow program.
+          keypair, and the deployed escrow program. Keep early tests small and
+          obvious until the public support process is written.
         </p>
       </section>
 

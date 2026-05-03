@@ -64,11 +64,11 @@ const groups = [
     items: [
       {
         q: "Can family members contribute with a credit card today?",
-        a: "Not in this V2 preview by default. The legacy onramp is gated while Stripe/Crossmint is finalized and tested.",
+        a: "Not yet. Wallet-based gifts can be tested now, and MoonPay card gifts are the next production rail to switch on after partner setup and terms review.",
       },
       {
         q: "What is live enough to test?",
-        a: "The V2 site, story surface, keepsake preview, and wallet-based Solana flow can be reviewed. Production minting should only be tested after the Vercel preview health check passes.",
+        a: "The public site, story surface, keepsake page, and wallet-based Solana flow are ready for controlled testing. Keep tests small until the card-gift on-ramp and email flows are wired.",
       },
       {
         q: "Is this financial advice?",

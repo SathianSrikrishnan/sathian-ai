@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
         {
           error: "provider_unconfigured",
           detail:
-            "AI Enhance is not connected in this preview. Continue with the original artwork.",
+            "Magic polish is not connected yet. Continue with the original artwork.",
         },
         { status: 503 }
       )
@@ -158,7 +158,7 @@ export async function POST(req: NextRequest) {
         {
           error: "provider_unconfigured",
           detail:
-            "AI Enhance is not authorized in this preview. Continue with the original artwork.",
+            "Magic polish is not authorized yet. Continue with the original artwork.",
         },
         { status: 503 }
       )

@@ -27,10 +27,10 @@ const layers = [
 ]
 
 const readiness = [
-  "Vercel preview must have real environment variables.",
-  "`/api/toothfairy/health` must pass before live-domain migration.",
-  "One controlled mint should be tested before outside users.",
-  "Fiat/card gifts stay gated until Stripe/Crossmint is wired and tested.",
+  "Production environment variables must stay complete before each deploy.",
+  "`/api/toothfairy/health` should pass before controlled user tests.",
+  "One controlled mint should be tested after every meaningful flow change.",
+  "MoonPay card gifts stay gated until partner setup, terms, and deposit handling are tested.",
 ]
 
 export default function ArchitecturePage() {
@@ -68,12 +68,12 @@ export default function ArchitecturePage() {
       </section>
 
       <section className="disclosure">
-        <h2>Current V2 preview truth</h2>
+        <h2>Current controlled-test truth</h2>
         <p>
           The site can be reviewed visually now. The minting and wallet flows
-          need real preview infrastructure before live testing. The regular
-          card-gift path is intentionally gated because the repo still contains
-          a legacy Coinbase onramp while the intended path is Stripe/Crossmint.
+          should stay in controlled testing while email, recovery, and card
+          gifts are wired. The regular card-gift path is intentionally gated
+          until the MoonPay flow and final public terms are tested end to end.
         </p>
         <Link href="/toothfairy/faq">Read parent FAQ</Link>
       </section>
