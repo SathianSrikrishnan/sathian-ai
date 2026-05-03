@@ -4,6 +4,7 @@ import {
   type EnhanceCharm,
   type EnhanceTradition,
 } from "@/lib/toothfairy/ai-enhance"
+import { isAllowedOrigin } from "@/lib/constants"
 
 const AI_MAX_PER_HOUR = 10
 const windowMs = 60 * 60 * 1000
@@ -52,13 +53,8 @@ const VALID_CHARMS = new Set<EnhanceCharm>(["sparkle", "glow", "magic"])
 
 export async function POST(req: NextRequest) {
   try {
-    const origin = req.headers.get("origin") || ""
-    const allowed = [
-      "https://toothfairy.network",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ]
-    if (!allowed.some((o) => origin.startsWith(o))) {
+    const origin = req.headers.get("origin")
+    if (!isAllowedOrigin(origin)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
