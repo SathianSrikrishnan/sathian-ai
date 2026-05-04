@@ -5,7 +5,6 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react"
 import { useWalletModal } from "@solana/wallet-adapter-react-ui"
 import { AnchorProvider } from "@coral-xyz/anchor"
 import { PublicKey } from "@solana/web3.js"
-import { PhantomWalletName } from "@solana/wallet-adapter-phantom"
 import { useParams } from "next/navigation"
 import {
   getEscrowProgram,
@@ -51,7 +50,6 @@ export default function GiftPage() {
     publicKey,
     signTransaction,
     signAllTransactions,
-    select,
     connect,
     connecting,
     wallet,
@@ -128,50 +126,6 @@ export default function GiftPage() {
     setPageLoading(false)
   }, [anchorProvider])
 
-  useEffect(() => {
-    if (!connectIntent || publicKey || connecting) return
-
-    if (!wallet) {
-      select(PhantomWalletName)
-      setVisible(true)
-      return
-    }
-
-    let cancelled = false
-    ;(async () => {
-      try {
-        await connect()
-        if (!cancelled) {
-          setConnectIntent(false)
-          setWalletConnectError(null)
-        }
-      } catch {
-        if (!cancelled) {
-          setConnectIntent(false)
-          setWalletConnectError(
-            "Phantom opened but did not finish connecting. Unlock Phantom, approve toothfairy.network, then try again."
-          )
-          setVisible(true)
-        }
-      }
-    })()
-
-    return () => {
-      cancelled = true
-    }
-  }, [connect, connectIntent, connecting, publicKey, select, setVisible, wallet])
-
-  useEffect(() => {
-    if (!connectIntent || publicKey) return
-    const timer = window.setTimeout(() => {
-      setConnectIntent(false)
-      setWalletConnectError(
-        "Wallet connection timed out. Open Phantom, unlock it, then try again."
-      )
-    }, 30000)
-    return () => window.clearTimeout(timer)
-  }, [connectIntent, publicKey])
-
   const handleDeposit = async () => {
     if (!publicKey || !anchorProvider || !childProfilePda) return
     setError(null); setLoading(true); setSuccess(null)
@@ -247,13 +201,28 @@ export default function GiftPage() {
       : keepsakeData?.totalEscrowed || 0
   const giftVerb = lockChoice === "ageTen" ? "Save" : "Gift"
 
-  const requestWalletConnection = () => {
+  const requestWalletConnection = async () => {
     setError(null)
     setWalletConnectError(null)
-    setConnectIntent(true)
+
+    if (publicKey || connecting || connectIntent) return
+
     if (!wallet) {
-      select(PhantomWalletName)
       setVisible(true)
+      setWalletConnectError("Choose Phantom from the wallet window, then approve the connection.")
+      return
+    }
+
+    setConnectIntent(true)
+    try {
+      await connect()
+    } catch {
+      setWalletConnectError(
+        "Phantom did not finish connecting. Unlock Phantom, approve toothfairy.network, then try again."
+      )
+      setVisible(true)
+    } finally {
+      setConnectIntent(false)
     }
   }
 

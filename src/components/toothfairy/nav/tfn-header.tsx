@@ -6,9 +6,8 @@ import { usePathname } from "next/navigation"
 
 const LINKS = [
   { href: "/toothfairy#how-it-works", label: "How It Works" },
-  { href: "/toothfairy/keepsake/preview", label: "Savings" },
   { href: "/toothfairy/stories", label: "Stories" },
-  { href: "/toothfairy/about", label: "For Families" },
+  { href: "/toothfairy#smile-fund", label: "Smile Fund" },
 ] as const
 
 export function TFNHeader() {
@@ -44,9 +43,8 @@ export function TFNHeader() {
           <ToothLogo />
           <span className="brand-copy">
             <span className="brand-name">
-              Tooth <b>Fairy Network</b>
+              Tooth Fairy <b>Network</b>
             </span>
-            <span className="brand-line">Memories today. Futures tomorrow.</span>
           </span>
         </Link>
 
@@ -64,7 +62,7 @@ export function TFNHeader() {
             Built on Solana
           </span>
           <Link href="/toothfairy/app" className="header-cta">
-            Join the Network
+            Start a keepsake
           </Link>
         </div>
 
@@ -87,7 +85,7 @@ export function TFNHeader() {
             </Link>
           ))}
           <Link href="/toothfairy/app" className="header-cta mt-2 justify-center">
-            Mint their first memory
+            Start a keepsake
           </Link>
         </nav>
       )}
@@ -118,15 +116,6 @@ export function TFNHeader() {
         .brand-name b {
           color: #6d45a8;
           font-weight: 800;
-        }
-
-        .brand-line {
-          display: none;
-          margin-top: 0.22rem;
-          color: var(--tfn-ink-muted);
-          font-size: 0.66rem;
-          font-weight: 800;
-          letter-spacing: 0.04em;
         }
 
         .nav-link {
@@ -252,12 +241,6 @@ export function TFNHeader() {
           font-size: 0.95rem;
           font-weight: 900;
           text-decoration: none;
-        }
-
-        @media (min-width: 480px) {
-          .brand-line {
-            display: block;
-          }
         }
       `}</style>
     </header>

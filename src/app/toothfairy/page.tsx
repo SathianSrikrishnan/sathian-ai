@@ -19,7 +19,6 @@ type IconName =
 
 const assets = {
   heroFamily: "/toothfairy/visual-system/hero-family-v1.png",
-  tanda: "/toothfairy/visual-system/tanda-guide-v1.png",
   keepsake: "/toothfairy/visual-system/nft-keepsake-v1.png",
   dashboard: "/toothfairy/visual-system/smile-dashboard-v1.png",
   saveMoment: "/toothfairy/visual-system/save-moment-v1.png",
@@ -27,130 +26,44 @@ const assets = {
   watchGrow: "/toothfairy/visual-system/watch-grow-v1.png",
   network: "/fairy-assets/fairy-network-sky.jpg",
   storyNetwork: "/story-assets/shared/shared-network-station.jpg",
-  collectors: "/story-assets/shared/shared-multiple-collectors.jpg",
-  familyConnected: "/story-assets/shared/shared-family-connected.jpg",
 }
 
 const proofItems = [
   {
+    icon: "tooth" as const,
+    title: "Save the moment",
+    body: "Photo, drawing, note.",
+  },
+  {
     icon: "gift" as const,
-    title: "Family gifting",
-    body: "One link for grandparents and loved ones.",
-  },
-  {
-    icon: "shield" as const,
-    title: "Parent controlled",
-    body: "You manage access, sharing, and unlock timing.",
-  },
-  {
-    icon: "book" as const,
-    title: "Magical stories",
-    body: "Tanda and global traditions make the ritual worth sharing.",
+    title: "Share one link",
+    body: "Loved ones can add a gift.",
   },
   {
     icon: "wallet" as const,
-    title: "Built on Solana",
-    body: "Modern rails tucked under a friendly family flow.",
+    title: "Parent controlled",
+    body: "Age 10 by default.",
   },
 ]
 
 const steps = [
   {
-    icon: "camera" as const,
     image: assets.saveMoment,
     number: "1",
-    title: "Save the moment",
-    body: "Photo, tooth, drawing, and a few words become one keepsake.",
+    title: "Lost a Tooth",
+    body: "The child has the moment. You save it before it disappears into bedtime memory.",
   },
   {
-    icon: "gift" as const,
     image: assets.inviteFamily,
     number: "2",
-    title: "Invite loved ones",
-    body: "Share one family link so small gifts can start the Smile Fund.",
+    title: "Capture & Mint",
+    body: "A photo, drawing, and note become one keepsake page your family can revisit.",
   },
   {
-    icon: "growth" as const,
     image: assets.watchGrow,
     number: "3",
-    title: "Watch it grow",
-    body: "By age 10, the child can see how tiny gifts became a first lesson in ownership.",
-  },
-]
-
-const parentReasons = [
-  {
-    icon: "heart" as const,
-    title: "Preserve the ritual",
-    body: "The tooth fairy stays magical, but the memory no longer disappears by morning.",
-  },
-  {
-    icon: "gift" as const,
-    title: "Make gifts useful",
-    body: "Loved ones can mark the moment with something small and meaningful.",
-  },
-  {
-    icon: "family" as const,
-    title: "Invite loved ones",
-    body: "Aunts, uncles, grandparents, and close friends get one simple place to participate.",
-  },
-  {
-    icon: "growth" as const,
-    title: "Teach growth early",
-    body: "The Smile Fund becomes a soft introduction to saving, ownership, and time.",
-  },
-]
-
-const tales = [
-  {
-    title: "Tanda and the First Memory",
-    region: "Network origin",
-    image: "/story-assets/tanda/tf-05-tanda.png",
-    href: "/toothfairy/story/tanda",
-    body: "The first tooth Tanda turns into a memory that can grow.",
-  },
-  {
-    title: "Ratoncito Perez",
-    region: "Spain",
-    image: "/story-assets/ratoncito-perez/rp-02-mouse.png",
-    href: "/toothfairy/story/ratoncito-perez",
-    body: "A careful mouse discovers a new way to connect families.",
-  },
-  {
-    title: "The Viking Promise",
-    region: "Northern Europe",
-    image: "/story-assets/viking-origin/vo-03-tooth.png",
-    href: "/toothfairy/story/viking-origin",
-    body: "A tooth talisman becomes a promise carried across generations.",
-  },
-  {
-    title: "The Tooth Shrine",
-    region: "Japan",
-    image: "/story-assets/japan/jp-05-shrine-gate.jpg",
-    href: "/toothfairy/stories",
-    body: "A quiet ritual links a lost tooth to growth and direction.",
-  },
-  {
-    title: "The Magpie Messenger",
-    region: "Korea",
-    image: "/story-assets/korea/kr-03-magpie-descends.jpg",
-    href: "/toothfairy/stories",
-    body: "A rooftop wish becomes a message carried across the sky.",
-  },
-]
-
-const faqItems = [
-  {
-    q: "Do I need crypto already?",
-    a: "No. The public flow is designed for parents first. Wallet gifts work today for controlled tests; card gifts are the next on-ramp.",
-  },
-  {
-    q: "Who controls the fund?",
-    a: "The parent controls the account, sharing, and unlock timing. Age 10 is the suggested learning milestone.",
-  },
-  {
-    q: "Is the keepsake public?",
-    a: "The keepsake is built around a family link: easy to share with people you choose, without making crypto the center of the experience.",
+    title: "Grow Their Future",
+    body: "Loved ones can add small gifts to a parent-controlled Smile Fund.",
   },
 ]
 
@@ -163,28 +76,27 @@ export default function ToothFairyLanding() {
         </div>
         <div className="hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">Tooth Fairy Network</p>
             <h1>
               Mint a memory.
               <span>Start their Smile Fund.</span>
             </h1>
             <p className="hero-lede">
-              A lost tooth becomes a keepsake, a family gift link, and a
-              parent-controlled digital piggy bank your child can grow into.
+              A lost tooth becomes a keepsake page, a family gift link, and a
+              parent-controlled digital piggy bank.
             </p>
             <div className="hero-actions">
               <Link href="/toothfairy/app" className="button primary">
-                Mint their first memory
-                <span aria-hidden>{"->"}</span>
+                Start a keepsake
+                <span aria-hidden className="button-arrow" />
               </Link>
               <Link href="#how-it-works" className="button secondary">
                 See how it works
               </Link>
             </div>
             <div className="hero-note">
-              <span>Free to start</span>
+              <span>Memory first</span>
               <span>Parent controlled</span>
-              <span>Built on Solana</span>
+              <span>Age 10 default</span>
             </div>
           </div>
 
@@ -200,33 +112,24 @@ export default function ToothFairyLanding() {
               />
             </div>
 
-            <div className="tanda-float" aria-label="Tanda, Tooth Fairy Network guide">
-              <Image
-                src={assets.tanda}
-                alt=""
-                fill
-                priority
-                sizes="180px"
-                className="object-cover"
-              />
-            </div>
-
             <article className="memory-card">
-              <div className="memory-orb">
-                <Image src={assets.keepsake} alt="" fill sizes="84px" className="object-cover" />
+              <div className="memory-preview">
+                <Image src={assets.keepsake} alt="" fill sizes="180px" className="object-cover" />
               </div>
               <p>Tooth memory</p>
               <strong>#1024</strong>
-              <span>Photo, drawing, and note saved</span>
+              <span>Photo, drawing, note</span>
             </article>
 
             <article className="smile-card">
-              <div>
+              <div className="smile-copy">
                 <p>Little Smile Fund</p>
                 <strong>12.45 SOL</strong>
                 <span>23 family gifts</span>
               </div>
-              <MiniChart />
+              <div className="smile-preview">
+                <Image src={assets.dashboard} alt="" fill sizes="180px" className="object-cover" />
+              </div>
             </article>
           </div>
         </div>
@@ -249,18 +152,15 @@ export default function ToothFairyLanding() {
       <section id="how-it-works" className="section">
         <SectionIntro
           eyebrow="How it works"
-          title="Three steps parents can explain at bedtime."
-          body="The whole product should feel this simple: save the moment, invite loved ones, watch the fund grow."
+          title="Lost tooth. Keepsake. Smile Fund."
+          body="Simple enough for bedtime, useful enough to revisit."
         />
         <div className="steps-grid">
           {steps.map((step) => (
             <article key={step.title} className="step-card">
               <div className="step-image">
                 <Image src={step.image} alt="" fill sizes="360px" className="object-contain" />
-              </div>
-              <div className="step-title-row">
-                <span>{step.number}</span>
-                <FeatureIcon name={step.icon} />
+                <span className="step-number">{step.number}</span>
               </div>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
@@ -269,136 +169,78 @@ export default function ToothFairyLanding() {
         </div>
       </section>
 
-      <section className="section product-section">
-        <div className="product-copy">
-          <p className="eyebrow">The actual product</p>
-          <h2>A keepsake page your family can share.</h2>
+      <section id="smile-fund" className="section smile-section">
+        <div className="smile-intro">
+          <p className="eyebrow">Smile Fund</p>
+          <h2>Small gifts, one parent-controlled balance.</h2>
           <p>
-            Memory first. Smile Fund second. Blockchain quietly underneath.
-            The child sees something they made. The parent sees a controlled
-            account with a simple family contribution path.
+            The dashboard shows who gave, what was saved, and when the child can
+            take over.
           </p>
         </div>
 
-        <div className="product-showcase">
-          <article className="keepsake-demo">
-            <div className="demo-art">
-              <Image
-                src={assets.keepsake}
-                alt="Tooth keepsake preview"
-                fill
-                sizes="(min-width: 1024px) 420px, 92vw"
-                className="object-contain"
-              />
-            </div>
-            <div className="demo-copy">
-              <p>Tanda's note</p>
-              <h3>Your first owned memory.</h3>
-              <span>
-                A photo, drawing, date, and little story become the first
-                digital object the child can point to and say: this is mine.
-              </span>
-            </div>
-          </article>
-
-          <article className="fund-demo">
+        <article className="smile-dashboard">
+          <div className="dashboard-visual">
+            <Image
+              src={assets.dashboard}
+              alt="Smile Fund dashboard preview"
+              fill
+              sizes="(min-width: 1024px) 520px, 92vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="dashboard-panel">
             <div className="fund-top">
               <FeatureIcon name="wallet" />
               <div>
-                <p>Smile Fund</p>
-                <strong>$45 saved by family</strong>
-                <span>Unlocks when they turn 10</span>
+                <p>Little Smile Fund</p>
+                <strong>12.45 SOL</strong>
+                <span>$2,341.15 USD</span>
               </div>
             </div>
-            <MiniChart large />
+            <div className="dashboard-stats">
+              <span><b>23</b><em>family gifts</em></span>
+              <span><b>age 10</b><em>unlock default</em></span>
+              <span><b>parent</b><em>controls access</em></span>
+            </div>
             <div className="giver-list">
               <span><b>Grandma</b><em>$20</em></span>
               <span><b>Mom and Dad</b><em>$15</em></span>
               <span><b>Uncle Ben</b><em>$10</em></span>
             </div>
-            <Link href="/toothfairy/keepsake/preview" className="button gold full">
-              View keepsake preview
-              <span aria-hidden>{"->"}</span>
-            </Link>
-          </article>
-        </div>
-      </section>
-
-      <section className="section parents-section">
-        <SectionIntro
-          eyebrow="Why parents love it"
-          title="It keeps the magic and adds a first money lesson."
-          body="This is not trying to make childhood financial. It is using a familiar ritual to teach ownership, patience, and growth."
-        />
-        <div className="reason-grid">
-          {parentReasons.map((item) => (
-            <article key={item.title} className="reason-card">
-              <FeatureIcon name={item.icon} />
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))}
-        </div>
+            <div className="dashboard-note">
+              <FeatureIcon name="shield" />
+              <span>Parent-controlled until the family is ready.</span>
+            </div>
+          </div>
+        </article>
       </section>
 
       <section className="story-band">
         <Image src={assets.network} alt="" fill sizes="100vw" className="object-cover" />
         <div className="story-shade" />
         <div className="story-content">
-          <p className="eyebrow">The world behind it</p>
-          <h2>Tanda is building the Tooth Fairy Network.</h2>
+          <p className="eyebrow">Story world</p>
+          <h2>Tanda turns one ritual into a world.</h2>
           <p>
-            Fairies, mice, birds, sun spirits, and family rituals from around
-            the world become one connected folklore network. The Smile Fund is
-            the small modern ritual underneath.
+            Tooth traditions become short stories families can read after the
+            keepsake is made.
           </p>
           <Link href="/toothfairy/stories" className="button gold">
             Explore the stories
-            <span aria-hidden>{"->"}</span>
+            <span aria-hidden className="button-arrow" />
           </Link>
         </div>
-      </section>
-
-      <section id="cultural-tales" className="section tales-section">
-        <SectionIntro
-          eyebrow="Cultural tales"
-          title="Stories families can actually share."
-          body="The story universe should make the product feel bigger without making the purchase decision complicated."
-        />
-
-        <div className="tales-grid">
-          {tales.map((tale) => (
-            <Link key={tale.title} href={tale.href} className="tale-card">
-              <span className="tale-image">
-                <Image src={tale.image} alt={tale.title} fill sizes="260px" className="object-cover" />
-              </span>
-              <span className="tale-copy">
-                <strong>{tale.title}</strong>
-                <em>{tale.region}</em>
-                <span>{tale.body}</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="faq-strip">
-        {faqItems.map((item) => (
-          <details key={item.q}>
-            <summary>{item.q}</summary>
-            <p>{item.a}</p>
-          </details>
-        ))}
       </section>
 
       <section className="final-cta">
         <Image src={assets.storyNetwork} alt="" fill sizes="100vw" className="object-cover" />
         <div className="final-shade" />
         <div className="final-copy">
-          <h2>Every tooth is a memory. Every small gift can become their first lesson in growth.</h2>
+          <h2>Start with one tiny moment.</h2>
           <Link href="/toothfairy/app" className="button gold">
-            Mint their first memory
-            <span aria-hidden>{"->"}</span>
+            Start a keepsake
+            <span aria-hidden className="button-arrow" />
           </Link>
         </div>
       </section>
@@ -441,11 +283,11 @@ export default function ToothFairyLanding() {
           z-index: 1;
           display: grid;
           max-width: 1280px;
-          min-height: min(760px, calc(100vh - 72px));
+          min-height: min(700px, calc(100vh - 72px));
           align-items: center;
-          gap: clamp(2rem, 5vw, 4.5rem);
+          gap: 4rem;
           margin: 0 auto;
-          padding: clamp(3.5rem, 6vw, 5.5rem) 1.25rem 3.5rem;
+          padding: 4.4rem 1.25rem 3.2rem;
         }
 
         .hero-copy {
@@ -461,7 +303,7 @@ export default function ToothFairyLanding() {
         }
 
         .hero h1,
-        .product-copy h2,
+        .smile-intro h2,
         .story-content h2,
         .final-copy h2 {
           color: var(--ink);
@@ -471,10 +313,10 @@ export default function ToothFairyLanding() {
         }
 
         .hero h1 {
-          margin-top: 1.1rem;
+          margin-top: 0;
           max-width: 650px;
-          font-size: clamp(4rem, 9vw, 7.35rem);
-          line-height: 0.88;
+          font-size: 5.25rem;
+          line-height: 0.94;
         }
 
         .hero h1 span {
@@ -486,7 +328,7 @@ export default function ToothFairyLanding() {
           max-width: 39rem;
           margin-top: 1.5rem;
           color: var(--ink-soft);
-          font-size: clamp(1.08rem, 2vw, 1.3rem);
+          font-size: 1.22rem;
           line-height: 1.7;
         }
 
@@ -516,6 +358,15 @@ export default function ToothFairyLanding() {
 
         .button:hover {
           transform: translateY(-1px);
+        }
+
+        .button-arrow {
+          display: inline-block;
+          width: 0.55rem;
+          height: 0.55rem;
+          border-top: 2px solid currentColor;
+          border-right: 2px solid currentColor;
+          transform: rotate(45deg);
         }
 
         .button.primary {
@@ -571,7 +422,7 @@ export default function ToothFairyLanding() {
 
         .family-frame {
           position: absolute;
-          inset: 7% 3% 9% 18%;
+          inset: 7% 1% 10% 9%;
           overflow: hidden;
           border: 1px solid rgba(255, 255, 255, 0.74);
           border-radius: 8px;
@@ -587,18 +438,6 @@ export default function ToothFairyLanding() {
             linear-gradient(90deg, rgba(251, 247, 238, 0.80), transparent 45%);
         }
 
-        .tanda-float {
-          position: absolute;
-          left: 0;
-          top: 17%;
-          width: clamp(8.5rem, 14vw, 11.5rem);
-          aspect-ratio: 0.78;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.72);
-          border-radius: 8px;
-          box-shadow: 0 24px 54px rgba(47, 35, 80, 0.18);
-        }
-
         .memory-card,
         .smile-card {
           position: absolute;
@@ -611,16 +450,15 @@ export default function ToothFairyLanding() {
 
         .memory-card {
           right: 0;
-          top: 25%;
-          width: min(220px, 38vw);
-          min-height: 210px;
-          padding: 1.35rem;
+          top: 24%;
+          width: min(230px, 40vw);
+          min-height: 238px;
+          padding: 0.85rem;
         }
 
         .memory-card p,
         .smile-card p,
-        .fund-top p,
-        .demo-copy p {
+        .fund-top p {
           color: var(--muted);
           font-size: 0.78rem;
           font-weight: 900;
@@ -641,8 +479,7 @@ export default function ToothFairyLanding() {
 
         .memory-card span,
         .smile-card span,
-        .fund-top span,
-        .demo-copy span {
+        .fund-top span {
           display: block;
           margin-top: 0.55rem;
           color: var(--muted);
@@ -650,50 +487,55 @@ export default function ToothFairyLanding() {
           line-height: 1.45;
         }
 
-        .memory-orb {
+        .memory-preview {
           position: relative;
-          width: 5.3rem;
-          height: 5.3rem;
+          width: 100%;
+          aspect-ratio: 1.1;
           overflow: hidden;
-          margin-bottom: 1rem;
-          border-radius: 999px;
+          margin-bottom: 0.9rem;
+          border-radius: 8px;
           background: #fffaf1;
           box-shadow: inset 0 0 0 1px rgba(216, 164, 60, 0.28);
         }
 
         .smile-card {
-          right: 6%;
+          right: 3%;
           bottom: 5%;
           display: grid;
-          width: min(360px, 58vw);
-          grid-template-columns: 1fr 140px;
-          align-items: end;
-          gap: 1rem;
-          padding: 1.35rem;
+          width: min(430px, 62vw);
+          grid-template-columns: minmax(0, 0.78fr) minmax(120px, 0.92fr);
+          align-items: center;
+          gap: 0.8rem;
+          padding: 0.9rem;
         }
 
-        .proof-strip,
-        .faq-strip {
+        .smile-preview {
+          position: relative;
+          min-height: 126px;
+          overflow: hidden;
+          border: 1px solid rgba(227, 217, 196, 0.76);
+          border-radius: 8px;
+          background: #fffaf1;
+        }
+
+        .proof-strip {
           border-bottom: 1px solid var(--line);
-          background: rgba(255, 252, 246, 0.5);
+          background: rgba(255, 252, 246, 0.44);
         }
 
         .proof-grid {
           display: grid;
-          max-width: 1280px;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 0.85rem;
+          max-width: 880px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.55rem;
           margin: 0 auto;
-          padding: 1.1rem 1.25rem;
+          padding: 0.7rem 1.25rem;
         }
 
         .proof-card,
-        .reason-card,
         .step-card,
-        .keepsake-demo,
-        .fund-demo,
-        .tale-card,
-        .faq-strip details {
+        .smile-dashboard,
+        .dashboard-panel {
           border: 1px solid var(--line);
           border-radius: 8px;
           background: var(--paper);
@@ -703,15 +545,14 @@ export default function ToothFairyLanding() {
         .proof-card {
           display: grid;
           grid-template-columns: auto 1fr;
-          gap: 0.95rem;
+          gap: 0.65rem;
           align-items: center;
-          padding: 1rem;
+          padding: 0.65rem 0.76rem;
+          box-shadow: none;
         }
 
         .proof-card h2,
-        .reason-card h3,
-        .step-card h3,
-        .demo-copy h3 {
+        .step-card h3 {
           color: var(--ink);
           font-family: var(--font-display), Georgia, serif;
           font-weight: 800;
@@ -719,28 +560,27 @@ export default function ToothFairyLanding() {
         }
 
         .proof-card h2 {
-          font-size: 1rem;
+          font-size: 0.94rem;
         }
 
         .proof-card p,
-        .reason-card p,
         .step-card p,
         .section-intro p,
-        .product-copy p,
+        .smile-intro p,
         .story-content p {
           color: var(--ink-soft);
           line-height: 1.6;
         }
 
         .proof-card p {
-          margin-top: 0.2rem;
-          font-size: 0.86rem;
+          margin-top: 0.1rem;
+          font-size: 0.78rem;
         }
 
         .section {
           max-width: 1280px;
           margin: 0 auto;
-          padding: clamp(4rem, 7vw, 6.5rem) 1.25rem;
+          padding: 4.6rem 1.25rem;
         }
 
         .section-intro {
@@ -753,7 +593,7 @@ export default function ToothFairyLanding() {
           margin-top: 0.7rem;
           color: var(--ink);
           font-family: var(--font-display), Georgia, serif;
-          font-size: clamp(2rem, 4vw, 3.4rem);
+          font-size: 3.1rem;
           font-weight: 800;
           letter-spacing: 0;
           line-height: 1.04;
@@ -764,110 +604,114 @@ export default function ToothFairyLanding() {
           font-size: 1.08rem;
         }
 
-        .steps-grid,
-        .reason-grid,
-        .tales-grid {
+        .steps-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1.1rem;
+          gap: 0.95rem;
         }
 
         .step-card {
-          min-height: 440px;
-          padding: 1.2rem;
+          position: relative;
+          min-height: 430px;
+          overflow: visible;
+          padding: 1rem 1rem 1.25rem;
+          text-align: center;
+        }
+
+        .step-card:not(:last-child):after {
+          content: "";
+          position: absolute;
+          top: 38%;
+          right: -1.15rem;
+          z-index: 2;
+          width: 2rem;
+          height: 2rem;
+          border-top: 2px dashed rgba(109, 69, 168, 0.34);
+          border-right: 2px dashed rgba(109, 69, 168, 0.34);
+          transform: rotate(45deg);
         }
 
         .step-image {
           position: relative;
-          height: 180px;
-          margin-bottom: 0.7rem;
+          height: 255px;
+          margin-bottom: 1.25rem;
           border-radius: 8px;
           background: linear-gradient(180deg, rgba(255, 252, 246, 0.66), rgba(245, 239, 226, 0.72));
           overflow: hidden;
         }
 
-        .step-title-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 0.9rem;
-        }
-
-        .step-title-row span {
+        .step-number {
+          position: absolute;
+          left: 50%;
+          bottom: 0.8rem;
           display: inline-grid;
-          width: 2.35rem;
-          height: 2.35rem;
+          width: 3.35rem;
+          height: 3.35rem;
           place-items: center;
           border-radius: 999px;
           background: var(--gold);
           color: #fffaf1;
+          border: 4px solid #fffaf1;
           font-weight: 900;
+          font-size: 1.28rem;
+          transform: translateX(-50%);
+          box-shadow: 0 12px 30px rgba(47, 35, 80, 0.14);
         }
 
         .step-card h3 {
-          margin-top: 1rem;
-          font-size: 1.55rem;
+          margin-top: 0;
+          font-size: 1.72rem;
         }
 
         .step-card p {
-          margin-top: 0.7rem;
-          font-size: 1rem;
+          max-width: 21rem;
+          margin: 0.62rem auto 0;
+          font-size: 0.98rem;
         }
 
-        .product-section {
+        .smile-section {
           display: grid;
-          grid-template-columns: 0.78fr 1.22fr;
-          gap: 1.5rem;
+          grid-template-columns: minmax(300px, 0.68fr) minmax(0, 1.32fr);
+          gap: 1.4rem;
           align-items: center;
         }
 
-        .product-copy h2,
+        .smile-intro h2,
         .story-content h2,
         .final-copy h2 {
           margin-top: 0.8rem;
-          font-size: clamp(2.2rem, 4.6vw, 4rem);
+          font-size: 3.55rem;
           line-height: 1.03;
         }
 
-        .product-copy p {
+        .smile-intro p {
           margin-top: 1rem;
           font-size: 1.08rem;
         }
 
-        .product-showcase {
+        .smile-dashboard {
           display: grid;
-          grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-          gap: 1rem;
-        }
-
-        .keepsake-demo,
-        .fund-demo {
+          grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.82fr);
+          gap: 1.05rem;
           padding: 1rem;
         }
 
-        .demo-art {
+        .dashboard-visual {
           position: relative;
-          min-height: 330px;
+          min-height: 390px;
           border-radius: 8px;
           background:
-            radial-gradient(circle at 50% 82%, rgba(216, 164, 60, 0.22), transparent 10rem),
+            radial-gradient(circle at 50% 75%, rgba(23, 143, 123, 0.12), transparent 12rem),
             linear-gradient(180deg, #fffaf1, #f5efe2);
           overflow: hidden;
         }
 
-        .demo-copy {
-          padding: 1.2rem 0.25rem 0.25rem;
-        }
-
-        .demo-copy h3 {
-          margin-top: 0.45rem;
-          font-size: 1.55rem;
-        }
-
-        .fund-demo {
+        .dashboard-panel {
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          padding: 1rem;
+          box-shadow: none;
         }
 
         .fund-top {
@@ -904,22 +748,53 @@ export default function ToothFairyLanding() {
           font-weight: 900;
         }
 
-        .reason-grid {
-          grid-template-columns: repeat(4, 1fr);
+        .dashboard-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.55rem;
         }
 
-        .reason-card {
-          padding: 1.35rem;
+        .dashboard-stats span {
+          display: block;
+          min-height: 5.4rem;
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          padding: 0.9rem;
+          background: rgba(255, 252, 246, 0.62);
         }
 
-        .reason-card h3 {
-          margin-top: 1.1rem;
-          font-size: 1.3rem;
+        .dashboard-stats b,
+        .dashboard-stats em {
+          display: block;
         }
 
-        .reason-card p {
-          margin-top: 0.6rem;
-          font-size: 0.94rem;
+        .dashboard-stats b {
+          color: var(--ink);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.2rem;
+          line-height: 1.05;
+        }
+
+        .dashboard-stats em {
+          margin-top: 0.32rem;
+          color: var(--muted);
+          font-size: 0.76rem;
+          font-style: normal;
+          line-height: 1.25;
+        }
+
+        .dashboard-note {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 0.75rem;
+          align-items: center;
+          border: 1px solid rgba(109, 69, 168, 0.18);
+          border-radius: 8px;
+          padding: 0.85rem;
+          background: rgba(109, 69, 168, 0.08);
+          color: var(--ink-soft);
+          font-size: 0.9rem;
+          font-weight: 800;
         }
 
         .story-band,
@@ -942,7 +817,7 @@ export default function ToothFairyLanding() {
           position: relative;
           z-index: 1;
           max-width: 680px;
-          padding: clamp(4rem, 7vw, 6rem) 1.25rem;
+          padding: 5.5rem 1.25rem;
           margin-left: max(1.25rem, calc((100vw - 1280px) / 2 + 1.25rem));
         }
 
@@ -954,81 +829,6 @@ export default function ToothFairyLanding() {
         .story-content p {
           margin-top: 1rem;
           font-size: 1.08rem;
-        }
-
-        .tales-grid {
-          grid-template-columns: repeat(5, 1fr);
-        }
-
-        .tale-card {
-          overflow: hidden;
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .tale-image {
-          position: relative;
-          display: block;
-          height: 150px;
-        }
-
-        .tale-copy {
-          display: block;
-          padding: 1rem;
-        }
-
-        .tale-copy strong,
-        .tale-copy em,
-        .tale-copy span {
-          display: block;
-        }
-
-        .tale-copy strong {
-          color: var(--ink);
-          font-family: var(--font-display), Georgia, serif;
-          font-size: 1.08rem;
-          font-weight: 800;
-        }
-
-        .tale-copy em {
-          margin-top: 0.2rem;
-          color: var(--gold-dark);
-          font-size: 0.8rem;
-          font-style: normal;
-          font-weight: 900;
-        }
-
-        .tale-copy span {
-          margin-top: 0.55rem;
-          color: var(--muted);
-          font-size: 0.88rem;
-          line-height: 1.45;
-        }
-
-        .faq-strip {
-          display: grid;
-          max-width: 1280px;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1rem;
-          margin: 0 auto;
-          padding: 1.3rem 1.25rem;
-        }
-
-        .faq-strip details {
-          padding: 1rem 1.1rem;
-        }
-
-        .faq-strip summary {
-          cursor: pointer;
-          color: var(--ink);
-          font-weight: 900;
-        }
-
-        .faq-strip p {
-          margin-top: 0.75rem;
-          color: var(--ink-soft);
-          font-size: 0.92rem;
-          line-height: 1.55;
         }
 
         .final-cta {
@@ -1056,30 +856,7 @@ export default function ToothFairyLanding() {
         .final-copy h2 {
           max-width: 650px;
           color: #fffaf1;
-          font-size: clamp(2rem, 4vw, 3.5rem);
-        }
-
-        .mini-chart {
-          display: flex;
-          align-items: end;
-          gap: 0.38rem;
-          height: 88px;
-        }
-
-        .mini-chart.large {
-          height: 148px;
-          padding: 1rem;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: linear-gradient(180deg, rgba(23, 143, 123, 0.06), rgba(255, 252, 246, 0.7));
-        }
-
-        .mini-chart i {
-          display: block;
-          flex: 1;
-          min-width: 12px;
-          border-radius: 999px 999px 0 0;
-          background: linear-gradient(180deg, #5fc9aa, rgba(95, 201, 170, 0.22));
+          font-size: 3.1rem;
         }
 
         @media (min-width: 900px) {
@@ -1089,29 +866,54 @@ export default function ToothFairyLanding() {
         }
 
         @media (max-width: 1060px) {
-          .proof-grid,
-          .reason-grid,
-          .tales-grid {
+          .proof-grid {
             grid-template-columns: repeat(2, 1fr);
           }
 
-          .product-section,
-          .product-showcase {
+          .smile-section,
+          .smile-dashboard {
             grid-template-columns: 1fr;
           }
 
           .hero-product {
             min-height: 520px;
           }
+
+          .hero h1 {
+            font-size: 4.6rem;
+          }
+
+          .section-intro h2,
+          .smile-intro h2,
+          .story-content h2,
+          .final-copy h2 {
+            font-size: 2.8rem;
+          }
         }
 
         @media (max-width: 720px) {
           .hero-grid {
             padding-top: 2.75rem;
+            gap: 2.25rem;
           }
 
           .hero h1 {
-            font-size: clamp(3.3rem, 17vw, 4.5rem);
+            font-size: 3.45rem;
+          }
+
+          .hero-lede {
+            font-size: 1.08rem;
+          }
+
+          .section {
+            padding: 4rem 1.25rem;
+          }
+
+          .section-intro h2,
+          .smile-intro h2,
+          .story-content h2,
+          .final-copy h2 {
+            font-size: 2.35rem;
           }
 
           .hero-actions,
@@ -1125,13 +927,7 @@ export default function ToothFairyLanding() {
           }
 
           .family-frame {
-            inset: 8% 0 16% 5%;
-          }
-
-          .tanda-float {
-            top: 2%;
-            left: 2%;
-            width: 8rem;
+            inset: 8% 0 16% 3%;
           }
 
           .memory-card {
@@ -1148,11 +944,12 @@ export default function ToothFairyLanding() {
           }
 
           .proof-grid,
-          .steps-grid,
-          .reason-grid,
-          .tales-grid,
-          .faq-strip {
+          .steps-grid {
             grid-template-columns: 1fr;
+          }
+
+          .step-card:not(:last-child):after {
+            display: none;
           }
 
           .step-card {
@@ -1182,17 +979,6 @@ function SectionIntro({
       <p className="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <p>{body}</p>
-    </div>
-  )
-}
-
-function MiniChart({ large = false }: { large?: boolean }) {
-  const heights = [26, 38, 32, 52, 72, 92]
-  return (
-    <div className={large ? "mini-chart large" : "mini-chart"} aria-hidden>
-      {heights.map((height, index) => (
-        <i key={`${height}-${index}`} style={{ height: `${large ? height + 20 : height}%` }} />
-      ))}
     </div>
   )
 }

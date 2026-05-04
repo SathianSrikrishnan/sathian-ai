@@ -150,6 +150,10 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     }
   };
 
+  const handleNativeShare = async () => {
+    await tryNativeShare();
+  };
+
   const handleShare = async (
     event: React.MouseEvent<HTMLAnchorElement>,
     key: Exclude<ShareKey, 'copy'>
@@ -212,9 +216,33 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
           <CopyIcon />
-          {copied ? 'Copied!' : 'Copy link'}
+          {copied ? 'Copied!' : 'Copy family link'}
         </span>
       </button>
+
+      {canNativeShare && (
+        <button
+          type="button"
+          onClick={handleNativeShare}
+          className="w-full px-8 py-4 rounded-full active:scale-[0.98]"
+          style={{
+            fontFamily: 'var(--font-body)',
+            background: c.cream,
+            color: c.brown,
+            border: `1px solid ${c.border}`,
+            fontSize: '1rem',
+            fontWeight: 600,
+            minHeight: 56,
+            cursor: 'pointer',
+          }}
+          aria-label="Open share options"
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
+            <MessageIcon />
+            Share from this device
+          </span>
+        </button>
+      )}
 
       {/* Share row: 5 destinations. SMS hidden on desktop (sms: link is mobile). */}
       <div
