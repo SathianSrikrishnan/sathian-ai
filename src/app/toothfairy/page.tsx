@@ -221,10 +221,10 @@ export default function ToothFairyLanding() {
         <div className="story-shade" />
         <div className="story-content">
           <p className="eyebrow">Story world</p>
-          <h2>Tanda turns one ritual into a world.</h2>
+          <h2>The world behind every tooth.</h2>
           <p>
-            Tooth traditions become short stories families can read after the
-            keepsake is made.
+            Tanda connects tooth fairies, mice, birds, and family rituals into
+            short stories children can read after the keepsake is made.
           </p>
           <Link href="/toothfairy/stories" className="button gold">
             Explore the stories
@@ -237,7 +237,7 @@ export default function ToothFairyLanding() {
         <Image src={assets.storyNetwork} alt="" fill sizes="100vw" className="object-cover" />
         <div className="final-shade" />
         <div className="final-copy">
-          <h2>Start with one tiny moment.</h2>
+          <h2>Ready when the tooth is.</h2>
           <Link href="/toothfairy/app" className="button gold">
             Start a keepsake
             <span aria-hidden className="button-arrow" />
@@ -832,7 +832,7 @@ export default function ToothFairyLanding() {
         }
 
         .final-cta {
-          min-height: 300px;
+          min-height: 230px;
           border-top: 1px solid var(--line);
         }
 
@@ -845,7 +845,7 @@ export default function ToothFairyLanding() {
         .final-copy {
           position: relative;
           z-index: 1;
-          min-height: 300px;
+          min-height: 230px;
           max-width: 1280px;
           margin: 0 auto;
           padding: 2rem 1.25rem;

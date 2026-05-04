@@ -36,10 +36,10 @@ const page = {
 }
 
 const amountPresets = [
-  { label: "$5", amount: "0.05" },
-  { label: "$10", amount: "0.1" },
-  { label: "$25", amount: "0.25" },
-  { label: "$50", amount: "0.5" },
+  { label: "0.05 SOL", amount: "0.05" },
+  { label: "0.10 SOL", amount: "0.1" },
+  { label: "0.25 SOL", amount: "0.25" },
+  { label: "0.50 SOL", amount: "0.5" },
 ]
 
 export default function GiftPage() {
@@ -201,28 +201,45 @@ export default function GiftPage() {
       : keepsakeData?.totalEscrowed || 0
   const giftVerb = lockChoice === "ageTen" ? "Save" : "Gift"
 
-  const requestWalletConnection = async () => {
-    setError(null)
-    setWalletConnectError(null)
+  useEffect(() => {
+    if (!connectIntent || !wallet || publicKey || connecting) return
 
-    if (publicKey || connecting || connectIntent) return
+    let cancelled = false
+
+    const finishConnection = async () => {
+      try {
+        await connect()
+        if (!cancelled) setWalletConnectError(null)
+      } catch {
+        if (!cancelled) {
+          setWalletConnectError(
+            "Phantom did not finish connecting. Unlock Phantom, approve toothfairy.network, then try again."
+          )
+          setVisible(true)
+        }
+      } finally {
+        if (!cancelled) setConnectIntent(false)
+      }
+    }
+
+    finishConnection()
+
+    return () => {
+      cancelled = true
+    }
+  }, [connectIntent, wallet, publicKey, connecting, connect, setVisible])
+
+  const requestWalletConnection = () => {
+    setError(null)
+
+    if (publicKey || connecting) return
+
+    setConnectIntent(true)
 
     if (!wallet) {
       setVisible(true)
       setWalletConnectError("Choose Phantom from the wallet window, then approve the connection.")
       return
-    }
-
-    setConnectIntent(true)
-    try {
-      await connect()
-    } catch {
-      setWalletConnectError(
-        "Phantom did not finish connecting. Unlock Phantom, approve toothfairy.network, then try again."
-      )
-      setVisible(true)
-    } finally {
-      setConnectIntent(false)
     }
   }
 
@@ -409,11 +426,15 @@ export default function GiftPage() {
               <button
                 type="button"
                 onClick={requestWalletConnection}
-                disabled={connecting || connectIntent}
+                disabled={connecting || (connectIntent && !!wallet)}
                 className="w-full rounded-full px-6 py-3 text-sm font-bold text-white disabled:opacity-60"
                 style={{ background: page.purple, boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}
               >
-                {connecting || connectIntent ? "Connecting wallet..." : "Use Solana wallet"}
+                {connecting || (connectIntent && wallet)
+                  ? "Connecting Phantom..."
+                  : connectIntent
+                    ? "Choose Phantom in the wallet window"
+                    : "Use Solana wallet"}
               </button>
               {walletConnectError && (
                 <p className="text-center text-xs leading-relaxed" style={{ color: C.rose }}>

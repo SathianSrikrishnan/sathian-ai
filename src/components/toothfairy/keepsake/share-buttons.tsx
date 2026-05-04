@@ -77,6 +77,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   const [isTouch, setIsTouch] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [currentUrl, setCurrentUrl] = useState('');
+  const [shareStatus, setShareStatus] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -109,6 +110,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
 
   const handleCopy = async () => {
     if (!resolvedUrl) return;
+    setShareStatus('');
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(resolvedUrl);
@@ -116,18 +118,27 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         throw new Error('clipboard unavailable');
       }
       setCopied(true);
+      setShareStatus('Family link copied.');
       setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setShareStatus(''), 3200);
     } catch {
-      const input = document.createElement('input');
+      const input = document.createElement('textarea');
       input.value = resolvedUrl;
+      input.setAttribute('readonly', '');
+      input.style.position = 'fixed';
+      input.style.left = '-9999px';
+      input.style.top = '0';
       document.body.appendChild(input);
+      input.focus();
       input.select();
       try {
         document.execCommand('copy');
         setCopied(true);
+        setShareStatus('Family link copied.');
         setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setShareStatus(''), 3200);
       } catch {
-        // give up; user can long-press to copy
+        setShareStatus('Copy was blocked. Select the link below instead.');
       }
       document.body.removeChild(input);
     }
@@ -151,7 +162,8 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   };
 
   const handleNativeShare = async () => {
-    await tryNativeShare();
+    const ok = await tryNativeShare();
+    if (!ok) setShareStatus('Share sheet closed. You can copy the family link instead.');
   };
 
   const handleShare = async (
@@ -308,6 +320,44 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
           <span className="hidden sm:inline">Facebook</span>
         </a>
       </div>
+
+      <div
+        aria-live="polite"
+        style={{
+          minHeight: 34,
+          color: shareStatus ? c.brownSoft : c.brownMuted,
+          fontFamily: 'var(--font-body)',
+          fontSize: 12,
+          lineHeight: 1.35,
+          textAlign: 'center',
+        }}
+      >
+        {shareStatus ? (
+          <span>{shareStatus}</span>
+        ) : (
+          <span>This link opens the keepsake first, then the Smile Fund gift option.</span>
+        )}
+      </div>
+
+      {shareStatus.includes('blocked') && (
+        <input
+          readOnly
+          value={resolvedUrl}
+          onFocus={(event) => event.currentTarget.select()}
+          style={{
+            width: '100%',
+            minHeight: 44,
+            borderRadius: 22,
+            border: `1px solid ${c.border}`,
+            background: c.cream,
+            color: c.brownSoft,
+            padding: '0 14px',
+            fontFamily: 'var(--font-body)',
+            fontSize: 12,
+          }}
+          aria-label="Family keepsake link"
+        />
+      )}
     </div>
   );
 }
