@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation"
 
 const LINKS = [
   { href: "/toothfairy#how-it-works", label: "How It Works" },
-  { href: "/toothfairy/stories", label: "Stories" },
   { href: "/toothfairy#smile-fund", label: "Smile Fund" },
+  { href: "/toothfairy/stories", label: "Stories" },
 ] as const
 
 export function TFNHeader() {
@@ -56,13 +56,14 @@ export function TFNHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="nav-actions hidden items-center gap-3 md:flex">
           <span className="solana-pill">
             <span aria-hidden />
             Built on Solana
           </span>
           <Link href="/toothfairy/app" className="header-cta">
             Start a keepsake
+            <span aria-hidden className="cta-arrow" />
           </Link>
         </div>
 
@@ -86,6 +87,7 @@ export function TFNHeader() {
           ))}
           <Link href="/toothfairy/app" className="header-cta mt-2 justify-center">
             Start a keepsake
+            <span aria-hidden className="cta-arrow" />
           </Link>
         </nav>
       )}
@@ -133,6 +135,10 @@ export function TFNHeader() {
           color: #6d45a8;
         }
 
+        .nav-actions {
+          margin-left: clamp(1.25rem, 3vw, 3rem);
+        }
+
         .solana-pill {
           display: inline-flex;
           min-height: 38px;
@@ -160,15 +166,26 @@ export function TFNHeader() {
           display: inline-flex;
           min-height: 40px;
           align-items: center;
+          gap: 0.55rem;
           border-radius: 999px;
-          padding: 0 1.05rem;
-          background: linear-gradient(135deg, #6d45a8, #8a5cc5);
-          color: #fffaf1;
+          padding: 0 1.15rem;
+          border: 1px solid oklch(74% 0.13 78 / 0.46);
+          background: linear-gradient(135deg, #f4cf7b, #d8a43c);
+          color: #2f2350;
           font-size: 0.84rem;
           font-weight: 900;
           text-decoration: none;
-          box-shadow: 0 10px 26px oklch(37% 0.11 302 / 0.22);
+          box-shadow: 0 12px 28px oklch(68% 0.14 76 / 0.28);
           white-space: nowrap;
+        }
+
+        .cta-arrow {
+          display: inline-block;
+          width: 0.46rem;
+          height: 0.46rem;
+          border-top: 2px solid currentColor;
+          border-right: 2px solid currentColor;
+          transform: rotate(45deg);
         }
 
         .menu-button {
@@ -251,20 +268,23 @@ function ToothLogo() {
   return (
     <span className="tooth-logo" aria-hidden>
       <svg viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" fill="url(#coinFill)" />
+        <circle cx="24" cy="24" r="17.5" stroke="#FFF6D9" strokeWidth="2" opacity="0.86" />
         <path
-          d="M24 7.5c-3.4-3-8.7-3.3-12.2-.6C7.2 10.4 6.4 17.3 9.7 24.4c2 4.4 3.1 9.7 4.2 13.3.8 2.7 2 4.7 4.1 4.7 2.5 0 3.1-3.1 3.8-6.4.4-1.8.8-3.2 2.2-3.2s1.8 1.4 2.2 3.2c.7 3.3 1.3 6.4 3.8 6.4 2.1 0 3.3-2 4.1-4.7 1.1-3.6 2.2-8.9 4.2-13.3 3.3-7.1 2.5-14-2.1-17.5-3.5-2.7-8.8-2.4-12.2.6Z"
-          stroke="url(#toothGradient)"
-          strokeWidth="3"
+          d="M24 14.2c-2.2-2-5.9-2.2-8.2-.4-3.1 2.4-3.6 7-1.4 11.7 1.3 2.9 2.1 6.5 2.8 8.9.5 1.8 1.4 3.2 2.8 3.2 1.7 0 2.1-2.1 2.6-4.3.3-1.2.6-2.2 1.5-2.2s1.2 1 1.5 2.2c.5 2.2.9 4.3 2.6 4.3 1.4 0 2.3-1.4 2.8-3.2.7-2.4 1.5-6 2.8-8.9 2.2-4.7 1.7-9.3-1.4-11.7-2.5-1.8-6.1-1.6-8.4.4Z"
+          fill="#FFFDF4"
+          stroke="#6D45A8"
+          strokeWidth="2"
           strokeLinejoin="round"
         />
-        <path d="M36.5 5.5v8" stroke="#D8A43C" strokeWidth="2" strokeLinecap="round" />
-        <path d="M32.5 9.5h8" stroke="#D8A43C" strokeWidth="2" strokeLinecap="round" />
+        <path d="M35.5 10.5v6" stroke="#FFF6D9" strokeWidth="2" strokeLinecap="round" />
+        <path d="M32.5 13.5h6" stroke="#FFF6D9" strokeWidth="2" strokeLinecap="round" />
         <defs>
-          <linearGradient id="toothGradient" x1="8" y1="8" x2="41" y2="42" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#C94BA8" />
-            <stop offset="0.55" stopColor="#6D45A8" />
-            <stop offset="1" stopColor="#D8A43C" />
-          </linearGradient>
+          <radialGradient id="coinFill" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(17 14) rotate(55) scale(31)">
+            <stop stopColor="#FFE8A3" />
+            <stop offset="0.48" stopColor="#D8A43C" />
+            <stop offset="1" stopColor="#8A5CC5" />
+          </radialGradient>
         </defs>
       </svg>
       <style jsx>{`

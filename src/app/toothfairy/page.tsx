@@ -20,29 +20,26 @@ type IconName =
 const assets = {
   heroFamily: "/toothfairy/visual-system/hero-family-v1.png",
   keepsake: "/toothfairy/visual-system/nft-keepsake-v1.png",
-  dashboard: "/toothfairy/visual-system/smile-dashboard-v1.png",
   saveMoment: "/toothfairy/visual-system/save-moment-v1.png",
-  inviteFamily: "/toothfairy/visual-system/invite-family-v1.png",
   watchGrow: "/toothfairy/visual-system/watch-grow-v1.png",
   network: "/fairy-assets/fairy-network-sky.jpg",
-  storyNetwork: "/story-assets/shared/shared-network-station.jpg",
 }
 
 const proofItems = [
   {
-    icon: "tooth" as const,
-    title: "Save the moment",
-    body: "Photo, drawing, note.",
+    icon: "wallet" as const,
+    title: "Parent controlled",
+    body: "You decide access and timing.",
   },
   {
     icon: "gift" as const,
-    title: "Share one link",
-    body: "Loved ones can add a gift.",
+    title: "One family link",
+    body: "Loved ones can add a small gift.",
   },
   {
-    icon: "wallet" as const,
-    title: "Parent controlled",
-    body: "Age 10 by default.",
+    icon: "tooth" as const,
+    title: "Memory first",
+    body: "Photo, drawing, and note stay together.",
   },
 ]
 
@@ -54,16 +51,49 @@ const steps = [
     body: "The child has the moment. You save it before it disappears into bedtime memory.",
   },
   {
-    image: assets.inviteFamily,
+    image: assets.keepsake,
     number: "2",
     title: "Capture & Mint",
-    body: "A photo, drawing, and note become one keepsake page your family can revisit.",
+    body: "The photo, drawing, and note become one keepsake page your family can revisit.",
   },
   {
     image: assets.watchGrow,
     number: "3",
     title: "Grow Their Future",
     body: "Loved ones can add small gifts to a parent-controlled Smile Fund.",
+  },
+]
+
+const storyCards = [
+  {
+    title: "Tanda's First Tooth",
+    place: "Origin story",
+    href: "/toothfairy/story/tanda",
+    image: "/story-assets/tanda/tf-05-tanda.png",
+  },
+  {
+    title: "The Viking Tooth",
+    place: "Norse tradition",
+    href: "/toothfairy/story/viking-origin",
+    image: "/story-assets/viking-origin/vo-01-village.png",
+  },
+  {
+    title: "Ratoncito Perez",
+    place: "Spain",
+    href: "/toothfairy/story/ratoncito-perez",
+    image: "/story-assets/ratoncito-perez/rp-02-mouse.png",
+  },
+  {
+    title: "The Tooth Kami",
+    place: "Japan",
+    href: "/toothfairy/story/japan",
+    image: "/story-assets/japan/jp-05-shrine-gate.jpg",
+  },
+  {
+    title: "The Magpie's Song",
+    place: "Korea",
+    href: "/toothfairy/story/korea",
+    image: "/story-assets/korea/kr-05-magpie-facing.jpg",
   },
 ]
 
@@ -93,11 +123,6 @@ export default function ToothFairyLanding() {
                 See how it works
               </Link>
             </div>
-            <div className="hero-note">
-              <span>Memory first</span>
-              <span>Parent controlled</span>
-              <span>Age 10 default</span>
-            </div>
           </div>
 
           <div className="hero-product" aria-label="Product preview">
@@ -118,17 +143,23 @@ export default function ToothFairyLanding() {
               </div>
               <p>Tooth memory</p>
               <strong>#1024</strong>
-              <span>Photo, drawing, note</span>
+              <span>Drawing and note saved</span>
             </article>
 
             <article className="smile-card">
               <div className="smile-copy">
                 <p>Little Smile Fund</p>
-                <strong>12.45 SOL</strong>
-                <span>23 family gifts</span>
+                <strong>2.35 SOL</strong>
+                <span>6 loved gifts</span>
               </div>
               <div className="smile-preview">
-                <Image src={assets.dashboard} alt="" fill sizes="180px" className="object-cover" />
+                <div className="smile-bars" aria-hidden>
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
               </div>
             </article>
           </div>
@@ -172,41 +203,35 @@ export default function ToothFairyLanding() {
       <section id="smile-fund" className="section smile-section">
         <div className="smile-intro">
           <p className="eyebrow">Smile Fund</p>
-          <h2>Small gifts, one parent-controlled balance.</h2>
+          <h2>Small gifts from their tribe can add up.</h2>
           <p>
-            The dashboard shows who gave, what was saved, and when the child can
-            take over.
+            Parents, grandparents, aunts, uncles, and close friends can mark the
+            moment. The parent keeps control until the child is ready.
           </p>
         </div>
 
         <article className="smile-dashboard">
           <div className="dashboard-visual">
-            <Image
-              src={assets.dashboard}
-              alt="Smile Fund dashboard preview"
-              fill
-              sizes="(min-width: 1024px) 520px, 92vw"
-              className="object-cover"
-            />
+            <MiniFundDashboard />
           </div>
           <div className="dashboard-panel">
             <div className="fund-top">
               <FeatureIcon name="wallet" />
               <div>
                 <p>Little Smile Fund</p>
-                <strong>12.45 SOL</strong>
-                <span>$2,341.15 USD</span>
+                <strong>2.35 SOL</strong>
+                <span>$360.00 USD</span>
               </div>
             </div>
             <div className="dashboard-stats">
-              <span><b>23</b><em>family gifts</em></span>
+              <span><b>6</b><em>loved gifts</em></span>
               <span><b>age 10</b><em>unlock default</em></span>
               <span><b>parent</b><em>controls access</em></span>
             </div>
             <div className="giver-list">
-              <span><b>Grandma</b><em>$20</em></span>
-              <span><b>Mom and Dad</b><em>$15</em></span>
-              <span><b>Uncle Ben</b><em>$10</em></span>
+              <span><b>Grandma</b><em>$25 / 0.16 SOL</em></span>
+              <span><b>Mom and Dad</b><em>$50 / 0.33 SOL</em></span>
+              <span><b>Uncle Ben</b><em>$15 / 0.10 SOL</em></span>
             </div>
             <div className="dashboard-note">
               <FeatureIcon name="shield" />
@@ -220,26 +245,27 @@ export default function ToothFairyLanding() {
         <Image src={assets.network} alt="" fill sizes="100vw" className="object-cover" />
         <div className="story-shade" />
         <div className="story-content">
-          <p className="eyebrow">Story world</p>
-          <h2>The world behind every tooth.</h2>
-          <p>
-            Tanda connects tooth fairies, mice, birds, and family rituals into
-            short stories children can read after the keepsake is made.
-          </p>
-          <Link href="/toothfairy/stories" className="button gold">
-            Explore the stories
-            <span aria-hidden className="button-arrow" />
-          </Link>
-        </div>
-      </section>
-
-      <section className="final-cta">
-        <Image src={assets.storyNetwork} alt="" fill sizes="100vw" className="object-cover" />
-        <div className="final-shade" />
-        <div className="final-copy">
-          <h2>Ready when the tooth is.</h2>
-          <Link href="/toothfairy/app" className="button gold">
-            Start a keepsake
+          <div className="story-copy">
+            <p className="eyebrow">Story world</p>
+            <h2>The world behind every tooth.</h2>
+            <p>
+              Tanda connects tooth fairies, mice, birds, and family rituals into
+              short stories children can read after the keepsake is made.
+            </p>
+          </div>
+          <div className="story-cards-grid" aria-label="Featured tooth traditions">
+            {storyCards.map((story) => (
+              <Link key={story.href} href={story.href} className="story-card">
+                <span className="story-image">
+                  <Image src={story.image} alt="" fill sizes="220px" className="object-cover" />
+                </span>
+                <span className="story-title">{story.title}</span>
+                <span className="story-place">{story.place}</span>
+              </Link>
+            ))}
+          </div>
+          <Link href="/toothfairy/stories" className="button gold story-button">
+            Explore all stories
             <span aria-hidden className="button-arrow" />
           </Link>
         </div>
@@ -304,8 +330,7 @@ export default function ToothFairyLanding() {
 
         .hero h1,
         .smile-intro h2,
-        .story-content h2,
-        .final-copy h2 {
+        .story-content h2 {
           color: var(--ink);
           font-family: var(--font-display), Georgia, serif;
           font-weight: 800;
@@ -332,8 +357,7 @@ export default function ToothFairyLanding() {
           line-height: 1.7;
         }
 
-        .hero-actions,
-        .final-copy {
+        .hero-actions {
           display: flex;
           flex-wrap: wrap;
           gap: 0.85rem;
@@ -389,30 +413,6 @@ export default function ToothFairyLanding() {
 
         .button.full {
           width: 100%;
-        }
-
-        .hero-note {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.55rem;
-          margin-top: 1.6rem;
-          color: var(--ink);
-          font-size: 0.88rem;
-          font-weight: 900;
-        }
-
-        .hero-note span {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-        }
-
-        .hero-note span:before {
-          content: "";
-          width: 0.42rem;
-          height: 0.42rem;
-          border-radius: 999px;
-          border: 1px solid var(--gold);
         }
 
         .hero-product {
@@ -518,6 +518,41 @@ export default function ToothFairyLanding() {
           background: #fffaf1;
         }
 
+        .smile-bars {
+          position: absolute;
+          inset: 1rem 0.85rem 0.85rem;
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 0.45rem;
+          align-items: end;
+        }
+
+        .smile-bars span {
+          display: block;
+          border-radius: 999px 999px 2px 2px;
+          background: linear-gradient(180deg, #55c8a8, rgba(85, 200, 168, 0.24));
+        }
+
+        .smile-bars span:nth-child(1) {
+          height: 28%;
+        }
+
+        .smile-bars span:nth-child(2) {
+          height: 38%;
+        }
+
+        .smile-bars span:nth-child(3) {
+          height: 48%;
+        }
+
+        .smile-bars span:nth-child(4) {
+          height: 64%;
+        }
+
+        .smile-bars span:nth-child(5) {
+          height: 78%;
+        }
+
         .proof-strip {
           border-bottom: 1px solid var(--line);
           background: rgba(255, 252, 246, 0.44);
@@ -547,7 +582,7 @@ export default function ToothFairyLanding() {
           grid-template-columns: auto 1fr;
           gap: 0.65rem;
           align-items: center;
-          padding: 0.65rem 0.76rem;
+          padding: 0.74rem 0.82rem;
           box-shadow: none;
         }
 
@@ -677,8 +712,7 @@ export default function ToothFairyLanding() {
         }
 
         .smile-intro h2,
-        .story-content h2,
-        .final-copy h2 {
+        .story-content h2 {
           margin-top: 0.8rem;
           font-size: 3.55rem;
           line-height: 1.03;
@@ -699,6 +733,7 @@ export default function ToothFairyLanding() {
         .dashboard-visual {
           position: relative;
           min-height: 390px;
+          padding: 1.15rem;
           border-radius: 8px;
           background:
             radial-gradient(circle at 50% 75%, rgba(23, 143, 123, 0.12), transparent 12rem),
@@ -797,28 +832,26 @@ export default function ToothFairyLanding() {
           font-weight: 800;
         }
 
-        .story-band,
-        .final-cta {
+        .story-band {
           position: relative;
-          min-height: 360px;
+          min-height: 520px;
           overflow: hidden;
         }
 
-        .story-shade,
-        .final-shade {
+        .story-shade {
           position: absolute;
           inset: 0;
           background:
-            linear-gradient(90deg, rgba(30, 18, 72, 0.88), rgba(30, 18, 72, 0.52), rgba(30, 18, 72, 0.18)),
+            linear-gradient(90deg, rgba(30, 18, 72, 0.92), rgba(30, 18, 72, 0.62), rgba(30, 18, 72, 0.24)),
             radial-gradient(circle at 74% 45%, rgba(216, 164, 60, 0.20), transparent 18rem);
         }
 
         .story-content {
           position: relative;
           z-index: 1;
-          max-width: 680px;
-          padding: 5.5rem 1.25rem;
-          margin-left: max(1.25rem, calc((100vw - 1280px) / 2 + 1.25rem));
+          max-width: 1280px;
+          padding: 5rem 1.25rem;
+          margin: 0 auto;
         }
 
         .story-content h2,
@@ -826,37 +859,72 @@ export default function ToothFairyLanding() {
           color: #fffaf1;
         }
 
+        .story-copy {
+          max-width: 650px;
+        }
+
         .story-content p {
           margin-top: 1rem;
           font-size: 1.08rem;
         }
 
-        .final-cta {
-          min-height: 230px;
-          border-top: 1px solid var(--line);
+        .story-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 0.8rem;
+          margin-top: 2rem;
         }
 
-        .final-shade {
-          background:
-            linear-gradient(90deg, rgba(30, 18, 72, 0.80), rgba(30, 18, 72, 0.56)),
-            radial-gradient(circle at 76% 46%, rgba(216, 164, 60, 0.28), transparent 18rem);
+        .story-card {
+          display: block;
+          min-width: 0;
+          overflow: hidden;
+          border: 1px solid rgba(255, 250, 241, 0.20);
+          border-radius: 8px;
+          background: rgba(255, 250, 241, 0.88);
+          color: var(--ink);
+          text-decoration: none;
+          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
+          transition: transform 160ms ease, box-shadow 160ms ease;
         }
 
-        .final-copy {
+        .story-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 22px 54px rgba(0, 0, 0, 0.26);
+        }
+
+        .story-image {
           position: relative;
-          z-index: 1;
-          min-height: 230px;
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 2rem 1.25rem;
-          align-items: center;
-          justify-content: space-between;
+          display: block;
+          aspect-ratio: 1.45;
+          background: #2f2350;
         }
 
-        .final-copy h2 {
-          max-width: 650px;
-          color: #fffaf1;
-          font-size: 3.1rem;
+        .story-title,
+        .story-place {
+          display: block;
+          padding: 0 0.85rem;
+        }
+
+        .story-title {
+          padding-top: 0.78rem;
+          color: var(--ink);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1rem;
+          font-weight: 900;
+          line-height: 1.15;
+        }
+
+        .story-place {
+          padding-top: 0.25rem;
+          padding-bottom: 0.85rem;
+          color: var(--muted);
+          font-size: 0.76rem;
+          font-weight: 800;
+        }
+
+        .story-button {
+          margin-top: 1.45rem;
         }
 
         @media (min-width: 900px) {
@@ -885,9 +953,12 @@ export default function ToothFairyLanding() {
 
           .section-intro h2,
           .smile-intro h2,
-          .story-content h2,
-          .final-copy h2 {
+          .story-content h2 {
             font-size: 2.8rem;
+          }
+
+          .story-cards-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
           }
         }
 
@@ -911,14 +982,12 @@ export default function ToothFairyLanding() {
 
           .section-intro h2,
           .smile-intro h2,
-          .story-content h2,
-          .final-copy h2 {
+          .story-content h2 {
             font-size: 2.35rem;
           }
 
           .hero-actions,
-          .button,
-          .final-copy {
+          .button {
             width: 100%;
           }
 
@@ -957,11 +1026,161 @@ export default function ToothFairyLanding() {
           }
 
           .story-content {
-            margin-left: 0;
+            padding: 4rem 1.25rem;
+          }
+
+          .story-cards-grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
     </main>
+  )
+}
+
+function MiniFundDashboard() {
+  return (
+    <div className="mini-fund">
+      <div className="mini-head">
+        <span className="mini-avatar" aria-hidden />
+        <div>
+          <h3>Little Explorer</h3>
+          <p>Smile Fund</p>
+        </div>
+        <strong>Age 10</strong>
+      </div>
+
+      <div className="mini-balance">
+        <span>Total saved</span>
+        <b>2.35 SOL</b>
+        <em>$360.00 USD</em>
+      </div>
+
+      <svg viewBox="0 0 420 160" className="mini-chart" aria-hidden>
+        <defs>
+          <linearGradient id="miniChartFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#55C8A8" stopOpacity="0.34" />
+            <stop offset="100%" stopColor="#55C8A8" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M22 126 C 62 112, 92 118, 126 96 S 186 94, 222 75 S 292 55, 334 43 S 382 28, 398 18 V146 H22Z" fill="url(#miniChartFill)" />
+        <path d="M22 126 C 62 112, 92 118, 126 96 S 186 94, 222 75 S 292 55, 334 43 S 382 28, 398 18" fill="none" stroke="#55C8A8" strokeWidth="5" strokeLinecap="round" />
+        {[22, 126, 222, 334, 398].map((x, index) => (
+          <circle key={x} cx={x} cy={[126, 96, 75, 43, 18][index]} r="6" fill="#55C8A8" />
+        ))}
+      </svg>
+
+      <div className="mini-tiles">
+        <span><b>$25</b><em>Grandma</em></span>
+        <span><b>$50</b><em>Mom and Dad</em></span>
+        <span><b>$15</b><em>Uncle Ben</em></span>
+      </div>
+
+      <style jsx>{`
+        .mini-fund {
+          height: 100%;
+          border: 1px solid rgba(227, 217, 196, 0.86);
+          border-radius: 8px;
+          background: rgba(255, 252, 246, 0.86);
+          padding: 1rem;
+          box-shadow: 0 20px 50px rgba(47, 35, 80, 0.10);
+        }
+
+        .mini-head {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 0.8rem;
+          align-items: center;
+        }
+
+        .mini-avatar {
+          width: 3rem;
+          height: 3rem;
+          border-radius: 999px;
+          background:
+            radial-gradient(circle at 42% 32%, #fff5df 0 14%, transparent 15%),
+            linear-gradient(135deg, #d8a43c, #6d45a8);
+        }
+
+        .mini-head h3 {
+          margin: 0;
+          color: #11234a;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.2rem;
+          font-weight: 900;
+          line-height: 1;
+        }
+
+        .mini-head p,
+        .mini-balance span,
+        .mini-balance em,
+        .mini-tiles em {
+          color: #687188;
+          font-size: 0.78rem;
+          font-style: normal;
+          font-weight: 800;
+        }
+
+        .mini-head strong {
+          border-radius: 999px;
+          background: rgba(216, 164, 60, 0.16);
+          color: #6d45a8;
+          padding: 0.45rem 0.68rem;
+          font-size: 0.76rem;
+          white-space: nowrap;
+        }
+
+        .mini-balance {
+          margin-top: 1.25rem;
+        }
+
+        .mini-balance b {
+          display: block;
+          margin-top: 0.2rem;
+          color: #11234a;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 2.15rem;
+          line-height: 1;
+        }
+
+        .mini-balance em {
+          display: block;
+          margin-top: 0.4rem;
+        }
+
+        .mini-chart {
+          display: block;
+          width: 100%;
+          height: auto;
+          margin-top: 0.65rem;
+        }
+
+        .mini-tiles {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.55rem;
+          margin-top: 0.65rem;
+        }
+
+        .mini-tiles span {
+          border: 1px solid #e3d9c4;
+          border-radius: 8px;
+          background: rgba(255, 250, 241, 0.72);
+          padding: 0.72rem;
+        }
+
+        .mini-tiles b,
+        .mini-tiles em {
+          display: block;
+        }
+
+        .mini-tiles b {
+          color: #11234a;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.05rem;
+        }
+      `}</style>
+    </div>
   )
 }
 
