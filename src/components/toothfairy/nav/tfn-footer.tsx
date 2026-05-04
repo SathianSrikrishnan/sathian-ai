@@ -6,18 +6,17 @@ const columns = [
   {
     title: "Product",
     links: [
-      { href: "/toothfairy#how-it-works", label: "How It Works" },
-      { href: "/toothfairy/app", label: "Mint Keepsake" },
+      { href: "/toothfairy#how-it-works", label: "How it works" },
+      { href: "/toothfairy/app", label: "Make a keepsake" },
       { href: "/toothfairy/keepsake/preview", label: "Keepsake Preview" },
-      { href: "/toothfairy/app/dashboard", label: "Family Dashboard" },
+      { href: "/toothfairy#smile-fund", label: "Smile Fund" },
     ],
   },
   {
-    title: "Learn",
+    title: "Stories",
     links: [
       { href: "/toothfairy/stories", label: "Cultural Tales" },
       { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
-      { href: "/toothfairy/network", label: "The Network" },
       { href: "/toothfairy/faq", label: "Parent FAQ" },
     ],
   },
@@ -26,17 +25,8 @@ const columns = [
     links: [
       { href: "/toothfairy/about", label: "About" },
       { href: "/toothfairy/company", label: "Company" },
-      { href: "/toothfairy/faq", label: "FAQ" },
+      { href: "/toothfairy/faq", label: "Safety" },
       { href: "/toothfairy/recover", label: "Recover Access" },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      { href: "/toothfairy/recover", label: "Recover" },
-      { href: "/toothfairy/faq", label: "Security" },
-      { href: "/toothfairy/faq", label: "Help Center" },
-      { href: "/toothfairy/app", label: "Start" },
     ],
   },
 ]
@@ -46,7 +36,7 @@ export function TFNFooter() {
 
   return (
     <footer className="tfn-footer">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[0.95fr_1.9fr_0.9fr]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[0.95fr_1.45fr_0.9fr]">
         <div>
           <Link href="/toothfairy" className="footer-brand">
             <span className="footer-logo" aria-hidden>
@@ -71,15 +61,9 @@ export function TFNFooter() {
           <p className="mt-4 max-w-xs text-sm leading-6" style={{ color: "#23365f" }}>
             A child's first digital piggy bank, disguised as a magical family ritual.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <span className="social-dot">X</span>
-            <span className="social-dot">IG</span>
-            <span className="social-dot">DC</span>
-            <span className="social-dot">M</span>
-          </div>
         </div>
 
-        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {columns.map((column) => (
             <div key={column.title}>
               <h3 className="footer-heading">{column.title}</h3>
@@ -117,7 +101,7 @@ export function TFNFooter() {
       <div className="footer-bottom">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <span>Copyright {year} Tooth Fairy Network.</span>
-          <span>Privacy, terms, and fee disclosures to be finalized before broad launch.</span>
+          <span>Privacy, terms, and fee disclosures will be finalized before broad launch.</span>
         </div>
       </div>
 
@@ -156,19 +140,6 @@ export function TFNFooter() {
         .footer-logo svg {
           width: 34px;
           height: 34px;
-        }
-
-        .social-dot {
-          display: inline-grid;
-          min-width: 36px;
-          height: 36px;
-          place-items: center;
-          border: 1px solid var(--tfn-border);
-          border-radius: 999px;
-          background: oklch(100% 0 0 / 0.52);
-          color: #6d45a8;
-          font-size: 0.76rem;
-          font-weight: 900;
         }
 
         .footer-heading {

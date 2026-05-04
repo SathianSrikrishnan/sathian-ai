@@ -28,17 +28,17 @@ const assets = {
 const proofItems = [
   {
     icon: "wallet" as const,
-    title: "Parent controlled",
-    body: "You decide access and timing.",
+    title: "Parent-controlled wallet",
+    body: "You choose access and timing.",
   },
   {
     icon: "gift" as const,
-    title: "One family link",
-    body: "Loved ones can add a small gift.",
+    title: "Family can contribute",
+    body: "One link lets loved ones add a gift.",
   },
   {
     icon: "tooth" as const,
-    title: "Memory first",
+    title: "Saved as a keepsake",
     body: "Photo, drawing, and note stay together.",
   },
 ]
@@ -47,20 +47,20 @@ const steps = [
   {
     image: assets.saveMoment,
     number: "1",
-    title: "Lost a Tooth",
-    body: "The child has the moment. You save it before it disappears into bedtime memory.",
+    title: "A tooth comes out",
+    body: "Your child has the moment. You save it before it fades into bedtime memory.",
   },
   {
     image: assets.keepsake,
     number: "2",
-    title: "Capture & Mint",
-    body: "The photo, drawing, and note become one keepsake page your family can revisit.",
+    title: "Create the keepsake",
+    body: "The photo, drawing, and note become one page your family can revisit.",
   },
   {
     image: assets.watchGrow,
     number: "3",
-    title: "Grow Their Future",
-    body: "Loved ones can add small gifts to a parent-controlled Smile Fund.",
+    title: "Share the Smile Fund",
+    body: "Loved ones can add small gifts while the parent stays in control.",
   },
 ]
 
@@ -107,20 +107,20 @@ export default function ToothFairyLanding() {
         <div className="hero-grid">
           <div className="hero-copy">
             <h1>
-              Mint a memory.
-              <span>Start their Smile Fund.</span>
+              Turn a lost tooth
+              <span>into their first keepsake and Smile Fund.</span>
             </h1>
             <p className="hero-lede">
-              A lost tooth becomes a keepsake page, a family gift link, and a
-              parent-controlled digital piggy bank.
+              Capture the story, invite family to contribute, and give your child
+              a parent-controlled wallet they can learn from.
             </p>
             <div className="hero-actions">
               <Link href="/toothfairy/app" className="button primary">
-                Start a keepsake
+                Make their first keepsake
                 <span aria-hidden className="button-arrow" />
               </Link>
               <Link href="#how-it-works" className="button secondary">
-                See how it works
+                See the 3 steps
               </Link>
             </div>
           </div>
@@ -143,14 +143,14 @@ export default function ToothFairyLanding() {
               </div>
               <p>Tooth memory</p>
               <strong>#1024</strong>
-              <span>Drawing and note saved</span>
+              <span>Drawing and note kept together</span>
             </article>
 
             <article className="smile-card">
               <div className="smile-copy">
                 <p>Little Smile Fund</p>
-                <strong>2.35 SOL</strong>
-                <span>6 loved gifts</span>
+                <strong>$360</strong>
+                <span>6 family gifts saved</span>
               </div>
               <div className="smile-preview">
                 <div className="smile-bars" aria-hidden>
@@ -183,8 +183,8 @@ export default function ToothFairyLanding() {
       <section id="how-it-works" className="section">
         <SectionIntro
           eyebrow="How it works"
-          title="Lost tooth. Keepsake. Smile Fund."
-          body="Simple enough for bedtime, useful enough to revisit."
+          title="A tiny ritual in 3 steps."
+          body="Tooth comes out. Digital tooth fairy comes in. Keepsake and Smile Fund come out."
         />
         <div className="steps-grid">
           {steps.map((step) => (
@@ -203,10 +203,11 @@ export default function ToothFairyLanding() {
       <section id="smile-fund" className="section smile-section">
         <div className="smile-intro">
           <p className="eyebrow">Smile Fund</p>
-          <h2>Small gifts from their tribe can add up.</h2>
+          <h2>The digital piggy bank starts with people who love them.</h2>
           <p>
             Parents, grandparents, aunts, uncles, and close friends can mark the
-            moment. The parent keeps control until the child is ready.
+            moment with a small gift. The parent keeps control until the child is ready,
+            while the child begins to understand saving and ownership.
           </p>
         </div>
 
@@ -219,12 +220,12 @@ export default function ToothFairyLanding() {
               <FeatureIcon name="wallet" />
               <div>
                 <p>Little Smile Fund</p>
-                <strong>2.35 SOL</strong>
-                <span>$360.00 USD</span>
+                <strong>$360</strong>
+                <span>2.35 SOL saved</span>
               </div>
             </div>
             <div className="dashboard-stats">
-              <span><b>6</b><em>loved gifts</em></span>
+              <span><b>6</b><em>family gifts</em></span>
               <span><b>age 10</b><em>unlock default</em></span>
               <span><b>parent</b><em>controls access</em></span>
             </div>
@@ -235,22 +236,22 @@ export default function ToothFairyLanding() {
             </div>
             <div className="dashboard-note">
               <FeatureIcon name="shield" />
-              <span>Parent-controlled until the family is ready.</span>
+              <span>Parent-controlled until your child is ready.</span>
             </div>
           </div>
         </article>
       </section>
 
-      <section className="story-band">
+      <section id="stories" className="story-band">
         <Image src={assets.network} alt="" fill sizes="100vw" className="object-cover" />
         <div className="story-shade" />
         <div className="story-content">
           <div className="story-copy">
             <p className="eyebrow">Story world</p>
-            <h2>The world behind every tooth.</h2>
+            <h2>Tanda turns the keepsake into a bedtime story.</h2>
             <p>
-              Tanda connects tooth fairies, mice, birds, and family rituals into
-              short stories children can read after the keepsake is made.
+              After the memory is saved, children can follow Tanda into tooth
+              traditions from around the world.
             </p>
           </div>
           <div className="story-cards-grid" aria-label="Featured tooth traditions">
@@ -265,7 +266,7 @@ export default function ToothFairyLanding() {
             ))}
           </div>
           <Link href="/toothfairy/stories" className="button gold story-button">
-            Explore all stories
+            Read a story together
             <span aria-hidden className="button-arrow" />
           </Link>
         </div>
@@ -1052,8 +1053,8 @@ function MiniFundDashboard() {
 
       <div className="mini-balance">
         <span>Total saved</span>
-        <b>2.35 SOL</b>
-        <em>$360.00 USD</em>
+        <b>$360</b>
+        <em>2.35 SOL saved</em>
       </div>
 
       <svg viewBox="0 0 420 160" className="mini-chart" aria-hidden>

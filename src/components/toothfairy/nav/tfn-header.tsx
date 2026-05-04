@@ -5,9 +5,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const LINKS = [
-  { href: "/toothfairy#how-it-works", label: "How It Works" },
-  { href: "/toothfairy#smile-fund", label: "Smile Fund" },
+  { href: "/toothfairy#how-it-works", label: "How it works" },
   { href: "/toothfairy/stories", label: "Stories" },
+  { href: "/toothfairy/faq", label: "Safety" },
 ] as const
 
 export function TFNHeader() {
@@ -59,10 +59,10 @@ export function TFNHeader() {
         <div className="nav-actions hidden items-center gap-3 md:flex">
           <span className="solana-pill">
             <span aria-hidden />
-            Built on Solana
+            Parent controlled
           </span>
           <Link href="/toothfairy/app" className="header-cta">
-            Start a keepsake
+            Make a keepsake
             <span aria-hidden className="cta-arrow" />
           </Link>
         </div>
@@ -86,7 +86,7 @@ export function TFNHeader() {
             </Link>
           ))}
           <Link href="/toothfairy/app" className="header-cta mt-2 justify-center">
-            Start a keepsake
+            Make a keepsake
             <span aria-hidden className="cta-arrow" />
           </Link>
         </nav>
@@ -158,7 +158,7 @@ export function TFNHeader() {
           width: 18px;
           height: 18px;
           border-radius: 5px;
-          background: linear-gradient(135deg, #14f195 0%, #80ecff 45%, #9945ff 100%);
+          background: linear-gradient(135deg, #f4cf7b 0%, #d8a43c 54%, #6d45a8 100%);
           box-shadow: 0 6px 16px oklch(37% 0.11 302 / 0.18);
         }
 
