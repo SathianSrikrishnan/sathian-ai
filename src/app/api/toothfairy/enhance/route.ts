@@ -6,6 +6,8 @@ import {
 } from "@/lib/toothfairy/ai-enhance"
 import { isAllowedOrigin } from "@/lib/constants"
 
+export const maxDuration = 60
+
 const AI_MAX_PER_HOUR = 10
 const windowMs = 60 * 60 * 1000
 const hits = new Map<string, { count: number; resetAt: number }>()
@@ -102,6 +104,8 @@ export async function POST(req: NextRequest) {
     const resolvedCharms: EnhanceCharm[] = Array.isArray(charms)
       ? charms.filter((c: string) => VALID_CHARMS.has(c as EnhanceCharm))
       : []
+    const charmsForEnhance: EnhanceCharm[] =
+      resolvedCharms.length > 0 ? resolvedCharms : ["sparkle", "glow"]
 
     if (!process.env.FAL_KEY) {
       return NextResponse.json(
@@ -117,7 +121,7 @@ export async function POST(req: NextRequest) {
     const result = await enhanceDrawing({
       imageDataUrl: drawingDataUrl,
       tradition: resolvedTradition,
-      charms: resolvedCharms,
+      charms: charmsForEnhance,
     })
 
     // Log latency + tradition (NOT the drawing data URL)
@@ -128,7 +132,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       enhancedImageUrl: result.imageUrl,
       traditionUsed: resolvedTradition,
-      charmsUsed: resolvedCharms,
+      charmsUsed: charmsForEnhance,
       generationMs: result.generationMs,
       remaining: rateLimit.remaining,
     })
@@ -144,6 +148,9 @@ export async function POST(req: NextRequest) {
       message.includes("401") ||
       message.toLowerCase().includes("api key") ||
       message.toLowerCase().includes("credential")
+    const isTimeout =
+      message.toLowerCase().includes("timed out") ||
+      message.toLowerCase().includes("timeout")
 
     if (isModeration) {
       return NextResponse.json(
@@ -161,6 +168,18 @@ export async function POST(req: NextRequest) {
             "Magic polish is not authorized yet. Continue with the original artwork.",
         },
         { status: 503 }
+      )
+    }
+
+    if (isTimeout) {
+      console.error("[enhance] Provider timeout:", message)
+      return NextResponse.json(
+        {
+          error: "timeout",
+          detail:
+            "Magic polish took too long. Continue with the original artwork, or try polish again.",
+        },
+        { status: 504 }
       )
     }
 

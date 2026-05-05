@@ -153,9 +153,16 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       if (!canvasRef.current || isEnhancing) return
       setIsEnhancing(true)
       setEnhanceError(null)
+      const finishWithError = (message: string) => {
+        setEnhanceError(message)
+        setIsEnhancing(false)
+      }
       try {
         const ctx = canvasRef.current.getContext("2d")
-        if (!ctx) return
+        if (!ctx) {
+          finishWithError("Magic polish could not start. Continue with the original artwork.")
+          return
+        }
         saveUndoSnapshot()
         const currentSnapshot = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
         const baseSnapshot = baseCanvasSnapshotRef.current
@@ -181,8 +188,10 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
             )
           } else if (outcome.error === "invalid_input") {
             setEnhanceError(outcome.detail || "This image could not be polished. Continue with the original artwork.")
+          } else if (outcome.error === "timeout") {
+            setEnhanceError(outcome.detail || "Magic polish took too long. Continue with the original artwork.")
           } else {
-            setEnhanceError("Magic polish is unavailable right now. Continue with the original artwork.")
+            setEnhanceError(outcome.detail || "Magic polish is unavailable right now. Continue with the original artwork.")
           }
           setIsEnhancing(false)
           return
@@ -191,9 +200,29 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
 
         const img = new Image()
         img.crossOrigin = "anonymous"
+        let imageSettled = false
+        let imageLoadTimeout: number | undefined
+        const settleImage = () => {
+          if (imageSettled) return false
+          imageSettled = true
+          if (imageLoadTimeout !== undefined) window.clearTimeout(imageLoadTimeout)
+          return true
+        }
+        imageLoadTimeout =
+          typeof window === "undefined"
+            ? undefined
+            : window.setTimeout(() => {
+                if (settleImage()) {
+                  finishWithError("Magic polish finished, but the polished image could not load. Continue with the original artwork.")
+                }
+              }, 15_000)
         img.onload = () => {
+          if (!settleImage()) return
           const ctx = canvasRef.current?.getContext("2d")
-          if (!ctx || !canvasRef.current) return
+          if (!ctx || !canvasRef.current) {
+            finishWithError("Magic polish could not update the canvas. Continue with the original artwork.")
+            return
+          }
           ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
           const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
           const w = img.width * scale, h = img.height * scale
@@ -215,7 +244,11 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           setIsPristine(false)
           setIsEnhancing(false)
         }
-        img.onerror = () => { setEnhanceError("Magic polish could not load. Continue with the original artwork."); setIsEnhancing(false) }
+        img.onerror = () => {
+          if (settleImage()) {
+            finishWithError("Magic polish could not load. Continue with the original artwork.")
+          }
+        }
         img.src = outcome.result.enhancedImageUrl
       } catch (err: any) {
         setEnhanceError(

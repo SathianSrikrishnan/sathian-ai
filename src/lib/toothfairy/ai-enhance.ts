@@ -43,6 +43,20 @@ const CHARM_ELEMENTS: Record<string, string> = {
   glow: "a soft warm halo and background wash matching the tradition's color palette",
 }
 
+const PROVIDER_TIMEOUT_MS = 50_000
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("AI enhancement timed out"))
+    }, timeoutMs)
+
+    promise
+      .then(resolve, reject)
+      .finally(() => clearTimeout(timeoutId))
+  })
+}
+
 function buildPrompt(
   tradition: EnhanceTradition,
   charms: EnhanceCharm[]
@@ -62,7 +76,7 @@ function buildPrompt(
   }
 
   const accent = parts.join(", and ")
-  return `Preserve the input drawing exactly — keep all lines, strokes, proportions, and the child-drawn character as-is. Add only subtle magical accents: ${accent}. Use a soft watercolor wash in the background. Do not redraw, smooth, or "correct" any of the existing lines. The child's drawing must remain the center of the image.`
+  return `Create a visible but gentle magical polish for this lost-tooth memory image. Keep every existing child or parent drawing mark exactly where it is, including lines, colors, handwriting, highlights, and marker strokes. Do not erase, repaint, smooth, or correct any existing marks. Add a warm storybook finish around the memory: ${accent}, a soft luminous edge, brighter tooth-focused light, and a delicate memory-card glow. The result should clearly look more magical than the input while preserving the original photo and drawings.`
 }
 
 export interface EnhanceRequest {
@@ -83,16 +97,19 @@ export async function enhanceDrawing(
   const prompt = buildPrompt(req.tradition, req.charms)
   const startedAt = Date.now()
 
-  const result = (await fal.subscribe("fal-ai/flux-pro/kontext", {
-    input: {
-      prompt,
-      image_url: req.imageDataUrl,
-      num_images: 1,
-      guidance_scale: 3.5,
-      safety_tolerance: "2",
-    },
-    logs: false,
-  })) as { data?: { images?: Array<{ url: string }> } }
+  const result = (await withTimeout(
+    fal.subscribe("fal-ai/flux-pro/kontext", {
+      input: {
+        prompt,
+        image_url: req.imageDataUrl,
+        num_images: 1,
+        guidance_scale: 4.25,
+        safety_tolerance: "2",
+      },
+      logs: false,
+    }),
+    PROVIDER_TIMEOUT_MS
+  )) as { data?: { images?: Array<{ url: string }> } }
 
   const imageUrl = result.data?.images?.[0]?.url
   if (!imageUrl) {
