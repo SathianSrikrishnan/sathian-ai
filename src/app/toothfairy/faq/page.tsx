@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 const highlights = [
   {
     label: "Parent controlled",
-    text: "Parents manage access, sharing, and timing.",
+    text: "Google recovery, family links, and wallet access stay with the parent.",
   },
   {
     label: "Memory first",
-    text: "The tooth story comes before any gift.",
+    text: "The tooth story comes before money, wallets, or technical details.",
   },
   {
     label: "Small by design",
-    text: "The Smile Fund is for practice, not pressure.",
+    text: "The Smile Fund is for practice, responsibility, and patience.",
   },
 ]
 
@@ -32,11 +32,15 @@ const groups = [
       },
       {
         q: "Is this crypto-first?",
-        a: "No. The child experience is memory, story, family, and learning ownership. Solana is quiet infrastructure underneath so the memory and fund can be durable.",
+        a: "No. Parents should feel the memory, the family ritual, and the learning moment first. Solana is quiet infrastructure underneath so the memory and fund can be durable.",
       },
       {
-        q: "Why not just save a photo?",
-        a: "A camera-roll photo disappears into thousands of other photos. This gives the moment a page, a story, and a place for family to return to over time.",
+        q: "Is Tooth Fairy Network a bank?",
+        a: "No. Tooth Fairy Network is not a bank, brokerage, exchange, or investment adviser. It is an educational family savings experience with parent-controlled access.",
+      },
+      {
+        q: "Why not just keep the photo?",
+        a: "A camera-roll photo can disappear into thousands of other photos. This gives the moment a page, a story, and a place for family to return to over time.",
       },
     ],
   },
@@ -45,7 +49,7 @@ const groups = [
     items: [
       {
         q: "What is the Smile Fund really for?",
-        a: "The Smile Fund is a first practice field for responsibility. Small gifts help a child start learning saving, patience, ownership, and the idea that something can be truly theirs without giving them adult control too early.",
+        a: "The Smile Fund is a first practice field for responsibility. Small gifts help a child start learning saving, patience, ownership, and the idea that something can be truly theirs without giving them adult financial control too early.",
       },
       {
         q: "Why mention investing and self-sovereignty?",
@@ -53,7 +57,7 @@ const groups = [
       },
       {
         q: "Is this investment advice?",
-        a: "No. Tooth Fairy Network is an educational family savings experience, not investment advice. Parents should decide what, if anything, belongs in the Smile Fund.",
+        a: "No. Tooth Fairy Network is an educational family savings experience, not investment advice. Parents decide what, if anything, belongs in the Smile Fund and when the child is ready to learn from it.",
       },
       {
         q: "Why age 10?",
@@ -62,7 +66,7 @@ const groups = [
     ],
   },
   {
-    title: "Safety, access, and control",
+    title: "Safety, access, and recovery",
     items: [
       {
         q: "Who controls the account?",
@@ -74,11 +78,19 @@ const groups = [
       },
       {
         q: "What happens if I lose access?",
-        a: "Return with the same Google account used to create the memory. Recovery must be boring and reliable before this product is ready for broad parent usage.",
+        a: "Return with the same Google account used to create the memory. If you used a wallet during testing, connect the same guardian wallet from the recovery page. Keep the family memory link in the meantime.",
       },
       {
         q: "Can I share the memory safely?",
         a: "The public link is designed for family viewing and optional gifts. Parents should share it only with people they trust while the product is still in controlled testing.",
+      },
+      {
+        q: "What emails should I expect?",
+        a: "Parents should receive a welcome email after Google sign-in, a memory-created email after minting, and a gift receipt email after a verified wallet gift. Each email points back to recovery with the same Google account.",
+      },
+      {
+        q: "What is AI polish?",
+        a: "AI polish is an optional enhancement step for artwork. The original parent-submitted memory stays the anchor, and the feature should never be required to create or recover a memory.",
       },
     ],
   },
@@ -95,7 +107,11 @@ const groups = [
       },
       {
         q: "What are the fees?",
-        a: "The current deployed contract includes a 2% network fee. Before broad release, fees and early-withdrawal rules need to be simplified and shown before payment.",
+        a: "The current deployed contract includes a 2% network fee. Before broad release, fees and early-withdrawal rules need to be shown plainly before payment.",
+      },
+      {
+        q: "When does a gift receipt send?",
+        a: "For wallet gifts, the app asks the server to verify the on-chain transaction before sending the parent a gift receipt. Card gift receipts will wait until card gifts are actually live.",
       },
     ],
   },
@@ -104,11 +120,11 @@ const groups = [
     items: [
       {
         q: "What is ready for controlled testing?",
-        a: "Homepage, Google sign-in, memory creation, live minting, keepsake pages, family sharing, dashboard, recovery, and wallet-based gift testing.",
+        a: "Homepage, Google sign-in, memory creation, AI polish, live minting, memory pages, family sharing, dashboard, recovery, wallet-based gift testing, and the core parent emails.",
       },
       {
         q: "What still needs work before 100 users?",
-        a: "Card gifts, email receipts, support language, privacy and terms pages, a cleaner recovery runbook, and more testing across fresh browsers and wallets.",
+        a: "Card gifts, privacy and terms pages, a clearer support path, a cleaner recovery runbook, and more testing across fresh browsers and wallets.",
       },
       {
         q: "Where does the story world fit?",

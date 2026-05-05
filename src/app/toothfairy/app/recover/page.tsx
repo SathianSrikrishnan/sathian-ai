@@ -292,7 +292,7 @@ export default function RecoverPage() {
 
       {!loading && publicKey && profiles.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-sm" style={{ color: C.muted }}>No profiles found for this wallet.</p>
+          <p className="text-sm" style={{ color: C.muted }}>No memories found for this wallet.</p>
         </div>
       )}
 

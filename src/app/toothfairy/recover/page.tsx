@@ -18,7 +18,7 @@ const paths = [
     title: "I used a wallet",
     body: "Connect the same guardian wallet only if you created or claimed the child's Smile Fund with Phantom.",
     href: "/toothfairy/app/recover",
-    cta: "Find keepsakes",
+    cta: "Find memories",
   },
   {
     title: "I have a family link",

@@ -103,11 +103,17 @@ test("AI polish remains visible unless it is explicitly disabled", () => {
 test("dashboard and recovery are Google-first for returning parents", () => {
   const dashboard = read("src/app/toothfairy/app/dashboard/page.tsx")
   const recover = read("src/app/toothfairy/recover/page.tsx")
+  const walletRecover = read("src/app/toothfairy/app/recover/page.tsx")
 
   assert.match(dashboard, /Continue with Google/)
   assert.match(dashboard, /\/api\/auth\/google\?next=/)
   assert.match(recover, /Continue with Google/)
   assert.match(recover, /\/api\/auth\/google\?next=/)
+  assert.match(recover, /same Google account/i)
+  assert.match(walletRecover, /same Google account/i)
+  assert.match(walletRecover, /No memories found/i)
+  assert.doesNotMatch(recover, /Find keepsakes/)
+  assert.doesNotMatch(walletRecover, /keepsake/i)
 })
 
 test("Google auth and mint flow send the core parent emails", () => {
@@ -130,6 +136,10 @@ test("Google auth and mint flow send the core parent emails", () => {
   assert.match(emailTemplates, /escapeHtml/)
   assert.match(emailTemplates, /\/toothfairy\/recover/)
   assert.match(emailTemplates, /same Google account/i)
+  assert.match(emailTemplates, /Share the memory first/i)
+  assert.match(emailTemplates, /gift receipt/i)
+  assert.match(emailTemplates, /not investment advice/i)
+  assert.doesNotMatch(emailTemplates, /payment path is ready/i)
 })
 
 test("footer email signup is wired to the subscribe endpoint", () => {
@@ -163,6 +173,12 @@ test("FAQ explains the Smile Fund as responsibility education without investment
   assert.match(faq, /investing/)
   assert.match(faq, /self-sovereignty/)
   assert.match(faq, /not investment advice/i)
+  assert.match(faq, /AI polish/i)
+  assert.match(faq, /gift receipt/i)
+  assert.match(faq, /same Google account/i)
+  assert.match(faq, /Card gifts are paused/i)
+  assert.match(faq, /not a bank/i)
+  assert.doesNotMatch(faq, /email receipts, support language/)
   assert.match(smileFund, /responsibility/)
   assert.match(smileFund, /self-sovereignty/)
   assert.match(smileFund, /practice portfolio/i)

@@ -91,7 +91,7 @@ export function renderWelcomeEmail({ name }: { name?: string | null }) {
         ${[
           ["1", "Capture the moment", "Save the smile photo, the tooth story, and your child's drawing."],
           ["2", "Make it theirs", "Create the first forever memory without making your child manage a wallet."],
-          ["3", "Invite family later", "Share the memory first. Loved ones can add a small gift when the payment path is ready for them."],
+          ["3", "Invite family later", "Share the memory first. Wallet gifts can be tested now; card gifts wait until the provider path is ready."],
         ].map(([num, title, text]) => `
           <tr><td style="padding:0 0 12px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFDF8;border:1px solid #E3D9C4;border-radius:12px;">
@@ -136,7 +136,7 @@ export function renderMemoryCreatedEmail({
       <div style="background:#FFFDF8;border:1px solid #E3D9C4;border-radius:14px;padding:18px 20px;">
         <p style="margin:0;color:#11234A;font-weight:700;font-size:15px;">Share the memory first.</p>
         <p style="margin:8px 0 0;color:#334260;font-size:14px;line-height:1.65;">
-          Family can open the link, read the story, and celebrate the moment. Gifts are optional, and the Smile Fund stays parent-controlled.
+          Family can open the link, read the story, and celebrate the moment. Gifts are optional, wallet gifts send a parent gift receipt after verification, and the Smile Fund stays parent-controlled.
         </p>
       </div>
       <div style="margin-top:14px;background:#F7F0DF;border:1px solid #E3D9C4;border-radius:14px;padding:18px 20px;">
@@ -198,7 +198,7 @@ export function renderGiftReceivedEmail({
         `).join("")}
       </table>
       <p style="margin:16px 0 0;color:#334260;font-size:14px;line-height:1.65;text-align:center;">
-        The fund is about practice: saving, patience, and responsibility before access.
+        This gift receipt is for parent records. The fund is about practice: saving, patience, and responsibility before access.
       </p>`,
     ctaHref: solscanUrl || SITE,
     ctaLabel: solscanUrl ? "View transaction" : "Open Tooth Fairy Network",
