@@ -437,7 +437,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ── Send keepsake email (after mint confirmed + data saved) ──
-    const profileUrl = `https://toothfairy.network/tooth/${childSlug}?g=${serverPubkey.toBase58()}`
+    const profileUrl = `https://toothfairy.network/toothfairy/keepsake/${milestonePda.toBase58()}`
     try {
       const resendKey = process.env.RESEND_API_KEY
       if (resendKey && user.email) {

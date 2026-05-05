@@ -28,6 +28,7 @@ interface SupabaseChild {
   child_name: string
   child_slug: string
   child_profile_pda: string | null
+  latest_milestone_pda: string | null
   guardian_pubkey: string
   smile_photo_url: string | null
   birthday: string | null
@@ -234,10 +235,15 @@ export default function WalletDashboard() {
         <div className="mb-8">
           <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: C.muted }}>Your Children</h2>
           <div className="space-y-2">
-            {supabaseChildren.map((child) => (
+            {supabaseChildren.map((child) => {
+              const childHref = child.latest_milestone_pda
+                ? `/toothfairy/keepsake/${child.latest_milestone_pda}`
+                : "/toothfairy/app"
+
+              return (
               <Link
                 key={child.child_slug}
-                href={`/tooth/${child.child_slug}`}
+                href={childHref}
                 className="block rounded-lg p-4 transition-all hover:translate-y-[-1px]"
                 style={{
                   background: "oklch(100% 0 0 / 0.68)",
@@ -255,17 +261,18 @@ export default function WalletDashboard() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold" style={{ color: C.text }}>{child.child_name}</p>
                     <p className="text-xs" style={{ color: C.muted }}>
-                      {child.is_server_guardian ? "Tap to claim with wallet" : "View profile"}
+                      {child.latest_milestone_pda ? "Open latest memory" : "Record a tooth"}
                     </p>
                   </div>
                   {child.is_server_guardian && (
                     <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(109,69,168,0.08)", color: page.purple, border: "1px solid rgba(109,69,168,0.18)" }}>
-                      Unclaimed
+                      Parent controlled
                     </span>
                   )}
                 </div>
               </Link>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
@@ -555,17 +562,18 @@ export default function WalletDashboard() {
           <div className="space-y-2 pt-2">
             <button
               onClick={() => {
-                // Use the first milestone's gift link for sharing
                 const milestonePda = milestones.length > 0 ? milestones[0].pda : activeProfile.pda
-                const url = `${window.location.origin}/toothfairy/app/gift/${milestonePda}`
+                const url = milestones.length > 0
+                  ? `${window.location.origin}/toothfairy/keepsake/${milestonePda}`
+                  : `${window.location.origin}/toothfairy/app/dashboard`
                 navigator.clipboard.writeText(url)
-                  .then(() => alert("Family link copied! Anyone with this link can view the keepsake and add to the Smile Fund."))
+                  .then(() => alert("Memory link copied. Family can view the keepsake and add a gift from there."))
                   .catch(() => prompt("Copy this link:", url))
               }}
               className="w-full px-4 py-3 rounded-lg text-sm font-medium"
               style={{ background: page.paper, border: `1px solid ${C.border}`, color: page.inkSoft }}
             >
-              Share {activeProfile.childName}&apos;s Smile Fund with family
+              Share {activeProfile.childName}&apos;s memory with family
             </button>
             <Link href="/toothfairy/app"
               className="block w-full px-4 py-3 rounded-lg text-sm font-medium text-white text-center"

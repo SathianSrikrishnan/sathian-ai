@@ -530,8 +530,8 @@ export default function GiftPage() {
           {/* Back to profile */}
           {childProfileData?.childName && (
             <div className="text-center pt-4">
-              <Link href={`/tooth/${encodeURIComponent(childProfileData.childName.toLowerCase().trim())}`} className="text-sm underline font-medium" style={{ color: page.gold }}>
-                View {childProfileData.childName}&apos;s page
+              <Link href={`/toothfairy/keepsake/${milestonePda}`} className="text-sm underline font-medium" style={{ color: page.gold }}>
+                Back to {childProfileData.childName}&apos;s memory
               </Link>
             </div>
           )}
