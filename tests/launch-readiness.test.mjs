@@ -38,6 +38,17 @@ test("homepage does not link to unpublished Japan or Korea story pages", () => {
   assert.doesNotMatch(homepage, /\/toothfairy\/story\/korea/)
 })
 
+test("homepage uses FAQ nav and a real minted memory preview", () => {
+  const homepage = read("src/app/toothfairy/page.tsx")
+  const header = read("src/components/toothfairy/nav/tfn-header.tsx")
+
+  assert.match(header, /label:\s*"FAQ"/)
+  assert.doesNotMatch(header, /label:\s*"Safety"/)
+  assert.match(homepage, /gateway\.irys\.xyz\/Z9_aFKhX6xpU1cZvw0h4u3zfJwhfJ1wiBf72KQWGF5k/)
+  assert.match(homepage, /className="real-tooth"/)
+  assert.doesNotMatch(homepage, /nft-keepsake-v1\.png/)
+})
+
 test("gift flow is clear that card gifts are paused", () => {
   const giftPage = read("src/app/toothfairy/app/gift/[milestone]/page.tsx")
   const mintPage = read("src/app/toothfairy/app/page.tsx")

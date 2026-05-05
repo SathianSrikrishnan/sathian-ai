@@ -19,7 +19,7 @@ type IconName =
 
 const assets = {
   heroFamily: "/toothfairy/visual-system/hero-family-v1.png",
-  keepsake: "/toothfairy/visual-system/nft-keepsake-v1.png",
+  realMemory: "https://gateway.irys.xyz/Z9_aFKhX6xpU1cZvw0h4u3zfJwhfJ1wiBf72KQWGF5k",
   saveMoment: "/toothfairy/visual-system/save-moment-v1.png",
   watchGrow: "/toothfairy/visual-system/watch-grow-v1.png",
   network: "/fairy-assets/fairy-network-sky.jpg",
@@ -51,7 +51,8 @@ const steps = [
     body: "Your child has the moment. You save it before it fades into bedtime memory.",
   },
   {
-    image: assets.keepsake,
+    image: assets.realMemory,
+    imageKind: "remote" as const,
     number: "2",
     title: "Make it theirs",
     body: "The photo, drawing, and note become one page your child can grow up with.",
@@ -95,20 +96,20 @@ export default function ToothFairyLanding() {
         <div className="hero-grid">
           <div className="hero-copy">
             <h1>
-              Turn a lost tooth
-              <span>into their first forever memory and Smile Fund.</span>
+              A lost tooth becomes
+              <span>their first forever memory.</span>
             </h1>
             <p className="hero-lede">
-              Capture the story, invite family to contribute, and give your child
-              a parent-controlled place that feels truly theirs.
+              Capture the story, invite family to contribute, and start a
+              parent-controlled Smile Fund they can grow into.
             </p>
             <div className="hero-actions">
               <Link href="/toothfairy/app" className="button primary">
-                Create their first forever memory
+                Create their memory
                 <span aria-hidden className="button-arrow" />
               </Link>
               <Link href="#how-it-works" className="button secondary">
-                See the 3 steps
+                See how it works
               </Link>
             </div>
           </div>
@@ -123,15 +124,34 @@ export default function ToothFairyLanding() {
                 sizes="(min-width: 1024px) 580px, 92vw"
                 className="object-cover"
               />
+              <span className="real-tooth" aria-hidden>
+                <svg viewBox="0 0 64 76" fill="none">
+                  <path
+                    d="M32 5.5c-10.2 0-18.6 7.7-19.5 18.1-.6 6.5 1.3 12.4 3.2 18.5 1.4 4.6 2 10.9 3.2 17.1.9 4.5 3.2 8.8 6.8 8.8 3.3 0 4.4-4.8 5.1-11.1.3-2.9.8-5.4 1.2-6.7.4 1.3.9 3.8 1.2 6.7.8 6.3 1.9 11.1 5.2 11.1 3.6 0 5.9-4.3 6.8-8.8 1.2-6.2 1.8-12.5 3.2-17.1 1.9-6.1 3.8-12 3.2-18.5C50.6 13.2 42.2 5.5 32 5.5Z"
+                    fill="url(#heroToothFill)"
+                    stroke="#d5c0a7"
+                    strokeWidth="2.3"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M20 26c6 3.1 17.2 3.7 24 0" stroke="#eadbc7" strokeWidth="2" strokeLinecap="round" />
+                  <defs>
+                    <linearGradient id="heroToothFill" x1="18" y1="8" x2="50" y2="70" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#fffefa" />
+                      <stop offset="0.58" stopColor="#fff4df" />
+                      <stop offset="1" stopColor="#ead4b5" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
             </div>
 
             <article className="memory-card">
               <div className="memory-preview">
-                <Image src={assets.keepsake} alt="" fill sizes="180px" className="object-cover" />
+                <img src={assets.realMemory} alt="A real minted Tooth Fairy memory" />
               </div>
-              <p>Tooth memory</p>
-              <strong>#1024</strong>
-              <span>Drawing and note kept together</span>
+              <p>Live memory</p>
+              <strong>#FDSR</strong>
+              <span>Minted on Tooth Fairy Network</span>
             </article>
 
             <article className="smile-card">
@@ -169,16 +189,20 @@ export default function ToothFairyLanding() {
       </section>
 
       <section id="how-it-works" className="section">
-          <SectionIntro
+        <SectionIntro
           eyebrow="How it works"
-          title="A tiny ritual in 3 steps."
+          title="A tiny ritual in three steps."
           body="Tooth comes out. Tanda helps save the moment. A family link and Smile Fund come next."
         />
         <div className="steps-grid">
           {steps.map((step) => (
             <article key={step.title} className="step-card">
               <div className="step-image">
-                <Image src={step.image} alt="" fill sizes="360px" className="object-contain" />
+                {"imageKind" in step && step.imageKind === "remote" ? (
+                  <img src={step.image} alt="" />
+                ) : (
+                  <Image src={step.image} alt="" fill sizes="360px" className="object-contain" />
+                )}
                 <span className="step-number">{step.number}</span>
               </div>
               <h3>{step.title}</h3>
@@ -297,16 +321,16 @@ export default function ToothFairyLanding() {
           position: relative;
           z-index: 1;
           display: grid;
-          max-width: 1280px;
-          min-height: min(700px, calc(100vh - 72px));
+          max-width: 1240px;
+          min-height: min(660px, calc(100vh - 72px));
           align-items: center;
-          gap: 4rem;
+          gap: 3rem;
           margin: 0 auto;
-          padding: 4.4rem 1.25rem 3.2rem;
+          padding: 3.8rem 1.25rem 2.7rem;
         }
 
         .hero-copy {
-          max-width: 630px;
+          max-width: 675px;
         }
 
         .eyebrow {
@@ -328,9 +352,9 @@ export default function ToothFairyLanding() {
 
         .hero h1 {
           margin-top: 0;
-          max-width: 650px;
-          font-size: 5.25rem;
-          line-height: 0.94;
+          max-width: 700px;
+          font-size: 5.55rem;
+          line-height: 0.92;
         }
 
         .hero h1 span {
@@ -422,9 +446,34 @@ export default function ToothFairyLanding() {
           content: "";
           position: absolute;
           inset: 0;
+          z-index: 1;
           background:
             radial-gradient(circle at 15% 10%, rgba(255, 252, 246, 0.85), transparent 16rem),
             linear-gradient(90deg, rgba(251, 247, 238, 0.80), transparent 45%);
+          pointer-events: none;
+        }
+
+        .real-tooth {
+          position: absolute;
+          top: 31%;
+          left: 17%;
+          z-index: 2;
+          display: grid;
+          width: 3.35rem;
+          height: 3.35rem;
+          place-items: center;
+          border: 1px solid rgba(213, 192, 167, 0.74);
+          border-radius: 999px;
+          background: rgba(255, 252, 246, 0.92);
+          box-shadow:
+            0 14px 28px rgba(47, 35, 80, 0.16),
+            0 0 34px rgba(216, 164, 60, 0.26);
+        }
+
+        .real-tooth svg {
+          width: 2.25rem;
+          height: 2.7rem;
+          filter: drop-shadow(0 4px 8px rgba(47, 35, 80, 0.16));
         }
 
         .memory-card,
@@ -487,6 +536,14 @@ export default function ToothFairyLanding() {
           box-shadow: inset 0 0 0 1px rgba(216, 164, 60, 0.28);
         }
 
+        .memory-preview img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          background: #fffaf1;
+        }
+
         .smile-card {
           right: 3%;
           bottom: 5%;
@@ -543,17 +600,18 @@ export default function ToothFairyLanding() {
         }
 
         .proof-strip {
+          border-top: 1px solid var(--line);
           border-bottom: 1px solid var(--line);
-          background: rgba(255, 252, 246, 0.44);
+          background: rgba(255, 252, 246, 0.58);
         }
 
         .proof-grid {
           display: grid;
-          max-width: 880px;
+          max-width: 1120px;
           grid-template-columns: repeat(3, 1fr);
-          gap: 0.55rem;
+          gap: 0;
           margin: 0 auto;
-          padding: 0.7rem 1.25rem;
+          padding: 0.92rem 1.25rem;
         }
 
         .proof-card,
@@ -569,10 +627,17 @@ export default function ToothFairyLanding() {
         .proof-card {
           display: grid;
           grid-template-columns: auto 1fr;
-          gap: 0.65rem;
+          gap: 0.75rem;
           align-items: center;
-          padding: 0.74rem 0.82rem;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+          padding: 0.42rem 1.25rem;
           box-shadow: none;
+        }
+
+        .proof-card:not(:last-child) {
+          border-right: 1px solid var(--line);
         }
 
         .proof-card h2,
@@ -584,7 +649,7 @@ export default function ToothFairyLanding() {
         }
 
         .proof-card h2 {
-          font-size: 0.94rem;
+          font-size: 1rem;
         }
 
         .proof-card p,
@@ -598,7 +663,7 @@ export default function ToothFairyLanding() {
 
         .proof-card p {
           margin-top: 0.1rem;
-          font-size: 0.78rem;
+          font-size: 0.84rem;
         }
 
         .section {
@@ -662,6 +727,14 @@ export default function ToothFairyLanding() {
           border-radius: 8px;
           background: linear-gradient(180deg, rgba(255, 252, 246, 0.66), rgba(245, 239, 226, 0.72));
           overflow: hidden;
+        }
+
+        .step-image > img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 0.65rem;
+          object-fit: contain;
         }
 
         .step-number {
@@ -937,7 +1010,7 @@ export default function ToothFairyLanding() {
           }
 
           .hero h1 {
-            font-size: 4.6rem;
+            font-size: 4.55rem;
           }
 
           .section-intro h2,
@@ -988,6 +1061,13 @@ export default function ToothFairyLanding() {
             inset: 8% 0 16% 3%;
           }
 
+          .real-tooth {
+            top: 30%;
+            left: 15%;
+            width: 2.85rem;
+            height: 2.85rem;
+          }
+
           .memory-card {
             top: 40%;
             width: 10.6rem;
@@ -1004,6 +1084,15 @@ export default function ToothFairyLanding() {
           .proof-grid,
           .steps-grid {
             grid-template-columns: 1fr;
+          }
+
+          .proof-card {
+            padding: 0.85rem 0;
+          }
+
+          .proof-card:not(:last-child) {
+            border-right: 0;
+            border-bottom: 1px solid var(--line);
           }
 
           .step-card:not(:last-child):after {
@@ -1187,6 +1276,52 @@ function SectionIntro({
       <p className="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <p>{body}</p>
+      <style jsx>{`
+        .section-intro {
+          max-width: 820px;
+          margin: 0 auto 2.35rem;
+          text-align: center;
+        }
+
+        .eyebrow {
+          margin: 0 0 0.74rem;
+          color: #b6871f;
+          font-size: 0.76rem;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        h2 {
+          margin: 0;
+          color: #11234a;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 3.15rem;
+          font-weight: 800;
+          letter-spacing: 0;
+          line-height: 1.02;
+        }
+
+        p:not(.eyebrow) {
+          max-width: 680px;
+          margin: 1rem auto 0;
+          color: #334260;
+          font-size: 1.08rem;
+          line-height: 1.62;
+        }
+
+        @media (max-width: 1060px) {
+          h2 {
+            font-size: 2.8rem;
+          }
+        }
+
+        @media (max-width: 720px) {
+          h2 {
+            font-size: 2.35rem;
+          }
+        }
+      `}</style>
     </div>
   )
 }

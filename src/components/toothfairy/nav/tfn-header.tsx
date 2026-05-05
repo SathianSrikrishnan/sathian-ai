@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 const LINKS = [
   { href: "/toothfairy#how-it-works", label: "How it works" },
   { href: "/toothfairy/stories", label: "Stories" },
-  { href: "/toothfairy/faq", label: "Safety" },
+  { href: "/toothfairy/faq", label: "FAQ" },
 ] as const
 
 export function TFNHeader() {
