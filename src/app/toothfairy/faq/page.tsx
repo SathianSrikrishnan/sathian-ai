@@ -64,7 +64,7 @@ const groups = [
     items: [
       {
         q: "Can family members contribute with a credit card today?",
-        a: "Not yet. Wallet-based gifts can be tested now, and MoonPay card gifts are the next production rail to switch on after partner setup and terms review.",
+        a: "Not yet. Wallet-based gifts can be tested now. Card gifts are paused until payment verification, receipts, fee disclosures, and terms are production-ready.",
       },
       {
         q: "What is live enough to test?",

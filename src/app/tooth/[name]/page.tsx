@@ -474,7 +474,7 @@ export default function ToothChildPage() {
         ) : (
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono" style={{ color: c.brownMuted }}>{publicKey.toBase58().slice(0, 4)}...{publicKey.toBase58().slice(-4)}</span>
-            <Link href="/dashboard" className="text-xs px-3 py-1.5 rounded-full" style={{ border: `1px solid ${c.border}`, color: c.gold, fontWeight: 500 }}>Dashboard</Link>
+            <Link href="/toothfairy/app/dashboard" className="text-xs px-3 py-1.5 rounded-full" style={{ border: `1px solid ${c.border}`, color: c.gold, fontWeight: 500 }}>Dashboard</Link>
           </div>
         )}
       </header>

@@ -8,10 +8,14 @@
  */
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
+import { requireToothFairyAdminRequest } from "@/lib/toothfairy/admin-guard"
 
 const SITE = "https://toothfairy.network"
 
 export async function POST(request: NextRequest) {
+  const unauthorized = requireToothFairyAdminRequest(request)
+  if (unauthorized) return unauthorized
+
   try {
     const apiKey = process.env.RESEND_API_KEY
     if (!apiKey) {

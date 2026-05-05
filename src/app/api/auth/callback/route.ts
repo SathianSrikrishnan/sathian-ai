@@ -6,6 +6,7 @@
  */
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { internalToothFairyHeaders } from "@/lib/toothfairy/admin-guard"
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -51,7 +52,10 @@ export async function GET(request: NextRequest) {
       if (email) {
         fetch(`${origin}/api/toothfairy/welcome-email`, {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            ...internalToothFairyHeaders(),
+          },
           body: JSON.stringify({ email, name }),
         }).catch((err) => console.error("[auth.callback] welcome-email dispatch failed:", err))
       }

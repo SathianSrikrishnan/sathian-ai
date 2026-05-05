@@ -162,24 +162,6 @@ export default function GiftPage() {
       setDeposits(deps)
       setSuccess(`${depositAmount} SOL deposited!`)
 
-      // Fire-and-forget deposit email to the child's guardian.
-      // The route resolves the guardian email server-side from childProfilePda.
-      const feeSol = amount * 0.02
-      const netSol = amount - feeSol
-      fetch("/api/toothfairy/deposit-email", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          childProfilePda,
-          depositorName: depositorName.trim(),
-          amountSol: amount,
-          feeSol,
-          netSol,
-          lockChoice,
-          txSignature: null,
-        }),
-      }).catch((err) => console.error("[gift] deposit-email dispatch failed:", err))
-
       setDepositAmount("0.1"); setDepositorName("")
     } catch (err: any) {
       setError(err.message || "Deposit failed")
@@ -413,14 +395,15 @@ export default function GiftPage() {
                   Add a small gift.
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  Wallet gifts work now. Card checkout is being connected so family can use dollars soon.
+                  Wallet gifts work now for controlled testing. Card checkout is paused until
+                  payment verification, receipts, and fee disclosures are ready.
                 </p>
               </div>
               <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
-                <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts are coming next.</p>
+                <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts are paused.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  MoonPay will let loved ones use a card here. For now, use a Solana wallet
-                  or go back to the keepsake.
+                  Share the keepsake first. For now, use a Solana wallet only for
+                  controlled testing or go back to the memory.
                 </p>
               </div>
               <button

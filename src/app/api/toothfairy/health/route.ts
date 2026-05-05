@@ -4,9 +4,10 @@
  * Pre-flight health check for TFN mint infrastructure.
  * Hit this before any demo. All checks must pass for minting to work.
  */
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js"
 import { createClient } from "@supabase/supabase-js"
+import { requireToothFairyAdminRequest } from "@/lib/toothfairy/admin-guard"
 
 export const maxDuration = 15
 export const dynamic = "force-dynamic"
@@ -17,7 +18,10 @@ interface Check {
   detail: string
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const unauthorized = requireToothFairyAdminRequest(request)
+  if (unauthorized) return unauthorized
+
   const checks: Check[] = []
   let allOk = true
 

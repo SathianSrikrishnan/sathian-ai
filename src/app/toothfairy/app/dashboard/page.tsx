@@ -46,6 +46,8 @@ const page = {
   border: "oklch(88% 0.015 75)",
 }
 
+const GOOGLE_DASHBOARD_SIGN_IN = "/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard"
+
 export default function WalletDashboard() {
   const { publicKey, signTransaction, signAllTransactions } = useWallet()
   const { connection } = useConnection()
@@ -193,6 +195,17 @@ export default function WalletDashboard() {
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+            <a
+              href={GOOGLE_DASHBOARD_SIGN_IN}
+              className="rounded-full px-5 py-3 text-center text-sm font-bold"
+              style={{
+                background: "rgba(109,69,168,0.09)",
+                color: page.purple,
+                border: "1px solid rgba(109,69,168,0.18)",
+              }}
+            >
+              Continue with Google
+            </a>
             <Link
               href="/toothfairy/app"
               className="rounded-full px-5 py-3 text-center text-sm font-bold"
@@ -281,16 +294,26 @@ export default function WalletDashboard() {
               One place for the keepsake, the family link, and the balance.
             </h2>
             <p className="mt-4 text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              This is where a parent comes back after the first tooth: one page
-              for the keepsakes, the family gift links, and the Smile Fund.
+              Sign in with the same Google account you used to save the keepsake.
+              Wallet tools are still here for controlled testing, but Google is
+              the normal parent path.
             </p>
-            <button
-              onClick={() => setVisible(true)}
-              className="mt-6 rounded-full px-6 py-3 text-sm font-bold text-white"
-              style={{ background: page.purple }}
-            >
-              Connect guardian wallet
-            </button>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={GOOGLE_DASHBOARD_SIGN_IN}
+                className="rounded-full px-6 py-3 text-center text-sm font-bold text-white"
+                style={{ background: page.purple }}
+              >
+                Continue with Google
+              </a>
+              <button
+                onClick={() => setVisible(true)}
+                className="rounded-full px-6 py-3 text-sm font-bold"
+                style={{ background: "transparent", border: `1px solid ${page.border}`, color: page.inkSoft }}
+              >
+                Connect guardian wallet
+              </button>
+            </div>
           </div>
 
           <div

@@ -71,36 +71,7 @@ export default function ParentFlow({
   }
 
   const handlePayWithCard = async () => {
-    if (!depositAmount || !fromName.trim()) return
-    setPayLoading(true)
-    try {
-      const res = await fetch("/api/toothfairy/onramp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amountUsd: parseFloat(depositAmount),
-          lockChoice: lockChoice === "custom" ? customLockDate : lockChoice,
-          depositorName: fromName.trim(),
-          childProfilePda: "pending",
-          milestonePda: "pending",
-          childDob: birthDate || undefined,
-        }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || "Failed to start payment")
-
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-      if (isMobile) {
-        window.location.href = data.onrampUrl
-      } else {
-        window.open(data.onrampUrl, "coinbase-onramp", "width=460,height=720")
-      }
-    } catch (err: any) {
-      console.error("[pay-with-card]", err)
-      alert(err.message || "Payment failed to start")
-    } finally {
-      setPayLoading(false)
-    }
+    alert("Card gifts are paused until payment verification, receipts, and fee disclosures are ready.")
   }
 
   // Computed
@@ -1360,7 +1331,7 @@ export default function ParentFlow({
               <div className="flex flex-col gap-3 items-center">
                 <button
                   onClick={handlePayWithCard}
-                  disabled={payLoading || !fromName.trim()}
+                  disabled
                   className="w-full py-4 font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform disabled:opacity-50"
                   style={{
                     background: parentGradients.stardust,
@@ -1377,7 +1348,7 @@ export default function ParentFlow({
                     <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
                     <line x1="1" y1="10" x2="23" y2="10" />
                   </svg>
-                  {payLoading ? "Opening payment..." : "Pay with Card"}
+                  Card gifts are paused
                 </button>
                 <button
                   className="font-bold text-sm"

@@ -124,8 +124,9 @@ export async function POST(request: NextRequest) {
     const provider = new AnchorProvider(connection, wallet, { commitment: "confirmed" })
     const program: any = new Program(idl as any, provider)
 
-    const childWalletPubkey = deriveChildWallet(serverPubkey, child.child_name)
-    const [childProfilePda] = getChildProfilePDA(childWalletPubkey)
+    const childProfilePda = child.child_profile_pda
+      ? new PublicKey(child.child_profile_pda)
+      : getChildProfilePDA(deriveChildWallet(serverPubkey, child.child_name))[0]
 
     // Transferring guardianship
 
@@ -152,20 +153,18 @@ export async function POST(request: NextRequest) {
       .update({
         is_server_guardian: false,
         user_wallet_pubkey: newGuardianPubkey.toBase58(),
+        child_profile_pda: childProfilePda.toBase58(),
         // DO NOT overwrite guardian_pubkey — it's needed for on-chain PDA derivation
         updated_at: new Date().toISOString(),
       })
       .eq("id", child.id)
 
-    // The child wallet PDA also changes after transfer — derive with new guardian
-    const newChildWallet = deriveChildWallet(newGuardianPubkey, child.child_name)
-    const [newProfilePda] = getChildProfilePDA(newChildWallet)
-
+    // The child profile PDA stays the same after guardianship transfer.
     return NextResponse.json({
       success: true,
       signature: txSig,
       newGuardian: newGuardianPubkey.toBase58(),
-      childProfilePda: newProfilePda.toBase58(),
+      childProfilePda: childProfilePda.toBase58(),
       explorerUrl: `https://solscan.io/tx/${txSig}`,
     })
   } catch (error: any) {

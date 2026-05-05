@@ -39,7 +39,7 @@ const LATEST_ENHANCED_KEY = "toothfairy-latest-enhanced"
 const LATEST_TRADITION_KEY = "toothfairy-latest-tradition"
 
 const SPRING = "cubic-bezier(0.16, 1, 0.3, 1)"
-const FIAT_ONRAMP_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_FIAT_ONRAMP === "true"
+const FIAT_ONRAMP_ENABLED = false
 const HAS_SUPABASE_CONFIG = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -408,7 +408,7 @@ export default function ToothFairyApp() {
   const [escrowInfo, setEscrowInfo] = useState<{ childProfilePda: string; milestonePda: string } | null>(null)
   const [depositSuccess, setDepositSuccess] = useState<string | null>(null)
 
-  // Card payment state (gated until the MoonPay/card on-ramp is ready)
+  // Card payment state (paused until payment verification and disclosures are ready)
   const [cardPaymentLoading, setCardPaymentLoading] = useState(false)
   const [onrampWindow, setOnrampWindow] = useState<Window | null>(null)
   const [awaitingCardDeposit, setAwaitingCardDeposit] = useState(false)
@@ -676,7 +676,7 @@ export default function ToothFairyApp() {
   const handleCardPayment = async () => {
     if (!escrowInfo) return
     if (!FIAT_ONRAMP_ENABLED) {
-      setError("MoonPay card gifts are being connected next. For this test, open the keepsake or use a Solana wallet gift.")
+      setError("Card gifts are paused for now. Open the keepsake, share it, or use a Solana wallet for a controlled test gift.")
       return
     }
     setError(null); setCardPaymentLoading(true)
@@ -1568,7 +1568,7 @@ export default function ToothFairyApp() {
                    : awaitingCardDeposit
                      ? "Waiting for payment..."
                      : !FIAT_ONRAMP_ENABLED
-                       ? "MoonPay card gifts are connecting next"
+                       ? "Card gifts are paused"
                       : (
                         <>
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">

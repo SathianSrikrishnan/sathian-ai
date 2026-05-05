@@ -9,22 +9,22 @@ export const metadata: Metadata = {
 
 const paths = [
   {
+    title: "I used Google sign-in",
+    body: "Use the same Google account you used when saving the keepsake. This is the normal parent recovery path.",
+    href: "/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard",
+    cta: "Continue with Google",
+  },
+  {
     title: "I used a wallet",
-    body: "Connect the same guardian wallet to find your child's keepsakes and any gifts that are ready to withdraw.",
+    body: "Connect the same guardian wallet only if you created or claimed the child's Smile Fund with Phantom.",
     href: "/toothfairy/app/recover",
     cta: "Find keepsakes",
   },
   {
-    title: "I used Google sign-in",
-    body: "Open the parent dashboard with the same Google account you used when saving the keepsake.",
-    href: "/toothfairy/faq",
-    cta: "Read account FAQ",
-  },
-  {
     title: "I have a family link",
     body: "Paste or open the keepsake link your family received. You do not need a wallet just to view a child's tooth story.",
-    href: "/toothfairy/architecture",
-    cta: "How it works",
+    href: "/toothfairy/keepsake/preview",
+    cta: "View sample keepsake",
   },
 ]
 
@@ -35,9 +35,9 @@ export default function RecoverLandingPage() {
         <p className="eyebrow">Recovery</p>
         <h1>Find a child&apos;s keepsake.</h1>
         <p>
-          If a parent comes back later, this page should help them find the
-          memory first. Wallet tools are still here, but they sit one step
-          behind the family language.
+          If a parent comes back later, start with Google. Wallet recovery is
+          available for advanced cases, but the parent path is the account they
+          already used to save the memory.
         </p>
       </section>
 
@@ -54,10 +54,9 @@ export default function RecoverLandingPage() {
       <section className="note">
         <h2>For controlled testing</h2>
         <p>
-          The recovery path should be tested with the same live infrastructure
-          used for minting: real Supabase records, Solana RPC, the server mint
-          keypair, and the deployed escrow program. Keep early tests small and
-          obvious until the public support process is written.
+          If Google sign-in does not show a child you minted, keep the family
+          keepsake link and contact support with the parent email used at mint.
+          Do not rely on wallet scanning as the only recovery path.
         </p>
       </section>
 

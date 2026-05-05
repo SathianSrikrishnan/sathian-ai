@@ -171,10 +171,23 @@ export default function RecoverPage() {
 
       {!publicKey && (
         <div className="text-center py-20 space-y-4">
-          <p className="text-sm" style={{ color: C.muted }}>Connect your wallet to find saved tooth stories and available gifts.</p>
-          <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: "#9945FF" }}>
-            Connect Wallet
-          </button>
+          <p className="text-sm" style={{ color: C.muted }}>
+            Parents should start with the same Google account used to save the
+            keepsake. Wallet recovery is only for families who already connected
+            Phantom.
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <a
+              href="/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard"
+              className="px-6 py-3 rounded-lg text-sm font-medium text-white"
+              style={{ background: "#9945FF" }}
+            >
+              Continue with Google
+            </a>
+            <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium" style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.text }}>
+              Connect Wallet
+            </button>
+          </div>
         </div>
       )}
 

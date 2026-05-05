@@ -19,6 +19,7 @@ import {
 import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor"
 import { createHash } from "crypto"
 import idl from "@/lib/toothfairy/escrow-idl.json"
+import { requireToothFairyAdminRequest } from "@/lib/toothfairy/admin-guard"
 
 export const maxDuration = 60
 
@@ -59,6 +60,9 @@ function loadServerKeypair(): Keypair {
 }
 
 export async function POST(request: NextRequest) {
+  const unauthorized = requireToothFairyAdminRequest(request)
+  if (unauthorized) return unauthorized
+
   try {
     const body = await request.json()
     const { email, childName, toothType, metadataUri } = body

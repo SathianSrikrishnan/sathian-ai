@@ -30,7 +30,7 @@ const readiness = [
   "Production environment variables must stay complete before each deploy.",
   "`/api/toothfairy/health` should pass before controlled user tests.",
   "One controlled mint should be tested after every meaningful flow change.",
-  "MoonPay card gifts stay gated until partner setup, terms, and deposit handling are tested.",
+  "Card gifts stay gated until provider setup, payment verification, terms, and deposit handling are tested.",
 ]
 
 export default function ArchitecturePage() {
@@ -73,7 +73,7 @@ export default function ArchitecturePage() {
           The site can be reviewed visually now. The minting and wallet flows
           should stay in controlled testing while email, recovery, and card
           gifts are wired. The regular card-gift path is intentionally gated
-          until the MoonPay flow and final public terms are tested end to end.
+          until the payment flow and final public terms are tested end to end.
         </p>
         <Link href="/toothfairy/faq">Read parent FAQ</Link>
       </section>

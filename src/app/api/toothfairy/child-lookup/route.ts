@@ -43,7 +43,6 @@ export async function GET(request: NextRequest) {
       isServerGuardian: data.is_server_guardian,
       userWalletPubkey: data.user_wallet_pubkey,
       childName: data.child_name,
-      birthday: data.birthday,
       smilePhotoUrl: data.smile_photo_url || null,
     })
   } catch (err: any) {

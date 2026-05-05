@@ -83,18 +83,6 @@ const storyCards = [
     href: "/toothfairy/story/ratoncito-perez",
     image: "/story-assets/ratoncito-perez/rp-02-mouse.png",
   },
-  {
-    title: "The Tooth Kami",
-    place: "Japan",
-    href: "/toothfairy/story/japan",
-    image: "/story-assets/japan/jp-05-shrine-gate.jpg",
-  },
-  {
-    title: "The Magpie's Song",
-    place: "Korea",
-    href: "/toothfairy/story/korea",
-    image: "/story-assets/korea/kr-05-magpie-facing.jpg",
-  },
 ]
 
 export default function ToothFairyLanding() {
@@ -869,9 +857,9 @@ export default function ToothFairyLanding() {
           font-size: 1.08rem;
         }
 
-        .story-cards-grid {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          .story-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 0.8rem;
           margin-top: 2rem;
         }

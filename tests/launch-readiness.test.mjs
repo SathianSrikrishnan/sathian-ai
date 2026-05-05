@@ -1,0 +1,109 @@
+import assert from "node:assert/strict"
+import { readFileSync } from "node:fs"
+
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8")
+const checks = []
+const test = (name, fn) => checks.push([name, fn])
+
+test("server-funded card deposits are disabled until payment verification exists", () => {
+  const serverDeposit = read("src/app/api/toothfairy/server-deposit/route.ts")
+  const onramp = read("src/app/api/toothfairy/onramp/route.ts")
+
+  assert.match(serverDeposit, /Card gifts are not enabled yet/)
+  assert.doesNotMatch(serverDeposit, /program\.methods\s*\.\s*deposit/)
+  assert.doesNotMatch(serverDeposit, /TFN_MINT_SECRET_KEY/)
+
+  assert.match(onramp, /Card gifts are not enabled yet/)
+  assert.doesNotMatch(onramp, /sessionToken/)
+  assert.doesNotMatch(onramp, /serverWallet/)
+})
+
+test("operational, admin, and email endpoints require internal authorization", () => {
+  const guardedRoutes = [
+    "src/app/api/toothfairy/health/route.ts",
+    "src/app/api/toothfairy/escrow-viewer/route.ts",
+    "src/app/api/toothfairy/welcome-email/route.ts",
+    "src/app/api/toothfairy/deposit-email/route.ts",
+  ]
+
+  for (const route of guardedRoutes) {
+    assert.match(read(route), /requireToothFairyAdminRequest/, route)
+  }
+})
+
+test("homepage does not link to unpublished Japan or Korea story pages", () => {
+  const homepage = read("src/app/toothfairy/page.tsx")
+
+  assert.doesNotMatch(homepage, /\/toothfairy\/story\/japan/)
+  assert.doesNotMatch(homepage, /\/toothfairy\/story\/korea/)
+})
+
+test("gift flow is clear that card gifts are paused", () => {
+  const giftPage = read("src/app/toothfairy/app/gift/[milestone]/page.tsx")
+  const mintPage = read("src/app/toothfairy/app/page.tsx")
+
+  assert.match(giftPage, /Card gifts are paused/)
+  assert.match(mintPage, /Card gifts are paused/)
+  assert.doesNotMatch(giftPage, /MoonPay/)
+  assert.doesNotMatch(mintPage, /MoonPay/)
+})
+
+test("AI polish is opt-in behind a launch flag", () => {
+  const drawingCanvas = read("src/components/toothfairy/app/drawing-canvas.tsx")
+
+  assert.match(drawingCanvas, /NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE/)
+  assert.match(drawingCanvas, /MAGIC_POLISH_ENABLED &&/)
+})
+
+test("dashboard and recovery are Google-first for returning parents", () => {
+  const dashboard = read("src/app/toothfairy/app/dashboard/page.tsx")
+  const recover = read("src/app/toothfairy/recover/page.tsx")
+
+  assert.match(dashboard, /Continue with Google/)
+  assert.match(dashboard, /\/api\/auth\/google\?next=/)
+  assert.match(recover, /Continue with Google/)
+  assert.match(recover, /\/api\/auth\/google\?next=/)
+})
+
+test("keepsake data can return stored smile photos", () => {
+  const keepsakeData = read("src/lib/toothfairy/keepsake-data.ts")
+
+  assert.match(keepsakeData, /smile_photo_url/)
+  assert.doesNotMatch(keepsakeData, /smilePhotoUrl:\s*undefined/)
+})
+
+test("claiming a profile keeps the original child profile PDA", () => {
+  const claimProfile = read("src/app/api/toothfairy/claim-profile/route.ts")
+
+  assert.match(claimProfile, /child\.child_profile_pda/)
+  assert.match(claimProfile, /childProfilePda:\s*childProfilePda\.toBase58\(\)/)
+  assert.doesNotMatch(claimProfile, /newProfilePda/)
+  assert.doesNotMatch(claimProfile, /newChildWallet/)
+})
+
+test("public sitemap and robots use the Tooth Fairy Network domain", () => {
+  const sitemap = read("src/app/sitemap.ts")
+  const robots = read("src/app/robots.ts")
+
+  assert.match(sitemap, /https:\/\/toothfairy\.network/)
+  assert.match(robots, /https:\/\/toothfairy\.network\/sitemap\.xml/)
+  assert.doesNotMatch(sitemap, /https:\/\/sathian\.ai/)
+  assert.doesNotMatch(robots, /https:\/\/sathian\.ai/)
+})
+
+let failures = 0
+
+for (const [name, fn] of checks) {
+  try {
+    fn()
+    console.log(`ok - ${name}`)
+  } catch (error) {
+    failures += 1
+    console.error(`not ok - ${name}`)
+    console.error(error.message)
+  }
+}
+
+if (failures > 0) {
+  process.exitCode = 1
+}

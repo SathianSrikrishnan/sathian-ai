@@ -6,6 +6,8 @@ import { C, ds, glass } from "../tokens"
 import { PC } from "../parent-theme"
 import { callEnhance } from "@/lib/toothfairy/enhance-client"
 
+const MAGIC_POLISH_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE === "true"
+
 // ─── Types ──────────────────────────────────────────────────────────
 export interface DrawingCanvasRef {
   toDataURL: () => string | null
@@ -353,6 +355,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           </div>
 
           {/* Optional magic polish bar */}
+          {MAGIC_POLISH_ENABLED && (
           <div className="flex items-center gap-2 px-4 py-3" style={{ borderTop: `1px solid ${PC.border}` }}>
             <button
               onClick={handleEnhance}
@@ -372,6 +375,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               {enhanceLabel}
             </button>
           </div>
+          )}
 
           {enhanceError && (
             <p className="text-xs px-4 pb-2" style={{ color: PC.error }}>{enhanceError}</p>
@@ -488,19 +492,21 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           >
             Clear
           </button>
-          <button
-            onClick={handleEnhance}
-            disabled={isEnhancing || enhanceRemaining <= 0}
-            className="px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex-1"
-            style={{
-              background: C.tealGlow,
-              border: `1px solid ${C.borderTeal}`,
-              color: C.teal,
-              opacity: enhanceRemaining <= 0 ? 0.4 : 1,
-            }}
-          >
-            {enhanceLabel}
-          </button>
+          {MAGIC_POLISH_ENABLED && (
+            <button
+              onClick={handleEnhance}
+              disabled={isEnhancing || enhanceRemaining <= 0}
+              className="px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex-1"
+              style={{
+                background: C.tealGlow,
+                border: `1px solid ${C.borderTeal}`,
+                color: C.teal,
+                opacity: enhanceRemaining <= 0 ? 0.4 : 1,
+              }}
+            >
+              {enhanceLabel}
+            </button>
+          )}
         </div>
 
         {enhanceError && (

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     name: `${childName}'s Tooth #${toothNumber}`,
     symbol: "TFN",
     description: `A childhood milestone from ${childName}'s journey, preserved on the Tooth Fairy Network.`,
-    image: "https://sathian.ai/toothfairy/tooth-placeholder.svg",
+    image: "https://toothfairy.network/toothfairy/tooth-placeholder.svg",
     external_url: "https://toothfairy.network",
     attributes: [
       { trait_type: "Child", value: childName },
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       category: "image",
       files: [
         {
-          uri: "https://sathian.ai/toothfairy/tooth-placeholder.svg",
+          uri: "https://toothfairy.network/toothfairy/tooth-placeholder.svg",
           type: "image/png",
         },
       ],
