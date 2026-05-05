@@ -4,17 +4,15 @@ import Link from "next/link"
 import { KeepsakeCard } from "@/components/toothfairy/keepsake/keepsake-card"
 
 const liveMemory = {
-  id: "F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E",
-  childName: "Jhonny",
-  toothType: "Upper right central incisor",
+  id: "D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa",
+  childName: "William Wallace",
+  toothType: "A little tooth",
   storyOrigin: "Live minted memory",
-  drawingUrl: "https://gateway.irys.xyz/_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk",
-  mintDate: new Date("2026-05-05T10:51:55.000Z"),
+  drawingUrl: "https://gateway.irys.xyz/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s",
+  mintDate: new Date("2026-05-05T22:30:33.000Z"),
   deposits: [],
-  toothStory:
-    "My first baby tooth fell out today. It was wiggling for two weeks a little bit but only really shaking for the last three days. I was pulling and pulling and nothing came out but it finally came out.",
-  message:
-    "A childhood milestone from Jhonny's journey, preserved on the Tooth Fairy Network.",
+  toothStory: "My first lost tooth. I want the Tooth Fairy to get me a robot dog.",
+  message: "William Wallace's first lost tooth, saved with his own robot-dog wish.",
 }
 
 const liveMemoryHref = `/toothfairy/keepsake/${liveMemory.id}`
@@ -22,36 +20,15 @@ const liveMemoryHref = `/toothfairy/keepsake/${liveMemory.id}`
 const networkSignals = [
   {
     label: "Memory",
-    value: "Photo, art, and story stay together",
+    value: "Photo, drawing, and story",
   },
   {
     label: "Access",
-    value: "Parent keeps the keys",
+    value: "Parent keeps control",
   },
   {
     label: "Smile Fund",
-    value: "A locked gift can start the habit",
-  },
-]
-
-const parentReads = [
-  {
-    source: "CFPB",
-    title: "Young children and saving",
-    href: "https://www.consumerfinance.gov/consumer-tools/money-as-you-grow/young-children/explore-saving/",
-    body: "A practical parent guide for turning waiting, saving, and small choices into age-appropriate conversations.",
-  },
-  {
-    source: "Investor.gov",
-    title: "Small Savings Add Up to Big Money",
-    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/small-savings-add-big-money",
-    body: "A plain-language compounding primer that helps explain why tiny amounts can matter over time.",
-  },
-  {
-    source: "Investor.gov",
-    title: "Understand What It Means to Invest",
-    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/understand-what-it-means-invest",
-    body: "A sober risk note for parents: investing can grow money, but it also means accepting the chance of loss.",
+    value: "Family gifts can grow beside it",
   },
 ]
 
@@ -61,15 +38,14 @@ export default function KeepsakePreviewPage() {
       <section className="preview-hero">
         <div className="copy">
           <p className="eyebrow">Live preview</p>
-          <h1>A real first forever memory, already saved on the Network.</h1>
+          <h1>William's first lost tooth is already saved.</h1>
           <p className="lede">
-            This is the product after a parent captures the tooth moment:
-            the artwork, the story, and the family page stay together as
-            something a child can grow up owning.
+            A real photo, a few bright marks, and one perfect wish for a robot
+            dog. This is what a finished Tooth Fairy memory should feel like.
           </p>
           <div className="actions">
-            <Link href={liveMemoryHref}>Open live memory</Link>
-            <Link href="/toothfairy/app">Create your child's memory</Link>
+            <Link href={liveMemoryHref}>Open William's memory</Link>
+            <Link href="/toothfairy/app">Create one</Link>
           </div>
         </div>
 
@@ -92,25 +68,22 @@ export default function KeepsakePreviewPage() {
         </div>
       </section>
 
-      <section className="parent-lens" aria-label="What parents should understand">
+      <section className="parent-lens" aria-label="How the finished memory works">
         <div className="lens-copy">
-          <p className="eyebrow">What parents should understand</p>
-          <h2>They are not buying an NFT. They are practicing ownership.</h2>
+          <p className="eyebrow">The finished page</p>
+          <h2>The child sees a story. The parent keeps control.</h2>
           <p>
-            The tooth is the emotional doorway. A child sees a real moment
-            become something permanent, then watches a small locked gift sit
-            beside it. That is the lesson: some things are worth saving, some
-            things are truly yours, and parents decide when the next concept is
-            ready.
+            The memory comes first. Gifts, recovery, and the Smile Fund sit
+            quietly behind it so the page still feels like family, not finance.
           </p>
         </div>
 
         <div className="lens-note">
-          <span>What should be obvious</span>
+          <span>On the page</span>
           <ul>
-            <li>The memory is preserved.</li>
-            <li>The parent controls access.</li>
-            <li>The fund can become a lesson over time.</li>
+            <li>The real moment stays visible.</li>
+            <li>William's words stay with the image.</li>
+            <li>The Smile Fund has a clear place to grow.</li>
           </ul>
         </div>
       </section>
@@ -124,29 +97,13 @@ export default function KeepsakePreviewPage() {
         ))}
       </section>
 
-      <section className="parent-reads" aria-label="Parent reading">
-        <div>
-          <p className="eyebrow">For parents</p>
-          <h2>Use the page as a first money conversation.</h2>
-        </div>
-        <div className="read-grid">
-          {parentReads.map((read) => (
-            <a key={read.href} href={read.href} target="_blank" rel="noreferrer">
-              <span>{read.source}</span>
-              <strong>{read.title}</strong>
-              <p>{read.body}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
       <section className="next-step">
         <div>
           <p className="eyebrow">Next step</p>
           <h2>Make one that feels like your child.</h2>
           <p>
-            A better memory starts with the real smile, the real drawing, and a
-            short story in their own words. That is the part families remember.
+            Start with the real smile, add their words, and keep the magic
+            light. The page should feel like it belongs to them.
           </p>
         </div>
         <Link href="/toothfairy/app">Start the ritual</Link>
@@ -175,7 +132,6 @@ export default function KeepsakePreviewPage() {
         .preview-hero,
         .parent-lens,
         .signal-grid,
-        .parent-reads,
         .next-step {
           width: min(100% - 40px, 1180px);
           margin: 0 auto;
@@ -378,8 +334,7 @@ export default function KeepsakePreviewPage() {
         }
 
         .deposit-chip span,
-        .lens-note span,
-        .read-grid span {
+        .lens-note span {
           display: block;
           color: var(--muted);
           font-size: 0.72rem;
@@ -460,7 +415,7 @@ export default function KeepsakePreviewPage() {
         }
 
         .signal-grid article,
-        .read-grid a {
+        .next-step {
           border: 1px solid var(--border);
           border-radius: 8px;
           background: var(--paper);
@@ -489,50 +444,13 @@ export default function KeepsakePreviewPage() {
           line-height: 1.05;
         }
 
-        .parent-reads {
-          display: grid;
-          gap: 1.3rem;
-          border-top: 1px solid var(--border);
-          padding: 54px 0 60px;
-        }
-
-        .parent-reads h2 {
-          max-width: 620px;
-        }
-
-        .read-grid {
-          display: grid;
-          gap: 1rem;
-        }
-
-        .read-grid a {
-          display: block;
-          padding: 1.1rem;
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .read-grid strong {
-          display: block;
-          margin-top: 0.38rem;
-          color: var(--navy);
-          font-family: var(--font-display), Georgia, serif;
-          font-size: 1.35rem;
-          line-height: 1.08;
-        }
-
-        .read-grid p {
-          margin: 0.65rem 0 0;
-          color: var(--ink);
-          font-size: 0.96rem;
-        }
-
         .next-step {
           display: grid;
           gap: 1.2rem;
           align-items: center;
           border-top: 1px solid var(--border);
-          padding: 58px 0 78px;
+          margin-bottom: 78px;
+          padding: 1.35rem;
         }
 
         .next-step p {
@@ -554,8 +472,7 @@ export default function KeepsakePreviewPage() {
             grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
           }
 
-          .signal-grid,
-          .read-grid {
+          .signal-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
 
@@ -568,7 +485,6 @@ export default function KeepsakePreviewPage() {
           .preview-hero,
           .parent-lens,
           .signal-grid,
-          .parent-reads,
           .next-step {
             width: min(100% - 28px, 1180px);
           }
