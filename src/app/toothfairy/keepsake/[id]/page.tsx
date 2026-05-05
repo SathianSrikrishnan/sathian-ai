@@ -164,9 +164,9 @@ function KeepsakeExperience({
 }) {
   const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
 
-  const headline = `${data.childName}'s first forever memory`;
+  const headline = `${data.childName}'s tooth memory`;
   const subhead =
-    'A lost tooth, a little note, and a drawing saved as something your family can come back to.';
+    'A real moment, saved for family to revisit and share.';
 
   return (
     <>
@@ -178,7 +178,7 @@ function KeepsakeExperience({
           </div>
 
           <p
-            className="mt-10 text-xs uppercase"
+            className="mt-8 text-xs uppercase"
             style={{
               fontFamily: 'var(--font-body)',
               color: c.gold,
@@ -206,35 +206,7 @@ function KeepsakeExperience({
             {subhead}
           </p>
 
-          <div
-            className="mt-7 rounded-lg p-5"
-            style={{
-              background: c.paper,
-              border: `1px solid ${c.border}`,
-              boxShadow: '0 16px 36px oklch(30% 0.035 65 / 0.06)',
-            }}
-          >
-            <p
-              className="text-xs uppercase"
-              style={{
-                color: c.gold,
-                letterSpacing: '0.16em',
-                fontFamily: 'var(--font-body)',
-                fontWeight: 700,
-              }}
-            >
-              Tanda's note
-            </p>
-            <p
-              className="mt-3 text-lg leading-relaxed"
-              style={{ color: c.ink, fontFamily: 'var(--font-display)', fontStyle: 'italic' }}
-            >
-              What a bright and beautiful smile you are growing, {data.childName}.
-              Keep this memory close. Small things can become big things.
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <a
               href="#share"
               className="inline-flex min-h-14 items-center justify-center rounded-full px-7 text-base font-semibold"
@@ -246,7 +218,7 @@ function KeepsakeExperience({
                 boxShadow: '0 16px 36px rgba(109, 69, 168, 0.24)',
               }}
             >
-              Share with family
+              Share
             </a>
             <Link
               href={`/toothfairy/app/gift/${milestoneId}`}
@@ -259,7 +231,7 @@ function KeepsakeExperience({
                 textDecoration: 'none',
               }}
             >
-              Add a gift
+              Add gift
             </Link>
           </div>
         </div>
@@ -322,14 +294,14 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Share the memory first.
+            Share the memory.
           </h2>
           <p
             className="mt-3 text-base leading-relaxed"
             style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
           >
-            Send one link to grandparents and loved ones. They can see the tooth story,
-            read the note, and add a small gift only if they want to.
+            Send one link to grandparents and loved ones. They can see the story
+            and add a gift if they want to.
           </p>
           <div className="mt-6">
             <ShareButtons keepsakeUrl={keepsakeUrl} childName={data.childName} />
@@ -405,7 +377,7 @@ function SmileFundPanel({
             {lockedCount || '10'}
           </div>
           <div className="text-[10px] uppercase" style={{ letterSpacing: '0.12em' }}>
-            {lockedCount ? 'locked' : 'age default'}
+            {lockedCount ? 'locked' : 'age 10'}
           </div>
         </div>
       </div>
@@ -415,8 +387,8 @@ function SmileFundPanel({
         style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
       >
         {hasDeposits
-          ? `${contributionCount} loved one${contributionCount === 1 ? '' : 's'} helped start this fund.`
-          : 'No gifts yet. Share the keepsake first; the fund can grow whenever family is ready.'}
+          ? `${contributionCount} loved one${contributionCount === 1 ? '' : 's'} added a gift.`
+          : 'No gifts yet. The memory is ready to share.'}
       </p>
 
       {hasDeposits && (
@@ -449,7 +421,7 @@ function SmileFundPanel({
           boxShadow: '0 12px 30px rgba(109, 69, 168, 0.22)',
         }}
       >
-        {hasDeposits ? 'Add another gift' : 'Add first gift'}
+        {hasDeposits ? 'Add another gift' : 'Add a gift'}
       </Link>
 
       <p
@@ -459,7 +431,7 @@ function SmileFundPanel({
           color: c.inkMuted,
         }}
       >
-        Parent-controlled. Default unlock: age 10.
+        Parent controlled. Age-10 hold is the default.
       </p>
     </section>
   );

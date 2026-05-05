@@ -157,16 +157,16 @@ function PaperCard({
 function ProductPromiseCard() {
   const items = [
     {
-      title: "Create the keepsake",
-      body: "Save the photo, drawing, and little story while the moment is still fresh.",
+      title: "Save the memory",
+      body: "Photo, drawing, and story in one place.",
     },
     {
-      title: "Share with family",
-      body: "Send one simple link so grandparents and loved ones can add a gift or note.",
+      title: "Share one link",
+      body: "Family can see the moment and add a gift.",
     },
     {
       title: "Start the Smile Fund",
-      body: "A parent-controlled account helps the child see how small things can grow by age 10.",
+      body: "Small gifts can grow beside the memory.",
     },
   ]
 
@@ -676,7 +676,7 @@ export default function ToothFairyApp() {
   const handleCardPayment = async () => {
     if (!escrowInfo) return
     if (!FIAT_ONRAMP_ENABLED) {
-      setError("Card gifts are paused for now. Open the keepsake, share it, or use a Solana wallet for a controlled test gift.")
+      setError("Card gifts are paused for now. Open the memory, share it, or use a Solana wallet for a controlled test gift.")
       return
     }
     setError(null); setCardPaymentLoading(true)
@@ -894,8 +894,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Begin</Eyebrow>
               </div>
               <StepTitle
-                title="Save their tooth story."
-                subtitle="One tiny ritual creates a keepsake your family can revisit, share, and grow into a first lesson in ownership."
+                title="Save the tooth moment."
+                subtitle="A photo, a drawing, and a few words become one memory your family can keep."
               />
             </div>
 
@@ -945,7 +945,7 @@ export default function ToothFairyApp() {
                 </button>
               )}
               <p className="text-xs italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}>
-                Their smiling face — appears on the keepsake
+                Appears on the memory page.
               </p>
             </div>
 
@@ -1009,8 +1009,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>The portrait</Eyebrow>
               </div>
               <StepTitle
-                title="Make the keepsake."
-                subtitle="Use the tooth photo, a drawing, and a few words if they help. Rough is fine; the point is that it is theirs."
+                title="Make it theirs."
+                subtitle="Add the tooth photo, then mark it up with color."
               />
             </div>
 
@@ -1112,7 +1112,7 @@ export default function ToothFairyApp() {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-[11px]" style={{ color: "var(--tfn-ink-muted)" }}>
-                    Optional. The keepsake works without it.
+                    Optional. The memory works without it.
                   </p>
                   <p className="text-[11px] font-mono" style={{ color: "var(--tfn-ink-muted)" }}>
                     {note.length}/500
@@ -1165,8 +1165,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Ready</Eyebrow>
               </div>
               <StepTitle
-                title={childName ? `${childName}'s keepsake` : "The keepsake"}
-                subtitle="This becomes the shareable family page: memory first, Smile Fund second, blockchain quietly underneath."
+                title={childName ? `${childName}'s memory` : "The memory"}
+                subtitle="This is the page your family can open and share."
               />
             </div>
 
@@ -1218,51 +1218,6 @@ export default function ToothFairyApp() {
               </div>
             )}
 
-            {/* Transparency */}
-            <PaperCard>
-              <div className="space-y-5">
-                {[
-                  { num: "i", title: "The memory stays together", desc: "The tooth photo, drawing, and optional note live on one page your family can revisit." },
-                  { num: "ii", title: "Loved ones get one link", desc: "After saving, send the page to grandparents, friends, and your wider family circle." },
-                  { num: "iii", title: "You stay in charge", desc: `You manage access, gifting, and unlock timing. ${childName || "Your child"} gets the memory and a first lesson in ownership.` },
-                ].map(({ num, title, desc }, i) => (
-                  <div
-                    key={num}
-                    className="flex gap-5"
-                    style={{
-                      paddingTop: i > 0 ? "1.25rem" : 0,
-                      borderTop: i > 0 ? "1px solid var(--tfn-border)" : "none",
-                    }}
-                  >
-                    <span
-                      className="text-xl leading-none italic shrink-0"
-                      style={{
-                        fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
-                        color: "var(--tfn-gold)",
-                        minWidth: "1.5rem",
-                      }}
-                    >
-                      {num}.
-                    </span>
-                    <div>
-                      <h3
-                        className="font-semibold mb-1 text-base"
-                        style={{
-                          fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
-                          color: "var(--tfn-ink)",
-                        }}
-                      >
-                        {title}
-                      </h3>
-                      <p className="text-sm leading-relaxed" style={{ color: "var(--tfn-ink-soft)" }}>
-                        {desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </PaperCard>
-
             {/* Auth + Mint */}
             <PaperCard className="space-y-5 text-center">
               {authLoading ? (
@@ -1279,7 +1234,7 @@ export default function ToothFairyApp() {
                     Saving is not connected on this domain yet.
                   </p>
                   <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
-                    Check the production environment variables and health check before testing a real keepsake.
+                    Check the production environment variables and health check before testing a real memory.
                   </p>
                 </>
               ) : !isAuthenticated ? (
@@ -1288,7 +1243,7 @@ export default function ToothFairyApp() {
                     className="text-lg"
                     style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
                   >
-                    Sign in to save the keepsake.
+                    Sign in to save the memory.
                   </p>
                   <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
                     This creates the parent account for this memory. No wallet or crypto knowledge required.
@@ -1326,7 +1281,7 @@ export default function ToothFairyApp() {
                     Signed in as {authEmail || ""}
                   </div>
                   <GoldCTA onClick={handleServerMint}>
-                    Save the keepsake
+                    Save the memory
                   </GoldCTA>
                   <p className="text-xs" style={{ color: "var(--tfn-ink-muted)" }}>
                     Free to create. You can add savings after it is saved.
@@ -1362,17 +1317,17 @@ export default function ToothFairyApp() {
 
             <div className="space-y-5">
               <div className="text-center">
-                <Eyebrow>Keepsake saved</Eyebrow>
+                <Eyebrow>Memory saved</Eyebrow>
               </div>
               <StepTitle
-                title="Start the Smile Fund, or share now."
-                subtitle={`The memory is saved. Add an optional first gift, or open ${childName || "the child"}'s family page and send it to loved ones.`}
+                title="Share now, or add a first gift."
+                subtitle="The memory is saved. The Smile Fund can start now or later."
               />
             </div>
 
             {escrowInfo && (
               <GoldCTA onClick={() => redirectToKeepsake(escrowInfo.milestonePda)}>
-                Open the family keepsake
+                Open the memory
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
@@ -1385,13 +1340,13 @@ export default function ToothFairyApp() {
                 className="text-base font-semibold mb-4"
                 style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
               >
-                What just happened
+                Saved
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: "Memory saved", value: note ? "Photo, drawing, note" : "Photo and drawing" },
-                  { label: "Family page created", value: "Ready to share" },
-                  { label: "Age-10 default", value: suggestedUnlockDate || "Set from birthday" },
+                  { label: "Memory page", value: "Ready" },
+                  { label: "Smile Fund", value: "Optional" },
+                  { label: "Default hold", value: suggestedUnlockDate || "Age 10" },
                 ].map(({ label, value }) => (
                   <div
                     key={label}
@@ -1404,7 +1359,7 @@ export default function ToothFairyApp() {
                 ))}
               </div>
               <p className="text-xs mt-4 italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
-                Savings are optional. The keepsake is already created and ready to share.
+                You can skip gifts and share the memory now.
               </p>
             </PaperCard>
 
@@ -1516,7 +1471,7 @@ export default function ToothFairyApp() {
                   })}
                 </div>
                 <p className="mt-3 text-xs leading-relaxed" style={{ color: "var(--tfn-ink-muted)" }}>
-                  Current deployed contract fee is 2%. Target public launch fee is 1%. Public card gifts will show final terms before payment.
+                  Wallet gifts are for controlled testing. Card gifts stay paused until terms are final.
                 </p>
               </InputRow>
             </PaperCard>
@@ -1602,7 +1557,7 @@ export default function ToothFairyApp() {
                 style={{ color: "var(--tfn-ink-muted)" }}
                 aria-label="Skip deposit for now"
               >
-                Skip gift and open the keepsake
+                Skip gift and open the memory
               </button>
             </div>
           </div>
@@ -1668,7 +1623,7 @@ export default function ToothFairyApp() {
 
             <div>
               <StepTitle
-                title={childName ? `Saving ${childName}'s keepsake...` : "Saving the keepsake..."}
+                title={childName ? `Saving ${childName}'s memory...` : "Saving the memory..."}
                 subtitle={mintProgress || "It takes just a few seconds."}
               />
             </div>
@@ -1683,8 +1638,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Saved forever</Eyebrow>
               </div>
               <StepTitle
-                title={childName ? `${childName}'s keepsake is live.` : "The keepsake is live."}
-                subtitle={`Saved on the Tooth Fairy Network. When ${childName || "they're"} older, this can become their first lesson in ownership.`}
+                title={childName ? `${childName}'s memory is live.` : "The memory is live."}
+                subtitle="Share the page with family, or open the dashboard any time."
               />
             </div>
 
@@ -1725,7 +1680,7 @@ export default function ToothFairyApp() {
               <GoldCTA
                 onClick={() => {
                   const url = `${window.location.origin}/toothfairy/keepsake/${escrowInfo.milestonePda}`
-                  const shareText = `${childName} saved their tooth fairy keepsake. See the memory and add a small gift if you want:`
+                  const shareText = `See ${childName || "this"} tooth memory:`
                   if (navigator.share) {
                     navigator.share({ title: `${childName}'s Tooth Fairy Network`, text: shareText, url }).catch(() => {})
                   } else {
