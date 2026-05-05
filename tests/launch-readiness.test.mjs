@@ -100,6 +100,18 @@ test("AI polish remains visible unless it is explicitly disabled", () => {
   assert.doesNotMatch(drawingCanvas, /Magic polish \(\$\{enhanceRemaining\}\)/)
 })
 
+test("AI polish preserves parent-drawn marks over the provider image", () => {
+  const drawingCanvas = read("src/components/toothfairy/app/drawing-canvas.tsx")
+  const overlayHelper = read("src/lib/toothfairy/canvas-overlay.ts")
+
+  assert.match(overlayHelper, /createChangedPixelOverlay/)
+  assert.match(overlayHelper, /overlay\.data\[i \+ 3\] = 0/)
+  assert.match(drawingCanvas, /baseCanvasSnapshotRef/)
+  assert.match(drawingCanvas, /createChangedPixelOverlay/)
+  assert.match(drawingCanvas, /manualOverlay/)
+  assert.match(drawingCanvas, /ctx\.drawImage\(manualOverlay/)
+})
+
 test("dashboard and recovery are Google-first for returning parents", () => {
   const dashboard = read("src/app/toothfairy/app/dashboard/page.tsx")
   const recover = read("src/app/toothfairy/recover/page.tsx")
@@ -212,6 +224,16 @@ test("public sitemap and robots use the Tooth Fairy Network domain", () => {
   assert.match(robots, /https:\/\/toothfairy\.network\/sitemap\.xml/)
   assert.doesNotMatch(sitemap, /https:\/\/sathian\.ai/)
   assert.doesNotMatch(robots, /https:\/\/sathian\.ai/)
+})
+
+test("draft animation work is excluded from local Vercel deploy packages", () => {
+  const vercelIgnore = read(".vercelignore")
+
+  assert.match(vercelIgnore, /public\/toothfairy\/animation\//)
+  assert.match(vercelIgnore, /src\/app\/animation\/tanda-hero-ritual\//)
+  assert.match(vercelIgnore, /src\/components\/toothfairy\/home\//)
+  assert.match(vercelIgnore, /src\/remotion\/TandaRitualHero\.tsx/)
+  assert.match(vercelIgnore, /docs\/plans\//)
 })
 
 let failures = 0

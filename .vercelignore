@@ -1,0 +1,13 @@
+# Draft animation, planning, and render artifacts.
+# These are explored in parallel and should not ship until explicitly merged.
+docs/plans/
+public/toothfairy/animation/
+scripts/render-tanda-layered-video.ps1
+src/app/animation/tanda-hero-ritual/
+src/app/animation/tanda-pose-pack/
+src/app/animation/tanda-ritual/
+src/app/animation/tanda-ritual-video/
+src/components/toothfairy/home/
+src/lib/toothfairy/tanda-pose-pack.ts
+src/remotion/TandaRitualHero.tsx
+tests/tanda-ritual-loop.spec.ts

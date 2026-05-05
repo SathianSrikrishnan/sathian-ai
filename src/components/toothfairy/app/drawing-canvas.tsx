@@ -5,6 +5,7 @@ import { useViewMode } from "../view-mode-context"
 import { C, ds, glass } from "../tokens"
 import { PC } from "../parent-theme"
 import { callEnhance } from "@/lib/toothfairy/enhance-client"
+import { createChangedPixelOverlay } from "@/lib/toothfairy/canvas-overlay"
 
 const MAGIC_POLISH_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE !== "false"
 
@@ -28,6 +29,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     const isDrawingRef = useRef(false)
     const lastPosRef = useRef({ x: 0, y: 0 })
     const undoStackRef = useRef<ImageData[]>([])
+    const baseCanvasSnapshotRef = useRef<ImageData | null>(null)
 
     const [brushColor, setBrushColor] = useState(isParent ? "#795900" : "#f0e6ff")
     const [brushSize, setBrushSize] = useState(4)
@@ -57,6 +59,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       if (!ctx) return
       canvas.width = 512; canvas.height = 512
       ctx.fillStyle = bgColor; ctx.fillRect(0, 0, 512, 512)
+      baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, 512, 512)
       // IMPORTANT: do NOT render placeholder text to the canvas. The canvas is
       // the export surface — anything drawn here ends up baked into the keepsake
       // via toDataURL(). The "Draw the tooth!" hint lives as a DOM overlay below.
@@ -76,6 +79,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
         const scale = Math.max(512 / img.width, 512 / img.height)
         const w = img.width * scale, h = img.height * scale
         ctx.drawImage(img, (512 - w) / 2, (512 - h) / 2, w, h)
+        baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, 512, 512)
         setIsPristine(false)
       }
       img.src = photo
@@ -150,6 +154,14 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       setIsEnhancing(true)
       setEnhanceError(null)
       try {
+        const ctx = canvasRef.current.getContext("2d")
+        if (!ctx) return
+        saveUndoSnapshot()
+        const currentSnapshot = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+        const baseSnapshot = baseCanvasSnapshotRef.current
+        const preservedOverlay = baseSnapshot
+          ? createChangedPixelOverlay(baseSnapshot, currentSnapshot)
+          : null
         const drawingDataUrl = canvasRef.current.toDataURL("image/png")
         const outcome = await callEnhance({
           drawingDataUrl,
@@ -186,6 +198,14 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
           const w = img.width * scale, h = img.height * scale
           ctx.drawImage(img, (canvasRef.current.width - w) / 2, (canvasRef.current.height - h) / 2, w, h)
+          baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+          if (preservedOverlay) {
+            const manualOverlay = document.createElement("canvas")
+            manualOverlay.width = canvasRef.current.width
+            manualOverlay.height = canvasRef.current.height
+            manualOverlay.getContext("2d")?.putImageData(preservedOverlay, 0, 0)
+            ctx.drawImage(manualOverlay, 0, 0)
+          }
           setIsPristine(false)
           setIsEnhancing(false)
         }
