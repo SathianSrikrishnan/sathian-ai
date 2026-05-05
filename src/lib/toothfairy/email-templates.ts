@@ -65,6 +65,8 @@ function emailShell({
         <div style="height:1px;background:#E3D9C4;"></div>
         <p style="margin:18px 0 0;font-size:12px;line-height:1.6;color:#687186;text-align:center;">
           ${footer}<br>
+          Lost the link? Use the same Google account at
+          <a href="${SITE}/toothfairy/recover" style="color:#6D45A8;text-decoration:none;">toothfairy.network/toothfairy/recover</a>.<br>
           <a href="${SITE}" style="color:#6D45A8;text-decoration:none;">toothfairy.network</a>
         </p>
       </td></tr>

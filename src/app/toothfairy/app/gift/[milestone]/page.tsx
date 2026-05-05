@@ -156,7 +156,19 @@ export default function GiftPage() {
         }
       }
 
-      await escrowDeposit(program, publicKey, new PublicKey(childProfilePda), new PublicKey(milestonePda), amount, lockPeriodKey, depositorName.trim(), lockTimestamp)
+      const txSignature = await escrowDeposit(program, publicKey, new PublicKey(childProfilePda), new PublicKey(milestonePda), amount, lockPeriodKey, depositorName.trim(), lockTimestamp)
+
+      void fetch("/api/toothfairy/gift-receipt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          txSignature,
+          milestonePda,
+          depositorPubkey: publicKey.toBase58(),
+        }),
+      }).catch((receiptError) => {
+        console.warn("[gift] parent receipt dispatch failed:", receiptError)
+      })
 
       const deps = await fetchDepositsForMilestone(program, new PublicKey(milestonePda))
       setDeposits(deps)

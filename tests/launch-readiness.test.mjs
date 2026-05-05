@@ -68,6 +68,22 @@ test("gift flow is clear that card gifts are paused", () => {
   assert.doesNotMatch(mintPage, /MoonPay/)
 })
 
+test("wallet gift receipts are sent only after server-side transaction verification", () => {
+  const giftPage = read("src/app/toothfairy/app/gift/[milestone]/page.tsx")
+  const receiptRoute = read("src/app/api/toothfairy/gift-receipt/route.ts")
+
+  assert.match(giftPage, /\/api\/toothfairy\/gift-receipt/)
+  assert.match(giftPage, /txSignature/)
+  assert.doesNotMatch(giftPage, /x-tfn-admin-secret/)
+  assert.match(receiptRoute, /isAllowedOrigin/)
+  assert.match(receiptRoute, /getParsedTransaction|getTransaction/)
+  assert.match(receiptRoute, /program\.account\.deposit\.all/)
+  assert.match(receiptRoute, /tfn_children/)
+  assert.match(receiptRoute, /renderGiftReceivedEmail/)
+  assert.match(receiptRoute, /RESEND_API_KEY/)
+  assert.doesNotMatch(receiptRoute, /requireToothFairyAdminRequest/)
+})
+
 test("AI polish remains visible unless it is explicitly disabled", () => {
   const drawingCanvas = read("src/components/toothfairy/app/drawing-canvas.tsx")
 
@@ -106,6 +122,8 @@ test("Google auth and mint flow send the core parent emails", () => {
   assert.match(emailTemplates, /renderMemoryCreatedEmail/)
   assert.match(emailTemplates, /renderGiftReceivedEmail/)
   assert.match(emailTemplates, /escapeHtml/)
+  assert.match(emailTemplates, /\/toothfairy\/recover/)
+  assert.match(emailTemplates, /same Google account/i)
 })
 
 test("footer email signup is wired to the subscribe endpoint", () => {
@@ -141,6 +159,8 @@ test("FAQ explains the Smile Fund as responsibility education without investment
   assert.match(faq, /not investment advice/i)
   assert.match(smileFund, /responsibility/)
   assert.match(smileFund, /self-sovereignty/)
+  assert.match(smileFund, /practice portfolio/i)
+  assert.match(smileFund, /card gifts are paused/i)
 })
 
 test("keepsake data can return stored smile photos", () => {

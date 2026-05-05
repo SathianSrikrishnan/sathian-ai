@@ -5,29 +5,35 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Smile Fund - Tooth Fairy Network",
   description:
-    "A parent-controlled Smile Fund helps a child grow from a tooth memory into an early lesson about saving, responsibility, ownership, and self-sovereignty.",
+    "A parent-controlled Smile Fund helps a child grow from a tooth memory into early lessons about saving, responsibility, ownership, and self-sovereignty.",
 }
 
-const principles = [
+const lessons = [
   {
-    title: "Responsibility first",
-    body: "The fund starts as practice: small amounts, parent guidance, and clear conversations about saving.",
+    title: "Saving is visible",
+    body: "A small gift becomes something they can point to, revisit, and understand as patience over time.",
   },
   {
-    title: "Parent controlled",
-    body: "Parents control access, sharing, and the timing for when the child starts learning from the fund.",
+    title: "Ownership has context",
+    body: "The money is attached to a real family moment, so ownership starts with memory instead of speculation.",
   },
   {
-    title: "Ownership without pressure",
-    body: "Children can learn that something is truly theirs before they are asked to manage adult financial choices.",
+    title: "Parents stay in control",
+    body: "Access, timing, and explanations stay with the parent until the child is ready for the next lesson.",
   },
 ]
 
-const steps = [
-  "A parent saves the lost-tooth moment.",
-  "The family link lets loved ones celebrate it.",
-  "Optional gifts collect in the Smile Fund.",
-  "The child grows into saving, investing, and self-sovereignty lessons over time.",
+const timeline = [
+  "The tooth moment is saved as a first forever memory.",
+  "Family can celebrate the page without needing a wallet.",
+  "Optional wallet gifts enter the Smile Fund during controlled testing.",
+  "The child grows into saving, investing, and self-sovereignty lessons with a parent guiding the pace.",
+]
+
+const status = [
+  ["Live now", "Memory creation, Google sign-in, public family links, and controlled wallet gifts."],
+  ["Paused", "Card gifts are paused until provider verification, receipts, fee disclosures, and terms are final."],
+  ["Boundary", "The Smile Fund is an educational savings experience, not investment advice or an investment product."],
 ]
 
 export default function SmileFundPage() {
@@ -36,111 +42,142 @@ export default function SmileFundPage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Smile Fund</p>
-          <h1>A first practice field for saving, ownership, and responsibility.</h1>
+          <h1>A practice portfolio for saving, responsibility, and ownership.</h1>
           <p>
-            The Smile Fund turns a family ritual into a gentle model for the
-            world children are growing into: saving early, understanding
-            ownership, and preparing for investing and self-sovereignty with a
-            parent still in control.
+            The Smile Fund gives a child an early model for the world they are
+            growing into: save before spending, understand what is truly theirs,
+            and learn about investing and self-sovereignty with a parent still
+            setting the pace.
           </p>
           <div className="actions">
             <Link href="/toothfairy/app">Create a memory</Link>
             <Link href="/toothfairy/faq">Read parent FAQ</Link>
           </div>
         </div>
-        <div className="hero-visual" aria-label="Smile Fund preview">
-          <Image
-            src="/toothfairy/visual-system/watch-grow-v1.png"
-            alt="A child watching their Smile Fund grow"
-            fill
-            priority
-            sizes="(min-width: 960px) 420px, 88vw"
-            className="object-contain"
-          />
+
+        <div className="hero-panel" aria-label="Smile Fund preview">
+          <div className="fund-card">
+            <p>Little Smile Fund</p>
+            <strong>$360</strong>
+            <span>6 family gifts saved</span>
+            <div className="bars" aria-hidden>
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+          </div>
+          <div className="image-frame">
+            <Image
+              src="/toothfairy/visual-system/watch-grow-v1.png"
+              alt="A child watching their Smile Fund grow"
+              fill
+              priority
+              sizes="(min-width: 960px) 460px, 88vw"
+              className="object-contain"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="principles" aria-label="Smile Fund principles">
-        {principles.map((item) => (
-          <article key={item.title}>
-            <h2>{item.title}</h2>
-            <p>{item.body}</p>
-          </article>
-        ))}
+      <section className="lesson-band" aria-label="Smile Fund lessons">
+        <div className="lesson-heading">
+          <p className="eyebrow">What it teaches</p>
+          <h2>The gift is optional. The lesson is the product.</h2>
+        </div>
+        <div className="lesson-grid">
+          {lessons.map((lesson) => (
+            <article key={lesson.title}>
+              <h3>{lesson.title}</h3>
+              <p>{lesson.body}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="flow">
         <div>
           <p className="eyebrow">Family flow</p>
-          <h2>The gift is optional. The lesson compounds.</h2>
+          <h2>Memory first, money second, responsibility over time.</h2>
           <p>
-            A Smile Fund should not make a lost tooth feel transactional. It
-            should make the child feel remembered, supported, and trusted with a
-            tiny piece of responsibility. The deeper purpose is not a bigger
-            balance; it is earlier practice with saving, patience, and ownership.
+            A lost tooth should not become a transaction. The memory is the
+            emotional anchor. The Smile Fund is the learning layer that can
+            slowly introduce saving, patience, investing vocabulary, and the
+            idea of self-sovereignty without handing a child adult financial
+            control too early.
           </p>
         </div>
         <ol>
-          {steps.map((step) => (
-            <li key={step}>{step}</li>
+          {timeline.map((step, index) => (
+            <li key={step}>
+              <span>{index + 1}</span>
+              <p>{step}</p>
+            </li>
           ))}
         </ol>
       </section>
 
       <section className="status">
-        <div>
+        <div className="status-heading">
           <p className="eyebrow">Launch status</p>
-          <h2>What is live now?</h2>
+          <h2>What families can trust right now.</h2>
         </div>
         <div className="status-grid">
-          <article>
-            <strong>Live for controlled testing</strong>
-            <p>Parent memory creation, Google sign-in, the public family link, and wallet-based gifts.</p>
-          </article>
-          <article>
-            <strong>Paused before broad release</strong>
-            <p>Card gifts, receipts, fee disclosures, and final payment-provider terms.</p>
-          </article>
-          <article>
-            <strong>Not financial advice</strong>
-            <p>The Smile Fund is an educational family savings experience, not investment advice or an investment product.</p>
-          </article>
+          {status.map(([title, body]) => (
+            <article key={title}>
+              <strong>{title}</strong>
+              <p>{body}</p>
+            </article>
+          ))}
         </div>
+      </section>
+
+      <section className="close">
+        <p>
+          Parent-controlled means the child can feel ownership before they are
+          responsible for custody, trading, or financial decisions. That is the
+          point.
+        </p>
+        <Link href="/toothfairy/app">Start with the memory</Link>
       </section>
 
       <style>{`
         .smile-page {
-          --navy: #11234a;
-          --ink: #23365f;
-          --muted: #687186;
+          --navy: #10234c;
+          --ink: #24385f;
+          --muted: #65728a;
           --purple: #6d45a8;
           --gold: #d8a43c;
+          --mint: #33b89f;
+          --rose: #c94b7c;
           --cream: #fbf7ee;
-          --paper: rgba(255, 252, 247, 0.78);
-          --border: rgba(178, 151, 107, 0.30);
+          --paper: rgba(255, 252, 247, 0.80);
+          --border: rgba(178, 151, 107, 0.32);
           min-height: 100vh;
           background:
-            radial-gradient(circle at 88% 0%, rgba(216, 164, 60, 0.17), transparent 24rem),
-            radial-gradient(circle at 10% 4%, rgba(109, 69, 168, 0.10), transparent 22rem),
-            var(--cream);
+            linear-gradient(90deg, rgba(16, 35, 76, 0.045) 1px, transparent 1px),
+            linear-gradient(180deg, #fffaf1, var(--cream));
+          background-size: 56px 56px, auto;
           color: var(--navy);
           font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
         }
 
         .hero,
-        .principles,
+        .lesson-band,
         .flow,
-        .status {
+        .status,
+        .close {
           width: min(100% - 40px, 1180px);
           margin: 0 auto;
         }
 
         .hero {
           display: grid;
-          gap: 2.5rem;
+          gap: 2.6rem;
           align-items: center;
-          min-height: min(720px, calc(100vh - 72px));
-          padding: 68px 0 44px;
+          min-height: min(740px, calc(100vh - 72px));
+          padding: 66px 0 46px;
         }
 
         .hero-copy {
@@ -148,16 +185,17 @@ export default function SmileFundPage() {
         }
 
         .eyebrow {
-          margin: 0 0 0.72rem;
-          color: #b77a11;
-          font-size: 0.78rem;
+          margin: 0 0 0.78rem;
+          color: #9b690f;
+          font-size: 0.76rem;
           font-weight: 900;
           letter-spacing: 0.14em;
           text-transform: uppercase;
         }
 
         h1,
-        h2 {
+        h2,
+        h3 {
           margin: 0;
           color: var(--navy);
           font-family: var(--font-display), Georgia, serif;
@@ -165,14 +203,19 @@ export default function SmileFundPage() {
         }
 
         h1 {
-          max-width: 780px;
-          font-size: clamp(3rem, 7vw, 5.4rem);
-          line-height: 0.95;
+          max-width: 800px;
+          font-size: clamp(3rem, 7vw, 5.45rem);
+          line-height: 0.94;
         }
 
         h2 {
-          font-size: clamp(2.2rem, 4vw, 3.4rem);
+          font-size: clamp(2.15rem, 4vw, 3.45rem);
           line-height: 0.98;
+        }
+
+        h3 {
+          font-size: 1.55rem;
+          line-height: 1.05;
         }
 
         p {
@@ -180,71 +223,143 @@ export default function SmileFundPage() {
           line-height: 1.65;
         }
 
-        .hero p {
+        .hero-copy > p:not(.eyebrow) {
           max-width: 680px;
           margin: 1.15rem 0 0;
           font-size: 1.12rem;
         }
 
-        .hero-visual {
-          position: relative;
-          min-height: 340px;
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          background:
-            linear-gradient(145deg, rgba(255, 255, 255, 0.70), rgba(245, 239, 226, 0.76));
-          box-shadow: 0 24px 70px rgba(48, 38, 24, 0.08);
-          overflow: hidden;
-        }
-
         .actions {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.8rem;
-          margin-top: 1.6rem;
+          gap: 0.82rem;
+          margin-top: 1.65rem;
         }
 
-        .actions a {
+        .actions a,
+        .close a {
           display: inline-flex;
           min-height: 48px;
           align-items: center;
           justify-content: center;
           border-radius: 999px;
-          padding: 0 1.1rem;
+          padding: 0 1.15rem;
           font-weight: 900;
           text-decoration: none;
         }
 
-        .actions a:first-child {
+        .actions a:first-child,
+        .close a {
           background: linear-gradient(135deg, var(--purple), #8b5cc8);
           color: #fffaf1;
+          box-shadow: 0 15px 34px rgba(109, 69, 168, 0.2);
         }
 
         .actions a:last-child {
           border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.62);
+          background: rgba(255, 255, 255, 0.68);
           color: var(--navy);
         }
 
-        .principles {
+        .hero-panel {
           display: grid;
           gap: 1rem;
-          padding: 18px 0 72px;
+        }
+
+        .fund-card {
+          border: 1px solid rgba(16, 35, 76, 0.14);
+          border-radius: 8px;
+          background: #10234c;
+          color: #fffaf1;
+          padding: 1.25rem;
+          box-shadow: 0 24px 60px rgba(16, 35, 76, 0.18);
+        }
+
+        .fund-card p,
+        .fund-card span {
+          margin: 0;
+          color: rgba(255, 250, 241, 0.76);
+          font-size: 0.82rem;
+          font-weight: 900;
+          letter-spacing: 0.11em;
+          text-transform: uppercase;
+        }
+
+        .fund-card strong {
+          display: block;
+          margin-top: 0.5rem;
+          color: #fffaf1;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: clamp(3.1rem, 7vw, 5rem);
+          line-height: 0.9;
+        }
+
+        .fund-card span {
+          display: block;
+          margin-top: 0.5rem;
+          letter-spacing: 0;
+          text-transform: none;
+        }
+
+        .bars {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 0.55rem;
+          align-items: end;
+          height: 120px;
+          margin-top: 1.35rem;
+          border-top: 1px solid rgba(255, 250, 241, 0.18);
+          padding-top: 1rem;
+        }
+
+        .bars i {
+          display: block;
+          min-height: 34px;
+          border-radius: 999px 999px 0 0;
+          background: linear-gradient(180deg, var(--mint), rgba(51, 184, 159, 0.22));
+        }
+
+        .bars i:nth-child(2) { min-height: 52px; }
+        .bars i:nth-child(3) { min-height: 68px; }
+        .bars i:nth-child(4) { min-height: 90px; }
+        .bars i:nth-child(5) { min-height: 112px; }
+
+        .image-frame {
+          position: relative;
+          min-height: 300px;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.64);
+          box-shadow: 0 22px 56px rgba(48, 38, 24, 0.08);
+          overflow: hidden;
+        }
+
+        .lesson-band {
+          border-top: 1px solid var(--border);
+          padding: 58px 0 64px;
+        }
+
+        .lesson-heading {
+          max-width: 780px;
+        }
+
+        .lesson-grid,
+        .status-grid {
+          display: grid;
+          gap: 1rem;
+          margin-top: 1.35rem;
         }
 
         article {
           border: 1px solid var(--border);
           border-radius: 8px;
           background: var(--paper);
+          padding: 1.15rem;
           box-shadow: 0 18px 44px rgba(48, 38, 24, 0.07);
         }
 
-        .principles article {
-          padding: 1.2rem;
-        }
-
-        .principles h2 {
-          font-size: 2rem;
+        article p {
+          margin: 0.7rem 0 0;
         }
 
         .flow {
@@ -252,84 +367,128 @@ export default function SmileFundPage() {
           gap: 2rem;
           align-items: start;
           border-top: 1px solid var(--border);
-          padding: 64px 0;
+          padding: 62px 0;
         }
 
-        .flow p {
-          max-width: 620px;
-          font-size: 1.06rem;
+        .flow > div > p:not(.eyebrow) {
+          max-width: 650px;
+          margin-top: 1rem;
+          font-size: 1.05rem;
         }
 
         ol {
           display: grid;
-          gap: 0.8rem;
+          gap: 0.82rem;
           margin: 0;
           padding: 0;
           list-style: none;
         }
 
         li {
+          display: grid;
+          grid-template-columns: 42px 1fr;
+          gap: 0.85rem;
+          align-items: start;
           border: 1px solid var(--border);
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.58);
-          color: var(--ink);
-          font-weight: 800;
+          background: rgba(255, 255, 255, 0.66);
           padding: 1rem;
+        }
+
+        li span {
+          display: grid;
+          width: 34px;
+          height: 34px;
+          place-items: center;
+          border-radius: 999px;
+          background: rgba(216, 164, 60, 0.18);
+          color: #956407;
+          font-weight: 900;
+        }
+
+        li p {
+          margin: 0;
+          font-weight: 800;
         }
 
         .status {
           border-top: 1px solid var(--border);
-          padding: 64px 0 82px;
+          padding: 62px 0;
         }
 
-        .status-grid {
-          display: grid;
-          gap: 1rem;
-          margin-top: 1.3rem;
-        }
-
-        .status article {
-          padding: 1.15rem;
+        .status-heading {
+          max-width: 720px;
         }
 
         .status strong {
-          color: var(--navy);
           display: block;
+          color: var(--navy);
           font-family: var(--font-display), Georgia, serif;
-          font-size: 1.35rem;
-          line-height: 1.1;
+          font-size: 1.42rem;
+          line-height: 1.08;
         }
 
-        .status p {
-          margin: 0.7rem 0 0;
+        .status article:nth-child(2) {
+          border-color: rgba(201, 75, 124, 0.28);
+          background: rgba(255, 246, 249, 0.82);
         }
 
-        @media (min-width: 840px) {
+        .close {
+          display: grid;
+          gap: 1.2rem;
+          align-items: center;
+          border-top: 1px solid var(--border);
+          padding: 54px 0 78px;
+        }
+
+        .close p {
+          max-width: 700px;
+          margin: 0;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: clamp(1.55rem, 3vw, 2.4rem);
+          line-height: 1.12;
+          color: var(--navy);
+        }
+
+        .close a {
+          width: fit-content;
+        }
+
+        @media (min-width: 860px) {
           .hero {
-            grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+            grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
           }
 
-          .principles,
+          .lesson-grid,
           .status-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
 
           .flow {
-            grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+            grid-template-columns: minmax(0, 1fr) minmax(380px, 0.88fr);
+          }
+
+          .close {
+            grid-template-columns: minmax(0, 1fr) auto;
           }
         }
 
         @media (max-width: 680px) {
           .hero,
-          .principles,
+          .lesson-band,
           .flow,
-          .status {
+          .status,
+          .close {
             width: min(100% - 28px, 1180px);
           }
 
           .hero {
             min-height: auto;
-            padding-top: 48px;
+            padding-top: 46px;
+          }
+
+          .fund-card strong {
+            font-size: 3.2rem;
           }
         }
       `}</style>
