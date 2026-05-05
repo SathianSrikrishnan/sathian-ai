@@ -31,7 +31,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     const undoStackRef = useRef<ImageData[]>([])
     const baseCanvasSnapshotRef = useRef<ImageData | null>(null)
 
-    const [brushColor, setBrushColor] = useState(isParent ? "#795900" : "#f0e6ff")
+    const [brushColor, setBrushColor] = useState(isParent ? PC.text : "#f0e6ff")
     const [brushSize, setBrushSize] = useState(4)
     const [eraserMode, setEraserMode] = useState(false)
     const [isEnhancing, setIsEnhancing] = useState(false)
@@ -198,7 +198,12 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
           const w = img.width * scale, h = img.height * scale
           ctx.drawImage(img, (canvasRef.current.width - w) / 2, (canvasRef.current.height - h) / 2, w, h)
-          baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+          let enhancedBaseSnapshot: ImageData | null = null
+          try {
+            enhancedBaseSnapshot = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+          } catch {
+            enhancedBaseSnapshot = null
+          }
           if (preservedOverlay) {
             const manualOverlay = document.createElement("canvas")
             manualOverlay.width = canvasRef.current.width
@@ -206,6 +211,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
             manualOverlay.getContext("2d")?.putImageData(preservedOverlay, 0, 0)
             ctx.drawImage(manualOverlay, 0, 0)
           }
+          baseCanvasSnapshotRef.current = enhancedBaseSnapshot
           setIsPristine(false)
           setIsEnhancing(false)
         }
@@ -223,7 +229,8 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
 
     // ── Theme-aware palettes ──
     const childColors = ["#FFFFFF", "#f0c456", "#5adace", "#fbb5b5", "#9b87f5", "#60a5fa", "#34d399", "#fb923c"]
-    const parentColors = [PC.text, PC.goldDark, PC.teal, PC.surfaceHigh, "#795900", "#3b82f6", "#059669", "#ea580c"]
+    const parentColors = [PC.text, "#f5c84c", "#22a06b", "#ef476f", "#3b82f6", "#8b5cc8", "#795900", "#ea580c"]
+    const parentColorNames = ["navy", "yellow", "green", "pink", "blue", "purple", "brown", "orange"]
     const colors = isParent ? parentColors : childColors
 
     const brushSizes = [
@@ -319,6 +326,8 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               {colors.map((color, i) => (
                 <button
                   key={i}
+                  aria-label={`Use ${isParent ? parentColorNames[i] : "color"} marker`}
+                  title={isParent ? parentColorNames[i] : "Color"}
                   onClick={() => { setBrushColor(color); setEraserMode(false) }}
                   style={{
                     width: "1.75rem",
@@ -437,9 +446,11 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           <div className="mt-3 space-y-2">
             {/* Color palette */}
             <div className="flex items-center justify-center gap-2">
-              {colors.map(color => (
+              {colors.map((color, i) => (
                 <button
                   key={color}
+                  aria-label={`Use ${isParent ? parentColorNames[i] : "color"} marker`}
+                  title={isParent ? parentColorNames[i] : "Color"}
                   onClick={() => { setBrushColor(color); setEraserMode(false) }}
                   className="w-6 h-6 rounded-full transition-all"
                   style={{
