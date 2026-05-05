@@ -59,10 +59,11 @@ test("gift flow is clear that card gifts are paused", () => {
   assert.doesNotMatch(mintPage, /MoonPay/)
 })
 
-test("AI polish is opt-in behind a launch flag", () => {
+test("AI polish remains visible unless it is explicitly disabled", () => {
   const drawingCanvas = read("src/components/toothfairy/app/drawing-canvas.tsx")
 
   assert.match(drawingCanvas, /NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE/)
+  assert.match(drawingCanvas, /!==\s*"false"/)
   assert.match(drawingCanvas, /MAGIC_POLISH_ENABLED &&/)
   assert.match(drawingCanvas, /: "Magic polish"/)
   assert.doesNotMatch(drawingCanvas, /Magic polish \(\$\{enhanceRemaining\}\)/)

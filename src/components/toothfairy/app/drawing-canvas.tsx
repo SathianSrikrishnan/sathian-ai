@@ -6,7 +6,7 @@ import { C, ds, glass } from "../tokens"
 import { PC } from "../parent-theme"
 import { callEnhance } from "@/lib/toothfairy/enhance-client"
 
-const MAGIC_POLISH_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE === "true"
+const MAGIC_POLISH_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE !== "false"
 
 // ─── Types ──────────────────────────────────────────────────────────
 export interface DrawingCanvasRef {
