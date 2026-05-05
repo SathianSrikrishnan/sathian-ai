@@ -55,7 +55,13 @@ test("preview page uses the latest real minted memory instead of static sample c
   assert.match(preview, /_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk/)
   assert.match(preview, /F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E/)
   assert.match(preview, /Jhonny/)
+  assert.match(preview, /locked Smile Fund/i)
+  assert.match(preview, /0\.05 SOL/)
+  assert.match(preview, /consumerfinance\.gov\/consumer-tools\/money-as-you-grow\/young-children\/explore-saving/)
+  assert.match(preview, /investor\.gov\/introduction-investing\/investing-basics\/save-and-invest\/small-savings-add-big-money/)
+  assert.match(preview, /investor\.gov\/introduction-investing\/investing-basics\/save-and-invest\/understand-what-it-means-invest/)
   assert.doesNotMatch(preview, /This is what Timmy got/)
+  assert.doesNotMatch(preview, /The page should not feel like an NFT pitch/)
 })
 
 test("gift flow is clear that card gifts are paused", () => {
@@ -160,6 +166,9 @@ test("FAQ explains the Smile Fund as responsibility education without investment
   assert.match(smileFund, /responsibility/)
   assert.match(smileFund, /self-sovereignty/)
   assert.match(smileFund, /practice portfolio/i)
+  assert.match(smileFund, /locked gift/i)
+  assert.match(smileFund, /Small Savings Add Up to Big Money/)
+  assert.match(smileFund, /Young children and saving/)
   assert.match(smileFund, /card gifts are paused/i)
 })
 

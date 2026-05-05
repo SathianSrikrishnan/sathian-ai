@@ -19,18 +19,39 @@ const liveMemory = {
 
 const liveMemoryHref = `/toothfairy/keepsake/${liveMemory.id}`
 
-const proof = [
+const networkSignals = [
   {
-    label: "Real minted image",
-    value: "Stored on Irys",
+    label: "Memory",
+    value: "Photo, art, and story stay together",
   },
   {
-    label: "Parent access",
-    value: "Controlled by family",
+    label: "Access",
+    value: "Parent keeps the keys",
   },
   {
     label: "Smile Fund",
-    value: "Ready for gifts",
+    value: "A locked gift can start the habit",
+  },
+]
+
+const parentReads = [
+  {
+    source: "CFPB",
+    title: "Young children and saving",
+    href: "https://www.consumerfinance.gov/consumer-tools/money-as-you-grow/young-children/explore-saving/",
+    body: "A practical parent guide for turning waiting, saving, and small choices into age-appropriate conversations.",
+  },
+  {
+    source: "Investor.gov",
+    title: "Small Savings Add Up to Big Money",
+    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/small-savings-add-big-money",
+    body: "A plain-language compounding primer that helps explain why tiny amounts can matter over time.",
+  },
+  {
+    source: "Investor.gov",
+    title: "Understand What It Means to Invest",
+    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/understand-what-it-means-invest",
+    body: "A sober risk note for parents: investing can grow money, but it also means accepting the chance of loss.",
   },
 ]
 
@@ -53,30 +74,70 @@ export default function KeepsakePreviewPage() {
         </div>
 
         <div className="card-wrap" aria-label="Real minted Tooth Fairy memory preview">
+          <div className="network-halo" aria-hidden>
+            <span>saved</span>
+            <span>parent key</span>
+            <span>fund</span>
+          </div>
+          <div className="network-lock" aria-hidden>
+            <i />
+            <b />
+          </div>
           <KeepsakeCard {...liveMemory} />
+          <div className="deposit-chip" aria-label="Example locked Smile Fund gift">
+            <span>Example locked Smile Fund gift</span>
+            <strong>0.05 SOL</strong>
+            <small>From Jimmy, held with this memory</small>
+          </div>
         </div>
       </section>
 
-      <section className="context" aria-label="What this preview shows">
-        <div>
+      <section className="parent-lens" aria-label="What parents should understand">
+        <div className="lens-copy">
           <p className="eyebrow">What parents should understand</p>
-          <h2>The memory comes first. The fund comes after.</h2>
+          <h2>They are not buying an NFT. They are practicing ownership.</h2>
+          <p>
+            The tooth is the emotional doorway. A child sees a real moment
+            become something permanent, then watches a small locked gift sit
+            beside it. That is the lesson: some things are worth saving, some
+            things are truly yours, and parents decide when the next concept is
+            ready.
+          </p>
         </div>
-        <p>
-          The page should not feel like an NFT pitch. It should feel like a
-          family record that can become a gentle practice field for saving,
-          patience, and responsibility. Loved ones can celebrate the moment;
-          parents decide when the child is ready to learn from the fund.
-        </p>
+
+        <div className="lens-note">
+          <span>What should be obvious</span>
+          <ul>
+            <li>The memory is preserved.</li>
+            <li>The parent controls access.</li>
+            <li>The fund can become a lesson over time.</li>
+          </ul>
+        </div>
       </section>
 
-      <section className="proof-grid" aria-label="Preview details">
-        {proof.map((item) => (
+      <section className="signal-grid" aria-label="Preview details">
+        {networkSignals.map((item) => (
           <article key={item.label}>
             <span>{item.label}</span>
             <strong>{item.value}</strong>
           </article>
         ))}
+      </section>
+
+      <section className="parent-reads" aria-label="Parent reading">
+        <div>
+          <p className="eyebrow">For parents</p>
+          <h2>Use the page as a first money conversation.</h2>
+        </div>
+        <div className="read-grid">
+          {parentReads.map((read) => (
+            <a key={read.href} href={read.href} target="_blank" rel="noreferrer">
+              <span>{read.source}</span>
+              <strong>{read.title}</strong>
+              <p>{read.body}</p>
+            </a>
+          ))}
+        </div>
       </section>
 
       <section className="next-step">
@@ -112,8 +173,9 @@ export default function KeepsakePreviewPage() {
         }
 
         .preview-hero,
-        .context,
-        .proof-grid,
+        .parent-lens,
+        .signal-grid,
+        .parent-reads,
         .next-step {
           width: min(100% - 40px, 1180px);
           margin: 0 auto;
@@ -203,11 +265,13 @@ export default function KeepsakePreviewPage() {
 
         .card-wrap {
           position: relative;
+          isolation: isolate;
         }
 
         .card-wrap:before {
           position: absolute;
           inset: 8% 7% auto auto;
+          z-index: -2;
           width: min(46vw, 360px);
           height: min(46vw, 360px);
           border-radius: 999px;
@@ -216,39 +280,198 @@ export default function KeepsakePreviewPage() {
           filter: blur(34px);
         }
 
+        .network-halo {
+          position: absolute;
+          inset: 3% -2% auto auto;
+          z-index: -1;
+          width: min(92%, 500px);
+          aspect-ratio: 1;
+          border: 1px solid rgba(109, 69, 168, 0.22);
+          border-radius: 999px;
+          transform: rotate(-8deg);
+        }
+
+        .network-halo span {
+          position: absolute;
+          border: 1px solid rgba(216, 164, 60, 0.34);
+          border-radius: 999px;
+          background: rgba(255, 252, 247, 0.88);
+          color: var(--purple);
+          font-size: 0.66rem;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          padding: 0.38rem 0.55rem;
+          text-transform: uppercase;
+          transform: rotate(8deg);
+        }
+
+        .network-halo span:nth-child(1) {
+          left: 12%;
+          top: 10%;
+        }
+
+        .network-halo span:nth-child(2) {
+          right: -2%;
+          top: 44%;
+        }
+
+        .network-halo span:nth-child(3) {
+          bottom: 9%;
+          left: 20%;
+        }
+
+        .network-lock {
+          position: absolute;
+          right: clamp(0.5rem, 3vw, 1.8rem);
+          top: clamp(1.2rem, 6vw, 3rem);
+          z-index: 4;
+          display: grid;
+          width: 58px;
+          height: 70px;
+          place-items: center;
+          pointer-events: none;
+        }
+
+        .network-lock i {
+          position: absolute;
+          top: 2px;
+          width: 34px;
+          height: 30px;
+          border: 5px solid rgba(216, 164, 60, 0.9);
+          border-bottom: 0;
+          border-radius: 999px 999px 0 0;
+        }
+
+        .network-lock b {
+          position: absolute;
+          bottom: 5px;
+          width: 44px;
+          height: 38px;
+          border-radius: 8px;
+          background: linear-gradient(135deg, #6d45a8, #d8a43c);
+          box-shadow: 0 12px 28px rgba(109, 69, 168, 0.24);
+        }
+
+        .network-lock b:after {
+          position: absolute;
+          inset: 11px 19px;
+          border-radius: 999px;
+          background: #fffaf1;
+          content: "";
+        }
+
         .card-wrap :global(article) {
           position: relative;
+          z-index: 1;
         }
 
-        .context {
+        .deposit-chip {
+          position: relative;
+          z-index: 3;
+          width: min(88%, 360px);
+          margin: -2.1rem auto 0;
+          border: 1px solid rgba(109, 69, 168, 0.18);
+          border-radius: 8px;
+          background: rgba(255, 252, 247, 0.94);
+          padding: 0.9rem 1rem;
+          box-shadow: 0 20px 44px rgba(48, 38, 24, 0.12);
+        }
+
+        .deposit-chip span,
+        .lens-note span,
+        .read-grid span {
+          display: block;
+          color: var(--muted);
+          font-size: 0.72rem;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .deposit-chip strong {
+          display: block;
+          margin-top: 0.25rem;
+          color: var(--navy);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.9rem;
+          line-height: 0.96;
+        }
+
+        .deposit-chip small {
+          display: block;
+          margin-top: 0.3rem;
+          color: var(--ink);
+          font-size: 0.9rem;
+          font-weight: 800;
+        }
+
+        .parent-lens {
           display: grid;
           gap: 1.4rem;
-          align-items: end;
+          align-items: stretch;
           border-top: 1px solid var(--border);
-          padding: 58px 0 30px;
+          padding: 58px 0 24px;
         }
 
-        .context p {
+        .lens-copy p {
           max-width: 620px;
-          margin: 0;
+          margin: 1rem 0 0;
           font-size: 1.04rem;
         }
 
-        .proof-grid {
-          display: grid;
-          gap: 1rem;
-          padding: 0 0 64px;
+        .lens-note {
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.58);
+          padding: 1.15rem;
         }
 
-        .proof-grid article {
+        .lens-note ul {
+          display: grid;
+          gap: 0.65rem;
+          margin: 1rem 0 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .lens-note li {
+          position: relative;
+          padding-left: 1rem;
+          color: var(--ink);
+          font-weight: 850;
+          line-height: 1.45;
+        }
+
+        .lens-note li:before {
+          position: absolute;
+          left: 0;
+          top: 0.62em;
+          width: 5px;
+          height: 5px;
+          border-radius: 999px;
+          background: var(--gold);
+          content: "";
+        }
+
+        .signal-grid {
+          display: grid;
+          gap: 1rem;
+          padding: 0 0 58px;
+        }
+
+        .signal-grid article,
+        .read-grid a {
           border: 1px solid var(--border);
           border-radius: 8px;
           background: var(--paper);
-          padding: 1.1rem;
           box-shadow: 0 18px 42px rgba(48, 38, 24, 0.07);
         }
 
-        .proof-grid span {
+        .signal-grid article {
+          padding: 1.1rem;
+        }
+
+        .signal-grid span {
           display: block;
           color: var(--muted);
           font-size: 0.78rem;
@@ -257,13 +480,51 @@ export default function KeepsakePreviewPage() {
           text-transform: uppercase;
         }
 
-        .proof-grid strong {
+        .signal-grid strong {
           display: block;
           margin-top: 0.35rem;
           color: var(--navy);
           font-family: var(--font-display), Georgia, serif;
           font-size: 1.45rem;
           line-height: 1.05;
+        }
+
+        .parent-reads {
+          display: grid;
+          gap: 1.3rem;
+          border-top: 1px solid var(--border);
+          padding: 54px 0 60px;
+        }
+
+        .parent-reads h2 {
+          max-width: 620px;
+        }
+
+        .read-grid {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .read-grid a {
+          display: block;
+          padding: 1.1rem;
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .read-grid strong {
+          display: block;
+          margin-top: 0.38rem;
+          color: var(--navy);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.35rem;
+          line-height: 1.08;
+        }
+
+        .read-grid p {
+          margin: 0.65rem 0 0;
+          color: var(--ink);
+          font-size: 0.96rem;
         }
 
         .next-step {
@@ -289,11 +550,12 @@ export default function KeepsakePreviewPage() {
             min-height: min(740px, calc(100vh - 72px));
           }
 
-          .context {
+          .parent-lens {
             grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
           }
 
-          .proof-grid {
+          .signal-grid,
+          .read-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
 
@@ -304,14 +566,26 @@ export default function KeepsakePreviewPage() {
 
         @media (max-width: 680px) {
           .preview-hero,
-          .context,
-          .proof-grid,
+          .parent-lens,
+          .signal-grid,
+          .parent-reads,
           .next-step {
             width: min(100% - 28px, 1180px);
           }
 
           .preview-hero {
             padding-top: 48px;
+          }
+
+          .network-halo {
+            display: none;
+          }
+
+          .network-lock {
+            right: 0.35rem;
+            top: 1rem;
+            transform: scale(0.82);
+            transform-origin: top right;
           }
         }
       `}</style>

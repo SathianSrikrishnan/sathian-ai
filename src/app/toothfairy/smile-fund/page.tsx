@@ -36,6 +36,27 @@ const status = [
   ["Boundary", "The Smile Fund is an educational savings experience, not investment advice or an investment product."],
 ]
 
+const parentResources = [
+  {
+    source: "CFPB",
+    title: "Young children and saving",
+    href: "https://www.consumerfinance.gov/consumer-tools/money-as-you-grow/young-children/explore-saving/",
+    body: "Use waiting, jars, and small choices to make saving concrete before money feels abstract.",
+  },
+  {
+    source: "Investor.gov",
+    title: "Small Savings Add Up to Big Money",
+    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/small-savings-add-big-money",
+    body: "A simple parent reference for explaining compounding without turning the moment into a market lesson.",
+  },
+  {
+    source: "Investor.gov",
+    title: "Understand What It Means to Invest",
+    href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/understand-what-it-means-invest",
+    body: "Use this as the guardrail: investing has risk, so children learn vocabulary before they get control.",
+  },
+]
+
 export default function SmileFundPage() {
   return (
     <main className="smile-page">
@@ -60,6 +81,13 @@ export default function SmileFundPage() {
             <p>Little Smile Fund</p>
             <strong>$360</strong>
             <span>6 family gifts saved</span>
+            <div className="locked-row" aria-label="Example locked gift">
+              <i aria-hidden />
+              <div>
+                <b>Example locked gift</b>
+                <small>0.05 SOL held with the memory</small>
+              </div>
+            </div>
             <div className="bars" aria-hidden>
               <i />
               <i />
@@ -118,6 +146,27 @@ export default function SmileFundPage() {
         </ol>
       </section>
 
+      <section className="resources" aria-label="Parent learning resources">
+        <div className="resources-heading">
+          <p className="eyebrow">Parent reading</p>
+          <h2>Good outside references for the lesson underneath.</h2>
+          <p>
+            The Smile Fund should make parents feel prepared, not sold to. These
+            are sober references for saving, compounding, and the risk boundary
+            around investing.
+          </p>
+        </div>
+        <div className="resource-grid">
+          {parentResources.map((resource) => (
+            <a key={resource.href} href={resource.href} target="_blank" rel="noreferrer">
+              <span>{resource.source}</span>
+              <strong>{resource.title}</strong>
+              <p>{resource.body}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <section className="status">
         <div className="status-heading">
           <p className="eyebrow">Launch status</p>
@@ -166,6 +215,7 @@ export default function SmileFundPage() {
         .hero,
         .lesson-band,
         .flow,
+        .resources,
         .status,
         .close {
           width: min(100% - 40px, 1180px);
@@ -301,6 +351,62 @@ export default function SmileFundPage() {
           text-transform: none;
         }
 
+        .locked-row {
+          display: grid;
+          grid-template-columns: 38px 1fr;
+          gap: 0.8rem;
+          align-items: center;
+          margin-top: 1.15rem;
+          border-top: 1px solid rgba(255, 250, 241, 0.18);
+          padding-top: 1rem;
+        }
+
+        .locked-row i {
+          position: relative;
+          display: block;
+          width: 34px;
+          height: 38px;
+        }
+
+        .locked-row i:before {
+          position: absolute;
+          left: 7px;
+          top: 0;
+          width: 20px;
+          height: 18px;
+          border: 4px solid var(--gold);
+          border-bottom: 0;
+          border-radius: 999px 999px 0 0;
+          content: "";
+        }
+
+        .locked-row i:after {
+          position: absolute;
+          left: 3px;
+          bottom: 0;
+          width: 28px;
+          height: 25px;
+          border-radius: 7px;
+          background: linear-gradient(135deg, var(--gold), var(--mint));
+          content: "";
+        }
+
+        .locked-row b {
+          display: block;
+          color: #fffaf1;
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.2rem;
+          line-height: 1;
+        }
+
+        .locked-row small {
+          display: block;
+          margin-top: 0.22rem;
+          color: rgba(255, 250, 241, 0.76);
+          font-size: 0.9rem;
+          font-weight: 800;
+        }
+
         .bars {
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -411,6 +517,62 @@ export default function SmileFundPage() {
           font-weight: 800;
         }
 
+        .resources {
+          display: grid;
+          gap: 1.35rem;
+          border-top: 1px solid var(--border);
+          padding: 60px 0;
+        }
+
+        .resources-heading {
+          max-width: 760px;
+        }
+
+        .resources-heading > p:not(.eyebrow) {
+          margin: 1rem 0 0;
+          font-size: 1.03rem;
+        }
+
+        .resource-grid {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .resource-grid a {
+          display: block;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          background: var(--paper);
+          padding: 1.1rem;
+          color: inherit;
+          text-decoration: none;
+          box-shadow: 0 18px 44px rgba(48, 38, 24, 0.07);
+        }
+
+        .resource-grid span {
+          display: block;
+          color: var(--muted);
+          font-size: 0.72rem;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .resource-grid strong {
+          display: block;
+          margin-top: 0.38rem;
+          color: var(--navy);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.35rem;
+          line-height: 1.08;
+        }
+
+        .resource-grid p {
+          margin: 0.68rem 0 0;
+          color: var(--ink);
+          font-size: 0.96rem;
+        }
+
         .status {
           border-top: 1px solid var(--border);
           padding: 62px 0;
@@ -460,6 +622,7 @@ export default function SmileFundPage() {
           }
 
           .lesson-grid,
+          .resource-grid,
           .status-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
@@ -477,6 +640,7 @@ export default function SmileFundPage() {
           .hero,
           .lesson-band,
           .flow,
+          .resources,
           .status,
           .close {
             width: min(100% - 28px, 1180px);
