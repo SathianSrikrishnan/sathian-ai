@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const paths = [
   {
     title: "I used Google sign-in",
-    body: "Use the same Google account you used when saving the keepsake. This is the normal parent recovery path.",
+    body: "Use the same Google account you used when saving the memory. This is the normal parent recovery path.",
     href: "/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard",
     cta: "Continue with Google",
   },
@@ -22,7 +22,7 @@ const paths = [
   },
   {
     title: "I have a family link",
-    body: "Paste or open the keepsake link your family received. You do not need a wallet just to view a child's tooth story.",
+    body: "Paste or open the family link you received. You do not need a wallet just to view a child's tooth story.",
     href: "/toothfairy/keepsake/preview",
     cta: "View sample keepsake",
   },
@@ -33,11 +33,11 @@ export default function RecoverLandingPage() {
     <main className="recover-page">
       <section className="hero">
         <p className="eyebrow">Recovery</p>
-        <h1>Find a child&apos;s keepsake.</h1>
+        <h1>Find a child&apos;s first forever memory.</h1>
         <p>
           If a parent comes back later, start with Google. Wallet recovery is
           available for advanced cases, but the parent path is the account they
-          already used to save the memory.
+          already used to save the memory and control access.
         </p>
       </section>
 
@@ -55,7 +55,7 @@ export default function RecoverLandingPage() {
         <h2>For controlled testing</h2>
         <p>
           If Google sign-in does not show a child you minted, keep the family
-          keepsake link and contact support with the parent email used at mint.
+          memory link and contact support with the parent email used at mint.
           Do not rely on wallet scanning as the only recovery path.
         </p>
       </section>

@@ -7,9 +7,9 @@ const columns = [
     title: "Product",
     links: [
       { href: "/toothfairy#how-it-works", label: "How it works" },
-      { href: "/toothfairy/app", label: "Make a keepsake" },
-      { href: "/toothfairy/keepsake/preview", label: "Keepsake Preview" },
-      { href: "/toothfairy#smile-fund", label: "Smile Fund" },
+      { href: "/toothfairy/app", label: "Create a memory" },
+      { href: "/toothfairy/keepsake/preview", label: "Preview" },
+      { href: "/toothfairy/smile-fund", label: "Smile Fund" },
     ],
   },
   {
@@ -59,7 +59,7 @@ export function TFNFooter() {
             <span>toothfairy.network</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-6" style={{ color: "#23365f" }}>
-            A child's first digital piggy bank, disguised as a magical family ritual.
+            A first forever memory, guided by family and protected by parents.
           </p>
         </div>
 

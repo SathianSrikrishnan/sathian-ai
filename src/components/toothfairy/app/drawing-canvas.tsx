@@ -142,7 +142,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       ? "Polishing..."
       : enhanceRemaining <= 0
         ? "Original artwork saved"
-        : `Magic polish (${enhanceRemaining})`
+        : "Magic polish"
 
     // ── Optional magic polish ──
     const handleEnhance = async () => {

@@ -53,6 +53,8 @@ test("AI polish is opt-in behind a launch flag", () => {
 
   assert.match(drawingCanvas, /NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE/)
   assert.match(drawingCanvas, /MAGIC_POLISH_ENABLED &&/)
+  assert.match(drawingCanvas, /: "Magic polish"/)
+  assert.doesNotMatch(drawingCanvas, /Magic polish \(\$\{enhanceRemaining\}\)/)
 })
 
 test("dashboard and recovery are Google-first for returning parents", () => {
@@ -63,6 +65,21 @@ test("dashboard and recovery are Google-first for returning parents", () => {
   assert.match(dashboard, /\/api\/auth\/google\?next=/)
   assert.match(recover, /Continue with Google/)
   assert.match(recover, /\/api\/auth\/google\?next=/)
+})
+
+test("parent-facing copy leads with first forever memory instead of bank language", () => {
+  const homepage = read("src/app/toothfairy/page.tsx")
+  const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
+  const keepsake = read("src/app/toothfairy/keepsake/[id]/page.tsx")
+  const smileFund = read("src/app/toothfairy/smile-fund/page.tsx")
+
+  assert.match(homepage, /first forever memory/)
+  assert.match(footer, /first forever memory/)
+  assert.match(keepsake, /first forever memory/)
+  assert.match(smileFund, /Smile Fund/)
+  assert.doesNotMatch(homepage, /digital piggy bank/i)
+  assert.doesNotMatch(footer, /digital piggy bank/i)
+  assert.doesNotMatch(smileFund, /digital piggy bank/i)
 })
 
 test("keepsake data can return stored smile photos", () => {

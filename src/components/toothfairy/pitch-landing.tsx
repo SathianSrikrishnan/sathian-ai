@@ -121,7 +121,7 @@ export function PitchLanding() {
 
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { num: "01", title: "Turn a milestone into art", desc: "Your child photographs their lost tooth and draws on it. Enhance it with AI. They create a digital keepsake they&apos;re proud of — something worth sharing.", color: C.amber, img: "/v2-storyboard/objects/obj-01-tooth-glowing.png" },
+  { num: "01", title: "Turn a milestone into art", desc: "Your child photographs their lost tooth and draws on it. Enhance it with AI. They create a first forever memory they&apos;re proud of — something worth sharing.", color: C.amber, img: "/v2-storyboard/objects/obj-01-tooth-glowing.png" },
               { num: "02", title: "Share it with family", desc: "Send it to grandparents, uncles, godparents — anywhere in the world. Each person can contribute a deposit. The tooth becomes a tiny fundraiser for your child.", color: C.cyan, img: "/v2-storyboard/objects/obj-03-nft-card.png" },
               { num: "03", title: "Build their foundation", desc: "Every deposit grows over time. Lock it until they turn 18 or gift it now. Your child inherits a savings account and a record of everyone who believed in them.", color: C.rose, img: "/v2-storyboard/objects/obj-05-wallet-child.png" },
             ].map((step, i) => (

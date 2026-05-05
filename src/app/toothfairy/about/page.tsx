@@ -5,7 +5,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "About - Tooth Fairy Network",
   description:
-    "Tooth Fairy Network turns a lost tooth into a family keepsake, a Smile Fund, and a first lesson in digital ownership.",
+    "Tooth Fairy Network turns a lost tooth into a first forever memory, a Smile Fund, and a first lesson in ownership.",
 }
 
 const pillars = [
@@ -39,11 +39,11 @@ export default function AboutPage() {
           <h1>We are turning a tiny childhood ritual into a first lesson in ownership.</h1>
           <p>
             Tooth Fairy Network is a family product for the moment children lose
-            their teeth. It combines a digital keepsake, a shareable gift page,
+            their teeth. It combines a first forever memory, a shareable gift page,
             and a parent-controlled Smile Fund that can unlock around age 10.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app">Mint a keepsake</Link>
+            <Link href="/toothfairy/app">Create a memory</Link>
             <Link href="/toothfairy/faq">Read the FAQ</Link>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function AboutPage() {
 
       <section className="cta">
         <h2>Start with one tooth memory.</h2>
-        <Link href="/toothfairy/app">Create the first keepsake</Link>
+        <Link href="/toothfairy/app">Create the first memory</Link>
       </section>
 
       <style>{`

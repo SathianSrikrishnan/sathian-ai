@@ -92,13 +92,13 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   }, []);
 
   const resolvedUrl = keepsakeUrl || currentUrl;
-  const shareText = `${childName}'s tooth fairy keepsake`;
+  const shareText = `${childName}'s first forever memory`;
   const shareBody = `I wanted to share ${shareText}: ${resolvedUrl}`;
   const shareLinks = {
     whatsapp: `https://wa.me/?text=${encodeURIComponent(shareBody)}`,
     sms: `sms:?body=${encodeURIComponent(shareBody)}`,
     email: `mailto:?subject=${encodeURIComponent(
-      `${childName}'s tooth fairy keepsake`
+      `${childName}'s first forever memory`
     )}&body=${encodeURIComponent(shareBody)}`,
     x: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       resolvedUrl
@@ -150,7 +150,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     if (!canNativeShare || !resolvedUrl) return false;
     try {
       await navigator.share({
-        title: `${childName}'s tooth`,
+        title: `${childName}'s first forever memory`,
         text: shareText,
         url: resolvedUrl,
       });
@@ -224,7 +224,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         onMouseLeave={(e) => {
           e.currentTarget.style.background = c.gold;
         }}
-        aria-label="Copy keepsake link"
+        aria-label="Copy family memory link"
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
           <CopyIcon />
@@ -268,7 +268,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
           rel="noopener noreferrer"
           onClick={(event) => handleShare(event, 'whatsapp')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on WhatsApp`}
+          aria-label={`Share ${childName}'s memory on WhatsApp`}
         >
           <WhatsAppIcon />
           <span className="hidden sm:inline">WhatsApp</span>
@@ -279,7 +279,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
             href={shareLinks.sms}
             onClick={(event) => handleShare(event, 'sms')}
             style={iconBtnStyle}
-            aria-label={`Share ${childName}'s keepsake via Messages`}
+            aria-label={`Share ${childName}'s memory via Messages`}
           >
             <MessageIcon />
             <span className="hidden sm:inline">Messages</span>
@@ -290,7 +290,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
           href={shareLinks.email}
           onClick={(event) => handleShare(event, 'email')}
           style={iconBtnStyle}
-          aria-label={`Email ${childName}'s keepsake`}
+          aria-label={`Email ${childName}'s memory`}
         >
           <EmailIcon />
           <span className="hidden sm:inline">Email</span>
@@ -302,7 +302,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
           rel="noopener noreferrer"
           onClick={(event) => handleShare(event, 'x')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on X`}
+          aria-label={`Share ${childName}'s memory on X`}
         >
           <XIcon />
           <span className="hidden sm:inline">X</span>
@@ -314,7 +314,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
           rel="noopener noreferrer"
           onClick={(event) => handleShare(event, 'facebook')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on Facebook`}
+          aria-label={`Share ${childName}'s memory on Facebook`}
         >
           <FacebookIcon />
           <span className="hidden sm:inline">Facebook</span>
@@ -335,7 +335,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         {shareStatus ? (
           <span>{shareStatus}</span>
         ) : (
-          <span>This link opens the keepsake first, then the Smile Fund gift option.</span>
+          <span>This link opens the memory first, then the Smile Fund gift option.</span>
         )}
       </div>
 
@@ -355,7 +355,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
             fontFamily: 'var(--font-body)',
             fontSize: 12,
           }}
-          aria-label="Family keepsake link"
+          aria-label="Family memory link"
         />
       )}
     </div>

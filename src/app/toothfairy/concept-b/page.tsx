@@ -239,7 +239,7 @@ export default function ToothFairyLanding() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/toothfairy/concept-b/keepsake-mockup.png"
-                alt="A digital keepsake with photos, notes, and savings"
+              alt="A first forever memory with photos, notes, and savings"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -259,7 +259,7 @@ export default function ToothFairyLanding() {
               <div className="space-y-4 mb-8">
                 {[
                   'No app to download',
-                  'No bank account required',
+                  'No separate financial account required',
                   'Works on any phone, anywhere in the world',
                 ].map((line) => (
                   <div key={line} className="flex items-center gap-3">

@@ -163,7 +163,7 @@ export default function RecoverPage() {
     <div className="max-w-2xl mx-auto px-6 py-8" style={{ background: C.bg, color: C.text, minHeight: "100vh" }}>
       <header className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-xl font-bold">Find my keepsakes</h1>
+          <h1 className="text-xl font-bold">Find my memories</h1>
           <p className="text-xs" style={{ color: C.muted }}>Connect the guardian wallet used for this child.</p>
         </div>
         <WalletButton />
@@ -173,7 +173,7 @@ export default function RecoverPage() {
         <div className="text-center py-20 space-y-4">
           <p className="text-sm" style={{ color: C.muted }}>
             Parents should start with the same Google account used to save the
-            keepsake. Wallet recovery is only for families who already connected
+            memory. Wallet recovery is only for families who already connected
             Phantom.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -193,7 +193,7 @@ export default function RecoverPage() {
 
       {loading && (
         <div className="text-center py-20">
-          <p className="text-sm animate-pulse" style={{ color: C.muted }}>Looking for keepsakes...</p>
+          <p className="text-sm animate-pulse" style={{ color: C.muted }}>Looking for memories...</p>
         </div>
       )}
 

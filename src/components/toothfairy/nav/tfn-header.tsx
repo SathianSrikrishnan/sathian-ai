@@ -62,7 +62,7 @@ export function TFNHeader() {
             Parent controlled
           </span>
           <Link href="/toothfairy/app" className="header-cta">
-            Make a keepsake
+            Create a memory
             <span aria-hidden className="cta-arrow" />
           </Link>
         </div>
@@ -86,7 +86,7 @@ export function TFNHeader() {
             </Link>
           ))}
           <Link href="/toothfairy/app" className="header-cta mt-2 justify-center">
-            Make a keepsake
+            Create a memory
             <span aria-hidden className="cta-arrow" />
           </Link>
         </nav>

@@ -4,7 +4,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "FAQ - Tooth Fairy Network",
   description:
-    "Answers for parents about Tooth Fairy Network keepsakes, Smile Funds, NFTs, Solana, fees, safety, and the age-10 milestone.",
+    "Answers for parents about Tooth Fairy Network memories, Smile Funds, NFTs, Solana, fees, safety, and the age-10 milestone.",
 }
 
 const groups = [
@@ -13,11 +13,11 @@ const groups = [
     items: [
       {
         q: "What is Tooth Fairy Network?",
-        a: "A parent-and-child activity that turns a lost tooth into a digital keepsake, a family gift page, and a parent-controlled Smile Fund.",
+        a: "A parent-and-child activity that turns a lost tooth into a first forever memory, a family link, and a parent-controlled Smile Fund.",
       },
       {
         q: "What is the Smile Fund?",
-        a: "The Smile Fund is the savings layer attached to a child&apos;s tooth memory. Family contributions can be tracked in one place while the parent stays in control.",
+        a: "The Smile Fund is the small savings story attached to a child&apos;s tooth memory. Family contributions can be tracked in one place while the parent stays in control.",
       },
       {
         q: "Why age 10?",
@@ -38,7 +38,7 @@ const groups = [
       },
       {
         q: "What happens if I lose access?",
-        a: "The recovery page explains the paths available. Wallet-based recovery depends on the guardian wallet, while email/server-assisted paths depend on the final production setup.",
+        a: "Start with the same Google account used to save the memory. Wallet-based recovery is available for families who connected Phantom, but it should not be the only parent path.",
       },
     ],
   },
@@ -47,7 +47,7 @@ const groups = [
     items: [
       {
         q: "Why use an NFT?",
-        a: "The NFT is the keepsake record: the child&apos;s tooth art and metadata can point to a durable memory instead of a throwaway photo in a camera roll.",
+        a: "The NFT is the quiet record underneath: the child&apos;s tooth art and metadata can point to a durable memory instead of a throwaway photo in a camera roll.",
       },
       {
         q: "Why Solana?",
@@ -68,7 +68,7 @@ const groups = [
       },
       {
         q: "What is live enough to test?",
-        a: "The public site, story surface, keepsake page, and wallet-based Solana flow are ready for controlled testing. Keep tests small until the card-gift on-ramp and email flows are wired.",
+        a: "The public site, story surface, memory page, and wallet-based Solana flow are ready for controlled testing. Keep tests small until the card-gift on-ramp and email flows are wired.",
       },
       {
         q: "Is this financial advice?",
@@ -85,9 +85,9 @@ export default function FAQPage() {
         <p className="eyebrow">FAQ</p>
         <h1>Clear answers before families trust the product.</h1>
         <p>
-          This page is intentionally plain about what the product does, what the
-          parent controls, what is ready now, and what still needs production
-          infrastructure before broad launch.
+          This page is intentionally plain about what parents control, what is
+          ready now, and what still needs production infrastructure before broad
+          launch.
         </p>
       </section>
 
@@ -113,7 +113,7 @@ export default function FAQPage() {
           <h2>Review the product flow.</h2>
         </div>
         <div className="actions">
-          <Link href="/toothfairy/app">Mint keepsake</Link>
+          <Link href="/toothfairy/app">Create memory</Link>
           <Link href="/toothfairy/architecture">Security overview</Link>
         </div>
       </section>

@@ -224,7 +224,7 @@ export default function ParentFlow({
                 Set up your child&apos;s profile
               </h2>
               <p className="text-xs mt-2" style={{ color: PC.muted }}>
-                Create a permanent digital keepsake from their lost tooth.
+                Create a first forever memory from their lost tooth.
               </p>
             </div>
 

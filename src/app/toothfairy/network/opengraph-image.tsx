@@ -64,14 +64,14 @@ export default function OGImage() {
             maxWidth: '700px',
             lineHeight: 1.5,
           }}>
-            Turn lost teeth into permanent savings and digital keepsakes.
+        Turn lost teeth into first forever memories and Smile Funds.
           </div>
           <div style={{
             display: 'flex',
             gap: '16px',
             marginTop: '8px',
           }}>
-            {['Digital Keepsakes', 'Child Savings', 'Family Milestones'].map((tag) => (
+      {['Forever Memories', 'Smile Funds', 'Family Milestones'].map((tag) => (
               <span key={tag} style={{
                 fontSize: '13px',
                 color: '#06B6D4',

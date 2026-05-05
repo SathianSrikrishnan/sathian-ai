@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Tooth Fairy Network',
-  description: 'Turn a child\'s lost tooth into a digital keepsake and parent-controlled Smile Fund.',
+  description: 'Turn a child\'s lost tooth into a first forever memory and parent-controlled Smile Fund.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Tooth Fairy Network',
-    description: 'Turn a child\'s lost tooth into a digital keepsake and parent-controlled Smile Fund.',
+    description: 'Turn a child\'s lost tooth into a first forever memory and parent-controlled Smile Fund.',
   },
 }
 

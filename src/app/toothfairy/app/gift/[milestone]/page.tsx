@@ -258,7 +258,7 @@ export default function GiftPage() {
             >
               Tooth Fairy Network
             </h1>
-            <p className="text-xs" style={{ color: page.muted }}>Smile Fund gift link</p>
+            <p className="text-xs" style={{ color: page.muted }}>Smile Fund family link</p>
           </div>
         </Link>
         <WalletButton />
@@ -302,11 +302,11 @@ export default function GiftPage() {
                 fontWeight: 700,
               }}
             >
-              You were invited to {displayChildName}&apos;s tooth memory.
+              You were invited to {displayChildName}&apos;s first forever memory.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              See the keepsake first. Add a small gift only if you want; the parent
-              keeps control of the Smile Fund until the child is ready.
+              See the memory first. Add a small gift only if you want; the parent
+              keeps control of the Smile Fund until the child is ready to learn from it.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
@@ -317,7 +317,7 @@ export default function GiftPage() {
                 {keepsakeData?.drawingUrl || keepsakeData?.smilePhotoUrl ? (
                   <img
                     src={keepsakeData.drawingUrl || keepsakeData.smilePhotoUrl || ""}
-                    alt={`${displayChildName}'s tooth keepsake`}
+                    alt={`${displayChildName}'s tooth memory`}
                     className="h-full max-h-64 w-full object-cover"
                   />
                 ) : (
@@ -327,7 +327,7 @@ export default function GiftPage() {
                         <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
                       </svg>
                     </div>
-                    <p className="mt-3 text-sm font-bold" style={{ color: page.ink }}>Keepsake preview</p>
+                    <p className="mt-3 text-sm font-bold" style={{ color: page.ink }}>Memory preview</p>
                     <p className="mt-1 text-xs" style={{ color: page.muted }}>The family memory is loading.</p>
                   </div>
                 )}
@@ -353,7 +353,7 @@ export default function GiftPage() {
             >
               <p className="text-sm font-bold" style={{ color: page.ink }}>Memory first. Gifts optional.</p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: page.muted }}>
-                Start with the memory; the gift can come later.
+                This is a family ritual first. The fund can grow later, one small gift at a time.
               </p>
             </div>
           </div>
@@ -396,14 +396,22 @@ export default function GiftPage() {
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
                   Wallet gifts work now for controlled testing. Card checkout is paused until
-                  payment verification, receipts, and fee disclosures are ready.
+                  payment verification, receipts, and fee disclosures are ready for families.
                 </p>
+              </div>
+              <div className="rounded-lg p-4" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
+                <p className="text-sm font-semibold" style={{ color: page.ink }}>How the Smile Fund works</p>
+                <div className="mt-3 grid gap-2 text-sm" style={{ color: page.inkSoft }}>
+                  <span>1. The memory stays visible from the family link.</span>
+                  <span>2. Gifts are optional and parent-controlled.</span>
+                  <span>3. The child can grow into the ownership lesson later.</span>
+                </div>
               </div>
               <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
                 <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts are paused.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  Share the keepsake first. For now, use a Solana wallet only for
-                  controlled testing or go back to the memory.
+                  Share the memory first. For now, use a Solana wallet only for
+                  controlled testing, or simply come back to the memory.
                 </p>
               </div>
               <button
@@ -425,7 +433,7 @@ export default function GiftPage() {
                 </p>
               )}
               <Link href={`/toothfairy/keepsake/${milestonePda}`} className="block text-center text-xs underline" style={{ color: page.muted }}>
-                Back to the keepsake
+                Back to the memory
               </Link>
             </div>
           )}

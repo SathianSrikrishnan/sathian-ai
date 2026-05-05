@@ -164,16 +164,16 @@ function KeepsakeExperience({
 }) {
   const mintDate = data.mintDate instanceof Date ? data.mintDate : new Date(data.mintDate);
 
-  const headline = `${data.childName}'s tooth fairy keepsake`;
+  const headline = `${data.childName}'s first forever memory`;
   const subhead =
-    'A lost tooth, a little note, and a drawing saved for your family to revisit.';
+    'A lost tooth, a little note, and a drawing saved as something your family can come back to.';
 
   return (
     <>
       <section className="grid gap-8 lg:grid-cols-[minmax(0,0.96fr)_minmax(430px,1.04fr)] lg:items-center">
         <div className="order-2 lg:order-2">
           <div className="flex flex-wrap gap-2">
-            <Pill>Family keepsake</Pill>
+            <Pill>Forever memory</Pill>
             <Pill>Parent controlled</Pill>
           </div>
 
@@ -186,7 +186,7 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Family keepsake
+            First forever memory
           </p>
           <h1
             className="mt-4 max-w-2xl text-4xl leading-[1.02] md:text-6xl"
@@ -322,13 +322,13 @@ function KeepsakeExperience({
               fontWeight: 700,
             }}
           >
-            Share the keepsake first.
+            Share the memory first.
           </h2>
           <p
             className="mt-3 text-base leading-relaxed"
             style={{ fontFamily: 'var(--font-body)', color: c.inkSoft }}
           >
-            Send one link to grandparents and loved ones. They can see the memory,
+            Send one link to grandparents and loved ones. They can see the tooth story,
             read the note, and add a small gift only if they want to.
           </p>
           <div className="mt-6">
@@ -510,7 +510,7 @@ function ErrorState() {
           lineHeight: 1.3,
         }}
       >
-        This keepsake is still on its way.
+        This memory is still on its way.
       </p>
       <p className="mb-8" style={{ lineHeight: 1.6 }}>
         The link may still be saving, or it may have expired.

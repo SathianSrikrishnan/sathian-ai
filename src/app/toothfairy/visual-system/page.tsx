@@ -57,7 +57,7 @@ const slots: Array<{
     priority: "P0",
     status: "replace",
     title: "NFT Keepsake Object",
-    pageRole: "Make the digital keepsake feel tangible and emotionally valuable.",
+    pageRole: "Make the first forever memory feel tangible and emotionally valuable.",
     currentAsset: "/toothfairy/concept-b/keepsake-mockup.png",
     currentUse: "Displayed in product demo and used as a generic keepsake visual.",
     gap: "It explains the idea, but feels too template-like and not premium enough for the hero conversion layer.",

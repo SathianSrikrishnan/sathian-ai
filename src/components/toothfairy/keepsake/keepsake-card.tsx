@@ -149,7 +149,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
             fontFamily: 'var(--font-body)',
           }}
         >
-          Tooth fairy keepsake
+          First forever memory
         </p>
         <h1
           className="text-4xl leading-none md:text-5xl"
