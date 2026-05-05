@@ -49,6 +49,15 @@ test("homepage uses FAQ nav and a real minted memory preview", () => {
   assert.doesNotMatch(homepage, /nft-keepsake-v1\.png/)
 })
 
+test("preview page uses the latest real minted memory instead of static sample copy", () => {
+  const preview = read("src/app/toothfairy/keepsake/preview/page.tsx")
+
+  assert.match(preview, /_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk/)
+  assert.match(preview, /F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E/)
+  assert.match(preview, /Jhonny/)
+  assert.doesNotMatch(preview, /This is what Timmy got/)
+})
+
 test("gift flow is clear that card gifts are paused", () => {
   const giftPage = read("src/app/toothfairy/app/gift/[milestone]/page.tsx")
   const mintPage = read("src/app/toothfairy/app/page.tsx")
