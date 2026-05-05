@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
       const email = data.session?.user?.email
       const name = (data.session?.user?.user_metadata?.full_name as string | undefined) ?? undefined
       if (email) {
-        fetch(`${origin}/api/toothfairy/welcome-email`, {
+        await fetch(`${origin}/api/toothfairy/welcome-email`, {
           method: "POST",
           headers: {
             "content-type": "application/json",

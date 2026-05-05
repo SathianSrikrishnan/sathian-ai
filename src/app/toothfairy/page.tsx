@@ -215,11 +215,12 @@ export default function ToothFairyLanding() {
       <section id="smile-fund" className="section smile-section">
         <div className="smile-intro">
           <p className="eyebrow">Smile Fund</p>
-          <h2>A small fund attached to a memory that is already theirs.</h2>
+          <h2>A first practice field for saving and ownership.</h2>
           <p>
             Parents, grandparents, aunts, uncles, and close friends can mark the
-            moment with a small gift. The parent keeps control until the child is ready,
-            while the child begins to understand saving, patience, and ownership.
+            moment with a small gift. The parent keeps control while the child
+            grows into responsibility, saving, and the idea that something can be
+            truly theirs.
           </p>
         </div>
 

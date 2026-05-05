@@ -2,77 +2,117 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "FAQ - Tooth Fairy Network",
+  title: "Parent FAQ - Tooth Fairy Network",
   description:
-    "Answers for parents about Tooth Fairy Network memories, Smile Funds, NFTs, Solana, fees, safety, and the age-10 milestone.",
+    "Parent answers about Tooth Fairy Network memories, Smile Funds, Google sign-in, family gifts, child ownership, and launch safety.",
 }
+
+const highlights = [
+  {
+    label: "Parent controlled",
+    text: "Parents manage access, sharing, and timing.",
+  },
+  {
+    label: "Memory first",
+    text: "The tooth story comes before any gift.",
+  },
+  {
+    label: "Small by design",
+    text: "The Smile Fund is for practice, not pressure.",
+  },
+]
 
 const groups = [
   {
-    title: "Product",
+    title: "What parents are signing up for",
     items: [
       {
         q: "What is Tooth Fairy Network?",
-        a: "A parent-and-child activity that turns a lost tooth into a first forever memory, a family link, and a parent-controlled Smile Fund.",
+        a: "It is a family ritual for saving a lost-tooth moment. A parent captures the smile, drawing, and story, then creates a first forever memory with a parent-controlled Smile Fund attached.",
       },
       {
-        q: "What is the Smile Fund?",
-        a: "The Smile Fund is the small savings story attached to a child&apos;s tooth memory. Family contributions can be tracked in one place while the parent stays in control.",
+        q: "Is this crypto-first?",
+        a: "No. The child experience is memory, story, family, and learning ownership. Solana is quiet infrastructure underneath so the memory and fund can be durable.",
+      },
+      {
+        q: "Why not just save a photo?",
+        a: "A camera-roll photo disappears into thousands of other photos. This gives the moment a page, a story, and a place for family to return to over time.",
+      },
+    ],
+  },
+  {
+    title: "Smile Fund and learning",
+    items: [
+      {
+        q: "What is the Smile Fund really for?",
+        a: "The Smile Fund is a first practice field for responsibility. Small gifts help a child start learning saving, patience, ownership, and the idea that something can be truly theirs without giving them adult control too early.",
+      },
+      {
+        q: "Why mention investing and self-sovereignty?",
+        a: "Children will inherit a world where digital ownership, investing, and self-sovereignty matter earlier than they did for us. Tooth Fairy Network introduces that model gently: a memory they love, a fund they can understand, and a parent guiding the timing.",
+      },
+      {
+        q: "Is this investment advice?",
+        a: "No. Tooth Fairy Network is an educational family savings experience, not investment advice. Parents should decide what, if anything, belongs in the Smile Fund.",
       },
       {
         q: "Why age 10?",
-        a: "Age 10 is the default milestone because children are usually ready for simple conversations about saving, patience, value, and digital ownership. Parents can choose another timing later.",
+        a: "Age 10 is the default learning milestone because many children are ready for simple conversations about saving, value, patience, and responsibility. Parents can choose a different timing as the product matures.",
       },
     ],
   },
   {
-    title: "Safety and control",
+    title: "Safety, access, and control",
     items: [
       {
         q: "Who controls the account?",
-        a: "The parent or guardian controls the account, sharing, access, and unlock path during the child&apos;s early years.",
+        a: "The parent or guardian controls the account, the family link, the wallet path, and when the child gets access to the ownership lesson.",
       },
       {
-        q: "Does my child need a crypto wallet?",
-        a: "No. The V1 flow is designed so the parent manages the technical layer. The child experiences it as a memory, story, and savings milestone.",
+        q: "Does my child need a wallet?",
+        a: "No. Parents can use Google sign-in and the app manages the technical layer. Wallets are only exposed where they are required for controlled testing of gifts.",
       },
       {
         q: "What happens if I lose access?",
-        a: "Start with the same Google account used to save the memory. Wallet-based recovery is available for families who connected Phantom, but it should not be the only parent path.",
+        a: "Return with the same Google account used to create the memory. Recovery must be boring and reliable before this product is ready for broad parent usage.",
+      },
+      {
+        q: "Can I share the memory safely?",
+        a: "The public link is designed for family viewing and optional gifts. Parents should share it only with people they trust while the product is still in controlled testing.",
       },
     ],
   },
   {
-    title: "NFTs, Solana, and fees",
+    title: "Gifts and payments",
     items: [
       {
-        q: "Why use an NFT?",
-        a: "The NFT is the quiet record underneath: the child&apos;s tooth art and metadata can point to a durable memory instead of a throwaway photo in a camera roll.",
+        q: "Can family members contribute today?",
+        a: "Wallet-based gifts can be tested. Card gifts are paused until the payment-provider path, receipts, fee disclosures, and support process are ready.",
       },
       {
-        q: "Why Solana?",
-        a: "Solana gives the product fast, low-cost rails for small family contributions and durable digital records.",
+        q: "Why are card gifts paused?",
+        a: "A stranger-safe payment flow needs verified provider terms, clear receipts, refund expectations, and plain fee language. Until then, the site should not imply card gifts are live.",
       },
       {
         q: "What are the fees?",
-        a: "The current deployed contract includes a 2% fee. The target before broad release is a simpler 1% fee and a lower early-withdrawal penalty, pending contract update and testing.",
+        a: "The current deployed contract includes a 2% network fee. Before broad release, fees and early-withdrawal rules need to be simplified and shown before payment.",
       },
     ],
   },
   {
-    title: "Launch status",
+    title: "What is live now",
     items: [
       {
-        q: "Can family members contribute with a credit card today?",
-        a: "Not yet. Wallet-based gifts can be tested now. Card gifts are paused until payment verification, receipts, fee disclosures, and terms are production-ready.",
+        q: "What is ready for controlled testing?",
+        a: "Homepage, Google sign-in, memory creation, live minting, keepsake pages, family sharing, dashboard, recovery, and wallet-based gift testing.",
       },
       {
-        q: "What is live enough to test?",
-        a: "The public site, story surface, memory page, and wallet-based Solana flow are ready for controlled testing. Keep tests small until the card-gift on-ramp and email flows are wired.",
+        q: "What still needs work before 100 users?",
+        a: "Card gifts, email receipts, support language, privacy and terms pages, a cleaner recovery runbook, and more testing across fresh browsers and wallets.",
       },
       {
-        q: "Is this financial advice?",
-        a: "No. Tooth Fairy Network is an educational family savings experience, not investment advice.",
+        q: "Where does the story world fit?",
+        a: "Tanda and the story world are the magical layer. They help make permanence, ownership, saving, and growth understandable to a child.",
       },
     ],
   },
@@ -82,16 +122,30 @@ export default function FAQPage() {
   return (
     <main className="faq-page">
       <section className="hero">
-        <p className="eyebrow">FAQ</p>
-        <h1>Clear answers before families trust the product.</h1>
-        <p>
-          This page is intentionally plain about what parents control, what is
-          ready now, and what still needs production infrastructure before broad
-          launch.
-        </p>
+        <div className="hero-copy">
+          <p className="eyebrow">Parent FAQ</p>
+          <h1>Sweet enough for children. Clear enough for parents.</h1>
+          <p>
+            Tooth Fairy Network should feel safe before it feels technical. These
+            answers explain what is live, what is paused, and how the Smile Fund
+            teaches responsibility without turning a tooth into a transaction.
+          </p>
+          <div className="actions">
+            <Link href="/toothfairy/app">Create a memory</Link>
+            <Link href="/toothfairy/smile-fund">Smile Fund</Link>
+          </div>
+        </div>
+        <div className="trust-panel" aria-label="Trust summary">
+          {highlights.map((item) => (
+            <div key={item.label}>
+              <strong>{item.label}</strong>
+              <span>{item.text}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section className="faq-grid">
+      <section className="faq-grid" aria-label="Frequently asked questions">
         {groups.map((group) => (
           <article key={group.title}>
             <h2>{group.title}</h2>
@@ -99,7 +153,7 @@ export default function FAQPage() {
               {group.items.map((item) => (
                 <details key={item.q}>
                   <summary>{item.q}</summary>
-                  <p dangerouslySetInnerHTML={{ __html: item.a }} />
+                  <p>{item.a}</p>
                 </details>
               ))}
             </div>
@@ -109,13 +163,14 @@ export default function FAQPage() {
 
       <section className="cta">
         <div>
-          <p className="eyebrow">Next step</p>
-          <h2>Review the product flow.</h2>
+          <p className="eyebrow">Launch stance</p>
+          <h2>Memory first. Payments only when the path is ready.</h2>
+          <p>
+            The product should not ask families to trust money flow until card
+            checkout, receipts, disclosures, and support are complete.
+          </p>
         </div>
-        <div className="actions">
-          <Link href="/toothfairy/app">Create memory</Link>
-          <Link href="/toothfairy/architecture">Security overview</Link>
-        </div>
+        <Link href="/toothfairy/recover">Recover access</Link>
       </section>
 
       <style>{`
@@ -129,9 +184,7 @@ export default function FAQPage() {
           --paper: rgba(255, 252, 247, 0.78);
           --border: rgba(178, 151, 107, 0.30);
           min-height: 100vh;
-          background:
-            radial-gradient(circle at 88% 0%, rgba(216, 164, 60, 0.16), transparent 24rem),
-            var(--cream);
+          background: linear-gradient(180deg, #fbf7ee, #f5efe2);
           color: var(--navy);
           font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
         }
@@ -144,7 +197,15 @@ export default function FAQPage() {
         }
 
         .hero {
-          padding: 72px 0 38px;
+          display: grid;
+          gap: 2rem;
+          align-items: end;
+          padding: 72px 0 42px;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .hero-copy {
+          max-width: 790px;
         }
 
         .eyebrow {
@@ -152,6 +213,7 @@ export default function FAQPage() {
           color: #b77a11;
           font-size: 0.78rem;
           font-weight: 900;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
 
@@ -165,11 +227,12 @@ export default function FAQPage() {
 
         h1 {
           max-width: 820px;
-          font-size: clamp(3rem, 7vw, 5.2rem);
-          line-height: 0.95;
+          font-size: 4.8rem;
+          line-height: 0.94;
         }
 
-        .hero p {
+        .hero p,
+        .cta p {
           max-width: 760px;
           margin: 1.15rem 0 0;
           color: var(--ink);
@@ -177,10 +240,76 @@ export default function FAQPage() {
           line-height: 1.65;
         }
 
+        .actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.8rem;
+          margin-top: 1.6rem;
+        }
+
+        .actions a,
+        .cta > a {
+          display: inline-flex;
+          min-height: 46px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          padding: 0 1rem;
+          font-weight: 900;
+          text-decoration: none;
+        }
+
+        .actions a:first-child {
+          background: linear-gradient(135deg, var(--purple), #8b5cc8);
+          color: #fffaf1;
+        }
+
+        .actions a:last-child,
+        .cta > a {
+          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.62);
+          color: var(--navy);
+        }
+
+        .trust-panel {
+          display: grid;
+          gap: 0;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          background: rgba(255, 252, 247, 0.72);
+          overflow: hidden;
+        }
+
+        .trust-panel div {
+          padding: 1rem;
+        }
+
+        .trust-panel div:not(:last-child) {
+          border-bottom: 1px solid var(--border);
+        }
+
+        .trust-panel strong,
+        .trust-panel span {
+          display: block;
+        }
+
+        .trust-panel strong {
+          color: var(--navy);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.18rem;
+        }
+
+        .trust-panel span {
+          margin-top: 0.25rem;
+          color: var(--ink);
+          font-size: 0.92rem;
+          line-height: 1.45;
+        }
+
         .faq-grid {
           display: grid;
           gap: 1rem;
-          padding: 28px 0 72px;
+          padding: 32px 0 72px;
         }
 
         article {
@@ -231,41 +360,24 @@ export default function FAQPage() {
         }
 
         .cta h2 {
-          font-size: clamp(2.1rem, 4vw, 3.2rem);
+          max-width: 760px;
+          font-size: 3rem;
           line-height: 1;
         }
 
-        .actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.8rem;
-        }
-
-        .actions a {
-          display: inline-flex;
-          min-height: 46px;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          padding: 0 1rem;
-          font-weight: 900;
-          text-decoration: none;
-        }
-
-        .actions a:first-child {
-          background: linear-gradient(135deg, var(--purple), #8b5cc8);
-          color: #fffaf1;
-        }
-
-        .actions a:last-child {
-          border: 1px solid var(--border);
-          background: rgba(255, 255, 255, 0.62);
-          color: var(--navy);
-        }
-
         @media (min-width: 840px) {
+          .hero {
+            grid-template-columns: minmax(0, 1fr) 320px;
+          }
+
           .faq-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 960px) {
+          h1 {
+            font-size: 3.7rem;
           }
         }
 
@@ -274,6 +386,16 @@ export default function FAQPage() {
           .faq-grid,
           .cta {
             width: min(100% - 28px, 1180px);
+          }
+
+          h1 {
+            font-size: 3rem;
+          }
+
+          .actions,
+          .actions a,
+          .cta > a {
+            width: 100%;
           }
         }
       `}</style>

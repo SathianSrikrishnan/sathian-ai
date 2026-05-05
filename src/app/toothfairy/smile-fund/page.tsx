@@ -5,21 +5,21 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Smile Fund - Tooth Fairy Network",
   description:
-    "A parent-controlled Smile Fund helps a child grow from a tooth memory into an early lesson about saving, patience, and ownership.",
+    "A parent-controlled Smile Fund helps a child grow from a tooth memory into an early lesson about saving, responsibility, ownership, and self-sovereignty.",
 }
 
 const principles = [
   {
-    title: "Memory first",
-    body: "Loved ones open the family link to see the tooth story before they ever see a gift option.",
+    title: "Responsibility first",
+    body: "The fund starts as practice: small amounts, parent guidance, and clear conversations about saving.",
   },
   {
     title: "Parent controlled",
-    body: "Parents control access, sharing, and the timing for when the child learns from the fund.",
+    body: "Parents control access, sharing, and the timing for when the child starts learning from the fund.",
   },
   {
-    title: "Small by design",
-    body: "The fund is built for tiny family gifts, not speculation or pressure.",
+    title: "Ownership without pressure",
+    body: "Children can learn that something is truly theirs before they are asked to manage adult financial choices.",
   },
 ]
 
@@ -27,7 +27,7 @@ const steps = [
   "A parent saves the lost-tooth moment.",
   "The family link lets loved ones celebrate it.",
   "Optional gifts collect in the Smile Fund.",
-  "The child grows into the ownership lesson over time.",
+  "The child grows into saving, investing, and self-sovereignty lessons over time.",
 ]
 
 export default function SmileFundPage() {
@@ -36,11 +36,12 @@ export default function SmileFundPage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Smile Fund</p>
-          <h1>A small fund attached to their first forever memory.</h1>
+          <h1>A first practice field for saving, ownership, and responsibility.</h1>
           <p>
-            The Smile Fund turns a family ritual into a gentle first lesson in
-            saving, patience, and ownership. Parents stay in control. Children
-            get something that feels like theirs to grow into.
+            The Smile Fund turns a family ritual into a gentle model for the
+            world children are growing into: saving early, understanding
+            ownership, and preparing for investing and self-sovereignty with a
+            parent still in control.
           </p>
           <div className="actions">
             <Link href="/toothfairy/app">Create a memory</Link>
@@ -71,11 +72,12 @@ export default function SmileFundPage() {
       <section className="flow">
         <div>
           <p className="eyebrow">Family flow</p>
-          <h2>The gift is optional. The meaning comes first.</h2>
+          <h2>The gift is optional. The lesson compounds.</h2>
           <p>
             A Smile Fund should not make a lost tooth feel transactional. It
             should make the child feel remembered, supported, and trusted with a
-            tiny piece of responsibility.
+            tiny piece of responsibility. The deeper purpose is not a bigger
+            balance; it is earlier practice with saving, patience, and ownership.
           </p>
         </div>
         <ol>
@@ -101,7 +103,7 @@ export default function SmileFundPage() {
           </article>
           <article>
             <strong>Not financial advice</strong>
-            <p>The Smile Fund is an educational family savings experience, not an investment product.</p>
+            <p>The Smile Fund is an educational family savings experience, not investment advice or an investment product.</p>
           </article>
         </div>
       </section>

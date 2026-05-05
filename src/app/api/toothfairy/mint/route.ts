@@ -25,6 +25,7 @@ import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor"
 import idl from "@/lib/toothfairy/escrow-idl.json"
 import { createServerClient } from "@supabase/ssr"
 import { isAllowedOrigin } from "@/lib/constants"
+import { renderMemoryCreatedEmail, toothFairyEmailFrom } from "@/lib/toothfairy/email-templates"
 
 export const maxDuration = 60
 
@@ -495,10 +496,14 @@ export async function POST(request: NextRequest) {
 </body></html>`
 
         await resend.emails.send({
-          from: "Tooth Fairy Network <noreply@toothfairy.network>",
+          from: toothFairyEmailFrom,
           to: user.email,
-          subject: `${childName}'s first tooth is kept.`,
-          html: keepsakeHtml,
+          subject: `${childName}'s first forever memory is saved.`,
+          html: renderMemoryCreatedEmail({
+            parentName: firstName,
+            childName,
+            profileUrl,
+          }),
         })
         // Keepsake email sent
       }

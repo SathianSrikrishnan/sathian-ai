@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, type FormEvent } from "react"
 import Link from "next/link"
 
 const columns = [
@@ -25,7 +26,7 @@ const columns = [
     links: [
       { href: "/toothfairy/about", label: "About" },
       { href: "/toothfairy/company", label: "Company" },
-      { href: "/toothfairy/faq", label: "Safety" },
+      { href: "/toothfairy/faq", label: "Parent FAQ" },
       { href: "/toothfairy/recover", label: "Recover Access" },
     ],
   },
@@ -33,6 +34,31 @@ const columns = [
 
 export function TFNFooter() {
   const year = new Date().getFullYear()
+  const [email, setEmail] = useState("")
+  const [signupState, setSignupState] = useState<"idle" | "loading" | "success" | "error">("idle")
+
+  async function handleSubscribe(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!email.trim()) return
+
+    setSignupState("loading")
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          source: "tfn-footer",
+        }),
+      })
+
+      if (!response.ok) throw new Error("Subscribe failed")
+      setEmail("")
+      setSignupState("success")
+    } catch {
+      setSignupState("error")
+    }
+  }
 
   return (
     <footer className="tfn-footer">
@@ -78,7 +104,7 @@ export function TFNFooter() {
           ))}
         </div>
 
-        <form className="newsletter" onSubmit={(event) => event.preventDefault()}>
+        <form className="newsletter" onSubmit={handleSubscribe}>
           <p className="text-sm font-extrabold" style={{ color: "#11234a" }}>
             Stay in the loop
           </p>
@@ -89,11 +115,26 @@ export function TFNFooter() {
             Email address
           </label>
           <div className="email-row">
-            <input id="tfn-footer-email" type="email" placeholder="Enter your email" />
-            <button type="submit">Subscribe</button>
+            <input
+              id="tfn-footer-email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                if (signupState !== "idle") setSignupState("idle")
+              }}
+            />
+            <button type="submit" disabled={signupState === "loading"}>
+              {signupState === "loading" ? "Saving..." : "Subscribe"}
+            </button>
           </div>
           <p className="mt-3 text-xs" style={{ color: "var(--tfn-ink-muted)" }}>
-            No spam. Just useful updates while the Network grows.
+            {signupState === "success"
+              ? "You are on the list."
+              : signupState === "error"
+                ? "That did not save. Try again in a moment."
+                : "No spam. Just useful updates while the Network grows."}
           </p>
         </form>
       </div>
@@ -194,6 +235,11 @@ export function TFNFooter() {
           color: #fffaf1;
           font-weight: 900;
           cursor: pointer;
+        }
+
+        .email-row button:disabled {
+          cursor: wait;
+          opacity: 0.72;
         }
 
         .footer-bottom {

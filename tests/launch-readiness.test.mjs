@@ -78,6 +78,33 @@ test("dashboard and recovery are Google-first for returning parents", () => {
   assert.match(recover, /\/api\/auth\/google\?next=/)
 })
 
+test("Google auth and mint flow send the core parent emails", () => {
+  const googleCallback = read("src/app/api/auth/google/callback/route.ts")
+  const authCallback = read("src/app/api/auth/callback/route.ts")
+  const mintRoute = read("src/app/api/toothfairy/mint/route.ts")
+  const welcomeEmail = read("src/app/api/toothfairy/welcome-email/route.ts")
+  const depositEmail = read("src/app/api/toothfairy/deposit-email/route.ts")
+  const emailTemplates = read("src/lib/toothfairy/email-templates.ts")
+
+  assert.match(googleCallback, /welcome-email/)
+  assert.match(googleCallback, /internalToothFairyHeaders/)
+  assert.match(authCallback, /welcome-email/)
+  assert.match(mintRoute, /renderMemoryCreatedEmail/)
+  assert.match(welcomeEmail, /renderWelcomeEmail/)
+  assert.match(depositEmail, /renderGiftReceivedEmail/)
+  assert.match(emailTemplates, /renderWelcomeEmail/)
+  assert.match(emailTemplates, /renderMemoryCreatedEmail/)
+  assert.match(emailTemplates, /renderGiftReceivedEmail/)
+  assert.match(emailTemplates, /escapeHtml/)
+})
+
+test("footer email signup is wired to the subscribe endpoint", () => {
+  const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
+
+  assert.match(footer, /fetch\("\/api\/subscribe"/)
+  assert.match(footer, /source:\s*"tfn-footer"/)
+})
+
 test("parent-facing copy leads with first forever memory instead of bank language", () => {
   const homepage = read("src/app/toothfairy/page.tsx")
   const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
@@ -91,6 +118,19 @@ test("parent-facing copy leads with first forever memory instead of bank languag
   assert.doesNotMatch(homepage, /digital piggy bank/i)
   assert.doesNotMatch(footer, /digital piggy bank/i)
   assert.doesNotMatch(smileFund, /digital piggy bank/i)
+})
+
+test("FAQ explains the Smile Fund as responsibility education without investment advice", () => {
+  const faq = read("src/app/toothfairy/faq/page.tsx")
+  const smileFund = read("src/app/toothfairy/smile-fund/page.tsx")
+
+  assert.match(faq, /responsibility/)
+  assert.match(faq, /saving/)
+  assert.match(faq, /investing/)
+  assert.match(faq, /self-sovereignty/)
+  assert.match(faq, /not investment advice/i)
+  assert.match(smileFund, /responsibility/)
+  assert.match(smileFund, /self-sovereignty/)
 })
 
 test("keepsake data can return stored smile photos", () => {
