@@ -6,7 +6,7 @@ import styles from "./tanda-live-ritual-hero.module.css";
 
 const liveAssetRoot = "/toothfairy/animation/live-hero-v1";
 const keepsakePreview = "https://gateway.irys.xyz/Z9_aFKhX6xpU1cZvw0h4u3zfJwhfJ1wiBf72KQWGF5k";
-const heroCues = ["Parent-controlled", "Live memory", "Smile Fund"];
+const heroCues = ["Live memory", "Smile Fund", "Parent-controlled"];
 
 const poses = [
   ["entryUp", "tanda-entry-up.webp"],
@@ -55,10 +55,10 @@ export default function TandaLiveRitualHero() {
         <div className={styles.copy}>
           <h1>
             Turn a lost tooth into
-            <span>their first digital asset.</span>
+            <span>their first digital piggy bank.</span>
           </h1>
           <p>
-            A saved keepsake, a first wallet, and a family-funded start.
+            Capture the keepsake, start a parent-controlled Smile Fund, and invite family to contribute.
           </p>
         </div>
 
@@ -162,7 +162,7 @@ export default function TandaLiveRitualHero() {
             Create their memory
             <span aria-hidden />
           </Link>
-          <Link href="/toothfairy#how-it-works" className={styles.secondaryAction}>
+          <Link href="/toothfairy/ritual" className={styles.secondaryAction}>
             See how it works
           </Link>
         </div>
