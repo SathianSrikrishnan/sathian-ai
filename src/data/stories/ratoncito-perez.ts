@@ -1,186 +1,200 @@
 import { StoryConfig } from './types'
 
+/**
+ * Story 3 — El Ratoncito Pérez: The Mouse of Madrid (8 scenes).
+ * The broadener. Shows the Network is global — other collectors exist,
+ * and they all converge on the same place. Ends on a world-map view
+ * that links to the globe explore page.
+ *
+ * Color palette: warm Mediterranean — terracotta, moonlight blue, candle gold.
+ */
 const ratoncitoPerez: StoryConfig = {
   id: 'ratoncito-perez',
-  title: 'Ratoncito Pérez',
-  region: 'Spain & Latin America',
-  emoji: '🐭',
+  title: 'El Ratoncito Pérez',
+  region: 'Madrid, Spain',
+  emoji: '\u{1F42D}',
   color: '#E8A820',
-  description: 'The Tooth Mouse of Spain',
+  description: 'In Madrid, teeth don’t go under pillows. They go into a glass by the bed — and someone very small comes for them.',
   characterName: 'Ratoncito Pérez',
   available: true,
-  crossReferences: ['tooth-fairy', 'romania', 'korea'],
+  crossReferences: ['tanda', 'viking-origin'],
   colors: {
     accent: '#E8A820',
+    accentGlow: '#E8A82080',
+    secondary: '#F0C456',
+    secondaryGlow: '#F0C45680',
   },
   effects: {
     particles: {
-      count: 15,
       color: '#E8A820',
+      count: 14,
       sizeMin: 1,
-      sizeMax: 2,
-      durationMin: 6,
-      durationMax: 10,
-      drift: 15,
+      sizeMax: 3,
+      durationMin: 8,
+      durationMax: 14,
+      drift: 16,
       glow: true,
     },
     sparkleOn: ['victory'],
   },
   scenes: [
-    // COVER
+    /* ─── COVER ───────────────────────────────────────────────────── */
     {
-      id: 'pz-01',
+      id: 'perez-cover',
       layout: 'cover',
-      background: '/story-assets/perez/pz-01-bedroom.jpg',
+      background: '/story-assets/ratoncito-perez/rp-02-mouse.png',
       dialogue: {
-        text: 'Ratoncito Pérez',
-        subtext: 'A bedtime story from Spain & Latin America',
+        text: 'El Ratoncito Pérez',
+        subtext: 'A tooth story from Madrid.',
       },
     },
-    // ACT 1: THE FAMILIAR
+
+    /* ─── Scene 1 · MADRID ───────────────────────────────────────── */
     {
-      id: 'pz-02',
-      background: '/story-assets/perez/pz-01-bedroom.jpg',
+      id: 'rp-01-madrid',
+      layout: 'narrative',
+      background: '/story-assets/ratoncito-perez/rp-01-madrid.png',
       dialogue: {
-        text: "In a little house in Madrid, a tooth has been wobbling all day long. And tonight... it finally fell out! Under the pillow it goes.",
+        text: "In Madrid, when you lose a tooth,\n\nyou don’t put it under your pillow.\n\nYou put it in a glass of water by your bed.\n\nAnd you wait for someone very small.",
       },
     },
+
+    /* ─── Scene 2 · THE MOUSE ────────────────────────────────────── */
     {
-      id: 'pz-03',
-      background: '/story-assets/perez/pz-01-bedroom.jpg',
-      dialogue: {
-        text: "But in Spain, it's not a fairy who comes for your tooth...",
-      },
-    },
-    // ACT 2: THE REVEAL
-    {
-      id: 'pz-04',
-      layout: 'character',
-      background: '/story-assets/perez/pz-02-madrid-bakery.jpg',
-      character: {
+      id: 'rp-02-mouse',
+      layout: 'narrative',
+      background: '/story-assets/ratoncito-perez/rp-02-mouse.png',
+      characterAvatar: {
         image: '/story-assets/characters/char-perez.jpg',
-        position: 'left',
-        enter: 'left',
+        alt: 'Ratoncito Pérez',
       },
       dialogue: {
-        speaker: 'Pérez',
+        speaker: 'Ratoncito Pérez',
         speakerColor: '#E8A820',
-        text: "¡Buenas noches! I am Ratoncito Pérez — the Tooth Mouse of Spain.",
-        subtext: "Royal tooth collector since 1894, living behind the walls of a Madrid bakery",
+        text: "His name is El Ratoncito Pérez.\n\nHe’s a mouse — but not an ordinary one.\n\nHe’s been collecting teeth in Spain for over a hundred years. He lives behind a cookie tin in a bakery on Calle del Arenal.\n\n(That’s a real street. You could visit.)",
       },
     },
+
+    /* ─── Scene 3 · THE COLLECTION ───────────────────────────────── */
     {
-      id: 'pz-05',
+      id: 'rp-03-collection',
+      layout: 'narrative',
+      background: '/story-assets/ratoncito-perez/rp-03-collection.png',
+      characterAvatar: {
+        image: '/story-assets/characters/char-perez.jpg',
+        alt: 'Ratoncito Pérez',
+      },
+      dialogue: {
+        text: "Every tooth he collects goes into his collection.\n\nNot a pile — a collection. Each one labeled. Each one remembered.\n\nHe knows whose tooth fell out on a Tuesday in October. He knows which ones were wiggly for weeks, and which ones surprised everyone at dinner.",
+      },
+    },
+
+    /* ─── Scene 4 · THE PROBLEM ──────────────────────────────────── */
+    {
+      id: 'rp-04-problem',
       layout: 'dramatic',
-      background: '/story-assets/perez/pz-02-madrid-bakery.jpg',
-      character: {
+      background: '/story-assets/ratoncito-perez/rp-04-problem.png',
+      characterAvatar: {
         image: '/story-assets/characters/char-perez.jpg',
-        position: 'left',
+        alt: 'Ratoncito Pérez',
       },
       dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "I've been doing this since the young King of Spain lost his first tooth and asked for ME.",
+        text: "But Ratoncito has a problem.",
+        subtext: "His shelves are full. And the oldest teeth — from children who are grandparents now — are starting to fade.",
       },
       secondDialogue: {
-        speaker: 'Pérez',
+        speaker: 'Ratoncito Pérez',
         speakerColor: '#E8A820',
-        text: "I live behind the walls of a bakery on Calle del Arenal. Very cozy. Very secret.",
+        text: "“I can’t keep them all safe by myself,” he said, very quietly. “Not anymore.”",
       },
     },
-    // THE MISSION
+
+    /* ─── Scene 5 · THE MESSAGE ──────────────────────────────────── */
     {
-      id: 'pz-06',
-      background: '/story-assets/perez/pz-03-sneaking-palace.jpg',
-      character: {
+      id: 'rp-05-message',
+      layout: 'dramatic',
+      background: '/story-assets/ratoncito-perez/rp-05-message.png',
+      characterAvatar: {
         image: '/story-assets/characters/char-perez.jpg',
-        position: 'center',
-        enter: 'bottom',
+        alt: 'Ratoncito Pérez',
       },
       dialogue: {
-        speaker: 'Pérez',
+        text: "Then one night, a letter arrived.",
+        subtext: "Tiny, golden, and warm to the touch — sealed with the mark of a tooth with wings.",
+      },
+      secondDialogue: {
+        speaker: 'Ratoncito Pérez',
         speakerColor: '#E8A820',
-        text: "Every night, I squeeze through tiny cracks... past sleeping cats... under creaky doors... I must be VERY quiet. A mouse on a mission!",
+        text: "He read it by candlelight. His whiskers trembled. Someone, somewhere, had been solving his exact problem — for the whole world.",
       },
     },
+
+    /* ─── Scene 6 · THE MEETING ──────────────────────────────────── */
     {
-      id: 'pz-07',
-      background: '/story-assets/perez/pz-04-at-pillow.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'right',
-        enter: 'right',
-      },
+      id: 'rp-06-meeting',
+      layout: 'dramatic',
+      background: '/story-assets/ratoncito-perez/rp-06-meeting.png',
       dialogue: {
-        speaker: 'Pérez',
+        text: "They met on a Madrid rooftop.",
+        subtext: "The city glowed below them. Stars above. A fairy and a mouse, at exactly the same height.",
+      },
+      secondDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#F0C456',
+        text: "“You keep teeth too.”",
+      },
+      thirdDialogue: {
+        speaker: 'Ratoncito Pérez',
         speakerColor: '#E8A820',
-        text: "I find the tooth. I inspect it carefully — yes, this is a good one. I leave a shiny coin. And then I run — fast as my little legs can carry me!",
+        text: "“For a hundred years.” “I’ve been doing it for a thousand,” Tanda said. “And I found a way to make sure they never fade. Would you like to see?”",
       },
     },
+
+    /* ─── Scene 7 · THE NETWORK ──────────────────────────────────── */
     {
-      id: 'pz-08',
-      background: '/story-assets/perez/pz-05-rooftop.jpg',
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "Up through the rooftops of Madrid, past the stars, to a place you won't believe...",
-      },
-    },
-    // THE NETWORK
-    {
-      id: 'pz-09',
+      id: 'rp-07-network',
       layout: 'victory',
-      background: '/story-assets/shared/shared-network-station.jpg',
-      character: {
+      background: '/story-assets/ratoncito-perez/rp-07-network.png',
+      characterAvatar: {
         image: '/story-assets/characters/char-perez.jpg',
-        position: 'center',
-        enter: 'left',
+        alt: 'Ratoncito Pérez',
       },
       dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "The Tooth Fairy Network! Where ALL of us deliver — fairies, mice, crows, even a beaver!",
+        text: 'A place where kept teeth stay kept.',
       },
       secondDialogue: {
-        speaker: 'Pérez',
+        speaker: 'Ratoncito Pérez',
         speakerColor: '#E8A820',
-        text: "Your tooth becomes a keepsake here. A treasure no one can ever take.",
+        text: "He placed his oldest, most faded tooth into the Network. It glowed warm again. Bright.",
+      },
+      thirdDialogue: {
+        speaker: 'Ratoncito Pérez',
+        speakerColor: '#E8A820',
+        text: "“María,” he whispered. “She was six. She lost this tooth eating an apple.” The Network remembered. It all came back.",
       },
     },
-    // ACT 3: THE INVITATION
+
+    /* ─── Scene 8 · THE INVITATION ───────────────────────────────── */
     {
-      id: 'pz-10',
-      background: '/story-assets/shared/shared-multiple-collectors.jpg',
+      id: 'rp-08-invitation',
+      layout: 'narrative',
+      background: '/story-assets/ratoncito-perez/rp-08-invitation.png',
       dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "I'm not the only collector, you know. In North America, a fairy does this. In Romania, a crow carries teeth through the Carpathian Mountains! Your family — abuela, tío, prima — everyone who loves you can add their love to your keepsake. And one day, all that love comes back to you. That is the magic of Ratoncito Pérez!",
+        text: "Ratoncito wasn’t the first to join. He wasn’t the last.\n\nAll over the world, collectors had been working alone — keeping teeth, keeping memories, running out of room.\n\nNow they have a place to bring them. Every tradition. Every culture. Every tooth that ever mattered to a child.\n\nThe Tooth Fairy Network isn’t one fairy’s idea. It’s everyone’s.",
       },
     },
+
+    /* ─── CTA ────────────────────────────────────────────────────── */
     {
-      id: 'pz-11',
-      background: '/story-assets/perez/pz-05-rooftop.jpg',
-      character: {
-        image: '/story-assets/characters/char-perez.jpg',
-        position: 'center',
-        enter: 'bottom',
-      },
-      dialogue: {
-        speaker: 'Pérez',
-        speakerColor: '#E8A820',
-        text: "Now then — shall we begin? Show me your smile!",
-      },
-    },
-    // CTA
-    {
-      id: 'pz-cta',
+      id: 'perez-cta',
       layout: 'cta',
-      background: '/story-assets/perez/pz-05-rooftop.jpg',
+      background: '/story-assets/ratoncito-perez/rp-08-invitation.png',
       dialogue: {
-        text: '',
+        text: 'There are collectors all over the world.',
+        subtext: 'Every culture keeps teeth differently. See who else is waiting on your child’s first one.',
       },
       isChoice: true,
-      choiceText: 'Now make yours ✦',
+      choiceText: 'Make your child’s keepsake →',
       choiceHref: '/toothfairy/app',
     },
   ],

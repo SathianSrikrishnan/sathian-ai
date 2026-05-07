@@ -29,7 +29,7 @@ setInterval(() => {
   keysToDelete.forEach(key => rateLimitMap.delete(key))
 }, 60_000)
 
-import { ALLOWED_ORIGINS } from '@/lib/constants'
+import { ALLOWED_ORIGINS, isAllowedOrigin } from '@/lib/constants'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -39,8 +39,12 @@ export async function middleware(request: NextRequest) {
   // Captures the response so auth cookies propagate through domain rewrites.
   const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
   const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
+  const hasSupabaseConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
   let supabaseResponse: NextResponse | null = null
-  if (isTfnApp || isTfnApi) {
+  if ((isTfnApp || isTfnApi) && hasSupabaseConfig) {
     supabaseResponse = await updateSupabaseSession(request)
   }
 
@@ -100,9 +104,18 @@ export async function middleware(request: NextRequest) {
     if (pathname === '/network') {
       return NextResponse.redirect(new URL('/', request.url), 307)
     }
+    // /stories → redirect to homepage trilogy (explore archived during trilogy launch)
+    if (pathname === '/stories' || pathname.startsWith('/stories/')) {
+      return NextResponse.redirect(new URL('/#stories', request.url), 307)
+    }
     // /network/about still works
     if (pathname.startsWith('/network/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
+    }
+    // Bare /toothfairy on TFN domain → redirect to root (clean URL, and
+    // prevents the catch-all from double-prefixing to /toothfairy/toothfairy)
+    if (pathname === '/toothfairy') {
+      return NextResponse.redirect(new URL('/', request.url), 307)
     }
     // Links already prefixed with /toothfairy/ — pass through without double-prefixing
     if (pathname.startsWith('/toothfairy/')) {
@@ -135,7 +148,7 @@ export async function middleware(request: NextRequest) {
 
   // --- CORS check ---
   const origin = request.headers.get('origin')
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json(
       { error: 'Not allowed' },
       { status: 403 }
@@ -161,7 +174,7 @@ export async function middleware(request: NextRequest) {
   // --- Add CORS + security headers to response ---
   const response = NextResponse.next()
 
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+  if (origin && isAllowedOrigin(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')

@@ -12,7 +12,7 @@ export const PROGRAM_ID = new PublicKey("FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtS
 // Platform fee: 2% (200 basis points)
 export const PLATFORM_FEE_BPS = 200
 
-// Lock period types for the V2 UI (simplified: now vs 18)
+// Lock period types for the V2 UI (simplified: now vs a suggested unlock age)
 export type LockPeriodKey = "immediate" | "untilTimestamp" | "threeYears" | "fiveYears" | "sevenYears" | "tenYears" | "fifteenYears"
 
 export const LOCK_PERIODS: { key: LockPeriodKey; label: string; years: number }[] = [
@@ -88,12 +88,16 @@ export function deriveChildWallet(guardian: PublicKey, childName: string): Publi
 }
 
 /**
- * Calculate the Unix timestamp for a child's 18th birthday.
+ * Calculate the Unix timestamp for a child's suggested TFN unlock date.
  */
+export function calculateUnlockBirthday(dob: Date, unlockAge = 10): number {
+  const unlockDate = new Date(dob)
+  unlockDate.setFullYear(unlockDate.getFullYear() + unlockAge)
+  return Math.floor(unlockDate.getTime() / 1000)
+}
+
 export function calculateEighteenthBirthday(dob: Date): number {
-  const eighteenth = new Date(dob)
-  eighteenth.setFullYear(eighteenth.getFullYear() + 18)
-  return Math.floor(eighteenth.getTime() / 1000)
+  return calculateUnlockBirthday(dob, 18)
 }
 
 /**

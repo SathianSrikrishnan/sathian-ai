@@ -4,6 +4,9 @@ import {
   type EnhanceCharm,
   type EnhanceTradition,
 } from "@/lib/toothfairy/ai-enhance"
+import { isAllowedOrigin } from "@/lib/constants"
+
+export const maxDuration = 60
 
 const AI_MAX_PER_HOUR = 10
 const windowMs = 60 * 60 * 1000
@@ -52,13 +55,8 @@ const VALID_CHARMS = new Set<EnhanceCharm>(["sparkle", "glow", "magic"])
 
 export async function POST(req: NextRequest) {
   try {
-    const origin = req.headers.get("origin") || ""
-    const allowed = [
-      "https://toothfairy.network",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ]
-    if (!allowed.some((o) => origin.startsWith(o))) {
+    const origin = req.headers.get("origin")
+    if (!isAllowedOrigin(origin)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
@@ -106,11 +104,24 @@ export async function POST(req: NextRequest) {
     const resolvedCharms: EnhanceCharm[] = Array.isArray(charms)
       ? charms.filter((c: string) => VALID_CHARMS.has(c as EnhanceCharm))
       : []
+    const charmsForEnhance: EnhanceCharm[] =
+      resolvedCharms.length > 0 ? resolvedCharms : ["sparkle", "glow"]
+
+    if (!process.env.FAL_KEY) {
+      return NextResponse.json(
+        {
+          error: "provider_unconfigured",
+          detail:
+            "Magic polish is not connected yet. Continue with the original artwork.",
+        },
+        { status: 503 }
+      )
+    }
 
     const result = await enhanceDrawing({
       imageDataUrl: drawingDataUrl,
       tradition: resolvedTradition,
-      charms: resolvedCharms,
+      charms: charmsForEnhance,
     })
 
     // Log latency + tradition (NOT the drawing data URL)
@@ -121,7 +132,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       enhancedImageUrl: result.imageUrl,
       traditionUsed: resolvedTradition,
-      charmsUsed: resolvedCharms,
+      charmsUsed: charmsForEnhance,
       generationMs: result.generationMs,
       remaining: rateLimit.remaining,
     })
@@ -132,11 +143,43 @@ export async function POST(req: NextRequest) {
       message.includes("moderation") ||
       message.includes("safety") ||
       message.includes("content")
+    const isProviderAuth =
+      message.toLowerCase().includes("unauthorized") ||
+      message.includes("401") ||
+      message.toLowerCase().includes("api key") ||
+      message.toLowerCase().includes("credential")
+    const isTimeout =
+      message.toLowerCase().includes("timed out") ||
+      message.toLowerCase().includes("timeout")
 
     if (isModeration) {
       return NextResponse.json(
         { error: "moderation_block", fallback: "original" },
         { status: 503 }
+      )
+    }
+
+    if (isProviderAuth) {
+      console.error("[enhance] Provider auth/config error:", message)
+      return NextResponse.json(
+        {
+          error: "provider_unconfigured",
+          detail:
+            "Magic polish is not authorized yet. Continue with the original artwork.",
+        },
+        { status: 503 }
+      )
+    }
+
+    if (isTimeout) {
+      console.error("[enhance] Provider timeout:", message)
+      return NextResponse.json(
+        {
+          error: "timeout",
+          detail:
+            "Magic polish took too long. Continue with the original artwork, or try polish again.",
+        },
+        { status: 504 }
       )
     }
 

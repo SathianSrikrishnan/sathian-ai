@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   experimental: {
+    workerThreads: true,
     // Prevent webpack from bundling native modules used by Solana/Umi
     serverComponentsExternalPackages: [
       "ws",
@@ -27,11 +28,11 @@ const nextConfig = {
       },
     ]
   },
-  // Subdomain routing handled by middleware.ts
-  turbopack: {
-    root: __dirname,
-  },
   webpack: (config, { isServer }) => {
+    // Codex/Windows workspaces can block webpack's filesystem cache from
+    // readlinking parent directories during dependency snapshots.
+    config.cache = false
+
     if (!isServer) {
       // Polyfills for Solana/Anchor in browser
       config.resolve.fallback = {

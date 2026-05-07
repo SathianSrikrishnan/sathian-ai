@@ -1,41 +1,7 @@
 import type { Metadata } from 'next'
-import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display, Source_Serif_4 } from 'next/font/google'
+import { headers } from 'next/headers'
 import { ChatWidget } from '@/components/ChatWidget'
 import './globals.css'
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-})
-
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-serif-display',
-  display: 'swap',
-  weight: ['700'],
-  style: ['normal', 'italic'],
-})
-
-const sourceSerif = Source_Serif_4({
-  subsets: ['latin'],
-  variable: '--font-serif',
-  display: 'swap',
-  weight: ['400', '600', '700'],
-  style: ['normal', 'italic'],
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
@@ -67,11 +33,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const host = headers().get('host') ?? ''
+  const isTfnDomain =
+    host === 'toothfairy.network' ||
+    host === 'www.toothfairy.network' ||
+    host === 'toothfairy.sathian.ai'
+
   return (
-    <html lang="en" data-theme="dark" className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} ${sourceSerif.variable}`}>
+    <html lang="en" data-theme="dark">
       <body className="font-sans antialiased">
         {children}
-        <ChatWidget />
+        {!isTfnDomain && <ChatWidget />}
       </body>
     </html>
   )

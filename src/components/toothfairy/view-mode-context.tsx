@@ -1,41 +1,38 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+// ─── View Mode (DEPRECATED — parent-only lock, Apr 2026) ────────────────
+// The child/parent toggle was removed in the Impeccable unification pass.
+// This module is intentionally kept as a pass-through so the ~15 call
+// sites under components/toothfairy/ui/ keep compiling unchanged — they
+// all read `isParent` and render the parent branch, which is now the
+// single visual language.
+//
+// Do not add new consumers. New code should reference CSS vars
+// (var(--tfn-*)) or shared primitives directly.
 
-type ViewMode = "child" | "parent"
+import { createContext, useContext, type ReactNode } from "react"
+
+type ViewMode = "parent"
 
 interface ViewModeContextType {
   mode: ViewMode
   toggle: () => void
-  isChild: boolean
-  isParent: boolean
+  isChild: false
+  isParent: true
 }
 
-const ViewModeContext = createContext<ViewModeContextType>({
-  mode: "child",
+const LOCKED: ViewModeContextType = {
+  mode: "parent",
   toggle: () => {},
-  isChild: true,
-  isParent: false,
-})
+  isChild: false,
+  isParent: true,
+}
 
-const STORAGE_KEY = "tfn-view-mode"
+const ViewModeContext = createContext<ViewModeContextType>(LOCKED)
 
 export function ViewModeProvider({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<ViewMode>("child")
-
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved === "parent" || saved === "child") setMode(saved)
-  }, [])
-
-  const toggle = () => {
-    const next: ViewMode = mode === "child" ? "parent" : "child"
-    setMode(next)
-    localStorage.setItem(STORAGE_KEY, next)
-  }
-
   return (
-    <ViewModeContext.Provider value={{ mode, toggle, isChild: mode === "child", isParent: mode === "parent" }}>
+    <ViewModeContext.Provider value={LOCKED}>
       {children}
     </ViewModeContext.Provider>
   )

@@ -32,12 +32,16 @@ type EnhanceOutcome =
       error:
         | "rate_limit"
         | "moderation_block"
+        | "provider_unconfigured"
         | "service_unavailable"
         | "invalid_input"
         | "network"
+        | "timeout"
       detail?: string
       retryAfter?: number
     }
+
+const ENHANCE_CLIENT_TIMEOUT_MS = 55_000
 
 async function compressIfNeeded(dataUrl: string, maxChars = 2_600_000): Promise<string> {
   if (typeof window === "undefined" || dataUrl.length <= maxChars) return dataUrl
@@ -72,11 +76,18 @@ async function compressIfNeeded(dataUrl: string, maxChars = 2_600_000): Promise<
 export async function callEnhance(
   req: EnhanceRequest
 ): Promise<EnhanceOutcome> {
+  const controller = new AbortController()
+  const timeoutId =
+    typeof window === "undefined"
+      ? undefined
+      : window.setTimeout(() => controller.abort(), ENHANCE_CLIENT_TIMEOUT_MS)
+
   try {
     const drawingDataUrl = await compressIfNeeded(req.drawingDataUrl)
     const res = await fetch("/api/toothfairy/enhance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
       body: JSON.stringify({ ...req, drawingDataUrl }),
     })
 
@@ -108,10 +119,29 @@ export async function callEnhance(
       if (body.error === "moderation_block") {
         return { ok: false, error: "moderation_block" }
       }
+      if (body.error === "provider_unconfigured") {
+        return {
+          ok: false,
+          error: "provider_unconfigured",
+          detail:
+            body.detail ??
+            "Magic polish is not connected yet. Continue with the original artwork.",
+        }
+      }
       return {
         ok: false,
         error: "service_unavailable",
         detail: body.detail,
+      }
+    }
+
+    if (res.status === 504 || body.error === "timeout") {
+      return {
+        ok: false,
+        error: "timeout",
+        detail:
+          body.detail ??
+          "Magic polish took too long. Your original artwork is still saved.",
       }
     }
 
@@ -120,7 +150,16 @@ export async function callEnhance(
       error: "service_unavailable",
       detail: `HTTP ${res.status}`,
     }
-  } catch {
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      return {
+        ok: false,
+        error: "timeout",
+        detail: "Magic polish took too long. Your original artwork is still saved.",
+      }
+    }
     return { ok: false, error: "network" }
+  } finally {
+    if (timeoutId !== undefined) window.clearTimeout(timeoutId)
   }
 }

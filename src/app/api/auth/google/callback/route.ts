@@ -9,6 +9,23 @@
  */
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { internalToothFairyHeaders } from "@/lib/toothfairy/admin-guard"
+
+type GoogleIdProfile = {
+  email?: string
+  name?: string
+  given_name?: string
+}
+
+function decodeGoogleIdProfile(idToken: string): GoogleIdProfile {
+  try {
+    const payload = idToken.split(".")[1]
+    if (!payload) return {}
+    return JSON.parse(Buffer.from(payload, "base64url").toString("utf8"))
+  } catch {
+    return {}
+  }
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -76,7 +93,7 @@ export async function GET(request: NextRequest) {
     }
   )
 
-  const { error: authError } = await supabase.auth.signInWithIdToken({
+  const { data: authData, error: authError } = await supabase.auth.signInWithIdToken({
     provider: "google",
     token: tokens.id_token,
     access_token: tokens.access_token,
@@ -85,6 +102,24 @@ export async function GET(request: NextRequest) {
   if (authError) {
     console.error("Supabase signInWithIdToken failed:", authError.message)
     return NextResponse.redirect(new URL("/app?auth_error=1", origin))
+  }
+
+  const googleProfile = decodeGoogleIdProfile(tokens.id_token)
+  const email = authData.user?.email || googleProfile.email
+  const name =
+    (authData.user?.user_metadata?.full_name as string | undefined) ||
+    googleProfile.name ||
+    googleProfile.given_name
+
+  if (email) {
+    await fetch(`${origin}/api/toothfairy/welcome-email`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...internalToothFairyHeaders(),
+      },
+      body: JSON.stringify({ email, name }),
+    }).catch((err) => console.error("[auth.google.callback] welcome-email dispatch failed:", err))
   }
 
   return response

@@ -28,11 +28,26 @@ interface SupabaseChild {
   child_name: string
   child_slug: string
   child_profile_pda: string | null
+  latest_milestone_pda: string | null
   guardian_pubkey: string
   smile_photo_url: string | null
   birthday: string | null
   is_server_guardian: boolean
 }
+
+const page = {
+  cream: "oklch(97.5% 0.01 80)",
+  creamDeep: "oklch(95% 0.015 75)",
+  paper: "oklch(100% 0 0 / 0.62)",
+  ink: "#11234a",
+  inkSoft: "#334260",
+  muted: "#6b7280",
+  gold: "oklch(72% 0.145 75)",
+  purple: "#6d45a8",
+  border: "oklch(88% 0.015 75)",
+}
+
+const GOOGLE_DASHBOARD_SIGN_IN = "/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard"
 
 export default function WalletDashboard() {
   const { publicKey, signTransaction, signAllTransactions } = useWallet()
@@ -139,18 +154,72 @@ export default function WalletDashboard() {
   const claimedDeposits = allDepositsList.filter(d => d.claimed)
 
   return (
-    <div className="max-w-lg mx-auto px-6 py-8">
-      {/* Header */}
-      <header className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Tooth Fairy Network</h1>
-          <p className="text-xs" style={{ color: C.muted }}>Your child&apos;s digital wallet</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/" className="px-3 py-1.5 rounded-lg text-xs hover:bg-white/10" style={{ border: `1px solid ${C.border}`, color: C.muted }}>
-            + New Tooth
-          </Link>
-          <WalletButton />
+    <main
+      className="min-h-screen px-4 py-8 md:py-12"
+      style={{
+        background: `linear-gradient(180deg, ${page.creamDeep}, ${page.cream})`,
+        color: page.ink,
+        fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+      }}
+    >
+      <div className="mx-auto w-full max-w-5xl">
+      <header
+        className="mb-8 overflow-hidden rounded-lg px-6 py-7 md:px-8"
+        style={{
+          background:
+            "radial-gradient(circle at 86% 12%, rgba(216,164,60,0.18), transparent 16rem), radial-gradient(circle at 6% 0%, rgba(109,69,168,0.09), transparent 14rem), oklch(100% 0 0 / 0.68)",
+          border: `1px solid ${page.border}`,
+          boxShadow: "0 24px 70px oklch(30% 0.035 65 / 0.08)",
+        }}
+      >
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p
+              className="text-xs uppercase"
+              style={{ color: page.gold, letterSpacing: "0.18em", fontWeight: 800 }}
+            >
+              Parent control room
+            </p>
+            <h1
+              className="mt-3 text-4xl leading-tight md:text-5xl"
+              style={{
+                color: page.ink,
+                fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                fontWeight: 700,
+              }}
+            >
+              Smile Fund dashboard
+            </h1>
+            <p className="mt-3 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
+              Revisit first forever memories, share family links, and track the
+              small gifts that become your child&apos;s first ownership lesson.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+            <a
+              href={GOOGLE_DASHBOARD_SIGN_IN}
+              className="rounded-full px-5 py-3 text-center text-sm font-bold"
+              style={{
+                background: "rgba(109,69,168,0.09)",
+                color: page.purple,
+                border: "1px solid rgba(109,69,168,0.18)",
+              }}
+            >
+              Continue with Google
+            </a>
+            <Link
+              href="/toothfairy/app"
+              className="rounded-full px-5 py-3 text-center text-sm font-bold"
+              style={{
+                background: page.gold,
+                color: "white",
+                boxShadow: "0 10px 26px oklch(72% 0.145 75 / 0.22)",
+              }}
+            >
+              Record a tooth
+            </Link>
+            <WalletButton />
+          </div>
         </div>
       </header>
 
@@ -166,13 +235,18 @@ export default function WalletDashboard() {
         <div className="mb-8">
           <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: C.muted }}>Your Children</h2>
           <div className="space-y-2">
-            {supabaseChildren.map((child) => (
+            {supabaseChildren.map((child) => {
+              const childHref = child.latest_milestone_pda
+                ? `/toothfairy/keepsake/${child.latest_milestone_pda}`
+                : "/toothfairy/app"
+
+              return (
               <Link
                 key={child.child_slug}
-                href={`/tooth/${child.child_slug}`}
-                className="block rounded-xl p-4 transition-all hover:translate-y-[-1px]"
+                href={childHref}
+                className="block rounded-lg p-4 transition-all hover:translate-y-[-1px]"
                 style={{
-                  background: "rgba(22,36,71,0.7)",
+                  background: "oklch(100% 0 0 / 0.68)",
                   border: `1px solid ${C.border}`,
                 }}
               >
@@ -187,31 +261,108 @@ export default function WalletDashboard() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold" style={{ color: C.text }}>{child.child_name}</p>
                     <p className="text-xs" style={{ color: C.muted }}>
-                      {child.is_server_guardian ? "Tap to claim with wallet" : "View profile →"}
+                      {child.latest_milestone_pda ? "Open latest memory" : "Record a tooth"}
                     </p>
                   </div>
                   {child.is_server_guardian && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(79,209,197,0.1)", color: C.teal, border: "1px solid rgba(79,209,197,0.2)" }}>
-                      Unclaimed
+                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(109,69,168,0.08)", color: page.purple, border: "1px solid rgba(109,69,168,0.18)" }}>
+                      Parent controlled
                     </span>
                   )}
                 </div>
               </Link>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
 
       {/* No wallet connected and no Supabase children */}
       {!publicKey && supabaseChildren.length === 0 && (
-        <div className="text-center py-20 space-y-4">
-          <div className="w-14 h-14 mx-auto rounded-full" style={{ background: "linear-gradient(135deg, #f43f5e, #F0C456)" }} />
-          <h2 className="text-xl font-medium">Connect to view your child&apos;s wallet</h2>
-          <p className="text-sm" style={{ color: C.muted }}>See their milestones and savings.</p>
-          <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: C.rose }}>
-            Connect Wallet
-          </button>
-        </div>
+        <section className="grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
+          <div
+            className="rounded-lg p-6 md:p-8"
+            style={{ background: page.paper, border: `1px solid ${page.border}` }}
+          >
+            <p
+              className="text-xs uppercase"
+              style={{ color: page.muted, letterSpacing: "0.14em", fontWeight: 800 }}
+            >
+              What parents see
+            </p>
+            <h2
+              className="mt-3 text-3xl leading-tight"
+              style={{
+                color: page.ink,
+                fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+                fontWeight: 700,
+              }}
+            >
+              One place for the memory, the family link, and the balance.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed" style={{ color: page.inkSoft }}>
+              Sign in with the same Google account you used to save the memory.
+              Wallet tools are still here for controlled testing, but Google is
+              the normal parent path.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={GOOGLE_DASHBOARD_SIGN_IN}
+                className="rounded-full px-6 py-3 text-center text-sm font-bold text-white"
+                style={{ background: page.purple }}
+              >
+                Continue with Google
+              </a>
+              <button
+                onClick={() => setVisible(true)}
+                className="rounded-full px-6 py-3 text-sm font-bold"
+                style={{ background: "transparent", border: `1px solid ${page.border}`, color: page.inkSoft }}
+              >
+                Connect guardian wallet
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="rounded-lg p-5"
+            style={{
+              background: "linear-gradient(145deg, oklch(100% 0 0 / 0.68), oklch(96% 0.018 75 / 0.72))",
+              border: `1px solid ${page.border}`,
+            }}
+          >
+            <div className="rounded-lg p-5" style={{ background: page.cream }}>
+              <p className="text-sm font-bold" style={{ color: page.ink }}>Little Smile Fund</p>
+              <p className="mt-1 text-xs" style={{ color: page.muted }}>Preview balance</p>
+              <div className="mt-5 text-4xl font-black" style={{ color: page.ink }}>
+                12.45 <span className="text-lg font-semibold" style={{ color: page.muted }}>SOL</span>
+              </div>
+              <div className="mt-5 flex h-24 items-end gap-2">
+                {[28, 42, 35, 54, 62, 58, 73, 88].map((height, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 rounded-t-full"
+                    style={{
+                      height: `${height}%`,
+                      background: `linear-gradient(180deg, ${page.gold}, oklch(86% 0.08 78))`,
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="mt-5 grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["5", "memories"],
+                  ["23", "gifts"],
+                  ["age 10", "default"],
+                ].map(([value, label]) => (
+                  <div key={label} className="rounded-lg py-3" style={{ background: "oklch(100% 0 0 / 0.58)" }}>
+                    <p className="text-sm font-bold">{value}</p>
+                    <p className="text-[11px]" style={{ color: page.muted }}>{label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       {publicKey && loading && (
@@ -222,12 +373,12 @@ export default function WalletDashboard() {
 
       {/* Empty state */}
       {publicKey && !loading && profiles.length === 0 && (
-        <div className="text-center py-16 space-y-4">
-          <div className="text-4xl">🦷</div>
-          <h2 className="text-xl font-medium">No wallets yet</h2>
-          <p className="text-sm" style={{ color: C.muted }}>Create your child&apos;s first digital wallet by recording a tooth.</p>
-          <Link href="/" className="inline-block px-6 py-3 rounded-lg text-sm font-medium text-white" style={{ background: C.rose }}>
-            Create Wallet
+          <div className="rounded-lg px-6 py-16 text-center" style={{ background: page.paper, border: `1px solid ${page.border}` }}>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold" style={{ background: "oklch(72% 0.145 75 / 0.14)", color: page.gold }}>TFN</div>
+          <h2 className="text-2xl font-bold">No Smile Fund yet</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Save the first tooth story to create the family link and the Smile Fund.</p>
+          <Link href="/toothfairy/app" className="mt-5 inline-block px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
+            Mint first memory
           </Link>
         </div>
       )}
@@ -246,8 +397,8 @@ export default function WalletDashboard() {
                     className="px-4 py-2 rounded-lg text-sm"
                     style={{
                       background: i === activeChild ? "rgba(171, 159, 242, 0.15)" : C.surface,
-                      border: `2px solid ${i === activeChild ? "#F0C456" : C.border}`,
-                      color: i === activeChild ? "#F0C456" : C.muted,
+                      border: `2px solid ${i === activeChild ? page.gold : C.border}`,
+                      color: i === activeChild ? page.gold : C.muted,
                     }}>
                     {label}
                   </button>
@@ -257,22 +408,26 @@ export default function WalletDashboard() {
           )}
 
           {/* ── Wallet Card ── */}
-          <div className="rounded-2xl p-6 space-y-5" style={{ background: "linear-gradient(135deg, rgba(240,196,86,0.1) 0%, rgba(16,185,129,0.05) 100%)", border: `1px solid rgba(240,196,86,0.2)` }}>
+          <div className="rounded-lg p-6 space-y-5" style={{ background: "linear-gradient(135deg, rgba(216,164,60,0.12) 0%, rgba(109,69,168,0.08) 100%)", border: `1px solid ${page.border}`, boxShadow: "0 18px 44px oklch(30% 0.035 65 / 0.08)" }}>
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold">{activeProfile.childName}&apos;s Wallet</h2>
-                <p className="text-xs mt-0.5" style={{ color: C.dim }}>Tooth Fairy Digital Wallet</p>
+                <h2 className="text-xl font-bold">{activeProfile.childName}&apos;s Smile Fund</h2>
+                <p className="text-xs mt-0.5" style={{ color: C.dim }}>Tooth memories and family savings</p>
               </div>
-              <div className="w-9 h-9 rounded-full" style={{ background: "linear-gradient(135deg, #f43f5e, #F0C456)" }} />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(109,69,168,0.10)", color: page.purple }}>
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6}>
+                  <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                </svg>
+              </div>
             </div>
 
             {/* Balance */}
             <div className="text-center py-4">
-              <div className="text-4xl font-bold" style={{ color: "#F0C456" }}>
+              <div className="text-4xl font-bold" style={{ color: page.ink }}>
                 {totalEscrowed.toFixed(4)} <span className="text-lg font-normal">SOL</span>
               </div>
               <p className="text-sm mt-1 font-mono" style={{ color: C.muted }}>
-                ≈ ${(totalEscrowed * solPrice).toFixed(2)} USD
+                ~ ${(totalEscrowed * solPrice).toFixed(2)} USD
               </p>
               <p className="text-xs mt-1" style={{ color: C.dim }}>
                 Total savings held on-chain
@@ -282,25 +437,25 @@ export default function WalletDashboard() {
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{milestones.length}</div>
                 <div className="text-xs" style={{ color: C.muted }}>Teeth</div>
               </div>
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{claimableDeposits.reduce((s, d) => s + d.amountSol, 0).toFixed(2)}</div>
                 <div className="text-xs" style={{ color: C.emerald }}>Available SOL</div>
               </div>
-              <div className="rounded-xl py-3 px-2" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="rounded-lg py-3 px-2" style={{ background: "oklch(100% 0 0 / 0.50)", border: `1px solid ${page.border}` }}>
                 <div className="text-lg font-bold">{lockedDeposits.reduce((s, d) => s + d.amountSol, 0).toFixed(2)}</div>
-                <div className="text-xs" style={{ color: "#F0C456" }}>Locked SOL</div>
+                <div className="text-xs" style={{ color: page.gold }}>Locked SOL</div>
               </div>
             </div>
           </div>
 
           {/* ── Available Deposits ── */}
           {claimableDeposits.length > 0 && (
-            <div className="rounded-xl p-4 space-y-3" style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
-              <h3 className="text-sm font-medium" style={{ color: C.emerald }}>
+            <div className="rounded-lg p-4 space-y-3" style={{ background: "rgba(79,184,145,0.08)", border: "1px solid rgba(79,184,145,0.22)" }}>
+              <h3 className="text-sm font-medium" style={{ color: page.ink }}>
                 Available Savings
               </h3>
               {claimableDeposits.map(d => {
@@ -309,13 +464,15 @@ export default function WalletDashboard() {
                   <div key={d.pda} className="flex items-center justify-between py-2">
                     <div>
                       <span className="text-sm font-medium">{d.depositorName}</span>
-                      <div className="text-xs font-mono" style={{ color: C.muted }}>{d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</span></div>
+                      <div className="text-xs font-mono" style={{ color: C.muted }}>
+                        {d.amountSol.toFixed(4)} SOL <span style={{ color: C.dim }}>~ ${(d.amountSol * solPrice).toFixed(2)}</span>
+                      </div>
                     </div>
                     <button
                       onClick={() => milestone && handleClaim(milestone.pda, d.pda)}
                       disabled={claimingPda === d.pda}
                       className="text-xs px-3 py-1.5 rounded-full font-medium transition-all hover:opacity-80 disabled:opacity-50"
-                      style={{ background: "rgba(20,241,149,0.15)", color: C.emerald }}
+                      style={{ background: "rgba(79,184,145,0.15)", color: "#2f7d62" }}
                     >
                       {claimingPda === d.pda ? "Claiming..." : "Withdraw"}
                     </button>
@@ -330,8 +487,8 @@ export default function WalletDashboard() {
 
           {/* ── Locked Savings ── */}
           {lockedDeposits.length > 0 && (
-            <div className="rounded-xl p-4 space-y-3" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
-              <h3 className="text-sm font-medium" style={{ color: "#F0C456" }}>
+            <div className="rounded-lg p-4 space-y-3" style={{ background: page.paper, border: `1px solid ${C.border}` }}>
+              <h3 className="text-sm font-medium" style={{ color: page.ink }}>
                 Locked Savings
               </h3>
               {lockedDeposits.map(d => (
@@ -342,12 +499,12 @@ export default function WalletDashboard() {
                   </div>
                   <div className="text-right">
                     <span className="font-mono">{d.amountSol.toFixed(4)} SOL</span>
-                    <div className="text-xs font-mono" style={{ color: C.dim }}>≈ ${(d.amountSol * solPrice).toFixed(2)}</div>
+                    <div className="text-xs font-mono" style={{ color: C.dim }}>~ ${(d.amountSol * solPrice).toFixed(2)}</div>
                   </div>
                 </div>
               ))}
               <p className="text-xs pt-2" style={{ color: C.dim }}>
-                Held securely on-chain. Cannot be withdrawn until the unlock date. Early withdrawal available with 10% penalty.
+                Held securely on-chain until the unlock date. Early withdrawal terms should be reviewed before launch.
               </p>
             </div>
           )}
@@ -363,18 +520,26 @@ export default function WalletDashboard() {
                 const deps = allDeposits.get(m.pda) || []
                 const total = deps.reduce((s, d) => s + (d.claimed ? 0 : d.amountSol), 0)
                 return (
-                  <div key={m.pda} className="rounded-xl p-3 text-center" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
-                    <div className="text-lg">🦷</div>
+                  <div key={m.pda} className="rounded-lg p-3 text-center" style={{ background: page.paper, border: `1px solid ${C.border}` }}>
+                    <div className="mx-auto flex h-6 w-6 items-center justify-center" style={{ color: page.gold }} aria-hidden>
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                        <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                      </svg>
+                    </div>
                     <div className="text-xs font-medium mt-1">#{m.milestoneIndex + 1}</div>
-                    {total > 0 && <div className="text-xs font-mono mt-0.5" style={{ color: "#F0C456" }}>{total.toFixed(2)}</div>}
+                    {total > 0 && <div className="text-xs font-mono mt-0.5" style={{ color: page.gold }}>{total.toFixed(2)}</div>}
                   </div>
                 )
               })}
               {/* Empty slots */}
               {Array.from({ length: Math.max(0, 4 - milestones.length) }).map((_, i) => (
-                <div key={`empty-${i}`} className="rounded-xl p-3 text-center opacity-20" style={{ background: C.surface, border: `1px dashed ${C.border}` }}>
-                  <div className="text-lg">🦷</div>
-                  <div className="text-xs mt-1">—</div>
+                <div key={`empty-${i}`} className="rounded-lg p-3 text-center opacity-40" style={{ background: page.paper, border: `1px dashed ${C.border}` }}>
+                  <div className="mx-auto flex h-6 w-6 items-center justify-center" style={{ color: page.muted }} aria-hidden>
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                      <path d="M8 3c-2.2 0-4 1.8-4 4 0 1.4.6 2.8 1.1 4.1.6 1.6 1.1 3.2 1.2 5 .1 1.5.7 3.9 2 3.9 1 0 1.4-1.4 1.8-3.1.4-1.6.8-3.1 1.9-3.1s1.5 1.5 1.9 3.1c.4 1.7.8 3.1 1.8 3.1 1.3 0 1.9-2.4 2-3.9.1-1.8.6-3.4 1.2-5 .5-1.3 1.1-2.7 1.1-4.1 0-2.2-1.8-4-4-4-1.3 0-2.4.5-3.2 1.2-.5.4-1.1.4-1.6 0C10.4 3.5 9.3 3 8 3Z" />
+                    </svg>
+                  </div>
+                  <div className="text-xs mt-1">open</div>
                 </div>
               ))}
             </div>
@@ -386,7 +551,7 @@ export default function WalletDashboard() {
               <h3 className="text-sm font-medium" style={{ color: C.muted }}>History</h3>
               {claimedDeposits.map(d => (
                 <div key={d.pda} className="flex justify-between text-xs py-1.5" style={{ color: C.dim }}>
-                  <span>{d.depositorName} — released {d.claimedAt ? new Date(d.claimedAt * 1000).toLocaleDateString() : ""}</span>
+                  <span>{d.depositorName} - released {d.claimedAt ? new Date(d.claimedAt * 1000).toLocaleDateString() : ""}</span>
                   <span className="font-mono">{d.amountSol.toFixed(4)} SOL</span>
                 </div>
               ))}
@@ -397,21 +562,22 @@ export default function WalletDashboard() {
           <div className="space-y-2 pt-2">
             <button
               onClick={() => {
-                // Use the first milestone's gift link for sharing
                 const milestonePda = milestones.length > 0 ? milestones[0].pda : activeProfile.pda
-                const url = `${window.location.origin}/gift/${milestonePda}`
+                const url = milestones.length > 0
+                  ? `${window.location.origin}/toothfairy/keepsake/${milestonePda}`
+                  : `${window.location.origin}/toothfairy/app/dashboard`
                 navigator.clipboard.writeText(url)
-                  .then(() => alert("Family link copied! Anyone with this link can view the wallet and add SOL."))
+                  .then(() => alert("Memory link copied. Family can view the keepsake and add a gift from there."))
                   .catch(() => prompt("Copy this link:", url))
               }}
-              className="w-full px-4 py-3 rounded-xl text-sm font-medium"
-              style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.muted }}
+              className="w-full px-4 py-3 rounded-lg text-sm font-medium"
+              style={{ background: page.paper, border: `1px solid ${C.border}`, color: page.inkSoft }}
             >
-              Share {activeProfile.childName}&apos;s wallet with family
+              Share {activeProfile.childName}&apos;s memory with family
             </button>
-            <Link href="/"
-              className="block w-full px-4 py-3 rounded-xl text-sm font-medium text-white text-center"
-              style={{ background: C.rose }}>
+            <Link href="/toothfairy/app"
+              className="block w-full px-4 py-3 rounded-lg text-sm font-medium text-white text-center"
+              style={{ background: page.purple }}>
               Record Another Tooth
             </Link>
           </div>
@@ -428,9 +594,10 @@ export default function WalletDashboard() {
         </div>
       )}
 
-      <footer className="mt-12 pt-4 border-t text-center" style={{ borderColor: C.border }}>
-        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network &middot; Your child&apos;s first digital wallet</p>
+      <footer className="mt-12 pt-4 border-t text-center" style={{ borderColor: page.border }}>
+          <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network &middot; First forever memories, protected by parents</p>
       </footer>
     </div>
+    </main>
   )
 }

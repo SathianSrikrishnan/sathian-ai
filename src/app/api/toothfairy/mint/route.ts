@@ -24,17 +24,10 @@ import {
 import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor"
 import idl from "@/lib/toothfairy/escrow-idl.json"
 import { createServerClient } from "@supabase/ssr"
+import { isAllowedOrigin } from "@/lib/constants"
+import { renderMemoryCreatedEmail, toothFairyEmailFrom } from "@/lib/toothfairy/email-templates"
 
 export const maxDuration = 60
-
-const ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "https://sathian.ai",
-  "https://www.sathian.ai",
-  "https://toothfairy.network",
-  "https://www.toothfairy.network",
-]
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024
 const PROGRAM_ID = new PublicKey("FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC")
@@ -115,7 +108,7 @@ export async function POST(request: NextRequest) {
 
   // ── Origin check ──
   const origin = request.headers.get("origin")
-  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json(
       { error: "Unauthorized origin" },
       { status: 403 }
@@ -444,7 +437,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ── Send keepsake email (after mint confirmed + data saved) ──
-    const profileUrl = `https://toothfairy.network/tooth/${childSlug}?g=${serverPubkey.toBase58()}`
+    const profileUrl = `https://toothfairy.network/toothfairy/keepsake/${milestonePda.toBase58()}`
     try {
       const resendKey = process.env.RESEND_API_KEY
       if (resendKey && user.email) {
@@ -452,45 +445,65 @@ export async function POST(request: NextRequest) {
         const resend = new Resend(resendKey)
         const firstName = user.user_metadata?.full_name?.split(" ")[0] || "there"
 
+        const SITE_URL = "https://toothfairy.network"
+        const keepsakeHtml = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#F6F2E8;font-family:'Alegreya Sans',Helvetica,Arial,sans-serif;color:#3D2F22;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F6F2E8;padding:32px 16px;">
+  <tr><td align="center">
+    <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background:#FBF7EE;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(61,47,34,0.08);">
+      <tr><td style="padding:36px 36px 12px;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#B8903A;font-weight:600;">Keepsake kept</p>
+      </td></tr>
+      <tr><td align="center" style="padding:12px 36px 8px;">
+        <img src="${SITE_URL}/story-assets/characters/char-tooth-fairy.jpg" alt="Tanda" width="96" height="96" style="width:96px;height:96px;object-fit:cover;border-radius:50%;border:3px solid #C99A3A;box-shadow:0 6px 22px rgba(201,154,58,0.28);display:block;">
+      </td></tr>
+      <tr><td style="padding:20px 36px 0;">
+        <h1 style="margin:0;font-family:'Alegreya',Georgia,serif;font-size:30px;line-height:1.18;color:#3D2F22;font-weight:700;text-align:center;">
+          ${childName}'s first tooth<br><em style="color:#C99A3A;font-weight:700;">is kept.</em>
+        </h1>
+      </td></tr>
+      <tr><td style="padding:20px 36px 4px;">
+        <p style="margin:0 0 12px;font-size:16px;line-height:1.7;color:#5A4A3A;text-align:center;">
+          ${firstName} — Tanda just filed ${childName}'s tooth in the Network.
+        </p>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#5A4A3A;text-align:center;">
+          The photo. The story. The drawing. All permanent. No one can delete it — not even us.
+        </p>
+      </td></tr>
+      <tr><td align="center" style="padding:20px 36px 8px;">
+        <a href="${profileUrl}" style="display:inline-block;background:#C99A3A;color:#FBF7EE;text-decoration:none;padding:16px 36px;border-radius:999px;font-weight:700;font-size:16px;box-shadow:0 6px 24px rgba(201,154,58,0.35);">
+          See ${childName}'s keepsake &rarr;
+        </a>
+      </td></tr>
+      <tr><td style="padding:16px 36px 24px;">
+        <div style="background:#F2ECDB;border:1px solid #E6DDC8;border-radius:14px;padding:18px 20px;">
+          <p style="margin:0 0 6px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#B8903A;font-weight:700;">Share the page</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#5A4A3A;">
+            Grandma. Uncle. A best friend who lives a plane ride away. Anyone you send the link to can add a note or a gift — and it stays on ${childName}'s keepsake forever.
+          </p>
+        </div>
+      </td></tr>
+      <tr><td style="padding:0 36px 28px;">
+        <div style="height:1px;background:#E6DDC8;"></div>
+        <p style="margin:20px 0 0;font-size:12px;line-height:1.6;color:#8A7560;text-align:center;">
+          Tooth Fairy Network &middot; <a href="${SITE_URL}" style="color:#C99A3A;text-decoration:none;">toothfairy.network</a>
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
         await resend.emails.send({
-          from: "Tooth Fairy Network <noreply@toothfairy.network>",
+          from: toothFairyEmailFrom,
           to: user.email,
-          subject: `${childName}'s tooth is saved forever ✨`,
-          html: `
-            <div style="font-family: 'Nunito', -apple-system, sans-serif; max-width: 520px; margin: 0 auto; background: #0B1026; color: #F0ECFF; padding: 40px 24px; border-radius: 16px;">
-              <div style="text-align: center; margin-bottom: 24px;">
-                <span style="font-size: 48px;">🧚‍♀️</span>
-              </div>
-
-              <h1 style="color: #F0C456; text-align: center; font-size: 24px; margin-bottom: 8px;">
-                ${childName}'s tooth is saved forever
-              </h1>
-
-              <p style="text-align: center; color: #A0AEC0; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
-                Hi ${firstName} — ${childName}'s keepsake has been permanently stored. No one can delete it, not even us.
-              </p>
-
-              <div style="background: rgba(240,196,86,0.08); border: 1px solid rgba(240,196,86,0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-                <h3 style="color: #F0C456; margin: 0 0 12px 0; font-size: 14px;">What to do next</h3>
-                <ul style="color: #CBD5E0; font-size: 14px; line-height: 2; padding-left: 20px; margin: 0;">
-                  <li>Share ${childName}'s page with family</li>
-                  <li>Family members can gift savings directly</li>
-                  <li>Each lost tooth becomes a new keepsake</li>
-                </ul>
-              </div>
-
-              <div style="text-align: center; margin-bottom: 16px;">
-                <a href="${profileUrl}"
-                   style="display: inline-block; background: linear-gradient(135deg, #F0C456, #E0A830); color: #0B1026; font-weight: 700; padding: 14px 32px; border-radius: 24px; text-decoration: none; font-size: 15px;">
-                  See ${childName}'s page →
-                </a>
-              </div>
-
-              <p style="text-align: center; color: #4A5568; font-size: 12px; margin-top: 32px;">
-                Tooth Fairy Network — Permanently stored
-              </p>
-            </div>
-          `,
+          subject: `${childName}'s first forever memory is saved.`,
+          html: renderMemoryCreatedEmail({
+            parentName: firstName,
+            childName,
+            profileUrl,
+          }),
         })
         // Keepsake email sent
       }

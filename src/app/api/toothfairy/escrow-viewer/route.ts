@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { Connection, PublicKey, Keypair } from "@solana/web3.js"
 import { Program, AnchorProvider, Wallet, BN } from "@coral-xyz/anchor"
 import IDL from "@/lib/toothfairy/escrow-idl.json"
+import { requireToothFairyAdminRequest } from "@/lib/toothfairy/admin-guard"
 
 function getReadOnlyProvider(connection: Connection): AnchorProvider {
   // Create a dummy wallet for read-only operations
@@ -21,7 +22,10 @@ function lamportsToSol(lamports: number | BN): number {
   return val / 1e9
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const unauthorized = requireToothFairyAdminRequest(request)
+  if (unauthorized) return unauthorized
+
   try {
     const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC || "https://api.mainnet-beta.solana.com"
     const connection = new Connection(rpc, "confirmed")

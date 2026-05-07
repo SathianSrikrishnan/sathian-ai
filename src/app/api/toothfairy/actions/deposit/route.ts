@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
 
   const actionMetadata = {
     type: "action",
-    icon: `https://sathian.ai/tooth/${encodeURIComponent(childName)}/opengraph-image`,
+    icon: `https://toothfairy.network/tooth/${encodeURIComponent(childName)}/opengraph-image`,
     title: `Gift SOL for ${childName}'s Tooth`,
     description: `Deposit SOL savings for ${childName} through the Tooth Fairy Network. SOL is held in an on-chain escrow until the child is ready to claim it.`,
     label: "Deposit SOL",

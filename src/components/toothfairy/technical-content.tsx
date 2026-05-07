@@ -121,7 +121,7 @@ export function TechnicalContent() {
               <h3 className="text-sm font-bold mb-3" style={{ color: C.text }}>On the roadmap</h3>
               <div className="space-y-2 text-sm" style={{ color: C.muted }}>
                 <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full" style={{ background: C.dim }} /><strong style={{ color: C.text }}>Non-crypto onboarding</strong> — Email login via Privy/Dynamic. Parent doesn&apos;t need to know what a wallet is.</div>
-                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full" style={{ background: C.dim }} /><strong style={{ color: C.text }}>Fiat deposits</strong> — Stripe or MoonPay integration. Grandma pays $50, we convert to SOL and deposit.</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full" style={{ background: C.dim }} /><strong style={{ color: C.text }}>Fiat deposits</strong> — Card checkout after provider, webhook, receipt, and fee disclosure work is complete.</div>
                 <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full" style={{ background: C.dim }} /><strong style={{ color: C.text }}>Fee sponsorship</strong> — All transactions sponsored by the network. Zero-fee for families.</div>
                 <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full" style={{ background: C.dim }} /><strong style={{ color: C.text }}>Mobile app</strong> — Camera-first experience. Push notifications when family deposits.</div>
               </div>
@@ -174,7 +174,7 @@ export function TechnicalContent() {
               </p>
               <ul className="space-y-2 text-sm" style={{ color: C.muted }}>
                 <li>&bull; Best pattern for non-crypto onboarding — Privy vs Dynamic vs Web3Auth for email-based wallets?</li>
-                <li>&bull; Fiat on-ramp strategy — Stripe + MoonPay, or build a custom solution?</li>
+                <li>&bull; Fiat on-ramp strategy — which provider, webhook model, compliance path, and fee disclosure?</li>
                 <li>&bull; Fee sponsorship model — who pays when everything is free for families?</li>
                 <li>&bull; Multi-wallet testing — are there edge cases with Backpack/Solflare wallet adapters?</li>
                 <li>&bull; Time-lock UX — how to communicate "your money is locked for 10 years" without scaring parents?</li>

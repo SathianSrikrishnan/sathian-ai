@@ -5,6 +5,9 @@ import { useViewMode } from "../view-mode-context"
 import { C, ds, glass } from "../tokens"
 import { PC } from "../parent-theme"
 import { callEnhance } from "@/lib/toothfairy/enhance-client"
+import { createChangedPixelOverlay } from "@/lib/toothfairy/canvas-overlay"
+
+const MAGIC_POLISH_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_AI_ENHANCE !== "false"
 
 // ─── Types ──────────────────────────────────────────────────────────
 export interface DrawingCanvasRef {
@@ -26,8 +29,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
     const isDrawingRef = useRef(false)
     const lastPosRef = useRef({ x: 0, y: 0 })
     const undoStackRef = useRef<ImageData[]>([])
+    const baseCanvasSnapshotRef = useRef<ImageData | null>(null)
 
-    const [brushColor, setBrushColor] = useState(isParent ? "#795900" : "#f0e6ff")
+    const [brushColor, setBrushColor] = useState(isParent ? PC.text : "#f0e6ff")
     const [brushSize, setBrushSize] = useState(4)
     const [eraserMode, setEraserMode] = useState(false)
     const [isEnhancing, setIsEnhancing] = useState(false)
@@ -55,6 +59,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
       if (!ctx) return
       canvas.width = 512; canvas.height = 512
       ctx.fillStyle = bgColor; ctx.fillRect(0, 0, 512, 512)
+      baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, 512, 512)
       // IMPORTANT: do NOT render placeholder text to the canvas. The canvas is
       // the export surface — anything drawn here ends up baked into the keepsake
       // via toDataURL(). The "Draw the tooth!" hint lives as a DOM overlay below.
@@ -74,6 +79,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
         const scale = Math.max(512 / img.width, 512 / img.height)
         const w = img.width * scale, h = img.height * scale
         ctx.drawImage(img, (512 - w) / 2, (512 - h) / 2, w, h)
+        baseCanvasSnapshotRef.current = ctx.getImageData(0, 0, 512, 512)
         setIsPristine(false)
       }
       img.src = photo
@@ -136,12 +142,33 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
 
     const endDraw = () => { isDrawingRef.current = false }
 
-    // ── AI Enhance ──
+    const enhanceLabel = isEnhancing
+      ? "Polishing..."
+      : enhanceRemaining <= 0
+        ? "Original artwork saved"
+        : "Magic polish"
+
+    // ── Optional magic polish ──
     const handleEnhance = async () => {
       if (!canvasRef.current || isEnhancing) return
       setIsEnhancing(true)
       setEnhanceError(null)
+      const finishWithError = (message: string) => {
+        setEnhanceError(message)
+        setIsEnhancing(false)
+      }
       try {
+        const ctx = canvasRef.current.getContext("2d")
+        if (!ctx) {
+          finishWithError("Magic polish could not start. Continue with the original artwork.")
+          return
+        }
+        saveUndoSnapshot()
+        const currentSnapshot = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+        const baseSnapshot = baseCanvasSnapshotRef.current
+        const preservedOverlay = baseSnapshot
+          ? createChangedPixelOverlay(baseSnapshot, currentSnapshot)
+          : null
         const drawingDataUrl = canvasRef.current.toDataURL("image/png")
         const outcome = await callEnhance({
           drawingDataUrl,
@@ -149,33 +176,94 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           charms: [],
         })
         if (!outcome.ok) {
-          throw new Error(outcome.detail || "Enhancement failed")
+          if (outcome.error === "rate_limit") {
+            setEnhanceError(outcome.detail || "Magic polish is cooling down. Try again in a moment.")
+          } else if (outcome.error === "moderation_block") {
+            setEnhanceError("Magic polish skipped this drawing. Continue with the original artwork.")
+          } else if (outcome.error === "provider_unconfigured") {
+            setEnhanceRemaining(0)
+            setEnhanceError(
+              outcome.detail ||
+                "Magic polish is not connected yet. Continue with the original artwork."
+            )
+          } else if (outcome.error === "invalid_input") {
+            setEnhanceError(outcome.detail || "This image could not be polished. Continue with the original artwork.")
+          } else if (outcome.error === "timeout") {
+            setEnhanceError(outcome.detail || "Magic polish took too long. Continue with the original artwork.")
+          } else {
+            setEnhanceError(outcome.detail || "Magic polish is unavailable right now. Continue with the original artwork.")
+          }
+          setIsEnhancing(false)
+          return
         }
         setEnhanceRemaining(outcome.result.remaining ?? 0)
 
         const img = new Image()
         img.crossOrigin = "anonymous"
+        let imageSettled = false
+        let imageLoadTimeout: number | undefined
+        const settleImage = () => {
+          if (imageSettled) return false
+          imageSettled = true
+          if (imageLoadTimeout !== undefined) window.clearTimeout(imageLoadTimeout)
+          return true
+        }
+        imageLoadTimeout =
+          typeof window === "undefined"
+            ? undefined
+            : window.setTimeout(() => {
+                if (settleImage()) {
+                  finishWithError("Magic polish finished, but the polished image could not load. Continue with the original artwork.")
+                }
+              }, 15_000)
         img.onload = () => {
+          if (!settleImage()) return
           const ctx = canvasRef.current?.getContext("2d")
-          if (!ctx || !canvasRef.current) return
+          if (!ctx || !canvasRef.current) {
+            finishWithError("Magic polish could not update the canvas. Continue with the original artwork.")
+            return
+          }
           ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
           const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height)
           const w = img.width * scale, h = img.height * scale
           ctx.drawImage(img, (canvasRef.current.width - w) / 2, (canvasRef.current.height - h) / 2, w, h)
+          let enhancedBaseSnapshot: ImageData | null = null
+          try {
+            enhancedBaseSnapshot = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+          } catch {
+            enhancedBaseSnapshot = null
+          }
+          if (preservedOverlay) {
+            const manualOverlay = document.createElement("canvas")
+            manualOverlay.width = canvasRef.current.width
+            manualOverlay.height = canvasRef.current.height
+            manualOverlay.getContext("2d")?.putImageData(preservedOverlay, 0, 0)
+            ctx.drawImage(manualOverlay, 0, 0)
+          }
+          baseCanvasSnapshotRef.current = enhancedBaseSnapshot
           setIsPristine(false)
           setIsEnhancing(false)
         }
-        img.onerror = () => { setEnhanceError("Failed to load enhanced image"); setIsEnhancing(false) }
+        img.onerror = () => {
+          if (settleImage()) {
+            finishWithError("Magic polish could not load. Continue with the original artwork.")
+          }
+        }
         img.src = outcome.result.enhancedImageUrl
       } catch (err: any) {
-        setEnhanceError(err.message)
+        setEnhanceError(
+          err?.message === "Unauthorized" || err?.message?.startsWith("HTTP")
+            ? "Magic polish is unavailable on this deployment. Continue with the original artwork."
+            : err?.message || "Magic polish is unavailable right now. Continue with the original artwork."
+        )
         setIsEnhancing(false)
       }
     }
 
     // ── Theme-aware palettes ──
     const childColors = ["#FFFFFF", "#f0c456", "#5adace", "#fbb5b5", "#9b87f5", "#60a5fa", "#34d399", "#fb923c"]
-    const parentColors = [PC.text, PC.goldDark, PC.teal, PC.surfaceHigh, "#795900", "#3b82f6", "#059669", "#ea580c"]
+    const parentColors = [PC.text, "#f5c84c", "#22a06b", "#ef476f", "#3b82f6", "#8b5cc8", "#795900", "#ea580c"]
+    const parentColorNames = ["navy", "yellow", "green", "pink", "blue", "purple", "brown", "orange"]
     const colors = isParent ? parentColors : childColors
 
     const brushSizes = [
@@ -271,6 +359,8 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               {colors.map((color, i) => (
                 <button
                   key={i}
+                  aria-label={`Use ${isParent ? parentColorNames[i] : "color"} marker`}
+                  title={isParent ? parentColorNames[i] : "Color"}
                   onClick={() => { setBrushColor(color); setEraserMode(false) }}
                   style={{
                     width: "1.75rem",
@@ -326,7 +416,8 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
             </button>
           </div>
 
-          {/* AI Enhance bar */}
+          {/* Optional magic polish bar */}
+          {MAGIC_POLISH_ENABLED && (
           <div className="flex items-center gap-2 px-4 py-3" style={{ borderTop: `1px solid ${PC.border}` }}>
             <button
               onClick={handleEnhance}
@@ -343,9 +434,10 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
               </svg>
-              {isEnhancing ? "Enhancing..." : `AI Enhance (${enhanceRemaining})`}
+              {enhanceLabel}
             </button>
           </div>
+          )}
 
           {enhanceError && (
             <p className="text-xs px-4 pb-2" style={{ color: PC.error }}>{enhanceError}</p>
@@ -387,9 +479,11 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           <div className="mt-3 space-y-2">
             {/* Color palette */}
             <div className="flex items-center justify-center gap-2">
-              {colors.map(color => (
+              {colors.map((color, i) => (
                 <button
                   key={color}
+                  aria-label={`Use ${isParent ? parentColorNames[i] : "color"} marker`}
+                  title={isParent ? parentColorNames[i] : "Color"}
                   onClick={() => { setBrushColor(color); setEraserMode(false) }}
                   className="w-6 h-6 rounded-full transition-all"
                   style={{
@@ -462,19 +556,21 @@ const DrawingCanvas = forwardRef<DrawingCanvasRef, DrawingCanvasProps>(
           >
             Clear
           </button>
-          <button
-            onClick={handleEnhance}
-            disabled={isEnhancing || enhanceRemaining <= 0}
-            className="px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex-1"
-            style={{
-              background: C.tealGlow,
-              border: `1px solid ${C.borderTeal}`,
-              color: C.teal,
-              opacity: enhanceRemaining <= 0 ? 0.4 : 1,
-            }}
-          >
-            {isEnhancing ? "Enhancing..." : `AI Enhance (${enhanceRemaining})`}
-          </button>
+          {MAGIC_POLISH_ENABLED && (
+            <button
+              onClick={handleEnhance}
+              disabled={isEnhancing || enhanceRemaining <= 0}
+              className="px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex-1"
+              style={{
+                background: C.tealGlow,
+                border: `1px solid ${C.borderTeal}`,
+                color: C.teal,
+                opacity: enhanceRemaining <= 0 ? 0.4 : 1,
+              }}
+            >
+              {enhanceLabel}
+            </button>
+          )}
         </div>
 
         {enhanceError && (

@@ -19,7 +19,7 @@ export interface ShareButtonsProps {
   childName: string;
 }
 
-// Simple inline SVGs — no new icon dep pulled in.
+// Simple inline SVGs so this share surface stays dependency-light.
 function CopyIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -76,6 +76,8 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [shareStatus, setShareStatus] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -86,90 +88,96 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
     setCanNativeShare(
       typeof navigator !== 'undefined' && typeof navigator.share === 'function'
     );
+    setCurrentUrl(window.location.href);
   }, []);
 
-  const shareText = `${childName}'s tooth — a little moment preserved forever`;
-  const shareBody = `${shareText} ${keepsakeUrl}`;
+  const resolvedUrl = keepsakeUrl || currentUrl;
+  const shareText = `${childName}'s first forever memory`;
+  const shareBody = `I wanted to share ${shareText}: ${resolvedUrl}`;
+  const shareLinks = {
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(shareBody)}`,
+    sms: `sms:?body=${encodeURIComponent(shareBody)}`,
+    email: `mailto:?subject=${encodeURIComponent(
+      `${childName}'s first forever memory`
+    )}&body=${encodeURIComponent(shareBody)}`,
+    x: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      resolvedUrl
+    )}&text=${encodeURIComponent(shareText)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      resolvedUrl
+    )}`,
+  };
 
   const handleCopy = async () => {
+    if (!resolvedUrl) return;
+    setShareStatus('');
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(keepsakeUrl);
+        await navigator.clipboard.writeText(resolvedUrl);
       } else {
         throw new Error('clipboard unavailable');
       }
       setCopied(true);
+      setShareStatus('Family link copied.');
       setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setShareStatus(''), 3200);
     } catch {
-      const input = document.createElement('input');
-      input.value = keepsakeUrl;
+      const input = document.createElement('textarea');
+      input.value = resolvedUrl;
+      input.setAttribute('readonly', '');
+      input.style.position = 'fixed';
+      input.style.left = '-9999px';
+      input.style.top = '0';
       document.body.appendChild(input);
+      input.focus();
       input.select();
       try {
         document.execCommand('copy');
         setCopied(true);
+        setShareStatus('Family link copied.');
         setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setShareStatus(''), 3200);
       } catch {
-        // give up — user can long-press to copy
+        setShareStatus('Copy was blocked. Select the link below instead.');
       }
       document.body.removeChild(input);
     }
   };
 
   // On touch devices with Web Share API, prefer the native sheet for everything
-  // except copy-link (which we keep explicit because it's the highest-trust path).
+  // except copy-link, which we keep explicit because it is the highest-trust path.
   const tryNativeShare = async (): Promise<boolean> => {
-    if (!canNativeShare) return false;
+    if (!canNativeShare || !resolvedUrl) return false;
     try {
       await navigator.share({
-        title: `${childName}'s tooth`,
+        title: `${childName}'s first forever memory`,
         text: shareText,
-        url: keepsakeUrl,
+        url: resolvedUrl,
       });
       return true;
     } catch {
-      // User cancelled or share failed — fall through to per-platform URL.
+      // User cancelled or share failed; fall through to per-platform URL.
       return false;
     }
   };
 
-  const handleShare = async (key: Exclude<ShareKey, 'copy'>) => {
+  const handleNativeShare = async () => {
+    const ok = await tryNativeShare();
+    if (!ok) setShareStatus('Share sheet closed. You can copy the family link instead.');
+  };
+
+  const handleShare = async (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    key: Exclude<ShareKey, 'copy'>
+  ) => {
     // Mobile-first: try the native share sheet if available. Users get WhatsApp,
     // iMessage, Mail, Messenger, and everything else they've installed.
     if (canNativeShare && isTouch) {
+      event.preventDefault();
       const ok = await tryNativeShare();
       if (ok) return;
+      window.location.href = shareLinks[key];
     }
-
-    let url = '';
-    switch (key) {
-      case 'whatsapp':
-        url = `https://wa.me/?text=${encodeURIComponent(shareBody)}`;
-        break;
-      case 'sms':
-        // iOS uses `&body=`, Android uses `?body=` — using `?body=` with no
-        // number works on both. `sms:` is a link navigation, not a popup.
-        window.location.href = `sms:?body=${encodeURIComponent(shareBody)}`;
-        return;
-      case 'email':
-        url = `mailto:?subject=${encodeURIComponent(
-          `${childName}'s tooth fairy keepsake`
-        )}&body=${encodeURIComponent(shareBody)}`;
-        window.location.href = url;
-        return;
-      case 'x':
-        url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          keepsakeUrl
-        )}&text=${encodeURIComponent(shareText)}`;
-        break;
-      case 'facebook':
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          keepsakeUrl
-        )}`;
-        break;
-    }
-
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const iconBtnStyle: React.CSSProperties = {
@@ -192,7 +200,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
 
   return (
     <div className="w-full flex flex-col items-stretch gap-3">
-      {/* Copy Link — primary, always full-width on mobile */}
+      {/* Copy link: primary, always full-width on mobile */}
       <button
         type="button"
         onClick={handleCopy}
@@ -216,13 +224,37 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         onMouseLeave={(e) => {
           e.currentTarget.style.background = c.gold;
         }}
-        aria-label="Copy keepsake link"
+        aria-label="Copy family memory link"
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
           <CopyIcon />
-          {copied ? 'Copied!' : 'Copy Link'}
+          {copied ? 'Copied!' : 'Copy family link'}
         </span>
       </button>
+
+      {canNativeShare && (
+        <button
+          type="button"
+          onClick={handleNativeShare}
+          className="w-full px-8 py-4 rounded-full active:scale-[0.98]"
+          style={{
+            fontFamily: 'var(--font-body)',
+            background: c.cream,
+            color: c.brown,
+            border: `1px solid ${c.border}`,
+            fontSize: '1rem',
+            fontWeight: 600,
+            minHeight: 56,
+            cursor: 'pointer',
+          }}
+          aria-label="Open share options"
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, justifyContent: 'center' }}>
+            <MessageIcon />
+            Share from this device
+          </span>
+        </button>
+      )}
 
       {/* Share row: 5 destinations. SMS hidden on desktop (sms: link is mobile). */}
       <div
@@ -230,58 +262,102 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
         role="group"
         aria-label="Share keepsake"
       >
-        <button
-          type="button"
-          onClick={() => handleShare('whatsapp')}
+        <a
+          href={shareLinks.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'whatsapp')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on WhatsApp`}
+          aria-label={`Share ${childName}'s memory on WhatsApp`}
         >
           <WhatsAppIcon />
           <span className="hidden sm:inline">WhatsApp</span>
-        </button>
+        </a>
 
         {isTouch && (
-          <button
-            type="button"
-            onClick={() => handleShare('sms')}
+          <a
+            href={shareLinks.sms}
+            onClick={(event) => handleShare(event, 'sms')}
             style={iconBtnStyle}
-            aria-label={`Share ${childName}'s keepsake via Messages`}
+            aria-label={`Share ${childName}'s memory via Messages`}
           >
             <MessageIcon />
             <span className="hidden sm:inline">Messages</span>
-          </button>
+          </a>
         )}
 
-        <button
-          type="button"
-          onClick={() => handleShare('email')}
+        <a
+          href={shareLinks.email}
+          onClick={(event) => handleShare(event, 'email')}
           style={iconBtnStyle}
-          aria-label={`Email ${childName}'s keepsake`}
+          aria-label={`Email ${childName}'s memory`}
         >
           <EmailIcon />
           <span className="hidden sm:inline">Email</span>
-        </button>
+        </a>
 
-        <button
-          type="button"
-          onClick={() => handleShare('x')}
+        <a
+          href={shareLinks.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'x')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on X`}
+          aria-label={`Share ${childName}'s memory on X`}
         >
           <XIcon />
           <span className="hidden sm:inline">X</span>
-        </button>
+        </a>
 
-        <button
-          type="button"
-          onClick={() => handleShare('facebook')}
+        <a
+          href={shareLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => handleShare(event, 'facebook')}
           style={iconBtnStyle}
-          aria-label={`Share ${childName}'s keepsake on Facebook`}
+          aria-label={`Share ${childName}'s memory on Facebook`}
         >
           <FacebookIcon />
           <span className="hidden sm:inline">Facebook</span>
-        </button>
+        </a>
       </div>
+
+      <div
+        aria-live="polite"
+        style={{
+          minHeight: 34,
+          color: shareStatus ? c.brownSoft : c.brownMuted,
+          fontFamily: 'var(--font-body)',
+          fontSize: 12,
+          lineHeight: 1.35,
+          textAlign: 'center',
+        }}
+      >
+        {shareStatus ? (
+          <span>{shareStatus}</span>
+        ) : (
+          <span>This link opens the memory first, then the Smile Fund gift option.</span>
+        )}
+      </div>
+
+      {shareStatus.includes('blocked') && (
+        <input
+          readOnly
+          value={resolvedUrl}
+          onFocus={(event) => event.currentTarget.select()}
+          style={{
+            width: '100%',
+            minHeight: 44,
+            borderRadius: 22,
+            border: `1px solid ${c.border}`,
+            background: c.cream,
+            color: c.brownSoft,
+            padding: '0 14px',
+            fontFamily: 'var(--font-body)',
+            fontSize: 12,
+          }}
+          aria-label="Family memory link"
+        />
+      )}
     </div>
   );
 }

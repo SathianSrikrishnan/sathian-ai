@@ -6,6 +6,11 @@ import Image from 'next/image';
 const c = {
   cream:      'oklch(97.5% 0.01 80)',
   creamDeep:  'oklch(95% 0.015 75)',
+  paper:      'oklch(99% 0.006 82 / 0.90)',
+  ink:        '#11234a',
+  inkSoft:    '#334260',
+  purple:     '#6d45a8',
+  purpleSoft: 'rgba(109, 69, 168, 0.10)',
   brown:      'oklch(30% 0.035 65)',
   brownSoft:  'oklch(42% 0.03 65)',
   brownMuted: 'oklch(58% 0.025 65)',
@@ -81,9 +86,9 @@ export interface KeepsakeCardProps {
   deposits: KeepsakeDeposit[];
   message?: string;
   /**
-   * The Tell — child's narrative about this specific tooth.
+   * The Tell: child's narrative about this specific tooth.
    * Rendered below the drawing in italic with a soft cream card background.
-   * When null/absent/empty: render nothing (silence is the right empty state — no "no story yet" fallback).
+   * When null/absent/empty: render nothing; silence is the right empty state.
    */
   toothStory?: string | null;
 }
@@ -116,22 +121,43 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
 
   return (
     <article
-      className="w-full max-w-md mx-auto rounded-3xl overflow-hidden"
+      className="relative mx-auto w-full max-w-lg overflow-hidden rounded-lg"
       style={{
-        background: c.cream,
+        background:
+          'linear-gradient(180deg, oklch(99% 0.006 82 / 0.94), oklch(97.5% 0.01 80 / 0.96))',
         border: `1px solid ${c.goldTint}`,
-        boxShadow: '0 20px 44px oklch(30% 0.035 65 / 0.1)',
+        boxShadow: '0 22px 54px oklch(30% 0.035 65 / 0.12)',
       }}
     >
-      {/* Header — child's name */}
-      <Fade delay={0} className="px-8 pt-10 pb-6" as="header">
+      <div
+        className="absolute -right-10 -top-8 h-32 w-32 rounded-full"
+        style={{ background: c.purpleSoft, filter: 'blur(6px)' }}
+        aria-hidden
+      />
+      <div
+        className="absolute -left-10 bottom-24 h-28 w-28 rounded-full"
+        style={{ background: c.goldSoft, filter: 'blur(6px)' }}
+        aria-hidden
+      />
+
+      <Fade delay={0} className="relative px-6 pt-7 pb-5 md:px-8" as="header">
+        <p
+          className="mb-3 text-[10px] font-bold uppercase"
+          style={{
+            color: c.gold,
+            letterSpacing: '0.18em',
+            fontFamily: 'var(--font-body)',
+          }}
+        >
+          First forever memory
+        </p>
         <h1
-          className="text-4xl md:text-5xl leading-none"
+          className="text-4xl leading-none md:text-5xl"
           style={{
             fontFamily: 'var(--font-display)',
-            color: c.brown,
-            fontWeight: 500,
-            letterSpacing: '-0.01em',
+            color: c.ink,
+            fontWeight: 700,
+            letterSpacing: '0',
           }}
         >
           {childName}
@@ -143,13 +169,13 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         />
         {storyOrigin && (
           <span
-            className="inline-block mt-4 px-3 py-1 text-xs rounded-full"
+            className="mt-4 inline-block rounded-md px-3 py-1 text-xs"
             style={{
               fontFamily: 'var(--font-body)',
-              background: c.goldSoft,
-              color: c.gold,
-              fontWeight: 500,
-              letterSpacing: '0.02em',
+              background: c.purpleSoft,
+              color: c.purple,
+              fontWeight: 700,
+              letterSpacing: '0.01em',
             }}
           >
             {storyOrigin}
@@ -157,13 +183,14 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         )}
       </Fade>
 
-      {/* Drawing area */}
-      <Fade delay={150} className="px-8 pb-6">
+      <Fade delay={150} className="relative px-6 pb-6 md:px-8">
         <div
-          className="relative w-full aspect-square rounded-2xl overflow-hidden"
+          className="relative aspect-square w-full overflow-hidden rounded-lg"
           style={{
-            background: c.creamDeep,
-            boxShadow: 'inset 0 2px 16px oklch(30% 0.035 65 / 0.08)',
+            background:
+              'linear-gradient(135deg, oklch(100% 0 0), oklch(96% 0.012 78))',
+            border: `1px solid ${c.border}`,
+            boxShadow: 'inset 0 2px 18px oklch(30% 0.035 65 / 0.06)',
           }}
         >
           {drawingUrl ? (
@@ -172,7 +199,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
               alt={`${childName}'s drawing`}
               fill
               sizes="(max-width: 768px) 100vw, 448px"
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'contain' }}
               unoptimized
             />
           ) : (
@@ -191,13 +218,12 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </div>
       </Fade>
 
-      {/* The Tell — child's narrative about this tooth */}
       {hasToothStory && (
-        <Fade delay={200} className="px-8 pb-6">
+        <Fade delay={200} className="relative px-6 pb-6 md:px-8">
           <div
-            className="rounded-2xl px-5 py-4"
+            className="rounded-lg px-5 py-4"
             style={{
-              background: c.creamDeep,
+              background: c.paper,
               border: `1px solid ${c.border}`,
             }}
           >
@@ -205,9 +231,9 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
               className="text-xs uppercase mb-2"
               style={{
                 fontFamily: 'var(--font-body)',
-                color: c.brownMuted,
+                color: c.inkSoft,
                 letterSpacing: '0.15em',
-                fontWeight: 500,
+                fontWeight: 700,
               }}
             >
               In their words
@@ -216,8 +242,8 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
               className="text-base italic"
               style={{
                 fontFamily: 'var(--font-display)',
-                color: c.brown,
-                fontWeight: 400,
+                color: c.ink,
+                fontWeight: 500,
                 lineHeight: 1.55,
               }}
             >
@@ -227,8 +253,7 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </Fade>
       )}
 
-      {/* Mint date */}
-      <Fade delay={250} className="px-8 pb-4">
+      <Fade delay={250} className="relative px-6 pb-4 md:px-8">
         <p
           className="text-sm"
           style={{
@@ -240,9 +265,8 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </p>
       </Fade>
 
-      {/* Family contributions — gift-card signatures, not a table */}
       {deposits.length > 0 && (
-        <Fade delay={350} className="px-8 pb-6">
+        <Fade delay={350} className="relative px-6 pb-6 md:px-8">
           <div
             className="h-px w-full mb-5"
             style={{ background: c.border }}
@@ -288,10 +312,15 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
                   {deposit.locked && (
                     <span
                       className="ml-2"
-                      style={{ color: c.goldLight, fontSize: '0.7rem' }}
+                      style={{
+                        color: c.goldLight,
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                      }}
                       aria-label="locked"
                     >
-                      ◆
+                      locked
                     </span>
                   )}
                 </span>
@@ -301,9 +330,8 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
         </Fade>
       )}
 
-      {/* Family message */}
       {message && (
-        <Fade delay={450} className="px-8 pb-10">
+        <Fade delay={450} className="relative px-6 pb-7 md:px-8">
           <div
             className="h-px w-full mb-5"
             style={{ background: c.border }}
@@ -335,6 +363,23 @@ export function KeepsakeCard(props: KeepsakeCardProps) {
           </div>
         </Fade>
       )}
+
+      <Fade delay={500} className="relative px-6 pb-7 md:px-8">
+        <div
+          className="flex items-center justify-between rounded-lg px-4 py-3"
+          style={{ background: c.purpleSoft, border: `1px solid rgba(109, 69, 168, 0.16)` }}
+        >
+          <span
+            className="text-xs font-bold uppercase"
+            style={{ color: c.purple, letterSpacing: '0.12em', fontFamily: 'var(--font-body)' }}
+          >
+            Protected in the Network
+          </span>
+          <span aria-hidden style={{ color: c.gold, fontFamily: 'var(--font-display)', fontSize: '1.1rem' }}>
+            *
+          </span>
+        </div>
+      </Fade>
     </article>
   );
 }

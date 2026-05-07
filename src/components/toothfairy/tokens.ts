@@ -1,90 +1,108 @@
-// ─── TFN CELESTIAL LEDGER Design System ──────────────────────────────────────
-// "Linear meets Bedtime Story" — extreme technical polish wrapped in dreamlike atmosphere
-// Powered by Google Stitch "Stardust Ledger" export
+// ─── TFN IMPECCABLE Design System (Cream · Brown · Gold) ────────────────
+// Single visual language for every /toothfairy/* route, including /app.
+// Prior incarnations of this file ("Celestial Ledger", "Stardust Ledger")
+// shipped a dark indigo surface; the April 2026 Impeccable pass unified
+// everything on warm cream + brown + gold. Token KEYS are preserved so
+// the existing /app page.tsx (1000+ lines) keeps compiling unchanged —
+// VALUES are remapped to the Impeccable palette.
 
-// === Surface Hierarchy (stacked frosted glass layers) ===
-// Base: surface (#0d1228) → Low: (#151a31) → Container: (#191e35) → High: (#242940) → Highest: (#2f334b)
+// Hex mirrors of the OKLCH tokens published by ThemeTransition as CSS
+// custom properties. Keep them in sync with
+// src/components/toothfairy/nav/theme-context.tsx THEME_PALETTES.child.
+const _cream = "#FBF7EE"      // oklch(97.5% 0.01 80)
+const _creamDeep = "#F5EFE2"  // oklch(95% 0.015 75)
+const _creamAlt = "#EFE7D4"   // oklch(91% 0.02 75)
+const _ink = "#11234A"
+const _inkSoft = "#334260"
+const _inkMuted = "#6B7280"
+const _purple = "#6D45A8"
+const _gold = "#D8A43C"       // oklch(72% 0.145 75)
+const _goldDark = "#B6871F"   // oklch(62% 0.13 72)
+const _goldLight = "#EFCF7C"  // oklch(82% 0.1 78)
+const _border = "#E3D9C4"     // oklch(88% 0.015 75)
 
 export const C = {
-  // Surfaces (the sky — layered depth)
-  bg: "#0d1228",                      // deepest navy — base layer
-  bgAlt: "#080d22",                   // surface-container-lowest — recessed elements
-  surface: "#151a31",                 // surface-container-low — parent sections
-  surfaceContainer: "#191e35",        // surface-container — standard cards
-  surfaceHigh: "#242940",             // surface-container-high — interactive widgets
-  surfaceHighest: "#2f334b",          // surface-container-highest — progress tracks, borders
-  surfaceBright: "#333850",           // surface-bright — highlighted sections
+  // Surfaces — cream hierarchy replacing the old navy hierarchy
+  bg: _cream,
+  bgAlt: _creamDeep,
+  surface: _cream,
+  surfaceContainer: _creamDeep,
+  surfaceHigh: _creamDeep,
+  surfaceHighest: _creamAlt,
+  surfaceBright: _cream,
+  bgSecondary: _creamDeep,
 
-  // Text (moonlight hierarchy)
-  text: "#dde1ff",                    // on-surface — primary text
-  textWarm: "#FFF8F0",               // pearl white — high-contrast warm text
-  muted: "#d1c5b0",                  // on-surface-variant — secondary text
-  dim: "#9a907c",                    // outline — tertiary/label text
-  softGrey: "#9ca3af",              // soft grey — micro-copy
+  // Text — brown hierarchy replacing moonlight whites
+  text: _ink,
+  textWarm: _ink,
+  muted: _inkSoft,
+  dim: _inkMuted,
+  softGrey: _inkMuted,
 
-  // Primary: Fairy Gold (the magic — CTAs, headlines, accents)
-  gold: "#f0c456",                   // primary-container — solid gold accent
-  heroGold: "#ffe3a5",              // hero gold — shimmer text effects
-  goldLight: "#ffe3a5",              // primary — light gold for text
-  primaryFixed: "#edc153",           // primary-fixed — secondary CTAs
-  goldDim: "#edc153",                // primary-fixed-dim — dimmed gold
-  goldSoft: "rgba(240, 196, 86, 0.15)",  // gold tint backgrounds
-  goldGlow: "rgba(240, 196, 86, 0.1)",   // gold glow effect
-  onGold: "#3e2e00",                 // on-primary — text on gold buttons
+  // Primary: Fairy Gold (unchanged role, unified hex)
+  gold: _gold,
+  heroGold: _goldLight,
+  goldLight: _goldLight,
+  primaryFixed: _gold,
+  goldDim: _goldDark,
+  goldSoft: "rgba(216, 164, 60, 0.12)",
+  goldGlow: "rgba(216, 164, 60, 0.08)",
+  onGold: "#FFFFFF",
 
-  // Secondary: Stardust Teal (the data — progress, active states, firefly glow)
-  teal: "#5adace",                   // secondary — stardust teal
-  tealContainer: "#01a89d",          // secondary-container — teal buttons
-  tealSoft: "rgba(90, 218, 206, 0.3)",
-  tealGlow: "rgba(90, 218, 206, 0.1)",
+  // Secondary: remapped from Stardust Teal to a warm accent so existing
+  // `C.teal` / `C.cyan` references keep rendering on-palette. In practice
+  // these are now just a softer gold — the Impeccable system has no teal.
+  teal: _goldLight,
+  tealContainer: _goldDark,
+  tealSoft: "rgba(216, 164, 60, 0.15)",
+  tealGlow: "rgba(216, 164, 60, 0.08)",
 
-  // Tertiary: Warm touches (the human)
-  pearl: "#FFF8F0",                  // tooth pearl — warm white
-  blush: "#fbb5b5",                  // tertiary-fixed-dim — blush pink
-  blushLight: "#ffdede",             // tertiary — light blush
-  ember: "#ffb8b8",                  // tertiary-container — warm accents
+  // Tertiary: warm touches
+  pearl: _cream,
+  blush: "#E8C09A",
+  blushLight: "#F3DCBF",
+  ember: "#E6B480",
 
-  // Borders & outlines (ghost borders — never solid 1px)
-  border: "rgba(78, 70, 54, 0.15)",  // outline-variant at 15% — ghost border
-  borderGold: "rgba(240, 196, 86, 0.15)", // gold-tinted ghost border
-  borderTeal: "rgba(90, 218, 206, 0.15)", // teal ghost border
+  // Borders — cream-toned ghost borders
+  border: _border,
+  borderGold: "rgba(216, 164, 60, 0.22)",
+  borderTeal: _border,
 
   // Error
-  error: "#ffb4ab",
-  errorContainer: "#93000a",
+  error: "#C4523A",
+  errorContainer: "#F7E4DC",
 
-  // Legacy aliases (backward compat with existing code)
-  rose: "#f0c456",
-  cyan: "#5adace",
-  amber: "#ffb8b8",
-  emerald: "#5adace",
-  bgSecondary: "#151a31",
+  // Legacy aliases (existing /app page.tsx reads C.rose for the primary CTA)
+  rose: _purple,
+  cyan: _goldLight,
+  amber: _goldLight,
+  emerald: _goldDark,
 }
 
-// Gradients
+// Gradients — all warm now
 export const gradients = {
-  stardust: "linear-gradient(135deg, #ffe3a5 0%, #f0c456 100%)",   // gold CTA gradient
-  stardustBg: "radial-gradient(circle at 50% 50%, #191e35 0%, #0d1228 100%)",  // background radial
-  fairyGlow: "radial-gradient(circle at 50% 50%, rgba(90, 218, 206, 0.1) 0%, transparent 70%)",
+  stardust: `linear-gradient(135deg, ${_goldLight} 0%, ${_gold} 100%)`,
+  stardustBg: `radial-gradient(circle at 50% 50%, ${_cream} 0%, ${_creamDeep} 100%)`,
+  fairyGlow: "radial-gradient(circle at 50% 50%, rgba(216, 164, 60, 0.1) 0%, transparent 70%)",
 }
 
-// Glow effects
+// Glow effects — warmer, softer, cream-compatible
 export const glow = {
-  gold: "0 0 20px rgba(240, 196, 86, 0.1), 0 0 60px rgba(240, 196, 86, 0.05)",
-  goldStrong: "0 0 30px rgba(240, 196, 86, 0.2), 0 0 80px rgba(240, 196, 86, 0.1)",
-  goldPhoto: "0 0 20px rgba(240, 196, 86, 0.4)",
-  teal: "0 0 20px rgba(90, 218, 206, 0.1), 0 0 60px rgba(90, 218, 206, 0.05)",
-  tealFirefly: "0 0 15px rgba(90, 218, 206, 0.3)",
-  ambient: "0 20px 40px rgba(0, 0, 0, 0.4)",   // ambient shadow (never pure black)
-  ctaFloat: "0 10px 30px rgba(240, 196, 86, 0.2)",  // CTA button float
+  gold: "0 0 24px rgba(216, 164, 60, 0.18), 0 0 60px rgba(216, 164, 60, 0.08)",
+  goldStrong: "0 0 32px rgba(216, 164, 60, 0.28), 0 0 80px rgba(216, 164, 60, 0.12)",
+  goldPhoto: "0 0 24px rgba(216, 164, 60, 0.35)",
+  teal: "0 0 24px rgba(216, 164, 60, 0.12), 0 0 60px rgba(216, 164, 60, 0.06)",
+  tealFirefly: "0 0 16px rgba(216, 164, 60, 0.3)",
+  ambient: "0 20px 40px rgba(75, 58, 32, 0.08)",
+  ctaFloat: "0 10px 30px rgba(216, 164, 60, 0.25)",
 }
 
-// Glass effects
+// Glass effects — paper-ish on cream now
 export const glass = {
-  card: "rgba(47, 51, 75, 0.4)",     // surface-variant at 40% — glassmorphism
-  cardBorder: "rgba(78, 70, 54, 0.15)",
-  blur: "12px",
-  blurHeavy: "20px",
+  card: "rgba(251, 247, 238, 0.75)",
+  cardBorder: _border,
+  blur: "10px",
+  blurHeavy: "18px",
 }
 
 // Animation presets (Framer Motion)
@@ -100,39 +118,34 @@ export const stagger = (i: number) => ({
   transition: { ...fadeUp.transition, delay: i * 0.1 },
 })
 
-// Reusable spring rhythm — entrance fades, card hovers, charm toggles.
-// CSS-friendly string and a Framer-Motion-friendly object.
+// Reusable spring rhythm
 export const motionSpringFast = {
-  // Framer Motion / typed animations
   duration: 0.4,
   ease: [0.22, 1, 0.36, 1] as const,
-  // CSS transition string (for inline style.transition)
   css: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
 } as const
 
-// Interactive shadow rhythm — lift-on-hover for cards, keepsake, legend tiles.
-// C theme = dark indigo background, shadow lands warmer/gold.
-// PC theme = cream background, shadow lands soft brown-gold.
+// Interactive shadow rhythm
 export const shadowKeepsake = {
-  c: "0 6px 20px oklch(78% 0.14 80 / 0.12)",
+  c: "0 6px 20px oklch(72% 0.145 75 / 0.14)",
   pc: "0 4px 12px oklch(72% 0.145 75 / 0.15)",
 } as const
 
-// Design system constants
+// Design system constants — fonts swapped to Impeccable (Alegreya pair)
 export const ds = {
-  maxWidth: "375px",                  // mobile-first focal width
-  headerHeight: "64px",              // h-16
-  bottomNavHeight: "80px",           // pb-6 pt-3 + content
+  maxWidth: "375px",
+  headerHeight: "64px",
+  bottomNavHeight: "80px",
   borderRadius: {
-    sm: "0.5rem",                    // rounded-lg
-    md: "0.75rem",                   // rounded-xl
-    lg: "1.5rem",                    // rounded-2xl — cards, buttons
-    xl: "2rem",                      // rounded-[2rem] — feature sections
+    sm: "0.5rem",
+    md: "0.75rem",
+    lg: "1.5rem",
+    xl: "2rem",
     full: "9999px",
   },
   fonts: {
-    headline: "'Plus Jakarta Sans', sans-serif",
-    body: "'Manrope', sans-serif",
-    story: "'Lora', serif",
+    headline: "var(--font-display), 'Alegreya', Georgia, serif",
+    body: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+    story: "var(--font-display), 'Alegreya', Georgia, serif",
   },
 }

@@ -142,6 +142,32 @@ async function fetchToothStory(milestonePda: string): Promise<string | null> {
   }
 }
 
+async function fetchChildMedia(
+  childProfilePda: string
+): Promise<{ smilePhotoUrl?: string }> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return {};
+
+  try {
+    const client = createClient(url, key);
+    const { data, error } = await client
+      .from('tfn_children')
+      .select('smile_photo_url')
+      .eq('child_profile_pda', childProfilePda)
+      .maybeSingle();
+    if (error) return {};
+    const smilePhotoUrl = data?.smile_photo_url;
+    return typeof smilePhotoUrl === 'string' && smilePhotoUrl.length > 0
+      ? { smilePhotoUrl }
+      : {};
+  } catch {
+    return {};
+  }
+}
+
 function prettyToothType(key: string): string {
   const map: Record<string, string> = {
     upperRight: 'Upper right tooth',
@@ -202,9 +228,10 @@ export async function getKeepsakeData(
       (childProfile.childName as string) || 'A little one';
 
     const metadataUri: string = milestone.metadataUri ?? '';
-    const [metadata, toothStory] = await Promise.all([
+    const [metadata, toothStory, childMedia] = await Promise.all([
       fetchDrawingFromMetadata(metadataUri, childNameFromChain),
       fetchToothStory(milestonePubkey.toBase58()),
+      fetchChildMedia(childProfilePda.toBase58()),
     ]);
 
     return {
@@ -212,7 +239,7 @@ export async function getKeepsakeData(
       toothType: prettyToothType(toothTypeKey),
       storyOrigin: metadata.storyOrigin,
       drawingUrl: metadata.drawingUrl,
-      smilePhotoUrl: undefined,
+      smilePhotoUrl: childMedia.smilePhotoUrl,
       mintDate: new Date(createdAt * 1000),
       deposits,
       message: metadata.message,

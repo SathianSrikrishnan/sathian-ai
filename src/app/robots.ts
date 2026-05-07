@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/studio', '/api/'],
+      disallow: ['/studio', '/api/', '/toothfairy/admin/'],
     },
-    sitemap: 'https://sathian.ai/sitemap.xml',
+    sitemap: 'https://toothfairy.network/sitemap.xml',
   }
 }

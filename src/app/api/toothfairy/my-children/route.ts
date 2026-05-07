@@ -45,11 +45,40 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ children: [], error: error.message })
     }
 
+    const children = data || []
+    const profilePdas = children
+      .map((c: any) => c.child_profile_pda)
+      .filter(Boolean)
+
+    const latestMilestoneByProfile = new Map<string, string>()
+    if (profilePdas.length > 0) {
+      const { data: stories, error: storiesError } = await supabaseAdmin
+        .from("tfn_tooth_stories")
+        .select("child_profile_pda, milestone_pda, created_at")
+        .in("child_profile_pda", profilePdas)
+        .order("created_at", { ascending: false })
+
+      if (!storiesError) {
+        for (const story of stories || []) {
+          if (
+            story.child_profile_pda &&
+            story.milestone_pda &&
+            !latestMilestoneByProfile.has(story.child_profile_pda)
+          ) {
+            latestMilestoneByProfile.set(story.child_profile_pda, story.milestone_pda)
+          }
+        }
+      }
+    }
+
     return NextResponse.json({
-      children: (data || []).map((c: any) => ({
+      children: children.map((c: any) => ({
         child_name: c.child_name,
         child_slug: c.child_slug,
         child_profile_pda: c.child_profile_pda,
+        latest_milestone_pda: c.child_profile_pda
+          ? latestMilestoneByProfile.get(c.child_profile_pda) || null
+          : null,
         guardian_pubkey: c.guardian_pubkey,
         smile_photo_url: c.smile_photo_url || null,
         birthday: c.birthday,
