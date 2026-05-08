@@ -108,7 +108,7 @@ export function renderWelcomeEmail({ name }: { name?: string | null }) {
           </td></tr>
         `).join("")}
       </table>`,
-    ctaHref: `${SITE}/toothfairy/app`,
+    ctaHref: `${SITE}/toothfairy/app/draw?from=welcome-email`,
     ctaLabel: "Create a memory",
     footer: "Parent controlled. Memory first. Solana stays in the background.",
   })

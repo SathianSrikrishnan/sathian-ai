@@ -2,202 +2,130 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Parent FAQ - Tooth Fairy Network",
+  title: "FAQ - Tooth Fairy Network",
   description:
-    "Parent answers about Tooth Fairy Network memories, Smile Funds, Google sign-in, family gifts, child ownership, and launch safety.",
+    "Frequently asked questions about Tooth Fairy Network memories, Smile Funds, parent control, family gifts, recovery, and launch safety.",
 }
 
-const highlights = [
+const essentials = [
+  "A lost tooth becomes a first forever memory: photo, drawing, story, and Smile Fund.",
+  "The child can begin with their first digital asset while the parent controls the edges.",
+  "Access is simple: sign in with Google. All you need is the Gmail address connected to the parent account.",
+  "The Smile Fund is parent-controlled until you decide to claim it together when your child is ready.",
+  "Card gifts are paused until payment verification, receipts, fee language, refunds, and support are ready.",
+]
+
+const faqItems = [
   {
-    label: "Parent controlled",
-    text: "Google recovery, family links, and wallet access stay with the parent.",
+    title: "What is Tooth Fairy Network?",
+    body: "It turns a lost tooth into a child's first forever memory and a parent-controlled Smile Fund. The goal is to turn a ritual into a lifetime journey: a smile, a drawing, a story, and the first lesson that something can truly be theirs.",
   },
   {
-    label: "Memory first",
-    text: "The tooth story comes before money, wallets, or technical details.",
+    title: "Is this my child's first digital wallet?",
+    body: "It can become that, but not all at once. The parent controls the account, recovery, family link, and Smile Fund until the child is ready for the next lesson.",
   },
   {
-    label: "Small by design",
-    text: "The Smile Fund is for practice, responsibility, and patience.",
+    title: "How do parents get back in?",
+    body: "Continue with Google using the Gmail address connected to the parent account. That inbox is where memories, receipts, and recovery links belong.",
+  },
+  {
+    title: "What is the Smile Fund?",
+    body: "It is a parent-controlled practice space for saving, patience, responsibility, ownership, and family generosity. Small gifts can become small conversations about growth.",
+  },
+  {
+    title: "Can family add gifts?",
+    body: "Yes, the memory link can invite grandparents, aunties, uncles, and close friends. A gift receipt should send only after the gift is verified.",
+  },
+  {
+    title: "Where do grandparents fit?",
+    body: "Grandparents can read a story with the child, share the tooth tradition they remember, and use the Smile Fund link only when the parent invites them.",
+  },
+  {
+    title: "Are card gifts live?",
+    body: "Card gifts are paused while payment verification, receipts, fee language, refunds, and support are finalized. The memory path works first; the payment path stays controlled.",
+  },
+  {
+    title: "What does AI polish do?",
+    body: "AI polish helps turn a child's drawing, photo, and story into something that feels like a masterpiece. Children love seeing their work transformed, and their colors and marks should be celebrated, not erased.",
+  },
+  {
+    title: "What child data is used?",
+    body: "Photos, drawings, and story text are used to build the memory, enhance the artwork, display the finished page, send parent emails, and help with parent-controlled recovery.",
+  },
+  {
+    title: "Is this financial advice?",
+    body: "No. Tooth Fairy Network is not a bank, brokerage, exchange, or investment adviser, and it is not investment advice. It is a learning and development ritual for saving, patience, ownership, and responsibility.",
   },
 ]
 
-const groups = [
-  {
-    title: "What parents are signing up for",
-    items: [
-      {
-        q: "What is Tooth Fairy Network?",
-        a: "It is a family ritual for saving a lost-tooth moment. A parent captures the smile, drawing, and story, then creates a first forever memory with a parent-controlled Smile Fund attached.",
-      },
-      {
-        q: "Is this crypto-first?",
-        a: "No. Parents should feel the memory, the family ritual, and the learning moment first. Solana is quiet infrastructure underneath so the memory and fund can be durable.",
-      },
-      {
-        q: "Is Tooth Fairy Network a bank?",
-        a: "No. Tooth Fairy Network is not a bank, brokerage, exchange, or investment adviser. It is an educational family savings experience with parent-controlled access.",
-      },
-      {
-        q: "Why not just keep the photo?",
-        a: "A camera-roll photo can disappear into thousands of other photos. This gives the moment a page, a story, and a place for family to return to over time.",
-      },
-    ],
-  },
-  {
-    title: "Smile Fund and learning",
-    items: [
-      {
-        q: "What is the Smile Fund really for?",
-        a: "The Smile Fund is a first practice field for responsibility. Small gifts help a child start learning saving, patience, ownership, and the idea that something can be truly theirs without giving them adult financial control too early.",
-      },
-      {
-        q: "Why mention investing and self-sovereignty?",
-        a: "Children will inherit a world where digital ownership, investing, and self-sovereignty matter earlier than they did for us. Tooth Fairy Network introduces that model gently: a memory they love, a fund they can understand, and a parent guiding the timing.",
-      },
-      {
-        q: "Is this investment advice?",
-        a: "No. Tooth Fairy Network is an educational family savings experience, not investment advice. Parents decide what, if anything, belongs in the Smile Fund and when the child is ready to learn from it.",
-      },
-      {
-        q: "Why age 10?",
-        a: "Age 10 is the default learning milestone because many children are ready for simple conversations about saving, value, patience, and responsibility. Parents can choose a different timing as the product matures.",
-      },
-    ],
-  },
-  {
-    title: "Safety, access, and recovery",
-    items: [
-      {
-        q: "Who controls the account?",
-        a: "The parent or guardian controls the account, the family link, the wallet path, and when the child gets access to the ownership lesson.",
-      },
-      {
-        q: "Does my child need a wallet?",
-        a: "No. Parents can use Google sign-in and the app manages the technical layer. Wallets are only exposed where they are required for controlled testing of gifts.",
-      },
-      {
-        q: "What happens if I lose access?",
-        a: "Return with the same Google account used to create the memory. If you used a wallet during testing, connect the same guardian wallet from the recovery page. Keep the family memory link in the meantime.",
-      },
-      {
-        q: "Can I share the memory safely?",
-        a: "The public link is designed for family viewing and optional gifts. Parents should share it only with people they trust while the product is still in controlled testing.",
-      },
-      {
-        q: "What emails should I expect?",
-        a: "Parents should receive a welcome email after Google sign-in, a memory-created email after minting, and a gift receipt email after a verified wallet gift. Each email points back to recovery with the same Google account.",
-      },
-      {
-        q: "What is AI polish?",
-        a: "AI polish is an optional enhancement step for artwork. The original parent-submitted memory stays the anchor, and the feature should never be required to create or recover a memory.",
-      },
-    ],
-  },
-  {
-    title: "Gifts and payments",
-    items: [
-      {
-        q: "Can family members contribute today?",
-        a: "Wallet-based gifts can be tested. Card gifts are paused until the payment-provider path, receipts, fee disclosures, and support process are ready.",
-      },
-      {
-        q: "Why are card gifts paused?",
-        a: "A stranger-safe payment flow needs verified provider terms, clear receipts, refund expectations, and plain fee language. Until then, the site should not imply card gifts are live.",
-      },
-      {
-        q: "What are the fees?",
-        a: "The current deployed contract includes a 2% network fee. Before broad release, fees and early-withdrawal rules need to be shown plainly before payment.",
-      },
-      {
-        q: "When does a gift receipt send?",
-        a: "For wallet gifts, the app asks the server to verify the on-chain transaction before sending the parent a gift receipt. Card gift receipts will wait until card gifts are actually live.",
-      },
-    ],
-  },
-  {
-    title: "What is live now",
-    items: [
-      {
-        q: "What is ready for controlled testing?",
-        a: "Homepage, Google sign-in, memory creation, AI polish, live minting, memory pages, family sharing, dashboard, recovery, wallet-based gift testing, and the core parent emails.",
-      },
-      {
-        q: "What still needs work before 100 users?",
-        a: "Card gifts, privacy and terms pages, a clearer support path, a cleaner recovery runbook, and more testing across fresh browsers and wallets.",
-      },
-      {
-        q: "Where does the story world fit?",
-        a: "Tanda and the story world are the magical layer. They help make permanence, ownership, saving, and growth understandable to a child.",
-      },
-    ],
-  },
+const launchNotes = [
+  "The memory path is live: create the memory, share the family link, and come back through Google and the parent Gmail inbox.",
+  "Card gifts stay paused until the payment provider is live and receipts, fees, refunds, and support are tested end to end.",
+  "Advanced wallet gifts are only for controlled testing with families who already know that path.",
+  "Parents decide what belongs in a Smile Fund and when to turn the lesson over to the child.",
 ]
 
 export default function FAQPage() {
   return (
-    <main className="faq-page">
+    <main className="guide-page">
       <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">Parent FAQ</p>
-          <h1>Sweet enough for children. Clear enough for parents.</h1>
-          <p>
-            Tooth Fairy Network should feel safe before it feels technical. These
-            answers explain what is live, what is paused, and how the Smile Fund
-            teaches responsibility without turning a tooth into a transaction.
-          </p>
-          <div className="actions">
-            <Link href="/toothfairy/app">Create a memory</Link>
-            <Link href="/toothfairy/smile-fund">Smile Fund</Link>
-          </div>
-        </div>
-        <div className="trust-panel" aria-label="Trust summary">
-          {highlights.map((item) => (
-            <div key={item.label}>
-              <strong>{item.label}</strong>
-              <span>{item.text}</span>
-            </div>
-          ))}
+        <p className="eyebrow">FAQ</p>
+        <h1>The first forever memory: their first digital asset, with parent control around the edges.</h1>
+        <p>
+          For families who want the magic, the family link, the AI-enhanced
+          artwork, and the Smile Fund to feel simple. Here is what parents
+          control, what is ready now, what is paused, and how access works.
+        </p>
+        <div className="actions">
+          <Link href="/toothfairy/app/draw?from=faq">Create a memory</Link>
+          <Link href="/api/auth/google?next=%2Ftoothfairy%2Fapp%2Fdashboard" prefetch={false}>
+            Continue with Google
+          </Link>
+          <Link href="/toothfairy/grandparents">Grandparent guide</Link>
         </div>
       </section>
 
-      <section className="faq-grid" aria-label="Frequently asked questions">
-        {groups.map((group) => (
-          <article key={group.title}>
-            <h2>{group.title}</h2>
-            <div className="items">
-              {group.items.map((item) => (
-                <details key={item.q}>
-                  <summary>{item.q}</summary>
-                  <p>{item.a}</p>
-                </details>
-              ))}
-            </div>
+      <section className="essentials" aria-label="Parent essentials">
+        <h2>What matters first</h2>
+        <ul>
+          {essentials.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="notes" aria-label="Frequently asked questions">
+        {faqItems.map((note) => (
+          <article key={note.title}>
+            <h2>{note.title}</h2>
+            <p>{note.body}</p>
           </article>
         ))}
       </section>
 
-      <section className="cta">
+      <section className="boundaries">
         <div>
-          <p className="eyebrow">Launch stance</p>
-          <h2>Memory first. Payments only when the path is ready.</h2>
-          <p>
-            The product should not ask families to trust money flow until card
-            checkout, receipts, disclosures, and support are complete.
-          </p>
+          <p className="eyebrow">Launch status</p>
+          <h2>Memory is live. Card gifts wait until the money path is ready.</h2>
         </div>
-        <Link href="/toothfairy/recover">Recover access</Link>
+        <div className="boundary-list">
+          {launchNotes.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </div>
       </section>
 
-      <style>{`
-        .faq-page {
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .guide-page {
           --navy: #11234a;
           --ink: #23365f;
           --muted: #687186;
           --purple: #6d45a8;
           --gold: #d8a43c;
           --cream: #fbf7ee;
-          --paper: rgba(255, 252, 247, 0.78);
+          --paper: rgba(255, 252, 247, 0.76);
           --border: rgba(178, 151, 107, 0.30);
           min-height: 100vh;
           background: linear-gradient(180deg, #fbf7ee, #f5efe2);
@@ -206,22 +134,17 @@ export default function FAQPage() {
         }
 
         .hero,
-        .faq-grid,
-        .cta {
+        .essentials,
+        .notes,
+        .boundaries,
+        .launch {
           width: min(100% - 40px, 1180px);
           margin: 0 auto;
         }
 
         .hero {
-          display: grid;
-          gap: 2rem;
-          align-items: end;
-          padding: 72px 0 42px;
+          padding: 76px 0 42px;
           border-bottom: 1px solid var(--border);
-        }
-
-        .hero-copy {
-          max-width: 790px;
         }
 
         .eyebrow {
@@ -229,7 +152,7 @@ export default function FAQPage() {
           color: #b77a11;
           font-size: 0.78rem;
           font-weight: 900;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
         }
 
@@ -242,29 +165,34 @@ export default function FAQPage() {
         }
 
         h1 {
-          max-width: 820px;
-          font-size: 4.8rem;
-          line-height: 0.94;
+          max-width: 910px;
+          font-size: clamp(3rem, 7vw, 5.25rem);
+          line-height: 0.95;
         }
 
         .hero p,
-        .cta p {
+        .essentials li,
+        article p,
+        .boundary-list p,
+        .launch p {
+          color: var(--ink);
+          font-size: 1.06rem;
+          line-height: 1.65;
+        }
+
+        .hero p {
           max-width: 760px;
           margin: 1.15rem 0 0;
-          color: var(--ink);
-          font-size: 1.08rem;
-          line-height: 1.65;
         }
 
         .actions {
           display: flex;
           flex-wrap: wrap;
           gap: 0.8rem;
-          margin-top: 1.6rem;
+          margin-top: 1.55rem;
         }
 
-        .actions a,
-        .cta > a {
+        .actions a {
           display: inline-flex;
           min-height: 46px;
           align-items: center;
@@ -280,141 +208,130 @@ export default function FAQPage() {
           color: #fffaf1;
         }
 
-        .actions a:last-child,
-        .cta > a {
+        .actions a:not(:first-child) {
           border: 1px solid var(--border);
           background: rgba(255, 255, 255, 0.62);
           color: var(--navy);
         }
 
-        .trust-panel {
+        .essentials {
+          display: grid;
+          gap: 1.2rem;
+          padding: 36px 0 28px;
+        }
+
+        .essentials h2,
+        .boundaries h2,
+        .launch h2 {
+          max-width: 760px;
+          font-size: clamp(2rem, 4vw, 3rem);
+          line-height: 1;
+        }
+
+        .essentials ul {
           display: grid;
           gap: 0;
+          margin: 0;
+          padding: 0;
+          list-style: none;
           border: 1px solid var(--border);
           border-radius: 8px;
-          background: rgba(255, 252, 247, 0.72);
+          background: rgba(255, 252, 247, 0.62);
           overflow: hidden;
         }
 
-        .trust-panel div {
+        .essentials li {
+          margin: 0;
           padding: 1rem;
+          font-weight: 850;
         }
 
-        .trust-panel div:not(:last-child) {
+        .essentials li:not(:last-child) {
           border-bottom: 1px solid var(--border);
         }
 
-        .trust-panel strong,
-        .trust-panel span {
-          display: block;
-        }
-
-        .trust-panel strong {
-          color: var(--navy);
-          font-family: var(--font-display), Georgia, serif;
-          font-size: 1.18rem;
-        }
-
-        .trust-panel span {
-          margin-top: 0.25rem;
-          color: var(--ink);
-          font-size: 0.92rem;
-          line-height: 1.45;
-        }
-
-        .faq-grid {
+        .notes {
           display: grid;
           gap: 1rem;
-          padding: 32px 0 72px;
+          padding: 8px 0 44px;
         }
 
         article {
           border: 1px solid var(--border);
           border-radius: 8px;
           background: var(--paper);
-          padding: 1.2rem;
+          padding: 1.25rem;
           box-shadow: 0 18px 44px rgba(48, 38, 24, 0.07);
         }
 
         article h2 {
-          font-size: 1.8rem;
-          line-height: 1;
-        }
-
-        .items {
-          display: grid;
-          gap: 0.7rem;
-          margin-top: 1rem;
-        }
-
-        details {
-          border-top: 1px solid var(--border);
-          padding-top: 0.8rem;
-        }
-
-        summary {
-          cursor: pointer;
-          color: var(--navy);
+          font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
+          font-size: 1.35rem;
+          line-height: 1.12;
           font-weight: 900;
-          line-height: 1.35;
         }
 
-        details p {
-          margin: 0.65rem 0 0;
-          color: var(--ink);
-          line-height: 1.58;
+        article p {
+          margin: 0.8rem 0 0;
         }
 
-        .cta {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
-          align-items: center;
-          justify-content: space-between;
+        .boundaries {
+          display: grid;
+          gap: 1.2rem;
           border-top: 1px solid var(--border);
-          padding: 54px 0 78px;
+          padding: 44px 0;
         }
 
-        .cta h2 {
-          max-width: 760px;
-          font-size: 3rem;
-          line-height: 1;
+        .boundary-list {
+          display: grid;
+          gap: 0.8rem;
+        }
+
+        .boundary-list p {
+          margin: 0;
+          border-left: 4px solid var(--gold);
+          padding-left: 1rem;
+          font-weight: 800;
+        }
+
+        .launch {
+          padding: 44px 0 78px;
+        }
+
+        .launch p {
+          max-width: 800px;
+          margin: 1rem 0 0;
         }
 
         @media (min-width: 840px) {
-          .hero {
-            grid-template-columns: minmax(0, 1fr) 320px;
+          .essentials,
+          .boundaries {
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            align-items: start;
           }
 
-          .faq-grid {
+          .notes {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-        }
-
-        @media (max-width: 960px) {
-          h1 {
-            font-size: 3.7rem;
           }
         }
 
         @media (max-width: 680px) {
           .hero,
-          .faq-grid,
-          .cta {
+          .essentials,
+          .notes,
+          .boundaries,
+          .launch {
             width: min(100% - 28px, 1180px);
           }
 
-          h1 {
-            font-size: 3rem;
-          }
-
           .actions,
-          .actions a,
-          .cta > a {
+          .actions a {
             width: 100%;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   )
 }

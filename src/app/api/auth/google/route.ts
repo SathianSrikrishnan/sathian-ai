@@ -6,6 +6,7 @@
  * redirects back to /api/auth/google/callback.
  */
 import { NextRequest, NextResponse } from "next/server"
+import { defaultAuthRedirectPath, safeAuthRedirectPath } from "@/lib/toothfairy/auth-redirect"
 
 export async function GET(request: NextRequest) {
   const host =
@@ -15,7 +16,8 @@ export async function GET(request: NextRequest) {
   const protocol = host.includes("localhost") ? "http" : "https"
   const origin = `${protocol}://${host}`
 
-  const next = request.nextUrl.searchParams.get("next") || "/app"
+  const fallbackNext = defaultAuthRedirectPath(host)
+  const next = safeAuthRedirectPath(request.nextUrl.searchParams.get("next"), fallbackNext)
 
   const params = new URLSearchParams({
     client_id: process.env.GOOGLE_CLIENT_ID!,

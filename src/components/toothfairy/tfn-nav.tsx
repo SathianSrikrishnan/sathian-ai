@@ -18,11 +18,11 @@ export function TfnNav({ activePage }: { activePage: ActivePage }) {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // On toothfairy.network: / = landing, /app = app, /network/technical = technical
-  // On sathian.ai: /toothfairy/network/ = landing, /toothfairy/app = app
+  // On toothfairy.network: / = landing, /app = legacy app continuation, /network/technical = technical
+  // On sathian.ai: /toothfairy/network/ = landing, /toothfairy/app = legacy app continuation
   const base = isTfnDomain ? "/network" : "/toothfairy/network"
   const homeHref = isTfnDomain ? "/" : "/toothfairy/network"
-  const appHref = isTfnDomain ? "/app" : "/toothfairy/app"
+  const appHref = isTfnDomain ? "/app/draw?from=legacy-nav" : "/toothfairy/app/draw?from=legacy-nav"
 
   const links = [
     { label: "Technical", page: "technical" as const, href: `${base}/technical` },

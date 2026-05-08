@@ -30,6 +30,7 @@ import { renderMemoryCreatedEmail, toothFairyEmailFrom } from "@/lib/toothfairy/
 export const maxDuration = 60
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024
+const MAX_REMOTE_IMAGE_SIZE = 8 * 1024 * 1024
 const PROGRAM_ID = new PublicKey("FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC")
 
 // ── PDA Derivation (server-side duplicates) ──
@@ -61,6 +62,68 @@ function getServerKeypair(): Keypair {
   if (!secretKeyBase64) throw new Error("TFN_MINT_SECRET_KEY not set")
   const secretKey = Buffer.from(secretKeyBase64, "base64")
   return Keypair.fromSecretKey(new Uint8Array(secretKey))
+}
+
+function isBlockedImageHost(hostname: string) {
+  const host = hostname.toLowerCase()
+  return (
+    host === "localhost" ||
+    host.endsWith(".local") ||
+    host === "0.0.0.0" ||
+    host.startsWith("127.") ||
+    host.startsWith("10.") ||
+    host.startsWith("192.168.") ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(host) ||
+    host === "::1" ||
+    host === "[::1]"
+  )
+}
+
+async function fetchRemoteImage(
+  imageUrl: string
+): Promise<{ buffer: Buffer; mimeType: string }> {
+  let parsed: URL
+  try {
+    parsed = new URL(imageUrl)
+  } catch {
+    throw new Error("Selected artwork URL is invalid.")
+  }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    throw new Error("Selected artwork must be a web image.")
+  }
+  if (isBlockedImageHost(parsed.hostname)) {
+    throw new Error("Selected artwork URL is not allowed.")
+  }
+
+  const res = await fetch(parsed.toString(), {
+    signal: AbortSignal.timeout(12000),
+  })
+  if (!res.ok) {
+    throw new Error("Could not load the selected artwork. Please try generating again.")
+  }
+
+  const mimeType =
+    res.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() ||
+    "image/jpeg"
+  if (!mimeType.startsWith("image/")) {
+    throw new Error("Selected artwork is not an image.")
+  }
+
+  const contentLength = Number(res.headers.get("content-length") || 0)
+  if (contentLength > MAX_REMOTE_IMAGE_SIZE) {
+    throw new Error("Selected artwork is too large. Please choose another image.")
+  }
+
+  const arrayBuffer = await res.arrayBuffer()
+  if (arrayBuffer.byteLength > MAX_REMOTE_IMAGE_SIZE) {
+    throw new Error("Selected artwork is too large. Please choose another image.")
+  }
+
+  return {
+    buffer: Buffer.from(arrayBuffer),
+    mimeType,
+  }
 }
 
 // ── Auth helper ──
@@ -157,7 +220,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { childName, birthday, toothType, toothNumber, imageBase64, imageMimeType, smilePhotoBase64, note, toothStory: rawToothStory, traditionSlug: rawTraditionSlug } = body
+    const { childName, birthday, toothType, toothNumber, imageBase64, imageUrl, imageMimeType, smilePhotoBase64, note, toothStory: rawToothStory, traditionSlug: rawTraditionSlug } = body
 
     // ── Normalize + validate traditionSlug (story this drawing belongs to) ──
     // Written to tfn_tooth_stories sidecar so keepsake display + later analytics
@@ -249,17 +312,33 @@ export async function POST(request: NextRequest) {
     // ── Upload + Mint cNFT (with retry for Arweave) ──
     let metadataUri: string
     let imageUri: string | undefined
+    let artImageBuffer: Buffer | null = null
+    let artImageMimeType = imageMimeType || "image/png"
 
     if (imageBase64) {
-      const imageBuffer = Buffer.from(imageBase64, "base64")
+      artImageBuffer = Buffer.from(imageBase64, "base64")
+    } else if (typeof imageUrl === "string" && imageUrl.trim()) {
+      try {
+        const remoteImage = await fetchRemoteImage(imageUrl.trim())
+        artImageBuffer = remoteImage.buffer
+        artImageMimeType = remoteImage.mimeType
+      } catch (err: any) {
+        return NextResponse.json(
+          { error: err.message || "Could not load the selected artwork." },
+          { status: 400 }
+        )
+      }
+    }
+
+    if (artImageBuffer) {
       let uploadResult: { metadataUri: string; imageUri: string }
       let lastUploadError: Error | null = null
 
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           uploadResult = await uploadMetadata(
-            imageBuffer,
-            imageMimeType || "image/png",
+            artImageBuffer,
+            artImageMimeType,
             childName,
             toothType,
             toothNum,

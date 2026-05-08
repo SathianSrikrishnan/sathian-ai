@@ -73,7 +73,7 @@ export function TfnLanding() {
         }}>
           <SparkleIcon size={16} /> Explore the Stories
         </Link>
-        <Link href="/app" className="block text-xs mt-3 hover:underline transition-opacity" style={{ color: "rgba(240,236,255,0.35)" }}>
+        <Link href="/toothfairy/app/draw?from=legacy-landing" className="block text-xs mt-3 hover:underline transition-opacity" style={{ color: "rgba(240,236,255,0.35)" }}>
           or create a keepsake directly &rarr;
         </Link>
 

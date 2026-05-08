@@ -260,7 +260,7 @@ export function ShareButtons({ keepsakeUrl, childName }: ShareButtonsProps) {
       <div
         className="flex flex-wrap items-center justify-center gap-2"
         role="group"
-        aria-label="Share keepsake"
+        aria-label="Share memory"
       >
         <a
           href={shareLinks.whatsapp}

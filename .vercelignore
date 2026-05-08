@@ -1,13 +1,30 @@
+# Local dependency, build, cache, and test output folders.
+# Vercel rebuilds from package-lock/package.json, so these should never upload.
+node_modules/
+.next/
+out/
+build/
+.git/
+.tmp/
+.npm-cache/
+.vercel-cli-appdata/
+test-results/
+coverage/
+tools/
+docs/
+tests/
+playwright.config.ts
+*.log
+tmp-*.log
+*.tsbuildinfo
+package-lock.json.bak
+
 # Draft animation, planning, and render artifacts.
-# These are explored in parallel and should not ship until explicitly merged.
-docs/plans/
-public/toothfairy/animation/
-scripts/render-tanda-layered-video.ps1
+# Keep live homepage animation assets uploadable; the homepage hero depends on
+# public/toothfairy/animation/live-hero-v1 and the piggy cutout.
 src/app/animation/tanda-hero-ritual/
 src/app/animation/tanda-pose-pack/
-src/app/animation/tanda-ritual/
-src/app/animation/tanda-ritual-video/
-src/components/toothfairy/home/
-src/lib/toothfairy/tanda-pose-pack.ts
-src/remotion/TandaRitualHero.tsx
-tests/tanda-ritual-loop.spec.ts
+scripts/render-tanda-layered-video.ps1
+scripts/render-tanda-hero-integrated-video.ps1
+start-tanda-preview.cmd
+start-toothfairy-ritual-preview.cmd

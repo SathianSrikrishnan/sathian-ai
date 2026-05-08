@@ -2,6 +2,8 @@ import { StoryConfig } from './types'
 import tanda from './tanda'
 import vikingOrigin from './viking-origin'
 import ratoncitoPerez from './ratoncito-perez'
+import japan from './japan'
+import korea from './korea'
 
 /** Featured trilogy — the three stories on the home page, in order.
  *  Tanda (converter) → Viking Origin (lore) → Ratoncito Pérez (broadener). */
@@ -18,6 +20,8 @@ export const ALL_STORIES: StoryConfig[] = [
   tanda,
   vikingOrigin,
   ratoncitoPerez,
+  japan,
+  korea,
 ]
 
 export function getStoryById(id: string): StoryConfig | undefined {

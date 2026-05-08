@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: base, lastModified: updated, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/toothfairy/app`, lastModified: updated, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/toothfairy/app/draw`, lastModified: updated, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/toothfairy/smile-fund`, lastModified: updated, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/toothfairy/stories`, lastModified: updated, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/toothfairy/story/tanda`, lastModified: updated, changeFrequency: 'monthly', priority: 0.7 },

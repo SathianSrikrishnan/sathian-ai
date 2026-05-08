@@ -78,7 +78,9 @@ export default function ArchitecturePage() {
         <Link href="/toothfairy/faq">Read parent FAQ</Link>
       </section>
 
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .security-page {
           --navy: #11234a;
           --ink: #23365f;
@@ -237,7 +239,9 @@ export default function ArchitecturePage() {
             width: min(100% - 28px, 1180px);
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   )
 }

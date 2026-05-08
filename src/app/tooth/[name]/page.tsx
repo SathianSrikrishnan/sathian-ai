@@ -830,7 +830,7 @@ export default function ToothChildPage() {
         {!publicKey && !isServerGuardian && (
           <div className="w-full rounded-3xl p-6 text-center mb-6" style={{ background: c.creamDeep, border: `1px solid ${c.border}` }}>
             <p className="text-sm mb-4" style={{ color: c.brownSoft, lineHeight: 1.55 }}>Save your child&apos;s milestones too</p>
-            <Link href="/toothfairy/app" className="inline-block px-6 py-3 rounded-full text-sm font-semibold active:scale-[0.98]"
+            <Link href="/toothfairy/app/draw?from=shared-tooth" className="inline-block px-6 py-3 rounded-full text-sm font-semibold active:scale-[0.98]"
               style={{ background: c.gold, color: 'oklch(98% 0.005 80)', boxShadow: `0 4px 20px oklch(72% 0.145 75 / 0.2)` }}>
               Create a keepsake
             </Link>

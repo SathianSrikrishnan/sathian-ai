@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tanda Fae and the Tooth Fee - Final Draft</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f8f4ec;
+      --muted: #cfc2ad;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(22, 27, 32, 0.78);
+      --accent: #e8b77a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #0e1519;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    header,
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-inline: 22px;
+    }
+
+    header {
+      padding-top: 56px;
+      padding-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(38px, 7vw, 82px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .dek {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #eadbc3;
+    }
+
+    .meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    main {
+      padding-bottom: 80px;
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 22px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      border-radius: 10px;
+      background: #182228;
+      overflow: hidden;
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 82vh;
+      object-fit: contain;
+      background: #182228;
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .kicker {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .quote {
+      color: #ffe6bd;
+    }
+
+    .button-copy {
+      display: inline-block;
+      width: fit-content;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: #f4c16f;
+      color: #1b140d;
+      padding: 10px 15px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .scene {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tanda Fae<br />and the Tooth Fee</h1>
+    <p class="dek">A Viking story of ships, mercy, and the first Toothlight.</p>
+    <div class="meta">
+      <span>35 scenes</span>
+      <span>35 unique frame images</span>
+      <span>Full-image review view</span>
+    </div>
+  </header>
+
+  <main id="story"></main>
+
+  <script>
+    const scenes = [
+      { n: "01", title: "Cover", image: "v2/s2-frame-01-cover-v3.png", lines: ["Tanda Fae and the Tooth Fee", "A Viking story of ships, mercy, and the first Toothlight."] },
+      { n: "02", title: "Ships Grow From Oak", image: "v2/s2-frame-02-shipyard.png", lines: ["Long before Tanda had wings, she lived where the sea slapped the stones and ships grew rib by rib from oak.", "She was seven, or almost seven, depending on who was asking."] },
+      { n: "03", title: "The Maker", image: "v2/s2-frame-03-maker.png", lines: ["Her father built ships.", "He could tap a board and know if it wanted to be a keel, an oar, or firewood. Tanda thought this was unfair. The boards never answered her when she tapped them."] },
+      { n: "04", title: "Tanda Helps", image: "v2/s2-frame-04-pitch-v4.png", lines: ["Tanda wanted to help.", "She pressed one plank exactly where he told her, then discovered the sticky pitch had joined her sleeve to the ship."], quotes: ["The ship likes me.", "The ship has poor judgment."] },
+      { n: "05", title: "The Wobble", image: "v2/s2-frame-05-wobble.png", lines: ["That morning, a tooth had been wobbling in her mouth like a loose peg.", "Tanda kept it secret. Grown-ups became very interested in teeth, and interest was tiring."] },
+      { n: "06", title: "The Point Comes Loose", image: "v2/s2-frame-06-point-loose.png", lines: ["At supper she bit a strip of dried fish to prove a point.", "The point came loose. So did the tooth."] },
+      { n: "07", title: "A Small Rude Thing", image: "v2/s2-frame-07-small-rude.png", lines: ["It sat in her palm, small and wet and rude.", "Tanda did not feel older. She felt as if a piece of herself had fallen out by mistake."] },
+      { n: "08", title: "The Tooth Fee", image: "v2/s2-frame-08-tooth-fee.png", lines: ["Her father cleaned the tooth in warm water.", "Then he set a bright coin beside it."], quotes: ["A tooth fee. For the one who did the growing."] },
+      { n: "09", title: "Still Mine", image: "v2/s2-frame-09-still-mine.png", lines: ["Tanda covered the tooth with both hands."], quotes: ["If I take the coin, is it still mine?", "Yes. A fee is not a purchase. It is a promise to notice."] },
+      { n: "10", title: "May I Carry It?", image: "v2/s2-frame-10-permission.png", lines: ["The next morning, the ship was leaving.", "Her father knelt with a leather cord and a tiny carved keeper, waiting for her answer."], quotes: ["May I carry your tooth until I come home?", "You may carry it. But you may not lose it, trade it, or let the goat chew it."] },
+      { n: "11", title: "The Threading", image: "v2/s2-frame-11-threading-v3.png", lines: ["So he threaded the tooth onto the cord.", "Tanda held the other end until the knot was done. That was her way of saying yes."], quotes: ["Near my heart, then.", "Until you come home."] },
+      { n: "12", title: "The Goat Tries", image: "v2/s2-frame-11-goat.png", lines: ["The goat tried immediately.", "After a moment like that, goats believed it was their duty to make things less majestic.", "Tanda stood guard until the tooth was tucked safely where her father could feel it."] },
+      { n: "13", title: "The Ship Leaves", image: "v2/s2-frame-12-ship-leaves.png", lines: ["When the sail rose, Tanda's throat went tight.", "The ship she had helped build now did the one thing she hated. It took him away."] },
+      { n: "14", title: "What Promises Can Do", image: "v2/s2-frame-13-promises.png", quotes: ["You promised,", "I promised to carry what is yours.", "I cannot promise the sea will ask less of me."] },
+      { n: "15", title: "Waiting Work", image: "v2/s2-frame-14-waiting-work.png", lines: ["So Tanda waited.", "She swept the shipyard. She counted gulls. She named the wood shavings. There were too many shavings. That was exactly why they needed names."] },
+      { n: "16", title: "Across the Water", image: "v2/s2-frame-15-across-water.png", lines: ["Across the water, the ship found wind, fog, and empty stores.", "Winter had been hard everywhere. The men wanted to bring home what their village needed."] },
+      { n: "17", title: "The Barrel", image: "v2/s2-frame-16-barrel.png", lines: ["One morning, they found a boy in a barrel.", "He was holding one of their rope coils and smelled so strongly of herring that even the gulls kept their distance."], quotes: ["A thief,"] },
+      { n: "18", title: "The Easier Choice", image: "v2/s2-frame-18-easier-choice-v3.png", lines: ["Her father was big enough to frighten him.", "He was tired enough to want to. Taking the rope back would have been easy. Making the boy afraid would have been easier."] },
+      { n: "19", title: "The Tooth Taps", image: "v2/s2-frame-19-tooth-taps-v4.png", lines: ["Then the tooth tapped against his chest.", "Not loudly. Just enough.", "He remembered Tanda's hands closing around it."], quotes: ["Still mine."] },
+      { n: "20", title: "Eye Level", image: "v2/s2-frame-19-eye-level.png", lines: ["He knelt all the way down, to the boy's eyes.", "The boy pointed to shore."], quotes: ["What is the rope for?"] },
+      { n: "21", title: "The Boy Shows Him", image: "v2/s2-frame-21-boy-shows-v4.png", lines: ["The boy led him down the stones.", "He did not ask for treasure. He pointed to a cracked little boat and a sister trying very hard not to shiver."] },
+      { n: "22", title: "The Small Boat", image: "v2/s2-frame-20-small-boat.png", lines: ["On the stones lay a little boat with a split side.", "Beside it stood the boy's sister, barefoot in the cold. The rope was not treasure. It was what he thought might hold their boat together."] },
+      { n: "23", title: "The Builder Understands", image: "v2/s2-frame-23-builder-understands-v3.png", lines: ["A broken boat was different from a stolen rope.", "Her father knew what broken things asked for. Not shouting. Not punishment. Time, tools, and someone willing to be late."] },
+      { n: "24", title: "What Mercy Does", image: "v2/s2-frame-21-mercy-repair.png", lines: ["Tanda's father took back the rope.", "Then he took up his tools.", "By dusk, the little boat held together, the boy's sister had socks from the ship's spare wool, and nobody had been hit."] },
+      { n: "25", title: "Two Shores Meet", image: "v2/s2-frame-25-shores-meet-v4.png", lines: ["When the little boat held, he did not hurry back to his own ship.", "He called the two sides closer: the ones with tools, the ones with wool, the ones with fish, the ones with rope.", "It took longer to talk. It also left everyone with more than they had before."] },
+      { n: "26", title: "Slower Than Taking", image: "v2/s2-frame-22-trade.png", lines: ["The next day, the two villages traded.", "Work for food. Nails for wool. Rope for fish. It was slower than taking. It was better."] },
+      { n: "27", title: "First Toothlight", image: "v2/s2-frame-23-first-toothlight.png", lines: ["That night, the tooth glowed near his heart like a star that had chosen a small place to live.", "Her father did not understand it. But he knew what had called it forward."] },
+      { n: "28", title: "Homecoming", image: "v2/s2-frame-24-homecoming.png", lines: ["When the ship came home, Tanda ran before she remembered she had legs.", "Her father came down the plank and knelt in the sand, laughing as she crashed into him."], quotes: ["I came home.", "You brought it back."] },
+      { n: "29", title: "It Carried Me Home", image: "v2/s2-frame-25-home-glow.png", lines: ["The tooth shone in his palm, bright as dawn."], quotes: ["It carried me home.", "But not the way I expected."] },
+      { n: "30", title: "What It Held", image: "v2/s2-frame-26-memory.png", lines: ["Tanda touched it.", "She smelled herring, heard waves knocking a cracked boat, and saw a boy blink hard because someone had been kind when he expected shouting."], quotes: ["It remembers."] },
+      { n: "31", title: "The Promise Grows", image: "v2/s2-frame-27-promise-grows.png", lines: ["Tanda placed the tooth in her wooden box with her drawing: a ship, a rope, two children on opposite shores."], quotes: ["You remembered first.", "Then I will remember for others."] },
+      { n: "32", title: "The Box Answers", image: "v2/s2-frame-30-box-answers-v3.png", lines: ["The box answered.", "Not with words. With little places: a rooftop under rain, a mouse-sized door, a feather, a seed pressing up through soil.", "The tooth had not kept only a memory. It had kept a way."] },
+      { n: "33", title: "Network Wings", image: "v2/s2-frame-31-network-wings-v3.png", lines: ["Light gathered around Tanda's shoulders.", "It did not make her less herself. It made room for everywhere she might be needed.", "Somewhere, another child was letting go of something small."] },
+      { n: "34", title: "What She Carries", image: "v2/s2-frame-34-adult-tanda-v2.png", lines: ["Tanda grew after that, and so did the promise.", "When children lost what they had outgrown, she could feel the bright place it belonged.", "The first tooth stayed near her heart, where all good borrowed things should be carried."] },
+      { n: "35", title: "Toothlight CTA", image: "v2/s2-frame-35-toothlight-cta-v4.png", lines: ["Your child's tooth is one small sign of a big change.", "Create a Toothlight from the tooth, their words, and the memory you want to keep."], button: "Create Your Tooth Keepsake" }
+    ];
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function renderScene(scene) {
+      const lines = (scene.lines || []).map(line => `<p>${escapeHtml(line)}</p>`).join("");
+      const quotes = (scene.quotes || []).map(line => `<p class="quote">"${escapeHtml(line)}"</p>`).join("");
+      const button = scene.button ? `<span class="button-copy">${escapeHtml(scene.button)}</span>` : "";
+      const title = scene.n === "01" ? `<h2>${escapeHtml(scene.lines[0])}</h2>` : "";
+      const body = scene.n === "01" ? `<p>${escapeHtml(scene.lines[1])}</p>` : `${lines}${quotes}${button}`;
+
+      return `
+        <section class="scene">
+          <div class="frame"><img src="${escapeHtml(scene.image)}" alt="${escapeHtml(scene.n + ". " + scene.title)}" /></div>
+          <div class="copy">
+            <p class="kicker">${escapeHtml(scene.n)}. ${escapeHtml(scene.title)}</p>
+            ${title}
+            ${body}
+          </div>
+        </section>
+      `;
+    }
+
+    document.getElementById("story").innerHTML = scenes.map(renderScene).join("");
+  </script>
+</body>
+</html>

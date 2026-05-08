@@ -45,14 +45,14 @@ export default function KeepsakePreviewPage() {
           </p>
           <div className="actions">
             <Link href={liveMemoryHref}>Open William's memory</Link>
-            <Link href="/toothfairy/app">Create one</Link>
+            <Link href="/toothfairy/app/draw?from=keepsake-preview">Create one</Link>
           </div>
         </div>
 
         <div className="card-wrap" aria-label="Real minted Tooth Fairy memory preview">
           <div className="network-halo" aria-hidden>
             <span>saved</span>
-            <span>parent key</span>
+            <span>parent control</span>
             <span>fund</span>
           </div>
           <div className="network-lock" aria-hidden>
@@ -60,10 +60,10 @@ export default function KeepsakePreviewPage() {
             <b />
           </div>
           <KeepsakeCard {...liveMemory} />
-          <div className="deposit-chip" aria-label="Example locked Smile Fund gift">
-            <span>Example locked Smile Fund gift</span>
-            <strong>0.05 SOL</strong>
-            <small>From Jimmy, held with this memory</small>
+          <div className="deposit-chip" aria-label="Example Smile Fund gift">
+            <span>Example Smile Fund gift</span>
+            <strong>$5</strong>
+            <small>From Jimmy, held until the child is ready</small>
           </div>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function KeepsakePreviewPage() {
             light. The page should feel like it belongs to them.
           </p>
         </div>
-        <Link href="/toothfairy/app">Start the ritual</Link>
+        <Link href="/toothfairy/app/draw?from=keepsake-preview">Start the ritual</Link>
       </section>
 
       <style jsx>{`

@@ -355,7 +355,14 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       <div
         ref={containerRef}
         className="fixed inset-0 flex flex-col"
-        style={{ background: c.creamDeep, touchAction: 'none' }}
+        style={{
+          background: c.creamDeep,
+          touchAction: 'none',
+          zIndex: 80,
+          height: '100dvh',
+          minHeight: '100vh',
+          overflow: 'hidden',
+        }}
       >
         {/* Top bar */}
         <header
@@ -400,47 +407,93 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
         {/* Canvas area */}
         <div
           className="flex-1 flex items-center justify-center p-3 relative"
-          style={{ background: c.creamDeep, touchAction: 'none' }}
+          style={{
+            background: c.creamDeep,
+            touchAction: 'none',
+            minHeight: 0,
+          }}
         >
           <div
-            className="relative"
+            className="relative flex flex-col items-center gap-3"
             style={{
-              width: '100%',
-              height: '100%',
+              width: 'min(92vw, calc(100dvh - 350px), 720px)',
+              minWidth: 260,
               maxWidth: '100%',
-              maxHeight: '100%',
-              aspectRatio: '1 / 1',
-              borderRadius: 16,
-              overflow: 'visible',
-              transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
-              transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
-              boxShadow: doneAnimating
-                ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
-                : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
-              animation: doneAnimating
-                ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-                : undefined,
             }}
           >
-            <canvas
-              ref={canvasRef}
-              className="w-full h-full rounded-2xl select-none"
+            <div
+              className="w-full rounded-2xl px-4 py-3 text-center"
               style={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                background: c.cream,
-                touchAction: 'none',
-                imageRendering: 'crisp-edges',
-                cursor: 'crosshair',
-                borderRadius: 16,
+                background: 'oklch(99% 0.006 82 / 0.82)',
+                border: `1px solid ${c.border}`,
+                boxShadow: `0 8px 26px ${c.shadow}`,
               }}
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={finishStroke}
-              onPointerCancel={finishStroke}
-              onPointerLeave={finishStroke}
-            />
+            >
+              <p
+                style={{
+                  margin: 0,
+                  color: c.gold,
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Tiny tooth memory
+              </p>
+              <p
+                style={{
+                  margin: '0.25rem 0 0',
+                  color: c.brownSoft,
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(1rem, 2.2vw, 1.2rem)',
+                  lineHeight: 1.2,
+                }}
+              >
+                Draw the tooth, a feeling, or a symbol.
+              </p>
+            </div>
+            <div
+              className="relative"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                aspectRatio: '1 / 1',
+                borderRadius: 16,
+                overflow: 'visible',
+                transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
+                transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: doneAnimating
+                  ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
+                  : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
+                animation: doneAnimating
+                  ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                  : undefined,
+              }}
+            >
+              <canvas
+                ref={canvasRef}
+                className="w-full h-full rounded-2xl select-none"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  height: '100%',
+                  background: c.cream,
+                  touchAction: 'none',
+                  imageRendering: 'crisp-edges',
+                  cursor: 'crosshair',
+                  borderRadius: 16,
+                }}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={finishStroke}
+                onPointerCancel={finishStroke}
+                onPointerLeave={finishStroke}
+              />
+            </div>
           </div>
 
           {/* Sparkle overlay — absolute positioned relative to the full canvas area */}

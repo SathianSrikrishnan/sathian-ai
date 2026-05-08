@@ -1,201 +1,374 @@
 import { StoryConfig } from './types'
 
+const v2 = '/story-assets/ratoncito-perez/v2'
+
+const perezGold = '#E8A820'
+const tandaGold = '#E8B77A'
+const luciaBlue = '#9FC1D0'
+
 /**
- * Story 3 — El Ratoncito Pérez: The Mouse of Madrid (8 scenes).
- * The broadener. Shows the Network is global — other collectors exist,
- * and they all converge on the same place. Ends on a world-map view
- * that links to the globe explore page.
- *
- * Color palette: warm Mediterranean — terracotta, moonlight blue, candle gold.
+ * Story 3 - Ratoncito Perez and the Toothlight Treaty.
+ * Final draft: 28 frames, with one unique full-frame image per scene.
  */
 const ratoncitoPerez: StoryConfig = {
   id: 'ratoncito-perez',
-  title: 'El Ratoncito Pérez',
-  region: 'Madrid, Spain',
+  title: 'Ratoncito Perez and the Toothlight Treaty',
+  region: 'Spain and mixed family traditions',
   emoji: '\u{1F42D}',
-  color: '#E8A820',
-  description: 'In Madrid, teeth don’t go under pillows. They go into a glass by the bed — and someone very small comes for them.',
-  characterName: 'Ratoncito Pérez',
+  color: perezGold,
+  description: 'A Madrid story about two tooth traditions learning to share one child with care.',
+  characterName: 'Ratoncito Perez',
   available: true,
-  crossReferences: ['tanda', 'viking-origin'],
+  crossReferences: ['viking-origin', 'tanda', 'tooth-fairy'],
   colors: {
-    accent: '#E8A820',
-    accentGlow: '#E8A82080',
-    secondary: '#F0C456',
-    secondaryGlow: '#F0C45680',
+    accent: perezGold,
+    accentGlow: `${perezGold}80`,
+    secondary: tandaGold,
+    secondaryGlow: `${tandaGold}80`,
   },
   effects: {
     particles: {
-      color: '#E8A820',
-      count: 14,
+      count: 16,
+      color: perezGold,
       sizeMin: 1,
       sizeMax: 3,
-      durationMin: 8,
-      durationMax: 14,
+      durationMin: 10,
+      durationMax: 18,
       drift: 16,
       glow: true,
     },
     sparkleOn: ['victory'],
   },
   scenes: [
-    /* ─── COVER ───────────────────────────────────────────────────── */
     {
-      id: 'perez-cover',
+      id: 'rp3-01-two-doors',
       layout: 'cover',
-      background: '/story-assets/ratoncito-perez/rp-02-mouse.png',
+      background: `${v2}/rp3-frame-01-two-doors.png`,
       dialogue: {
-        text: 'El Ratoncito Pérez',
-        subtext: 'A tooth story from Madrid.',
+        text: 'Ratoncito Perez\nand the Toothlight Treaty',
+        subtext: 'A Madrid story about two true tooth traditions.',
       },
     },
-
-    /* ─── Scene 1 · MADRID ───────────────────────────────────────── */
     {
-      id: 'rp-01-madrid',
+      id: 'rp3-02-wobble-merienda',
       layout: 'narrative',
-      background: '/story-assets/ratoncito-perez/rp-01-madrid.png',
+      background: `${v2}/rp3-frame-02-wobble-merienda.png`,
       dialogue: {
-        text: "In Madrid, when you lose a tooth,\n\nyou don’t put it under your pillow.\n\nYou put it in a glass of water by your bed.\n\nAnd you wait for someone very small.",
+        text: "At merienda, Lucia's tooth wobbled every time she smiled, swallowed, or tried very hard not to think about it.",
+        subtext: 'Papa said Perez loved a brave tooth. Mom said the Tooth Fairy loved one too.',
       },
     },
-
-    /* ─── Scene 2 · THE MOUSE ────────────────────────────────────── */
     {
-      id: 'rp-02-mouse',
+      id: 'rp3-03-finally-falls',
       layout: 'narrative',
-      background: '/story-assets/ratoncito-perez/rp-02-mouse.png',
-      characterAvatar: {
-        image: '/story-assets/characters/char-perez.jpg',
-        alt: 'Ratoncito Pérez',
-      },
+      background: `${v2}/rp3-frame-03-finally-falls.png`,
       dialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "His name is El Ratoncito Pérez.\n\nHe’s a mouse — but not an ordinary one.\n\nHe’s been collecting teeth in Spain for over a hundred years. He lives behind a cookie tin in a bakery on Calle del Arenal.\n\n(That’s a real street. You could visit.)",
+        text: "Then the tooth popped free into Lucia's palm, small and bright and suddenly important.",
+        subtext: 'Papa reached for the old coin box. Mom reached for an old folded note.',
       },
     },
-
-    /* ─── Scene 3 · THE COLLECTION ───────────────────────────────── */
     {
-      id: 'rp-03-collection',
+      id: 'rp3-04-two-true-stories',
       layout: 'narrative',
-      background: '/story-assets/ratoncito-perez/rp-03-collection.png',
-      characterAvatar: {
-        image: '/story-assets/characters/char-perez.jpg',
-        alt: 'Ratoncito Pérez',
-      },
+      background: `${v2}/rp3-frame-04-two-true-stories.png`,
       dialogue: {
-        text: "Every tooth he collects goes into his collection.\n\nNot a pile — a collection. Each one labeled. Each one remembered.\n\nHe knows whose tooth fell out on a Tuesday in October. He knows which ones were wiggly for weeks, and which ones surprised everyone at dinner.",
+        text: 'Papa told how Perez had come through the walls when he was little.',
+        subtext: 'Mom told how a fairy had left a note by her pillow when she was little.',
       },
     },
-
-    /* ─── Scene 4 · THE PROBLEM ──────────────────────────────────── */
     {
-      id: 'rp-04-problem',
+      id: 'rp3-05-question',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-05-question.png`,
+      dialogue: {
+        text: 'Lucia liked both stories.',
+        subtext: 'That was the trouble. If she chose one, would the other story feel left outside?',
+      },
+    },
+    {
+      id: 'rp3-06-note-under-pillow',
       layout: 'dramatic',
-      background: '/story-assets/ratoncito-perez/rp-04-problem.png',
-      characterAvatar: {
-        image: '/story-assets/characters/char-perez.jpg',
-        alt: 'Ratoncito Pérez',
-      },
+      background: `${v2}/rp3-frame-06-note-under-pillow.png`,
       dialogue: {
-        text: "But Ratoncito has a problem.",
-        subtext: "His shelves are full. And the oldest teeth — from children who are grandparents now — are starting to fade.",
+        text: 'So Lucia wrote the smallest note she could manage and tucked it beside the tooth.',
+        subtext: 'It said, Can both of you come?',
       },
       secondDialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "“I can’t keep them all safe by myself,” he said, very quietly. “Not anymore.”",
+        speaker: 'Lucia',
+        speakerColor: luciaBlue,
+        text: 'Please do not make me choose.',
       },
     },
-
-    /* ─── Scene 5 · THE MESSAGE ──────────────────────────────────── */
     {
-      id: 'rp-05-message',
-      layout: 'dramatic',
-      background: '/story-assets/ratoncito-perez/rp-05-message.png',
-      characterAvatar: {
-        image: '/story-assets/characters/char-perez.jpg',
-        alt: 'Ratoncito Pérez',
-      },
+      id: 'rp3-07-ledger-room',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-07-ledger-room.png`,
       dialogue: {
-        text: "Then one night, a letter arrived.",
-        subtext: "Tiny, golden, and warm to the touch — sealed with the mark of a tooth with wings.",
+        text: 'Behind the bakery wall, Ratoncito Perez checked his ledger, polished his stamp, and counted his coins twice.',
+        subtext: 'Perez was not merely quick. He was exact.',
+      },
+    },
+    {
+      id: 'rp3-08-mouse-code',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-08-mouse-code.png`,
+      dialogue: {
+        text: 'His family code was older than the bakery ovens.',
+        subtext: 'Enter quietly. Take respectfully. Leave the coin. Keep the local promise. A mouse collected because a house had trusted him.',
+      },
+    },
+    {
+      id: 'rp3-09-tooth-calls-twice',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-09-tooth-calls-twice.png`,
+      dialogue: {
+        text: "Lucia's tooth glowed in Perez's ledger.",
+        subtext: "Far away, the same glow woke Tanda's pendant.",
+      },
+    },
+    {
+      id: 'rp3-10-tanda-arrives',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-10-tanda-arrives.png`,
+      dialogue: {
+        text: 'Perez opened his tiny door and found Tanda trying very hard to look small.',
+        subtext: 'This was difficult. She had wings.',
       },
       secondDialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "He read it by candlelight. His whiskers trembled. Someone, somewhere, had been solving his exact problem — for the whole world.",
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'That is not knocking. That is sunrise with manners.',
       },
     },
-
-    /* ─── Scene 6 · THE MEETING ──────────────────────────────────── */
     {
-      id: 'rp-06-meeting',
+      id: 'rp3-11-professional-offense',
       layout: 'dramatic',
-      background: '/story-assets/ratoncito-perez/rp-06-meeting.png',
+      background: `${v2}/rp3-frame-11-professional-offense.png`,
       dialogue: {
-        text: "They met on a Madrid rooftop.",
-        subtext: "The city glowed below them. Stars above. A fairy and a mouse, at exactly the same height.",
+        text: "Tanda said she had come because Lucia's tooth called through Toothlight.",
+        subtext: 'Perez held his coin tray a little higher.',
+      },
+      secondDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'Madrid is not a branch office.',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: tandaGold,
+        text: 'I did not come to take Madrid.',
+      },
+    },
+    {
+      id: 'rp3-12-old-claim',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-12-old-claim.png`,
+      dialogue: {
+        text: "Perez showed her the routes, the names, the old seals, the teeth kept safe since his great-grandfather's night.",
+        subtext: 'His pride was not vanity. It was a promise with whiskers.',
+      },
+      secondDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'A house gives a mouse its trust. I do not misplace that.',
+      },
+    },
+    {
+      id: 'rp3-13-wide-claim',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-13-wide-claim.png`,
+      dialogue: {
+        text: "Tanda opened her hands, and Toothlight showed what the tooth was holding: Mom's old pillow, Papa's old coin, Lucia's worried little note.",
+        subtext: 'Perez stopped tapping his stamp.',
       },
       secondDialogue: {
         speaker: 'Tanda',
-        speakerColor: '#F0C456',
-        text: "“You keep teeth too.”",
-      },
-      thirdDialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "“For a hundred years.” “I’ve been doing it for a thousand,” Tanda said. “And I found a way to make sure they never fade. Would you like to see?”",
+        speakerColor: tandaGold,
+        text: 'She is not asking which story is true. She is asking whether both can love her.',
       },
     },
-
-    /* ─── Scene 7 · THE NETWORK ──────────────────────────────────── */
     {
-      id: 'rp-07-network',
-      layout: 'victory',
-      background: '/story-assets/ratoncito-perez/rp-07-network.png',
-      characterAvatar: {
-        image: '/story-assets/characters/char-perez.jpg',
-        alt: 'Ratoncito Pérez',
-      },
+      id: 'rp3-14-first-argument',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-14-first-argument.png`,
       dialogue: {
-        text: 'A place where kept teeth stay kept.',
+        text: "On the roof, the night wind lifted Tanda's hair and Perez's whiskers.",
+        subtext: 'They were both right enough to be annoying.',
       },
       secondDialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "He placed his oldest, most faded tooth into the Network. It glowed warm again. Bright.",
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'Big magic has a habit of making small doors disappear.',
       },
       thirdDialogue: {
-        speaker: 'Ratoncito Pérez',
-        speakerColor: '#E8A820',
-        text: "“María,” he whispered. “She was six. She lost this tooth eating an apple.” The Network remembered. It all came back.",
+        speaker: 'Tanda',
+        speakerColor: tandaGold,
+        text: 'And small doors can become locks if no one listens through them.',
       },
     },
-
-    /* ─── Scene 8 · THE INVITATION ───────────────────────────────── */
     {
-      id: 'rp-08-invitation',
+      id: 'rp3-15-race-to-room',
       layout: 'narrative',
-      background: '/story-assets/ratoncito-perez/rp-08-invitation.png',
+      background: `${v2}/rp3-frame-15-race-to-room.png`,
       dialogue: {
-        text: "Ratoncito wasn’t the first to join. He wasn’t the last.\n\nAll over the world, collectors had been working alone — keeping teeth, keeping memories, running out of room.\n\nNow they have a place to bring them. Every tradition. Every culture. Every tooth that ever mattered to a child.\n\nThe Tooth Fairy Network isn’t one fairy’s idea. It’s everyone’s.",
+        text: 'Perez took the pipes. Tanda took the sky.',
+        subtext: 'Neither called it a race, which was how both of them knew it was one.',
       },
     },
-
-    /* ─── CTA ────────────────────────────────────────────────────── */
     {
-      id: 'perez-cta',
-      layout: 'cta',
-      background: '/story-assets/ratoncito-perez/rp-08-invitation.png',
+      id: 'rp3-16-mouse-work',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-16-mouse-work.png`,
       dialogue: {
-        text: 'There are collectors all over the world.',
-        subtext: 'Every culture keeps teeth differently. See who else is waiting on your child’s first one.',
+        text: "Perez slipped under Lucia's door, past the squeaky toy, past the sleeping cat's tail, past the one floorboard that betrayed amateurs.",
+        subtext: 'Every inch of the room had a sound, and Perez knew which ones not to make.',
+      },
+    },
+    {
+      id: 'rp3-17-fairy-work',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-17-fairy-work.png`,
+      dialogue: {
+        text: "At the window, Tanda folded her wings and softened the Toothlight until it was no brighter than a sleeping child's breath.",
+        subtext: 'Her work was not to dazzle. Her work was to notice.',
+      },
+    },
+    {
+      id: 'rp3-18-both-hands-reach',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-18-both-hands-reach.png`,
+      dialogue: {
+        text: 'Perez reached under the pillow.',
+        subtext: "Tanda's light reached through the room. The tooth did not move.",
+      },
+    },
+    {
+      id: 'rp3-19-split-light',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-19-split-light.png`,
+      dialogue: {
+        text: 'The tooth glowed in two colors: bakery gold and pearly fairy light.',
+        subtext: 'One held the smell of bread and old Madrid stone. One held the hush of a pillow in another country.',
+      },
+    },
+    {
+      id: 'rp3-20-perez-offense',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-20-perez-offense.png`,
+      dialogue: {
+        text: 'Perez thought Tanda had enchanted his route.',
+        subtext: 'Tanda thought Perez was trying to close the tooth around one answer.',
+      },
+      secondDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'You put wings on everything and call it helping.',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: tandaGold,
+        text: 'You put stamps on everything and call it safe.',
+      },
+    },
+    {
+      id: 'rp3-21-lucia-dream',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-21-lucia-dream.png`,
+      dialogue: {
+        text: 'Then Lucia turned in her sleep, and the tooth showed them her dream.',
+        subtext: 'She stood between two bedtime doors, holding one small tooth with both hands.',
+      },
+    },
+    {
+      id: 'rp3-22-collectors-fear',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-22-collectors-fear.png`,
+      dialogue: {
+        text: 'Perez looked very small in the glow.',
+        subtext: 'For a moment, Tanda saw what he had been guarding: not the route, but the right to matter.',
+      },
+      secondDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'When big stories arrive, little ones are asked to be charming and quiet.',
+      },
+    },
+    {
+      id: 'rp3-23-tanda-apology',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-23-tanda-apology.png`,
+      dialogue: {
+        text: "Tanda folded her wings until the room felt like Perez's size again.",
+        subtext: 'She bowed lower than the mouse door.',
+      },
+      secondDialogue: {
+        speaker: 'Tanda',
+        speakerColor: tandaGold,
+        text: 'I should have asked how to enter.',
+      },
+    },
+    {
+      id: 'rp3-24-perez-apology',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-24-perez-apology.png`,
+      dialogue: {
+        text: "Perez opened his ledger and stared at Lucia's note.",
+        subtext: 'There was no box for Can both of you come?',
+      },
+      secondDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'My code kept the tooth safe. It did not answer the child.',
+      },
+    },
+    {
+      id: 'rp3-25-treaty',
+      layout: 'dramatic',
+      background: `${v2}/rp3-frame-25-treaty.png`,
+      dialogue: {
+        text: "Perez stamped a tiny receipt with the authority of Madrid's hidden walls.",
+        subtext: 'Tanda threaded Toothlight through it without changing the mouse seal.',
+      },
+      secondDialogue: {
+        speaker: 'Tanda',
+        speakerColor: tandaGold,
+        text: 'Your path carries the tooth.',
+      },
+      thirdDialogue: {
+        speaker: 'Perez',
+        speakerColor: perezGold,
+        text: 'Your light carries the question.',
+      },
+    },
+    {
+      id: 'rp3-26-double-carry',
+      layout: 'narrative',
+      background: `${v2}/rp3-frame-26-double-carry.png`,
+      dialogue: {
+        text: "Below the rooftops, Perez carried the tooth through Madrid's mouse roads.",
+        subtext: 'Above the rooftops, Tanda carried the memory through Toothlight.',
+      },
+    },
+    {
+      id: 'rp3-27-morning-proof',
+      layout: 'victory',
+      background: `${v2}/rp3-frame-27-morning-proof.png`,
+      dialogue: {
+        text: "Morning found Lucia with a coin, a tiny stamped receipt, and a glow that held both parents' stories.",
+        subtext: "Nobody's tradition had lost. Lucia had gained a bigger home.",
+      },
+    },
+    {
+      id: 'rp3-28-treaty-partners',
+      layout: 'cta',
+      background: `${v2}/rp3-frame-28-treaty-partners.png`,
+      dialogue: {
+        text: 'At dawn, Perez tucked a new page into his ledger. Tanda did not sign above his name. She signed beside it. "Next time," Perez said, "knock smaller." Tanda smiled. "Next time, leave room on the form."',
+        subtext: 'Create a Toothlight from the tooth, the story, and the people who helped your child feel held.',
       },
       isChoice: true,
-      choiceText: 'Make your child’s keepsake →',
-      choiceHref: '/toothfairy/app',
+      choiceText: 'Create Your Tooth Keepsake',
+      choiceHref: '/toothfairy/app/draw?from=story&slug=ratoncito-perez',
     },
   ],
 }

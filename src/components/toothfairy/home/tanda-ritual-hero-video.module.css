@@ -1,0 +1,43 @@
+.heroVideo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  border: 1px solid rgba(31, 29, 79, 0.08);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 75% 18%, rgba(247, 201, 103, 0.25), transparent 18rem),
+    radial-gradient(circle at 20% 12%, rgba(178, 143, 227, 0.24), transparent 20rem),
+    linear-gradient(135deg, #fff8ed 0%, #f3e7dc 48%, #efe5ff 100%);
+  box-shadow: 0 28px 78px rgba(55, 39, 98, 0.18);
+}
+
+.video,
+.reducedMotionPoster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reducedMotionPoster {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .heroVideo {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
+
+  .reducedMotionPoster {
+    display: block;
+  }
+}

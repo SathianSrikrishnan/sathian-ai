@@ -156,7 +156,7 @@ const cherokee: StoryConfig = {
       },
       isChoice: true,
       choiceText: "Now make yours ✦",
-      choiceHref: '/toothfairy/app',
+      choiceHref: '/toothfairy/app/draw?from=story&slug=cherokee',
     },
   ],
 }

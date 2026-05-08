@@ -8,7 +8,7 @@ const columns = [
     title: "Product",
     links: [
       { href: "/toothfairy#how-it-works", label: "How it works" },
-      { href: "/toothfairy/app", label: "Create a memory" },
+      { href: "/toothfairy/app/draw?from=footer", label: "Create a memory" },
       { href: "/toothfairy/keepsake/preview", label: "Preview" },
       { href: "/toothfairy/smile-fund", label: "Smile Fund" },
     ],
@@ -18,14 +18,12 @@ const columns = [
     links: [
       { href: "/toothfairy/stories", label: "Cultural Tales" },
       { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
-      { href: "/toothfairy/faq", label: "Parent FAQ" },
     ],
   },
   {
-    title: "Company",
+    title: "Parents",
     links: [
       { href: "/toothfairy/about", label: "About" },
-      { href: "/toothfairy/company", label: "Company" },
       { href: "/toothfairy/faq", label: "Parent FAQ" },
       { href: "/toothfairy/recover", label: "Recover Access" },
     ],
@@ -62,7 +60,7 @@ export function TFNFooter() {
 
   return (
     <footer className="tfn-footer">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[0.95fr_1.45fr_0.9fr]">
+      <div className="footer-grid">
         <div>
           <Link href="/toothfairy" className="footer-brand">
             <span className="footer-logo" aria-hidden>
@@ -84,16 +82,16 @@ export function TFNFooter() {
             </span>
             <span>toothfairy.network</span>
           </Link>
-          <p className="mt-4 max-w-xs text-sm leading-6" style={{ color: "#23365f" }}>
-            A first forever memory, guided by family and protected by parents.
+          <p className="footer-tagline">
+            A child's first forever memory, guided by story and protected by parents.
           </p>
         </div>
 
-        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="footer-columns">
           {columns.map((column) => (
             <div key={column.title}>
               <h3 className="footer-heading">{column.title}</h3>
-              <div className="mt-3 flex flex-col gap-2">
+              <div className="footer-link-list">
                 {column.links.map((link) => (
                   <Link key={`${column.title}-${link.label}`} href={link.href} className="footer-link">
                     {link.label}
@@ -105,11 +103,11 @@ export function TFNFooter() {
         </div>
 
         <form className="newsletter" onSubmit={handleSubscribe}>
-          <p className="text-sm font-extrabold" style={{ color: "#11234a" }}>
+          <p className="newsletter-title">
             Stay in the loop
           </p>
-          <p className="mt-2 text-sm leading-6" style={{ color: "#23365f" }}>
-            Family-friendly stories, product updates, and early access notes.
+          <p className="newsletter-copy">
+            Story lessons, Smile Fund notes, product updates, and early access.
           </p>
           <label className="sr-only" htmlFor="tfn-footer-email">
             Email address
@@ -129,7 +127,7 @@ export function TFNFooter() {
               {signupState === "loading" ? "Saving..." : "Subscribe"}
             </button>
           </div>
-          <p className="mt-3 text-xs" style={{ color: "var(--tfn-ink-muted)" }}>
+          <p className="newsletter-state">
             {signupState === "success"
               ? "You are on the list."
               : signupState === "error"
@@ -140,20 +138,43 @@ export function TFNFooter() {
       </div>
 
       <div className="footer-bottom">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="footer-bottom-inner">
           <span>Copyright {year} Tooth Fairy Network.</span>
           <span>Privacy, terms, and fee disclosures will be finalized before broad launch.</span>
         </div>
       </div>
 
-      <style jsx>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .tfn-footer {
           border-top: 1px solid var(--tfn-border);
           background:
             radial-gradient(circle at 86% 10%, oklch(72% 0.145 75 / 0.12), transparent 20rem),
             linear-gradient(180deg, #fffaf1, var(--tfn-surface-alt));
           color: var(--tfn-ink-muted);
-          font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
+          font-family: var(--font-body), Segoe UI, system-ui, sans-serif;
+        }
+
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+
+        .footer-grid {
+          display: grid;
+          width: min(100% - 40px, 1280px);
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          margin: 0 auto;
+          padding: 3rem 0;
         }
 
         .footer-brand {
@@ -183,12 +204,33 @@ export function TFNFooter() {
           height: 34px;
         }
 
+        .footer-tagline {
+          max-width: 20rem;
+          margin: 1rem 0 0;
+          color: #23365f;
+          font-size: 0.9rem;
+          line-height: 1.55;
+        }
+
+        .footer-columns {
+          display: grid;
+          gap: 1.75rem;
+        }
+
         .footer-heading {
+          margin: 0;
           color: #11234a;
           font-size: 0.82rem;
           font-weight: 900;
           letter-spacing: 0.08em;
           text-transform: uppercase;
+        }
+
+        .footer-link-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 0.75rem;
         }
 
         .footer-link {
@@ -208,6 +250,20 @@ export function TFNFooter() {
           background: oklch(100% 0 0 / 0.58);
           padding: 1rem;
           box-shadow: 0 18px 42px oklch(30% 0.035 65 / 0.06);
+        }
+
+        .newsletter-title {
+          margin: 0;
+          color: #11234a;
+          font-size: 0.9rem;
+          font-weight: 900;
+        }
+
+        .newsletter-copy {
+          margin: 0.5rem 0 0;
+          color: #23365f;
+          font-size: 0.9rem;
+          line-height: 1.55;
         }
 
         .email-row {
@@ -242,11 +298,58 @@ export function TFNFooter() {
           opacity: 0.72;
         }
 
+        .newsletter-state {
+          margin: 0.75rem 0 0;
+          color: var(--tfn-ink-muted);
+          font-size: 0.75rem;
+        }
+
         .footer-bottom {
           border-top: 1px solid var(--tfn-border);
           color: var(--tfn-ink-muted);
         }
-      `}</style>
+
+        .footer-bottom-inner {
+          display: flex;
+          width: min(100% - 40px, 1280px);
+          flex-direction: column;
+          gap: 0.75rem;
+          margin: 0 auto;
+          padding: 1.25rem 0;
+          font-size: 0.75rem;
+        }
+
+        @media (min-width: 640px) {
+          .footer-columns {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .footer-bottom-inner {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+
+        @media (min-width: 980px) {
+          .footer-grid {
+            grid-template-columns: 0.95fr 1.45fr 0.9fr;
+          }
+
+          .footer-columns {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 680px) {
+          .footer-grid,
+          .footer-bottom-inner {
+            width: min(100% - 28px, 1280px);
+          }
+        }
+      `,
+        }}
+      />
     </footer>
   )
 }

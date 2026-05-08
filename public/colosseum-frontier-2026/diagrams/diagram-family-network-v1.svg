@@ -1,0 +1,71 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#182033" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" markerWidth="18" markerHeight="18" refX="14" refY="9" orient="auto">
+      <path d="M2 2L16 9L2 16" fill="none" stroke="#435064" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      .title{font:800 76px Inter,Segoe UI,Arial,sans-serif;fill:#182033}
+      .subtitle{font:500 32px Inter,Segoe UI,Arial,sans-serif;fill:#546174}
+      .label{font:800 31px Inter,Segoe UI,Arial,sans-serif;fill:#182033}
+      .small{font:600 22px Inter,Segoe UI,Arial,sans-serif;fill:#667387}
+      .node{filter:url(#shadow)}
+      .line{stroke:#435064;stroke-width:4;stroke-linecap:round;stroke-dasharray:14 16;marker-end:url(#arrow);opacity:.72}
+    </style>
+  </defs>
+  <rect width="1920" height="1080" fill="#FBFCFF"/>
+  <path d="M0 206H1920" stroke="#E6EBF2" stroke-width="2"/>
+  <text x="116" y="125" class="title">Distributed families, one shared milestone</text>
+  <text x="120" y="174" class="subtitle">A lost tooth becomes a lightweight network event for parents, co-parents, grandparents, and relatives.</text>
+
+  <line x1="960" y1="560" x2="536" y2="364" class="line"/>
+  <line x1="960" y1="560" x2="1390" y2="350" class="line"/>
+  <line x1="960" y1="560" x2="404" y2="618" class="line"/>
+  <line x1="960" y1="560" x2="1510" y2="630" class="line"/>
+  <line x1="960" y1="560" x2="734" y2="820" class="line"/>
+  <line x1="960" y1="560" x2="1192" y2="824" class="line"/>
+
+  <g class="node">
+    <rect x="710" y="404" width="500" height="312" rx="34" fill="#FFFFFF" stroke="#D7DFEA" stroke-width="3"/>
+    <circle cx="960" cy="530" r="72" fill="#FFE5A8" stroke="#F3B84A" stroke-width="5"/>
+    <path d="M928 522C928 497 947 476 974 476C1003 476 1022 497 1022 522C1022 559 982 573 960 614C938 573 928 559 928 522Z" fill="#FDF7EC" stroke="#7B5B29" stroke-width="5" stroke-linejoin="round"/>
+    <text x="960" y="638" class="label" text-anchor="middle">Child milestone</text>
+    <text x="960" y="676" class="small" text-anchor="middle">memory + keepsake + gift link</text>
+  </g>
+
+  <g class="node">
+    <rect x="292" y="270" width="288" height="132" rx="28" fill="#EAF4FF" stroke="#8CB8EE" stroke-width="3"/>
+    <text x="436" y="332" class="label" text-anchor="middle">Parent</text>
+    <text x="436" y="369" class="small" text-anchor="middle">creates the ritual</text>
+  </g>
+  <g class="node">
+    <rect x="1308" y="258" width="320" height="132" rx="28" fill="#EEFDF5" stroke="#67D391" stroke-width="3"/>
+    <text x="1468" y="320" class="label" text-anchor="middle">Co-parent</text>
+    <text x="1468" y="357" class="small" text-anchor="middle">joins from elsewhere</text>
+  </g>
+  <g class="node">
+    <rect x="232" y="574" width="332" height="132" rx="28" fill="#FFF3D5" stroke="#F4BD4A" stroke-width="3"/>
+    <text x="398" y="636" class="label" text-anchor="middle">Grandparent</text>
+    <text x="398" y="673" class="small" text-anchor="middle">adds a gift</text>
+  </g>
+  <g class="node">
+    <rect x="1368" y="586" width="332" height="132" rx="28" fill="#FFEFF5" stroke="#E88AA8" stroke-width="3"/>
+    <text x="1534" y="648" class="label" text-anchor="middle">Aunt / uncle</text>
+    <text x="1534" y="685" class="small" text-anchor="middle">shares the link</text>
+  </g>
+  <g class="node">
+    <rect x="560" y="812" width="340" height="132" rx="28" fill="#F0EDFF" stroke="#9077FF" stroke-width="3"/>
+    <text x="730" y="874" class="label" text-anchor="middle">Family creator</text>
+    <text x="730" y="911" class="small" text-anchor="middle">drives discovery</text>
+  </g>
+  <g class="node">
+    <rect x="1030" y="812" width="340" height="132" rx="28" fill="#E8FAFE" stroke="#56CFE1" stroke-width="3"/>
+    <text x="1200" y="874" class="label" text-anchor="middle">Local keeper</text>
+    <text x="1200" y="911" class="small" text-anchor="middle">adapts the tradition</text>
+  </g>
+
+  <rect x="116" y="950" width="1688" height="70" rx="22" fill="#182033"/>
+  <text x="960" y="996" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="28" font-weight="750" fill="#FFFFFF" text-anchor="middle">The wedge: make it easy for a distributed family to participate in one small, emotional savings moment.</text>
+</svg>
