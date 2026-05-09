@@ -45,7 +45,7 @@ function HomeFallback() {
             fontWeight: 800,
           }}
         >
-          Turn a lost tooth into their first forever memory.
+          Turn a lost tooth into your child's first digital wallet.
         </h1>
         <p
           style={{
@@ -56,7 +56,7 @@ function HomeFallback() {
             lineHeight: 1.65,
           }}
         >
-          Draw the moment, make it magical, and save the memory before gifts ever enter the story.
+          Start with a Toothlight memory. Parents control the wallet, the timing, and the family link. Built on Solana.
         </p>
         <a
           href="/toothfairy/app/draw?from=home"
@@ -68,14 +68,14 @@ function HomeFallback() {
             marginTop: "1.75rem",
             borderRadius: 999,
             padding: "0 1.35rem",
-            background: "linear-gradient(135deg, #f4cf7b, #d8a43c)",
-            color: "#2f2350",
+            background: "linear-gradient(135deg, #0f857d, #28b99a 46%, #ffd76a)",
+            color: "#fffaf1",
             fontWeight: 900,
             textDecoration: "none",
             boxShadow: "0 12px 28px rgba(216, 164, 60, 0.28)",
           }}
         >
-          Create their memory
+          Create a Toothlight
         </a>
       </section>
     </main>

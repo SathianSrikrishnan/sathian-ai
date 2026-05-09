@@ -2,30 +2,31 @@
 
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
+import { TFNGlowingToothLogo } from "@/components/toothfairy/brand/tfn-glowing-tooth-logo"
 
 const columns = [
   {
     title: "Product",
     links: [
-      { href: "/toothfairy#how-it-works", label: "How it works" },
-      { href: "/toothfairy/app/draw?from=footer", label: "Create a memory" },
+      { href: "/toothfairy/app/draw?from=footer", label: "Create a Toothlight" },
       { href: "/toothfairy/keepsake/preview", label: "Preview" },
       { href: "/toothfairy/smile-fund", label: "Smile Fund" },
     ],
   },
   {
-    title: "Stories",
+    title: "Parents",
     links: [
-      { href: "/toothfairy/stories", label: "Cultural Tales" },
-      { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
+      { href: "/toothfairy#how-it-works", label: "How it works" },
+      { href: "/toothfairy/faq", label: "Parent FAQ" },
+      { href: "/toothfairy/recover", label: "Recover Access" },
     ],
   },
   {
-    title: "Parents",
+    title: "Network",
     links: [
       { href: "/toothfairy/about", label: "About" },
-      { href: "/toothfairy/faq", label: "Parent FAQ" },
-      { href: "/toothfairy/recover", label: "Recover Access" },
+      { href: "/toothfairy/stories", label: "Stories" },
+      { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
     ],
   },
 ]
@@ -63,27 +64,13 @@ export function TFNFooter() {
       <div className="footer-grid">
         <div>
           <Link href="/toothfairy" className="footer-brand">
-            <span className="footer-logo" aria-hidden>
-              <svg viewBox="0 0 48 48" fill="none">
-                <path
-                  d="M24 7.5c-3.4-3-8.7-3.3-12.2-.6C7.2 10.4 6.4 17.3 9.7 24.4c2 4.4 3.1 9.7 4.2 13.3.8 2.7 2 4.7 4.1 4.7 2.5 0 3.1-3.1 3.8-6.4.4-1.8.8-3.2 2.2-3.2s1.8 1.4 2.2 3.2c.7 3.3 1.3 6.4 3.8 6.4 2.1 0 3.3-2 4.1-4.7 1.1-3.6 2.2-8.9 4.2-13.3 3.3-7.1 2.5-14-2.1-17.5-3.5-2.7-8.8-2.4-12.2.6Z"
-                  stroke="url(#footerToothGradient)"
-                  strokeWidth="3"
-                  strokeLinejoin="round"
-                />
-                <defs>
-                  <linearGradient id="footerToothGradient" x1="8" y1="8" x2="41" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#C94BA8" />
-                    <stop offset="0.55" stopColor="#6D45A8" />
-                    <stop offset="1" stopColor="#D8A43C" />
-                  </linearGradient>
-                </defs>
-              </svg>
+            <TFNGlowingToothLogo className="footer-logo" size={42} />
+            <span>
+              toothfairy.<b>network</b>
             </span>
-            <span>toothfairy.network</span>
           </Link>
           <p className="footer-tagline">
-            A child's first forever memory, guided by story and protected by parents.
+            A tiny ritual. A wallet parents control.
           </p>
         </div>
 
@@ -104,10 +91,10 @@ export function TFNFooter() {
 
         <form className="newsletter" onSubmit={handleSubscribe}>
           <p className="newsletter-title">
-            Stay in the loop
+            Follow the story
           </p>
           <p className="newsletter-copy">
-            Story lessons, Smile Fund notes, product updates, and early access.
+            Story drops, Smile Fund notes, and product updates.
           </p>
           <label className="sr-only" htmlFor="tfn-footer-email">
             Email address
@@ -116,7 +103,7 @@ export function TFNFooter() {
             <input
               id="tfn-footer-email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="Parent email"
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value)
@@ -124,7 +111,7 @@ export function TFNFooter() {
               }}
             />
             <button type="submit" disabled={signupState === "loading"}>
-              {signupState === "loading" ? "Saving..." : "Subscribe"}
+              {signupState === "loading" ? "Saving..." : "Join"}
             </button>
           </div>
           <p className="newsletter-state">
@@ -132,7 +119,7 @@ export function TFNFooter() {
               ? "You are on the list."
               : signupState === "error"
                 ? "That did not save. Try again in a moment."
-                : "No spam. Just useful updates while the Network grows."}
+                : "Useful updates only."}
           </p>
         </form>
       </div>
@@ -140,7 +127,7 @@ export function TFNFooter() {
       <div className="footer-bottom">
         <div className="footer-bottom-inner">
           <span>Copyright {year} Tooth Fairy Network.</span>
-          <span>Privacy, terms, and fee disclosures will be finalized before broad launch.</span>
+          <span>Parent-controlled memories. Built on Solana.</span>
         </div>
       </div>
 
@@ -188,6 +175,13 @@ export function TFNFooter() {
           text-decoration: none;
         }
 
+        .footer-brand b {
+          background: linear-gradient(100deg, #0c7d78, #28b99a 38%, #d8a43c 72%, #f06f73);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+
         .footer-logo {
           display: grid;
           width: 42px;
@@ -195,8 +189,8 @@ export function TFNFooter() {
           flex: 0 0 auto;
           place-items: center;
           border-radius: 999px;
-          background: #fffaf1;
-          box-shadow: 0 8px 22px oklch(37% 0.11 302 / 0.12);
+          background: transparent;
+          box-shadow: none;
         }
 
         .footer-logo svg {
@@ -241,7 +235,7 @@ export function TFNFooter() {
         }
 
         .footer-link:hover {
-          color: #6d45a8;
+          color: #0c7d78;
         }
 
         .newsletter {
@@ -287,7 +281,7 @@ export function TFNFooter() {
           min-height: 42px;
           border: 0;
           border-radius: 999px;
-          background: linear-gradient(135deg, #6d45a8, #8a5cc5);
+          background: linear-gradient(135deg, #0f857d, #28b99a 48%, #ffd76a);
           color: #fffaf1;
           font-weight: 900;
           cursor: pointer;
