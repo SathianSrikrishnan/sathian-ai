@@ -3,7 +3,7 @@
 import { motion } from 'motion/react'
 import Link from 'next/link'
 import { StoryConfig } from '@/data/stories/types'
-import { FEATURED_STORIES } from '@/data/stories'
+import { LIVE_STORIES } from '@/data/stories'
 
 /* ─── Color tokens (OKLCH, matching landing page) ───────────────────────── */
 const c = {
@@ -32,7 +32,10 @@ const charImageMap: Record<string, string> = {
   'finland': 'char-finish-fairy.jpg',
   'north-africa': 'char-sun-spirit.jpg',
   'jamaica': 'char-granny-jamaica.jpg',
-  'korea': 'char-magpie.jpg',
+  'korea': 'char-kkachi.png',
+  'waraba-edge-light': 'char-waraba.png',
+  'daga-one-year-wish': 'char-daga.png',
+  'anna-bogle': 'char-anna-bogle-v2.png',
   'romania': 'char-crow.jpg',
   'japan': 'char-tooth-kami.jpg',
   'ethiopia': 'char-hyena.jpg',
@@ -42,7 +45,7 @@ const charImageMap: Record<string, string> = {
   'babylonia': 'char-tooth-worm.jpg',
 }
 
-const featuredIds = new Set(FEATURED_STORIES.map(s => s.id))
+const featuredIds = new Set(LIVE_STORIES.map(s => s.id))
 
 interface StorySelectorProps {
   stories: StoryConfig[]
@@ -98,23 +101,22 @@ export default function StorySelector({ stories, simple = false }: StorySelector
                 className="text-lg leading-[1.8] mb-4"
                 style={{ color: c.brownSoft }}
               >
-                In North America, a hummingbird fairy carries an ancient satchel.
-                In Ethiopia, a hyena waits in the dark for children brave enough to come.
-                In Brazil, a jaguar only appears when you stop looking.
-                Pick a tradition — your child&apos;s story begins here.
+                Read the seven storybooks now ready on the Network: Tanda,
+                the first tooth fee, Perez, Kkachi, Waraba, Daga, and Anna Bogle.
+                Each keeper protects a different family promise.
               </p>
 
               <p
                 className="text-sm font-medium"
                 style={{ color: c.brownMuted }}
               >
-                {stories.filter(s => s.available).length} traditions · 6 continents · Every one leads to a keepsake
+                {featured.length} stories / 7 keepers / Every one leads to a keepsake
               </p>
             </>
           )}
         </motion.div>
 
-        {/* ── Featured Stories (Full-Length) ───────────────────────────── */}
+        {/* ── Live Stories (Full-Length) ───────────────────────────── */}
         {featured.length > 0 && (
           <motion.div
             className="mb-16"
@@ -126,9 +128,9 @@ export default function StorySelector({ stories, simple = false }: StorySelector
               className="text-xs font-semibold uppercase tracking-[0.15em] mb-6"
               style={{ color: c.gold }}
             >
-              Featured Stories
+              Live Stories
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {featured.map((story, i) => (
                 <motion.div
                   key={story.id}
@@ -319,7 +321,7 @@ export default function StorySelector({ stories, simple = false }: StorySelector
             Every story ends with a keepsake. You can make one right now.
           </p>
           <Link
-            href="/toothfairy/app"
+            href="/toothfairy/app/draw?from=story-selector"
             className="inline-block px-8 py-3.5 text-base font-semibold rounded-full no-underline active:scale-[0.98]"
             style={{
               background: c.gold,

@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ratoncito Perez and the Toothlight Treaty - Final Draft</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #fff7eb;
+      --muted: #d7c5aa;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(28, 21, 17, 0.8);
+      --accent: #e8a820;
+      --tanda: #e8b77a;
+      --lucia: #9fc1d0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #111013;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    header,
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-inline: 22px;
+    }
+
+    header {
+      padding-top: 56px;
+      padding-bottom: 28px;
+    }
+
+    h1 {
+      max-width: 920px;
+      margin: 0 0 10px;
+      font-size: clamp(38px, 7vw, 82px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .dek {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #ffe1ad;
+    }
+
+    .meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    main {
+      padding-bottom: 80px;
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 22px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      border-radius: 10px;
+      background: #181316;
+      overflow: hidden;
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 82vh;
+      object-fit: contain;
+      background: #181316;
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .kicker {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .quote {
+      border-left: 3px solid currentColor;
+      padding-left: 12px;
+      color: #ffe0a3;
+    }
+
+    .quote.tanda {
+      color: var(--tanda);
+    }
+
+    .quote.lucia {
+      color: var(--lucia);
+    }
+
+    .button-copy {
+      display: inline-block;
+      width: fit-content;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: #f4c16f;
+      color: #1b140d;
+      padding: 10px 15px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .scene {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ratoncito Perez<br />and the Toothlight Treaty</h1>
+    <p class="dek">A Madrid story about two true tooth traditions learning how to share one child with care.</p>
+    <div class="meta">
+      <span>28 scenes</span>
+      <span>28 unique frame images</span>
+      <span>Full-image review view</span>
+      <span>Ready-to-submit draft</span>
+    </div>
+  </header>
+
+  <main id="story"></main>
+
+  <script>
+    const scenes = [
+      {
+        n: "01",
+        title: "Two Doors In One Moon",
+        image: "v2/rp3-frame-01-two-doors.png",
+        lines: [
+          "Ratoncito Perez and the Toothlight Treaty",
+          "A Madrid story about two true tooth traditions."
+        ]
+      },
+      {
+        n: "02",
+        title: "The Wobble At Merienda",
+        image: "v2/rp3-frame-02-wobble-merienda.png",
+        lines: [
+          "At merienda, Lucia's tooth wobbled every time she smiled, swallowed, or tried very hard not to think about it.",
+          "Papa said Perez loved a brave tooth. Mom said the Tooth Fairy loved one too."
+        ]
+      },
+      {
+        n: "03",
+        title: "It Finally Falls",
+        image: "v2/rp3-frame-03-finally-falls.png",
+        lines: [
+          "Then the tooth popped free into Lucia's palm, small and bright and suddenly important.",
+          "Papa reached for the old coin box. Mom reached for an old folded note."
+        ]
+      },
+      {
+        n: "04",
+        title: "Two True Stories",
+        image: "v2/rp3-frame-04-two-true-stories.png",
+        lines: [
+          "Papa told how Perez had come through the walls when he was little.",
+          "Mom told how a fairy had left a note by her pillow when she was little."
+        ]
+      },
+      {
+        n: "05",
+        title: "The Question",
+        image: "v2/rp3-frame-05-question.png",
+        lines: [
+          "Lucia liked both stories.",
+          "That was the trouble. If she chose one, would the other story feel left outside?"
+        ]
+      },
+      {
+        n: "06",
+        title: "The Note Under The Pillow",
+        image: "v2/rp3-frame-06-note-under-pillow.png",
+        lines: [
+          "So Lucia wrote the smallest note she could manage and tucked it beside the tooth.",
+          "It said, Can both of you come?"
+        ],
+        quotes: [{ speaker: "Lucia", kind: "lucia", text: "Please do not make me choose." }]
+      },
+      {
+        n: "07",
+        title: "Perez's Ledger Room",
+        image: "v2/rp3-frame-07-ledger-room.png",
+        lines: [
+          "Behind the bakery wall, Ratoncito Perez checked his ledger, polished his stamp, and counted his coins twice.",
+          "Perez was not merely quick. He was exact."
+        ]
+      },
+      {
+        n: "08",
+        title: "The Mouse Code",
+        image: "v2/rp3-frame-08-mouse-code.png",
+        lines: [
+          "His family code was older than the bakery ovens.",
+          "Enter quietly. Take respectfully. Leave the coin. Keep the local promise. A mouse collected because a house had trusted him."
+        ]
+      },
+      {
+        n: "09",
+        title: "A Tooth Calls Twice",
+        image: "v2/rp3-frame-09-tooth-calls-twice.png",
+        lines: [
+          "Lucia's tooth glowed in Perez's ledger.",
+          "Far away, the same glow woke Tanda's pendant."
+        ]
+      },
+      {
+        n: "10",
+        title: "Tanda Arrives Too Bright",
+        image: "v2/rp3-frame-10-tanda-arrives.png",
+        lines: [
+          "Perez opened his tiny door and found Tanda trying very hard to look small.",
+          "This was difficult. She had wings."
+        ],
+        quotes: [{ speaker: "Perez", text: "That is not knocking. That is sunrise with manners." }]
+      },
+      {
+        n: "11",
+        title: "Professional Offense",
+        image: "v2/rp3-frame-11-professional-offense.png",
+        lines: [
+          "Tanda said she had come because Lucia's tooth called through Toothlight.",
+          "Perez held his coin tray a little higher."
+        ],
+        quotes: [
+          { speaker: "Perez", text: "Madrid is not a branch office." },
+          { speaker: "Tanda", kind: "tanda", text: "I did not come to take Madrid." }
+        ]
+      },
+      {
+        n: "12",
+        title: "The Old Claim",
+        image: "v2/rp3-frame-12-old-claim.png",
+        lines: [
+          "Perez showed her the routes, the names, the old seals, the teeth kept safe since his great-grandfather's night.",
+          "His pride was not vanity. It was a promise with whiskers."
+        ],
+        quotes: [{ speaker: "Perez", text: "A house gives a mouse its trust. I do not misplace that." }]
+      },
+      {
+        n: "13",
+        title: "The Wide Claim",
+        image: "v2/rp3-frame-13-wide-claim.png",
+        lines: [
+          "Tanda opened her hands, and Toothlight showed what the tooth was holding: Mom's old pillow, Papa's old coin, Lucia's worried little note.",
+          "Perez stopped tapping his stamp."
+        ],
+        quotes: [{ speaker: "Tanda", kind: "tanda", text: "She is not asking which story is true. She is asking whether both can love her." }]
+      },
+      {
+        n: "14",
+        title: "The First Argument",
+        image: "v2/rp3-frame-14-first-argument.png",
+        lines: [
+          "On the roof, the night wind lifted Tanda's hair and Perez's whiskers.",
+          "They were both right enough to be annoying."
+        ],
+        quotes: [
+          { speaker: "Perez", text: "Big magic has a habit of making small doors disappear." },
+          { speaker: "Tanda", kind: "tanda", text: "And small doors can become locks if no one listens through them." }
+        ]
+      },
+      {
+        n: "15",
+        title: "The Race To The Room",
+        image: "v2/rp3-frame-15-race-to-room.png",
+        lines: [
+          "Perez took the pipes. Tanda took the sky.",
+          "Neither called it a race, which was how both of them knew it was one."
+        ]
+      },
+      {
+        n: "16",
+        title: "Mouse Work",
+        image: "v2/rp3-frame-16-mouse-work.png",
+        lines: [
+          "Perez slipped under Lucia's door, past the squeaky toy, past the sleeping cat's tail, past the one floorboard that betrayed amateurs.",
+          "Every inch of the room had a sound, and Perez knew which ones not to make."
+        ]
+      },
+      {
+        n: "17",
+        title: "Fairy Work",
+        image: "v2/rp3-frame-17-fairy-work.png",
+        lines: [
+          "At the window, Tanda folded her wings and softened the Toothlight until it was no brighter than a sleeping child's breath.",
+          "Her work was not to dazzle. Her work was to notice."
+        ]
+      },
+      {
+        n: "18",
+        title: "Both Hands Reach",
+        image: "v2/rp3-frame-18-both-hands-reach.png",
+        lines: [
+          "Perez reached under the pillow.",
+          "Tanda's light reached through the room.",
+          "The tooth did not move."
+        ]
+      },
+      {
+        n: "19",
+        title: "The Split Light",
+        image: "v2/rp3-frame-19-split-light.png",
+        lines: [
+          "The tooth glowed in two colors: bakery gold and pearly fairy light.",
+          "One held the smell of bread and old Madrid stone. One held the hush of a pillow in another country."
+        ]
+      },
+      {
+        n: "20",
+        title: "Perez Takes Offense",
+        image: "v2/rp3-frame-20-perez-offense.png",
+        lines: [
+          "Perez thought Tanda had enchanted his route.",
+          "Tanda thought Perez was trying to close the tooth around one answer."
+        ],
+        quotes: [
+          { speaker: "Perez", text: "You put wings on everything and call it helping." },
+          { speaker: "Tanda", kind: "tanda", text: "You put stamps on everything and call it safe." }
+        ]
+      },
+      {
+        n: "21",
+        title: "Lucia's Dream",
+        image: "v2/rp3-frame-21-lucia-dream.png",
+        lines: [
+          "Then Lucia turned in her sleep, and the tooth showed them her dream.",
+          "She stood between two bedtime doors, holding one small tooth with both hands."
+        ]
+      },
+      {
+        n: "22",
+        title: "A Collector's Fear",
+        image: "v2/rp3-frame-22-collectors-fear.png",
+        lines: [
+          "Perez looked very small in the glow.",
+          "For a moment, Tanda saw what he had been guarding: not the route, but the right to matter."
+        ],
+        quotes: [{ speaker: "Perez", text: "When big stories arrive, little ones are asked to be charming and quiet." }]
+      },
+      {
+        n: "23",
+        title: "Tanda's Apology",
+        image: "v2/rp3-frame-23-tanda-apology.png",
+        lines: [
+          "Tanda folded her wings until the room felt like Perez's size again.",
+          "She bowed lower than the mouse door."
+        ],
+        quotes: [{ speaker: "Tanda", kind: "tanda", text: "I should have asked how to enter." }]
+      },
+      {
+        n: "24",
+        title: "Perez's Apology",
+        image: "v2/rp3-frame-24-perez-apology.png",
+        lines: [
+          "Perez opened his ledger and stared at Lucia's note.",
+          "There was no box for Can both of you come?"
+        ],
+        quotes: [{ speaker: "Perez", text: "My code kept the tooth safe. It did not answer the child." }]
+      },
+      {
+        n: "25",
+        title: "The Treaty",
+        image: "v2/rp3-frame-25-treaty.png",
+        lines: [
+          "Perez stamped a tiny receipt with the authority of Madrid's hidden walls.",
+          "Tanda threaded Toothlight through it without changing the mouse seal."
+        ],
+        quotes: [
+          { speaker: "Tanda", kind: "tanda", text: "Your path carries the tooth." },
+          { speaker: "Perez", text: "Your light carries the question." }
+        ]
+      },
+      {
+        n: "26",
+        title: "The Double Carry",
+        image: "v2/rp3-frame-26-double-carry.png",
+        lines: [
+          "Below the rooftops, Perez carried the tooth through Madrid's mouse roads.",
+          "Above the rooftops, Tanda carried the memory through Toothlight."
+        ]
+      },
+      {
+        n: "27",
+        title: "Morning Proof",
+        image: "v2/rp3-frame-27-morning-proof.png",
+        lines: [
+          "Morning found Lucia with a coin, a tiny stamped receipt, and a glow that held both parents' stories.",
+          "Nobody's tradition had lost. Lucia had gained a bigger home."
+        ]
+      },
+      {
+        n: "28",
+        title: "Treaty Partners",
+        image: "v2/rp3-frame-28-treaty-partners.png",
+        lines: [
+          "At dawn, Perez tucked a new page into his ledger.",
+          "Tanda did not sign above his name. She signed beside it."
+        ],
+        quotes: [
+          { speaker: "Perez", text: "Next time, knock smaller." },
+          { speaker: "Tanda", kind: "tanda", text: "Next time, leave room on the form." }
+        ],
+        button: "Create Your Tooth Keepsake"
+      }
+    ];
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function renderScene(scene) {
+      const lines = (scene.lines || []).map(line => `<p>${escapeHtml(line)}</p>`).join("");
+      const quotes = (scene.quotes || [])
+        .map(quote => `<p class="quote ${escapeHtml(quote.kind || "")}"><strong>${escapeHtml(quote.speaker)}:</strong> "${escapeHtml(quote.text)}"</p>`)
+        .join("");
+      const button = scene.button ? `<span class="button-copy">${escapeHtml(scene.button)}</span>` : "";
+      const title = scene.n === "01" ? `<h2>${escapeHtml(scene.lines[0])}</h2>` : "";
+      const body = scene.n === "01" ? `<p>${escapeHtml(scene.lines[1])}</p>` : `${lines}${quotes}${button}`;
+
+      return `
+        <section class="scene">
+          <div class="frame"><img src="${escapeHtml(scene.image)}" alt="${escapeHtml(scene.n + ". " + scene.title)}" /></div>
+          <div class="copy">
+            <p class="kicker">${escapeHtml(scene.n)}. ${escapeHtml(scene.title)}</p>
+            ${title}
+            ${body}
+          </div>
+        </section>
+      `;
+    }
+
+    document.getElementById("story").innerHTML = scenes.map(renderScene).join("");
+  </script>
+</body>
+</html>

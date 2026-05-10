@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  type ReactNode,
 } from 'react';
 import {
   BRUSH_DEFAULT_SIZE_INDEX,
@@ -58,6 +59,7 @@ export interface DrawingCanvasV2Props {
   onDone: (dataUrl: string) => void;
   onBack?: () => void;
   initialBackground?: string | null;
+  topAction?: ReactNode;
 }
 
 interface Sparkle {
@@ -76,7 +78,7 @@ const CANVAS_RESOLUTION = 1024;
 const UNDO_CAP = 30;
 
 const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
-  function DrawingCanvasV2({ onDone, onBack, initialBackground }, ref) {
+  function DrawingCanvasV2({ onDone, onBack, initialBackground, topAction }, ref) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const activePointerRef = useRef<PointerId | null>(null);
@@ -194,6 +196,9 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
         const w = img.width * scale;
         const h = img.height * scale;
         ctx.drawImage(img, (CANVAS_RESOLUTION - w) / 2, (CANVAS_RESOLUTION - h) / 2, w, h);
+        undoStackRef.current = [];
+        strokeCountRef.current = 1;
+        setHasStrokes(true);
       };
       img.src = initialBackground;
     }, [initialBackground, fillBackground]);
@@ -219,10 +224,10 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
 
     // ── Palm rejection guard ────────────────────────────────────
     const shouldRejectPointer = (e: React.PointerEvent): boolean => {
-      // Reject if pointer is touch AND width/height suggest a palm (>40px contact)
+      // Reject only unusually broad touch contacts; some mobile browsers report
+      // normal finger pressure as 0, so pressure is not a reliable guard.
       if (e.pointerType === 'touch') {
-        if (e.width > 40 || e.height > 40) return true;
-        if (e.pressure === 0) return true;
+        if (e.width > 48 && e.height > 48) return true;
       }
       return false;
     };
@@ -262,6 +267,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
 
     // ── Pointer handlers ────────────────────────────────────────
     const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
       if (shouldRejectPointer(e)) return;
       if (activePointerRef.current !== null) return; // already tracking a pointer
 
@@ -293,6 +299,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
     };
 
     const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
       if (activePointerRef.current !== e.pointerId) return;
       if (shouldRejectPointer(e)) return;
 
@@ -314,6 +321,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
     };
 
     const finishStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
       if (activePointerRef.current !== e.pointerId) return;
       activePointerRef.current = null;
       lastPosRef.current = null;
@@ -355,7 +363,16 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       <div
         ref={containerRef}
         className="fixed inset-0 flex flex-col"
-        style={{ background: c.creamDeep, touchAction: 'none' }}
+        style={{
+          background: c.creamDeep,
+          touchAction: 'none',
+          zIndex: 80,
+          height: '100dvh',
+          minHeight: '100vh',
+          overflowY: 'auto',
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
+        }}
       >
         {/* Top bar */}
         <header
@@ -394,53 +411,100 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           >
             Draw your tooth
           </h1>
-          <div style={{ width: 48 }} aria-hidden />
+          <div className="flex items-center justify-end" style={{ minWidth: 56 }}>
+            {topAction}
+          </div>
         </header>
 
         {/* Canvas area */}
         <div
           className="flex-1 flex items-center justify-center p-3 relative"
-          style={{ background: c.creamDeep, touchAction: 'none' }}
+          style={{
+            background: c.creamDeep,
+            touchAction: 'none',
+            minHeight: 0,
+          }}
         >
           <div
-            className="relative"
+            className="drawing-stage relative flex flex-col items-center gap-3"
             style={{
-              width: '100%',
-              height: '100%',
+              minWidth: 260,
               maxWidth: '100%',
-              maxHeight: '100%',
-              aspectRatio: '1 / 1',
-              borderRadius: 16,
-              overflow: 'visible',
-              transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
-              transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
-              boxShadow: doneAnimating
-                ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
-                : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
-              animation: doneAnimating
-                ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-                : undefined,
             }}
           >
-            <canvas
-              ref={canvasRef}
-              className="w-full h-full rounded-2xl select-none"
+            <div
+              className="drawing-prompt w-full rounded-2xl px-4 py-3 text-center"
               style={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                background: c.cream,
-                touchAction: 'none',
-                imageRendering: 'crisp-edges',
-                cursor: 'crosshair',
-                borderRadius: 16,
+                background: 'oklch(99% 0.006 82 / 0.82)',
+                border: `1px solid ${c.border}`,
+                boxShadow: `0 8px 26px ${c.shadow}`,
               }}
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={finishStroke}
-              onPointerCancel={finishStroke}
-              onPointerLeave={finishStroke}
-            />
+            >
+              <p
+                style={{
+                  margin: 0,
+                  color: c.gold,
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Tiny tooth memory
+              </p>
+              <p
+                style={{
+                  margin: '0.25rem 0 0',
+                  color: c.brownSoft,
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(1rem, 2.2vw, 1.2rem)',
+                  lineHeight: 1.2,
+                }}
+              >
+                Draw the tooth, a feeling, or a symbol.
+              </p>
+            </div>
+            <div
+              className="relative"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                aspectRatio: '1 / 1',
+                borderRadius: 16,
+                overflow: 'visible',
+                transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
+                transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: doneAnimating
+                  ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
+                  : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
+                animation: doneAnimating
+                  ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                  : undefined,
+              }}
+            >
+              <canvas
+                ref={canvasRef}
+                className="w-full h-full rounded-2xl select-none"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  height: '100%',
+                  background: c.cream,
+                  touchAction: 'none',
+                  imageRendering: 'crisp-edges',
+                  cursor: 'crosshair',
+                  borderRadius: 16,
+                }}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={finishStroke}
+                onPointerCancel={finishStroke}
+                onPointerLeave={finishStroke}
+              />
+            </div>
           </div>
 
           {/* Sparkle overlay — absolute positioned relative to the full canvas area */}
@@ -474,6 +538,19 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           </div>
 
           <style jsx>{`
+            .drawing-stage {
+              width: min(92vw, 720px);
+            }
+            @media (max-width: 480px) and (max-height: 720px) {
+              .drawing-stage {
+                width: min(78vw, 304px);
+                gap: 0.5rem;
+              }
+              .drawing-prompt {
+                padding-top: 0.65rem;
+                padding-bottom: 0.65rem;
+              }
+            }
             @keyframes tfn-sparkle {
               0% {
                 opacity: 0;
@@ -508,12 +585,13 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           style={{
             background: c.cream,
             borderTop: `1px solid ${c.border}`,
+            paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
           }}
         >
           {/* Row 1: tools + sizes */}
-          <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center justify-center gap-2 mb-3 flex-wrap">
             {/* Tool picker */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               {TOOL_ORDER.map((t) => (
                 <button
                   key={t}
@@ -527,8 +605,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                   aria-pressed={tool === t && !eraser}
                   className="rounded-2xl active:scale-95"
                   style={{
-                    width: 64,
-                    height: 64,
+                    width: 52,
+                    height: 52,
                     background: tool === t && !eraser ? c.goldSoft : c.cream,
                     border: `2px solid ${tool === t && !eraser ? c.gold : c.border}`,
                     color: c.brown,
@@ -548,7 +626,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
             </div>
 
             {/* Size picker */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               {[0, 1, 2].map((i) => {
                 const s = BRUSH_SIZES[tool][i as BrushSizeIndex];
                 const isActive = sizeIndex === i && !eraser;
@@ -564,8 +642,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                     aria-pressed={isActive}
                     className="rounded-full active:scale-95 flex items-center justify-center"
                     style={{
-                      width: 56,
-                      height: 56,
+                      width: 48,
+                      height: 48,
                       background: c.cream,
                       border: `2px solid ${isActive ? c.gold : c.border}`,
                       padding: 0,
@@ -587,7 +665,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           </div>
 
           {/* Row 2: color swatches */}
-          <div className="flex items-center justify-center gap-2 mb-3 flex-wrap">
+          <div className="flex items-center justify-center gap-1.5 mb-3 flex-wrap">
             {SWATCHES.map((s) => (
               <button
                 key={s.name}
@@ -597,8 +675,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                 aria-pressed={color === s.hex}
                 className="rounded-full active:scale-95"
                 style={{
-                  width: 44,
-                  height: 44,
+                  width: 38,
+                  height: 38,
                   background: s.hex,
                   border:
                     color === s.hex
@@ -611,15 +689,15 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           </div>
 
           {/* Row 3: eraser + undo + done */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setEraser((e) => !e)}
               aria-pressed={eraser}
               className="rounded-full active:scale-95"
               style={{
-                width: 56,
-                height: 56,
+                width: 52,
+                height: 52,
                 background: eraser ? c.goldSoft : c.cream,
                 border: `2px solid ${eraser ? c.gold : c.border}`,
                 color: c.brown,
@@ -637,8 +715,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
               onClick={handleUndo}
               className="rounded-full active:scale-95"
               style={{
-                width: 56,
-                height: 56,
+                width: 52,
+                height: 52,
                 background: c.cream,
                 border: `2px solid ${c.border}`,
                 color: c.brown,
@@ -656,8 +734,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
               onClick={handleClear}
               className="rounded-full active:scale-95"
               style={{
-                width: 56,
-                height: 56,
+                width: 52,
+                height: 52,
                 background: c.cream,
                 border: `2px solid ${c.border}`,
                 color: c.brown,
@@ -676,7 +754,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
               disabled={!hasStrokes}
               className="flex-1 rounded-full active:scale-[0.98]"
               style={{
-                height: 64,
+                minHeight: 56,
                 background: hasStrokes ? c.gold : c.border,
                 color: c.cream,
                 fontFamily: 'var(--font-display)',

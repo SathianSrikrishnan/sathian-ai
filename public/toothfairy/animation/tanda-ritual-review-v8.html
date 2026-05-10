@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tanda Ritual Loop v8</title>
+    <style>
+      :root {
+        color: #211d50;
+        background: #fff7ea;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: clamp(12px, 2vw, 28px);
+        background:
+          radial-gradient(circle at 76% 8%, rgba(216, 164, 60, 0.18), transparent 20rem),
+          radial-gradient(circle at 16% 4%, rgba(138, 99, 201, 0.14), transparent 18rem),
+          linear-gradient(180deg, #fff8ed, #f8ecd9);
+      }
+
+      main {
+        width: min(100%, 980px);
+        text-align: center;
+      }
+
+      p {
+        margin: 0 0 10px;
+        color: #8b63c9;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 0 clamp(16px, 2.6vw, 30px);
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1;
+      }
+
+      figure {
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid rgba(41, 31, 82, 0.08);
+        border-radius: 8px;
+        background: rgba(255, 249, 238, 0.74);
+        box-shadow: 0 28px 72px rgba(47, 33, 92, 0.13);
+      }
+
+      video {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>Static Review</p>
+      <h1>Tanda Ritual Loop v8</h1>
+      <figure aria-label="Tanda saves a tooth story and starts a tiny gift in the Smile Fund piggy bank.">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          poster="/toothfairy/animation/tfn-tanda-ritual-layered-poster-v8.webp"
+        >
+          <source src="/toothfairy/animation/tfn-tanda-ritual-layered-loop-v8.webm" type="video/webm" />
+          <source src="/toothfairy/animation/tfn-tanda-ritual-layered-loop-v8.mp4" type="video/mp4" />
+        </video>
+      </figure>
+    </main>
+  </body>
+</html>

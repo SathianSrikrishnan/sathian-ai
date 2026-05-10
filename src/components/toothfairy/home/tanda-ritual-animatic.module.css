@@ -1,0 +1,467 @@
+.animatic {
+  width: 100%;
+}
+
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid rgba(31, 29, 79, 0.08);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 74% 12%, rgba(247, 201, 103, 0.28), transparent 18rem),
+    radial-gradient(circle at 18% 18%, rgba(178, 143, 227, 0.26), transparent 20rem),
+    linear-gradient(135deg, #fff8ed 0%, #f3e7dc 48%, #efe5ff 100%);
+  box-shadow: 0 28px 78px rgba(55, 39, 98, 0.18);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  margin: 0;
+  opacity: 0;
+  animation: sceneReveal 8.4s linear infinite;
+}
+
+.scene1 {
+  animation-delay: 0s;
+}
+
+.scene2 {
+  animation-delay: 1.4s;
+}
+
+.scene3 {
+  animation-delay: 2.8s;
+}
+
+.scene4 {
+  animation-delay: 4.2s;
+}
+
+.scene5 {
+  animation-delay: 5.6s;
+}
+
+.scene6 {
+  animation-delay: 7s;
+}
+
+.backdrop,
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.backdrop {
+  z-index: 0;
+  object-fit: cover;
+  opacity: 0.52;
+  filter: blur(30px) saturate(1.18);
+  transform: scale(1.18);
+}
+
+.frame {
+  z-index: 1;
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: min(2.2vw, 1.25rem);
+  filter: drop-shadow(0 20px 34px rgba(60, 44, 104, 0.18));
+  animation: frameDrift 8.4s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
+.scene1 .frame {
+  --from-x: -1.7%;
+  --to-x: 0.4%;
+  --from-y: 0.5%;
+  --to-y: -0.7%;
+  --from-scale: 1.015;
+  --to-scale: 1.07;
+}
+
+.scene2 .frame {
+  --from-x: 1%;
+  --to-x: -0.4%;
+  --from-y: 0.7%;
+  --to-y: -0.3%;
+  --from-scale: 1.02;
+  --to-scale: 1.065;
+}
+
+.scene3 .frame {
+  --from-x: -0.6%;
+  --to-x: 0.7%;
+  --from-y: 0.4%;
+  --to-y: -0.5%;
+  --from-scale: 1.01;
+  --to-scale: 1.06;
+}
+
+.scene4 .frame {
+  --from-x: 0.8%;
+  --to-x: -0.2%;
+  --from-y: 0.5%;
+  --to-y: -0.4%;
+  --from-scale: 1.02;
+  --to-scale: 1.075;
+}
+
+.scene5 .frame {
+  --from-x: -0.8%;
+  --to-x: 0.8%;
+  --from-y: 0.4%;
+  --to-y: -0.6%;
+  --from-scale: 1.015;
+  --to-scale: 1.065;
+}
+
+.scene6 .frame {
+  --from-x: 0.6%;
+  --to-x: -0.5%;
+  --from-y: 0.3%;
+  --to-y: -0.5%;
+  --from-scale: 1.015;
+  --to-scale: 1.055;
+}
+
+.ambient,
+.orbitOne,
+.orbitTwo,
+.coinGlint {
+  position: absolute;
+  pointer-events: none;
+}
+
+.ambient {
+  inset: -16%;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 44% 42%, rgba(255, 238, 177, 0.38), transparent 18rem),
+    radial-gradient(circle at 80% 62%, rgba(255, 190, 207, 0.24), transparent 16rem),
+    radial-gradient(circle at 22% 64%, rgba(172, 134, 231, 0.2), transparent 18rem);
+  animation: ambientBreath 8.4s ease-in-out infinite;
+}
+
+.orbitOne {
+  left: 7%;
+  top: 18%;
+  z-index: 4;
+  width: 64%;
+  height: 48%;
+  border: 2px solid rgba(255, 221, 138, 0.28);
+  border-left-color: rgba(255, 245, 201, 0.72);
+  border-radius: 50%;
+  filter: blur(0.2px) drop-shadow(0 0 10px rgba(255, 221, 138, 0.36));
+  transform: rotate(-10deg);
+  animation: orbitSweep 8.4s ease-in-out infinite;
+}
+
+.orbitTwo {
+  right: 10%;
+  bottom: 18%;
+  z-index: 4;
+  width: 42%;
+  height: 30%;
+  border: 1px solid rgba(255, 245, 201, 0.32);
+  border-top-color: rgba(255, 220, 135, 0.74);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 12px rgba(255, 221, 138, 0.4));
+  transform: rotate(18deg);
+  animation: vaultHalo 8.4s ease-in-out infinite;
+}
+
+.coinGlint {
+  right: 27%;
+  top: 22%;
+  z-index: 5;
+  width: 4.5rem;
+  max-width: 9vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%, #fff7c7 0 11%, transparent 12%),
+    radial-gradient(circle, rgba(255, 216, 104, 0.76), rgba(210, 139, 28, 0.38) 52%, transparent 70%);
+  opacity: 0;
+  filter: blur(0.5px) drop-shadow(0 0 16px rgba(255, 203, 83, 0.66));
+  animation: coinPulse 8.4s ease-in-out infinite;
+}
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.sparkles span {
+  position: absolute;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: #fff4c7;
+  box-shadow: 0 0 10px rgba(255, 229, 150, 0.82);
+  opacity: 0;
+  animation: sparkleTwinkle 2.9s ease-in-out infinite;
+}
+
+.sparkles span:nth-child(1) {
+  left: 15%;
+  top: 22%;
+  animation-delay: 0.2s;
+}
+
+.sparkles span:nth-child(2) {
+  left: 24%;
+  top: 74%;
+  animation-delay: 0.8s;
+}
+
+.sparkles span:nth-child(3) {
+  left: 33%;
+  top: 18%;
+  animation-delay: 1.4s;
+}
+
+.sparkles span:nth-child(4) {
+  left: 44%;
+  top: 66%;
+  animation-delay: 0.4s;
+}
+
+.sparkles span:nth-child(5) {
+  left: 53%;
+  top: 28%;
+  animation-delay: 1.1s;
+}
+
+.sparkles span:nth-child(6) {
+  left: 63%;
+  top: 44%;
+  animation-delay: 1.8s;
+}
+
+.sparkles span:nth-child(7) {
+  left: 73%;
+  top: 18%;
+  animation-delay: 0.6s;
+}
+
+.sparkles span:nth-child(8) {
+  left: 86%;
+  top: 63%;
+  animation-delay: 1.5s;
+}
+
+.sparkles span:nth-child(9) {
+  left: 10%;
+  top: 52%;
+  animation-delay: 2s;
+}
+
+.sparkles span:nth-child(10) {
+  left: 31%;
+  top: 48%;
+  animation-delay: 2.3s;
+}
+
+.sparkles span:nth-child(11) {
+  left: 41%;
+  top: 35%;
+  animation-delay: 2.6s;
+}
+
+.sparkles span:nth-child(12) {
+  left: 58%;
+  top: 75%;
+  animation-delay: 0.9s;
+}
+
+.sparkles span:nth-child(13) {
+  left: 69%;
+  top: 71%;
+  animation-delay: 2.1s;
+}
+
+.sparkles span:nth-child(14) {
+  left: 78%;
+  top: 38%;
+  animation-delay: 2.7s;
+}
+
+.sparkles span:nth-child(15) {
+  left: 91%;
+  top: 29%;
+  animation-delay: 1.9s;
+}
+
+.sparkles span:nth-child(16) {
+  left: 49%;
+  top: 12%;
+  animation-delay: 1.2s;
+}
+
+@keyframes sceneReveal {
+  0% {
+    opacity: 0;
+  }
+
+  3%,
+  18% {
+    opacity: 1;
+  }
+
+  23%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes frameDrift {
+  0% {
+    transform: translate3d(var(--from-x), var(--from-y), 0) scale(var(--from-scale));
+  }
+
+  22% {
+    transform: translate3d(var(--to-x), var(--to-y), 0) scale(var(--to-scale));
+  }
+
+  100% {
+    transform: translate3d(var(--to-x), var(--to-y), 0) scale(var(--to-scale));
+  }
+}
+
+@keyframes ambientBreath {
+  0%,
+  100% {
+    opacity: 0.54;
+    transform: scale(1);
+  }
+
+  45%,
+  72% {
+    opacity: 0.82;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes orbitSweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(-2%, 4%, 0) rotate(-18deg) scale(0.9);
+  }
+
+  8%,
+  27% {
+    opacity: 0.78;
+  }
+
+  42% {
+    opacity: 0.42;
+    transform: translate3d(9%, -2%, 0) rotate(8deg) scale(1.02);
+  }
+
+  68%,
+  100% {
+    opacity: 0;
+    transform: translate3d(16%, -5%, 0) rotate(20deg) scale(1.08);
+  }
+}
+
+@keyframes vaultHalo {
+  0%,
+  36% {
+    opacity: 0;
+    transform: rotate(10deg) scale(0.82);
+  }
+
+  48%,
+  72% {
+    opacity: 0.72;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(26deg) scale(1.12);
+  }
+}
+
+@keyframes coinPulse {
+  0%,
+  62% {
+    opacity: 0;
+    transform: translate3d(-12rem, 7rem, 0) scale(0.45);
+  }
+
+  70% {
+    opacity: 0.86;
+  }
+
+  82% {
+    opacity: 0.46;
+    transform: translate3d(2rem, -1rem, 0) scale(0.92);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(4rem, 2rem, 0) scale(0.55);
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  42% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  70% {
+    opacity: 0.28;
+    transform: scale(0.72);
+  }
+}
+
+@media (max-width: 760px) {
+  .stage {
+    aspect-ratio: 4 / 3;
+  }
+
+  .frame {
+    padding: 0.7rem;
+  }
+
+  .coinGlint {
+    width: 3rem;
+    max-width: 14vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient,
+  .orbitOne,
+  .orbitTwo,
+  .coinGlint,
+  .sparkles span,
+  .frame,
+  .scene {
+    animation: none;
+  }
+
+  .scene {
+    opacity: 0;
+  }
+
+  .scene6 {
+    opacity: 1;
+  }
+}

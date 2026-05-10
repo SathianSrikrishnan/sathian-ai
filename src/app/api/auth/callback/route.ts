@@ -6,21 +6,22 @@
  */
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { defaultAuthRedirectPath, safeAuthRedirectUrl } from "@/lib/toothfairy/auth-redirect"
 import { internalToothFairyHeaders } from "@/lib/toothfairy/admin-guard"
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/app"
 
   // Use the host header to preserve the original domain (toothfairy.network vs sathian.ai)
   const host = request.headers.get("host") || request.headers.get("x-forwarded-host") || "toothfairy.network"
   const protocol = host.includes("localhost") ? "http" : "https"
   const origin = `${protocol}://${host}`
+  const fallbackNext = defaultAuthRedirectPath(host)
 
   if (code) {
     // Append returning=auth so the wizard knows this is an OAuth return
-    const redirectUrl = new URL(next, origin)
+    const redirectUrl = safeAuthRedirectUrl(searchParams.get("next"), origin, fallbackNext)
     redirectUrl.searchParams.set("returning", "auth")
     const response = NextResponse.redirect(redirectUrl)
 
@@ -64,5 +65,5 @@ export async function GET(request: NextRequest) {
   }
 
   // Auth failed — redirect to landing with error
-  return NextResponse.redirect(new URL("/app?auth_error=1", origin))
+  return NextResponse.redirect(safeAuthRedirectUrl(null, origin, `${fallbackNext}?auth_error=1`))
 }

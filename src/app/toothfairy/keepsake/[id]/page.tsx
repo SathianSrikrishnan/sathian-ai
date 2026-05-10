@@ -363,7 +363,7 @@ function SmileFundPanel({
             className="mt-1 text-sm font-semibold uppercase"
             style={{ color: c.inkMuted, letterSpacing: '0.12em', fontFamily: 'var(--font-body)' }}
           >
-            SOL saved
+            saved so far
           </p>
         </div>
         <div
@@ -449,7 +449,7 @@ function LoadingState() {
       }}
     >
       <span className="inline-block" style={{ animation: 'keepsakePulse 2.2s ease-in-out infinite' }}>
-        Loading keepsake...
+        Loading memory...
       </span>
       <style jsx>{`
         @keyframes keepsakePulse {

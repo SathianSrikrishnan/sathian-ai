@@ -59,7 +59,7 @@ function Fade({ children, className = '', delay = 0 }: { children: React.ReactNo
 function CTA({ className = '' }: { className?: string }) {
   return (
     <a
-      href="/toothfairy/app"
+      href="/toothfairy/app/draw?from=concept-b"
       className={`inline-block px-10 py-4 text-lg font-semibold rounded-full active:scale-[0.98] ${className}`}
       style={{
         fontFamily: 'var(--font-body)',

@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Waraba at the Edge of the Light - Final Draft V2</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080b11;
+      --ink: #fff8ef;
+      --muted: #d7c8b1;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(18, 24, 31, 0.82);
+      --accent: #f0b766;
+      --amber: #ffd089;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(185, 122, 50, 0.16), transparent 34rem),
+        linear-gradient(180deg, #0b1020 0%, var(--bg) 42%, #090806 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 22px 80px;
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
+      gap: 22px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .scene:first-child {
+      border-top: 0;
+      padding-top: 24px;
+    }
+
+    .frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      border-radius: 10px;
+      background: #111827;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 82vh;
+      object-fit: contain;
+      background: #111827;
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .quote {
+      color: var(--amber);
+    }
+
+    .cover-title {
+      margin-bottom: 14px;
+      color: var(--amber);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 700;
+      line-height: 0.96;
+    }
+
+    .cover-subtitle {
+      color: var(--muted);
+      font-size: 21px;
+    }
+
+    @media (max-width: 860px) {
+      main {
+        padding-inline: 16px;
+      }
+
+      .scene {
+        grid-template-columns: 1fr;
+      }
+
+      .copy {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="story"></main>
+
+  <script>
+    const scenes = [
+      {
+        image: "v1/frames/s5-frame-01-cover.png",
+        lines: [
+          "Waraba at the Edge of the Light",
+          "A Tooth Fairy Network story of a tooth, a doorway, and the courage that walks beside fear."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-02-place-that-listens.png",
+        lines: [
+          "The dark outside Ilyas's house, near Harar, was not empty.",
+          "It held cooling stones, dry grass, and the warm breath of night.",
+          "It held old paths his mother knew without naming.",
+          "And somewhere beyond the kitchen light, Waraba listened."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-03-tooth-trouble.png",
+        lines: [
+          "Ilyas's tooth had been loose for four days.",
+          "He named it Captain Wobble.",
+          "\"Captain Wobble fears no soup,\" he told his mother.",
+          "Captain Wobble feared soup a little."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-04-announcement.png",
+        lines: [
+          "At supper, Ilyas bit down carefully.",
+          "The tooth slipped free and landed in his palm.",
+          "\"Mutiny,\" said Ilyas.",
+          "His mother laughed into her hand."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-06-old-way.png",
+        lines: [
+          "His mother rinsed the tooth and set it back in his palm.",
+          "\"In our family,\" she said, \"there is an old way. You step beyond the light. You offer the tooth to the dark. You ask Waraba for a strong new one.\"",
+          "\"Step beyond the light?\" said Ilyas.",
+          "\"Only if the tooth wants a dramatic ending.\"",
+          "But his smile disappeared for one blink."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-08-how-big-is-waraba.png",
+        lines: [
+          "\"How big is Waraba?\" Ilyas asked.",
+          "\"Bigger than a joke,\" his mother said.",
+          "Ilyas frowned.",
+          "\"That is not a measurement.\"",
+          "\"No,\" she said. \"It is a warning.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-10-old-invitation.png",
+        lines: [
+          "Far from Ilyas's kitchen, Tanda noticed a warm mark stir on the Network shelf.",
+          "It was not an order and not a road.",
+          "Waraba's places did not like roads.",
+          "It was an old invitation: Come to the edge. Remember what is witnessed. Do not take what is not yours.",
+          "Tanda put the marked stone in her satchel and went."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-11-door-opens.png",
+        lines: [
+          "Ilyas stood at the open door with the tooth in his fist.",
+          "His mother waited behind him, calm as the lamp.",
+          "\"I have an excellent plan,\" said Ilyas. \"I will throw from here. Efficient. Aerodynamic. Nearly ancient.\"",
+          "\"The old way asks for your feet too,\" his mother said.",
+          "\"My feet send their respects.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-14-tooth-in-the-light.png",
+        lines: [
+          "Ilyas flicked the tooth into the bright rectangle on the ground.",
+          "It landed in the kitchen light, not in the dark.",
+          "The little white tooth glowed, then dimmed.",
+          "A thin crack appeared in the dust at the threshold.",
+          "\"There,\" said Ilyas. \"Delivered.\"",
+          "His mother did not scold him. She only watched."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-16-tanda-at-the-edge.png",
+        lines: [
+          "After the door closed, Tanda arrived at the exact edge of the light.",
+          "She saw the tooth near the threshold.",
+          "She saw the crack in the dust.",
+          "Then she folded her own glow small.",
+          "This was Waraba's territory. Tanda could carry news. She could not finish the ritual for a child."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-17-waraba-does-not-move.png",
+        lines: [
+          "Far out in the dark, Waraba opened one amber eye.",
+          "Then he closed it again.",
+          "Waraba was not refusing Ilyas.",
+          "He simply could not receive a gift that had not truly been given.",
+          "His silence was so complete it almost sounded like a joke."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-18-morning-proof.png",
+        lines: [
+          "In the morning, the tooth still waited where the light had touched it.",
+          "\"Waraba must be busy,\" said Ilyas.",
+          "The joke came out smaller than he meant it to.",
+          "His mother placed the tooth in his palm.",
+          "It felt heavier than yesterday."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-20-near-is-not-given.png",
+        lines: [
+          "\"I came near,\" said Ilyas.",
+          "\"Near is a doorway,\" his mother said. \"It is not a gift.\"",
+          "Her voice stayed gentle.",
+          "\"You do not have to try again because I say so.\"",
+          "She let that line rest between them.",
+          "\"But the tooth will know.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-21-what-she-remembered.png",
+        lines: [
+          "\"When I was little,\" his mother said, \"I stood where you stood.\"",
+          "\"Were you scared?\"",
+          "\"The whole way.\"",
+          "\"Did the dark get smaller?\"",
+          "\"No. I stepped anyway. My mother waited. Waraba waited. The dark did not need to become smaller for me to walk.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-23-tandas-advice.png",
+        lines: [
+          "That evening, Tanda sat at the edge of the light.",
+          "\"Are you here to collect?\" Ilyas asked.",
+          "\"No,\" said Tanda. \"This one belongs to Waraba.\"",
+          "\"Can you make the dark less dark?\"",
+          "\"No,\" said Tanda. \"I can stand where the light ends and remind you that you are not alone.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-25-the-question.png",
+        lines: [
+          "His mother touched his shoulder.",
+          "\"Before the jokes,\" she said, \"answer one question.\"",
+          "Ilyas looked at the dark.",
+          "\"Do you want your joke to protect you,\" she asked, \"or keep you from going?\"",
+          "Ilyas almost said, \"Both.\"",
+          "The word did not come out."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-26-first-step.png",
+        lines: [
+          "Ilyas stepped over the threshold.",
+          "One whole foot stood in the dark.",
+          "The ground was warm from the day.",
+          "Nothing grabbed him.",
+          "\"That is rude,\" he whispered. \"I prepared several heroic noises.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-27-shadow-grows.png",
+        lines: [
+          "His shadow stretched ahead of him, bigger than he was.",
+          "A tiny burrow-shaped mark opened in the dust, then vanished.",
+          "The dark seemed to listen for courage and leave behind the part made only of show.",
+          "Ilyas swallowed.",
+          "This time, he did not make the swallow into a joke."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-28-tanda-stays.png",
+        lines: [
+          "Ilyas looked back once.",
+          "Tanda folded her hands over her satchel.",
+          "\"I can witness,\" she said softly. \"I cannot walk it for you.\"",
+          "His mother stayed inside the light.",
+          "She did not rescue the moment."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-30-warm-stone.png",
+        lines: [
+          "Ilyas walked farther.",
+          "His jokes grew quiet.",
+          "Fear walked beside him.",
+          "It did not leave, but it stopped standing in front.",
+          "Under his sandal, a sun-warmed stone held one last breath of day.",
+          "He stood there until his own breath slowed."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-31-past-the-light.png",
+        lines: [
+          "The doorway became a small amber shape behind him.",
+          "Ilyas opened his palm.",
+          "The tooth looked tiny.",
+          "His fear looked huge.",
+          "Both had come along.",
+          "\"Waraba,\" he whispered, \"this is my tooth. Please give me a strong new one.\""
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-32-true-throw.png",
+        lines: [
+          "This time, Ilyas threw from beyond the kitchen light.",
+          "The tooth made a little white arc and vanished into the dark.",
+          "He did not run after it with a joke.",
+          "He waited."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-34-the-eyes.png",
+        lines: [
+          "Two amber lights opened low to the ground.",
+          "Not lamps.",
+          "Not fire.",
+          "Eyes.",
+          "Ilyas forgot every joke he had ever known.",
+          "Then one came back and decided not to say itself."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-35-waraba-revealed.png",
+        lines: [
+          "Waraba lifted his enormous head.",
+          "His spotted coat held night and dust.",
+          "His ears were torn like old paper.",
+          "His eyes were warm as coals buried under ash.",
+          "He was not smaller than fear.",
+          "He was older than it."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-36-the-breath.png",
+        lines: [
+          "Waraba lowered his muzzle to the tooth.",
+          "His breath moved over the ground, warm and slow.",
+          "Inside that breath, Ilyas saw the first throw, the crack in the threshold, the joke he had used like a shield, and the step he had taken anyway."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-37-looking-anyway.png",
+        lines: [
+          "Ilyas wanted to look away from the scared part.",
+          "Waraba kept all of it.",
+          "Not to shame him.",
+          "To witness him.",
+          "Courage, Waraba seemed to say, was not fear disappearing.",
+          "Courage was walking with fear until it belonged to the story."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-38-received.png",
+        lines: [
+          "Waraba took the tooth gently.",
+          "The dark around him softened.",
+          "Ilyas felt the place where the new tooth would grow.",
+          "It did not feel empty.",
+          "It felt like a place preparing."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-39-threshold-glow.png",
+        lines: [
+          "On the stone near Ilyas's foot, a glow gathered.",
+          "Amber on one edge.",
+          "Earth-shadow on the other.",
+          "One far protective eye.",
+          "It was warm enough to carry and small enough for a pocket.",
+          "Waraba had left the Threshold Glow."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-40-warabas-mark.png",
+        lines: [
+          "Waraba looked toward the doorway.",
+          "Tanda bowed before he moved.",
+          "Waraba breathed once.",
+          "A new claw mark lit beside the old scratch on Tanda's stone.",
+          "Not a road.",
+          "Permission to remember this threshold."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-41-back-to-kitchen.png",
+        lines: [
+          "Ilyas walked back.",
+          "The fear came too, but now it knew the way.",
+          "His shadow followed behind him, where shadows are supposed to be.",
+          "His mother waited with the door open.",
+          "Tanda stood small at the edge, exactly where she had promised."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-42-right-answer.png",
+        lines: [
+          "\"Were you scared?\" his mother asked.",
+          "\"Yes,\" said Ilyas.",
+          "Then he held up the warm stone.",
+          "\"Very professionally.\"",
+          "His mother laughed softly.",
+          "Tanda laughed too, but softly, because the dark was still listening."
+        ]
+      },
+      {
+        image: "v1/frames/s5-frame-43-shelf-opens.png",
+        lines: [
+          "At dawn, Tanda placed the marked stone on the Network shelf.",
+          "The shelf did not open into Waraba's dark.",
+          "It opened beside it, like a respectful doorway.",
+          "On Ilyas's drawing, a warm shadow settled at the border: amber edge, soft earth wash, one far eye.",
+          "And beyond the kitchen light, Waraba slept with one new story in his breath."
+        ]
+      }
+    ];
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, function(char) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char];
+      });
+    }
+
+    function isQuote(line) {
+      return line.indexOf('"') >= 0;
+    }
+
+    function renderLine(line, sceneIndex, lineIndex) {
+      let cls = "";
+      if (sceneIndex === 0 && lineIndex === 0) cls = "cover-title";
+      if (sceneIndex === 0 && lineIndex === 1) cls = "cover-subtitle";
+      if (sceneIndex !== 0 && isQuote(line)) cls = "quote";
+      return '<p' + (cls ? ' class="' + cls + '"' : "") + '>' + escapeHtml(line) + '</p>';
+    }
+
+    function renderScene(scene, index) {
+      const lines = scene.lines.map(function(line, lineIndex) {
+        return renderLine(line, index, lineIndex);
+      }).join("");
+
+      return '<section class="scene">' +
+        '<div class="frame"><img src="' + escapeHtml(scene.image) + '" alt="Illustration for Waraba at the Edge of the Light" loading="lazy" /></div>' +
+        '<div class="copy">' + lines + '</div>' +
+        '</section>';
+    }
+
+    document.getElementById("story").innerHTML = scenes.map(renderScene).join("");
+  </script>
+</body>
+</html>

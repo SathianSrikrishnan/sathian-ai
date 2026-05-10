@@ -36,10 +36,14 @@ const TELL_TEXT_KEY = "tfn-tell-text"
 const STORY_CONTEXT_KEY = "tfn-story-context"
 const LATEST_DRAWING_KEY = "toothfairy-latest-drawing"
 const LATEST_ENHANCED_KEY = "toothfairy-latest-enhanced"
+const FINAL_DRAWING_KEY = "toothfairy-final-drawing"
 const LATEST_TRADITION_KEY = "toothfairy-latest-tradition"
+const MAGIC_RESULTS_KEY = "toothfairy-magic-results"
+const MAGIC_SELECTED_STYLES_KEY = "toothfairy-magic-selected-styles"
 
 const SPRING = "cubic-bezier(0.16, 1, 0.3, 1)"
-const FIAT_ONRAMP_ENABLED = false
+const FIAT_ONRAMP_ENABLED =
+  process.env.NEXT_PUBLIC_TFN_FIAT_ONRAMP_ENABLED === "true"
 const HAS_SUPABASE_CONFIG = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -341,6 +345,7 @@ export default function ToothFairyApp() {
   const [error, setError] = useState<string | null>(null)
   const [mintProgress, setMintProgress] = useState("")
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const [magicArtworkReady, setMagicArtworkReady] = useState(false)
 
   // Deposit state
   const [lockChoice, setLockChoice] = useState<LockChoice>("ageTen")
@@ -412,6 +417,7 @@ export default function ToothFairyApp() {
   const [cardPaymentLoading, setCardPaymentLoading] = useState(false)
   const [onrampWindow, setOnrampWindow] = useState<Window | null>(null)
   const [awaitingCardDeposit, setAwaitingCardDeposit] = useState(false)
+  const [showGiftPanel, setShowGiftPanel] = useState(false)
 
   // Canvas
   const drawingCanvasRef = useRef<DrawingCanvasRef>(null)
@@ -442,31 +448,58 @@ export default function ToothFairyApp() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(FLOW_STORAGE_KEY)
-      if (!saved) return
-      const state = JSON.parse(saved)
-      if (state.childName) setChildName(state.childName)
-      if (state.childDob) setChildDob(state.childDob)
-      if (state.childPhoto) setChildPhoto(state.childPhoto)
-      if (state.previewImage) {
-        setPreviewImage(state.previewImage)
-      } else {
+      const state = saved ? JSON.parse(saved) : null
+      if (state?.childName) setChildName(state.childName)
+      if (state?.childDob) setChildDob(state.childDob)
+      if (state?.childPhoto) setChildPhoto(state.childPhoto)
+      if (state?.fromMagicStudio) setMagicArtworkReady(true)
+
+      let restoredPreviewImage =
+        typeof state?.previewImage === "string" ? state.previewImage : null
+
+      if (!restoredPreviewImage) {
+        const finalDrawing = localStorage.getItem(FINAL_DRAWING_KEY)
         const enhanced = localStorage.getItem(LATEST_ENHANCED_KEY)
         const drawing = localStorage.getItem(LATEST_DRAWING_KEY)
-        if (enhanced) setPreviewImage(enhanced)
-        else if (drawing) setPreviewImage(drawing)
+        restoredPreviewImage = finalDrawing || enhanced || drawing
+        if (finalDrawing) setMagicArtworkReady(true)
       }
-      if (state.photo) setPhoto(state.photo)
-      if (state.step === "preview" || state.step === "deposit") setStep("preview")
+
+      if (restoredPreviewImage) setPreviewImage(restoredPreviewImage)
+      if (state?.photo) setPhoto(state.photo)
+      if (state?.step === "preview" || state?.step === "deposit") setStep("preview")
     } catch { /* ignore corrupt localStorage */ }
   }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("legacy") === "1") return
+
+    const hasMagicOrMintHandoff = Boolean(
+      localStorage.getItem(FLOW_STORAGE_KEY) ||
+        localStorage.getItem(FINAL_DRAWING_KEY) ||
+        localStorage.getItem(LATEST_ENHANCED_KEY) ||
+        localStorage.getItem(LATEST_DRAWING_KEY)
+    )
+
+    if (!hasMagicOrMintHandoff) {
+      router.replace("/toothfairy/app/draw?from=app")
+    }
+  }, [router])
 
   const saveFlowState = useCallback(() => {
     try {
       localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify({
-        childName, childDob, childPhoto, step: "preview",
+        childName,
+        childDob,
+        childPhoto,
+        previewImage,
+        fromMagicStudio: magicArtworkReady,
+        step: "preview",
       }))
     } catch { /* localStorage full or unavailable */ }
-  }, [childName, childDob, childPhoto])
+  }, [childName, childDob, childPhoto, previewImage, magicArtworkReady])
 
   const clearFlowState = useCallback(() => {
     try { localStorage.removeItem(FLOW_STORAGE_KEY) } catch {}
@@ -479,7 +512,10 @@ export default function ToothFairyApp() {
       STORY_CONTEXT_KEY,
       LATEST_DRAWING_KEY,
       LATEST_ENHANCED_KEY,
+      FINAL_DRAWING_KEY,
       LATEST_TRADITION_KEY,
+      MAGIC_RESULTS_KEY,
+      MAGIC_SELECTED_STYLES_KEY,
     ]
     for (const k of keys) {
       try { localStorage.removeItem(k) } catch { /* ignore */ }
@@ -591,7 +627,12 @@ export default function ToothFairyApp() {
         ? await compressImageDataUrl(childPhoto, 1024, 0.85)
         : null
       const imageBase64 = compressedPreview
-        ? compressedPreview.split(",")[1]
+        ? compressedPreview.startsWith("data:")
+          ? compressedPreview.split(",")[1]
+          : undefined
+        : undefined
+      const imageUrl = compressedPreview
+        ? compressedPreview.startsWith("data:") ? undefined : compressedPreview
         : undefined
       const smilePhotoBase64 = compressedPhoto
         ? compressedPhoto.split(",")[1]
@@ -606,6 +647,7 @@ export default function ToothFairyApp() {
           toothType: "UpperRightCentralIncisor",
           toothNumber: 1,
           imageBase64,
+          imageUrl,
           imageMimeType: "image/jpeg",
           note: note || undefined,
           birthday: childDob || undefined,
@@ -676,7 +718,11 @@ export default function ToothFairyApp() {
   const handleCardPayment = async () => {
     if (!escrowInfo) return
     if (!FIAT_ONRAMP_ENABLED) {
-      setError("Card gifts are paused for now. Open the memory, share it, or use a Solana wallet for a controlled test gift.")
+      setError("Card gifts are paused until checkout is ready.")
+      return
+    }
+    if (!publicKey) {
+      setError("Connect a wallet first for an advanced test gift.")
       return
     }
     setError(null); setCardPaymentLoading(true)
@@ -694,6 +740,7 @@ export default function ToothFairyApp() {
           depositorName: depositorName.trim() || "Parent",
           childProfilePda: escrowInfo.childProfilePda,
           milestonePda: escrowInfo.milestonePda,
+          walletAddress: publicKey.toBase58(),
           childDob: childDob || undefined,
         }),
       })
@@ -706,69 +753,16 @@ export default function ToothFairyApp() {
       const { onrampUrl } = await res.json()
 
       const popup = window.open(onrampUrl, "tfn-onramp", "width=460,height=700,left=200,top=100")
+      if (!popup) throw new Error("Popup blocked. Allow popups for this site and try again.")
       setOnrampWindow(popup)
       setAwaitingCardDeposit(true)
       setCardPaymentLoading(false)
-
-      const handleMessage = async (event: MessageEvent) => {
-        if (event.origin !== "https://pay.coinbase.com") return
-        const { eventName } = event.data || {}
-
-        if (eventName === "onramp_api.polling_success" || eventName === "onramp_api.commit_success") {
-          window.removeEventListener("message", handleMessage)
-          popup?.close()
-          setAwaitingCardDeposit(false)
-          setStep("minting")
-          setMintProgress("Processing deposit...")
-
-          try {
-            const depositRes = await fetch("/api/toothfairy/server-deposit", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                childProfilePda: escrowInfo.childProfilePda,
-                milestonePda: escrowInfo.milestonePda,
-                amountSol: depositAmount,
-                lockChoice: lockChoice === "custom" ? customLockDate : lockChoice,
-                depositorName: depositorName.trim() || "Parent",
-                childDob: childDob || undefined,
-              }),
-            })
-
-            if (!depositRes.ok) {
-              const d = await depositRes.json().catch(() => ({}))
-              throw new Error(d.error || "Deposit failed")
-            }
-
-            await depositRes.json()
-            setDepositSuccess(`$${amountUsd} deposited for ${childName}!`)
-            if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
-            else setStep("done")
-          } catch (err: any) {
-            setError(err.message || "Deposit to escrow failed after payment")
-            if (escrowInfo) redirectToKeepsake(escrowInfo.milestonePda)
-            else setStep("done")
-          }
-        }
-
-        if (eventName === "onramp_api.cancel") {
-          window.removeEventListener("message", handleMessage)
-          setAwaitingCardDeposit(false)
-        }
-
-        if (eventName === "onramp_api.polling_error" || eventName === "onramp_api.load_error") {
-          window.removeEventListener("message", handleMessage)
-          setAwaitingCardDeposit(false)
-          setError("Payment failed. Please try again.")
-        }
-      }
-
-      window.addEventListener("message", handleMessage)
+      setDepositSuccess("Card checkout opened. After SOL arrives, use the wallet gift path to record the milestone deposit.")
 
       const pollClosed = setInterval(() => {
         if (popup?.closed) {
           clearInterval(pollClosed)
-          if (awaitingCardDeposit) setAwaitingCardDeposit(false)
+          setAwaitingCardDeposit(false)
         }
       }, 1000)
     } catch (err: any) {
@@ -781,8 +775,10 @@ export default function ToothFairyApp() {
   const mintAnother = () => {
     clearFlowState()
     setStep("setup"); setPhoto(null); setPreviewImage(null); setMintSignature("")
+    setMagicArtworkReady(false)
     setError(null); setMintProgress(""); setDeposits([]); setEscrowInfo(null)
     setDepositSuccess(null)
+    setShowGiftPanel(false)
     setUseEmailMint(false); setRecipientEmail(""); setEmailMintDone(false)
   }
 
@@ -794,6 +790,100 @@ export default function ToothFairyApp() {
     if (step === "deposit" || step === "done") return 2
     return 1
   })()
+
+  const childPhotoPicker = (
+    <div className="flex flex-col items-center gap-3">
+      <input ref={childPhotoRef} type="file" accept="image/*" onChange={handleChildPhoto} className="hidden" />
+      {magicArtworkReady && (
+        <p
+          className="text-[10px] font-semibold uppercase"
+          style={{
+            color: "var(--tfn-ink-muted)",
+            letterSpacing: "0.18em",
+            fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+          }}
+        >
+          Optional child photo
+        </p>
+      )}
+      {childPhoto ? (
+        <div className="relative">
+          <div
+            className="w-28 h-28 rounded-full overflow-hidden"
+            style={{
+              border: "2px solid var(--tfn-gold)",
+              boxShadow: "0 4px 18px oklch(72% 0.145 75 / 0.25)",
+            }}
+          >
+            <img src={childPhoto} alt="Child" className="w-full h-full object-cover" />
+          </div>
+          <button
+            type="button"
+            onClick={() => setChildPhoto(null)}
+            aria-label="Remove photo"
+            className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+            style={{ background: "var(--tfn-surface-alt)", border: "1px solid var(--tfn-border)", color: "var(--tfn-ink-soft)" }}
+          >
+            x
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => childPhotoRef.current?.click()}
+          className="w-28 h-28 rounded-full flex flex-col items-center justify-center transition-all hover:scale-[1.02]"
+          style={{
+            border: "1.5px dashed var(--tfn-border)",
+            background: "var(--tfn-accent-soft)",
+            color: "var(--tfn-ink-muted)",
+            fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+          }}
+        >
+          <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+          </svg>
+          <span className="text-[10px] uppercase" style={{ letterSpacing: "0.2em" }}>
+            {magicArtworkReady ? "Add child photo" : "Add photo"}
+          </span>
+        </button>
+      )}
+      <p className="text-xs italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}>
+        {magicArtworkReady ? "This is optional and can be added later." : "Appears on the memory page."}
+      </p>
+    </div>
+  )
+
+  const magicArtworkSummary = magicArtworkReady && previewImage ? (
+    <PaperCard className="flex items-center gap-4">
+      <img
+        src={previewImage}
+        alt="Selected Magic Studio artwork"
+        className="h-20 w-20 rounded-lg object-cover"
+        style={{
+          border: "1px solid var(--tfn-gold)",
+          boxShadow: "0 10px 28px oklch(72% 0.145 75 / 0.18)",
+        }}
+      />
+      <div className="min-w-0 text-left">
+        <p
+          className="text-sm font-semibold"
+          style={{
+            color: "var(--tfn-ink)",
+            fontFamily: "var(--font-display), 'Alegreya', Georgia, serif",
+          }}
+        >
+          Magic artwork selected
+        </p>
+        <p
+          className="mt-1 text-xs leading-relaxed"
+          style={{ color: "var(--tfn-ink-muted)" }}
+        >
+          Add the child details, then save this keepsake.
+        </p>
+      </div>
+    </PaperCard>
+  ) : null
 
   return (
     <div
@@ -845,19 +935,23 @@ export default function ToothFairyApp() {
 
           {/* Right: Wallet */}
           <div className="flex items-center gap-3">
-            {publicKey && (
-              <Link
-                href="/toothfairy/app/dashboard"
-                className="text-sm transition-opacity hover:opacity-80 hidden sm:inline"
-                style={{
-                  color: "var(--tfn-ink-soft)",
-                  fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
-                }}
-              >
-                Wallet
-              </Link>
+            {step === "deposit" && !showGiftPanel ? null : (
+              <>
+                {publicKey && (
+                  <Link
+                    href="/toothfairy/app/dashboard"
+                    className="text-sm transition-opacity hover:opacity-80 hidden sm:inline"
+                    style={{
+                      color: "var(--tfn-ink-soft)",
+                      fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
+                    }}
+                  >
+                    Advanced
+                  </Link>
+                )}
+                <WalletButton />
+              </>
             )}
-            <WalletButton />
           </div>
         </div>
       </div>
@@ -891,63 +985,21 @@ export default function ToothFairyApp() {
           <div className="space-y-12">
             <div className="space-y-5">
               <div className="text-center">
-                <Eyebrow>Begin</Eyebrow>
+                <Eyebrow>{magicArtworkReady ? "Keepsake details" : "Begin"}</Eyebrow>
               </div>
               <StepTitle
-                title="Save the tooth moment."
-                subtitle="A photo, a drawing, and a few words become one memory your family can keep."
+                title={magicArtworkReady ? "Who is this keepsake for?" : "Save the tooth moment."}
+                subtitle={
+                  magicArtworkReady
+                    ? "The Magic artwork is ready. Add the child details before saving it."
+                    : "A photo, a drawing, and a few words become one memory your family can keep."
+                }
               />
             </div>
 
-            <ProductPromiseCard />
-
-            {/* Child photo */}
-            <div className="flex flex-col items-center gap-3">
-              <input ref={childPhotoRef} type="file" accept="image/*" onChange={handleChildPhoto} className="hidden" />
-              {childPhoto ? (
-                <div className="relative">
-                  <div
-                    className="w-28 h-28 rounded-full overflow-hidden"
-                    style={{
-                      border: "2px solid var(--tfn-gold)",
-                      boxShadow: "0 4px 18px oklch(72% 0.145 75 / 0.25)",
-                    }}
-                  >
-                    <img src={childPhoto} alt="Child" className="w-full h-full object-cover" />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setChildPhoto(null)}
-                    aria-label="Remove photo"
-                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
-                    style={{ background: "var(--tfn-surface-alt)", border: "1px solid var(--tfn-border)", color: "var(--tfn-ink-soft)" }}
-                  >
-                    ×
-                  </button>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => childPhotoRef.current?.click()}
-                  className="w-28 h-28 rounded-full flex flex-col items-center justify-center transition-all hover:scale-[1.02]"
-                  style={{
-                    border: "1.5px dashed var(--tfn-border)",
-                    background: "var(--tfn-accent-soft)",
-                    color: "var(--tfn-ink-muted)",
-                    fontFamily: "var(--font-body), 'Alegreya Sans', system-ui, sans-serif",
-                  }}
-                >
-                  <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                  </svg>
-                  <span className="text-[10px] uppercase" style={{ letterSpacing: "0.2em" }}>Add photo</span>
-                </button>
-              )}
-              <p className="text-xs italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), 'Alegreya', serif" }}>
-                Appears on the memory page.
-              </p>
-            </div>
+            {!magicArtworkReady && <ProductPromiseCard />}
+            {!magicArtworkReady && childPhotoPicker}
+            {magicArtworkSummary}
 
             {/* Details card */}
             <PaperCard className="space-y-7">
@@ -989,11 +1041,13 @@ export default function ToothFairyApp() {
               </InputRow>
             </PaperCard>
 
+            {magicArtworkReady && childPhotoPicker}
+
             <GoldCTA
-              onClick={() => setStep("create")}
+              onClick={() => magicArtworkReady ? setStep("tell") : setStep("create")}
               disabled={!childName.trim() || !childDob}
             >
-              Continue to the memory
+              {magicArtworkReady ? "Continue with this keepsake" : "Continue to the memory"}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
@@ -1246,7 +1300,7 @@ export default function ToothFairyApp() {
                     Sign in to save the memory.
                   </p>
                   <p className="text-sm" style={{ color: "var(--tfn-ink-soft)" }}>
-                    This creates the parent account for this memory. No wallet or crypto knowledge required.
+                    This creates the parent account for this memory. No technical setup required.
                   </p>
                   <button
                     type="button"
@@ -1292,11 +1346,11 @@ export default function ToothFairyApp() {
 
             <button
               type="button"
-              onClick={() => setStep("create")}
+              onClick={() => magicArtworkReady ? setStep("setup") : setStep("create")}
               className="w-full text-xs text-center py-2 underline transition-opacity hover:opacity-80"
               style={{ color: "var(--tfn-ink-muted)" }}
             >
-              Back to drawing
+              {magicArtworkReady ? "Back to details" : "Back to drawing"}
             </button>
           </div>
         )}
@@ -1320,8 +1374,8 @@ export default function ToothFairyApp() {
                 <Eyebrow>Memory saved</Eyebrow>
               </div>
               <StepTitle
-                title="Share now, or add a first gift."
-                subtitle="The memory is saved. The Smile Fund can start now or later."
+                title="Memory saved. Share first."
+                subtitle="The keepsake is live. Gifts are optional and can wait until the family is ready."
               />
             </div>
 
@@ -1334,19 +1388,18 @@ export default function ToothFairyApp() {
               </GoldCTA>
             )}
 
-            {/* What is saved */}
-            <PaperCard>
+            <PaperCard className="space-y-5">
               <h3
                 className="text-base font-semibold mb-4"
                 style={{ fontFamily: "var(--font-display), 'Alegreya', serif", color: "var(--tfn-ink)" }}
               >
-                Saved
+                Gift setup is optional
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: "Memory page", value: "Ready" },
-                  { label: "Smile Fund", value: "Optional" },
-                  { label: "Default hold", value: suggestedUnlockDate || "Age 10" },
+                  { label: "Family memory", value: "Ready to share" },
+                  { label: "Smile Fund", value: "Can start later" },
+                  { label: "Parent control", value: "Already on" },
                 ].map(({ label, value }) => (
                   <div
                     key={label}
@@ -1359,13 +1412,18 @@ export default function ToothFairyApp() {
                 ))}
               </div>
               <p className="text-xs mt-4 italic" style={{ color: "var(--tfn-ink-muted)", fontFamily: "var(--font-display), serif" }}>
-                You can skip gifts and share the memory now.
+                The best next step is opening the memory and sharing the family link.
               </p>
+              <GhostButton onClick={() => setShowGiftPanel((shown) => !shown)}>
+                {showGiftPanel ? "Hide advanced gift setup" : "Advanced gift setup"}
+              </GhostButton>
             </PaperCard>
 
+            {showGiftPanel && (
+              <>
             {/* Lock period */}
             <PaperCard className="space-y-4">
-              <InputRow label="When should the first gift unlock?">
+              <InputRow label="Advanced gift hold">
                 <div className="space-y-2 mt-2">
                   {[
                     { id: "now" as LockChoice, label: "Available now" },
@@ -1516,7 +1574,7 @@ export default function ToothFairyApp() {
             <div className="space-y-3">
                 <GoldCTA
                  onClick={handleCardPayment}
-                 disabled={!FIAT_ONRAMP_ENABLED || cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
+                 disabled={!FIAT_ONRAMP_ENABLED || !publicKey || cardPaymentLoading || awaitingCardDeposit || !depositorName.trim()}
                 >
                  {cardPaymentLoading
                    ? "Opening payment..."
@@ -1524,6 +1582,8 @@ export default function ToothFairyApp() {
                      ? "Waiting for payment..."
                      : !FIAT_ONRAMP_ENABLED
                        ? "Card gifts are paused"
+                      : !publicKey
+                        ? "Connect wallet for card gift"
                       : (
                         <>
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -1543,7 +1603,7 @@ export default function ToothFairyApp() {
                 </GhostButton>
               ) : (
                 <GhostButton onClick={() => setVisible(true)}>
-                  Use a Solana wallet for a test gift
+                  Advanced wallet test gift
                 </GhostButton>
               )}
 
@@ -1560,6 +1620,8 @@ export default function ToothFairyApp() {
                 Skip gift and open the memory
               </button>
             </div>
+              </>
+            )}
           </div>
         )}
 
@@ -1624,9 +1686,36 @@ export default function ToothFairyApp() {
             <div>
               <StepTitle
                 title={childName ? `Saving ${childName}'s memory...` : "Saving the memory..."}
-                subtitle={mintProgress || "It takes just a few seconds."}
+                subtitle={mintProgress || "Tanda is filing this memory in the Tooth Fairy Network."}
               />
             </div>
+            <PaperCard className="mx-auto max-w-md">
+              <div className="space-y-3 text-left">
+                {[
+                  "Checking the parent account",
+                  "Saving the artwork",
+                  "Opening the family link",
+                ].map((label) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-3 text-sm"
+                    style={{ color: "var(--tfn-ink-soft)" }}
+                  >
+                    <span
+                      className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                      style={{
+                        background: "var(--tfn-gold-soft)",
+                        color: "var(--tfn-gold-hover)",
+                      }}
+                      aria-hidden
+                    >
+                      *
+                    </span>
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </PaperCard>
           </div>
         )}
 
@@ -1647,7 +1736,7 @@ export default function ToothFairyApp() {
               <div className="flex justify-center">
                 <img
                   src={previewImage}
-                  alt="Keepsake"
+                  alt="Tooth memory"
                   className="w-48 h-48 rounded-lg object-cover"
                   style={{
                     border: "1px solid var(--tfn-gold)",
@@ -1708,7 +1797,7 @@ export default function ToothFairyApp() {
                   className="underline"
                   style={{ color: "var(--tfn-gold)" }}
                 >
-                  View on blockchain {"->"}
+                  View technical record {"->"}
                 </a>
               </p>
             )}

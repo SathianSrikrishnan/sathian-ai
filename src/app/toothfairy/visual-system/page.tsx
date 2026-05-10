@@ -289,7 +289,9 @@ export default function VisualSystemPage() {
         ))}
       </section>
 
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .visual-system {
           --navy: #11234a;
           --ink: #23365f;
@@ -645,7 +647,9 @@ export default function VisualSystemPage() {
             min-height: 260px;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   )
 }

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tanda and the Night the Network Woke - Final Draft</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #fff8ec;
+      --muted: #d9c7a9;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(20, 24, 29, 0.78);
+      --accent: #f0c456;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #0e141b;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    header,
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-inline: 22px;
+    }
+
+    header {
+      padding-top: 56px;
+      padding-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(38px, 7vw, 82px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .dek {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #ffe2a9;
+    }
+
+    .meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    main {
+      padding-bottom: 80px;
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 22px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      border-radius: 10px;
+      background: #172029;
+      overflow: hidden;
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 86vh;
+      object-fit: contain;
+      background: #172029;
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .kicker {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .quote {
+      color: #ffe2a9;
+    }
+
+    .button-copy {
+      display: inline-block;
+      width: fit-content;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: #f4c16f;
+      color: #1b140d;
+      padding: 10px 15px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .scene {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tanda and the Night<br />the Network Woke</h1>
+    <p class="dek">The modern Network origin: why one skipped note made Tanda call the keepers together.</p>
+    <div class="meta">
+      <span>32 scenes</span>
+      <span>32 unique frame images</span>
+      <span>Full-image review view</span>
+    </div>
+  </header>
+
+  <main id="story"></main>
+
+  <script>
+    const scenes = [
+      { n: "01", title: "Cover", image: "v2/s1-frame-01-cover.png", lines: ["Tanda and the Night the Network Woke", "A story about the tooth, the corn, and the first call to the keepers."] },
+      { n: "02", title: "Dinner Is Already Late", image: "v2/s1-frame-02-dinner-late.png", lines: ["Dinner was already late.", "Elias was six, wearing space pajamas at the table, because sometimes bedtime and dinner had to share a chair.", "His dad had said, \"Just three more bites.\" Elias had decided this was unfair, because one of the bites was corn, and corn had too many small parts."] },
+      { n: "03", title: "The Tooth Comes Out", image: "v2/s1-frame-03-tooth-comes-out.png", lines: ["On the second bite, something clicked.", "His tooth sat on the table, tiny and white and looking very pleased with itself."], quotes: ["Elias: I meant to do that."] },
+      { n: "04", title: "The Tooth Words", image: "v2/s1-frame-04-tooth-words.png", lines: ["After dinner, Dad put the tooth in a little blue dish.", "Then he slid over a pencil."], quotes: ["Dad: Want help spelling surprised?", "Elias: No. Then it will be your surprise."] },
+      { n: "05", title: "Bad Spelling, True Story", image: "v2/s1-frame-05-bad-spelling-note.png", lines: ["So Elias wrote it himself.", "The letters leaned. The tooth drawing had too many roots. The corn was mostly yellow scribble."], quotes: ["Elias's note: I lost it on corn. I was brave. Also surprised."] },
+      { n: "06", title: "Under The Pillow", image: "v2/s1-frame-06-under-pillow.png", lines: ["He tucked the tooth, the note, and the drawing under his pillow.", "Then he checked once. Then twice. Then one more time, because pillows were suspicious.", "Dad kissed his hair and left the door open exactly one hand wide."] },
+      { n: "07", title: "Tanda's Route", image: "v2/s1-frame-07-tandas-route.png", lines: ["Above the roofs, Tanda was already flying.", "She knew every loose tooth by its small gold call. She knew which windows stuck, which dogs barked, and which children pretended to sleep with both eyes open."] },
+      { n: "08", title: "Coin And Done", image: "v2/s1-frame-08-coin-and-done.png", lines: ["She was very good at the work.", "Tooth lifted. Coin left. Pillow smoothed. Window closed. On to the next glow.", "From the outside, every visit looked perfect."] },
+      { n: "09", title: "The Unread Pocket", image: "v2/s1-frame-09-unread-pocket.png", lines: ["But Tanda had made one small habit.", "When a note was long, or a drawing was folded, or a memory felt tangled, she tucked it into the side pocket of her satchel."], quotes: ["Tanda: I will read it after the route."] },
+      { n: "10", title: "A Dull Glow", image: "v2/s1-frame-10-dull-glow.png", lines: ["After was getting crowded.", "In the side pocket, some teeth still glowed. Some only shimmered. One had gone pale at the edges, like a story told too quickly."] },
+      { n: "11", title: "Professional Entrance", image: "v2/s1-frame-11-professional-entrance.png", lines: ["Tanda reached Elias just after midnight.", "She slipped through the window in her most professional way, tapped one hanging planet with her wing, caught it, and bowed to absolutely no one."], quotes: ["Tanda: No one saw that."] },
+      { n: "12", title: "The Warm Tooth", image: "v2/s1-frame-12-warm-tooth.png", lines: ["The tooth was warm when she lifted it.", "Not warm like soup. Warm like a laugh that had just happened.", "Corn. A blue dish. Dad trying not to smile. A boy feeling braver than he expected."] },
+      { n: "13", title: "Another Window Calls", image: "v2/s1-frame-13-another-window-calls.png", lines: ["Then another window flashed across town.", "A new tooth. A nervous child. Dawn moving closer.", "Tanda looked from the glow outside to the folded note near Elias's pillow."] },
+      { n: "14", title: "I'll Read It After", image: "v2/s1-frame-14-read-it-after.png", lines: ["She meant it. That was the trouble with after. It sounded almost as good as now."], quotes: ["Tanda: I will read it after."] },
+      { n: "15", title: "The Note Slips", image: "v2/s1-frame-15-note-slips.png", lines: ["The note slipped from under the pillow.", "It turned once in the moonlight and landed where Tanda had not looked."] },
+      { n: "16", title: "The First Nibble", image: "v2/s1-frame-16-first-nibble.png", lines: ["At the edge of the Toothlight, something small noticed.", "A curl of shadow. A bite in the gold. A very old, very fussy little hunger."] },
+      { n: "17", title: "Don't Forget The Corn Part", image: "v2/s1-frame-17-corn-part.png", lines: ["Elias stirred in his sleep.", "Tanda stopped moving."], quotes: ["Elias: Do not forget the corn part."] },
+      { n: "18", title: "Too Plain", image: "v2/s1-frame-18-too-plain.png", lines: ["The tooth still glowed, but not enough.", "It remembered a child. A dinner. A tooth. But it was forgetting Elias."] },
+      { n: "19", title: "The Voice", image: "v2/s1-frame-19-the-voice.png", lines: ["A tiny voice cleared its tiny throat."], quotes: ["The Old Forgetting: Unread things are unattended things.", "Tanda: That is not yours."] },
+      { n: "20", title: "Memory Opens", image: "v2/s1-frame-20-memory-opens.png", lines: ["Tanda opened the memory properly.", "There was the corn. There was Dad's worried face. There was Elias checking for blood, finding none, and becoming proud all at once."] },
+      { n: "21", title: "The Missing Bit", image: "v2/s1-frame-21-missing-bit.png", lines: ["The Old Forgetting pulled at the funniest part first.", "Not the tooth. Not the coin. The exact bit. The Elias bit."] },
+      { n: "22", title: "Tanda Gives Chase", image: "v2/s1-frame-22-tanda-gives-chase.png", lines: ["Tanda dove after it through the Toothlight.", "Past breakfast smells, sock arguments, bedtime songs, and half-remembered jokes from children she had promised to read later."] },
+      { n: "23", title: "Exact Words Work", image: "v2/s1-frame-23-exact-words.png", lines: ["Then she found Elias's note.", "She read every uneven letter. She read the brave part. She read the surprised part. She read the corn part twice."], quotes: ["Tanda: There you are."] },
+      { n: "24", title: "The Old Forgetting Retreats", image: "v2/s1-frame-24-forgetting-retreats.png", lines: ["The Old Forgetting spat out the little gold piece.", "It curled itself thin and slipped back where neglected things wait."], quotes: ["The Old Forgetting: Too much corn."] },
+      { n: "25", title: "The First Toothlight", image: "v2/s1-frame-25-first-toothlight.png", lines: ["The tooth brightened.", "The note, the drawing, the dinner laugh, the proud little gap in Elias's smile - all of it gathered into one warm Toothlight."] },
+      { n: "26", title: "The Real Wound", image: "v2/s1-frame-26-real-wound.png", lines: ["Tanda opened her satchel.", "The side pocket was full. Too full. Tiny teeth. Folded notes. Drawings waiting for after.", "She had not missed the teeth. She had missed the listening."] },
+      { n: "27", title: "The Old Promise", image: "v2/s1-frame-27-old-promise.png", lines: ["Her pendant warmed against her heart.", "Long ago, a tooth fee had become a promise: what a child outgrows is still worth carrying carefully.", "A promise to carry was also a promise to notice."] },
+      { n: "28", title: "The First Rule", image: "v2/s1-frame-28-first-rule.png", lines: ["So Tanda made the first rule."], quotes: ["Tanda: No tooth without its story.", "Tanda: And no story left for after."] },
+      { n: "29", title: "A Rule Needed Keepers", image: "v2/s1-frame-29-letter-to-perez.png", lines: ["A rule needed keepers.", "The first letter went to Madrid. It arrived at a mouse-sized desk, where Ratoncito Perez was already sorting three teeth, two receipts, and what he called professional crumbs.", "He looked offended before he even opened it, which Tanda would later learn meant he was interested."] },
+      { n: "30", title: "Tanda Tunes The Network", image: "v2/s1-frame-30-letters-elsewhere.png", lines: ["Then Tanda tuned the Network.", "She sent gold threads to Kkachi, the rooftop magpie in Korea; to mouse doors, sunlit thresholds, seed-keepers, night-runners, and quiet paths where brave children left small things in the dark.", "She did not make every keeper the same. She helped their different songs answer one another."] },
+      { n: "31", title: "Morning Proof", image: "v2/s1-frame-31-morning-proof.png", lines: ["In the morning, the Network had its first proof.", "Then he found the tiny glow beside it."], quotes: ["Elias: She kept the corn part."] },
+      { n: "32", title: "The Network Begins", image: "v2/s1-frame-32-network-begins-cta.png", lines: ["The Network began because one child wrote the exact thing only he could write.", "Create a Toothlight from the tooth, their words, and the memory you want to keep."], button: "Create Your Tooth Keepsake" }
+    ];
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function renderScene(scene) {
+      const lines = (scene.lines || []).map(line => `<p>${escapeHtml(line)}</p>`).join("");
+      const quotes = (scene.quotes || []).map(line => `<p class="quote">"${escapeHtml(line)}"</p>`).join("");
+      const button = scene.button ? `<span class="button-copy">${escapeHtml(scene.button)}</span>` : "";
+      const title = scene.n === "01" ? `<h2>${escapeHtml(scene.lines[0])}</h2>` : "";
+      const body = scene.n === "01" ? `<p>${escapeHtml(scene.lines[1])}</p>` : `${lines}${quotes}${button}`;
+
+      return `
+        <section class="scene">
+          <div class="frame"><img src="${escapeHtml(scene.image)}" alt="${escapeHtml(scene.n + ". " + scene.title)}" /></div>
+          <div class="copy">
+            <p class="kicker">${escapeHtml(scene.n)}. ${escapeHtml(scene.title)}</p>
+            ${title}
+            ${body}
+          </div>
+        </section>
+      `;
+    }
+
+    document.getElementById("story").innerHTML = scenes.map(renderScene).join("");
+  </script>
+</body>
+</html>

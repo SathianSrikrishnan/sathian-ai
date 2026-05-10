@@ -5,7 +5,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Smile Fund - Tooth Fairy Network",
   description:
-    "A parent-controlled Smile Fund helps a child grow from a tooth memory into early lessons about saving, responsibility, ownership, and self-sovereignty.",
+    "A parent-controlled Smile Fund preview helps a tooth memory become an early lesson about saving, patience, responsibility, and care.",
 }
 
 const lessons = [
@@ -15,7 +15,7 @@ const lessons = [
   },
   {
     title: "Ownership has context",
-    body: "The money is attached to a real family moment, so ownership starts with memory instead of speculation.",
+    body: "Any future gift is attached to a real family moment, so ownership starts with memory instead of speculation.",
   },
   {
     title: "Parents stay in control",
@@ -25,14 +25,14 @@ const lessons = [
 
 const timeline = [
   "The tooth moment is saved as a first forever memory.",
-  "Family can celebrate the page without needing a wallet.",
-  "Optional wallet gifts enter the Smile Fund during controlled testing.",
-  "The child grows into saving, investing, and self-sovereignty lessons with a parent guiding the pace.",
+  "Grandparents and family can celebrate the page without needing a wallet.",
+  "Family gifts can start the Smile Fund after the card-funded gift path is ready.",
+  "The child grows into saving, patience, responsibility, and why ownership matters with a parent guiding the pace.",
 ]
 
 const status = [
-  ["Live now", "Memory creation, Google sign-in, public family links, and controlled wallet gifts."],
-  ["Paused", "Card gifts are paused until provider verification, receipts, fee disclosures, and terms are final."],
+  ["Live now", "Memory creation, Google sign-in, public family links, and a parent-controlled gift preview."],
+  ["Not live yet", "Card-funded gifts are paused until provider verification, receipts, fee disclosures, and terms are final."],
   ["Boundary", "The Smile Fund is an educational savings experience, not investment advice or an investment product."],
 ]
 
@@ -47,13 +47,13 @@ const parentResources = [
     source: "Investor.gov",
     title: "Small Savings Add Up to Big Money",
     href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/small-savings-add-big-money",
-    body: "A simple parent reference for explaining compounding without turning the moment into a market lesson.",
+    body: "A simple parent reference for showing how small habits can matter over a long time.",
   },
   {
     source: "Investor.gov",
-    title: "Understand What It Means to Invest",
+    title: "Risk and timing basics",
     href: "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/understand-what-it-means-invest",
-    body: "Use this as the guardrail: investing has risk, so children learn vocabulary before they get control.",
+    body: "A parent-facing reminder that savings conversations should include care, risk, and timing.",
   },
 ]
 
@@ -63,16 +63,16 @@ export default function SmileFundPage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Smile Fund</p>
-          <h1>A practice portfolio for saving, responsibility, and ownership.</h1>
+          <h1>A small gift can become a gentle money lesson.</h1>
           <p>
-            The Smile Fund gives a child an early model for the world they are
-            growing into: save before spending, understand what is truly theirs,
-            and learn about investing and self-sovereignty with a parent still
-            setting the pace.
+            The Smile Fund starts as a preview beside the tooth memory. Parents
+            keep the pace gentle while children begin to learn patience, saving,
+            responsibility, and why care matters.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app">Create a memory</Link>
+            <Link href="/toothfairy/app/draw?from=smile-fund">Create a memory</Link>
             <Link href="/toothfairy/faq">Read parent FAQ</Link>
+            <Link href="/toothfairy/grandparents">Grandparent guide</Link>
           </div>
         </div>
 
@@ -80,12 +80,12 @@ export default function SmileFundPage() {
           <div className="fund-card">
             <p>Little Smile Fund</p>
             <strong>$360</strong>
-            <span>6 family gifts saved</span>
-            <div className="locked-row" aria-label="Example locked gift">
+            <span>Family gift preview</span>
+            <div className="locked-row" aria-label="Example Smile Fund gift">
               <i aria-hidden />
               <div>
-                <b>Example locked gift</b>
-                <small>0.05 SOL held with the memory</small>
+                <b>Example Smile Fund gift</b>
+                <small>Held with the memory until the child is ready</small>
               </div>
             </div>
             <div className="bars" aria-hidden>
@@ -112,7 +112,7 @@ export default function SmileFundPage() {
       <section className="lesson-band" aria-label="Smile Fund lessons">
         <div className="lesson-heading">
           <p className="eyebrow">What it teaches</p>
-          <h2>The gift is optional. The lesson is the product.</h2>
+          <h2>The gift is optional. The lesson comes first.</h2>
         </div>
         <div className="lesson-grid">
           {lessons.map((lesson) => (
@@ -127,13 +127,12 @@ export default function SmileFundPage() {
       <section className="flow">
         <div>
           <p className="eyebrow">Family flow</p>
-          <h2>Memory first, money second, responsibility over time.</h2>
+          <h2>Memory first, gifts later, responsibility over time.</h2>
           <p>
             A lost tooth should not become a transaction. The memory is the
             emotional anchor. The Smile Fund is the learning layer that can
-            slowly introduce saving, patience, investing vocabulary, and the
-            idea of self-sovereignty without handing a child adult financial
-            control too early.
+            slowly introduce saving, patience, responsibility, and ownership
+            without handing a child grown-up financial control too early.
           </p>
         </div>
         <ol>
@@ -149,11 +148,11 @@ export default function SmileFundPage() {
       <section className="resources" aria-label="Parent learning resources">
         <div className="resources-heading">
           <p className="eyebrow">Parent reading</p>
-          <h2>Good outside references for the lesson underneath.</h2>
+          <h2>Trusted references for the lesson underneath.</h2>
           <p>
             The Smile Fund should make parents feel prepared, not sold to. These
-            are sober references for saving, compounding, and the risk boundary
-            around investing.
+            references keep the focus on saving, small habits, and the risk
+            boundary around any grown-up money decision.
           </p>
         </div>
         <div className="resource-grid">
@@ -185,13 +184,15 @@ export default function SmileFundPage() {
       <section className="close">
         <p>
           Parent-controlled means the child can feel ownership before they are
-          responsible for custody, trading, or financial decisions. That is the
-          point.
+          responsible for accounts, trading, or grown-up financial decisions.
+          That is the point.
         </p>
-        <Link href="/toothfairy/app">Start with the memory</Link>
+        <Link href="/toothfairy/app/draw?from=smile-fund">Start with the memory</Link>
       </section>
 
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .smile-page {
           --navy: #10234c;
           --ink: #24385f;
@@ -305,7 +306,7 @@ export default function SmileFundPage() {
           box-shadow: 0 15px 34px rgba(109, 69, 168, 0.2);
         }
 
-        .actions a:last-child {
+        .actions a:not(:first-child) {
           border: 1px solid var(--border);
           background: rgba(255, 255, 255, 0.68);
           color: var(--navy);
@@ -655,7 +656,9 @@ export default function SmileFundPage() {
             font-size: 3.2rem;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   )
 }

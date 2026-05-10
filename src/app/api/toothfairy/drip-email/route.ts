@@ -155,7 +155,7 @@ function renderT24({ firstName }: { firstName: string }) {
       <p style="margin:0 0 4px;font-size:16px;line-height:1.7;color:#5A4A3A;font-style:italic;">
         That's it. Tanda does the rest.
       </p>`,
-    ctaHref: `${SITE}/toothfairy/app`,
+    ctaHref: `${SITE}/toothfairy/app/draw?from=drip-email`,
     ctaLabel: "Make the keepsake",
     footerLine: "Tanda &middot; keeper on call for a thousand years",
   })

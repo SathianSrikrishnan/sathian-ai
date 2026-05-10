@@ -1,9 +1,20 @@
 export type EnhanceCharm = "sparkle" | "glow" | "magic"
+export type MagicStyleId =
+  | "tanda-glow"
+  | "storybook-ink"
+  | "watercolor-memory"
+  | "pencil-charm"
+  | "cartoon-3d"
+  | "tradition-magic"
 export type EnhanceTradition =
   | "tanda"
   | "anna-bogle"
   | "raton-perez"
+  | "ratoncito-perez"
+  | "korea"
   | "kkachi"
+  | "waraba-edge-light"
+  | "daga-one-year-wish"
   | "ethiopian-hyena"
   | "mayil"
   | "hazara"
@@ -14,16 +25,32 @@ export type EnhanceTradition =
 export interface EnhanceRequest {
   drawingDataUrl: string
   tradition: EnhanceTradition
-  charms: EnhanceCharm[]
+  charms?: EnhanceCharm[]
+  style?: MagicStyleId
 }
 
 export interface EnhanceResult {
   enhancedImageUrl: string
   traditionUsed: EnhanceTradition
   charmsUsed: EnhanceCharm[]
+  styleUsed?: MagicStyleId
   generationMs: number
   remaining: number
+  credits?: MagicCreditStatus
 }
+
+export interface MagicCreditStatus {
+  lifetime: number
+  remaining: number
+  reserved: number
+  used: number
+  estimatedCostUsd: number
+}
+
+export type MagicCreditOutcome =
+  | { ok: true; authenticated: true; credits: MagicCreditStatus }
+  | { ok: true; authenticated: false; credits: null }
+  | { ok: false; error: "credits_unavailable" | "network"; detail?: string }
 
 type EnhanceOutcome =
   | { ok: true; result: EnhanceResult }
@@ -33,6 +60,8 @@ type EnhanceOutcome =
         | "rate_limit"
         | "moderation_block"
         | "provider_unconfigured"
+        | "auth_required"
+        | "no_credits"
         | "service_unavailable"
         | "invalid_input"
         | "network"
@@ -107,6 +136,26 @@ export async function callEnhance(
       }
     }
 
+    if (res.status === 401 || body.error === "auth_required") {
+      return {
+        ok: false,
+        error: "auth_required",
+        detail:
+          body.detail ??
+          "Sign in to unlock Magic Studio credits.",
+      }
+    }
+
+    if (res.status === 402 || body.error === "no_credits") {
+      return {
+        ok: false,
+        error: "no_credits",
+        detail:
+          body.detail ??
+          "This account has used its starter Magic Studio credits.",
+      }
+    }
+
     if (res.status === 400) {
       return {
         ok: false,
@@ -161,5 +210,35 @@ export async function callEnhance(
     return { ok: false, error: "network" }
   } finally {
     if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+  }
+}
+
+export async function getMagicCreditStatus(): Promise<MagicCreditOutcome> {
+  try {
+    const res = await fetch("/api/toothfairy/enhance", {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    })
+
+    const body = await res.json().catch(() => ({}))
+
+    if (res.ok) {
+      if (body.authenticated) {
+        return {
+          ok: true,
+          authenticated: true,
+          credits: body.credits as MagicCreditStatus,
+        }
+      }
+      return { ok: true, authenticated: false, credits: null }
+    }
+
+    return {
+      ok: false,
+      error: "credits_unavailable",
+      detail: body.detail ?? `HTTP ${res.status}`,
+    }
+  } catch {
+    return { ok: false, error: "network" }
   }
 }

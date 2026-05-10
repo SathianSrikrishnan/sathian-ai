@@ -1,7 +1,5 @@
-"use client"
-
-import TandaLiveRitualHero from "@/components/toothfairy/home/tanda-live-ritual-hero"
+import ToothFairyHomeClient from "./home-client"
 
 export default function ToothFairyLanding() {
-  return <TandaLiveRitualHero />
+  return <ToothFairyHomeClient />
 }

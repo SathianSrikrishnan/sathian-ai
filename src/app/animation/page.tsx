@@ -9,7 +9,7 @@ export default function AnimationPage() {
   return (
     <div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
       <ChainOfTeeth
-        onDepositClick={() => router.push('/toothfairy/app')}
+        onDepositClick={() => router.push('/toothfairy/app/draw?from=animation')}
         onStoriesClick={() => router.push('/toothfairy/stories')}
       />
     </div>

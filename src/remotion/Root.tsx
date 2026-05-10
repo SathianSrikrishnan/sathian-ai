@@ -1,17 +1,38 @@
 import React from 'react';
-import { Composition, registerRoot } from 'remotion';
-import { ToothFairyVideo } from './ToothFairyVideo';
+import { Composition, Folder, registerRoot } from 'remotion';
 import { StoryComposition, storyTotalFrames } from './StoryComposition';
 import { ALL_STORIES } from '../data/stories';
-import { TOTAL_FRAMES_V3, FPS } from './styles';
+import { FPS } from './styles';
+import {
+  TandaRitualHero,
+  TANDA_RITUAL_DURATION_FRAMES,
+  TANDA_RITUAL_FPS,
+  TANDA_RITUAL_HEIGHT,
+  TANDA_RITUAL_WIDTH,
+} from './TandaRitualHero';
+import {
+  TandaHeroIntegratedRitual,
+  TANDA_HERO_INTEGRATED_DURATION_FRAMES,
+  TANDA_HERO_INTEGRATED_FPS,
+  TANDA_HERO_INTEGRATED_HEIGHT,
+  TANDA_HERO_INTEGRATED_WIDTH,
+} from './TandaHeroIntegratedRitual';
+import {
+  COLOSSEUM_FPS,
+  COLOSSEUM_HEIGHT,
+  COLOSSEUM_WIDTH,
+  framesForStoryboard,
+} from './colosseum/storyboards';
+import {
+  ColosseumPitchStoryboard,
+  ColosseumTechnicalStoryboard,
+} from './colosseum/ColosseumStoryboard';
 
 const RemotionRoot: React.FC = () => {
   return (
     <>
-      {/* ── Story Videos (one per tradition) ── */}
-      {ALL_STORIES.filter((s) => s.available).map((story) => (
+      {ALL_STORIES.filter((story) => story.available).map((story) => (
         <React.Fragment key={story.id}>
-          {/* Landscape (16:9) */}
           <Composition
             id={`Story-${story.id}`}
             component={StoryComposition}
@@ -21,7 +42,6 @@ const RemotionRoot: React.FC = () => {
             height={1080}
             defaultProps={{ story }}
           />
-          {/* Vertical (9:16 — mobile/reels) */}
           <Composition
             id={`Story-${story.id}-Vertical`}
             component={StoryComposition}
@@ -34,33 +54,41 @@ const RemotionRoot: React.FC = () => {
         </React.Fragment>
       ))}
 
-      {/* ── Marketing Video (existing — uses TransitionSeries, currently broken) ── */}
-      {/*
       <Composition
-        id="ToothFairyNetwork"
-        component={ToothFairyVideo}
-        durationInFrames={TOTAL_FRAMES_V3}
-        fps={FPS}
-        width={1920}
-        height={1080}
+        id="TandaRitualHero"
+        component={TandaRitualHero}
+        durationInFrames={TANDA_RITUAL_DURATION_FRAMES}
+        fps={TANDA_RITUAL_FPS}
+        width={TANDA_RITUAL_WIDTH}
+        height={TANDA_RITUAL_HEIGHT}
       />
       <Composition
-        id="ToothFairyNetwork-Square"
-        component={ToothFairyVideo}
-        durationInFrames={TOTAL_FRAMES_V3}
-        fps={FPS}
-        width={1080}
-        height={1080}
+        id="TandaHeroIntegratedRitual"
+        component={TandaHeroIntegratedRitual}
+        durationInFrames={TANDA_HERO_INTEGRATED_DURATION_FRAMES}
+        fps={TANDA_HERO_INTEGRATED_FPS}
+        width={TANDA_HERO_INTEGRATED_WIDTH}
+        height={TANDA_HERO_INTEGRATED_HEIGHT}
       />
-      <Composition
-        id="ToothFairyNetwork-Vertical"
-        component={ToothFairyVideo}
-        durationInFrames={TOTAL_FRAMES_V3}
-        fps={FPS}
-        width={1080}
-        height={1920}
-      />
-      */}
+
+      <Folder name="Colosseum">
+        <Composition
+          id="Colosseum-Pitch-Storyboard"
+          component={ColosseumPitchStoryboard}
+          durationInFrames={framesForStoryboard('pitch')}
+          fps={COLOSSEUM_FPS}
+          width={COLOSSEUM_WIDTH}
+          height={COLOSSEUM_HEIGHT}
+        />
+        <Composition
+          id="Colosseum-Technical-Storyboard"
+          component={ColosseumTechnicalStoryboard}
+          durationInFrames={framesForStoryboard('technical')}
+          fps={COLOSSEUM_FPS}
+          width={COLOSSEUM_WIDTH}
+          height={COLOSSEUM_HEIGHT}
+        />
+      </Folder>
     </>
   );
 };

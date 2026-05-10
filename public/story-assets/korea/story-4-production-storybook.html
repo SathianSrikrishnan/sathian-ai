@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kkachi and the Roof Song - Production Storybook</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f6fbff;
+      --muted: #c1d4d9;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(13, 23, 30, 0.82);
+      --accent: #70c7d8;
+      --green: #5ac6a0;
+      --gold: #e8b77a;
+      --rose: #f3a7b5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(112, 199, 216, 0.18), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(90, 198, 160, 0.14), transparent 30rem),
+        #081017;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    header,
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-inline: 22px;
+    }
+
+    header {
+      padding-top: 56px;
+      padding-bottom: 28px;
+    }
+
+    h1 {
+      max-width: 960px;
+      margin: 0 0 10px;
+      font-size: clamp(38px, 7vw, 82px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .dek {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #dbf8ff;
+    }
+
+    .meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    main { padding-bottom: 80px; }
+
+    .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 22px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      border-radius: 10px;
+      background: #101d26;
+      overflow: hidden;
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 82vh;
+      object-fit: contain;
+      background: #101d26;
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .kicker {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .quote {
+      border-left: 3px solid currentColor;
+      padding-left: 12px;
+      color: var(--accent);
+    }
+
+    .quote.tanda { color: var(--gold); }
+    .quote.jiyoon { color: var(--rose); }
+    .quote.grandmother { color: #f0c987; }
+
+    .button-copy {
+      display: inline-block;
+      width: fit-content;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #1b140d;
+      padding: 10px 15px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .scene { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kkachi and<br />the Roof Song</h1>
+    <p class="dek">A Korean story of a magpie, a lost tooth, and the old words that knew the way home.</p>
+    <div class="meta">
+      <span>Final read-aloud preview</span>
+      <span>45 scenes</span>
+      <span>Final 3D visual draft</span>
+    </div>
+  </header>
+
+  <main id="story"></main>
+
+  <script>
+    const img = {
+      bedroom: "kr-01-bedroom.jpg",
+      rooftop: "kr-02-rooftop-singing.jpg",
+      arrival: "kr-03-magpie-descends.jpg",
+      nest: "kr-04-magical-nest.jpg",
+      kkachi: "kr-05-magpie-facing.jpg",
+      network: "../shared/shared-network-station.jpg",
+      collectors: "../shared/shared-multiple-collectors.jpg"
+    };
+
+    const scenes = [
+      { n: "01", title: "Cover", image: "v2/s4-frame-01-cover.png", lines: ["Kkachi and the Roof Song", "A Korean story of a magpie, a lost tooth, and the old words that knew the way home."] },
+      { n: "02", title: "The Wobble Beat", image: "v2/s4-frame-02-loose-tooth.png", lines: ["Jiyoon's tooth had been wobbling all week.", "Not a little wobble. A tap-tap, twist-twist, please-stop-thinking-about-me wobble."] },
+      { n: "03", title: "The Pop", image: "v2/s4-frame-03-grandmother-enters.png", lines: ["At supper, Jiyoon bit into a pear slice to prove the tooth was not ready.", "The tooth disagreed. It popped into her mouth like a tiny announcement."] },
+      { n: "04", title: "Small And Strange", image: "v2/s4-frame-04-first-roof-song.png", lines: ["Grandmother held out a folded tissue. Jiyoon placed the tooth on it carefully.", "It was smaller than she expected. It was also stranger. A piece of Jiyoon had come loose, and everyone seemed happy about it."] },
+      { n: "05", title: "Grandmother's Smile", image: "v2/s4-frame-05-jiyoon-listens.png", lines: ["Grandmother washed the tooth in a little bowl.", "The water moved around it in one bright circle. \"When I was small,\" she said, \"we knew who to call.\""] },
+      { n: "06", title: "The Old Roof Song", image: "v2/s4-frame-05-jiyoon-listens.png", lines: ["Then Grandmother sang. Softly. So softly the window seemed to lean in.", "\"Kkachi-ya, Kkachi-ya...\" The roof song lifted like steam."] },
+      { n: "07", title: "What It Means", image: "v2/s4-frame-06-explanation.png", lines: ["\"It means old tooth, new tooth,\" Grandmother said.", "\"Take what is finished. Help what is growing.\""], quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "Jiyoon nodded as if she had heard every word. Mostly, she had heard the beat." }] },
+      { n: "08", title: "A Better Idea", image: "v2/s4-frame-07-first-choice.png", lines: ["The song was sweet. The song was old. The song was also, in Jiyoon's professional opinion, very slow.", "She had an idea. A very good idea. Possibly the best idea a person with one missing tooth had ever had."] },
+      { n: "09", title: "Remix Table", image: "v2/s4-frame-08-phone-opens.png", lines: ["Jiyoon opened her recorder. She tapped the desk. She clapped the beat.", "She made the roof song bounce."] },
+      { n: "10", title: "Loop Loop Loop", image: "v2/s4-frame-09-remix-begins.png", lines: ["Loop. Tap. Clap. Again.", "The old song became faster. Then brighter. Then clickier. Much more roof-worthy."] },
+      { n: "11", title: "Cut That Part", image: "v2/s4-frame-11-roofline-wakes.png", lines: ["One line was too slow. One pause was too quiet.", "One little piece sounded exactly like Grandmother. So Jiyoon trimmed it out."] },
+      { n: "12", title: "Grandmother Hears", image: "v2/s4-frame-10-grandmother-pauses.png", lines: ["Grandmother listened from the doorway. She smiled.", "It was not her whole smile."], quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "I made it cooler!" }] },
+      { n: "13", title: "Not Scolding", image: "v2/s4-frame-10-grandmother-pauses.png", lines: ["\"That is very clever,\" Grandmother said.", "Her voice stayed gentle. \"It still needs to know where it came from.\""], quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "It knows. I saved the best parts." }] },
+      { n: "14", title: "Tanda's Invitation", image: "v2/s4-frame-12-tanda-arrives.png", lines: ["Far above the city, Tanda unfolded a small bright letter.", "It hummed with roof tiles, bird feet, and a child's almost-song."] },
+      { n: "15", title: "First Korean Song", image: "v2/s4-frame-14-first-rooftop-step.png", lines: ["The roof did not glow like Tanda's Toothlight. It listened differently.", "It held the sound in its tiles. It waited for the right voice. Tanda folded her light close and landed softly."] },
+      { n: "16", title: "The Roofline Guardian", image: "v2/s4-frame-17-kkachi-arrives.png", lines: ["Kkachi swept onto the roofline in black, white, and blue-green shine."], quotes: [{ speaker: "Kkachi", text: "If this is about the shiny noise, I heard it three chimneys ago." }] },
+      { n: "17", title: "Kkachi's Opinions", image: "v2/s4-frame-17-kkachi-arrives.png", lines: ["Kkachi was beautiful. Kkachi was important.", "Kkachi had never met a rhythm she did not have an opinion about."], quotes: [{ speaker: "Kkachi", text: "The claps are early. But the confidence is enormous." }] },
+      { n: "18", title: "The Invitation", image: "v2/s4-frame-18-kkachi-and-tanda.png", lines: ["Tanda bowed and held out the invitation.", "\"A child is calling.\""], quotes: [{ speaker: "Kkachi", text: "A child is performing. There is a difference." }, { speaker: "Tanda", kind: "tanda", text: "Then I will listen before I bring the Network near." }] },
+      { n: "19", title: "Shiny Sound", image: "v2/s4-frame-16-shiny-rhythm.png", lines: ["The remix flew up from Jiyoon's room in bright loops.", "It sparkled. It spun. It nearly knocked over a wind chime."], quotes: [{ speaker: "Kkachi", text: "Well. It is not boring." }] },
+      { n: "20", title: "The First Throw", image: "v2/s4-frame-15-roof-call-starts.png", lines: ["That evening, Jiyoon stepped onto the rooftop terrace. Grandmother came with her.", "The city lights blinked on, one by one. Jiyoon held the tooth tight in her fingers."] },
+      { n: "21", title: "Big Performance", image: "v2/s4-frame-19-tooth-thrown.png", lines: ["Jiyoon sang fast. She sang bright.", "She sang as if the sky had asked for a show and she had brought one. The tooth lifted from her palm."] },
+      { n: "22", title: "Kkachi Approves, Almost", image: "v2/s4-frame-20-echo-breaks.png", quotes: [{ speaker: "Kkachi", text: "Interesting tempo. Risky middle. Terrible respect for silence." }], lines: ["Then she stopped moving."] },
+      { n: "23", title: "No Echo", image: "v2/s4-frame-20-echo-breaks.png", lines: ["The tooth rose, glittered, and waited.", "The roof gave back an echo. But the echo was thin. It had no warm bowl. No pear slice. No Grandmother."] },
+      { n: "24", title: "The Crack", image: "v2/s4-frame-21-missing-line.png", lines: ["A roof tile made a sound like a tiny cough.", "Tik. A dark little crack opened where the missing line should have landed."] },
+      { n: "25", title: "Not Accepted", image: "v2/s4-frame-25-hollow-echo.png", quotes: [{ speaker: "Kkachi", text: "Pretty." }, { speaker: "Kkachi", text: "Empty." }], lines: ["Jiyoon smiled, just a little. Then Kkachi lowered her head."] },
+      { n: "26", title: "Jiyoon's Heat", image: "v2/s4-frame-22-jiyoon-defends-song.png", quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "I practiced." }, { speaker: "Kkachi", text: "I heard." }], lines: ["That made it worse. Grandmother did not say anything. Somehow that was worse too."] },
+      { n: "27", title: "Toothlight Temptation", image: "v2/s4-frame-26-tanda-raises-light.png", lines: ["Tanda lifted one hand. Toothlight gathered, soft and ready.", "She could have wrapped the tooth in glow. She could have made the moment easier."], quotes: [{ speaker: "Kkachi", text: "Careful, bright one. A louder light can still miss a song." }] },
+      { n: "28", title: "Grandmother's Choice", image: "v2/s4-frame-23-grandmother-waits.png", lines: ["Tanda saw Grandmother listening, and lowered her hand.", "Grandmother sat beside Jiyoon on the roof. She could have said, I told you. She did not."] },
+      { n: "29", title: "The Missing Piece", image: "v2/s4-frame-28-jiyoon-chooses-listening.png", quotes: [{ speaker: "Grandmother", kind: "grandmother", text: "Which part did you cut?" }], lines: ["Jiyoon looked down. She knew. Of course she knew.", "It was the part that sounded slow because it was carrying someone."] },
+      { n: "30", title: "Who Taught You", image: "v2/s4-frame-30-call-and-response.png", quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "Who taught it to you?" }, { speaker: "Grandmother", kind: "grandmother", text: "My grandmother. In a yard with persimmon leaves." }] },
+      { n: "31", title: "The Family Voice", image: "v2/s4-frame-29-grandmother-memory.png", quotes: [{ speaker: "Grandmother", kind: "grandmother", text: "I had lost my tooth, and I was sure the new one would never come." }, { speaker: "Grandmother", kind: "grandmother", text: "I was very dramatic." }], lines: ["Jiyoon laughed. It came out small, but it came out true."] },
+      { n: "32", title: "Kkachi Listens", image: "v2/s4-frame-32-toothlight-listens.png", lines: ["Kkachi tucked her wings close.", "Even her tail stopped giving advice. That was how Tanda knew the next part mattered."] },
+      { n: "33", title: "Jiyoon Listens", image: "v2/s4-frame-35-true-song.png", lines: ["Grandmother sang again.", "This time Jiyoon did not count the beat. She did not plan the claps. She listened for the hand that had handed it down."] },
+      { n: "34", title: "The True Call Begins", image: "v2/s4-frame-35-true-song.png", lines: ["Then Jiyoon took a breath.", "Not a performance breath. A listening breath. She let Grandmother's voice stand beside hers."] },
+      { n: "35", title: "Old Tooth, New Tooth", image: "v2/s4-frame-35-true-song.png", quotes: [{ speaker: "Jiyoon", kind: "jiyoon", text: "Kkachi-ya, Kkachi-ya." }], lines: ["Slowly enough for the words to find their way.", "Old tooth. New tooth. Take what is finished. Help what is growing."] },
+      { n: "36", title: "The Roof Answers", image: "v2/s4-frame-36-new-tooth-promise.png", lines: ["The roof did not sparkle first. It remembered first.", "The tiles warmed under the song. The crack stopped spreading. The tooth began to shine."] },
+      { n: "37", title: "Echoes With Names", image: "v2/s4-frame-31-neighborhood-echo.png", lines: ["The echo came back full.", "It carried pear sweetness. Warm water. Grandmother's hands. A yard of persimmon leaves Jiyoon had never seen. A voice that had reached her anyway."] },
+      { n: "38", title: "Kkachi Accepts", image: "v2/s4-frame-34-kkachi-softens.png", lines: ["Kkachi stepped forward. No joke. No opinion. Only care."], quotes: [{ speaker: "Kkachi", text: "There. Now the song has somewhere to land." }] },
+      { n: "39", title: "The Carry", image: "v2/s4-frame-45-what-tanda-learned.png", lines: ["Kkachi took the tooth gently.", "It shone silver-blue in her care. Not louder. Truer.", "Her feathers shimmered like the roof had breathed through them."] },
+      { n: "40", title: "Toothlight Waits Its Turn", image: "v2/s4-frame-40-network-listens.png", lines: ["Only then did Tanda let Toothlight touch the air.", "It did not change the call. It did not cover the song. It made room around it."], quotes: [{ speaker: "Kkachi", text: "So the Network can listen without taking over?" }, { speaker: "Tanda", kind: "tanda", text: "Yes. The Network listens before it glows." }] },
+      { n: "41", title: "Feather-Song Mark", image: "v2/s4-frame-38-charm-forms.png", lines: ["On Jiyoon's drawing, three tiny feathers appeared.", "A roofline. A line of song so faint it looked like listening."], quotes: [{ speaker: "Grandmother", kind: "grandmother", text: "Ah. It remembered." }] },
+      { n: "42", title: "Kkachi's Promise", image: "v2/s4-frame-41-grandmother-and-jiyoon.png", quotes: [{ speaker: "Kkachi", text: "I will carry this with excellent posture and no unnecessary improvisation." }, { speaker: "Kkachi", text: "Almost no unnecessary improvisation." }], lines: ["Jiyoon laughed again. This time, Grandmother did too."] },
+      { n: "43", title: "The Tile Heals", image: "v2/s4-frame-33-crack-closes.png", lines: ["The crack in the tile closed.", "It did not disappear. It became a small roofline mark, tucked into the pattern as if it had learned the song too."] },
+      { n: "44", title: "Morning Voice", image: "v2/s4-frame-43-roof-morning.png", lines: ["The next morning, Jiyoon recorded the roof song again.", "She kept the slow part. She kept the quiet part. She kept Grandmother laughing at the end."] },
+      { n: "45", title: "What Tanda Learned", image: "v2/s4-frame-45-what-tanda-learned.png", lines: ["Kkachi carried the tooth over the brightening roofs.", "Tanda carried the lesson back to the Network.", "Before Toothlight, listen.", "Because a song is not only how it sounds. It is who loved you enough to teach it."], button: "Create Your Tooth Keepsake" }
+    ];
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function renderScene(scene) {
+      const lines = (scene.lines || []).map(line => `<p>${escapeHtml(line)}</p>`).join("");
+      const quotes = (scene.quotes || [])
+        .map(quote => `<p class="quote ${escapeHtml(quote.kind || "")}"><strong>${escapeHtml(quote.speaker)}:</strong> "${escapeHtml(quote.text)}"</p>`)
+        .join("");
+      const button = scene.button ? `<span class="button-copy">${escapeHtml(scene.button)}</span>` : "";
+      const title = scene.n === "01" ? `<h2>${escapeHtml(scene.lines[0])}</h2>` : "";
+      const body = scene.n === "01" ? `<p>${escapeHtml(scene.lines[1])}</p>` : `${lines}${quotes}${button}`;
+
+      return `
+        <section class="scene">
+          <div class="frame"><img src="${escapeHtml(scene.image)}" alt="${escapeHtml(scene.n + ". " + scene.title)}" /></div>
+          <div class="copy">
+            <p class="kicker">${escapeHtml(scene.n)}. ${escapeHtml(scene.title)}</p>
+            ${title}
+            ${body}
+          </div>
+        </section>
+      `;
+    }
+
+    document.getElementById("story").innerHTML = scenes.map(renderScene).join("");
+  </script>
+</body>
+</html>

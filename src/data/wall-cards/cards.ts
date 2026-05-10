@@ -5,36 +5,53 @@ export const wallCards: WallCard[] = [
   {
     id: 'irish-leprechaun',
     slug: 'irish-leprechaun',
-    title: 'Anna Bogle',
+    title: 'Anna Bogle and the Gap in the Gold',
     region: 'Ireland',
     continent: 'Europe',
     characterName: 'Anna Bogle',
-    image: '/story-assets/ireland/ir-01-bedroom.jpg',
+    image: '/story-assets/anna/v2/finals/story7-frame-01-cover.png',
     miniStory:
-      'Anna Bogle is a leprechaun with a gap in her smile and a reason for it. "I gave mine away," she says, grinning wide enough to fit a whole story through. Tonight she squeezes through the window of a cottage in County Kerry, inspects the tooth under the pillow, and whistles low. "This one is LOVELY. Much nicer than the one I lost." She wraps it in a clover leaf and flies — because even leprechauns fly when the cargo matters — to a place where teeth become keepsakes and gold is beside the point.',
-    theme: 'Generosity',
+      'Ryan expects gold for his lost tooth, but Grandad remembers an older story and Anna Bogle hears the gift going cold. Tanda arrives carefully, not to replace Anna, but to listen to why old keepers guard their promises. The tooth becomes proof that gold can mark a memory without becoming the point.',
+    theme: 'Trust',
     featured: true,
-    linkedFullStory: 'ireland',
+    linkedFullStory: 'anna-bogle',
     coordinates: { lat: 53.35, lng: -6.26 },
-    source: 'tfn-story-bible.md / Ireland entry',
+    source: 'Story 7 approved production draft / Ireland Anna Bogle lane',
   },
 
   // ── 2. South Korea ──────────────────────────────────────
   {
     id: 'korean-magpie',
     slug: 'korean-magpie',
-    title: "The Magpie's Song",
+    title: 'Kkachi and the Roof Song',
     region: 'South Korea',
     continent: 'Asia',
     characterName: 'Kkachi the Magpie',
-    image: '/story-assets/korea/kr-01-bedroom.jpg',
+    image: '/story-assets/korea/v2/kkachi-story-card.png',
     miniStory:
-      'On the rooftop at dusk, a child holds a tooth to the sky and sings the old words: "Kkachi-ya, kkachi-ya, take my old tooth and bring me a new one!" A magpie with iridescent feathers lands on the gutter, tilts her head, and says, "Did someone call? I HEARD a tooth." Kkachi has been collecting rooftop teeth in Korea for four hundred years, but she still gets excited every time. She tucks the tooth into her nest of silver and silk, because in her view, a child\'s first lost tooth deserves a setting as fine as any jewel.',
-    theme: 'Nature & Wonder',
+      'Jiyoon wants to make Grandmother\'s roof song faster, brighter, and cooler. Kkachi the Magpie hears the shiny remix right away, but she will not accept a song that has lost the family voice inside it. On the roof, Tanda learns to keep Toothlight quiet while Kkachi listens for the old words, the missing line, and the memory that makes the ritual true.',
+    theme: 'Listening',
     featured: true,
     linkedFullStory: 'korea',
     coordinates: { lat: 37.57, lng: 126.98 },
     source: 'tfn-story-bible.md / Korea entry',
+  },
+
+  {
+    id: 'philippines-one-year-wish',
+    slug: 'philippines-one-year-wish',
+    title: 'Daga and the One-Year Wish',
+    region: 'Philippines',
+    continent: 'Asia',
+    characterName: 'Daga',
+    image: '/story-assets/daga-one-year-wish/site/story-06-story-card.png',
+    miniStory:
+      'Maya wants her wish now, but Lola remembers a roof mouse who hides a tooth for one full year. Daga keeps the promise tucked between roof dust, calendar light, and the exact place a child will forget until she is ready to remember. Tanda can read the map, but even she cannot hurry magic that needs time to answer.',
+    theme: 'Patience',
+    featured: true,
+    linkedFullStory: 'daga-one-year-wish',
+    coordinates: { lat: 14.6, lng: 120.98 },
+    source: 'Story 6 approved production draft / Philippines family-version lane',
   },
 
   // ── 3. Cherokee Nation ──────────────────────────────────
@@ -56,20 +73,20 @@ export const wallCards: WallCard[] = [
 
   // ── 4. Ethiopia ─────────────────────────────────────────
   {
-    id: 'ethiopian-hyena',
-    slug: 'ethiopian-hyena',
-    title: "The Hyena's Bargain",
-    region: 'Ethiopia',
+    id: 'waraba-edge-light',
+    slug: 'waraba-edge-light',
+    title: 'Waraba at the Edge of the Light',
+    region: 'Ethiopia / Harar',
     continent: 'Africa',
-    characterName: 'Hyena',
-    image: '/story-assets/ethiopia/et-01-bedroom.jpg',
+    characterName: 'Waraba',
+    image: '/story-assets/waraba-edge-light/v1/support/s5-landscape-story-card.png',
     miniStory:
-      'In the Ethiopian dusk, a child walks out past the cooking fire and holds a tooth toward the dark. "Hyena," she whispers, "take my weak tooth. Give me a strong one." Two amber eyes blink open. "Heheheh... another brave one," the Hyena says, stepping into the firelight. His jaws can crush bone, but he takes the tiny tooth as gently as picking up a moth. "Brave," he says again, softer now. "I like brave." He turns and vanishes into the dark, carrying her courage and her tooth to a place even his jaws cannot break.',
-    theme: 'Bravery',
+      'Ilyas can joke about anything, especially fear. But when his tooth falls out, the old family way asks him to step beyond the kitchen light and offer it to the dark. Tanda comes only to the edge, because this ritual belongs to Waraba: enormous, silent, amber-eyed, and gentle enough to receive a child who walks with fear until it becomes part of the story.',
+    theme: 'Courage',
     featured: true,
-    linkedFullStory: 'ethiopia',
-    coordinates: { lat: 9.02, lng: 38.75 },
-    source: 'tfn-story-bible.md / Ethiopia entry',
+    linkedFullStory: 'waraba-edge-light',
+    coordinates: { lat: 9.31, lng: 42.12 },
+    source: 'Story 5 approved production draft / Ethiopia-Harar lane',
   },
 
   // ── 5. Finland ──────────────────────────────────────────

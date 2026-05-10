@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Tanda Hero Ritual Mobile Review</title>
+    <style>
+      :root {
+        --cream: #fbf7ee;
+        --cream-deep: #f5efe2;
+        --ink: #11234a;
+        --muted: #687188;
+        --purple: #7048ad;
+        --gold: #d8a43c;
+        --mint: #69d5bc;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 92% 8%, rgba(216, 164, 60, 0.22), transparent 18rem),
+          radial-gradient(circle at 7% 4%, rgba(112, 72, 173, 0.12), transparent 18rem),
+          linear-gradient(180deg, var(--cream), var(--cream-deep));
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .page {
+        width: min(100%, 1220px);
+        margin: 0 auto;
+        padding: clamp(1rem, 3vw, 2.2rem);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(520px, 1.1fr);
+        gap: clamp(1.4rem, 4vw, 3rem);
+        min-height: min(760px, 100vh);
+        align-items: center;
+      }
+
+      .copy h1 {
+        max-width: 640px;
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(3.5rem, 7vw, 5.8rem);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .copy h1 span {
+        display: block;
+        color: var(--purple);
+      }
+
+      .copy p {
+        max-width: 38rem;
+        margin: 1.3rem 0 0;
+        color: #334260;
+        font-size: clamp(1rem, 1.5vw, 1.22rem);
+        line-height: 1.65;
+      }
+
+      .stage {
+        position: relative;
+        min-height: 610px;
+        aspect-ratio: 1.08 / 1;
+      }
+
+      .family {
+        position: absolute;
+        inset: 5% 0 13% 7%;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: 8px;
+        box-shadow: 0 28px 68px rgba(47, 35, 80, 0.16);
+      }
+
+      .family img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .family::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 16% 12%, rgba(255, 252, 246, 0.88), transparent 15rem),
+          linear-gradient(90deg, rgba(251, 247, 238, 0.78), transparent 48%);
+      }
+
+      .source-tooth,
+      .hologram-tooth {
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(216, 189, 147, 0.74);
+        border-radius: 999px;
+        background: rgba(255, 252, 246, 0.94);
+        box-shadow: 0 14px 28px rgba(47, 35, 80, 0.16), 0 0 34px rgba(216, 164, 60, 0.28);
+      }
+
+      .source-tooth {
+        position: absolute;
+        z-index: 5;
+        top: 31%;
+        left: 17%;
+        width: 3.15rem;
+        height: 3.15rem;
+      }
+
+      .source-tooth svg,
+      .hologram-tooth svg {
+        width: 62%;
+        height: 76%;
+        filter: drop-shadow(0 4px 8px rgba(47, 35, 80, 0.14));
+      }
+
+      .base {
+        position: absolute;
+        z-index: 7;
+        left: 4%;
+        bottom: 1%;
+        width: min(290px, 41%);
+        aspect-ratio: 2.18 / 1;
+      }
+
+      .base img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 18px 26px rgba(47, 35, 80, 0.16)) drop-shadow(0 0 18px rgba(244, 200, 101, 0.2));
+      }
+
+      .base-glow,
+      .pig-glow {
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+      }
+
+      .base-glow {
+        inset: -62% 4% 4%;
+        background: radial-gradient(circle, rgba(255, 230, 137, 0.66), rgba(255, 230, 137, 0.18) 38%, transparent 68%);
+        filter: blur(4px);
+      }
+
+      .hologram-tooth {
+        position: absolute;
+        z-index: 9;
+        left: 17.5%;
+        bottom: 19%;
+        width: 2.85rem;
+        height: 2.85rem;
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.6);
+      }
+
+      .pig {
+        position: absolute;
+        z-index: 8;
+        right: -3%;
+        bottom: 3%;
+        width: min(215px, 31%);
+      }
+
+      .pig img {
+        position: relative;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        filter: drop-shadow(0 24px 34px rgba(47, 35, 80, 0.18));
+      }
+
+      .pig-glow {
+        inset: 12% 8% 8% 12%;
+        z-index: 1;
+        opacity: 0;
+        background: radial-gradient(circle, rgba(255, 220, 103, 0.62), rgba(255, 190, 70, 0.18) 48%, transparent 72%);
+        filter: blur(14px);
+      }
+
+      .memory-card,
+      .fund-card {
+        position: absolute;
+        z-index: 6;
+        border: 1px solid rgba(227, 217, 196, 0.84);
+        border-radius: 8px;
+        background: rgba(255, 252, 246, 0.87);
+        box-shadow: 0 24px 54px rgba(47, 35, 80, 0.16);
+        backdrop-filter: blur(14px);
+        opacity: 0;
+        transform: scale(0.68);
+      }
+
+      .memory-card {
+        right: 0;
+        top: 19%;
+        width: min(215px, 33%);
+        padding: 0.75rem;
+      }
+
+      .memory-art {
+        display: grid;
+        aspect-ratio: 1.08 / 1;
+        place-items: center;
+        border-radius: 6px;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(255, 232, 154, 0.62), transparent 34%),
+          linear-gradient(135deg, rgba(242, 230, 255, 0.88), rgba(255, 252, 246, 0.92));
+      }
+
+      .memory-art svg {
+        width: 28%;
+        height: 42%;
+        filter: drop-shadow(0 0 14px rgba(244, 200, 101, 0.62));
+      }
+
+      .memory-card p,
+      .fund-card p {
+        margin: 0.75rem 0 0;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .memory-card strong,
+      .fund-card strong {
+        display: block;
+        margin-top: 0.38rem;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+
+      .fund-card {
+        right: 18%;
+        bottom: 3%;
+        display: grid;
+        grid-template-columns: minmax(120px, 0.84fr) minmax(160px, 1.1fr);
+        gap: 0.8rem;
+        width: min(410px, 56%);
+        min-height: 138px;
+        align-items: center;
+        padding: 0.92rem;
+      }
+
+      .fund-chart {
+        position: relative;
+        align-self: stretch;
+        border: 1px solid rgba(227, 217, 196, 0.9);
+        border-radius: 8px;
+        background: rgba(255, 252, 246, 0.72);
+      }
+
+      .bars {
+        position: absolute;
+        inset: auto 0.85rem 0.85rem;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.42rem;
+        align-items: end;
+        height: 66%;
+      }
+
+      .bars span {
+        display: block;
+        border-radius: 999px 999px 0 0;
+        background: linear-gradient(180deg, #5fd0b4, rgba(95, 208, 180, 0.28));
+      }
+
+      .bars span:nth-child(1) { height: 34%; }
+      .bars span:nth-child(2) { height: 48%; }
+      .bars span:nth-child(3) { height: 60%; }
+      .bars span:nth-child(4) { height: 82%; }
+      .bars span:nth-child(5) { height: 100%; }
+
+      .coin {
+        position: absolute;
+        z-index: 10;
+        left: 60%;
+        top: 55%;
+        display: grid;
+        width: 2.7rem;
+        height: 2.7rem;
+        place-items: center;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fff0a9, #d89731 65%, #a66420);
+        color: #87531d;
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        box-shadow: inset 0 0 0 4px rgba(133, 78, 19, 0.24), inset 0 0 0 10px rgba(255, 245, 185, 0.22), 0 0 24px rgba(244, 200, 101, 0.7);
+        opacity: 0;
+      }
+
+      .tanda {
+        position: absolute;
+        z-index: 12;
+        left: -24%;
+        top: 16%;
+        width: min(230px, 31%);
+        aspect-ratio: 1;
+        opacity: 0;
+        transform-origin: 50% 58%;
+        will-change: left, top, transform, opacity;
+      }
+
+      .tanda img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 18px 28px rgba(47, 35, 80, 0.18)) drop-shadow(0 0 18px rgba(244, 200, 101, 0.18));
+      }
+
+      .sparkle {
+        position: absolute;
+        z-index: 11;
+        width: 0.48rem;
+        height: 0.48rem;
+        background: #fff1a7;
+        box-shadow: 0 0 14px rgba(244, 200, 101, 0.9);
+        transform: rotate(45deg);
+        opacity: 0.6;
+      }
+
+      .sparkle:nth-child(1) { left: 24%; top: 42%; }
+      .sparkle:nth-child(2) { left: 42%; top: 60%; }
+      .sparkle:nth-child(3) { left: 74%; top: 30%; }
+
+      @media (max-width: 760px) {
+        .page {
+          padding: 1rem 0.8rem 1.5rem;
+        }
+
+        .hero {
+          display: block;
+          min-height: auto;
+        }
+
+        .copy h1 {
+          font-size: clamp(3rem, 14vw, 4.2rem);
+        }
+
+        .copy p {
+          font-size: 1rem;
+          line-height: 1.55;
+        }
+
+        .stage {
+          width: min(100%, 440px);
+          min-height: auto;
+          aspect-ratio: 0.86 / 1;
+          margin: 1.4rem auto 0;
+        }
+
+        .family {
+          inset: 3% 0 25%;
+        }
+
+        .source-tooth {
+          top: 30%;
+          left: 17%;
+          width: 2.75rem;
+          height: 2.75rem;
+        }
+
+        .base {
+          left: 0;
+          bottom: 16%;
+          width: 43%;
+        }
+
+        .hologram-tooth {
+          left: 19%;
+          bottom: 32%;
+          width: 2.25rem;
+          height: 2.25rem;
+        }
+
+        .memory-card {
+          top: 42%;
+          right: 0;
+          width: 42%;
+        }
+
+        .memory-card p,
+        .fund-card p {
+          font-size: 0.62rem;
+        }
+
+        .memory-card strong,
+        .fund-card strong {
+          font-size: 1.05rem;
+        }
+
+        .fund-card {
+          right: 0;
+          bottom: 2%;
+          width: 88%;
+          min-height: 152px;
+          grid-template-columns: 1fr;
+        }
+
+        .fund-chart {
+          min-height: 76px;
+        }
+
+        .pig {
+          right: -6%;
+          bottom: 5%;
+          width: 34%;
+        }
+
+        .tanda {
+          width: 33%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero" aria-label="Tanda hero ritual mobile review">
+        <div class="copy">
+          <h1>A lost tooth becomes<span>their first forever memory.</span></h1>
+          <p>Capture the story, invite family to contribute, and start a parent-controlled Smile Fund they can grow into.</p>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="family">
+            <img src="/toothfairy/visual-system/hero-family-v1.png" alt="" />
+          </div>
+
+          <div class="source-tooth" id="sourceTooth" aria-hidden="true">
+            <svg viewBox="0 0 64 76" fill="none"><path d="M32 5.5c-10.2 0-18.6 7.7-19.5 18.1-.6 6.5 1.3 12.4 3.2 18.5 1.4 4.6 2 10.9 3.2 17.1.9 4.5 3.2 8.8 6.8 8.8 3.3 0 4.4-4.8 5.1-11.1.3-2.9.8-5.4 1.2-6.7.4 1.3.9 3.8 1.2 6.7.8 6.3 1.9 11.1 5.2 11.1 3.6 0 5.9-4.3 6.8-8.8 1.2-6.2 1.8-12.5 3.2-17.1 1.9-6.1 3.8-12 3.2-18.5C50.6 13.2 42.2 5.5 32 5.5Z" fill="#fff4df" stroke="#d8bd93" stroke-width="2.3" stroke-linejoin="round"/></svg>
+          </div>
+
+          <div class="base" aria-hidden="true">
+            <span class="base-glow" id="baseGlow"></span>
+            <img src="/toothfairy/animation/base-options/capture-base-a-platform-cropped.png" alt="" />
+          </div>
+
+          <div class="hologram-tooth" id="hologramTooth" aria-hidden="true">
+            <svg viewBox="0 0 64 76" fill="none"><path d="M32 5.5c-10.2 0-18.6 7.7-19.5 18.1-.6 6.5 1.3 12.4 3.2 18.5 1.4 4.6 2 10.9 3.2 17.1.9 4.5 3.2 8.8 6.8 8.8 3.3 0 4.4-4.8 5.1-11.1.3-2.9.8-5.4 1.2-6.7.4 1.3.9 3.8 1.2 6.7.8 6.3 1.9 11.1 5.2 11.1 3.6 0 5.9-4.3 6.8-8.8 1.2-6.2 1.8-12.5 3.2-17.1 1.9-6.1 3.8-12 3.2-18.5C50.6 13.2 42.2 5.5 32 5.5Z" fill="#fff8e6" stroke="#d8bd93" stroke-width="2.3" stroke-linejoin="round"/></svg>
+          </div>
+
+          <article class="memory-card" id="memoryCard">
+            <div class="memory-art"><svg viewBox="0 0 64 76" fill="none"><path d="M32 5.5c-10.2 0-18.6 7.7-19.5 18.1-.6 6.5 1.3 12.4 3.2 18.5 1.4 4.6 2 10.9 3.2 17.1.9 4.5 3.2 8.8 6.8 8.8 3.3 0 4.4-4.8 5.1-11.1.3-2.9.8-5.4 1.2-6.7.4 1.3.9 3.8 1.2 6.7.8 6.3 1.9 11.1 5.2 11.1 3.6 0 5.9-4.3 6.8-8.8 1.2-6.2 1.8-12.5 3.2-17.1 1.9-6.1 3.8-12 3.2-18.5C50.6 13.2 42.2 5.5 32 5.5Z" fill="#fff8e6" stroke="#d8bd93" stroke-width="2.3" stroke-linejoin="round"/></svg></div>
+            <p>Live Memory</p>
+            <strong>Saved</strong>
+          </article>
+
+          <article class="fund-card" id="fundCard">
+            <div>
+              <p>Little Smile Fund</p>
+              <strong>$360</strong>
+            </div>
+            <div class="fund-chart"><div class="bars"><span></span><span></span><span></span><span></span><span></span></div></div>
+          </article>
+
+          <div class="pig" aria-hidden="true">
+            <span class="pig-glow" id="pigGlow"></span>
+            <img src="/toothfairy/animation/layered/piggy-cutout-soft-no-coin.png" alt="" />
+          </div>
+
+          <div class="coin" id="coin" aria-hidden="true">$</div>
+
+          <div class="tanda" id="tanda" aria-hidden="true">
+            <img id="tandaImg" alt="" />
+          </div>
+
+          <span class="sparkle"></span>
+          <span class="sparkle"></span>
+          <span class="sparkle"></span>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const loop = 13600;
+      const preToothFramePaths = [
+        '01-entry-no-tooth-wing-up',
+        '02-entry-no-tooth-wing-down',
+        '03-searching',
+        '04-spots-tooth',
+        '05-reach-empty-hand',
+        '06-grab-tooth',
+        '07-lift-tooth-close',
+        '08-carry-tooth-glow'
+      ].map((name) => `/toothfairy/animation/hero-pose-pack-v22-pre/tanda-hero-v22-pre-${name}.png`);
+
+      const ritualFramePaths = [
+        '01-entry-wing-up',
+        '02-entry-wing-down',
+        '03-brake-near-photo',
+        '04-phone-emerging',
+        '05-phone-ready',
+        '06-place-tooth',
+        '07-photo-flash-empty-hand',
+        '08-magic-pause',
+        '09-two-hand-photo',
+        '10-phone-tap',
+        '11-two-thumb-type',
+        '12-capture-complete',
+        '13-notices-coin',
+        '14-pickup-coin',
+        '15-carry-coin',
+        '16-release-coin',
+        '17-empty-hand-after-release',
+        '18-pig-glow-reaction',
+        '19-turn-front',
+        '20-wave-start',
+        '21-wave-open',
+        '22-wave-finish',
+        '23-exit-wing-up',
+        '24-exit-wing-down'
+      ].map((name) => `/toothfairy/animation/hero-pose-pack-v21/tanda-hero-v21-${name}.png`);
+
+      const framePaths = [...preToothFramePaths, ...ritualFramePaths];
+      const frameCues = [
+        [0.000, preToothFramePaths[0]],
+        [0.050, preToothFramePaths[1]],
+        [0.095, preToothFramePaths[2]],
+        [0.145, preToothFramePaths[3]],
+        [0.190, preToothFramePaths[4]],
+        [0.235, preToothFramePaths[5]],
+        [0.285, preToothFramePaths[6]],
+        [0.330, preToothFramePaths[7]],
+        [0.370, ritualFramePaths[0]],
+        [0.400, ritualFramePaths[1]],
+        [0.430, ritualFramePaths[2]],
+        [0.465, ritualFramePaths[3]],
+        [0.500, ritualFramePaths[4]],
+        [0.535, ritualFramePaths[5]],
+        [0.575, ritualFramePaths[6]],
+        [0.610, ritualFramePaths[7]],
+        [0.645, ritualFramePaths[8]],
+        [0.675, ritualFramePaths[9]],
+        [0.705, ritualFramePaths[10]],
+        [0.735, ritualFramePaths[11]],
+        [0.765, ritualFramePaths[12]],
+        [0.790, ritualFramePaths[13]],
+        [0.815, ritualFramePaths[14]],
+        [0.840, ritualFramePaths[15]],
+        [0.865, ritualFramePaths[16]],
+        [0.890, ritualFramePaths[17]],
+        [0.910, ritualFramePaths[18]],
+        [0.930, ritualFramePaths[19]],
+        [0.948, ritualFramePaths[20]],
+        [0.965, ritualFramePaths[21]],
+        [0.980, ritualFramePaths[22]],
+        [0.992, ritualFramePaths[23]]
+      ];
+
+      const tanda = document.getElementById('tanda');
+      const tandaImg = document.getElementById('tandaImg');
+      const sourceTooth = document.getElementById('sourceTooth');
+      const hologramTooth = document.getElementById('hologramTooth');
+      const memoryCard = document.getElementById('memoryCard');
+      const fundCard = document.getElementById('fundCard');
+      const coin = document.getElementById('coin');
+      const pigGlow = document.getElementById('pigGlow');
+      const baseGlow = document.getElementById('baseGlow');
+
+      framePaths.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      const points = [
+        [0.00, -28, 16, 0.50, -10, 0],
+        [0.06, -14, 10, 0.55, -6, 1],
+        [0.12, -2, 12, 0.59, -2, 1],
+        [0.18, 8, 20, 0.63, 2, 1],
+        [0.24, 14, 30, 0.65, 4, 1],
+        [0.31, 17, 25, 0.66, -1, 1],
+        [0.37, 18, 29, 0.65, -2, 1],
+        [0.43, 19, 41, 0.64, 2, 1],
+        [0.50, 19, 58, 0.62, 2, 1],
+        [0.61, 20, 58, 0.61, -1, 1],
+        [0.70, 28, 53, 0.61, -3, 1],
+        [0.77, 39, 46, 0.61, -2, 1],
+        [0.83, 55, 38, 0.61, 2, 1],
+        [0.89, 68, 44, 0.60, 0, 1],
+        [0.94, 72, 38, 0.58, -2, 1],
+        [0.98, 84, 28, 0.54, -7, 1],
+        [1.00, 98, 18, 0.48, -10, 0]
+      ];
+
+      function mix(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function pointAt(p) {
+        for (let i = 0; i < points.length - 1; i += 1) {
+          const a = points[i];
+          const b = points[i + 1];
+          if (p >= a[0] && p <= b[0]) {
+            const t = (p - a[0]) / (b[0] - a[0]);
+            return {
+              x: mix(a[1], b[1], t),
+              y: mix(a[2], b[2], t),
+              s: mix(a[3], b[3], t),
+              r: mix(a[4], b[4], t),
+              o: mix(a[5], b[5], t)
+            };
+          }
+        }
+        const last = points[points.length - 1];
+        return { x: last[1], y: last[2], s: last[3], r: last[4], o: last[5] };
+      }
+
+      function fade(p, start, end) {
+        if (p <= start) return 0;
+        if (p >= end) return 1;
+        return (p - start) / (end - start);
+      }
+
+      function frameAt(p) {
+        let src = frameCues[0][1];
+        for (const cue of frameCues) {
+          if (p >= cue[0]) src = cue[1];
+        }
+        return src;
+      }
+
+      let currentFrame = '';
+
+      function animate(now) {
+        const p = (now % loop) / loop;
+        const nextFrame = frameAt(p);
+        if (nextFrame !== currentFrame) {
+          tandaImg.src = nextFrame;
+          currentFrame = nextFrame;
+        }
+
+        const pt = pointAt(p);
+        tanda.style.left = `${pt.x}%`;
+        tanda.style.top = `${pt.y}%`;
+        tanda.style.opacity = pt.o;
+        tanda.style.transform = `scale(${pt.s}) rotate(${pt.r}deg)`;
+
+        const toothOut = fade(p, 0.20, 0.31);
+        sourceTooth.style.opacity = String(1 - toothOut);
+        sourceTooth.style.transform = `scale(${1 + toothOut * 0.22})`;
+
+        const holoIn = fade(p, 0.45, 0.58);
+        const holoOut = fade(p, 0.75, 0.86);
+        const holoOpacity = Math.max(0, Math.min(1, holoIn - holoOut));
+        hologramTooth.style.opacity = holoOpacity;
+        hologramTooth.style.transform = `translate(-50%, ${-18 * holoOpacity}px) scale(${0.62 + holoOpacity * 0.48})`;
+        baseGlow.style.opacity = String(0.42 + holoOpacity * 0.5);
+
+        const outputs = fade(p, 0.66, 0.78);
+        memoryCard.style.opacity = outputs;
+        memoryCard.style.transform = `scale(${0.68 + outputs * 0.32})`;
+        fundCard.style.opacity = outputs;
+        fundCard.style.transform = `scale(${0.68 + outputs * 0.32})`;
+
+        const coinIn = fade(p, 0.76, 0.84);
+        const coinOut = fade(p, 0.88, 0.95);
+        const coinOpacity = Math.max(0, Math.min(1, coinIn - coinOut));
+        coin.style.opacity = coinOpacity;
+        coin.style.left = `${mix(42, 84, Math.min(1, Math.max(0, (p - 0.76) / 0.17)))}%`;
+        coin.style.top = `${mix(48, 66, Math.min(1, Math.max(0, (p - 0.76) / 0.17)))}%`;
+        coin.style.transform = `translate(-50%, -50%) scale(${0.62 + coinOpacity * 0.38}) rotate(${p * 900}deg)`;
+
+        const pigPulse = Math.max(0, Math.min(1, fade(p, 0.87, 0.93) - fade(p, 0.98, 1)));
+        pigGlow.style.opacity = String(pigPulse);
+
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>

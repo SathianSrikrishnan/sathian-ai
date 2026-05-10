@@ -68,7 +68,7 @@ export function PitchLanding() {
           <div className="flex items-center gap-4">
             <a href="#how-it-works" className="text-xs hover:opacity-80" style={{ color: C.muted }}>How It Works</a>
             <a href="#video" className="text-xs hover:opacity-80 hidden sm:block" style={{ color: C.muted }}>Video</a>
-            <Link href="/app" className="px-4 py-1.5 rounded-lg text-xs font-medium text-white" style={{ background: C.rose }}>
+            <Link href="/toothfairy/app/draw?from=pitch-nav" className="px-4 py-1.5 rounded-lg text-xs font-medium text-white" style={{ background: C.rose }}>
               Start Free
             </Link>
           </div>
@@ -96,7 +96,7 @@ export function PitchLanding() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
-            <Link href="/app" className="px-8 py-3.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90" style={{ background: C.rose, color: "white" }}>
+            <Link href="/toothfairy/app/draw?from=pitch-hero" className="px-8 py-3.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90" style={{ background: C.rose, color: "white" }}>
               Create Your Child&apos;s Wallet — Free
             </Link>
             <a href="#how-it-works" className="px-8 py-3.5 rounded-lg text-sm font-semibold transition-all hover:bg-white/[0.06]" style={{ border: `1px solid ${C.border}`, color: C.muted }}>
@@ -150,7 +150,7 @@ export function PitchLanding() {
             <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: "var(--font-display)" }}>Start with one tooth.</h2>
             <p className="text-sm mb-6" style={{ color: C.muted }}>Create your child&apos;s wallet in 60 seconds — or leave your email and we&apos;ll remind you when the next tooth falls.</p>
             <div className="flex flex-col gap-3">
-              <Link href="/app" className="px-6 py-3 rounded-lg text-sm font-semibold text-white text-center" style={{ background: C.rose }}>
+              <Link href="/toothfairy/app/draw?from=pitch-email" className="px-6 py-3 rounded-lg text-sm font-semibold text-white text-center" style={{ background: C.rose }}>
                 Create Wallet — Free
               </Link>
               {submitted ? (
@@ -250,7 +250,7 @@ export function PitchLanding() {
             <p className="text-lg mb-8" style={{ color: C.muted }}>
               Be ready. Create your child&apos;s wallet before it falls.
             </p>
-            <Link href="/app" className="inline-block px-10 py-4 rounded-lg text-sm font-semibold text-white" style={{ background: C.rose }}>
+            <Link href="/toothfairy/app/draw?from=pitch-final" className="inline-block px-10 py-4 rounded-lg text-sm font-semibold text-white" style={{ background: C.rose }}>
               Start Free
             </Link>
           </motion.div>

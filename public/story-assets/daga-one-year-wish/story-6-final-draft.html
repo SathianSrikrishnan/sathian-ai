@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daga and the One-Year Wish - Final Draft</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #2d241b;
+      --muted: #6f5d49;
+      --paper: #fff8ec;
+      --wash: #f5e7d2;
+      --line: #dcc8ab;
+      --night: #10243a;
+      --gold: #9a6417;
+      --shadow: rgba(51, 34, 18, .16);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .story-shell {
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(16,36,58,.96) 0, rgba(16,36,58,.9) 360px, rgba(255,248,236,0) 361px),
+        linear-gradient(180deg, #fff8ec 0, #f4e4ce 100%);
+    }
+    header {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 42px 24px 26px;
+      color: #fff8ec;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 54px;
+      line-height: 1.02;
+      font-weight: 700;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+    header p {
+      margin: 14px 0 0;
+      max-width: 680px;
+      color: #f0ddbd;
+      font-size: 19px;
+      line-height: 1.55;
+    }
+    main { padding: 4px 0 60px; }
+    .spread {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.08fr) minmax(300px, .92fr);
+      gap: 36px;
+      align-items: center;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      border-top: 1px solid rgba(220, 200, 171, .72);
+    }
+    .spread.reverse figure { order: 2; }
+    .spread.reverse .story-copy { order: 1; }
+    .cover-spread { border-top: 0; padding-top: 10px; }
+    figure {
+      margin: 0;
+      overflow: hidden;
+      background: #1d1712;
+      border: 1px solid rgba(220, 200, 171, .9);
+      box-shadow: 0 18px 48px var(--shadow);
+    }
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      object-fit: cover;
+    }
+    .story-copy {
+      max-width: 520px;
+      padding: 6px 0;
+    }
+    .story-copy p {
+      margin: 0 0 13px;
+      font-size: 22px;
+      line-height: 1.48;
+      letter-spacing: 0;
+    }
+    .story-copy p:last-child { margin-bottom: 0; }
+    .story-copy .dialogue { color: #4a3216; }
+    .story-copy .wish {
+      display: inline-block;
+      margin-top: 2px;
+      padding: 5px 0;
+      color: var(--gold);
+      font-style: italic;
+    }
+    @media (max-width: 860px) {
+      header { padding: 30px 18px 20px; }
+      header h1 { font-size: 38px; }
+      header p { font-size: 17px; }
+      .spread,
+      .spread.reverse {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 24px 18px;
+      }
+      .spread.reverse figure,
+      .spread.reverse .story-copy { order: initial; }
+      .story-copy { max-width: none; }
+      .story-copy p { font-size: 20px; line-height: 1.5; }
+    }
+    @media (max-width: 480px) {
+      header h1 { font-size: 32px; }
+      .story-copy p { font-size: 18px; }
+    }
+    @media print {
+      .story-shell { background: #fff; }
+      header { color: var(--ink); }
+      header p { color: var(--muted); }
+      .spread { break-inside: avoid; }
+      figure { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="story-shell">
+    <header>
+      <h1>Daga and the One-Year Wish</h1>
+      <p>A Philippines story of a roof mouse, a hidden tooth, and the magic that does not hurry.</p>
+    </header>
+    <main>
+    <section class="spread cover-spread" id="page-01" aria-label="Cover">
+      <figure>
+        <img src="v1/frames/frame-01-draft.png" alt="Story 6 frame 01: Cover" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Daga and the One-Year Wish</p>
+          <p>A Philippines story of a roof mouse, a hidden tooth, and the magic that does not hurry.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-02" aria-label="The High Hook">
+      <figure>
+        <img src="v1/frames/frame-02-draft.png" alt="Story 6 frame 02: The High Hook" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Every December, Lola&#x27;s house grew strings, stars, and careful knots.</p>
+          <p>The parol came out of its box.</p>
+          <p>The cousins came out of everywhere.</p>
+          <p>Maya&#x27;s older cousins were tall enough to help near the eave.</p>
+          <p>Maya was tall enough to point at what they were doing wrong.</p>
+          <p>This was also important work.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-03" aria-label="Next Year">
+      <figure>
+        <img src="v1/frames/frame-03-draft.png" alt="Story 6 frame 03: Next Year" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;I can tie the high hook,&quot; Maya said.</p>
+          <p>She stood on her toes until her tsinelas gave up.</p>
+          <p>Lola caught the string before it escaped.</p>
+          <p class="dialogue">&quot;Next year, maybe.&quot;</p>
+          <p class="dialogue">&quot;Next year is too far.&quot;</p>
+          <p class="dialogue">&quot;The high hook needs patient hands.&quot;</p>
+          <p>Maya looked at her hands.</p>
+          <p>They looked available immediately.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-04" aria-label="The Wobble At Merienda">
+      <figure>
+        <img src="v1/frames/frame-04-draft.png" alt="Story 6 frame 04: The Wobble At Merienda" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>At merienda, Maya&#x27;s loose tooth wobbled against warm bread and sweet crumbs.</p>
+          <p>It had been wobbling all week.</p>
+          <p>At breakfast, it leaned left.</p>
+          <p>At lunch, it leaned right.</p>
+          <p>By merienda, it seemed to be making an announcement.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-05" aria-label="A Small Click">
+      <figure>
+        <img src="v1/frames/frame-05-draft.png" alt="Story 6 frame 05: A Small Click" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya bit down carefully.</p>
+          <p>There was a small click.</p>
+          <p>Then something tiny and white sat in her palm.</p>
+          <p>Maya stared at it.</p>
+          <p>Her cousins leaned in.</p>
+          <p>Lola leaned in too.</p>
+          <p>The tooth looked too small to have caused so much drama.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-06" aria-label="Lola Remembers">
+      <figure>
+        <img src="v1/frames/frame-06-draft.png" alt="Story 6 frame 06: Lola Remembers" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Lola rinsed the tooth and wrapped it in a square of tissue.</p>
+          <p class="dialogue">&quot;When I was small,&quot; she said, &quot;we did not give a tooth only to the night.&quot;</p>
+          <p>Maya held very still.</p>
+          <p>Lola&#x27;s remembering voice was different from her where-did-I-put-the-scissors voice.</p>
+          <p class="dialogue">&quot;We gave it time.&quot;</p>
+      </div>
+    </section>
+    <section class="spread" id="page-07" aria-label="The Family Version">
+      <figure>
+        <img src="v1/frames/frame-07-draft.png" alt="Story 6 frame 07: The Family Version" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;We asked the roof mouse to hide it well,&quot; Lola said.</p>
+          <p>Maya glanced at the window.</p>
+          <p class="dialogue">&quot;A mouse?&quot;</p>
+          <p class="dialogue">&quot;A very quick one.&quot;</p>
+          <p class="dialogue">&quot;How quick?&quot;</p>
+          <p class="dialogue">&quot;Quick enough that children mostly see the place where the mouse was.&quot;</p>
+          <p>From the eave came one soft tick.</p>
+          <p>Probably the roof.</p>
+          <p>Maybe not.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-08" aria-label="One Whole Year">
+      <figure>
+        <img src="v1/frames/frame-08-draft.png" alt="Story 6 frame 08: One Whole Year" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;If we found the tooth after one year,&quot; Lola said, &quot;we could make another wish.&quot;</p>
+          <p>Maya stopped chewing.</p>
+          <p class="dialogue">&quot;One real year?&quot;</p>
+          <p class="dialogue">&quot;One real year.&quot;</p>
+          <p class="dialogue">&quot;That has twelve months.&quot;</p>
+          <p class="dialogue">&quot;It does.&quot;</p>
+          <p class="dialogue">&quot;And each month has too many mornings.&quot;</p>
+          <p>Lola nodded.</p>
+          <p class="dialogue">&quot;That is why the wish has room to grow.&quot;</p>
+      </div>
+    </section>
+    <section class="spread" id="page-09" aria-label="The First Wish">
+      <figure>
+        <img src="v1/frames/frame-09-draft.png" alt="Story 6 frame 09: The First Wish" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya sat at her desk and drew herself tying the high hook.</p>
+          <p>She drew the string.</p>
+          <p>She drew the parol.</p>
+          <p>She drew herself very tall.</p>
+          <p>Under the picture she wrote her wish in careful letters.</p>
+          <p class="wish">I wish to be big enough now.</p>
+          <p>Then she folded the paper as small as a secret.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-10" aria-label="Showing The Roof">
+      <figure>
+        <img src="v1/frames/frame-10-draft.png" alt="Story 6 frame 10: Showing The Roof" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Lola opened the window screen.</p>
+          <p>Maya stood safely inside and tossed the tiny bundle onto the low awning under the roof.</p>
+          <p>It landed with a soft tap.</p>
+          <p>The house seemed to blink.</p>
+          <p class="dialogue">&quot;Now,&quot; Lola said, &quot;we wait.&quot;</p>
+          <p>Maya nodded.</p>
+          <p>She was already thinking about how to wait faster.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-11" aria-label="A Tail In The Moonlight">
+      <figure>
+        <img src="v1/frames/frame-11-draft.png" alt="Story 6 frame 11: A Tail In The Moonlight" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Something small crossed the awning.</p>
+          <p>Maya saw whiskers.</p>
+          <p>A folded ear.</p>
+          <p>A flash of silver feet.</p>
+          <p>A tail with the attitude of someone leaving before questions began.</p>
+          <p>Then the tooth was gone.</p>
+          <p>On the roof dust, three tiny pawprints glowed and went out.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-12" aria-label="No Peeking">
+      <figure>
+        <img src="v1/frames/frame-12-draft.png" alt="Story 6 frame 12: No Peeking" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;That was Daga,&quot; Lola said.</p>
+          <p class="dialogue">&quot;You saw Daga?&quot;</p>
+          <p class="dialogue">&quot;I saw the place where Daga was.&quot;</p>
+          <p>Maya leaned toward the window.</p>
+          <p>Lola closed it gently.</p>
+          <p class="dialogue">&quot;No peeking.&quot;</p>
+          <p>Maya nodded in the serious way children nod when they have already begun planning the opposite.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-13" aria-label="Morning Search">
+      <figure>
+        <img src="v1/frames/frame-13-draft.png" alt="Story 6 frame 13: Morning Search" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>At sunrise, Maya checked the awning.</p>
+          <p>Then the windowsill.</p>
+          <p>Then the pencil box.</p>
+          <p>Everyone knew mysterious mice liked office supplies.</p>
+          <p>Inside the pencil box, one pencil rolled by itself.</p>
+          <p>Maya opened the lid.</p>
+          <p>Nothing was there except pencil shavings, eraser crumbs, and the strong feeling of being laughed at.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-14" aria-label="The Drawer Shadow">
+      <figure>
+        <img src="v1/frames/frame-14-draft.png" alt="Story 6 frame 14: The Drawer Shadow" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>In the desk drawer, Maya found one silver pawprint.</p>
+          <p>She found a crumb of roof dust.</p>
+          <p>She found a shadow shaped like a question.</p>
+          <p>For one breath, the hiding place looked empty enough to feel forgotten.</p>
+          <p>Then another silver pawprint crossed the shadow.</p>
+          <p>The shadow pulled back.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-15" aria-label="Calendar Shortcut">
+      <figure>
+        <img src="v1/frames/frame-15-draft.png" alt="Story 6 frame 15: Calendar Shortcut" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya looked at the family calendar.</p>
+          <p>One page.</p>
+          <p>Two pages.</p>
+          <p>Eleven pages.</p>
+          <p class="dialogue">&quot;There,&quot; she whispered. &quot;One year.&quot;</p>
+          <p>The calendar swung crooked on its nail.</p>
+          <p>The room did not believe her.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-16" aria-label="The House Moves The Secret">
+      <figure>
+        <img src="v1/frames/frame-16-draft.png" alt="Story 6 frame 16: The House Moves The Secret" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>The drawer clicked shut.</p>
+          <p>The calendar flapped backward.</p>
+          <p>The pencil box sneezed out a crumb of roof dust.</p>
+          <p>Maya jumped.</p>
+          <p>The hidden place would not stay where impatience pointed.</p>
+          <p>Up near the eave, something tiny made a sound that was almost a cough.</p>
+          <p>Or possibly a laugh.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-17" aria-label="Toothlight At The Window">
+      <figure>
+        <img src="v1/frames/frame-17-draft.png" alt="Story 6 frame 17: Toothlight At The Window" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>A warm gold glow brushed the window.</p>
+          <p>Tanda folded her wings small so she would not wake the whole house.</p>
+          <p>Her satchel rested at her side.</p>
+          <p>Her tooth pendant caught the light.</p>
+          <p class="dialogue">&quot;Someone is pulling on a promise before its date,&quot; she whispered.</p>
+          <p>Maya looked at the calendar.</p>
+          <p>The calendar looked innocent.</p>
+          <p>Badly.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-18" aria-label="Tanda Tries Gently">
+      <figure>
+        <img src="v1/frames/frame-18-draft.png" alt="Story 6 frame 18: Tanda Tries Gently" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Tanda touched the silver pawprint.</p>
+          <p>Toothlight opened around it.</p>
+          <p>Gold met silver.</p>
+          <p>The map began to wake.</p>
+          <p>Then the light stopped at one tiny square of moon.</p>
+          <p>Tanda tried once more, very gently.</p>
+          <p>The square stayed closed.</p>
+          <p class="dialogue">&quot;I can see the path,&quot; Tanda said. &quot;I cannot shorten it.&quot;</p>
+      </div>
+    </section>
+    <section class="spread" id="page-19" aria-label="Behind Tanda">
+      <figure>
+        <img src="v1/frames/frame-19-draft.png" alt="Story 6 frame 19: Behind Tanda" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;Then who can?&quot; Maya asked.</p>
+          <p>Behind Tanda, a tiny mouse stood on the pencil box.</p>
+          <p>Daga wore a scrap of calendar paper tied like a kerchief, soft as a secret and dusty at the edges.</p>
+          <p>One ear folded like a page corner.</p>
+          <p>Daga looked at Maya.</p>
+          <p>Daga looked at Tanda.</p>
+          <p>Daga looked at the calendar, as if everyone should have been paying better attention.</p>
+          <p>Then Daga vanished.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-20" aria-label="Roof Beam Road">
+      <figure>
+        <img src="v1/frames/frame-20-draft.png" alt="Story 6 frame 20: Roof Beam Road" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Daga ran up the curtain cord.</p>
+          <p>Across the wall seam.</p>
+          <p>Behind the calendar.</p>
+          <p>Through a space no mouse should have fit inside.</p>
+          <p>Only after Daga vanished did the silver tracks appear.</p>
+          <p>Maya tried to follow them with her finger.</p>
+          <p>The tracks were faster than fingers.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-21" aria-label="The One-Year Map">
+      <figure>
+        <img src="v1/frames/frame-21-draft.png" alt="Story 6 frame 21: The One-Year Map" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Tanda held her Toothlight low.</p>
+          <p>Daga&#x27;s tracks answered in silver.</p>
+          <p>Together, they drew a map across the room.</p>
+          <p>Window.</p>
+          <p>Drawer.</p>
+          <p>Calendar.</p>
+          <p>Roofline.</p>
+          <p>Moon.</p>
+          <p>The house had been keeping the path all along.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-22" aria-label="Twelve Small Doors">
+      <figure>
+        <img src="v1/frames/frame-22-draft.png" alt="Story 6 frame 22: Twelve Small Doors" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>The months appeared as twelve small paper doors.</p>
+          <p>Eleven were pictures of waiting.</p>
+          <p>Rain.</p>
+          <p>School shoes.</p>
+          <p>New pencils.</p>
+          <p>A moon cut thin as a fingernail.</p>
+          <p>The twelfth door had a soft light behind it.</p>
+          <p>It would not open.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-23" aria-label="Not Lost">
+      <figure>
+        <img src="v1/frames/frame-23-draft.png" alt="Story 6 frame 23: Not Lost" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya&#x27;s throat went tight.</p>
+          <p class="dialogue">&quot;What if waiting means it forgets me?&quot;</p>
+          <p>High near the ceiling, Daga&#x27;s whiskers shone.</p>
+          <p>The little mouse&#x27;s voice came from somewhere above the calendar.</p>
+          <p class="dialogue">&quot;Waiting is not forgetting.&quot;</p>
+          <p>It was a very small voice.</p>
+          <p>It still filled the room.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-24" aria-label="The Choice">
+      <figure>
+        <img src="v1/frames/frame-24-draft.png" alt="Story 6 frame 24: The Choice" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>The first door glowed.</p>
+          <p>The twelfth door glowed.</p>
+          <p>Maya could grab at both and lose the map.</p>
+          <p>Or she could let one stay closed.</p>
+          <p>Her fingers curled.</p>
+          <p>Uncurled.</p>
+          <p>Then rested in her lap.</p>
+          <p>No one clapped.</p>
+          <p>That made it feel more important.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-25" aria-label="A Promise That Waits">
+      <figure>
+        <img src="v1/frames/frame-25-draft.png" alt="Story 6 frame 25: A Promise That Waits" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p class="dialogue">&quot;All right,&quot; Maya said.</p>
+          <p>It came out smaller than she meant.</p>
+          <p class="dialogue">&quot;Hide it where one year can find it.&quot;</p>
+          <p>The calendar straightened.</p>
+          <p>The drawer sighed.</p>
+          <p>The pencil box settled down.</p>
+          <p>The room became a room again.</p>
+          <p>Daga&#x27;s tracks shone once near the eave, then disappeared.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-26" aria-label="Daga&#x27;s True Hiding Place">
+      <figure>
+        <img src="v1/frames/frame-26-draft.png" alt="Story 6 frame 26: Daga&#x27;s True Hiding Place" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>High above the window, under the eave, Daga worked.</p>
+          <p>Daga did not work with stamps or speeches.</p>
+          <p>Daga did not work by making the night brighter.</p>
+          <p>Daga worked with roof dust, moonlight, and the exact place a child would forget until she was ready to remember.</p>
+          <p>The tooth bundle slipped into a patient splinter of wood.</p>
+          <p>The splinter closed.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-27" aria-label="First Month">
+      <figure>
+        <img src="v1/frames/frame-27-draft.png" alt="Story 6 frame 27: First Month" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>The first month passed with rain ticking on the roof.</p>
+          <p>Maya counted the ticks.</p>
+          <p>Then she counted the spaces between the ticks.</p>
+          <p>Then counting became boring.</p>
+          <p>This was a kind of mercy.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-28" aria-label="School Days">
+      <figure>
+        <img src="v1/frames/frame-28-draft.png" alt="Story 6 frame 28: School Days" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Then came school days.</p>
+          <p>Packed lunches.</p>
+          <p>Missing pencils.</p>
+          <p>New words.</p>
+          <p>Old slippers.</p>
+          <p>One grown-up tooth pushing in exactly when it felt like it.</p>
+          <p>Maya checked the calendar less often.</p>
+          <p>The calendar did not brag.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-29" aria-label="Hot Afternoon">
+      <figure>
+        <img src="v1/frames/frame-29-draft.png" alt="Story 6 frame 29: Hot Afternoon" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>On a hot afternoon, the pencil box wiggled.</p>
+          <p>Maya put her hand on the lid.</p>
+          <p>Then she took her hand away.</p>
+          <p class="dialogue">&quot;I know,&quot; she said.</p>
+          <p>The pencil box became very still.</p>
+          <p>Inside, something tiny was pretending not to be pleased.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-30" aria-label="Nina&#x27;s Tooth">
+      <figure>
+        <img src="v1/frames/frame-30-draft.png" alt="Story 6 frame 30: Nina&#x27;s Tooth" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya&#x27;s little cousin Nina came to visit.</p>
+          <p>Nina&#x27;s tooth was loose.</p>
+          <p>Nina was not interested in this development.</p>
+          <p class="dialogue">&quot;It&#x27;s easy,&quot; Maya almost said.</p>
+          <p>Then she remembered the drawer shadow.</p>
+          <p>The calendar.</p>
+          <p>The twelfth door.</p>
+          <p>So she sat beside Nina and said, &quot;It feels weird at first.&quot;</p>
+      </div>
+    </section>
+    <section class="spread" id="page-31" aria-label="Halfway Moon">
+      <figure>
+        <img src="v1/frames/frame-31-draft.png" alt="Story 6 frame 31: Halfway Moon" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Half a year later, the moon looked like a fingernail clipping.</p>
+          <p>Maya laughed.</p>
+          <p class="dialogue">&quot;I used to want the whole year to disappear.&quot;</p>
+          <p>Lola sat beside her at the window.</p>
+          <p class="dialogue">&quot;And now?&quot;</p>
+          <p>Maya thought about it.</p>
+          <p class="dialogue">&quot;Now I only want it to hurry politely.&quot;</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-32" aria-label="The High Hook Again">
+      <figure>
+        <img src="v1/frames/frame-32-draft.png" alt="Story 6 frame 32: The High Hook Again" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>When the parol box came out of storage again, Maya was taller.</p>
+          <p>That helped.</p>
+          <p>But it was not the biggest thing.</p>
+          <p>The biggest thing was that she could hold the string without yanking it.</p>
+          <p>The high hook looked less like a prize.</p>
+          <p>It looked like a job someone had trusted her with.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-33" aria-label="Lola Does Not Remind Her">
+      <figure>
+        <img src="v1/frames/frame-33-draft.png" alt="Story 6 frame 33: Lola Does Not Remind Her" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Lola looked at the calendar.</p>
+          <p>Then she looked at Maya.</p>
+          <p>She did not say a word.</p>
+          <p>This was difficult for Lola, who had many excellent words.</p>
+          <p>Maya saw the circled date by herself.</p>
+          <p>Her heart gave one hard knock.</p>
+          <p>One real year.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-34" aria-label="Anniversary Night">
+      <figure>
+        <img src="v1/frames/frame-34-draft.png" alt="Story 6 frame 34: Anniversary Night" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>That night, Maya did not run to the window.</p>
+          <p>She washed her hands.</p>
+          <p>She found her old drawing.</p>
+          <p>She sat at her desk and waited until the house sounded ready.</p>
+          <p>The fan hummed.</p>
+          <p>The roof settled.</p>
+          <p>The calendar held still.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-35" aria-label="The Place Opens">
+      <figure>
+        <img src="v1/frames/frame-35-draft.png" alt="Story 6 frame 35: The Place Opens" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Under the eave, the patient splinter lifted like a tiny door.</p>
+          <p>The tooth bundle waited inside.</p>
+          <p>It was smaller than Maya remembered.</p>
+          <p>It was brighter than she expected.</p>
+          <p>Daga stood beside it.</p>
+          <p>For once, Daga did not run.</p>
+          <p>Tanda watched from the window with her light lowered.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-36" aria-label="The Old Wish">
+      <figure>
+        <img src="v1/frames/frame-36-draft.png" alt="Story 6 frame 36: The Old Wish" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya unfolded the paper.</p>
+          <p>There was her drawing.</p>
+          <p>There was the high hook.</p>
+          <p>There was herself, very tall and very sure.</p>
+          <p class="wish">I wish to be big enough now.</p>
+          <p>Maya read the word now.</p>
+          <p>Then she smiled at it as if it belonged to a younger cousin.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-37" aria-label="How It Answered">
+      <figure>
+        <img src="v1/frames/frame-37-draft.png" alt="Story 6 frame 37: How It Answered" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>She was big enough to tie the parol string.</p>
+          <p>She was big enough to wait.</p>
+          <p>She was big enough to sit with Nina and not steal the brave part from her.</p>
+          <p>The wish had not arrived all at once.</p>
+          <p>It had come back in pieces.</p>
+          <p>Hands.</p>
+          <p>Days.</p>
+          <p>Choices.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-38" aria-label="The Second Wish">
+      <figure>
+        <img src="v1/frames/frame-38-draft.png" alt="Story 6 frame 38: The Second Wish" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Maya held the tooth in both hands.</p>
+          <p class="dialogue">&quot;For my next wish,&quot; she said, &quot;let Nina&#x27;s wish have a hiding place that remembers her.&quot;</p>
+          <p>Lola&#x27;s smile went soft.</p>
+          <p>Tanda looked at Daga.</p>
+          <p>Daga looked away first, which is how very serious mice sometimes admit they are moved.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-39" aria-label="Daga Stands Still">
+      <figure>
+        <img src="v1/frames/frame-39-draft.png" alt="Story 6 frame 39: Daga Stands Still" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Daga stepped onto Maya&#x27;s drawing.</p>
+          <p>One tiny paw touched the roofline Maya had drawn a year before.</p>
+          <p>The calendar-paper kerchief lifted in the night air.</p>
+          <p>Daga&#x27;s whiskers shone.</p>
+          <p>For the first time, Maya could see the whole mouse and not only the place where Daga had been.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-40" aria-label="The Charm Appears">
+      <figure>
+        <img src="v1/frames/frame-40-draft.png" alt="Story 6 frame 40: The Charm Appears" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>A small moon curled into the corner of the drawing.</p>
+          <p>A calendar square glowed.</p>
+          <p>Three mouse tracks crossed the roofline.</p>
+          <p>The marks did not cover Maya&#x27;s picture.</p>
+          <p>They settled into it.</p>
+          <p>As if the drawing had always been saving a place.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-41" aria-label="Tanda Learns The Lock">
+      <figure>
+        <img src="v1/frames/frame-41-draft.png" alt="Story 6 frame 41: Tanda Learns The Lock" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Tanda raised one hand.</p>
+          <p>Then she lowered it again.</p>
+          <p>The charm was already complete.</p>
+          <p>Some magic did not need more light.</p>
+          <p class="dialogue">&quot;Some memories,&quot; Tanda said softly, &quot;are kept by not opening them too soon.&quot;</p>
+          <p>Daga gave her a look that said, Finally.</p>
+          <p>Tanda bowed her head.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-42" aria-label="Lola&#x27;s Smile">
+      <figure>
+        <img src="v1/frames/frame-42-draft.png" alt="Story 6 frame 42: Lola&#x27;s Smile" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Lola tied the last knot on the parol.</p>
+          <p>Then she handed Maya the high hook.</p>
+          <p>Maya took it with careful hands.</p>
+          <p>Lola did not say, &quot;I told you.&quot;</p>
+          <p>This was one of Lola&#x27;s finest magic tricks.</p>
+      </div>
+    </section>
+    <section class="spread" id="page-43" aria-label="A New Keeper">
+      <figure>
+        <img src="v1/frames/frame-43-draft.png" alt="Story 6 frame 43: A New Keeper" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>When Nina&#x27;s tooth finally fell, Maya brought a square of tissue, a pencil, and her most serious face.</p>
+          <p>Nina held the tooth like it might jump.</p>
+          <p class="dialogue">&quot;First,&quot; Maya said, &quot;the wish needs room.&quot;</p>
+          <p>Near the pencil box, one tiny silver pawprint appeared.</p>
+          <p>Then another.</p>
+          <p>Then none at all.</p>
+      </div>
+    </section>
+    <section class="spread reverse" id="page-44" aria-label="The Shelf Mark">
+      <figure>
+        <img src="v1/frames/frame-44-draft.png" alt="Story 6 frame 44: The Shelf Mark" loading="lazy" />
+      </figure>
+      <div class="story-copy">
+          <p>Far above the roof, Tanda&#x27;s shelf-map opened.</p>
+          <p>There were mouse roads.</p>
+          <p>Feather songs.</p>
+          <p>Threshold shadows.</p>
+          <p>Toothlight promises.</p>
+          <p>Now a tiny moon-calendar mark appeared between them, with three small mouse tracks walking around its edge.</p>
+          <p>No road told Daga where to go.</p>
+          <p>No light opened Daga&#x27;s hidden place.</p>
+          <p>The Network simply made room.</p>
+          <p>Below, Maya helped Nina fold her wish.</p>
+          <p>Above, Daga vanished before anyone could say thank you.</p>
+          <p>Which was how everyone knew Daga had been listening.</p>
+      </div>
+    </section>
+    </main>
+  </div>
+</body>
+</html>
