@@ -101,7 +101,7 @@ export function TechnicalContent() {
               <ul className="space-y-3 text-sm" style={{ color: C.muted }}>
                 <li><strong style={{ color: C.text }}>Cost:</strong> ~$0.00005 per cNFT mint. Families shouldn&apos;t pay $5 in gas to record a lost tooth.</li>
                 <li><strong style={{ color: C.text }}>Speed:</strong> ~400ms confirmation. The experience feels instant.</li>
-                <li><strong style={{ color: C.text }}>Ecosystem:</strong> Phantom has 15M+ monthly active users. Largest consumer crypto wallet. Our distribution channel.</li>
+                <li><strong style={{ color: C.text }}>Ecosystem:</strong> Phantom has 15M+ monthly active users. Largest consumer wallet in the Solana ecosystem. Our distribution channel.</li>
                 <li><strong style={{ color: C.text }}>Compressed NFTs:</strong> Bubblegum enables NFTs at 1/1000th the cost of traditional mints. Makes "free for parents" economically viable.</li>
                 <li><strong style={{ color: C.text }}>Anchor framework:</strong> Rust-based, type-safe, battle-tested. The contract is auditable and upgradeable.</li>
               </ul>
@@ -136,7 +136,7 @@ export function TechnicalContent() {
                 {[
                   { status: "done", label: "Concept, narrative, video", detail: "Landing page, 59s video, storyboard assets" },
                   { status: "done", label: "cNFT minting pipeline", detail: "Photo → Arweave → Bubblegum cNFT → Phantom Collectibles" },
-                  { status: "done", label: "Escrow smart contract", detail: "9 instructions, multi-depositor, time-locks, deployed on mainnet" },
+                  { status: "done", label: "Escrow program", detail: "9 instructions, multi-depositor, time-locks, deployed on mainnet" },
                   { status: "done", label: "Frontend app", detail: "5-step mint flow + deposit + dashboard + shareable gift links" },
                   { status: "done", label: "Solana Blinks", detail: "Action endpoint for one-click deposits from any wallet" },
                   { status: "done", label: "Mobile support", detail: "Phantom in-app browser with universal link detection" },

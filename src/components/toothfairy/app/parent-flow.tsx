@@ -391,7 +391,7 @@ export default function ParentFlow({
                   Encrypted Ledger
                 </h3>
                 <p style={{ fontSize: "0.8125rem", color: PC.muted, opacity: 0.7, lineHeight: 1.5 }}>
-                  Your child&apos;s milestones are anchored on the blockchain for permanent preservation.
+                  Your child&apos;s milestones are anchored to a durable ledger for permanent preservation.
                 </p>
               </div>
               <div
@@ -741,7 +741,7 @@ export default function ParentFlow({
                 },
                 {
                   num: "02",
-                  title: "Solana blockchain creation",
+                  title: "Solana ledger creation",
                   desc: "A unique cryptographic hash locks this milestone into the public ledger.",
                 },
                 {
@@ -866,7 +866,7 @@ export default function ParentFlow({
               Saving {name}&apos;s keepsake...
             </h2>
             <p className="text-lg" style={{ color: PC.muted }}>
-              Securing this milestone permanently on the blockchain.
+              Securing this milestone permanently on the ledger.
             </p>
 
             {/* Checklist */}
@@ -1009,7 +1009,7 @@ export default function ParentFlow({
                 {name}&apos;s keepsake is live
               </h2>
               <p className="font-medium" style={{ color: PC.muted }}>
-                Permanently stored on the Solana blockchain
+                Permanently stored through Solana rails
               </p>
             </div>
 
@@ -1291,8 +1291,8 @@ export default function ParentFlow({
                   <path d="M12 8h.01" />
                 </svg>
                 <p style={{ fontSize: "0.8125rem", lineHeight: 1.6, color: `${PC.text}cc` }}>
-                  <strong>How this works:</strong> Your deposit goes into a smart contract on the
-                  Solana blockchain. Funds are cryptographically held until {name} turns 18.{" "}
+                  <strong>How this works:</strong> Your deposit goes into an escrow program on
+                  Solana rails. Funds are cryptographically held until {name} turns 18.{" "}
                   <span style={{ fontWeight: 600, color: PC.teal }}>2% network fee</span> applies to
                   maintain the ledger.
                 </p>
@@ -1399,7 +1399,7 @@ export default function ParentFlow({
                 style={{ color: PC.text, fontSize: "0.9375rem" }}
               >
                 &ldquo;Thank you for trusting us with your family&apos;s history. Everything here is
-                stored on the Solana blockchain to ensure {name}&apos;s memories remain accessible and
+                stored through Solana rails to ensure {name}&apos;s memories remain accessible and
                 immutable for decades to come. As a father, I built this to preserve what matters
                 most.&rdquo;
               </p>
@@ -1522,7 +1522,7 @@ export default function ParentFlow({
                 className="text-sm font-bold flex items-center gap-1"
                 style={{ color: PC.teal, textDecoration: "none" }}
               >
-                View on blockchain
+                View public record
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14" />
                   <polyline points="12 5 19 12 12 19" />
