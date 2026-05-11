@@ -137,6 +137,17 @@ export default function DrawPreviewPage() {
     }
   };
 
+  const continueWithOriginal = () => {
+    if (!drawing) return;
+    try {
+      localStorage.setItem(LATEST_ENHANCED_KEY, drawing);
+      localStorage.setItem(LATEST_DRAWING_KEY, drawing);
+    } catch {
+      // localStorage might be full or blocked; the main app can still start fresh.
+    }
+    router.push('/toothfairy/app');
+  };
+
   if (!hydrated) return null;
 
   if (!drawing) {
@@ -234,6 +245,7 @@ export default function DrawPreviewPage() {
             {enhanceState.retryable && (
               <button type="button" onClick={handleEnhance} className="px-6 py-3 rounded-full" style={{ background: c.gold, color: c.cream, fontFamily: 'var(--font-body)', fontWeight: 500, border: 'none' }}>Try again</button>
             )}
+            <button type="button" onClick={continueWithOriginal} className="px-6 py-3 rounded-full" style={{ marginTop: '0.75rem', background: 'transparent', color: c.brown, fontFamily: 'var(--font-body)', fontWeight: 500, border: `1px solid ${c.border}` }}>Continue with original</button>
           </div>
         )}
 
@@ -295,6 +307,22 @@ export default function DrawPreviewPage() {
                 }}
               >
                 Enhance
+              </button>
+              <button
+                type="button"
+                onClick={continueWithOriginal}
+                className="w-full rounded-full active:scale-[0.98]"
+                style={{
+                  height: 56,
+                  background: c.cream,
+                  color: c.brown,
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 15,
+                  fontWeight: 500,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                Continue with original
               </button>
               <button
                 type="button"

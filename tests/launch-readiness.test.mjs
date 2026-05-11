@@ -41,13 +41,28 @@ test("homepage does not link to unpublished Japan or Korea story pages", () => {
 test("homepage keeps the top nav simple and uses the approved hero assets", () => {
   const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
   const header = read("src/components/toothfairy/nav/tfn-header.tsx")
+  const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
 
   assert.match(header, /label:\s*"How it works"/)
   assert.match(header, /label:\s*"Stories"/)
   assert.doesNotMatch(header, /label:\s*"Safety"/)
+  assert.match(homepage, /\/toothfairy\/app\?from=home/)
+  assert.match(header, /\/toothfairy\/app\?from=nav/)
+  assert.match(footer, /\/toothfairy\/app\?from=footer/)
+  assert.doesNotMatch(homepage, /\/toothfairy\/app\/draw\?from=home/)
+  assert.doesNotMatch(header, /\/toothfairy\/app\/draw\?from=nav/)
+  assert.doesNotMatch(footer, /\/toothfairy\/app\/draw\?from=footer/)
   assert.match(homepage, /hero-family-v1-no-spark\.png/)
   assert.match(homepage, /toothlight-keepsake-current\.jpg/)
   assert.match(homepage, /className=\{styles\.memoryArt\}/)
+})
+
+test("draw polish preview can never block the mint path", () => {
+  const preview = read("src/app/toothfairy/app/draw/preview/page.tsx")
+
+  assert.match(preview, /Continue with original/)
+  assert.match(preview, /localStorage\.setItem\(LATEST_ENHANCED_KEY,\s*drawing\)/)
+  assert.match(preview, /router\.push\('\/toothfairy\/app'\)/)
 })
 
 test("preview page uses the current real-memory sample instead of static Timmy copy", () => {
