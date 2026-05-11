@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const essentials = [
   "A lost tooth becomes a first forever memory: photo, drawing, story, and Smile Fund.",
-  "The child can begin with their first digital asset while the parent controls the edges.",
+  "The child can begin with their first digital asset, with parent control around the edges.",
   "Access is simple: sign in with Google. All you need is the Gmail address connected to the parent account.",
   "The Smile Fund is parent-controlled until you decide to claim it together when your child is ready.",
   "Card gifts are paused until payment verification, receipts, fee language, refunds, and support are ready.",
@@ -18,11 +18,15 @@ const essentials = [
 const faqItems = [
   {
     title: "What is Tooth Fairy Network?",
-    body: "It turns a lost tooth into a child's first forever memory and a parent-controlled Smile Fund. The goal is to turn a ritual into a lifetime journey: a smile, a drawing, a story, and the first lesson that something can truly be theirs.",
+    body: "It turns a lost tooth into a child's first forever memory: a smile, a drawing, a story, and a parent-controlled Smile Fund. The goal is to turn a small family ritual into a lifetime journey about permanence, ownership, and care.",
+  },
+  {
+    title: "What happens on tooth night?",
+    body: "You read or remember a story together, save the tooth moment, let the child draw what happened, and keep the memory. The technology should feel like a helper in the room, not the reason the room exists.",
   },
   {
     title: "Is this my child's first digital wallet?",
-    body: "It can become that, but not all at once. The parent controls the account, recovery, family link, and Smile Fund until the child is ready for the next lesson.",
+    body: "It can become that, but not all at once. If you are a crypto parent, you can think of the keepsake as the child's first digital asset and the Smile Fund as an early, parent-guided savings rail. If you are not a crypto parent, start simpler: it is a memory your child can grow into.",
   },
   {
     title: "How do parents get back in?",
@@ -30,7 +34,7 @@ const faqItems = [
   },
   {
     title: "What is the Smile Fund?",
-    body: "It is a parent-controlled practice space for saving, patience, responsibility, ownership, and family generosity. Small gifts can become small conversations about growth.",
+    body: "It is a parent-controlled practice space for saving, patience, responsibility, ownership, and family generosity. Small gifts can become small conversations about growth, especially when the child can see that family showed up for them.",
   },
   {
     title: "Can family add gifts?",
@@ -43,6 +47,18 @@ const faqItems = [
   {
     title: "Are card gifts live?",
     body: "Card gifts are paused while payment verification, receipts, fee language, refunds, and support are finalized. The memory path works first; the payment path stays controlled.",
+  },
+  {
+    title: "What is happening under the hood?",
+    body: "The keepsake can use a blockchain record, and the Smile Fund can use a smart contract escrow, but parents should not need to manage that vocabulary to use the product. The point is independent financial rails with parent control: durable records, clear permissions, and a simple family experience on top.",
+  },
+  {
+    title: "Is this about self-sovereignty?",
+    body: "Eventually, yes, in a child-safe way. Self-sovereignty here does not mean handing a young child a crypto wallet and hoping for the best. It means teaching that some things can truly belong to them, while parents keep the keys, context, and pace until the lesson is ready.",
+  },
+  {
+    title: "What are the stories trying to teach?",
+    body: "The stories make ownership feel warm instead of abstract. They give children a fun way to learn that memories can last, promises can be kept, family can participate, and growing up comes with both wonder and responsibility.",
   },
   {
     title: "What does AI polish do?",
@@ -72,9 +88,10 @@ export default function FAQPage() {
         <p className="eyebrow">FAQ</p>
         <h1>The first forever memory: their first digital asset, with parent control around the edges.</h1>
         <p>
-          For families who want the magic, the family link, the AI-enhanced
-          artwork, and the Smile Fund to feel simple. Here is what parents
-          control, what is ready now, what is paused, and how access works.
+          For crypto parents, not-yet-crypto parents, grandparents, and anyone
+          wondering what this is really trying to promote: permanence,
+          ownership, a fun way to learn, and an activity families can do
+          together.
         </p>
         <div className="actions">
           <Link href="/toothfairy/app/draw?from=faq">Create a memory</Link>

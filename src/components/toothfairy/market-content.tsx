@@ -225,7 +225,7 @@ export function MarketContent() {
                 </div>
                 <div>
                   <strong style={{ color: C.text }}>The narrative is unclaimed.</strong>{" "}
-                  Nobody has built a narrative-first, family-first product on blockchain. The
+                  Nobody has built a narrative-first, family-first product on durable public rails. The
                   tooth fairy is an untouched cultural universal — recognized across every
                   demographic, every income level, every family structure.
                 </div>
@@ -255,8 +255,8 @@ export function MarketContent() {
                   crypto-aware and care about financial education for their kids.
                 </li>
                 <li>
-                  <strong style={{ color: C.text }}>The blockchain barrier.</strong> Most parents
-                  don&apos;t know what a wallet is. The onboarding has to be invisible — blockchain
+                  <strong style={{ color: C.text }}>The infrastructure barrier.</strong> Most parents
+                  don&apos;t know what a wallet is. The onboarding has to be invisible — public rails
                   as infrastructure, not interface. If a parent has to understand transaction fees, we&apos;ve
                   already failed.
                 </li>
@@ -267,7 +267,7 @@ export function MarketContent() {
                 </li>
                 <li>
                   <strong style={{ color: C.text }}>The &ldquo;why not just Venmo?&rdquo; question.</strong>{" "}
-                  A parent will ask: why do I need blockchain for this? The answer has to be felt,
+                  A parent will ask: why do I need this for a tooth story? The answer has to be felt,
                   not explained — permanence, family ownership, no platform risk, compounding
                   education. If the product doesn&apos;t make this obvious in 30 seconds, the thesis
                   doesn&apos;t matter.
