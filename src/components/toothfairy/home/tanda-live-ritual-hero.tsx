@@ -3,7 +3,7 @@ import styles from "./tanda-live-ritual-hero.module.css";
 
 const liveAssetRoot = "/toothfairy/animation/live-hero-v1";
 const liveAssetVersion = "asset-fix-2";
-const keepsakePreview = "https://gateway.irys.xyz/Z9_aFKhX6xpU1cZvw0h4u3zfJwhfJ1wiBf72KQWGF5k";
+const keepsakePreview = "/toothfairy/visual-system/nft-keepsake-v1.png";
 
 const steps = [
   {
@@ -43,7 +43,7 @@ const storyCards = [
     chapter: "Chapter 1",
     title: "Tanda and the Night the Network Woke",
     body: "A skipped bedtime note wakes the Toothlight and sends Tanda looking for the other keepers.",
-    image: "/story-assets/tanda/v2/s1-frame-01-cover.png",
+    image: "/story-assets/tanda/tf-05-tanda.png",
     alt: "Tanda flying above a moonlit town as glowing teeth connect the first Tooth Fairy Network routes",
     href: "/toothfairy/story/tanda",
     position: "center",
@@ -52,7 +52,7 @@ const storyCards = [
     chapter: "Chapter 2",
     title: "Tanda Fae and the Tooth Fee",
     body: "A father by the sea turns a small tooth into proof of growing up.",
-    image: "/story-assets/viking-origin/v2/s2-frame-01-cover-v3.png",
+    image: "/story-assets/viking-origin/vo-02-father.png",
     alt: "Young Tanda holding a glowing tooth beside her father in a Norse shipyard",
     href: "/toothfairy/story/viking-origin",
     position: "center",
@@ -61,7 +61,7 @@ const storyCards = [
     chapter: "Chapter 3",
     title: "Ratoncito Perez and the Toothlight Treaty",
     body: "A child with two true family traditions asks Perez and Tanda not to make her choose.",
-    image: "/story-assets/ratoncito-perez/v2/rp3-frame-01-two-doors.png",
+    image: "/story-assets/ratoncito-perez/rp-06-meeting.png",
     alt: "Tanda and Ratoncito Perez meeting on a Madrid rooftop under moonlight",
     href: "/toothfairy/story/ratoncito-perez",
     position: "center 38%",
@@ -105,7 +105,7 @@ export default function TandaLiveRitualHero() {
         <div className={styles.stage} aria-label="Tanda flies across the hero image and starts a Smile Fund.">
           <div className={styles.familyFrame}>
             <Image
-              src="/toothfairy/visual-system/hero-family-v1-no-spark.png"
+              src="/toothfairy/visual-system/hero-family-v1.png"
               alt="A parent and child celebrating a lost tooth"
               fill
               priority
