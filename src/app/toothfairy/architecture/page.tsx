@@ -9,25 +9,25 @@ export const metadata: Metadata = {
 
 const layers = [
   {
-    title: "Parent-controlled account",
-    body: "The parent or guardian controls the early account experience, sharing, and unlock path. The child sees the memory and lesson before the technical rails.",
+    title: "Family surface",
+    body: "The parent starts with a Toothlight memory, a shareable keepsake, and a recovery path tied to Google. The child sees the story, drawing, and family activity before any technical rails.",
   },
   {
-    title: "Tooth Memory keepsake",
-    body: "The cNFT keepsake records the tooth milestone and points to durable artwork/metadata. Personal story data can stay in the application layer where it can be presented safely.",
+    title: "Keepsake record",
+    body: "The cNFT keepsake records the tooth milestone and points to durable artwork and metadata. Personal story text can stay in the application layer where it can be presented safely.",
   },
   {
-    title: "Solana escrow",
-    body: "Family contributions are intended to sit in a Solana escrow flow, with the age-10 milestone as the default educational unlock target.",
+    title: "Smile Fund escrow",
+    body: "Family contributions are designed to sit in a Solana escrow flow with clear deposit, refund, claim, and time-lock rules. Age 10 remains the default educational handoff target.",
   },
   {
-    title: "Supabase records",
-    body: "Supabase stores supporting profile, story, child, and recovery context so the product can stay understandable to parents.",
+    title: "Parent data layer",
+    body: "Supabase stores supporting profile, story, child, photo, and recovery context so the product can stay understandable to parents and inspectable during launch.",
   },
 ]
 
 const readiness = [
-  "Production environment variables must stay complete before each deploy.",
+  "Production environment variables must be complete before each deploy.",
   "`/api/toothfairy/health` should pass before controlled user tests.",
   "One controlled mint should be tested after every meaningful flow change.",
   "Card gifts stay gated until provider setup, payment verification, terms, and deposit handling are tested.",
@@ -38,11 +38,12 @@ export default function ArchitecturePage() {
     <main className="security-page">
       <section className="hero">
         <p className="eyebrow">Security and architecture</p>
-        <h1>The rails should feel invisible, but they cannot be vague.</h1>
+        <h1>The rails should feel invisible to families, but clear to reviewers.</h1>
         <p>
-          Tooth Fairy Network is a warm family product on the surface. Under it
-          sits a minting path, a keepsake record, app-side family data, and a
-          Solana escrow model. This page explains the V1 architecture plainly.
+          Tooth Fairy Network is a warm family product on the surface. Under
+          it sits a minting path, a keepsake record, app-side family data, and
+          a Solana escrow model. This page keeps the implementation plain for
+          Colosseum reviewers and controlled testers.
         </p>
       </section>
 
@@ -58,7 +59,7 @@ export default function ArchitecturePage() {
       <section className="readiness">
         <div>
           <p className="eyebrow">Deployment gate</p>
-          <h2>What must be true before the domain moves.</h2>
+          <h2>What must be true before another live review.</h2>
         </div>
         <div className="checks">
           {readiness.map((item) => (
@@ -70,10 +71,11 @@ export default function ArchitecturePage() {
       <section className="disclosure">
         <h2>Current controlled-test truth</h2>
         <p>
-          The site can be reviewed visually now. The minting and wallet flows
-          should stay in controlled testing while email, recovery, and card
-          gifts are wired. The regular card-gift path is intentionally gated
-          until the payment flow and final public terms are tested end to end.
+          The site can be reviewed visually now. Minting, recovery, AI polish,
+          and dashboard access should be tested with known accounts before the
+          friend review. The regular card-gift path is intentionally gated
+          until the provider flow, receipts, fee language, refunds, and support
+          are tested end to end.
         </p>
         <Link href="/toothfairy/faq">Read parent FAQ</Link>
       </section>
