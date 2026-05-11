@@ -1,22 +1,22 @@
 {
   "name": "Tooth Fairy Network",
   "short_name": "TFN",
-  "description": "Turn your child's lost tooth into permanent savings and a digital keepsake.",
-  "start_url": "/story",
+  "description": "A child's first digital asset from a lost tooth.",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#060B18",
   "theme_color": "#F0C456",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "/toothfairy/brand/toothfairy-glow-mark-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/favicon.png",
-      "sizes": "32x32",
+      "src": "/toothfairy/brand/toothfairy-glow-mark-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
