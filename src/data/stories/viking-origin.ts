@@ -1,23 +1,18 @@
 import { StoryConfig } from './types'
 
+const v2 = '/story-assets/viking-origin/v2'
+
 /**
- * Story 2 — The First Tooth: Viking Origin (10 scenes).
- * The lore story. Father-daughter. How Tanda became what she is.
- *
- * Expanded to 10 scenes from the bible's 8:
- *  - Scene 2b: Father kneels, really sees what she's holding (warmth beat).
- *  - Scene 10: Tanda's transformation — the folkloric origin moment that
- *    bridges the girl on the cliff to the fairy at the window tonight.
- *
- * Color: cooler than Story 1 — slate blues, hearth amber, sea mist.
+ * Story 2 - Tanda Fae and the First Tooth Fee.
+ * Final approval draft: 31 frames, with unique approved/revised v2 art.
  */
 const vikingOrigin: StoryConfig = {
   id: 'viking-origin',
-  title: 'The First Tooth',
+  title: 'Tanda Fae and the First Tooth Fee',
   region: 'A Viking origin',
   emoji: '\u{2693}',
   color: '#8FB4D4',
-  description: 'A thousand years ago, a girl and her father made a promise.',
+  description: 'A Viking story of ships, mercy, and the first Toothlight.',
   characterName: 'Young Tanda',
   available: true,
   crossReferences: ['tanda', 'ratoncito-perez'],
@@ -41,176 +36,409 @@ const vikingOrigin: StoryConfig = {
     sparkleOn: ['victory'],
   },
   scenes: [
-    /* ─── COVER ───────────────────────────────────────────────────── */
     {
-      id: 'viking-cover',
+      id: 's2-01-cover',
       layout: 'cover',
-      background: '/story-assets/viking-origin/vo-01-village.png',
+      background: `${v2}/s2-frame-01-cover-v3.png`,
       dialogue: {
-        text: 'The First Tooth',
-        subtext: 'A Viking story. How Tanda became who she is.',
+        text: 'Tanda Fae\nand the First Tooth Fee',
+        subtext: 'A Viking story of ships, mercy, and the first Toothlight.',
       },
     },
-
-    /* ─── Scene 1 · A LONG TIME AGO ──────────────────────────────── */
     {
-      id: 'vo-01-village',
+      id: 's2-02-ships-grow',
       layout: 'narrative',
-      background: '/story-assets/viking-origin/vo-01-village.png',
+      background: `${v2}/s2-frame-02-shipyard.png`,
       dialogue: {
-        text: "A thousand years ago, in a village by the sea,\n\nthere lived a girl named Tanda,\n\nand her father, who built ships.",
+        text: 'Long before Tanda had wings, she lived where the sea slapped the stones and ships grew rib by rib from oak.',
+        subtext: 'She was seven, or almost seven, depending on who was asking.',
       },
     },
-
-    /* ─── Scene 2 · THE FATHER ───────────────────────────────────── */
     {
-      id: 'vo-02-father',
+      id: 's2-03-maker',
       layout: 'narrative',
-      background: '/story-assets/viking-origin/vo-02-father.png',
+      background: `${v2}/s2-frame-03-maker.png`,
       dialogue: {
-        text: "Her father’s hands were rough from rope and salt.\n\nBut when he held something small — a bird’s feather, a carved boat, a loose tooth —\n\nhe held it like it was the most important thing in the world.",
+        text: 'Her father built ships.',
+        subtext: 'He could tap a board and know if it wanted to be a keel, an oar, or firewood. Tanda thought this was unfair. The boards never answered her when she tapped them.',
       },
     },
-
-    /* ─── Scene 2b · THE KNEELING ────────────────────────────────── */
     {
-      id: 'vo-02b-kneeling',
+      id: 's2-04-tanda-helps',
       layout: 'dramatic',
-      background: '/story-assets/viking-origin/vo-02b-kneeling.png',
+      background: `${v2}/s2-frame-04-pitch-v4.png`,
       dialogue: {
-        text: "Tanda ran to him with her hand closed tight.",
-        subtext: "He knelt down — all the way down, to her eyes — so he wouldn’t miss a thing.",
+        text: 'Tanda wanted to help.',
+        subtext: 'She pressed one plank exactly where he told her, then discovered the sticky pitch had joined her sleeve to the ship.',
       },
       secondDialogue: {
         speaker: 'Tanda',
         speakerColor: '#E8B77A',
-        text: "“It fell out at breakfast.”",
+        text: '"The ship likes me."',
       },
       thirdDialogue: {
         speaker: 'Father',
         speakerColor: '#8FB4D4',
-        text: "“Show me.”",
+        text: '"The ship has poor judgment."',
       },
     },
-
-    /* ─── Scene 3 · THE TOOTH ────────────────────────────────────── */
     {
-      id: 'vo-03-tooth',
-      layout: 'dramatic',
-      background: '/story-assets/viking-origin/vo-03-tooth.png',
+      id: 's2-05-wobble',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-05-wobble.png`,
       dialogue: {
-        text: "She opened her palm.",
-        subtext: "A tiny white tooth. His weathered hand reached toward it — slow, careful, like touching an egg.",
+        text: 'That morning, a tooth had been wobbling in her mouth like a loose peg.',
+        subtext: 'Tanda kept it secret. Grown-ups became very interested in teeth, and interest was tiring.',
+      },
+    },
+    {
+      id: 's2-06-point-comes-loose',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-06-point-loose.png`,
+      dialogue: {
+        text: 'At supper she bit a strip of dried fish to prove a point.',
+        subtext: 'The point came loose. So did the tooth.',
+      },
+    },
+    {
+      id: 's2-07-small-rude-thing',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-07-small-rude.png`,
+      dialogue: {
+        text: 'It sat in her palm, small and wet and rude.',
+        subtext: 'Tanda did not feel older. She felt as if a piece of herself had fallen out by mistake.',
+      },
+    },
+    {
+      id: 's2-08-tooth-fee',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-08-tooth-fee.png`,
+      dialogue: {
+        text: 'Her father cleaned the tooth in warm water.',
+        subtext: 'Then he set a bright coin beside it.',
       },
       secondDialogue: {
         speaker: 'Father',
         speakerColor: '#8FB4D4',
-        text: "“Do you know what this is?”",
+        text: '"A tooth fee. For the one who did the growing."',
+      },
+    },
+    {
+      id: 's2-09-still-mine',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-09-still-mine.png`,
+      dialogue: {
+        text: 'Tanda covered the tooth with both hands.',
+      },
+      secondDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"If I take the coin, is it still mine?"',
       },
       thirdDialogue: {
         speaker: 'Father',
         speakerColor: '#8FB4D4',
-        text: "“It’s proof. Proof that you’re growing. Proof that right now, today, you are exactly this old and no older.”",
+        text: '"Yes. A fee is not a purchase. It is a promise to notice."',
       },
     },
-
-    /* ─── Scene 4 · THE TALISMAN ─────────────────────────────────── */
     {
-      id: 'vo-04-talisman',
-      layout: 'narrative',
-      background: '/story-assets/viking-origin/vo-04-talisman.png',
+      id: 's2-10-may-i-carry-it',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-10-permission.png`,
       dialogue: {
-        text: "He threaded the tooth onto a leather cord and tied it around his own neck.\n\n“Where you go, a part of me goes,” Tanda said.\n\n“No,” her father said. “Where I go, a part of you goes.\n\nYour courage. Your smallness. Your laugh. I carry it so I never forget who I’m coming home to.”",
+        text: 'The next morning, the ship was leaving.',
+        subtext: 'Her father knelt with a leather cord and a tiny carved keeper, waiting for her answer.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"May I carry your tooth until I come home?"',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"You may carry it. But you may not lose it, trade it, or let the goat chew it."',
       },
     },
-
-    /* ─── Scene 5 · THE DEPARTURE ────────────────────────────────── */
     {
-      id: 'vo-05-departure',
-      layout: 'narrative',
-      background: '/story-assets/viking-origin/vo-05-departure.png',
+      id: 's2-11-threading',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-11-threading-v3.png`,
       dialogue: {
-        text: "He sailed the next morning.\n\nTanda watched until the ship was smaller than her thumbnail.\n\nShe didn’t cry. She knew he carried something of hers — and that meant he’d come back.",
+        text: 'So he threaded the tooth onto the cord.',
+        subtext: 'Tanda held the other end until the knot was done. That was her way of saying yes.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"Near my heart, then."',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"Until you come home."',
       },
     },
-
-    /* ─── Scene 6 · THE WAITING ──────────────────────────────────── */
     {
-      id: 'vo-06-waiting',
+      id: 's2-12-goat-tries',
       layout: 'narrative',
-      background: '/story-assets/viking-origin/vo-06-waiting.png',
+      background: `${v2}/s2-frame-11-goat.png`,
       dialogue: {
-        text: "Weeks became months.\n\nTanda lost another tooth. And another. She kept each one in a small wooden box her father had carved.\n\n“When he comes back,” she thought, “I’ll show him how much I’ve grown.”",
+        text: 'The goat tried immediately.',
+        subtext: 'After a moment like that, goats believed it was their duty to make things less majestic.',
+      },
+      secondDialogue: {
+        text: 'Tanda stood guard until the tooth was tucked safely where her father could feel it.',
       },
     },
-
-    /* ─── Scene 7 · THE RETURN ───────────────────────────────────── */
     {
-      id: 'vo-07-return',
+      id: 's2-13-ship-leaves',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-12-ship-leaves.png`,
+      dialogue: {
+        text: 'When the sail rose, Tanda\'s throat went tight.',
+        subtext: 'The ship she had helped build now did the one thing she hated. It took him away.',
+      },
+    },
+    {
+      id: 's2-14-promises',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-13-promises.png`,
+      dialogue: {
+        text: '"You promised," she had said.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"I promised to carry what is yours."',
+      },
+      thirdDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"I cannot promise the sea will ask less of me."',
+      },
+    },
+    {
+      id: 's2-16-across-water',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-15-across-water.png`,
+      dialogue: {
+        text: 'Across the water, the ship found wind, fog, and empty stores.',
+        subtext: 'Winter had been hard everywhere. The men wanted to bring home what their village needed.',
+      },
+    },
+    {
+      id: 's2-17-barrel',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-16-barrel.png`,
+      dialogue: {
+        text: 'One morning, they found a boy in a barrel.',
+        subtext: 'He was holding one of their rope coils and smelled so strongly of herring that even the gulls kept their distance.',
+      },
+      secondDialogue: {
+        text: '"A thief," someone said.',
+      },
+    },
+    {
+      id: 's2-18-easier-choice',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-18-easier-choice-v3.png`,
+      dialogue: {
+        text: 'Her father was big enough to frighten him.',
+        subtext: 'He was tired enough to want to. Taking the rope back would have been easy. Making the boy afraid would have been easier.',
+      },
+    },
+    {
+      id: 's2-19-tooth-taps',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-19-tooth-taps-v4.png`,
+      dialogue: {
+        text: 'Then the tooth tapped against his chest.',
+        subtext: 'Not loudly. Just enough.',
+      },
+      secondDialogue: {
+        text: 'He remembered Tanda\'s hands closing around it.',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"Still mine."',
+      },
+    },
+    {
+      id: 's2-20-eye-level',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-19-eye-level.png`,
+      dialogue: {
+        text: 'He knelt all the way down, to the boy\'s eyes.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"What is the rope for?"',
+      },
+      thirdDialogue: {
+        text: 'The boy pointed to shore.',
+      },
+    },
+    {
+      id: 's2-22-small-boat',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-20-small-boat.png`,
+      dialogue: {
+        text: 'The boy led him down the stones to a cracked little boat.',
+        subtext: 'Beside it stood his sister, barefoot in the cold. The rope was not treasure. It was what he thought might hold their boat together.',
+      },
+    },
+    {
+      id: 's2-23-builder-understands',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-23-builder-understands-v3.png`,
+      dialogue: {
+        text: 'A broken boat was different from a stolen rope.',
+        subtext: 'Her father knew what broken things asked for. Not shouting. Not punishment. Time, tools, and someone willing to be late.',
+      },
+      secondDialogue: {
+        text: 'By dusk, the little boat held together, the girl had socks from the ship\'s spare wool, and nobody had been hit.',
+      },
+    },
+    {
+      id: 's2-25-shores-meet',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-25-shores-meet-v4.png`,
+      dialogue: {
+        text: 'When the little boat held, he did not hurry back to his own ship.',
+        subtext: 'He called the two sides closer: the ones with tools, the ones with wool, the ones with fish, the ones with rope.',
+      },
+      secondDialogue: {
+        text: 'The next day they traded work for food, nails for wool, rope for fish. It was slower than taking. It was better.',
+      },
+    },
+    {
+      id: 's2-27-first-toothlight',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-23-first-toothlight.png`,
+      dialogue: {
+        text: 'That night, the tooth glowed near his heart like a star that had chosen a small place to live.',
+        subtext: 'Her father did not understand it. But he knew what had called it forward.',
+      },
+    },
+    {
+      id: 's2-28-homecoming',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-24-homecoming.png`,
+      dialogue: {
+        text: 'When the ship came home, Tanda ran before she remembered she had legs.',
+        subtext: 'Her father came down the plank and knelt in the sand, laughing as she crashed into him.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"I came home."',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"You brought it back."',
+      },
+    },
+    {
+      id: 's2-29-it-carried-me-home',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-25-home-glow.png`,
+      dialogue: {
+        text: 'The tooth shone in his palm, bright as dawn.',
+      },
+      secondDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"It carried me home."',
+      },
+      thirdDialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"But not the way I expected."',
+      },
+    },
+    {
+      id: 's2-30-what-it-held',
+      layout: 'narrative',
+      background: `${v2}/s2-frame-26-memory.png`,
+      dialogue: {
+        text: 'Tanda touched it.',
+        subtext: 'She smelled herring, heard waves knocking a cracked boat, and saw a boy blink hard because someone had been kind when he expected shouting.',
+      },
+      secondDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"It remembers."',
+      },
+    },
+    {
+      id: 's2-31-promise-grows',
+      layout: 'dramatic',
+      background: `${v2}/s2-frame-27-promise-grows.png`,
+      dialogue: {
+        speaker: 'Father',
+        speakerColor: '#8FB4D4',
+        text: '"You remembered first."',
+      },
+      secondDialogue: {
+        text: 'Tanda placed the tooth in her wooden box with her drawing: a ship, a rope, two children on opposite shores.',
+      },
+      thirdDialogue: {
+        speaker: 'Tanda',
+        speakerColor: '#E8B77A',
+        text: '"Then I will remember for others."',
+      },
+    },
+    {
+      id: 's2-32-box-answers',
       layout: 'victory',
-      background: '/story-assets/viking-origin/vo-07-return.png',
+      background: `${v2}/s2-frame-30-box-answers-v3.png`,
       dialogue: {
-        text: 'The ship came home.',
+        text: 'The box answered.',
+        subtext: 'Not with words. With little places: a rooftop under rain, a mouse-sized door, a feather, a seed pressing up through soil.',
       },
       secondDialogue: {
-        speaker: 'Tanda',
-        speakerColor: '#E8B77A',
-        text: "She ran so fast she lost a sandal. Her father knelt, arms open, the tooth pendant still at his neck.",
-      },
-      thirdDialogue: {
-        speaker: 'Father',
-        speakerColor: '#8FB4D4',
-        text: "“You grew.” “I grew,” she said. And for a moment they both held something small and important and didn’t say anything at all.",
+        text: 'The tooth had not kept only a memory. It had kept a way.',
       },
     },
-
-    /* ─── Scene 8 · THE PROMISE ──────────────────────────────────── */
     {
-      id: 'vo-08-promise',
-      layout: 'dramatic',
-      background: '/story-assets/viking-origin/vo-08-promise.png',
+      id: 's2-33-network-wings',
+      layout: 'victory',
+      background: `${v2}/s2-frame-31-network-wings-v3.png`,
       dialogue: {
-        text: "Years passed. Tanda turned ten.",
-        subtext: "She sat alone on a cliff above the sea, the leather cord around her neck now, her box of teeth full on her lap.",
+        text: 'Light gathered around Tanda\'s shoulders.',
+        subtext: 'It did not make her less herself. It made room for everywhere she might be needed.',
       },
       secondDialogue: {
-        speaker: 'Tanda',
-        speakerColor: '#E8B77A',
-        text: "“It matters,” she whispered to the stars. “Every one of them. And I’ll make sure no one ever forgets.”",
+        text: 'Somewhere, another child was letting go of something small.',
       },
     },
-
-    /* ─── Scene 9 · THE TRANSFORMATION ───────────────────────────── */
     {
-      id: 'vo-09-transformation',
-      layout: 'dramatic',
-      background: '/story-assets/viking-origin/vo-09-transformation.png',
+      id: 's2-34-what-she-carries',
+      layout: 'victory',
+      background: `${v2}/s2-frame-34-adult-tanda-v2.png`,
       dialogue: {
-        text: "That promise was the beginning.",
-        subtext: "At the edges of her, something golden began to form. Not magic she had asked for — magic the promise had called forward.",
+        text: 'Tanda grew after that, and so did the promise.',
+        subtext: 'When children lost what they had outgrown, she could feel the bright place it belonged.',
       },
       secondDialogue: {
-        text: "Wings. A pouch at her hip. Eyes that would grow kind and tired over a thousand years.",
-      },
-      thirdDialogue: {
-        speaker: 'Tanda',
-        speakerColor: '#F0C456',
-        text: "She stood up as someone new.\n\nAnd somewhere, far from that cliff, a child’s tooth fell out — and Tanda knew exactly where to go.",
+        text: 'The first tooth stayed near her heart, where all good borrowed things should be carried.',
       },
     },
-
-    /* ─── CTA ────────────────────────────────────────────────────── */
     {
-      id: 'viking-cta',
+      id: 's2-35-cta',
       layout: 'cta',
-      background: '/story-assets/viking-origin/vo-09-transformation.png',
+      background: `${v2}/s2-frame-35-toothlight-cta-v4.png`,
       dialogue: {
-        text: 'Your child’s tooth is proof they’re growing.',
-        subtext: 'Keep it somewhere nothing can fade. Start their keepsake tonight.',
+        text: 'Your child\'s tooth is one small sign of a big change.',
+        subtext: 'Create a Toothlight from the tooth, their words, and the memory you want to keep.',
       },
       isChoice: true,
-      choiceText: 'Start the keepsake →',
-      choiceHref: '/toothfairy/app',
+      choiceText: 'Create Your Tooth Keepsake',
+      choiceHref: '/toothfairy/app/draw?from=story&slug=viking-origin',
     },
   ],
 }

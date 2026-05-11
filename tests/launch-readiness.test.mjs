@@ -38,28 +38,27 @@ test("homepage does not link to unpublished Japan or Korea story pages", () => {
   assert.doesNotMatch(homepage, /\/toothfairy\/story\/korea/)
 })
 
-test("homepage uses FAQ nav and a real minted memory preview", () => {
-  const homepage = read("src/app/toothfairy/page.tsx")
+test("homepage keeps the top nav simple and uses the approved hero assets", () => {
+  const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
   const header = read("src/components/toothfairy/nav/tfn-header.tsx")
 
-  assert.match(header, /label:\s*"FAQ"/)
+  assert.match(header, /label:\s*"How it works"/)
+  assert.match(header, /label:\s*"Stories"/)
   assert.doesNotMatch(header, /label:\s*"Safety"/)
-  assert.match(homepage, /gateway\.irys\.xyz\/Z9_aFKhX6xpU1cZvw0h4u3zfJwhfJ1wiBf72KQWGF5k/)
-  assert.match(homepage, /className="real-tooth"/)
-  assert.doesNotMatch(homepage, /nft-keepsake-v1\.png/)
+  assert.match(homepage, /hero-family-v1-no-spark\.png/)
+  assert.match(homepage, /toothlight-keepsake-current\.jpg/)
+  assert.match(homepage, /className=\{styles\.memoryArt\}/)
 })
 
-test("preview page uses the latest real minted memory instead of static sample copy", () => {
+test("preview page uses the current real-memory sample instead of static Timmy copy", () => {
   const preview = read("src/app/toothfairy/keepsake/preview/page.tsx")
 
-  assert.match(preview, /_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk/)
-  assert.match(preview, /F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E/)
-  assert.match(preview, /Jhonny/)
-  assert.match(preview, /locked Smile Fund/i)
+  assert.match(preview, /D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa/)
+  assert.match(preview, /5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s/)
+  assert.match(preview, /William Wallace/)
+  assert.match(preview, /robot dog/i)
+  assert.match(preview, /Example locked Smile Fund gift/i)
   assert.match(preview, /0\.05 SOL/)
-  assert.match(preview, /consumerfinance\.gov\/consumer-tools\/money-as-you-grow\/young-children\/explore-saving/)
-  assert.match(preview, /investor\.gov\/introduction-investing\/investing-basics\/save-and-invest\/small-savings-add-big-money/)
-  assert.match(preview, /investor\.gov\/introduction-investing\/investing-basics\/save-and-invest\/understand-what-it-means-invest/)
   assert.doesNotMatch(preview, /This is what Timmy got/)
   assert.doesNotMatch(preview, /The page should not feel like an NFT pitch/)
 })
@@ -161,18 +160,38 @@ test("footer email signup is wired to the subscribe endpoint", () => {
   assert.match(footer, /source:\s*"tfn-footer"/)
 })
 
-test("parent-facing copy leads with first forever memory instead of bank language", () => {
-  const homepage = read("src/app/toothfairy/page.tsx")
+test("stories route uses the new Tooth Fairy Atlas shelf instead of the old globe page", () => {
+  const stories = read("src/app/toothfairy/stories/page.tsx")
+  const storiesLayout = read("src/app/toothfairy/stories/layout.tsx")
+  const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
+
+  assert.match(homepage, /href="\/toothfairy\/stories"/)
+  assert.match(storiesLayout, /Tooth Fairy Atlas/)
+  assert.match(stories, /Tooth Fairy Atlas/)
+  assert.match(stories, /Seven keepers/)
+  assert.match(stories, /Seven ways to make magic from a lost tooth/)
+  assert.match(stories, /Seven bedtime stories now open the Tooth Fairy Network/)
+  assert.match(stories, /Meet the Collectors/)
+  assert.match(stories, /\/toothfairy\/story\/\$\{story\.id\}/)
+  assert.doesNotMatch(stories, /TfnGlobe/)
+  assert.doesNotMatch(stories, /PhotoBorder/)
+  assert.doesNotMatch(stories, /FEATURED_STORIES/)
+  assert.doesNotMatch(stories, /Stories from Around the World/)
+})
+
+test("parent-facing copy keeps the approved wallet headline and asset tagline", () => {
+  const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
   const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
   const keepsake = read("src/app/toothfairy/keepsake/[id]/page.tsx")
   const smileFund = read("src/app/toothfairy/smile-fund/page.tsx")
 
-  assert.match(homepage, /first forever memory/)
-  assert.match(footer, /first forever memory/)
-  assert.match(keepsake, /first forever memory/)
+  assert.match(homepage, /Now turn a lost tooth/)
+  assert.match(homepage, /your child's first digital wallet/)
+  assert.match(footer, /A child's first digital asset from a lost tooth/)
   assert.match(smileFund, /Smile Fund/)
   assert.doesNotMatch(homepage, /digital piggy bank/i)
   assert.doesNotMatch(footer, /digital piggy bank/i)
+  assert.doesNotMatch(keepsake, /digital piggy bank/i)
   assert.doesNotMatch(smileFund, /digital piggy bank/i)
 })
 
@@ -229,11 +248,11 @@ test("public sitemap and robots use the Tooth Fairy Network domain", () => {
 test("draft animation work is excluded from local Vercel deploy packages", () => {
   const vercelIgnore = read(".vercelignore")
 
-  assert.match(vercelIgnore, /public\/toothfairy\/animation\//)
   assert.match(vercelIgnore, /src\/app\/animation\/tanda-hero-ritual\//)
-  assert.match(vercelIgnore, /src\/components\/toothfairy\/home\//)
   assert.match(vercelIgnore, /src\/remotion\/TandaRitualHero\.tsx/)
   assert.match(vercelIgnore, /docs\/plans\//)
+  assert.doesNotMatch(vercelIgnore, /src\/components\/toothfairy\/home\//)
+  assert.doesNotMatch(vercelIgnore, /public\/toothfairy\/visual-system\//)
 })
 
 let failures = 0

@@ -60,7 +60,7 @@ test.describe('TFN mobile happy path', () => {
     // ── Step 1: Stories page ────────────────────────────────────────────
     await page.goto('/toothfairy/stories', { waitUntil: 'load' });
     await expect(
-      page.getByRole('heading', { name: /Stories from Around the World/i })
+      page.getByRole('heading', { name: /Seven keepers/i })
     ).toBeVisible();
 
     // Tanda is an active story (linkedFullStory='tanda' in wall-cards/cards.ts).

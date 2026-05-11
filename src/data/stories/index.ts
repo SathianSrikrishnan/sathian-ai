@@ -2,23 +2,28 @@ import { StoryConfig } from './types'
 import tanda from './tanda'
 import vikingOrigin from './viking-origin'
 import ratoncitoPerez from './ratoncito-perez'
+import korea from './korea'
+import warabaEdgeLight from './waraba-edge-light'
+import dagaOneYearWish from './daga-one-year-wish'
+import annaBogle from './anna-bogle'
 
-/** Featured trilogy — the three stories on the home page, in order.
- *  Tanda (converter) → Viking Origin (lore) → Ratoncito Pérez (broadener). */
+/** Original launch trilogy: Tanda -> Viking Origin -> Ratoncito Perez. */
 export const FEATURED_STORIES: StoryConfig[] = [
   tanda,
   vikingOrigin,
   ratoncitoPerez,
 ]
 
-/** ALL_STORIES is currently scoped to the trilogy only — the other 14 story
- *  files remain on disk for future re-activation, but aren't surfaced anywhere
- *  until the trilogy has proven the loop end-to-end. */
-export const ALL_STORIES: StoryConfig[] = [
-  tanda,
-  vikingOrigin,
-  ratoncitoPerez,
+/** Live story shelf: the seven production full storybooks. */
+export const LIVE_STORIES: StoryConfig[] = [
+  ...FEATURED_STORIES,
+  korea,
+  warabaEdgeLight,
+  dagaOneYearWish,
+  annaBogle,
 ]
+
+export const ALL_STORIES: StoryConfig[] = LIVE_STORIES
 
 export function getStoryById(id: string): StoryConfig | undefined {
   return ALL_STORIES.find(s => s.id === id)
