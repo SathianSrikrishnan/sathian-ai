@@ -9,6 +9,7 @@
  */
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { defaultAuthRedirectPath, safeAuthRedirectUrl } from "@/lib/toothfairy/auth-redirect"
 import { internalToothFairyHeaders } from "@/lib/toothfairy/admin-guard"
 
 type GoogleIdProfile = {
@@ -30,7 +31,6 @@ function decodeGoogleIdProfile(idToken: string): GoogleIdProfile {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("state") || "/app"
   const error = searchParams.get("error")
 
   const host =
@@ -39,10 +39,11 @@ export async function GET(request: NextRequest) {
     "toothfairy.network"
   const protocol = host.includes("localhost") ? "http" : "https"
   const origin = `${protocol}://${host}`
+  const fallbackNext = defaultAuthRedirectPath(host)
 
   // Google denied or user cancelled
   if (error || !code) {
-    return NextResponse.redirect(new URL("/app?auth_error=1", origin))
+    return NextResponse.redirect(safeAuthRedirectUrl(null, origin, `${fallbackNext}?auth_error=1`))
   }
 
   // Step 1: Exchange authorization code for tokens with Google
@@ -62,11 +63,11 @@ export async function GET(request: NextRequest) {
 
   if (!tokens.id_token) {
     console.error("Google token exchange failed:", tokens)
-    return NextResponse.redirect(new URL("/app?auth_error=1", origin))
+    return NextResponse.redirect(safeAuthRedirectUrl(null, origin, `${fallbackNext}?auth_error=1`))
   }
 
   // Step 2: Create Supabase session using the Google ID token
-  const redirectUrl = new URL(next, origin)
+  const redirectUrl = safeAuthRedirectUrl(searchParams.get("state"), origin, fallbackNext)
   redirectUrl.searchParams.set("returning", "auth")
   const response = NextResponse.redirect(redirectUrl)
 
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest) {
 
   if (authError) {
     console.error("Supabase signInWithIdToken failed:", authError.message)
-    return NextResponse.redirect(new URL("/app?auth_error=1", origin))
+    return NextResponse.redirect(safeAuthRedirectUrl(null, origin, `${fallbackNext}?auth_error=1`))
   }
 
   const googleProfile = decodeGoogleIdProfile(tokens.id_token)

@@ -54,7 +54,7 @@ export function TFNHeader() {
             <span aria-hidden />
             Built on Solana
           </span>
-          <Link href="/toothfairy/app?from=nav" className="header-cta">
+          <Link href="/toothfairy/app/draw?from=nav" className="header-cta">
             Create a Toothlight
             <span aria-hidden className="cta-arrow" />
           </Link>

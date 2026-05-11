@@ -164,7 +164,7 @@ export default function RecoverPage() {
       <header className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-xl font-bold">Find my memories</h1>
-          <p className="text-xs" style={{ color: C.muted }}>Connect the guardian wallet used for this child.</p>
+          <p className="text-xs" style={{ color: C.muted }}>Start with Google. Advanced wallet fallback is only for families who already tested it.</p>
         </div>
         <WalletButton />
       </header>
@@ -185,7 +185,7 @@ export default function RecoverPage() {
               Continue with Google
             </a>
             <button onClick={() => setVisible(true)} className="px-6 py-3 rounded-lg text-sm font-medium" style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.text }}>
-              Connect Wallet
+              Advanced wallet fallback
             </button>
           </div>
         </div>
@@ -297,7 +297,7 @@ export default function RecoverPage() {
       )}
 
       <footer className="mt-12 pt-4 text-center" style={{ borderTop: `1px solid ${C.border}` }}>
-        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network recovery &middot; Parent-controlled wallet access</p>
+        <p className="text-xs" style={{ color: C.dim }}>Tooth Fairy Network recovery &middot; Parent-controlled recovery</p>
       </footer>
     </div>
   )

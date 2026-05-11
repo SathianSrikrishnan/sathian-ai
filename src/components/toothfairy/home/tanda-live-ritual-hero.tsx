@@ -253,7 +253,7 @@ export default function TandaLiveRitualHero() {
         </div>
 
         <div className={styles.actions}>
-          <a href="/toothfairy/app?from=home" className={styles.primaryAction}>
+          <a href="/toothfairy/app/draw?from=home" className={styles.primaryAction}>
             Create a Toothlight
             <span aria-hidden />
           </a>

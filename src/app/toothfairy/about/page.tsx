@@ -43,7 +43,7 @@ export default function AboutPage() {
             and a parent-controlled Smile Fund that can unlock around age 10.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app">Create a memory</Link>
+            <Link href="/toothfairy/app/draw?from=about">Create a memory</Link>
             <Link href="/toothfairy/faq">Read the FAQ</Link>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function AboutPage() {
 
       <section className="cta">
         <h2>Start with one tooth memory.</h2>
-        <Link href="/toothfairy/app">Create the first memory</Link>
+        <Link href="/toothfairy/app/draw?from=about">Create the first memory</Link>
       </section>
 
       <style>{`

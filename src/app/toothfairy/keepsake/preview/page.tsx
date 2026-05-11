@@ -45,7 +45,7 @@ export default function KeepsakePreviewPage() {
           </p>
           <div className="actions">
             <Link href={liveMemoryHref}>Open William's memory</Link>
-            <Link href="/toothfairy/app">Create one</Link>
+            <Link href="/toothfairy/app/draw?from=keepsake-preview">Create one</Link>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ export default function KeepsakePreviewPage() {
             light. The page should feel like it belongs to them.
           </p>
         </div>
-        <Link href="/toothfairy/app">Start the ritual</Link>
+        <Link href="/toothfairy/app/draw?from=keepsake-preview">Start the ritual</Link>
       </section>
 
       <style jsx>{`

@@ -17,5 +17,19 @@ export default function DrawLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .tfn-header,
+            .tfn-footer {
+              display: none !important;
+            }
+          `,
+        }}
+      />
+      {children}
+    </>
+  );
 }

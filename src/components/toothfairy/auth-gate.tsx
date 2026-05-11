@@ -26,19 +26,15 @@ export function AuthGate({ childName, onAuthenticated, onBack }: AuthGateProps) 
   // Get the correct redirect URL based on current hostname
   const getRedirectUrl = () => {
     const origin = window.location.origin
-    const hostname = window.location.hostname
-    const isTfnDomain = hostname === 'toothfairy.network' || hostname === 'www.toothfairy.network'
-    const nextPath = isTfnDomain ? '/app' : '/toothfairy/app'
-    return `${origin}/api/auth/callback?next=${nextPath}`
+    const nextPath = `${window.location.pathname}${window.location.search}` || '/toothfairy/app/draw'
+    return `${origin}/api/auth/callback?next=${encodeURIComponent(nextPath)}`
   }
 
   const handleGoogleSignIn = () => {
     setLoading(true)
     setError(null)
     // Direct Google OAuth — bypasses Supabase redirect, no supabase.co domain exposure
-    const hostname = window.location.hostname
-    const isTfnDomain = hostname === "toothfairy.network" || hostname === "www.toothfairy.network"
-    const nextPath = isTfnDomain ? "/app" : "/toothfairy/app"
+    const nextPath = `${window.location.pathname}${window.location.search}` || "/toothfairy/app/draw"
     window.location.href = `/api/auth/google?next=${encodeURIComponent(nextPath)}`
   }
 

@@ -314,11 +314,11 @@ export default function GiftPage() {
                 fontWeight: 700,
               }}
             >
-              You were invited to {displayChildName}&apos;s first forever memory.
+              {displayChildName}&apos;s memory is ready to share.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              See the memory first. Add a small gift only if you want; the parent
-              keeps control of the Smile Fund until the child is ready to learn from it.
+              Open the keepsake first. A small gift can come later, and the
+              parent keeps control until the child is ready to learn from it.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-[0.88fr_1.12fr] sm:items-stretch">
@@ -375,7 +375,7 @@ export default function GiftPage() {
             {liveDeposits.length > 0 && (
             <div className="mb-5 space-y-1 rounded-lg p-4" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
               <p className="text-xs font-bold uppercase mb-2" style={{ color: page.muted, letterSpacing: "0.14em" }}>
-                {liveDeposits.length} gift{liveDeposits.length > 1 ? "s" : ""} &middot; {totalEscrowed.toFixed(2)} SOL saved
+                {liveDeposits.length} gift{liveDeposits.length > 1 ? "s" : ""} &middot; saved so far
               </p>
               {liveDeposits.filter(d => !d.claimed).map((d, i) => (
                 <div key={i} className="flex justify-between text-xs py-1">
@@ -391,7 +391,7 @@ export default function GiftPage() {
             <div className="mb-5 rounded-2xl p-4 text-center" style={{ background: "rgba(79, 184, 145, 0.12)", border: "1px solid rgba(79, 184, 145, 0.28)" }}>
               <div className="mb-1 text-sm font-black uppercase" style={{ color: page.ink }}>Saved</div>
               <p className="text-sm font-medium" style={{ color: C.emerald }}>{success}</p>
-              <p className="text-xs mt-1" style={{ color: C.muted }}>Your gift is held in escrow on Solana.</p>
+              <p className="text-xs mt-1" style={{ color: C.muted }}>Your gift is recorded and held for the Smile Fund.</p>
             </div>
           )}
 
@@ -407,8 +407,8 @@ export default function GiftPage() {
                   Add a small gift.
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  Wallet gifts work now for controlled testing. Card checkout is paused until
-                  payment verification, receipts, and fee disclosures are ready for families.
+                  Card gifts open soon. For now, share the memory first or use
+                  the advanced wallet path only for controlled testing.
                 </p>
               </div>
               <div className="rounded-lg p-4" style={{ background: page.cream, border: `1px solid ${page.border}` }}>
@@ -422,10 +422,25 @@ export default function GiftPage() {
               <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
                 <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts are paused.</p>
                 <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
-                  Share the memory first. For now, use a Solana wallet only for
-                  controlled testing, or simply come back to the memory.
+                  Share the memory first. Advanced wallet testing is optional;
+                  you can also simply come back to the memory.
                 </p>
               </div>
+              <button
+                type="button"
+                aria-label="Card gift checkout coming soon"
+                disabled
+                className="w-full rounded-full px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-80"
+                style={{
+                  background: page.gold,
+                  boxShadow: "0 12px 30px rgba(216,164,60,0.20)",
+                }}
+              >
+                Card gifts open soon
+              </button>
+              <p className="text-center text-xs leading-relaxed" style={{ color: page.muted }}>
+                Provider checkout is in final review. Wallet testing stays separate.
+              </p>
               <button
                 type="button"
                 onClick={requestWalletConnection}
@@ -437,7 +452,7 @@ export default function GiftPage() {
                   ? "Connecting Phantom..."
                   : connectIntent
                     ? "Choose Phantom in the wallet window"
-                    : "Use Solana wallet"}
+                    : "Advanced wallet test gift"}
               </button>
               {walletConnectError && (
                 <p className="text-center text-xs leading-relaxed" style={{ color: C.rose }}>
@@ -461,7 +476,7 @@ export default function GiftPage() {
           {publicKey && childProfilePda && (
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Solana gift</p>
+                <p className="text-xs font-black uppercase" style={{ color: page.gold, letterSpacing: "0.16em" }}>Advanced wallet test gift</p>
                 <p className="mt-1 text-sm font-bold" style={{ color: page.ink }}>Save a small gift for {displayChildName}</p>
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -518,6 +533,25 @@ export default function GiftPage() {
                   </p>
                 </div>
               )}
+
+              <div className="rounded-lg p-4" style={{ background: page.goldSoft, border: `1px solid rgba(216,164,60,0.24)` }}>
+                <p className="text-sm font-semibold" style={{ color: page.ink }}>Card gifts open soon.</p>
+                <p className="mt-1 text-sm leading-relaxed" style={{ color: page.inkSoft }}>
+                  Provider checkout is in final review. For now, use this wallet-only test path when you want to record a live gift.
+                </p>
+                <button
+                  type="button"
+                  aria-label="Card gift checkout coming soon"
+                  disabled
+                  className="mt-3 w-full rounded-full px-6 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-80"
+                  style={{
+                    background: page.gold,
+                    boxShadow: "0 12px 30px rgba(216,164,60,0.20)",
+                  }}
+                >
+                  Card gifts open soon
+                </button>
+              </div>
 
               <button onClick={handleDeposit} disabled={loading || !depositorName.trim()}
                 className="w-full px-4 py-3 rounded-full text-sm font-bold text-white disabled:opacity-30 transition-all hover:opacity-90" style={{ background: page.purple, color: "white", boxShadow: "0 12px 30px rgba(109,69,168,0.22)" }}>

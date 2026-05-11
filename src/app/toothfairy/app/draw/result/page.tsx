@@ -1,21 +1,37 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  MAGIC_STYLES,
+  getMagicStyle,
+  type MagicStyleId,
+} from '@/lib/toothfairy/magic-studio';
 
 const c = {
-  cream:      'oklch(97.5% 0.01 80)',
-  creamDeep:  'oklch(95% 0.015 75)',
-  brown:      'oklch(30% 0.035 65)',
-  brownSoft:  'oklch(42% 0.03 65)',
+  cream: 'oklch(97.5% 0.01 80)',
+  creamDeep: 'oklch(95% 0.015 75)',
+  brown: 'oklch(30% 0.035 65)',
+  brownSoft: 'oklch(42% 0.03 65)',
   brownMuted: 'oklch(58% 0.025 65)',
-  gold:       'oklch(72% 0.145 75)',
-  goldTint:   'oklch(72% 0.145 75 / 0.25)',
-  border:     'oklch(88% 0.015 75)',
+  gold: 'oklch(72% 0.145 75)',
+  goldSoft: 'oklch(72% 0.145 75 / 0.15)',
+  goldTint: 'oklch(72% 0.145 75 / 0.25)',
+  border: 'oklch(88% 0.015 75)',
 };
 
 const LATEST_DRAWING_KEY = 'toothfairy-latest-drawing';
 const LATEST_ENHANCED_KEY = 'toothfairy-latest-enhanced';
+const FINAL_DRAWING_KEY = 'toothfairy-final-drawing';
+const MAGIC_RESULTS_KEY = 'toothfairy-magic-results';
+const FLOW_STORAGE_KEY = 'tfn-flow-state';
+
+interface MagicResult {
+  id: string;
+  styleId: MagicStyleId;
+  enhancedImageUrl: string;
+  generationMs: number;
+}
 
 interface Sparkle {
   id: number;
@@ -39,10 +55,68 @@ function generateSparkles(count: number, width: number, height: number): Sparkle
   return result;
 }
 
+function parseMagicResults(raw: string | null): MagicResult[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as MagicResult[];
+    return parsed.filter((item) => item?.enhancedImageUrl && item?.styleId);
+  } catch {
+    return [];
+  }
+}
+
+function readMagicResults(): MagicResult[] {
+  try {
+    const localResults = parseMagicResults(localStorage.getItem(MAGIC_RESULTS_KEY));
+    if (localResults.length > 0) return localResults;
+
+    const sessionResults = parseMagicResults(sessionStorage.getItem(MAGIC_RESULTS_KEY));
+    if (sessionResults.length > 0) return sessionResults;
+
+    const fallback =
+      localStorage.getItem(LATEST_ENHANCED_KEY) ||
+      sessionStorage.getItem(LATEST_ENHANCED_KEY);
+    if (fallback) {
+      return [
+        {
+          id: 'legacy-result',
+          styleId: 'tanda-glow',
+          enhancedImageUrl: fallback,
+          generationMs: 0,
+        },
+      ];
+    }
+  } catch {
+    // ignore corrupt localStorage
+  }
+  return [];
+}
+
+function readOriginalDrawing(): string | null {
+  try {
+    return (
+      localStorage.getItem(LATEST_DRAWING_KEY) ||
+      sessionStorage.getItem(LATEST_DRAWING_KEY) ||
+      localStorage.getItem(FINAL_DRAWING_KEY) ||
+      sessionStorage.getItem(FINAL_DRAWING_KEY)
+    );
+  } catch {
+    try {
+      return (
+        sessionStorage.getItem(LATEST_DRAWING_KEY) ||
+        sessionStorage.getItem(FINAL_DRAWING_KEY)
+      );
+    } catch {
+      return null;
+    }
+  }
+}
+
 export default function DrawResultPage() {
   const router = useRouter();
   const [original, setOriginal] = useState<string | null>(null);
-  const [enhanced, setEnhanced] = useState<string | null>(null);
+  const [results, setResults] = useState<MagicResult[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [hydrated, setHydrated] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
@@ -57,38 +131,71 @@ export default function DrawResultPage() {
       reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
     try {
-      setOriginal(localStorage.getItem(LATEST_DRAWING_KEY));
-      setEnhanced(localStorage.getItem(LATEST_ENHANCED_KEY));
+      setOriginal(readOriginalDrawing());
+      setResults(readMagicResults());
     } catch {
       // Private browsing
     }
   }, []);
 
-  // Trigger reveal animation
   useEffect(() => {
-    if (!enhanced || !hydrated) return;
+    if (results.length === 0 || !hydrated) return;
+    setRevealed(false);
+    setShowButtons(false);
+    setSparkles([]);
+
     if (reducedMotion.current) {
       setRevealed(true);
       setShowButtons(true);
       return;
     }
+
     const t1 = setTimeout(() => {
       setRevealed(true);
       const frame = frameRef.current;
       if (frame) {
         setSparkles(generateSparkles(10, frame.offsetWidth, frame.offsetHeight));
       }
-    }, 200);
-    const t2 = setTimeout(() => setShowButtons(true), 1400);
+    }, 180);
+    const t2 = setTimeout(() => setShowButtons(true), 900);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [enhanced, hydrated]);
+  }, [results.length, selectedIndex, hydrated]);
+
+  const selected = results[selectedIndex] ?? null;
+  const selectedStyle = useMemo(
+    () => getMagicStyle(selected?.styleId),
+    [selected?.styleId]
+  );
 
   const handleKeep = () => {
+    const finalImage = selected?.enhancedImageUrl || original || '';
+    if (!finalImage) return;
+    const flowState = JSON.stringify({
+      previewImage: finalImage,
+      step: 'setup',
+      fromMagicStudio: true,
+    });
     try {
-      localStorage.setItem('toothfairy-final-drawing', enhanced || original || '');
+      sessionStorage.setItem(FINAL_DRAWING_KEY, finalImage);
+      sessionStorage.setItem(FLOW_STORAGE_KEY, flowState);
+      if (selected?.enhancedImageUrl) {
+        sessionStorage.setItem(LATEST_ENHANCED_KEY, selected.enhancedImageUrl);
+      }
+    } catch {
+      // Session storage is best-effort.
+    }
+    try {
+      if (selected?.enhancedImageUrl) {
+        localStorage.removeItem(LATEST_DRAWING_KEY);
+      }
+      localStorage.setItem(FINAL_DRAWING_KEY, finalImage);
+      localStorage.setItem(FLOW_STORAGE_KEY, flowState);
+      if (selected?.enhancedImageUrl) {
+        localStorage.setItem(LATEST_ENHANCED_KEY, selected.enhancedImageUrl);
+      }
     } catch {
       // ignore
     }
@@ -97,35 +204,77 @@ export default function DrawResultPage() {
 
   if (!hydrated) return null;
 
-  if (!original || !enhanced) {
+  if (!selected) {
     return (
-      <main className="min-h-screen w-full flex items-center justify-center px-5" style={{ background: c.creamDeep }}>
-        <div className="max-w-md w-full rounded-3xl px-8 py-12 text-center" style={{ background: c.cream, border: `1px solid ${c.border}` }}>
-          <p style={{ fontFamily: 'var(--font-display)', color: c.brown, fontSize: '1.5rem', fontWeight: 500, marginBottom: '1rem' }}>No enhanced drawing found</p>
-          <button type="button" onClick={() => router.push('/toothfairy/app/draw')} className="px-6 py-3 rounded-full" style={{ background: c.gold, color: c.cream, fontFamily: 'var(--font-body)', fontWeight: 500, border: 'none' }}>Start drawing</button>
+      <main
+        className="min-h-screen w-full flex items-center justify-center px-5"
+        style={{ background: c.creamDeep }}
+      >
+        <div
+          className="max-w-md w-full rounded-2xl px-8 py-12 text-center"
+          style={{ background: c.cream, border: `1px solid ${c.border}` }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.brown,
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            No magic drawing found
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push('/toothfairy/app/draw')}
+            className="px-6 py-3 rounded-full"
+            style={{
+              background: c.gold,
+              color: c.cream,
+              fontFamily: 'var(--font-body)',
+              fontWeight: 500,
+              border: 'none',
+            }}
+          >
+            Start drawing
+          </button>
         </div>
       </main>
     );
   }
 
-  const isUrl = enhanced.startsWith('http');
-
   return (
     <main className="min-h-screen w-full" style={{ background: c.creamDeep }}>
-      <div className="max-w-md mx-auto px-5 py-12">
-        <header className="text-center mb-8">
-          <p className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-body)', color: c.gold, letterSpacing: '0.2em', fontWeight: 500 }}>
+      <div className="max-w-md mx-auto px-5 py-10">
+        <header className="text-center mb-6">
+          <p
+            className="text-xs uppercase mb-2"
+            style={{
+              fontFamily: 'var(--font-body)',
+              color: c.gold,
+              letterSpacing: '0.2em',
+              fontWeight: 600,
+            }}
+          >
             Tooth Fairy Network
           </p>
-          <h1 style={{ fontFamily: 'var(--font-display)', color: c.brown, fontSize: '1.75rem', fontWeight: 500 }}>
-            Look what the fairy made
+          <h1
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: c.brown,
+              fontSize: '1.8rem',
+              lineHeight: 1.05,
+              fontWeight: 500,
+            }}
+          >
+            Choose the keepsake
           </h1>
         </header>
 
-        {/* Reveal frame */}
         <div
           ref={frameRef}
-          className="rounded-2xl overflow-hidden mb-8 relative"
+          className="rounded-2xl overflow-hidden mb-5 relative"
           style={{
             background: c.cream,
             border: `1px solid ${c.goldTint}`,
@@ -133,27 +282,27 @@ export default function DrawResultPage() {
             aspectRatio: '1 / 1',
           }}
         >
-          {/* Original (underneath) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={original}
-            alt="Your original drawing"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              background: c.cream,
-              zIndex: 1,
-            }}
-          />
+          {original && (
+            <img
+              src={original}
+              alt="Original drawing"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                background: c.cream,
+                zIndex: 1,
+              }}
+            />
+          )}
 
-          {/* Enhanced (on top, crossfade) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={isUrl ? enhanced : original}
-            alt="Enhanced by the tooth fairy"
+            src={selected.enhancedImageUrl}
+            alt={`${selectedStyle.label} keepsake`}
             style={{
               position: 'absolute',
               inset: 0,
@@ -161,15 +310,14 @@ export default function DrawResultPage() {
               height: '100%',
               objectFit: 'contain',
               background: c.cream,
-              zIndex: showOriginal ? 0 : 2,
-              opacity: revealed && !showOriginal ? 1 : 0,
+              zIndex: showOriginal && original ? 0 : 2,
+              opacity: !original || (revealed && !showOriginal) ? 1 : 0,
               transition: reducedMotion.current
                 ? 'opacity 0.1s'
-                : 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                : 'opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           />
 
-          {/* Sparkle particles */}
           {sparkles.map((s) => (
             <span
               key={s.id}
@@ -187,7 +335,10 @@ export default function DrawResultPage() {
               }}
             >
               <svg width="100%" height="100%" viewBox="0 0 12 12" fill="none">
-                <path d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z" fill="currentColor" />
+                <path
+                  d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z"
+                  fill="currentColor"
+                />
               </svg>
             </span>
           ))}
@@ -201,27 +352,69 @@ export default function DrawResultPage() {
           `}</style>
         </div>
 
-        {/* See original toggle */}
-        <div className="text-center mb-6">
-          <button
-            type="button"
-            onPointerDown={() => setShowOriginal(true)}
-            onPointerUp={() => setShowOriginal(false)}
-            onPointerLeave={() => setShowOriginal(false)}
-            className="text-sm underline"
+        <div className="text-center mb-5">
+          <p
             style={{
-              fontFamily: 'var(--font-body)',
-              color: c.brownMuted,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
+              fontFamily: 'var(--font-display)',
+              color: c.brown,
+              fontSize: '1.15rem',
+              lineHeight: 1.2,
+              marginBottom: 4,
             }}
           >
-            Hold to see original
-          </button>
+            {selectedStyle.label}
+          </p>
+          {original && (
+            <button
+              type="button"
+              onPointerDown={() => setShowOriginal(true)}
+              onPointerUp={() => setShowOriginal(false)}
+              onPointerLeave={() => setShowOriginal(false)}
+              className="text-sm underline"
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: c.brownMuted,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Hold to see original
+            </button>
+          )}
         </div>
 
-        {/* Buttons (slide up after reveal) */}
+        {results.length > 1 && (
+          <div className="grid grid-cols-3 gap-2 mb-6" aria-label="Generated styles">
+            {results.map((result, index) => {
+              const style = getMagicStyle(result.styleId);
+              const active = index === selectedIndex;
+              return (
+                <button
+                  key={result.id}
+                  type="button"
+                  onClick={() => setSelectedIndex(index)}
+                  aria-pressed={active}
+                  className="rounded-2xl active:scale-95"
+                  style={{
+                    minHeight: 58,
+                    background: active ? c.goldSoft : c.cream,
+                    border: `2px solid ${active ? c.gold : c.border}`,
+                    color: active ? c.brown : c.brownMuted,
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    lineHeight: 1.1,
+                    padding: '8px 6px',
+                  }}
+                >
+                  {style.shortLabel}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         <div
           className="flex flex-col gap-3"
           style={{
@@ -229,7 +422,7 @@ export default function DrawResultPage() {
             transform: showButtons ? 'translateY(0)' : 'translateY(16px)',
             transition: reducedMotion.current
               ? 'opacity 0.1s'
-              : 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              : 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           <button
@@ -259,11 +452,11 @@ export default function DrawResultPage() {
               color: c.brown,
               fontFamily: 'var(--font-body)',
               fontSize: 15,
-              fontWeight: 500,
+              fontWeight: 600,
               border: `1px solid ${c.border}`,
             }}
           >
-            Try again
+            Try more styles
           </button>
         </div>
       </div>

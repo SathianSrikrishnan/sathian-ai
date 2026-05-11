@@ -147,7 +147,7 @@ export default function FAQPage() {
             teaches responsibility without turning a tooth into a transaction.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app">Create a memory</Link>
+            <Link href="/toothfairy/app/draw?from=faq">Create a memory</Link>
             <Link href="/toothfairy/smile-fund">Smile Fund</Link>
           </div>
         </div>

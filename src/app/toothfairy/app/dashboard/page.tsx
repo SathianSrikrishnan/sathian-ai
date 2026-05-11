@@ -208,7 +208,7 @@ export default function WalletDashboard() {
               Continue with Google
             </a>
             <Link
-              href="/toothfairy/app"
+              href="/toothfairy/app/draw?from=dashboard"
               className="rounded-full px-5 py-3 text-center text-sm font-bold"
               style={{
                 background: page.gold,
@@ -238,7 +238,7 @@ export default function WalletDashboard() {
             {supabaseChildren.map((child) => {
               const childHref = child.latest_milestone_pda
                 ? `/toothfairy/keepsake/${child.latest_milestone_pda}`
-                : "/toothfairy/app"
+                : "/toothfairy/app/draw?from=dashboard-child"
 
               return (
               <Link
@@ -301,9 +301,9 @@ export default function WalletDashboard() {
               One place for the memory, the family link, and the balance.
             </h2>
             <p className="mt-4 text-base leading-relaxed" style={{ color: page.inkSoft }}>
-              Sign in with the same Google account you used to save the memory.
-              Wallet tools are still here for controlled testing, but Google is
-              the normal parent path.
+              Sign in with Google using the Gmail address you used to save the
+              memory. Advanced wallet tools stay available for controlled
+              testing, but Google is the normal parent path.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
@@ -377,8 +377,8 @@ export default function WalletDashboard() {
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold" style={{ background: "oklch(72% 0.145 75 / 0.14)", color: page.gold }}>TFN</div>
           <h2 className="text-2xl font-bold">No Smile Fund yet</h2>
           <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed" style={{ color: C.muted }}>Save the first tooth story to create the family link and the Smile Fund.</p>
-          <Link href="/toothfairy/app" className="mt-5 inline-block px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
-            Mint first memory
+          <Link href="/toothfairy/app/draw?from=dashboard-empty" className="mt-5 inline-block px-6 py-3 rounded-full text-sm font-bold text-white" style={{ background: page.purple }}>
+            Save first memory
           </Link>
         </div>
       )}
@@ -567,7 +567,7 @@ export default function WalletDashboard() {
                   ? `${window.location.origin}/toothfairy/keepsake/${milestonePda}`
                   : `${window.location.origin}/toothfairy/app/dashboard`
                 navigator.clipboard.writeText(url)
-                  .then(() => alert("Memory link copied. Family can view the keepsake and add a gift from there."))
+                  .then(() => alert("Memory link copied. Family can view the memory and add a gift from there."))
                   .catch(() => prompt("Copy this link:", url))
               }}
               className="w-full px-4 py-3 rounded-lg text-sm font-medium"
@@ -575,7 +575,7 @@ export default function WalletDashboard() {
             >
               Share {activeProfile.childName}&apos;s memory with family
             </button>
-            <Link href="/toothfairy/app"
+            <Link href="/toothfairy/app/draw?from=dashboard-record-another"
               className="block w-full px-4 py-3 rounded-lg text-sm font-medium text-white text-center"
               style={{ background: page.purple }}>
               Record Another Tooth
@@ -585,7 +585,7 @@ export default function WalletDashboard() {
           {/* On-chain proof */}
           <div className="text-center pt-2">
             <p className="text-xs" style={{ color: C.dim }}>
-              All savings held on-chain by a Solana smart contract &middot;{" "}
+              Advanced fund records are available for verification &middot;{" "}
               <a href={`https://solscan.io/account/${activeProfile.pda}`} target="_blank" rel="noopener noreferrer" className="underline">
                 Verify on Solscan
               </a>

@@ -71,7 +71,7 @@ export default function SmileFundPage() {
             setting the pace.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app">Create a memory</Link>
+            <Link href="/toothfairy/app/draw?from=smile-fund">Create a memory</Link>
             <Link href="/toothfairy/faq">Read parent FAQ</Link>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function SmileFundPage() {
           responsible for custody, trading, or financial decisions. That is the
           point.
         </p>
-        <Link href="/toothfairy/app">Start with the memory</Link>
+        <Link href="/toothfairy/app/draw?from=smile-fund">Start with the memory</Link>
       </section>
 
       <style>{`

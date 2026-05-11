@@ -8,7 +8,7 @@ const columns = [
   {
     title: "Product",
     links: [
-      { href: "/toothfairy/app?from=footer", label: "Create a Toothlight" },
+      { href: "/toothfairy/app/draw?from=footer", label: "Create a Toothlight" },
       { href: "/toothfairy/keepsake/preview", label: "Preview" },
       { href: "/toothfairy/smile-fund", label: "Smile Fund" },
     ],
