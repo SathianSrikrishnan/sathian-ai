@@ -5,7 +5,8 @@ import { TFNHeader } from '@/components/toothfairy/nav/tfn-header'
 import { TFNFooter } from '@/components/toothfairy/nav/tfn-footer'
 
 // TFN routes use the local fallback font variables from globals.css.
-const shareTagline = "A child's first digital asset from a lost tooth."
+const shareTagline =
+  "Turn a child's lost tooth into a Toothlight memory, bedtime story, and family keepsake."
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   applicationName: 'Tooth Fairy Network',
   title: 'Tooth Fairy Network',
-  description: "A child's first digital asset from a lost tooth.",
+  description: shareTagline,
   manifest: '/manifest.json',
   icons: {
     icon: '/toothfairy/brand/toothfairy-glow-mark-512.png',
