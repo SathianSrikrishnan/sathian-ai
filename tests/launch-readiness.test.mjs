@@ -32,7 +32,7 @@ test("operational, admin, and email endpoints require internal authorization", (
 })
 
 test("homepage does not link to unpublished Japan or Korea story pages", () => {
-  const homepage = read("src/app/toothfairy/page.tsx")
+  const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
 
   assert.doesNotMatch(homepage, /\/toothfairy\/story\/japan/)
   assert.doesNotMatch(homepage, /\/toothfairy\/story\/korea/)
@@ -46,6 +46,7 @@ test("homepage keeps the top nav simple and uses the approved hero assets", () =
   assert.match(header, /label:\s*"How it works"/)
   assert.match(header, /label:\s*"Stories"/)
   assert.doesNotMatch(header, /label:\s*"Safety"/)
+  assert.match(header, /Built on Solana/)
   assert.match(homepage, /\/toothfairy\/app\/draw\?from=home/)
   assert.match(header, /\/toothfairy\/app\/draw\?from=nav/)
   assert.match(footer, /\/toothfairy\/app\/draw\?from=footer/)
@@ -55,6 +56,10 @@ test("homepage keeps the top nav simple and uses the approved hero assets", () =
   assert.match(homepage, /hero-family-v1-no-spark\.png/)
   assert.match(homepage, /toothlight-keepsake-current\.jpg/)
   assert.match(homepage, /className=\{styles\.memoryArt\}/)
+  assert.match(homepage, /gateway\.irys\.xyz\/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s/)
+  assert.match(homepage, /Toothlight time capsules/)
+  assert.match(homepage, /A few already made/)
+  assert.match(homepage, /className="real-tooth"/)
 })
 
 test("draw polish preview can never block the mint path", () => {
@@ -203,6 +208,8 @@ test("parent-facing copy keeps the approved wallet headline and asset tagline", 
 
   assert.match(homepage, /Now turn a lost tooth/)
   assert.match(homepage, /your child's first digital wallet/)
+  assert.match(homepage, /Make a time capsule/)
+  assert.match(homepage, /Toothlight time capsules/)
   assert.match(footer, /A child's first digital asset from a lost tooth/)
   assert.match(smileFund, /Smile Fund/)
   assert.doesNotMatch(homepage, /digital piggy bank/i)

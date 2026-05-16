@@ -6,36 +6,116 @@ const liveAssetVersion = "asset-fix-2";
 const keepsakePreview = "/toothfairy/visual-system/toothlight-keepsake-current.jpg";
 const keepsakePreviewFallback = "/toothfairy/visual-system/nft-keepsake-v1.png";
 
+const liveMemories = [
+  {
+    label: "Network memory",
+    title: "Robot-dog wish",
+    story: "I want the Tooth Fairy to get me a robot dog.",
+    image: "https://gateway.irys.xyz/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s",
+    alt: "A real lost tooth resting in a hand with colorful child-drawn marks and a heart",
+    href: "/toothfairy/keepsake/D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa",
+    date: "May 5",
+  },
+  {
+    label: "Network memory",
+    title: "Winged tooth",
+    story: "A tiny tooth turned into a bright memory.",
+    image: "https://gateway.irys.xyz/4dqch-6Vbsir96QiADF8HMX1oAbE5l9carQbsInPRdU",
+    alt: "A glowing lost tooth with golden wings against a dark starry background",
+    href: "/toothfairy/keepsake/3cdg3LwvSnvWdDcpJTMvQuGdeZuhBNwzCvs5kR6wqjUK",
+    date: "May 15",
+  },
+  {
+    label: "Network memory",
+    title: "Wiggly for two weeks",
+    story: "It was wiggling for two weeks.",
+    image: "https://gateway.irys.xyz/_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk",
+    alt: "A child holding a baby tooth with blue, green, and orange drawings added over the photo",
+    href: "/toothfairy/keepsake/F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E",
+    date: "May 5",
+  },
+  {
+    label: "Network memory",
+    title: "Dad helped draw it",
+    story: "My tooth fell out today and I made a drawing with my dad to remember it.",
+    image: "https://gateway.irys.xyz/sL-S3rxY5B6a88ACRwGxDxep-Pc-aBsyuYpXifa5HTg",
+    alt: "A child's drawing of a tooth, sun, green hills, and a small house on paper",
+    href: "/toothfairy/keepsake/5DffDLpt4B4Gwm61P6msyHWHgC5RzD8RToYY5nQovVhw",
+    date: "May 11",
+  },
+  {
+    label: "Network memory",
+    title: "Dinner became the story",
+    story: "The spicy dinner became part of the memory.",
+    image: "https://gateway.irys.xyz/JBOR9kEFDukXKcy88c3ABC48__Y0OqBemvExPl0jKuo",
+    alt: "A storybook portrait of a parent and two children with gold wings and a moonlit frame",
+    href: "/toothfairy/keepsake/AjLMXmNP9A6hfzQuTYLG1drU5JppViraCf8NwGmngK1r",
+    date: "May 13",
+  },
+  {
+    label: "Network memory",
+    title: "First handoff",
+    story: "A small tooth, held in the palm, ready to become a keepsake.",
+    image: "https://gateway.irys.xyz/YVyiBp-3gPSG8PeUoCpdyKp1c91Vmqt40-UDBf-x8f0",
+    alt: "A small baby tooth resting in the palm of a hand with a soft illustrated finish",
+    href: "/toothfairy/keepsake/5hsP9CctgecT2bYqdhuLM3Kn2s3JzoVp8iZUWNLFvvfi",
+    date: "May 11",
+  },
+  {
+    label: "Network memory",
+    title: "First drawing",
+    story: "I hope this drawing stays with us.",
+    image: "https://gateway.irys.xyz/U3ZfRDlna4_hx1wWXKcSLTaTNNkr8R4y8PKDJvQpUNU",
+    alt: "A childlike drawing with gold and silver shapes on warm paper",
+    href: "/toothfairy/keepsake/7SuoSiQMBuB8dLC5kswfQoVCcq2ArSdRTMG6ErJDqVzN",
+    date: "May 8",
+  },
+  {
+    label: "Network memory",
+    title: "Tooth and note",
+    story: "The marks stay part of the memory.",
+    image: "https://gateway.irys.xyz/zYkvv_5tbHmSkAByJu0zJYoPP-ZfQW3qhwVyC8uWCSU",
+    alt: "A storybook-style image of a tooth beside childlike handwriting and a gold shape",
+    href: "/toothfairy/keepsake/9MFFKi4jdzZ1wcFGAbifEKx57okbhCJ1pSrQwDjuSGYk",
+    date: "Apr 24",
+  },
+] as const;
+
+const featuredMemory = liveMemories[0];
+
 const steps = [
   {
     eyebrow: "01",
-    title: "Draw",
-    body: "Make the tooth moment theirs.",
+    title: "Start with the real thing",
+    body: "Photo, drawing, or note.",
     accent: "gold",
-    image: "/toothfairy/visual-system/save-moment-v1.png",
-    alt: "A tooth, camera, and child drawing arranged as a keepsake activity",
+    image: liveMemories[5].image,
+    alt: liveMemories[5].alt,
     fit: "cover",
     position: "center",
+    variant: "source",
   },
   {
     eyebrow: "02",
-    title: "Light",
-    body: "Turn it into a Toothlight.",
+    title: "Make a Toothlight",
+    body: "Custom AI frames polish their creativity.",
     accent: "coral",
-    image: "/toothfairy/visual-system/tanda-guide-v1.png",
-    alt: "Tanda guiding a magical Toothlight moment",
-    fit: "contain",
+    image: featuredMemory.image,
+    alt: featuredMemory.alt,
+    fit: "cover",
     position: "center",
+    variant: "toothlight",
   },
   {
     eyebrow: "03",
-    title: "Save",
-    body: "Keep the wallet parent-controlled.",
+    title: "Add the story details",
+    body: "Connect the Smile Fund and share with family.",
     accent: "teal",
-    image: "/toothfairy/visual-system/watch-grow-v1.png",
-    alt: "A gentle savings chart growing from tooth tokens",
+    image: liveMemories[2].image,
+    alt: liveMemories[2].alt,
     fit: "cover",
     position: "center",
+    variant: "saved",
   },
 ] as const;
 
@@ -267,10 +347,11 @@ export default function TandaLiveRitualHero() {
         <div className={styles.howIntro}>
           <p>How it works</p>
           <h2>
-            Draw it. Light it. Save it.
+            Make a time capsule
+            <span className={styles.howTitleLine}>for a lost tooth.</span>
           </h2>
           <span>
-            A lost tooth becomes a Toothlight memory, then a first wallet parents control until the child is ready.
+            Start with the real moment. Add a little magic. Share the finished Toothlight with family.
           </span>
         </div>
 
@@ -278,13 +359,25 @@ export default function TandaLiveRitualHero() {
           {steps.map((step) => (
             <article key={step.title} className={`${styles.stepCard} ${styles[step.accent]}`}>
               <div className={styles.stepMedia}>
-                <Image
-                  src={step.image}
-                  alt={step.alt}
-                  fill
-                  sizes="(min-width: 900px) 31vw, 92vw"
-                  style={{ objectFit: step.fit, objectPosition: step.position }}
-                />
+                {step.variant === "source" ? (
+                  <div className={styles.sourceStep}>
+                    <img src={step.image} alt={step.alt} draggable={false} />
+                    <span>Photo or drawing</span>
+                  </div>
+                ) : step.variant === "toothlight" ? (
+                  <div className={styles.toothlightStep}>
+                    <img className="real-tooth" src={step.image} alt={step.alt} draggable={false} />
+                    <span>AI-polished Toothlight</span>
+                  </div>
+                ) : (
+                  <div className={styles.savedStep}>
+                    <img src={step.image} alt={step.alt} draggable={false} />
+                    <div className={styles.savedStory}>
+                      <span>In their words</span>
+                      <p>&ldquo;{liveMemories[2].story}&rdquo;</p>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className={styles.stepCopy}>
                 <p>{step.eyebrow}</p>
@@ -293,6 +386,31 @@ export default function TandaLiveRitualHero() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className={styles.liveProof} aria-label="Recent Toothlight memories">
+        <div className={styles.liveProofIntro}>
+          <p>Toothlight time capsules</p>
+          <h2>A few already made.</h2>
+          <span>Public examples from the live product.</span>
+        </div>
+        <div className={styles.liveRailViewport}>
+          <div className={styles.liveRail}>
+            {[...liveMemories, ...liveMemories].map((memory, index) => (
+              <a
+                key={`${memory.href}-${index}`}
+                href={memory.href}
+                className={styles.liveMemoryCard}
+                aria-label={`Open ${memory.title} Toothlight memory`}
+              >
+                <img src={memory.image} alt={memory.alt} draggable={false} />
+                <span>Saved {memory.date}</span>
+                <h3>{memory.title}</h3>
+                <em>&ldquo;{memory.story}&rdquo;</em>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
