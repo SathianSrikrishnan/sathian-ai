@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { StoriesThemeLock } from '@/components/toothfairy/nav/stories-theme-lock'
 
 export const metadata: Metadata = {
-  title: 'Tooth Fairy Atlas | Tooth Fairy Network',
+  title: 'Stories from Around the World | Tooth Fairy Network',
   description:
-    'Read Tooth Fairy Network bedtime stories, meet the collectors, and explore tooth traditions from around the world.',
+    'Explore tooth fairy traditions from around the world through bedtime stories, keepers, and family memories.',
 }
 
 export default function StoriesLayout({

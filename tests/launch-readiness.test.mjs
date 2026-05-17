@@ -55,6 +55,10 @@ test("homepage keeps the top nav simple and uses the approved hero assets", () =
   assert.match(homepage, /hero-family-v1-no-spark\.png/)
   assert.match(homepage, /toothlight-keepsake-current\.jpg/)
   assert.match(homepage, /className=\{styles\.memoryArt\}/)
+  assert.match(homepage, /gateway\.irys\.xyz\/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s/)
+  assert.match(homepage, /Toothlight time capsules/)
+  assert.match(homepage, /A few already made/)
+  assert.match(homepage, /className="real-tooth"/)
 })
 
 test("draw polish preview can never block the mint path", () => {
@@ -176,23 +180,22 @@ test("footer email signup is wired to the subscribe endpoint", () => {
   assert.match(footer, /source:\s*"tfn-footer"/)
 })
 
-test("stories route uses the new Tooth Fairy Atlas shelf instead of the old globe page", () => {
+test("stories route uses the story-world gateway instead of the old globe page", () => {
   const stories = read("src/app/toothfairy/stories/page.tsx")
   const storiesLayout = read("src/app/toothfairy/stories/layout.tsx")
   const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
 
   assert.match(homepage, /href="\/toothfairy\/stories"/)
-  assert.match(storiesLayout, /Tooth Fairy Atlas/)
-  assert.match(stories, /Tooth Fairy Atlas/)
-  assert.match(stories, /Seven keepers/)
-  assert.match(stories, /Seven ways to make magic from a lost tooth/)
-  assert.match(stories, /Seven bedtime stories now open the Tooth Fairy Network/)
-  assert.match(stories, /Meet the Collectors/)
-  assert.match(stories, /\/toothfairy\/story\/\$\{story\.id\}/)
+  assert.match(storiesLayout, /Stories from Around the World/)
+  assert.match(stories, /story-world-gateway-v1\.png/)
+  assert.match(stories, /Join Tanda and the Keepers/)
+  assert.match(stories, /Open traditions/)
+  assert.match(stories, /Start with Tanda, then follow each local promise/)
+  assert.match(stories, /Wider world/)
+  assert.match(stories, /openKeeperDoors/)
   assert.doesNotMatch(stories, /TfnGlobe/)
   assert.doesNotMatch(stories, /PhotoBorder/)
   assert.doesNotMatch(stories, /FEATURED_STORIES/)
-  assert.doesNotMatch(stories, /Stories from Around the World/)
 })
 
 test("parent-facing copy keeps the approved wallet headline and asset tagline", () => {
@@ -204,6 +207,9 @@ test("parent-facing copy keeps the approved wallet headline and asset tagline", 
   assert.match(homepage, /Turn a lost tooth/)
   assert.match(homepage, /your child's first digital wallet/)
   assert.doesNotMatch(homepage, /Start with a Toothlight memory/)
+  assert.doesNotMatch(homepage, /Now turn a lost tooth/)
+  assert.match(homepage, /Make a time capsule/)
+  assert.match(homepage, /Toothlight time capsules/)
   assert.match(footer, /A child's first digital asset from a lost tooth/)
   assert.match(smileFund, /Smile Fund/)
   assert.doesNotMatch(homepage, /digital piggy bank/i)
