@@ -201,8 +201,9 @@ test("parent-facing copy keeps the approved wallet headline and asset tagline", 
   const keepsake = read("src/app/toothfairy/keepsake/[id]/page.tsx")
   const smileFund = read("src/app/toothfairy/smile-fund/page.tsx")
 
-  assert.match(homepage, /Now turn a lost tooth/)
+  assert.match(homepage, /Turn a lost tooth/)
   assert.match(homepage, /your child's first digital wallet/)
+  assert.doesNotMatch(homepage, /Start with a Toothlight memory/)
   assert.match(footer, /A child's first digital asset from a lost tooth/)
   assert.match(smileFund, /Smile Fund/)
   assert.doesNotMatch(homepage, /digital piggy bank/i)
