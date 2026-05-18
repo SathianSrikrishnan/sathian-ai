@@ -12,39 +12,76 @@ const parentRoutes = ["Homepage", "Preview", "Smile Fund", "FAQ", "Draw flow"]
 const storyRoutes = ["Tanda", "Keepers", "Story map", "Cultural doors", "Animation"]
 
 const palette = [
-  { name: "Pearl", value: "#fffaf1", role: "parent surfaces" },
-  { name: "Ink", value: "#11234a", role: "primary text" },
-  { name: "Toothlight gold", value: "#f0c456", role: "memory glow" },
-  { name: "Network teal", value: "#4fd1c5", role: "connection accent" },
-  { name: "Keeper night", value: "#07101f", role: "storybook world" },
+  { name: "Vellum", value: "#f6ead6", role: "warm parent surfaces" },
+  { name: "Porcelain", value: "#fff8eb", role: "cards and memory objects" },
+  { name: "Ink Navy", value: "#101d34", role: "primary text and trust" },
+  { name: "Lantern Gold", value: "#d9a84e", role: "Toothlight glow" },
+  { name: "Rose Copper", value: "#b97963", role: "human warmth" },
+  { name: "Sage Glass", value: "#9fc7b4", role: "network accent" },
+  { name: "Keeper Night", value: "#07111f", role: "storybook world" },
 ]
 
-function ToothlightMark({ mode = "light" }: { mode?: "light" | "dark" }) {
+function ProductMark() {
   return (
-    <span className={`mark ${mode}`} aria-hidden="true">
+    <span className="product-mark" aria-hidden="true">
+      <span className="product-mark-orbit" />
       <Image
-        src="/toothfairy/brand/toothfairy-glow-tooth-256.png"
+        src="/toothfairy/brand/toothfairy-glow-mark-512.png"
         alt=""
-        width={92}
-        height={92}
+        width={86}
+        height={86}
         priority
       />
-      <span className="orbit one" />
-      <span className="orbit two" />
-      <span className="node n1" />
-      <span className="node n2" />
-      <span className="node n3" />
     </span>
   )
 }
 
-function Wordmark({ context }: { context: "parent" | "network" }) {
+function Wordmark({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
-    <div className={`wordmark ${context}`}>
-      <ToothlightMark mode={context === "network" ? "dark" : "light"} />
+    <div className={`wordmark ${tone}`}>
+      <ProductMark />
       <div>
         <strong>Toothlight</strong>
         <span>by Tooth Fairy Network</span>
+      </div>
+    </div>
+  )
+}
+
+function KeeperSeal() {
+  return (
+    <div className="keeper-seal" aria-label="Keeper seal concept">
+      <div className="keeper-image">
+        <Image
+          src="/story-assets/tanda/v2/s1-frame-25-first-toothlight.png"
+          alt="Tanda holding the first Toothlight memory"
+          fill
+          sizes="320px"
+        />
+      </div>
+      <div className="keeper-copy">
+        <span>The Keepers</span>
+        <strong>Collect and preserve Toothlights.</strong>
+      </div>
+    </div>
+  )
+}
+
+function NetworkLockup() {
+  return (
+    <div className="network-lockup" aria-label="Network lockup concept">
+      <Image
+        src="/story-assets/tanda/v2/s1-frame-32-network-begins-cta.png"
+        alt="Tanda connecting Toothlights across the network"
+        fill
+        sizes="(min-width: 900px) 44vw, 92vw"
+      />
+      <div className="network-plate">
+        <ProductMark />
+        <div>
+          <span>Tooth Fairy Network</span>
+          <strong>Keepers of Toothlights</strong>
+        </div>
       </div>
     </div>
   )
@@ -55,11 +92,12 @@ export default function ToothlightBrandSystemPage() {
     <main className="brand-system">
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Brand system pass</p>
+          <p className="eyebrow">Brand system pass v2</p>
           <h1>One lost tooth becomes one Toothlight.</h1>
           <p>
-            Toothlight becomes the parent-facing product. Tooth Fairy Network becomes the world of
-            collectors and keepers who preserve Toothlights across cultures, stories, and learning.
+            Toothlight is the parent-facing product: a private AI-enhanced memory and
+            fundable time capsule. Tooth Fairy Network is the keeper world: collectors
+            preserving Toothlights across families, cultures, stories, and learning.
           </p>
           <div className="actions">
             <Link href="/toothfairy">Current homepage</Link>
@@ -67,22 +105,57 @@ export default function ToothlightBrandSystemPage() {
           </div>
         </div>
 
-        <div className="hero-card" aria-label="Recommended logo direction">
-          <Wordmark context="parent" />
-          <div className="light-object">
+        <div className="identity-card" aria-label="Recommended identity direction">
+          <Wordmark />
+          <div className="identity-art">
             <Image
               src="/toothfairy/brand/toothfairy-glow-mark-512.png"
               alt="Glowing Toothlight mark"
-              width={240}
-              height={240}
+              width={300}
+              height={300}
               priority
             />
           </div>
           <p>
-            Recommended mark: a glowing tooth capsule with gold connection arcs. It must work as an
-            app icon, story object, favicon, and parent-facing trust mark.
+            The mark should feel like a collectible memory object: porcelain tooth,
+            lantern glow, dark story core, and subtle connection arcs. The wordmark
+            stays solid, not rainbow or gradient.
           </p>
         </div>
+      </section>
+
+      <section className="brand-objects" aria-label="Identity object system">
+        <article className="object-card product-object">
+          <p className="eyebrow">Product mark</p>
+          <div className="object-showcase">
+            <ProductMark />
+          </div>
+          <h2>Simple enough for an app icon. Rich enough for the story world.</h2>
+          <p>
+            The parent product gets the cleanest form: a luminous tooth inside a
+            softly beveled capsule. Connection is implied, not cluttered.
+          </p>
+        </article>
+
+        <article className="object-card keeper-object">
+          <p className="eyebrow">Keeper seal</p>
+          <KeeperSeal />
+          <h2>A story seal, not a generic badge.</h2>
+          <p>
+            The keeper identity should use Tanda and the Toothlight object together,
+            framed like a storybook collector seal.
+          </p>
+        </article>
+
+        <article className="object-card network-object">
+          <p className="eyebrow">Network lockup</p>
+          <NetworkLockup />
+          <h2>The network is a world, not a diagram.</h2>
+          <p>
+            Use cinematic story imagery for the umbrella brand. The line is simple:
+            Tooth Fairy Network, Keepers of Toothlights.
+          </p>
+        </article>
       </section>
 
       <section className="structure" aria-label="Brand hierarchy">
@@ -116,12 +189,21 @@ export default function ToothlightBrandSystemPage() {
 
       <section className="worlds" aria-label="Two connected visual worlds">
         <article className="world parent-world">
-          <Wordmark context="parent" />
+          <Wordmark />
+          <div className="world-media parent-media">
+            <Image
+              src="/toothfairy/visual-system/hero-family-v1.png"
+              alt="Parent and child saving a lost tooth memory"
+              fill
+              sizes="(min-width: 900px) 42vw, 92vw"
+            />
+          </div>
           <p className="eyebrow">Parent product world</p>
-          <h2>Warm, light, calm, fundable.</h2>
+          <h2>Warm, precise, fundable.</h2>
           <p>
-            This is where parents understand the product quickly: save the tooth moment, enhance the
-            story, share the link, and keep control of the Smile Fund.
+            This is where parents understand the product quickly: save the tooth
+            moment, enhance the story, share the link, and keep control of the
+            Smile Fund.
           </p>
           <div className="route-list">
             {parentRoutes.map((route) => (
@@ -143,25 +225,18 @@ export default function ToothlightBrandSystemPage() {
         </article>
 
         <article className="world network-world">
-          <Wordmark context="network" />
+          <Wordmark tone="dark" />
+          <NetworkLockup />
           <p className="eyebrow">Storybook network world</p>
-          <h2>Night, gold, cinematic, keeper-led.</h2>
+          <h2>Night, lanterns, keepers.</h2>
           <p>
-            This is where Tanda and the Keepers live. They collect Toothlights, preserve cultural
-            traditions, and turn the product into a story world.
+            This is where Tanda and the Keepers live. They collect Toothlights,
+            preserve cultural traditions, and turn the product into a story world.
           </p>
           <div className="route-list">
             {storyRoutes.map((route) => (
               <span key={route}>{route}</span>
             ))}
-          </div>
-          <div className="network-image">
-            <Image
-              src="/story-assets/network/story-world-gateway-v1.png"
-              alt="Tanda and the Keepers' glowing Toothlight network"
-              fill
-              sizes="(min-width: 900px) 42vw, 92vw"
-            />
           </div>
         </article>
       </section>
@@ -174,15 +249,15 @@ export default function ToothlightBrandSystemPage() {
         <div className="rules">
           <article>
             <strong>No gradient wordmark</strong>
-            <p>The wordmark should be solid ink or pearl. Gold/teal live in the mark, not every letter.</p>
+            <p>The wordmark should be solid ink or porcelain. The glow lives in the mark.</p>
           </article>
           <article>
             <strong>One product name first</strong>
             <p>Lead with Toothlight. Use Tooth Fairy Network as the keeper-world endorsement.</p>
           </article>
           <article>
-            <strong>Same CTA shape</strong>
-            <p>Create a Toothlight remains the main action in both light and dark modes.</p>
+            <strong>Same product object</strong>
+            <p>The glowing tooth capsule appears in parent pages, stories, sharing, and funds.</p>
           </article>
           <article>
             <strong>Story supports product</strong>
@@ -191,35 +266,10 @@ export default function ToothlightBrandSystemPage() {
         </div>
       </section>
 
-      <section className="logo-options" aria-label="Logo exploration">
-        <article>
-          <ToothlightMark />
-          <h3>Product mark</h3>
-          <p>Best for app icon, header, and parent pages.</p>
-        </article>
-        <article>
-          <div className="seal">
-            <ToothlightMark mode="dark" />
-          </div>
-          <h3>Keeper seal</h3>
-          <p>Best for storybook doors, badges, and cultural collection pages.</p>
-        </article>
-        <article>
-          <div className="mini-network" aria-hidden="true">
-            <ToothlightMark />
-            <span />
-            <span />
-            <span />
-          </div>
-          <h3>Network lockup</h3>
-          <p>Best for explaining family links and global keeper routes.</p>
-        </article>
-      </section>
-
       <section className="palette" aria-label="Color palette">
         <div>
-          <p className="eyebrow">Core palette</p>
-          <h2>Few colors, used with discipline.</h2>
+          <p className="eyebrow">Core palette v2</p>
+          <h2>Warmer parent surfaces. Deeper keeper night. Less toy color.</h2>
         </div>
         <div className="swatches">
           {palette.map((color) => (
@@ -240,20 +290,23 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .brand-system {
-          --pearl: #fffaf1;
-          --paper: #f4eadb;
-          --ink: #11234a;
-          --ink-soft: #374866;
-          --gold: #f0c456;
-          --gold-deep: #c98f28;
-          --teal: #4fd1c5;
-          --night: #07101f;
+          --vellum: #f6ead6;
+          --vellum-deep: #ead8bb;
+          --porcelain: #fff8eb;
+          --ink: #101d34;
+          --ink-soft: #3e4d64;
+          --lantern: #d9a84e;
+          --lantern-hot: #f2cb74;
+          --copper: #b97963;
+          --sage: #9fc7b4;
+          --night: #07111f;
           --night-deep: #020712;
-          --line: rgba(17, 35, 74, 0.13);
+          --line: rgba(16, 29, 52, 0.14);
           min-height: 100vh;
           background:
-            radial-gradient(circle at 12% 4%, rgba(240, 196, 86, 0.2), transparent 24rem),
-            linear-gradient(180deg, #fffaf1 0%, #f4eadb 42%, #08111f 42%, #030712 100%);
+            radial-gradient(circle at 16% 6%, rgba(217, 168, 78, 0.26), transparent 26rem),
+            radial-gradient(circle at 88% 18%, rgba(185, 121, 99, 0.18), transparent 22rem),
+            linear-gradient(180deg, #fff8eb 0%, #f6ead6 58%, #ead8bb 100%);
           color: var(--ink);
           font-family: var(--font-body), Segoe UI, system-ui, sans-serif;
         }
@@ -263,10 +316,10 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .hero,
+        .brand-objects,
         .structure,
         .worlds,
         .bridge,
-        .logo-options,
         .palette {
           width: min(1180px, calc(100% - 32px));
           margin: 0 auto;
@@ -274,18 +327,18 @@ export default function ToothlightBrandSystemPage() {
 
         .hero {
           display: grid;
-          grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
-          gap: clamp(1.4rem, 4vw, 4rem);
+          grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.82fr);
+          gap: clamp(1.4rem, 5vw, 5rem);
           align-items: center;
           padding: clamp(5rem, 10vw, 8rem) 0 4rem;
         }
 
         .eyebrow {
           margin: 0 0 0.85rem;
-          color: var(--gold-deep);
+          color: #a77327;
           font-size: 0.78rem;
           font-weight: 950;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
         }
 
@@ -300,20 +353,14 @@ export default function ToothlightBrandSystemPage() {
         h1 {
           max-width: 760px;
           color: var(--ink);
-          font-size: clamp(4rem, 8.5vw, 8.4rem);
+          font-size: clamp(4.2rem, 8.3vw, 8.2rem);
           line-height: 0.88;
         }
 
         h2 {
           color: var(--ink);
-          font-size: clamp(2rem, 4vw, 4.2rem);
+          font-size: clamp(2rem, 3.8vw, 4rem);
           line-height: 0.98;
-        }
-
-        h3 {
-          color: var(--ink);
-          font-size: 1.6rem;
-          line-height: 1;
         }
 
         p {
@@ -323,8 +370,8 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .hero-copy > p:not(.eyebrow) {
-          max-width: 650px;
-          font-size: clamp(1.08rem, 1.8vw, 1.32rem);
+          max-width: 660px;
+          font-size: clamp(1.08rem, 1.75vw, 1.28rem);
         }
 
         .actions {
@@ -342,141 +389,281 @@ export default function ToothlightBrandSystemPage() {
           border-radius: 999px;
           padding: 0 1.1rem;
           background: var(--ink);
-          color: var(--pearl);
+          color: var(--porcelain);
           font-weight: 900;
           text-decoration: none;
+          box-shadow: 0 16px 34px rgba(16, 29, 52, 0.14);
         }
 
         .actions a + a {
           border: 1px solid var(--line);
-          background: rgba(255, 250, 241, 0.56);
+          background: rgba(255, 248, 235, 0.58);
           color: var(--ink);
+          box-shadow: none;
         }
 
-        .hero-card,
+        .identity-card,
         .wide-card,
+        .object-card,
         .world,
         .bridge,
-        .logo-options article,
         .palette {
-          border: 1px solid rgba(17, 35, 74, 0.12);
+          border: 1px solid rgba(16, 29, 52, 0.13);
           border-radius: 8px;
-          background: rgba(255, 250, 241, 0.72);
-          box-shadow: 0 28px 70px rgba(17, 35, 74, 0.09);
+          background: rgba(255, 248, 235, 0.72);
+          box-shadow: 0 30px 82px rgba(44, 28, 8, 0.1);
         }
 
-        .hero-card {
+        .identity-card {
           padding: clamp(1.1rem, 3vw, 1.6rem);
+          background:
+            radial-gradient(circle at 50% 44%, rgba(217, 168, 78, 0.22), transparent 15rem),
+            linear-gradient(180deg, rgba(255, 248, 235, 0.94), rgba(246, 234, 214, 0.82));
         }
 
-        .light-object {
+        .identity-art {
           display: grid;
           place-items: center;
-          min-height: 280px;
+          min-height: 320px;
           margin: 1rem 0;
           border-radius: 8px;
           background:
-            radial-gradient(circle, rgba(240, 196, 86, 0.3), transparent 44%),
-            linear-gradient(135deg, rgba(255, 250, 241, 0.86), rgba(255, 255, 255, 0.44));
+            radial-gradient(circle, rgba(242, 203, 116, 0.3), transparent 44%),
+            linear-gradient(135deg, rgba(255, 248, 235, 0.9), rgba(255, 255, 255, 0.45));
           overflow: hidden;
         }
 
-        .light-object img {
-          filter: drop-shadow(0 22px 40px rgba(201, 143, 40, 0.2));
+        .identity-art img {
+          filter: drop-shadow(0 24px 42px rgba(99, 60, 20, 0.22));
         }
 
         .wordmark {
           display: inline-grid;
-          grid-template-columns: 64px minmax(0, 1fr);
+          grid-template-columns: 70px minmax(0, 1fr);
           align-items: center;
-          gap: 0.8rem;
+          gap: 0.9rem;
         }
 
         .wordmark strong {
           display: block;
           color: var(--ink);
           font-family: var(--font-display), Georgia, serif;
-          font-size: clamp(1.85rem, 3.5vw, 3.1rem);
+          font-size: clamp(1.9rem, 3.5vw, 3.15rem);
           font-weight: 950;
           line-height: 0.9;
         }
 
         .wordmark span {
           display: block;
-          margin-top: 0.25rem;
+          margin-top: 0.32rem;
           color: var(--ink-soft);
-          font-size: 0.76rem;
+          font-size: 0.73rem;
           font-weight: 950;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.13em;
           text-transform: uppercase;
         }
 
-        .wordmark.network strong {
-          color: var(--pearl);
+        .wordmark.dark strong {
+          color: var(--porcelain);
         }
 
-        .wordmark.network span {
-          color: rgba(255, 250, 241, 0.66);
+        .wordmark.dark span {
+          color: rgba(255, 248, 235, 0.72);
         }
 
-        .mark {
+        .product-mark {
           position: relative;
-          width: 64px;
-          height: 64px;
+          width: 70px;
+          height: 70px;
           display: grid;
           place-items: center;
-          border-radius: 999px;
+          border-radius: 22px;
           background:
-            radial-gradient(circle, rgba(255, 250, 241, 0.95), rgba(240, 196, 86, 0.26) 52%, rgba(17, 35, 74, 0.08));
-          box-shadow: 0 0 0 1px rgba(240, 196, 86, 0.36), 0 0 36px rgba(240, 196, 86, 0.3);
+            radial-gradient(circle at 44% 38%, rgba(255, 248, 235, 0.92), rgba(242, 203, 116, 0.32) 48%, rgba(16, 29, 52, 0.18)),
+            linear-gradient(145deg, rgba(255, 248, 235, 0.94), rgba(234, 216, 187, 0.56));
+          box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.74),
+            inset 0 -16px 28px rgba(120, 75, 32, 0.1),
+            0 18px 38px rgba(84, 53, 16, 0.15),
+            0 0 38px rgba(217, 168, 78, 0.24);
         }
 
-        .mark.dark {
-          background:
-            radial-gradient(circle, rgba(255, 250, 241, 0.92), rgba(240, 196, 86, 0.24) 52%, rgba(255, 250, 241, 0.08));
-        }
-
-        .mark img {
-          z-index: 2;
-          width: 44px;
-          height: 44px;
-          object-fit: contain;
-          filter: drop-shadow(0 0 12px rgba(240, 196, 86, 0.44));
-        }
-
-        .orbit,
-        .node {
+        .product-mark::before {
+          content: "";
           position: absolute;
-          pointer-events: none;
+          inset: 7px;
+          border: 1px solid rgba(217, 168, 78, 0.36);
+          border-radius: 18px;
         }
 
-        .orbit {
-          inset: 11px 7px;
-          border: 1px solid rgba(240, 196, 86, 0.56);
+        .product-mark img {
+          z-index: 2;
+          width: 58px;
+          height: 58px;
+          object-fit: cover;
+          border-radius: 18px;
+          filter: drop-shadow(0 0 14px rgba(217, 168, 78, 0.5));
+        }
+
+        .product-mark-orbit {
+          position: absolute;
+          inset: 14px 8px;
+          border: 1.5px solid rgba(159, 199, 180, 0.72);
           border-left-color: transparent;
           border-bottom-color: transparent;
           border-radius: 999px;
           transform: rotate(-18deg);
         }
 
-        .orbit.two {
-          inset: 8px 13px;
-          border-color: rgba(79, 209, 197, 0.4);
-          border-right-color: transparent;
-          transform: rotate(32deg);
+        .brand-objects {
+          display: grid;
+          grid-template-columns: 0.84fr 1fr 1.18fr;
+          gap: 1rem;
+          padding: 1rem 0 3.5rem;
         }
 
-        .node {
-          width: 7px;
-          height: 7px;
-          border-radius: 999px;
-          background: var(--gold);
-          box-shadow: 0 0 14px rgba(240, 196, 86, 0.8);
+        .object-card {
+          min-height: 520px;
+          display: flex;
+          flex-direction: column;
+          padding: clamp(1rem, 2.5vw, 1.4rem);
+          overflow: hidden;
         }
 
-        .n1 { top: 12px; right: 12px; }
-        .n2 { left: 10px; bottom: 17px; background: var(--teal); }
-        .n3 { right: 18px; bottom: 9px; }
+        .object-card h2 {
+          margin-top: 1rem;
+          font-size: clamp(1.7rem, 2.6vw, 2.7rem);
+        }
+
+        .object-showcase {
+          display: grid;
+          place-items: center;
+          min-height: 230px;
+          border-radius: 8px;
+          background:
+            radial-gradient(circle, rgba(217, 168, 78, 0.22), transparent 52%),
+            linear-gradient(145deg, rgba(255, 248, 235, 0.92), rgba(234, 216, 187, 0.7));
+          box-shadow: inset 0 0 0 1px rgba(16, 29, 52, 0.08);
+        }
+
+        .object-showcase .product-mark {
+          width: 152px;
+          height: 152px;
+          border-radius: 42px;
+        }
+
+        .object-showcase .product-mark::before {
+          border-radius: 34px;
+          inset: 13px;
+        }
+
+        .object-showcase .product-mark img {
+          width: 126px;
+          height: 126px;
+          border-radius: 36px;
+        }
+
+        .object-showcase .product-mark-orbit {
+          inset: 34px 19px;
+        }
+
+        .keeper-seal {
+          display: grid;
+          gap: 0.9rem;
+        }
+
+        .keeper-image {
+          position: relative;
+          min-height: 270px;
+          border-radius: 8px;
+          overflow: hidden;
+          background: var(--night);
+          box-shadow:
+            inset 0 0 0 1px rgba(217, 168, 78, 0.36),
+            0 20px 48px rgba(16, 29, 52, 0.15);
+        }
+
+        .keeper-image::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 52% 78%, rgba(242, 203, 116, 0.2), transparent 20rem),
+            linear-gradient(180deg, transparent 46%, rgba(7, 17, 31, 0.48));
+        }
+
+        .keeper-image img {
+          object-fit: cover;
+          object-position: 50% 57%;
+        }
+
+        .keeper-copy {
+          border: 1px solid rgba(217, 168, 78, 0.24);
+          border-radius: 8px;
+          background: linear-gradient(135deg, rgba(16, 29, 52, 0.96), rgba(7, 17, 31, 0.96));
+          padding: 0.9rem;
+        }
+
+        .keeper-copy span,
+        .network-plate span {
+          display: block;
+          color: var(--lantern-hot);
+          font-size: 0.72rem;
+          font-weight: 950;
+          letter-spacing: 0.13em;
+          text-transform: uppercase;
+        }
+
+        .keeper-copy strong,
+        .network-plate strong {
+          display: block;
+          margin-top: 0.3rem;
+          color: var(--porcelain);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.55rem;
+          line-height: 1;
+        }
+
+        .network-lockup {
+          position: relative;
+          min-height: 310px;
+          border-radius: 8px;
+          overflow: hidden;
+          background: var(--night);
+          box-shadow:
+            inset 0 0 0 1px rgba(217, 168, 78, 0.28),
+            0 24px 58px rgba(2, 7, 18, 0.24);
+        }
+
+        .network-lockup > img {
+          object-fit: cover;
+        }
+
+        .network-lockup::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 48% 54%, transparent, rgba(2, 7, 18, 0.12) 36%, rgba(2, 7, 18, 0.54)),
+            linear-gradient(180deg, rgba(2, 7, 18, 0.08), rgba(2, 7, 18, 0.68));
+        }
+
+        .network-plate {
+          position: absolute;
+          z-index: 2;
+          left: 1rem;
+          right: 1rem;
+          bottom: 1rem;
+          display: grid;
+          grid-template-columns: 70px minmax(0, 1fr);
+          align-items: center;
+          gap: 0.8rem;
+          border: 1px solid rgba(255, 248, 235, 0.16);
+          border-radius: 8px;
+          background: rgba(7, 17, 31, 0.72);
+          padding: 0.8rem;
+          backdrop-filter: blur(14px);
+        }
 
         .structure {
           padding: 1rem 0 3.5rem;
@@ -497,12 +684,12 @@ export default function ToothlightBrandSystemPage() {
           min-height: 190px;
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.46);
+          background: rgba(255, 248, 235, 0.55);
           padding: 1rem;
         }
 
         .stack span {
-          color: var(--gold-deep);
+          color: #a77327;
           font-size: 0.75rem;
           font-weight: 950;
           letter-spacing: 0.12em;
@@ -525,37 +712,56 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .world {
-          min-height: 680px;
+          min-height: 760px;
           padding: clamp(1rem, 3vw, 1.5rem);
           overflow: hidden;
         }
 
         .world .wordmark {
-          margin-bottom: 3rem;
+          margin-bottom: 1.1rem;
         }
 
         .parent-world {
           background:
-            radial-gradient(circle at 84% 8%, rgba(240, 196, 86, 0.22), transparent 16rem),
-            linear-gradient(180deg, #fffaf1, #f5eadb);
+            radial-gradient(circle at 86% 8%, rgba(217, 168, 78, 0.2), transparent 16rem),
+            linear-gradient(180deg, #fff8eb, #f4e3c8);
         }
 
         .network-world {
-          border-color: rgba(255, 250, 241, 0.14);
+          border-color: rgba(255, 248, 235, 0.14);
           background:
-            radial-gradient(circle at 82% 10%, rgba(240, 196, 86, 0.24), transparent 18rem),
-            radial-gradient(circle at 18% 34%, rgba(79, 209, 197, 0.15), transparent 18rem),
-            linear-gradient(180deg, #07101f, #020712);
-          color: var(--pearl);
+            radial-gradient(circle at 82% 10%, rgba(217, 168, 78, 0.18), transparent 18rem),
+            radial-gradient(circle at 16% 36%, rgba(159, 199, 180, 0.12), transparent 18rem),
+            linear-gradient(180deg, #07111f, #020712);
+          color: var(--porcelain);
+        }
+
+        .network-world .network-lockup {
+          min-height: 275px;
+          margin-bottom: 1.6rem;
+        }
+
+        .world-media {
+          position: relative;
+          min-height: 275px;
+          margin-bottom: 1.5rem;
+          border: 1px solid rgba(16, 29, 52, 0.1);
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 24px 58px rgba(44, 28, 8, 0.12);
+        }
+
+        .world-media img {
+          object-fit: cover;
         }
 
         .network-world .eyebrow,
         .network-world h2 {
-          color: #fff7c4;
+          color: #fff1bd;
         }
 
         .network-world p {
-          color: rgba(255, 250, 241, 0.72);
+          color: rgba(255, 248, 235, 0.72);
         }
 
         .route-list {
@@ -566,9 +772,9 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .route-list span {
-          border: 1px solid rgba(17, 35, 74, 0.12);
+          border: 1px solid rgba(16, 29, 52, 0.12);
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.48);
+          background: rgba(255, 248, 235, 0.56);
           padding: 0.45rem 0.7rem;
           color: var(--ink);
           font-size: 0.78rem;
@@ -576,9 +782,9 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .network-world .route-list span {
-          border-color: rgba(255, 250, 241, 0.14);
-          background: rgba(255, 250, 241, 0.08);
-          color: rgba(255, 250, 241, 0.82);
+          border-color: rgba(255, 248, 235, 0.14);
+          background: rgba(255, 248, 235, 0.08);
+          color: rgba(255, 248, 235, 0.82);
         }
 
         .sample-product {
@@ -591,12 +797,12 @@ export default function ToothlightBrandSystemPage() {
         .sample-product div {
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.56);
+          background: rgba(255, 248, 235, 0.6);
           padding: 1rem;
         }
 
         .sample-product span {
-          color: var(--gold-deep);
+          color: #a77327;
           font-size: 0.72rem;
           font-weight: 950;
           letter-spacing: 0.12em;
@@ -612,29 +818,15 @@ export default function ToothlightBrandSystemPage() {
           line-height: 1;
         }
 
-        .network-image {
-          position: relative;
-          min-height: 270px;
-          margin-top: 2rem;
-          border: 1px solid rgba(240, 196, 86, 0.24);
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-        }
-
-        .network-image img {
-          object-fit: cover;
-        }
-
         .bridge {
           display: grid;
           grid-template-columns: 0.75fr 1.25fr;
           gap: 1rem;
           padding: clamp(1rem, 3vw, 1.6rem);
-          border-color: rgba(17, 35, 74, 0.12);
+          border-color: rgba(16, 29, 52, 0.12);
           background:
-            radial-gradient(circle at 12% 18%, rgba(240, 196, 86, 0.16), transparent 18rem),
-            linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(244, 234, 219, 0.94));
+            radial-gradient(circle at 12% 18%, rgba(217, 168, 78, 0.16), transparent 18rem),
+            linear-gradient(135deg, rgba(255, 248, 235, 0.96), rgba(246, 234, 214, 0.94));
         }
 
         .rules {
@@ -643,80 +835,28 @@ export default function ToothlightBrandSystemPage() {
           gap: 0.75rem;
           border-radius: 8px;
           background:
-            radial-gradient(circle at 86% 12%, rgba(240, 196, 86, 0.14), transparent 14rem),
-            linear-gradient(180deg, #07101f, #020712);
+            radial-gradient(circle at 86% 12%, rgba(217, 168, 78, 0.13), transparent 14rem),
+            linear-gradient(180deg, #07111f, #020712);
           padding: 0.75rem;
         }
 
         .rules article {
-          border: 1px solid rgba(255, 250, 241, 0.16);
+          border: 1px solid rgba(255, 248, 235, 0.16);
           border-radius: 8px;
-          background: rgba(255, 250, 241, 0.08);
+          background: rgba(255, 248, 235, 0.08);
           padding: 1rem;
         }
 
         .rules strong {
-          color: #fff7c4;
+          color: #fff1bd;
           font-family: var(--font-display), Georgia, serif;
           font-size: 1.25rem;
         }
 
         .rules p {
-          color: rgba(255, 250, 241, 0.7);
+          color: rgba(255, 248, 235, 0.72);
           font-size: 0.9rem;
         }
-
-        .logo-options {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 1rem;
-          padding: 4rem 0;
-          color: var(--pearl);
-        }
-
-        .logo-options article {
-          min-height: 280px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          background: rgba(255, 250, 241, 0.92);
-          padding: 1.2rem;
-        }
-
-        .seal {
-          width: 104px;
-          height: 104px;
-          display: grid;
-          place-items: center;
-          border-radius: 999px;
-          background: radial-gradient(circle, rgba(240, 196, 86, 0.18), rgba(7, 16, 31, 0.96));
-          box-shadow: inset 0 0 0 1px rgba(240, 196, 86, 0.4);
-        }
-
-        .mini-network {
-          position: relative;
-          width: 170px;
-          height: 110px;
-        }
-
-        .mini-network .mark {
-          position: absolute;
-          left: 48px;
-          top: 22px;
-        }
-
-        .mini-network > span {
-          position: absolute;
-          width: 18px;
-          height: 18px;
-          border-radius: 999px;
-          background: var(--gold);
-          box-shadow: 0 0 0 7px rgba(240, 196, 86, 0.14);
-        }
-
-        .mini-network > span:nth-of-type(1) { left: 8px; top: 8px; }
-        .mini-network > span:nth-of-type(2) { right: 12px; top: 18px; background: var(--teal); }
-        .mini-network > span:nth-of-type(3) { right: 52px; bottom: 8px; }
 
         .palette {
           margin-bottom: 5rem;
@@ -725,7 +865,7 @@ export default function ToothlightBrandSystemPage() {
 
         .swatches {
           display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
+          grid-template-columns: repeat(7, minmax(0, 1fr));
           gap: 0.75rem;
           margin-top: 1.4rem;
         }
@@ -733,39 +873,54 @@ export default function ToothlightBrandSystemPage() {
         .swatches article {
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.48);
+          background: rgba(255, 248, 235, 0.5);
           padding: 0.75rem;
         }
 
         .swatches span {
           display: block;
           height: 72px;
-          border: 1px solid rgba(17, 35, 74, 0.12);
+          border: 1px solid rgba(16, 29, 52, 0.12);
           border-radius: 7px;
           margin-bottom: 0.75rem;
         }
 
         .swatches strong {
           color: var(--ink);
+          font-size: 0.92rem;
         }
 
         .swatches p {
-          min-height: 40px;
+          min-height: 42px;
           margin: 0.35rem 0 0.65rem;
-          font-size: 0.82rem;
+          font-size: 0.78rem;
           line-height: 1.35;
         }
 
         .swatches code {
           color: var(--ink-soft);
-          font-size: 0.75rem;
+          font-size: 0.72rem;
+        }
+
+        @media (max-width: 1040px) {
+          .brand-objects {
+            grid-template-columns: 1fr;
+          }
+
+          .object-card {
+            min-height: auto;
+          }
+
+          .swatches {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
         }
 
         @media (max-width: 900px) {
           .brand-system {
             background:
-              radial-gradient(circle at 12% 4%, rgba(240, 196, 86, 0.2), transparent 24rem),
-              linear-gradient(180deg, #fffaf1 0%, #f4eadb 46%, #08111f 46%, #030712 100%);
+              radial-gradient(circle at 16% 6%, rgba(217, 168, 78, 0.24), transparent 24rem),
+              linear-gradient(180deg, #fff8eb 0%, #f6ead6 62%, #ead8bb 100%);
           }
 
           .hero,
@@ -776,27 +931,44 @@ export default function ToothlightBrandSystemPage() {
 
           .stack,
           .rules,
-          .logo-options,
           .swatches {
             grid-template-columns: 1fr;
+          }
+
+          h1 {
+            font-size: clamp(4rem, 18vw, 5.8rem);
+          }
+
+          .identity-card {
+            padding: 1rem;
           }
 
           .world {
             min-height: auto;
           }
 
-          .bridge {
-            background:
-              radial-gradient(circle at 12% 18%, rgba(240, 196, 86, 0.16), transparent 18rem),
-              linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(244, 234, 219, 0.94));
-          }
-
-          .bridge h2 {
-            margin-bottom: 1.6rem;
-          }
-
           .sample-product {
             grid-template-columns: 1fr;
+          }
+
+          .wordmark {
+            grid-template-columns: 62px minmax(0, 1fr);
+          }
+
+          .wordmark strong {
+            font-size: 2rem;
+          }
+
+          .product-mark {
+            width: 62px;
+            height: 62px;
+            border-radius: 19px;
+          }
+
+          .product-mark img {
+            width: 51px;
+            height: 51px;
+            border-radius: 16px;
           }
         }
       `}</style>
