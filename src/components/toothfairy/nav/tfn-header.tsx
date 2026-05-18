@@ -24,11 +24,11 @@ export function TFNHeader() {
       className="tfn-header"
       style={{
         background: scrolled
-          ? "oklch(97.5% 0.01 80 / 0.9)"
-          : "oklch(97.5% 0.01 80 / 0.72)",
+          ? "rgba(5, 12, 24, 0.9)"
+          : "rgba(5, 12, 24, 0.74)",
         backdropFilter: "blur(16px) saturate(150%)",
         WebkitBackdropFilter: "blur(16px) saturate(150%)",
-        borderBottom: `1px solid ${scrolled ? "var(--tfn-border)" : "transparent"}`,
+        borderBottom: `1px solid ${scrolled ? "rgba(255, 250, 241, 0.14)" : "rgba(255, 250, 241, 0.07)"}`,
       }}
     >
       <div className="tfn-header-inner">
@@ -103,7 +103,7 @@ export function TFNHeader() {
         .brand-name {
           position: relative;
           display: block;
-          color: #11234a;
+          color: #fffaf1;
           font-family: var(--font-display), Georgia, serif;
           font-size: clamp(1.08rem, 1.5vw, 1.38rem);
           font-weight: 900;
@@ -111,7 +111,7 @@ export function TFNHeader() {
         }
 
         .brand-name b {
-          background: linear-gradient(100deg, #0c7d78, #28b99a 38%, #d8a43c 72%, #f06f73);
+          background: linear-gradient(100deg, #fff7c4, #f0c456 42%, #4fd1c5 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -138,7 +138,7 @@ export function TFNHeader() {
           align-items: center;
           border-radius: 999px;
           padding: 0 0.64rem;
-          color: #23365f;
+          color: rgba(255, 250, 241, 0.72);
           font-size: 0.78rem;
           font-weight: 900;
           text-decoration: none;
@@ -147,8 +147,8 @@ export function TFNHeader() {
         }
 
         .nav-link:hover {
-          background: oklch(100% 0 0 / 0.6);
-          color: #0c7d78;
+          background: rgba(255, 250, 241, 0.08);
+          color: #fff7c4;
         }
 
         .solana-pill {
@@ -156,11 +156,11 @@ export function TFNHeader() {
           min-height: 38px;
           align-items: center;
           gap: 0.58rem;
-          border: 1px solid var(--tfn-border);
+          border: 1px solid rgba(255, 250, 241, 0.14);
           border-radius: 999px;
           padding: 0 0.86rem;
-          color: #23365f;
-          background: oklch(100% 0 0 / 0.54);
+          color: rgba(255, 250, 241, 0.76);
+          background: rgba(255, 250, 241, 0.06);
           font-size: 0.78rem;
           font-weight: 900;
           white-space: nowrap;
@@ -182,12 +182,12 @@ export function TFNHeader() {
           border-radius: 999px;
           padding: 0 1.15rem;
           border: 1px solid rgba(40, 185, 154, 0.28);
-          background: linear-gradient(135deg, #0f857d, #28b99a 48%, #ffd76a);
-          color: #fffaf1;
+          background: linear-gradient(135deg, #ffd76a, #f0c456 52%, #f7b75b);
+          color: #081123;
           font-size: 0.84rem;
           font-weight: 900;
           text-decoration: none;
-          box-shadow: 0 12px 28px rgba(16, 133, 125, 0.24);
+          box-shadow: 0 12px 28px rgba(240, 196, 86, 0.2);
           white-space: nowrap;
         }
 

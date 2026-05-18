@@ -203,7 +203,7 @@ export default function StoriesPage() {
           <p>The Network</p>
           <h1>Join Tanda and the Keepers.</h1>
           <span>
-            They follow lost-tooth traditions around the world, opening each one as a living memory for children.
+            Every door turns a local tooth tradition into the same Toothlight promise: keep the child&apos;s real memory at the center.
           </span>
         </div>
       </section>
@@ -293,7 +293,7 @@ export default function StoriesPage() {
           --paper-soft: rgba(255, 250, 241, 0.74);
           --gold: #ffd76a;
           --teal: #28b99a;
-          --coral: #f06f73;
+          --coral: #ff8a7a;
           min-height: 100vh;
           overflow: hidden;
           background:

@@ -70,7 +70,7 @@ export function TFNFooter() {
             </span>
           </Link>
           <p className="footer-tagline">
-            A child's first digital asset from a lost tooth.
+            A Toothlight for every lost tooth.
           </p>
         </div>
 
@@ -135,11 +135,12 @@ export function TFNFooter() {
         dangerouslySetInnerHTML={{
           __html: `
         .tfn-footer {
-          border-top: 1px solid var(--tfn-border);
+          border-top: 1px solid rgba(255, 250, 241, 0.12);
           background:
-            radial-gradient(circle at 86% 10%, oklch(72% 0.145 75 / 0.12), transparent 20rem),
-            linear-gradient(180deg, #fffaf1, var(--tfn-surface-alt));
-          color: var(--tfn-ink-muted);
+            radial-gradient(circle at 86% 10%, rgba(240, 196, 86, 0.13), transparent 20rem),
+            radial-gradient(circle at 14% 4%, rgba(79, 209, 197, 0.08), transparent 22rem),
+            linear-gradient(180deg, #07101f, #030812);
+          color: rgba(255, 250, 241, 0.66);
           font-family: var(--font-body), Segoe UI, system-ui, sans-serif;
         }
 
@@ -173,7 +174,7 @@ export function TFNFooter() {
           grid-template-columns: 46px minmax(0, 1fr);
           align-items: center;
           gap: 0.62rem;
-          color: #11234a;
+          color: #fffaf1;
           font-family: var(--font-display), Georgia, serif;
           font-size: clamp(1.32rem, 2vw, 1.6rem);
           font-weight: 900;
@@ -182,7 +183,7 @@ export function TFNFooter() {
         }
 
         .footer-brand b {
-          background: linear-gradient(100deg, #0c7d78, #28b99a 38%, #d8a43c 72%, #f06f73);
+          background: linear-gradient(100deg, #fff7c4, #f0c456 42%, #4fd1c5 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -202,7 +203,7 @@ export function TFNFooter() {
         .footer-tagline {
           max-width: none;
           margin: 0.24rem 0 0 3.86rem;
-          color: #23365f;
+          color: rgba(255, 250, 241, 0.72);
           font-size: clamp(0.78rem, 1vw, 0.84rem);
           font-weight: 800;
           line-height: 1.34;
@@ -215,7 +216,7 @@ export function TFNFooter() {
 
         .footer-heading {
           margin: 0;
-          color: #11234a;
+          color: #fff7c4;
           font-size: 0.82rem;
           font-weight: 900;
           letter-spacing: 0.08em;
@@ -230,34 +231,35 @@ export function TFNFooter() {
         }
 
         .footer-link {
-          color: #23365f;
+          color: rgba(255, 250, 241, 0.72);
           font-size: 0.92rem;
           text-decoration: none;
           transition: color 160ms ease;
         }
 
         .footer-link:hover {
-          color: #0c7d78;
+          color: #4fd1c5;
         }
 
         .newsletter {
-          border: 1px solid var(--tfn-border);
+          border: 1px solid rgba(240, 196, 86, 0.22);
           border-radius: 8px;
-          background: oklch(100% 0 0 / 0.58);
+          background: rgba(255, 250, 241, 0.06);
           padding: 1rem;
-          box-shadow: 0 18px 42px oklch(30% 0.035 65 / 0.06);
+          box-shadow: 0 18px 42px rgba(2, 8, 20, 0.22);
+          backdrop-filter: blur(16px);
         }
 
         .newsletter-title {
           margin: 0;
-          color: #11234a;
+          color: #fffaf1;
           font-size: 0.9rem;
           font-weight: 900;
         }
 
         .newsletter-copy {
           margin: 0.5rem 0 0;
-          color: #23365f;
+          color: rgba(255, 250, 241, 0.72);
           font-size: 0.9rem;
           line-height: 1.55;
         }
@@ -271,20 +273,24 @@ export function TFNFooter() {
         .email-row input {
           min-height: 42px;
           width: 100%;
-          border: 1px solid var(--tfn-border);
+          border: 1px solid rgba(255, 250, 241, 0.16);
           border-radius: 8px;
-          background: #fffaf1;
-          color: #11234a;
+          background: rgba(5, 12, 24, 0.72);
+          color: #fffaf1;
           padding: 0 0.9rem;
           outline: none;
+        }
+
+        .email-row input::placeholder {
+          color: rgba(255, 250, 241, 0.46);
         }
 
         .email-row button {
           min-height: 42px;
           border: 0;
           border-radius: 999px;
-          background: linear-gradient(135deg, #0f857d, #28b99a 48%, #ffd76a);
-          color: #fffaf1;
+          background: linear-gradient(135deg, #ffd76a, #f0c456 52%, #f7b75b);
+          color: #081123;
           font-weight: 900;
           cursor: pointer;
         }
@@ -296,13 +302,13 @@ export function TFNFooter() {
 
         .newsletter-state {
           margin: 0.75rem 0 0;
-          color: var(--tfn-ink-muted);
+          color: rgba(255, 250, 241, 0.56);
           font-size: 0.75rem;
         }
 
         .footer-bottom {
-          border-top: 1px solid var(--tfn-border);
-          color: var(--tfn-ink-muted);
+          border-top: 1px solid rgba(255, 250, 241, 0.1);
+          color: rgba(255, 250, 241, 0.54);
         }
 
         .footer-bottom-inner {

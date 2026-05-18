@@ -110,8 +110,8 @@ const steps = [
   },
   {
     eyebrow: "03",
-    title: "Add the story details",
-    body: "Connect the Smile Fund and share with family.",
+    title: "Fund the time capsule",
+    body: "Family can add gifts under parent control.",
     accent: "teal",
     image: liveMemories[2].image,
     alt: liveMemories[2].alt,
@@ -228,11 +228,11 @@ export default function TandaLiveRitualHero() {
       >
         <div className={styles.copy}>
           <h1>
-            Now turn a lost tooth{" "}
-            <span>into your child's first digital wallet.</span>
+            Turn a lost tooth{" "}
+            <span>into a Toothlight.</span>
           </h1>
           <p>
-            Start with a Toothlight memory. Parents control the wallet, the timing, and the family link.
+            An AI-enhanced tooth story, family time capsule, and parent-controlled Smile Fund.
           </p>
         </div>
 
@@ -370,11 +370,11 @@ export default function TandaLiveRitualHero() {
         <div className={styles.howIntro}>
           <p>How it works</p>
           <h2>
-            Make a time capsule
-            <span className={styles.howTitleLine}>for a lost tooth.</span>
+            One clear loop
+            <span className={styles.howTitleLine}>for every lost tooth.</span>
           </h2>
           <span>
-            Start with the real moment. Add a little magic. Share the finished Toothlight with family.
+            Start with the real moment. AI enhances the story. Family can fund the time capsule.
           </span>
         </div>
 
@@ -441,9 +441,9 @@ export default function TandaLiveRitualHero() {
         <div className={styles.networkShell}>
           <div className={styles.networkIntro}>
             <p>Tanda's Network</p>
-            <h2>Tanda is building the Tooth Fairy Network.</h2>
+            <h2>The story world and product now share one light.</h2>
             <span>
-              The first keepers have opened their doors into their local traditions.
+              Each keeper opens a tradition. Each Toothlight keeps the child&apos;s real moment at the center.
             </span>
           </div>
 
@@ -533,7 +533,7 @@ export default function TandaLiveRitualHero() {
 
             <div className={styles.gatewayLegend}>
               <p>The first paths are open.</p>
-              <span>Hover a door to follow its thread.</span>
+              <span>Follow the thread from story to Toothlight.</span>
               <a href="/toothfairy/stories">Open the story map</a>
             </div>
 

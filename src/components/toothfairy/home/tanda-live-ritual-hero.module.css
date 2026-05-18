@@ -1,23 +1,26 @@
 .page {
-  --cream: #fbf7ee;
-  --cream-deep: #f5efe2;
-  --ink: #11234a;
-  --ink-soft: #334260;
-  --muted: #687188;
-  --coral: #f06f73;
-  --teal: #28b99a;
-  --sky: #51bde8;
-  --gold: #d8a43c;
+  --cream: #fff8e8;
+  --cream-deep: #e9ddc1;
+  --ink: #fffaf1;
+  --ink-soft: rgba(238, 232, 214, 0.78);
+  --muted: rgba(238, 232, 214, 0.56);
+  --night: #07101f;
+  --night-deep: #030812;
+  --night-card: rgba(9, 23, 44, 0.78);
+  --coral: #ff8a7a;
+  --teal: #4fd1c5;
+  --sky: #6ecbe8;
+  --gold: #f0c456;
   --gold-bright: #ffd76a;
-  --line: #e3d9c4;
+  --line: rgba(255, 250, 241, 0.16);
   --loop: 11.5s;
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    linear-gradient(124deg, rgba(255, 215, 106, 0.24), transparent 32%),
-    linear-gradient(218deg, rgba(81, 189, 232, 0.14), transparent 38%),
-    linear-gradient(312deg, rgba(240, 111, 115, 0.12), transparent 34%),
-    linear-gradient(180deg, var(--cream), var(--cream-deep));
+    radial-gradient(circle at 17% 6%, rgba(255, 215, 106, 0.18), transparent 27rem),
+    radial-gradient(circle at 86% 18%, rgba(79, 209, 197, 0.12), transparent 30rem),
+    radial-gradient(circle at 42% 72%, rgba(255, 138, 122, 0.08), transparent 34rem),
+    linear-gradient(180deg, var(--night) 0%, #0a1830 46%, var(--night-deep) 100%);
   color: var(--ink);
   font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
 }
@@ -46,7 +49,7 @@
 
 .copy h1 {
   margin: 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(3.15rem, 6.5vw, 5.55rem);
   font-weight: 800;
@@ -56,7 +59,8 @@
 
 .copy h1 span {
   display: block;
-  color: #0c7d78;
+  color: var(--gold-bright);
+  text-shadow: 0 0 34px rgba(255, 215, 106, 0.28);
 }
 
 .copy p {
@@ -90,9 +94,9 @@
 }
 
 .primaryAction {
-  background: linear-gradient(135deg, #0f857d, var(--teal) 46%, var(--gold-bright));
-  color: #fffaf1;
-  box-shadow: 0 18px 42px rgba(16, 133, 125, 0.24);
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold) 56%, #f7b75b);
+  color: #081123;
+  box-shadow: 0 18px 42px rgba(240, 196, 86, 0.22), 0 0 30px rgba(240, 196, 86, 0.16);
 }
 
 .primaryAction span {
@@ -105,8 +109,9 @@
 
 .secondaryAction {
   border: 1px solid var(--line);
-  background: rgba(255, 252, 246, 0.64);
-  color: var(--ink);
+  background: rgba(255, 250, 241, 0.07);
+  color: #fffaf1;
+  backdrop-filter: blur(16px);
 }
 
 .stage {
@@ -140,11 +145,11 @@
   position: absolute;
   inset: 4% 3% 13% 1%;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(255, 215, 106, 0.22);
   border-radius: 8px;
   background:
     linear-gradient(140deg, #142a4e 0%, #183b57 42%, #173f38 100%);
-  box-shadow: 0 30px 70px rgba(47, 35, 80, 0.16);
+  box-shadow: 0 30px 70px rgba(2, 8, 20, 0.38), 0 0 42px rgba(240, 196, 86, 0.08);
 }
 
 .familyImage {
@@ -270,10 +275,10 @@
 .smileCard {
   position: absolute;
   z-index: 7;
-  border: 1px solid rgba(227, 217, 196, 0.84);
+  border: 1px solid rgba(240, 196, 86, 0.3);
   border-radius: 8px;
-  background: rgba(255, 252, 246, 0.86);
-  box-shadow: 0 24px 54px rgba(47, 35, 80, 0.16);
+  background: rgba(9, 23, 44, 0.82);
+  box-shadow: 0 24px 54px rgba(2, 8, 20, 0.34), 0 0 30px rgba(240, 196, 86, 0.08);
   backdrop-filter: blur(14px);
   opacity: 1;
   overflow: visible;
@@ -309,8 +314,8 @@
   aspect-ratio: 1.08;
   overflow: hidden;
   border-radius: 6px;
-  background: #efe7d7;
-  box-shadow: inset 0 0 0 1px rgba(216, 164, 60, 0.14);
+  background: rgba(255, 250, 241, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(240, 196, 86, 0.14);
 }
 
 .memoryArt img {
@@ -334,7 +339,7 @@
 .smileCard strong {
   display: block;
   margin-top: 0.34rem;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.1rem, 2.2vw, 1.5rem);
   line-height: 1;
@@ -367,16 +372,17 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 0.4rem;
   align-items: end;
-  border: 1px solid rgba(227, 217, 196, 0.76);
+  border: 1px solid rgba(240, 196, 86, 0.22);
   border-radius: 8px;
-  background: #fffaf1;
+  background: rgba(5, 12, 24, 0.68);
   padding: 0.9rem 0.72rem 0.72rem;
 }
 
 .fundBars span {
   display: block;
   border-radius: 999px 999px 2px 2px;
-  background: linear-gradient(180deg, #55c8a8, rgba(85, 200, 168, 0.24));
+  background: linear-gradient(180deg, var(--gold-bright), rgba(79, 209, 197, 0.28));
+  box-shadow: 0 0 12px rgba(240, 196, 86, 0.18);
 }
 
 .fundBars span:nth-child(1) { height: 34%; }
@@ -739,19 +745,19 @@
 
 @keyframes cardAhaGlow {
   0%, 70% {
-    border-color: rgba(227, 217, 196, 0.84);
-    box-shadow: 0 24px 54px rgba(47, 35, 80, 0.16);
+    border-color: rgba(240, 196, 86, 0.3);
+    box-shadow: 0 24px 54px rgba(2, 8, 20, 0.34), 0 0 30px rgba(240, 196, 86, 0.08);
   }
   78%, 96% {
     border-color: rgba(255, 222, 117, 0.95);
     box-shadow:
       0 0 0 2px rgba(255, 230, 139, 0.62),
       0 0 30px rgba(255, 214, 92, 0.7),
-      0 24px 54px rgba(47, 35, 80, 0.16);
+      0 24px 54px rgba(2, 8, 20, 0.34);
   }
   100% {
     border-color: rgba(255, 222, 117, 0.58);
-    box-shadow: 0 0 18px rgba(255, 214, 92, 0.34), 0 24px 54px rgba(47, 35, 80, 0.16);
+    box-shadow: 0 0 18px rgba(255, 214, 92, 0.34), 0 24px 54px rgba(2, 8, 20, 0.34);
   }
 }
 
@@ -771,7 +777,7 @@
 
 .howIntro p {
   margin: 0;
-  color: #a46123;
+  color: var(--gold-bright);
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -780,7 +786,7 @@
 
 .howIntro h2 {
   margin: 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(2rem, 3.4vw, 3rem);
   font-weight: 800;
@@ -812,12 +818,12 @@
   display: grid;
   min-height: 0;
   overflow: hidden;
-  border: 1px solid rgba(227, 217, 196, 0.9);
+  border: 1px solid rgba(255, 250, 241, 0.13);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(251, 247, 238, 0.74)),
-    var(--cream);
-  box-shadow: 0 18px 44px rgba(47, 35, 80, 0.08);
+    linear-gradient(180deg, rgba(255, 250, 241, 0.08), rgba(255, 250, 241, 0.035)),
+    rgba(9, 23, 44, 0.72);
+  box-shadow: 0 18px 44px rgba(2, 8, 20, 0.24);
   padding: 0.62rem;
 }
 
@@ -826,7 +832,7 @@
   inset: 0;
   background:
     linear-gradient(128deg, var(--step-wash), transparent 42%),
-    linear-gradient(310deg, rgba(255, 255, 255, 0.72), transparent 38%);
+    linear-gradient(310deg, rgba(255, 250, 241, 0.08), transparent 38%);
   content: "";
   opacity: 0.72;
   pointer-events: none;
@@ -841,10 +847,10 @@
   position: relative;
   min-height: 13.4rem;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(255, 250, 241, 0.18);
   border-radius: 6px;
-  background: #efe7d7;
-  box-shadow: inset 0 0 0 1px rgba(216, 164, 60, 0.12);
+  background: rgba(5, 12, 24, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(240, 196, 86, 0.1);
 }
 
 .stepMedia img {
@@ -906,14 +912,14 @@
 }
 
 .sourceStep span {
-  background: rgba(255, 252, 246, 0.84);
-  color: var(--ink);
+  background: rgba(255, 250, 241, 0.9);
+  color: #081123;
 }
 
 .savedStep::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 32%, rgba(251, 247, 238, 0.96) 78%);
+  background: linear-gradient(180deg, transparent 32%, rgba(5, 12, 24, 0.86) 78%);
   content: "";
   pointer-events: none;
 }
@@ -924,16 +930,16 @@
   bottom: 0.72rem;
   left: 0.72rem;
   z-index: 2;
-  border: 1px solid rgba(227, 217, 196, 0.92);
+  border: 1px solid rgba(240, 196, 86, 0.24);
   border-radius: 8px;
-  background: rgba(255, 252, 246, 0.9);
+  background: rgba(9, 23, 44, 0.86);
   padding: 0.72rem;
-  box-shadow: 0 12px 32px rgba(47, 35, 80, 0.12);
+  box-shadow: 0 12px 32px rgba(2, 8, 20, 0.28);
 }
 
 .savedStory span {
   display: block;
-  color: #0f857d;
+  color: var(--teal);
   font-size: 0.62rem;
   font-weight: 950;
   letter-spacing: 0.14em;
@@ -944,7 +950,7 @@
   display: -webkit-box;
   overflow: hidden;
   margin: 0.28rem 0 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1rem, 1.7vw, 1.22rem);
   font-style: italic;
@@ -971,7 +977,7 @@
 
 .stepCard h3 {
   margin: 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.45rem, 2.45vw, 2.05rem);
   line-height: 1.02;
@@ -986,31 +992,31 @@
 }
 
 .gold {
-  --step-wash: rgba(255, 215, 106, 0.28);
+  --step-wash: rgba(255, 215, 106, 0.16);
   --step-glow: rgba(255, 215, 106, 0.58);
-  --step-ink: #a46123;
+  --step-ink: #ffd76a;
 }
 
 .coral {
-  --step-wash: rgba(240, 111, 115, 0.20);
+  --step-wash: rgba(255, 138, 122, 0.13);
   --step-glow: rgba(240, 111, 115, 0.34);
-  --step-ink: #b84c55;
+  --step-ink: #ffb0a4;
 }
 
 .teal {
-  --step-wash: rgba(40, 185, 154, 0.22);
+  --step-wash: rgba(79, 209, 197, 0.13);
   --step-glow: rgba(40, 185, 154, 0.38);
-  --step-ink: #0f857d;
+  --step-ink: #78ece1;
 }
 
 .liveProof {
   width: 100%;
   overflow: hidden;
-  border-top: 1px solid rgba(227, 217, 196, 0.78);
+  border-top: 1px solid rgba(255, 250, 241, 0.12);
   background:
-    linear-gradient(90deg, rgba(255, 215, 106, 0.15), transparent 28%),
-    linear-gradient(270deg, rgba(40, 185, 154, 0.12), transparent 30%),
-    rgba(255, 252, 246, 0.66);
+    linear-gradient(90deg, rgba(255, 215, 106, 0.1), transparent 28%),
+    linear-gradient(270deg, rgba(79, 209, 197, 0.09), transparent 30%),
+    rgba(5, 12, 24, 0.32);
   padding: clamp(2.4rem, 5vw, 4.4rem) 0;
 }
 
@@ -1024,7 +1030,7 @@
 
 .liveProofIntro p {
   margin: 0;
-  color: #a46123;
+  color: var(--gold-bright);
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -1033,7 +1039,7 @@
 
 .liveProofIntro h2 {
   margin: 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(2rem, 3.2vw, 2.9rem);
   font-weight: 800;
@@ -1068,12 +1074,12 @@
 
 .liveRailViewport::before {
   left: 0;
-  background: linear-gradient(90deg, var(--cream), transparent);
+  background: linear-gradient(90deg, var(--night), transparent);
 }
 
 .liveRailViewport::after {
   right: 0;
-  background: linear-gradient(270deg, var(--cream), transparent);
+  background: linear-gradient(270deg, var(--night), transparent);
 }
 
 .liveRail {
@@ -1094,12 +1100,12 @@
   width: clamp(15.5rem, 23vw, 20rem);
   flex: 0 0 auto;
   overflow: hidden;
-  border: 1px solid rgba(227, 217, 196, 0.92);
+  border: 1px solid rgba(240, 196, 86, 0.2);
   border-radius: 8px;
-  background: rgba(255, 252, 246, 0.9);
+  background: rgba(9, 23, 44, 0.78);
   color: inherit;
   text-decoration: none;
-  box-shadow: 0 18px 44px rgba(47, 35, 80, 0.08);
+  box-shadow: 0 18px 44px rgba(2, 8, 20, 0.26);
 }
 
 .liveMemoryCard img {
@@ -1107,12 +1113,12 @@
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  background: #efe7d7;
+  background: rgba(255, 250, 241, 0.08);
 }
 
 .liveMemoryCard span {
   margin: 0.82rem 0.82rem 0;
-  color: #a46123;
+  color: var(--gold-bright);
   font-size: 0.68rem;
   font-weight: 950;
   letter-spacing: 0.13em;
@@ -1121,7 +1127,7 @@
 
 .liveMemoryCard h3 {
   margin: 0.32rem 0.82rem 0;
-  color: var(--ink);
+  color: #fffaf1;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.32rem, 2vw, 1.72rem);
   line-height: 1.02;
@@ -1143,7 +1149,7 @@
   display: -webkit-box;
   overflow: hidden;
   margin: 0.5rem 0.82rem 1rem;
-  color: #6a4b20;
+  color: rgba(255, 250, 241, 0.78);
   font-family: var(--font-display), Georgia, serif;
   font-size: 0.98rem;
   font-style: italic;
@@ -2462,9 +2468,9 @@
 @media (max-width: 720px) {
   .page {
     background:
-      linear-gradient(142deg, rgba(255, 215, 106, 0.20), transparent 34%),
-      linear-gradient(236deg, rgba(81, 189, 232, 0.12), transparent 38%),
-      linear-gradient(180deg, var(--cream), var(--cream-deep));
+      radial-gradient(circle at 20% 4%, rgba(255, 215, 106, 0.16), transparent 21rem),
+      radial-gradient(circle at 86% 16%, rgba(79, 209, 197, 0.1), transparent 22rem),
+      linear-gradient(180deg, var(--night) 0%, #0a1830 48%, var(--night-deep) 100%);
   }
 
   .hero {

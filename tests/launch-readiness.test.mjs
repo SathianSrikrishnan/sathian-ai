@@ -199,17 +199,18 @@ test("stories route uses the story-world gateway instead of the old globe page",
   assert.doesNotMatch(stories, /FEATURED_STORIES/)
 })
 
-test("parent-facing copy keeps the approved wallet headline and asset tagline", () => {
+test("parent-facing copy keeps the approved Toothlight spine", () => {
   const homepage = read("src/components/toothfairy/home/tanda-live-ritual-hero.tsx")
   const footer = read("src/components/toothfairy/nav/tfn-footer.tsx")
   const keepsake = read("src/app/toothfairy/keepsake/[id]/page.tsx")
   const smileFund = read("src/app/toothfairy/smile-fund/page.tsx")
 
-  assert.match(homepage, /Now turn a lost tooth/)
-  assert.match(homepage, /your child's first digital wallet/)
-  assert.match(homepage, /Make a time capsule/)
+  assert.match(homepage, /Turn a lost tooth/)
+  assert.match(homepage, /into a Toothlight/)
+  assert.match(homepage, /AI-enhanced tooth story/)
+  assert.match(homepage, /One clear loop/)
   assert.match(homepage, /Toothlight time capsules/)
-  assert.match(footer, /A child's first digital asset from a lost tooth/)
+  assert.match(footer, /A Toothlight for every lost tooth/)
   assert.match(smileFund, /Smile Fund/)
   assert.doesNotMatch(homepage, /digital piggy bank/i)
   assert.doesNotMatch(footer, /digital piggy bank/i)
