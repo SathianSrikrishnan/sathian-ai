@@ -3,36 +3,130 @@ import Link from "next/link"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Toothlight Brand System | Tooth Fairy Network",
+  title: "Toothlight Brand System | ToothFairy Network",
   description:
-    "A working brand board for Toothlight, the Smile Fund, and the Tooth Fairy Network keeper world.",
+    "A working brand board for Toothlight, the Smile Fund, and the ToothFairy Network keeper world.",
 }
 
 const parentRoutes = ["Homepage", "Preview", "Smile Fund", "FAQ", "Draw flow"]
 const storyRoutes = ["Tanda", "Keepers", "Story map", "Cultural doors", "Animation"]
 
 const palette = [
-  { name: "Vellum", value: "#f6ead6", role: "warm parent surfaces" },
-  { name: "Porcelain", value: "#fff8eb", role: "cards and memory objects" },
-  { name: "Ink Navy", value: "#101d34", role: "primary text and trust" },
-  { name: "Lantern Gold", value: "#d9a84e", role: "Toothlight glow" },
-  { name: "Rose Copper", value: "#b97963", role: "human warmth" },
-  { name: "Sage Glass", value: "#9fc7b4", role: "network accent" },
-  { name: "Keeper Night", value: "#07111f", role: "storybook world" },
+  { name: "Vellum", value: "#f4e4c8", role: "warm parent surfaces" },
+  { name: "Tooth Ivory", value: "#fff7e6", role: "memory object and light" },
+  { name: "Ink Navy", value: "#101d34", role: "primary trust text" },
+  { name: "Story Blue", value: "#102542", role: "bridge between product and story" },
+  { name: "Keeper Black", value: "#020712", role: "storybook night world" },
+  { name: "Thread Gold", value: "#d6a046", role: "network mesh and Toothlight glow" },
 ]
 
 function ProductMark() {
   return (
     <span className="product-mark" aria-hidden="true">
-      <span className="product-mark-orbit" />
-      <Image
-        src="/toothfairy/brand/toothfairy-glow-mark-512.png"
-        alt=""
-        width={86}
-        height={86}
-        priority
-      />
+      <svg viewBox="0 0 128 128" role="img" focusable="false">
+        <defs>
+          <radialGradient id="toothlightShell" cx="44%" cy="35%" r="74%">
+            <stop offset="0%" stopColor="#fffaf0" />
+            <stop offset="48%" stopColor="#f4e4c8" />
+            <stop offset="100%" stopColor="#d9bd82" />
+          </radialGradient>
+          <radialGradient id="toothlightCore" cx="50%" cy="45%" r="62%">
+            <stop offset="0%" stopColor="#24385c" />
+            <stop offset="52%" stopColor="#102542" />
+            <stop offset="100%" stopColor="#020712" />
+          </radialGradient>
+          <linearGradient id="toothlightTooth" x1="41" y1="29" x2="84" y2="94" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="48%" stopColor="#fff3d5" />
+            <stop offset="100%" stopColor="#d6a046" />
+          </linearGradient>
+          <filter id="toothlightGlow" x="-35%" y="-35%" width="170%" height="170%">
+            <feGaussianBlur stdDeviation="3.2" result="blur" />
+            <feColorMatrix
+              in="blur"
+              type="matrix"
+              values="1 0 0 0 0.82  0 1 0 0 0.55  0 0 1 0 0.18  0 0 0 0.82 0"
+              result="goldGlow"
+            />
+            <feMerge>
+              <feMergeNode in="goldGlow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <rect className="mark-shell" x="7" y="7" width="114" height="114" rx="30" />
+        <rect className="mark-inner-line" x="17" y="17" width="94" height="94" rx="25" />
+        <circle className="mark-core" cx="64" cy="64" r="41" />
+        <circle className="mark-orbit mark-orbit-wide" cx="64" cy="64" r="47" />
+        <circle className="mark-orbit mark-orbit-tight" cx="64" cy="64" r="33" />
+        <path className="mark-thread" d="M32 73 C45 48 84 42 97 64" />
+        <path className="mark-thread" d="M30 60 C47 84 84 88 100 57" />
+        <circle className="mark-node" cx="34" cy="72" r="2.3" />
+        <circle className="mark-node" cx="51" cy="50" r="1.9" />
+        <circle className="mark-node" cx="84" cy="47" r="2.1" />
+        <circle className="mark-node" cx="99" cy="64" r="2.5" />
+        <circle className="mark-star" cx="44" cy="40" r="1.2" />
+        <circle className="mark-star" cx="89" cy="81" r="1.4" />
+        <circle className="mark-star" cx="72" cy="36" r="1" />
+        <path
+          className="mark-tooth"
+          d="M64.1 32.5c-6.7-5.7-20.6-6.5-26 3.4-5.5 10.2-1.1 22.1 3.1 31.1 3.3 7 2.1 20.9 9.1 22.8 5.8 1.6 7.7-12.9 13.8-12.9 6 0 7.8 14.5 13.6 12.9 7-1.9 5.9-15.8 9.1-22.8 4.2-9 8.5-20.9 3.1-31.1-5.3-9.9-19.2-9.1-25.8-3.4z"
+        />
+        <path className="mark-tooth-shine" d="M50.5 37.5c5.7 7.3 17.3 7.2 25.8 1.8" />
+      </svg>
     </span>
+  )
+}
+
+function MemoryMesh() {
+  return (
+    <svg className="memory-mesh" viewBox="0 0 900 460" preserveAspectRatio="none" aria-hidden="true">
+      <g className="mesh-cube">
+        <polygon points="234,112 429,64 617,122 419,184" />
+        <polygon points="234,112 419,184 419,366 232,302" />
+        <polygon points="617,122 419,184 419,366 618,284" />
+        <polygon points="419,184 617,122 618,284 419,366" />
+      </g>
+      <g className="mesh-threads">
+        <path d="M234 112 L429 64 L617 122 L419 184 Z" />
+        <path d="M232 302 L419 366 L618 284" />
+        <path d="M234 112 L232 302" />
+        <path d="M429 64 L419 366" />
+        <path d="M617 122 L618 284" />
+        <path d="M300 96 L492 344" />
+        <path d="M534 96 L302 324" />
+        <path d="M234 220 C333 171 488 185 618 204" />
+        <path d="M122 304 C245 222 355 190 475 202 C577 211 676 166 790 93" />
+        <path d="M139 147 C266 208 387 232 506 221 C612 211 714 248 804 326" />
+      </g>
+      <g className="mesh-nodes">
+        {[
+          [234, 112],
+          [429, 64],
+          [617, 122],
+          [419, 184],
+          [232, 302],
+          [419, 366],
+          [618, 284],
+          [300, 96],
+          [492, 344],
+          [534, 96],
+          [302, 324],
+          [122, 304],
+          [790, 93],
+          [139, 147],
+          [804, 326],
+          [475, 202],
+        ].map(([cx, cy]) => (
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="5" />
+        ))}
+      </g>
+      <g className="mesh-lights">
+        <circle cx="419" cy="184" r="38" />
+        <circle cx="617" cy="122" r="25" />
+        <circle cx="232" cy="302" r="23" />
+      </g>
+    </svg>
   )
 }
 
@@ -42,7 +136,7 @@ function Wordmark({ tone = "light" }: { tone?: "light" | "dark" }) {
       <ProductMark />
       <div>
         <strong>Toothlight</strong>
-        <span>by Tooth Fairy Network</span>
+        <span>preserved by ToothFairy Network</span>
       </div>
     </div>
   )
@@ -76,10 +170,11 @@ function NetworkLockup() {
         fill
         sizes="(min-width: 900px) 44vw, 92vw"
       />
+      <MemoryMesh />
       <div className="network-plate">
         <ProductMark />
         <div>
-          <span>Tooth Fairy Network</span>
+          <span>ToothFairy Network</span>
           <strong>Keepers of Toothlights</strong>
         </div>
       </div>
@@ -92,11 +187,11 @@ export default function ToothlightBrandSystemPage() {
     <main className="brand-system">
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Brand system pass v2</p>
+          <p className="eyebrow">Brand system pass v3</p>
           <h1>One lost tooth becomes one Toothlight.</h1>
           <p>
             Toothlight is the parent-facing product: a private AI-enhanced memory and
-            fundable time capsule. Tooth Fairy Network is the keeper world: collectors
+            fundable time capsule. ToothFairy Network is the keeper world: collectors
             preserving Toothlights across families, cultures, stories, and learning.
           </p>
           <div className="actions">
@@ -108,18 +203,12 @@ export default function ToothlightBrandSystemPage() {
         <div className="identity-card" aria-label="Recommended identity direction">
           <Wordmark />
           <div className="identity-art">
-            <Image
-              src="/toothfairy/brand/toothfairy-glow-mark-512.png"
-              alt="Glowing Toothlight mark"
-              width={300}
-              height={300}
-              priority
-            />
+            <ProductMark />
           </div>
           <p>
-            The mark should feel like a collectible memory object: porcelain tooth,
-            lantern glow, dark story core, and subtle connection arcs. The wordmark
-            stays solid, not rainbow or gradient.
+            The mark now starts as a designed object: complete rounded shell, dark
+            memory core, full rings, tooth light, and gold connection threads. The
+            wordmark stays solid; the glow belongs inside the mark.
           </p>
         </div>
       </section>
@@ -133,7 +222,7 @@ export default function ToothlightBrandSystemPage() {
           <h2>Simple enough for an app icon. Rich enough for the story world.</h2>
           <p>
             The parent product gets the cleanest form: a luminous tooth inside a
-            softly beveled capsule. Connection is implied, not cluttered.
+            precise memory capsule. The network is present, but not noisy.
           </p>
         </article>
 
@@ -153,7 +242,7 @@ export default function ToothlightBrandSystemPage() {
           <h2>The network is a world, not a diagram.</h2>
           <p>
             Use cinematic story imagery for the umbrella brand. The line is simple:
-            Tooth Fairy Network, Keepers of Toothlights.
+            ToothFairy Network, Keepers of Toothlights.
           </p>
         </article>
       </section>
@@ -161,7 +250,7 @@ export default function ToothlightBrandSystemPage() {
       <section className="structure" aria-label="Brand hierarchy">
         <article className="wide-card">
           <p className="eyebrow">Naming hierarchy</p>
-          <h2>Toothlight sells the product. Tooth Fairy Network explains the world.</h2>
+          <h2>Toothlight sells the product. ToothFairy Network explains the world.</h2>
           <div className="stack">
             <div>
               <span>01</span>
@@ -180,7 +269,7 @@ export default function ToothlightBrandSystemPage() {
             </div>
             <div>
               <span>04</span>
-              <strong>Tooth Fairy Network</strong>
+              <strong>ToothFairy Network</strong>
               <p>The cultural story world and education umbrella.</p>
             </div>
           </div>
@@ -230,8 +319,8 @@ export default function ToothlightBrandSystemPage() {
           <p className="eyebrow">Storybook network world</p>
           <h2>Night, lanterns, keepers.</h2>
           <p>
-            This is where Tanda and the Keepers live. They collect Toothlights,
-            preserve cultural traditions, and turn the product into a story world.
+            This is where Tanda and the Keepers live. They collect Toothlights inside
+            a gold-thread memory network and turn the product into a story world.
           </p>
           <div className="route-list">
             {storyRoutes.map((route) => (
@@ -253,23 +342,23 @@ export default function ToothlightBrandSystemPage() {
           </article>
           <article>
             <strong>One product name first</strong>
-            <p>Lead with Toothlight. Use Tooth Fairy Network as the keeper-world endorsement.</p>
+            <p>Lead with Toothlight. Use ToothFairy Network as the keeper-world endorsement.</p>
           </article>
           <article>
             <strong>Same product object</strong>
             <p>The glowing tooth capsule appears in parent pages, stories, sharing, and funds.</p>
           </article>
           <article>
-            <strong>Story supports product</strong>
-            <p>Keepers collect Toothlights. They do not compete with the parent product.</p>
+            <strong>Gold mesh means network</strong>
+            <p>Threads, nodes, and memory cubes show why Toothlights belong together.</p>
           </article>
         </div>
       </section>
 
       <section className="palette" aria-label="Color palette">
         <div>
-          <p className="eyebrow">Core palette v2</p>
-          <h2>Warmer parent surfaces. Deeper keeper night. Less toy color.</h2>
+          <p className="eyebrow">Core palette v3</p>
+          <h2>Cream parent surfaces, blue story depth, gold memory threads.</h2>
         </div>
         <div className="swatches">
           {palette.map((color) => (
@@ -290,23 +379,22 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .brand-system {
-          --vellum: #f6ead6;
-          --vellum-deep: #ead8bb;
-          --porcelain: #fff8eb;
+          --vellum: #f4e4c8;
+          --vellum-deep: #e7d2ad;
+          --porcelain: #fff7e6;
           --ink: #101d34;
           --ink-soft: #3e4d64;
-          --lantern: #d9a84e;
-          --lantern-hot: #f2cb74;
-          --copper: #b97963;
-          --sage: #9fc7b4;
-          --night: #07111f;
+          --story-blue: #102542;
+          --lantern: #d6a046;
+          --lantern-hot: #f5d17d;
+          --night: #102542;
           --night-deep: #020712;
           --line: rgba(16, 29, 52, 0.14);
           min-height: 100vh;
           background:
-            radial-gradient(circle at 16% 6%, rgba(217, 168, 78, 0.26), transparent 26rem),
-            radial-gradient(circle at 88% 18%, rgba(185, 121, 99, 0.18), transparent 22rem),
-            linear-gradient(180deg, #fff8eb 0%, #f6ead6 58%, #ead8bb 100%);
+            radial-gradient(circle at 16% 6%, rgba(214, 160, 70, 0.25), transparent 26rem),
+            radial-gradient(circle at 88% 18%, rgba(16, 37, 66, 0.14), transparent 24rem),
+            linear-gradient(180deg, #fff7e6 0%, #f4e4c8 58%, #e7d2ad 100%);
           color: var(--ink);
           font-family: var(--font-body), Segoe UI, system-ui, sans-serif;
         }
@@ -397,7 +485,7 @@ export default function ToothlightBrandSystemPage() {
 
         .actions a + a {
           border: 1px solid var(--line);
-          background: rgba(255, 248, 235, 0.58);
+          background: rgba(255, 247, 230, 0.58);
           color: var(--ink);
           box-shadow: none;
         }
@@ -410,15 +498,15 @@ export default function ToothlightBrandSystemPage() {
         .palette {
           border: 1px solid rgba(16, 29, 52, 0.13);
           border-radius: 8px;
-          background: rgba(255, 248, 235, 0.72);
+          background: rgba(255, 247, 230, 0.72);
           box-shadow: 0 30px 82px rgba(44, 28, 8, 0.1);
         }
 
         .identity-card {
           padding: clamp(1.1rem, 3vw, 1.6rem);
           background:
-            radial-gradient(circle at 50% 44%, rgba(217, 168, 78, 0.22), transparent 15rem),
-            linear-gradient(180deg, rgba(255, 248, 235, 0.94), rgba(246, 234, 214, 0.82));
+            radial-gradient(circle at 50% 44%, rgba(214, 160, 70, 0.22), transparent 15rem),
+            linear-gradient(180deg, rgba(255, 247, 230, 0.94), rgba(244, 228, 200, 0.82));
         }
 
         .identity-art {
@@ -428,13 +516,14 @@ export default function ToothlightBrandSystemPage() {
           margin: 1rem 0;
           border-radius: 8px;
           background:
-            radial-gradient(circle, rgba(242, 203, 116, 0.3), transparent 44%),
-            linear-gradient(135deg, rgba(255, 248, 235, 0.9), rgba(255, 255, 255, 0.45));
+            radial-gradient(circle, rgba(245, 209, 125, 0.3), transparent 44%),
+            linear-gradient(135deg, rgba(255, 247, 230, 0.9), rgba(255, 255, 255, 0.45));
           overflow: hidden;
         }
 
-        .identity-art img {
-          filter: drop-shadow(0 24px 42px rgba(99, 60, 20, 0.22));
+        .identity-art .product-mark {
+          width: min(290px, 72vw);
+          height: min(290px, 72vw);
         }
 
         .wordmark {
@@ -468,51 +557,82 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .wordmark.dark span {
-          color: rgba(255, 248, 235, 0.72);
+          color: rgba(255, 247, 230, 0.72);
         }
 
         .product-mark {
-          position: relative;
           width: 70px;
           height: 70px;
           display: grid;
           place-items: center;
-          border-radius: 22px;
-          background:
-            radial-gradient(circle at 44% 38%, rgba(255, 248, 235, 0.92), rgba(242, 203, 116, 0.32) 48%, rgba(16, 29, 52, 0.18)),
-            linear-gradient(145deg, rgba(255, 248, 235, 0.94), rgba(234, 216, 187, 0.56));
-          box-shadow:
-            inset 0 0 0 1px rgba(255, 255, 255, 0.74),
-            inset 0 -16px 28px rgba(120, 75, 32, 0.1),
-            0 18px 38px rgba(84, 53, 16, 0.15),
-            0 0 38px rgba(217, 168, 78, 0.24);
+          filter:
+            drop-shadow(0 18px 24px rgba(84, 53, 16, 0.16))
+            drop-shadow(0 0 22px rgba(214, 160, 70, 0.28));
         }
 
-        .product-mark::before {
-          content: "";
-          position: absolute;
-          inset: 7px;
-          border: 1px solid rgba(217, 168, 78, 0.36);
-          border-radius: 18px;
+        .product-mark svg {
+          width: 100%;
+          height: 100%;
+          display: block;
         }
 
-        .product-mark img {
-          z-index: 2;
-          width: 58px;
-          height: 58px;
-          object-fit: cover;
-          border-radius: 18px;
-          filter: drop-shadow(0 0 14px rgba(217, 168, 78, 0.5));
+        .mark-shell {
+          fill: url(#toothlightShell);
+          stroke: rgba(255, 255, 255, 0.78);
+          stroke-width: 1.5;
         }
 
-        .product-mark-orbit {
-          position: absolute;
-          inset: 14px 8px;
-          border: 1.5px solid rgba(159, 199, 180, 0.72);
-          border-left-color: transparent;
-          border-bottom-color: transparent;
-          border-radius: 999px;
-          transform: rotate(-18deg);
+        .mark-inner-line {
+          fill: none;
+          stroke: rgba(16, 29, 52, 0.13);
+          stroke-width: 1.2;
+        }
+
+        .mark-core {
+          fill: url(#toothlightCore);
+          stroke: rgba(214, 160, 70, 0.72);
+          stroke-width: 1.4;
+        }
+
+        .mark-orbit {
+          fill: none;
+          stroke: rgba(214, 160, 70, 0.46);
+          stroke-width: 1.15;
+        }
+
+        .mark-orbit-tight {
+          stroke: rgba(255, 247, 230, 0.18);
+        }
+
+        .mark-thread {
+          fill: none;
+          stroke: rgba(245, 209, 125, 0.82);
+          stroke-width: 1.4;
+          stroke-linecap: round;
+        }
+
+        .mark-node {
+          fill: #f5d17d;
+          stroke: rgba(2, 7, 18, 0.45);
+          stroke-width: 0.8;
+        }
+
+        .mark-star {
+          fill: rgba(255, 247, 230, 0.9);
+        }
+
+        .mark-tooth {
+          fill: url(#toothlightTooth);
+          stroke: rgba(255, 247, 230, 0.88);
+          stroke-width: 1.2;
+          filter: url(#toothlightGlow);
+        }
+
+        .mark-tooth-shine {
+          fill: none;
+          stroke: rgba(255, 255, 255, 0.78);
+          stroke-width: 2.2;
+          stroke-linecap: round;
         }
 
         .brand-objects {
@@ -541,30 +661,14 @@ export default function ToothlightBrandSystemPage() {
           min-height: 230px;
           border-radius: 8px;
           background:
-            radial-gradient(circle, rgba(217, 168, 78, 0.22), transparent 52%),
-            linear-gradient(145deg, rgba(255, 248, 235, 0.92), rgba(234, 216, 187, 0.7));
+            radial-gradient(circle, rgba(214, 160, 70, 0.22), transparent 52%),
+            linear-gradient(145deg, rgba(255, 247, 230, 0.92), rgba(231, 210, 173, 0.7));
           box-shadow: inset 0 0 0 1px rgba(16, 29, 52, 0.08);
         }
 
         .object-showcase .product-mark {
           width: 152px;
           height: 152px;
-          border-radius: 42px;
-        }
-
-        .object-showcase .product-mark::before {
-          border-radius: 34px;
-          inset: 13px;
-        }
-
-        .object-showcase .product-mark img {
-          width: 126px;
-          height: 126px;
-          border-radius: 36px;
-        }
-
-        .object-showcase .product-mark-orbit {
-          inset: 34px 19px;
         }
 
         .keeper-seal {
@@ -579,7 +683,7 @@ export default function ToothlightBrandSystemPage() {
           overflow: hidden;
           background: var(--night);
           box-shadow:
-            inset 0 0 0 1px rgba(217, 168, 78, 0.36),
+            inset 0 0 0 1px rgba(214, 160, 70, 0.36),
             0 20px 48px rgba(16, 29, 52, 0.15);
         }
 
@@ -588,7 +692,7 @@ export default function ToothlightBrandSystemPage() {
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(circle at 52% 78%, rgba(242, 203, 116, 0.2), transparent 20rem),
+            radial-gradient(circle at 52% 78%, rgba(245, 209, 125, 0.2), transparent 20rem),
             linear-gradient(180deg, transparent 46%, rgba(7, 17, 31, 0.48));
         }
 
@@ -598,7 +702,7 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .keeper-copy {
-          border: 1px solid rgba(217, 168, 78, 0.24);
+          border: 1px solid rgba(214, 160, 70, 0.24);
           border-radius: 8px;
           background: linear-gradient(135deg, rgba(16, 29, 52, 0.96), rgba(7, 17, 31, 0.96));
           padding: 0.9rem;
@@ -631,26 +735,69 @@ export default function ToothlightBrandSystemPage() {
           overflow: hidden;
           background: var(--night);
           box-shadow:
-            inset 0 0 0 1px rgba(217, 168, 78, 0.28),
+            inset 0 0 0 1px rgba(214, 160, 70, 0.28),
             0 24px 58px rgba(2, 7, 18, 0.24);
         }
 
         .network-lockup > img {
           object-fit: cover;
+          z-index: 0;
         }
 
         .network-lockup::after {
           content: "";
           position: absolute;
+          z-index: 1;
           inset: 0;
           background:
             radial-gradient(circle at 48% 54%, transparent, rgba(2, 7, 18, 0.12) 36%, rgba(2, 7, 18, 0.54)),
             linear-gradient(180deg, rgba(2, 7, 18, 0.08), rgba(2, 7, 18, 0.68));
+          pointer-events: none;
+        }
+
+        .memory-mesh {
+          position: absolute;
+          z-index: 2;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0.9;
+          mix-blend-mode: screen;
+          pointer-events: none;
+        }
+
+        .mesh-cube polygon {
+          fill: rgba(214, 160, 70, 0.07);
+          stroke: rgba(245, 209, 125, 0.34);
+          stroke-width: 1.2;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .mesh-threads path {
+          fill: none;
+          stroke: rgba(245, 209, 125, 0.72);
+          stroke-width: 1.35;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .mesh-nodes circle {
+          fill: #f5d17d;
+          stroke: rgba(255, 247, 230, 0.66);
+          stroke-width: 1;
+          vector-effect: non-scaling-stroke;
+          filter: drop-shadow(0 0 10px rgba(245, 209, 125, 0.8));
+        }
+
+        .mesh-lights circle {
+          fill: rgba(214, 160, 70, 0.22);
+          filter: drop-shadow(0 0 22px rgba(245, 209, 125, 0.55));
         }
 
         .network-plate {
           position: absolute;
-          z-index: 2;
+          z-index: 3;
           left: 1rem;
           right: 1rem;
           bottom: 1rem;
@@ -658,7 +805,7 @@ export default function ToothlightBrandSystemPage() {
           grid-template-columns: 70px minmax(0, 1fr);
           align-items: center;
           gap: 0.8rem;
-          border: 1px solid rgba(255, 248, 235, 0.16);
+          border: 1px solid rgba(255, 247, 230, 0.16);
           border-radius: 8px;
           background: rgba(7, 17, 31, 0.72);
           padding: 0.8rem;
@@ -684,7 +831,7 @@ export default function ToothlightBrandSystemPage() {
           min-height: 190px;
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 248, 235, 0.55);
+          background: rgba(255, 247, 230, 0.55);
           padding: 1rem;
         }
 
@@ -723,16 +870,16 @@ export default function ToothlightBrandSystemPage() {
 
         .parent-world {
           background:
-            radial-gradient(circle at 86% 8%, rgba(217, 168, 78, 0.2), transparent 16rem),
-            linear-gradient(180deg, #fff8eb, #f4e3c8);
+            radial-gradient(circle at 86% 8%, rgba(214, 160, 70, 0.2), transparent 16rem),
+            linear-gradient(180deg, #fff7e6, #f4e4c8);
         }
 
         .network-world {
-          border-color: rgba(255, 248, 235, 0.14);
+          border-color: rgba(255, 247, 230, 0.14);
           background:
-            radial-gradient(circle at 82% 10%, rgba(217, 168, 78, 0.18), transparent 18rem),
-            radial-gradient(circle at 16% 36%, rgba(159, 199, 180, 0.12), transparent 18rem),
-            linear-gradient(180deg, #07111f, #020712);
+            radial-gradient(circle at 82% 10%, rgba(214, 160, 70, 0.2), transparent 18rem),
+            radial-gradient(circle at 16% 36%, rgba(16, 37, 66, 0.84), transparent 18rem),
+            linear-gradient(180deg, #102542, #020712);
           color: var(--porcelain);
         }
 
@@ -761,7 +908,7 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .network-world p {
-          color: rgba(255, 248, 235, 0.72);
+          color: rgba(255, 247, 230, 0.72);
         }
 
         .route-list {
@@ -774,7 +921,7 @@ export default function ToothlightBrandSystemPage() {
         .route-list span {
           border: 1px solid rgba(16, 29, 52, 0.12);
           border-radius: 999px;
-          background: rgba(255, 248, 235, 0.56);
+          background: rgba(255, 247, 230, 0.56);
           padding: 0.45rem 0.7rem;
           color: var(--ink);
           font-size: 0.78rem;
@@ -782,9 +929,9 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .network-world .route-list span {
-          border-color: rgba(255, 248, 235, 0.14);
-          background: rgba(255, 248, 235, 0.08);
-          color: rgba(255, 248, 235, 0.82);
+          border-color: rgba(255, 247, 230, 0.14);
+          background: rgba(255, 247, 230, 0.08);
+          color: rgba(255, 247, 230, 0.82);
         }
 
         .sample-product {
@@ -797,7 +944,7 @@ export default function ToothlightBrandSystemPage() {
         .sample-product div {
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 248, 235, 0.6);
+          background: rgba(255, 247, 230, 0.6);
           padding: 1rem;
         }
 
@@ -825,8 +972,8 @@ export default function ToothlightBrandSystemPage() {
           padding: clamp(1rem, 3vw, 1.6rem);
           border-color: rgba(16, 29, 52, 0.12);
           background:
-            radial-gradient(circle at 12% 18%, rgba(217, 168, 78, 0.16), transparent 18rem),
-            linear-gradient(135deg, rgba(255, 248, 235, 0.96), rgba(246, 234, 214, 0.94));
+            radial-gradient(circle at 12% 18%, rgba(214, 160, 70, 0.16), transparent 18rem),
+            linear-gradient(135deg, rgba(255, 247, 230, 0.96), rgba(244, 228, 200, 0.94));
         }
 
         .rules {
@@ -835,15 +982,15 @@ export default function ToothlightBrandSystemPage() {
           gap: 0.75rem;
           border-radius: 8px;
           background:
-            radial-gradient(circle at 86% 12%, rgba(217, 168, 78, 0.13), transparent 14rem),
-            linear-gradient(180deg, #07111f, #020712);
+            radial-gradient(circle at 86% 12%, rgba(214, 160, 70, 0.13), transparent 14rem),
+            linear-gradient(180deg, #102542, #020712);
           padding: 0.75rem;
         }
 
         .rules article {
-          border: 1px solid rgba(255, 248, 235, 0.16);
+          border: 1px solid rgba(255, 247, 230, 0.16);
           border-radius: 8px;
-          background: rgba(255, 248, 235, 0.08);
+          background: rgba(255, 247, 230, 0.08);
           padding: 1rem;
         }
 
@@ -854,7 +1001,7 @@ export default function ToothlightBrandSystemPage() {
         }
 
         .rules p {
-          color: rgba(255, 248, 235, 0.72);
+          color: rgba(255, 247, 230, 0.72);
           font-size: 0.9rem;
         }
 
@@ -865,7 +1012,7 @@ export default function ToothlightBrandSystemPage() {
 
         .swatches {
           display: grid;
-          grid-template-columns: repeat(7, minmax(0, 1fr));
+          grid-template-columns: repeat(6, minmax(0, 1fr));
           gap: 0.75rem;
           margin-top: 1.4rem;
         }
@@ -873,7 +1020,7 @@ export default function ToothlightBrandSystemPage() {
         .swatches article {
           border: 1px solid var(--line);
           border-radius: 8px;
-          background: rgba(255, 248, 235, 0.5);
+          background: rgba(255, 247, 230, 0.5);
           padding: 0.75rem;
         }
 
@@ -919,8 +1066,8 @@ export default function ToothlightBrandSystemPage() {
         @media (max-width: 900px) {
           .brand-system {
             background:
-              radial-gradient(circle at 16% 6%, rgba(217, 168, 78, 0.24), transparent 24rem),
-              linear-gradient(180deg, #fff8eb 0%, #f6ead6 62%, #ead8bb 100%);
+              radial-gradient(circle at 16% 6%, rgba(214, 160, 70, 0.24), transparent 24rem),
+              linear-gradient(180deg, #fff7e6 0%, #f4e4c8 62%, #e7d2ad 100%);
           }
 
           .hero,
@@ -962,13 +1109,6 @@ export default function ToothlightBrandSystemPage() {
           .product-mark {
             width: 62px;
             height: 62px;
-            border-radius: 19px;
-          }
-
-          .product-mark img {
-            width: 51px;
-            height: 51px;
-            border-radius: 16px;
           }
         }
       `}</style>
