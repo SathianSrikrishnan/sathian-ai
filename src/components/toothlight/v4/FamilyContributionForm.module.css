@@ -1,0 +1,136 @@
+.panel {
+  display: grid;
+  width: min(100%, 52rem);
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  border: 1px solid rgba(23, 38, 42, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 1rem;
+  box-shadow: 0 18px 44px rgba(25, 42, 46, 0.08);
+}
+
+.visual {
+  display: grid;
+  place-items: center;
+  min-height: 14rem;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(247, 167, 186, 0.18), transparent 34%),
+    radial-gradient(circle at 74% 52%, rgba(234, 163, 64, 0.16), transparent 38%),
+    rgba(251, 248, 239, 0.72);
+}
+
+.form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #9d6b17;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.form h1 {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.form p {
+  margin: 0;
+  color: #52666a;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field span,
+.toggle span {
+  color: #5f7175;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(23, 38, 42, 0.14);
+  border-radius: 8px;
+  background: #fff;
+  color: #17262a;
+  font: inherit;
+  font-size: 1rem;
+  letter-spacing: 0;
+  padding: 0.78rem 0.85rem;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #eaa340;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.62rem;
+}
+
+.actions button {
+  display: inline-flex;
+  min-height: 2.85rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f6c95f, #eaa340);
+  color: #1f2b15;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  padding: 0 1rem;
+}
+
+.actions .secondaryButton {
+  border: 1px solid rgba(23, 38, 42, 0.14);
+  background: rgba(255, 255, 255, 0.82);
+  color: #25373c;
+}
+
+.actions button:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.message {
+  color: #2d5d50;
+  font-weight: 850;
+}
+
+@media (min-width: 780px) {
+  .panel {
+    grid-template-columns: minmax(14rem, 0.62fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}

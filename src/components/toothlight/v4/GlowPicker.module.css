@@ -1,0 +1,90 @@
+.picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.option {
+  display: grid;
+  min-height: 5.7rem;
+  align-content: center;
+  justify-items: center;
+  gap: 0.34rem;
+  border: 1px solid rgba(29, 48, 53, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #25373c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  padding: 0.55rem 0.35rem;
+}
+
+.selected {
+  border-color: color-mix(in srgb, var(--glow-accent), #ffffff 18%);
+  background:
+    radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--glow-accent), transparent 66%), transparent 64%),
+    rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--glow-accent), transparent 72%);
+}
+
+.preview {
+  display: block;
+  width: 2.1rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--glow-accent);
+  box-shadow:
+    0 0 0 0.34rem color-mix(in srgb, var(--glow-accent), transparent 82%),
+    0 0 1.25rem color-mix(in srgb, var(--glow-accent), transparent 18%);
+}
+
+.option small {
+  color: #80601c;
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.glowStarlace {
+  background: #f6c95f;
+}
+
+.glowMoonmilk {
+  background: #d8f3ff;
+}
+
+.glowMintveil {
+  background: #8fe6c6;
+}
+
+.glowRosebeam {
+  background: #f7a7ba;
+}
+
+.glowSunpenny {
+  background: #eaa340;
+}
+
+.glowSkyforge {
+  background: #7ab8ff;
+}
+
+.glowOrchidpin {
+  background: #bfa2ff;
+}
+
+.glowEmberdot {
+  background: #ff8a5c;
+}
+
+.glowSilverthread {
+  background: #bfc7d5;
+}
+
+@media (max-width: 520px) {
+  .picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

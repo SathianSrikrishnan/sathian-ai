@@ -1,0 +1,205 @@
+.sequence {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(15, 30, 36, 0.78);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.networkAperture {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  display: grid;
+  width: 8rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(246, 201, 95, 0.28);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(246, 201, 95, 0.22), transparent 62%),
+    radial-gradient(circle at 70% 30%, rgba(122, 184, 255, 0.2), transparent 36%);
+  color: #fff8df;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  transform: scale(0.74);
+}
+
+.active .networkAperture {
+  animation: apertureOpen 1.8s ease forwards;
+}
+
+.lightCard {
+  width: 7.2rem;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.95), rgba(246, 201, 95, 0.52) 36%, transparent 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(143, 230, 198, 0.34));
+  box-shadow: 0 0 28px rgba(246, 201, 95, 0.58);
+  opacity: 0;
+}
+
+.active .lightCard {
+  animation: cardFlight 1.9s cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
+}
+
+.tandaGuide {
+  position: absolute;
+  left: 8%;
+  bottom: 11%;
+  width: 8rem;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.28));
+}
+
+.active .tandaGuide {
+  animation: guideFlight 1.9s ease forwards;
+}
+
+.trail {
+  position: absolute;
+  left: 28%;
+  bottom: 34%;
+  width: 48%;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(246, 201, 95, 0.88), rgba(143, 230, 198, 0.5), transparent);
+  box-shadow: 0 0 22px rgba(246, 201, 95, 0.4);
+  opacity: 0;
+  transform: rotate(-20deg) scaleX(0.2);
+  transform-origin: left center;
+}
+
+.active .trail {
+  animation: trailDraw 1.6s ease forwards;
+}
+
+.success {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #173437;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  padding: 0.4rem 0.72rem;
+  opacity: 0;
+  transform: translateX(-50%) translateY(0.6rem);
+}
+
+.active .success {
+  animation: successIn 420ms ease 1.45s forwards;
+}
+
+.parentMode {
+  background: rgba(18, 34, 39, 0.66);
+}
+
+.calm .tandaGuide {
+  width: 7rem;
+}
+
+@keyframes apertureOpen {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cardFlight {
+  0% {
+    opacity: 0;
+    transform: translate(-5rem, 7rem) scale(0.72) rotate(-8deg);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(7.6rem, -6rem) scale(0.46) rotate(10deg);
+  }
+}
+
+@keyframes guideFlight {
+  0% {
+    opacity: 0;
+    transform: translate(-2rem, 1rem) scale(0.88);
+  }
+
+  30%,
+  74% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(2rem, -2rem) scale(0.82);
+  }
+}
+
+@keyframes trailDraw {
+  0% {
+    opacity: 0;
+    transform: rotate(-20deg) scaleX(0.2);
+  }
+
+  42%,
+  78% {
+    opacity: 1;
+    transform: rotate(-20deg) scaleX(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-20deg) scaleX(0.72);
+  }
+}
+
+@keyframes successIn {
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sequence,
+  .networkAperture,
+  .lightCard,
+  .tandaGuide,
+  .trail,
+  .success {
+    animation: none;
+    transition: none;
+  }
+
+  .active .networkAperture,
+  .active .lightCard,
+  .active .tandaGuide,
+  .active .trail,
+  .active .success {
+    opacity: 1;
+    transform: none;
+  }
+}

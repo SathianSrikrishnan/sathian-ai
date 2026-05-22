@@ -1,0 +1,1682 @@
+.page {
+  --ink: #13213f;
+  --ink-soft: #40506e;
+  --cream: #fff8e8;
+  --paper: #fff3d8;
+  --gold: #f0c456;
+  --gold-bright: #ffe38a;
+  --teal: #55d7cc;
+  --night: #071026;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #fff6df;
+  color: var(--ink);
+  font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
+}
+
+.darkPage {
+  background:
+    linear-gradient(180deg, #071026 0%, #102044 44%, #fff6df 44.1%, #fff6df 100%);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 92svh;
+  overflow: hidden;
+  color: var(--cream);
+}
+
+.heroImage,
+.heroShade {
+  position: absolute;
+  inset: 0;
+}
+
+.heroImage {
+  z-index: -3;
+  object-fit: cover;
+}
+
+.heroShade {
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(4, 10, 25, 0.94) 0%, rgba(4, 10, 25, 0.75) 36%, rgba(4, 10, 25, 0.2) 100%),
+    linear-gradient(180deg, rgba(4, 10, 25, 0.08) 0%, #071026 100%);
+}
+
+.heroInner,
+.section,
+.wideSection {
+  width: min(100% - 40px, 1240px);
+  margin: 0 auto;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  min-height: calc(92svh - 76px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.58fr);
+  gap: clamp(1.8rem, 5vw, 5rem);
+  align-items: center;
+  padding: 4rem 0 6rem;
+}
+
+.heroCopy {
+  max-width: 720px;
+  animation: softReveal 680ms ease-out both;
+}
+
+.eyebrow {
+  margin: 0 0 0.78rem;
+  color: #b37818;
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero .eyebrow,
+.darkBand .eyebrow {
+  color: var(--gold-bright);
+}
+
+.hero h1,
+.sectionTitle,
+.panelTitle {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.hero h1 {
+  max-width: 780px;
+  font-size: clamp(3.7rem, 7.4vw, 7.2rem);
+  line-height: 0.9;
+}
+
+.lead {
+  max-width: 650px;
+  margin: 1.15rem 0 0;
+  color: rgba(255, 248, 232, 0.86);
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  line-height: 1.62;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.72rem;
+  margin-top: 1.6rem;
+}
+
+.actions a,
+.textLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.actions a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 1.15rem;
+  font-weight: 950;
+}
+
+.primaryAction {
+  background: linear-gradient(135deg, #ffe38a, #f0c456 55%, #55d7cc);
+  color: #111a34;
+  box-shadow: 0 18px 44px rgba(240, 196, 86, 0.26);
+}
+
+.secondaryAction {
+  border: 1px solid rgba(255, 248, 232, 0.26);
+  background: rgba(255, 248, 232, 0.08);
+  color: var(--cream);
+}
+
+.heroCard {
+  justify-self: end;
+  transform: rotate(1.5deg);
+  animation: softReveal 900ms ease-out 140ms both;
+}
+
+.heroStats {
+  display: grid;
+  max-width: 680px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.statPill {
+  display: grid;
+  gap: 0.18rem;
+  min-height: 74px;
+  align-content: center;
+  border: 1px solid rgba(255, 248, 232, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 248, 232, 0.08);
+  padding: 0.72rem;
+  color: rgba(255, 248, 232, 0.76);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.22;
+}
+
+.statPill strong {
+  display: block;
+  color: var(--gold-bright);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 0.9;
+}
+
+.section {
+  padding: clamp(4rem, 7vw, 6.5rem) 0;
+}
+
+.wideSection {
+  padding: clamp(4rem, 7vw, 6.5rem) 0;
+}
+
+.sectionHeader {
+  max-width: 760px;
+  margin-bottom: 2rem;
+  animation: softReveal 540ms ease-out both;
+}
+
+.sectionTitle {
+  color: var(--ink);
+  font-size: clamp(2.55rem, 5vw, 5.1rem);
+  line-height: 0.92;
+}
+
+.sectionHeader p:not(.eyebrow),
+.bodyCopy {
+  color: var(--ink-soft);
+  font-size: 1.04rem;
+  line-height: 1.65;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.72fr);
+  gap: clamp(1.3rem, 4vw, 3.2rem);
+  align-items: center;
+}
+
+.visualPanel {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #0c1732;
+  box-shadow: 0 28px 70px rgba(20, 24, 34, 0.18);
+}
+
+.visualPanel img {
+  object-fit: cover;
+}
+
+.bodyPanel {
+  max-width: 560px;
+}
+
+.panelTitle {
+  color: var(--ink);
+  font-size: clamp(2.4rem, 4.7vw, 4.7rem);
+  line-height: 0.94;
+}
+
+.darkBand {
+  background:
+    linear-gradient(180deg, #071026 0%, #102044 100%);
+  color: var(--cream);
+}
+
+.lightBand {
+  background: #fff6df;
+}
+
+.networkExampleBand {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(240, 196, 86, 0.18), transparent 30rem),
+    radial-gradient(circle at 82% 18%, rgba(85, 215, 204, 0.1), transparent 28rem),
+    linear-gradient(180deg, #fff6df 0%, #fff0d0 100%);
+}
+
+.networkPulseBand {
+  background:
+    linear-gradient(180deg, #0a1530 0%, #12254d 100%);
+  color: var(--cream);
+}
+
+.darkBand .sectionTitle,
+.darkBand .panelTitle,
+.atlasField .sectionTitle,
+.networkPulseBand .sectionTitle {
+  color: var(--cream);
+}
+
+.darkBand .sectionHeader p:not(.eyebrow),
+.darkBand .bodyCopy,
+.atlasField .sectionHeader p:not(.eyebrow),
+.networkPulseBand .networkPulseIntro p:not(.eyebrow) {
+  color: rgba(255, 248, 232, 0.78);
+}
+
+.atlasField {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  background:
+    linear-gradient(180deg, #071026 0%, #0f1e3e 100%);
+  color: var(--cream);
+}
+
+.atlasMap {
+  position: relative;
+  min-height: 650px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #08142d;
+  box-shadow: 0 36px 90px rgba(1, 8, 26, 0.42);
+  animation: softReveal 760ms ease-out both;
+}
+
+.atlasWorkbench {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.atlasSidebar {
+  display: grid;
+  align-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(255, 248, 232, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.1), rgba(255, 248, 232, 0.04));
+  padding: 1rem;
+}
+
+.atlasFilters,
+.arrivalStack {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.atlasFilters span {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  border: 1px solid rgba(255, 248, 232, 0.14);
+  border-radius: 8px;
+  background: rgba(7, 16, 38, 0.44);
+  padding: 0 0.8rem;
+  color: rgba(255, 248, 232, 0.84);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.arrivalCard {
+  border: 1px solid rgba(255, 227, 138, 0.18);
+  border-radius: 8px;
+  background: rgba(7, 16, 38, 0.5);
+  padding: 0.86rem;
+}
+
+.arrivalCard span,
+.pathCard span,
+.listeningCard span,
+.doorCard span {
+  color: var(--accent, var(--gold-bright));
+  font-size: 0.67rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.arrivalCard strong,
+.pathCard strong,
+.listeningCard strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--cream);
+  font-size: 1rem;
+  line-height: 1.18;
+}
+
+.arrivalCard p,
+.listeningCard p {
+  margin: 0.48rem 0 0;
+  color: rgba(255, 248, 232, 0.72);
+  font-size: 0.84rem;
+  line-height: 1.42;
+}
+
+.atlasMapFrame {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.mapImage {
+  object-fit: cover;
+}
+
+.mapShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(4, 10, 25, 0.54), rgba(4, 10, 25, 0.14) 46%, rgba(4, 10, 25, 0.5)),
+    linear-gradient(180deg, rgba(4, 10, 25, 0.28), rgba(4, 10, 25, 0.58));
+}
+
+.signalNode,
+.district {
+  position: absolute;
+}
+
+.signalNode {
+  left: var(--x);
+  top: var(--y);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ffe38a;
+  box-shadow:
+    0 0 14px rgba(255, 227, 138, 0.58),
+    0 0 28px rgba(85, 215, 204, 0.18);
+  animation: atlasPulse 5.8s ease-in-out var(--delay, 0s) infinite;
+}
+
+.networkPathOne,
+.networkPathTwo,
+.networkPathThree {
+  position: absolute;
+  left: 10%;
+  right: 8%;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 227, 138, 0.72), rgba(85, 215, 204, 0.46), transparent);
+  background-size: 180% 100%;
+  box-shadow: 0 0 20px rgba(255, 227, 138, 0.28);
+  transform-origin: center;
+  animation: pathGlow 8s ease-in-out infinite;
+}
+
+.networkPathOne {
+  top: 39%;
+  transform: rotate(8deg);
+}
+
+.networkPathTwo {
+  top: 56%;
+  transform: rotate(-10deg);
+}
+
+.networkPathThree {
+  top: 68%;
+  transform: rotate(3deg);
+}
+
+.centralArrival {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+  transform: translate(-50%, -50%);
+  color: var(--gold-bright);
+  font-size: 0.7rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.centralArrival span {
+  display: block;
+  width: 46px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 227, 138, 0.76);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 245, 190, 0.95) 0 18%, rgba(255, 227, 138, 0.46) 19% 42%, transparent 43%);
+  box-shadow:
+    0 0 20px rgba(255, 227, 138, 0.74),
+    0 0 54px rgba(255, 227, 138, 0.3);
+  animation: centralBreathe 3.8s ease-in-out infinite;
+}
+
+.district {
+  left: var(--x);
+  top: var(--y);
+  width: min(200px, 18vw);
+  min-width: 158px;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--accent) 62%, transparent);
+  border-radius: 8px;
+  background: rgba(7, 16, 38, 0.72);
+  box-shadow: 0 0 36px color-mix(in srgb, var(--accent) 22%, transparent);
+  padding: 0.68rem;
+  backdrop-filter: blur(12px);
+}
+
+.district span,
+.miniStat {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.district strong {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--cream);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.12rem;
+  line-height: 0.98;
+}
+
+.district p {
+  display: none;
+}
+
+.districtList,
+.stepGrid,
+.storyGrid,
+.trustGrid,
+.stageRibbon,
+.listenStrip,
+.assuranceGrid,
+.reviewGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.districtList {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1.2rem;
+}
+
+.districtCard,
+.stepCard,
+.storyCard,
+.trustCard {
+  border: 1px solid rgba(19, 33, 63, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 248, 232, 0.92);
+  box-shadow: 0 20px 52px rgba(18, 22, 36, 0.08);
+  padding: 1rem;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.districtCard:hover,
+.stepCard:hover,
+.storyCard:hover,
+.trustCard:hover,
+.stageCard:hover,
+.listenCard:hover,
+.reviewCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px rgba(18, 22, 36, 0.12);
+}
+
+.districtCard {
+  border-color: color-mix(in srgb, var(--accent) 40%, rgba(255, 248, 232, 0.2));
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.96), rgba(255, 243, 216, 0.9));
+}
+
+.districtCard strong,
+.stepCard strong,
+.storyCard strong,
+.trustCard strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.districtCard p,
+.stepCard p,
+.storyCard p,
+.trustCard p {
+  margin: 0.55rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.memoryDock {
+  position: absolute;
+  right: 4%;
+  bottom: 5%;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  transform: scale(0.86);
+  transform-origin: bottom right;
+}
+
+.memoryDock > *:first-child {
+  transform: rotate(-5deg) translateY(1rem);
+}
+
+.memoryDock > *:last-child {
+  transform: rotate(5deg);
+}
+
+.mapLegend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.mapLegend span {
+  border: 1px solid rgba(255, 248, 232, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 248, 232, 0.06);
+  padding: 0.72rem;
+  color: rgba(255, 248, 232, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.38;
+}
+
+.cardRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.stageRibbon {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.stageCard {
+  position: relative;
+  min-height: 190px;
+  overflow: hidden;
+  border: 1px solid rgba(19, 33, 63, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.98), rgba(255, 243, 216, 0.88));
+  padding: 1rem;
+  box-shadow: 0 20px 52px rgba(18, 22, 36, 0.08);
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.stageCard::after {
+  position: absolute;
+  inset: auto 1rem 1rem auto;
+  width: 44px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(240, 196, 86, 0.26);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 227, 138, 0.42), transparent 64%);
+  content: "";
+}
+
+.stageCard span,
+.listenCard span {
+  color: #b37818;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.stageCard strong,
+.listenCard strong,
+.assuranceCard strong,
+.reviewCard strong {
+  display: block;
+  margin-top: 0.36rem;
+  color: var(--ink);
+  font-size: 1.08rem;
+  line-height: 1.18;
+}
+
+.stageCard p,
+.listenCard p,
+.assuranceCard p,
+.reviewCard p {
+  margin: 0.55rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.48;
+}
+
+.stageCard i {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.78rem;
+  z-index: 1;
+  color: rgba(19, 33, 63, 0.28);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.memoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.memoryPlacement {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: center;
+  border: 1px solid rgba(19, 33, 63, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 248, 232, 0.96), rgba(255, 243, 216, 0.86));
+  padding: 1rem;
+  box-shadow: 0 22px 56px rgba(18, 22, 36, 0.08);
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.memoryPlacement:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 28px 66px rgba(18, 22, 36, 0.12);
+}
+
+.memoryPlacement strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--ink);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.65rem;
+  line-height: 0.95;
+}
+
+.memoryPlacement p {
+  margin: 0.58rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.48;
+}
+
+.networkStoryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.networkStoryCard {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, rgba(19, 33, 63, 0.1));
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.98), rgba(255, 243, 216, 0.88));
+  box-shadow: 0 22px 58px rgba(18, 22, 36, 0.08);
+  animation: softReveal 540ms ease-out both;
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.networkStoryCard:nth-child(2),
+.keeperCouncilCard:nth-child(2),
+.networkPulseCard:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.networkStoryCard:nth-child(3),
+.keeperCouncilCard:nth-child(3),
+.networkPulseCard:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.networkStoryCard:nth-child(4),
+.keeperCouncilCard:nth-child(4),
+.networkPulseCard:nth-child(4) {
+  animation-delay: 210ms;
+}
+
+.networkStoryCard:nth-child(5),
+.keeperCouncilCard:nth-child(5) {
+  animation-delay: 280ms;
+}
+
+.networkStoryCard:nth-child(6),
+.keeperCouncilCard:nth-child(6) {
+  animation-delay: 350ms;
+}
+
+.networkStoryCard:nth-child(7),
+.keeperCouncilCard:nth-child(7) {
+  animation-delay: 420ms;
+}
+
+.networkStoryCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 30px 74px rgba(18, 22, 36, 0.13);
+}
+
+.networkStoryImage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0c1732;
+}
+
+.networkStoryImage img {
+  object-fit: cover;
+  transition: transform 520ms ease;
+}
+
+.networkStoryCard:hover .networkStoryImage img {
+  transform: scale(1.035);
+}
+
+.networkStoryCard div:last-child {
+  padding: 1rem;
+}
+
+.networkStoryCard span {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.networkStoryCard strong {
+  display: block;
+  margin-top: 0.36rem;
+  color: var(--ink);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.62rem;
+  line-height: 0.96;
+}
+
+.networkStoryCard p {
+  margin: 0.58rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.46;
+}
+
+.storyMemoryTag {
+  display: inline-flex;
+  margin-top: 0.74rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, rgba(19, 33, 63, 0.1));
+  border-radius: 999px;
+  background: rgba(255, 248, 232, 0.72);
+  padding: 0.38rem 0.56rem;
+  color: #694814;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.doorGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.networkPulseIntro {
+  max-width: 800px;
+  margin-bottom: 1.2rem;
+}
+
+.networkPulseGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.networkPulseCard {
+  position: relative;
+  min-height: 190px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 248, 232, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.09), rgba(255, 248, 232, 0.035));
+  padding: 1rem;
+  box-shadow: 0 24px 70px rgba(1, 8, 26, 0.24);
+  animation: softReveal 520ms ease-out both;
+}
+
+.networkPulseCard::after {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  width: 66px;
+  height: 3px;
+  border: 1px solid rgba(255, 227, 138, 0.32);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 227, 138, 0.82), rgba(85, 215, 204, 0.46), transparent);
+  box-shadow: 0 0 18px rgba(255, 227, 138, 0.24);
+  content: "";
+}
+
+.networkPulseCard span {
+  color: var(--gold-bright);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.networkPulseCard strong {
+  display: block;
+  max-width: 14ch;
+  margin-top: 0.42rem;
+  color: var(--cream);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.72rem;
+  line-height: 0.96;
+}
+
+.networkPulseCard p {
+  margin: 0.65rem 0 0;
+  color: rgba(255, 248, 232, 0.72);
+  line-height: 1.48;
+}
+
+.keeperCouncilGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.keeperCouncilCard {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 46%, rgba(255, 248, 232, 0.12));
+  border-radius: 8px;
+  background: #0c1732;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 26px 76px rgba(1, 8, 26, 0.3);
+  animation: softReveal 560ms ease-out both;
+  transition:
+    box-shadow 260ms ease,
+    transform 260ms ease;
+}
+
+.keeperCouncilCard:first-child,
+.keeperCouncilCard:nth-child(3) {
+  grid-column: span 2;
+}
+
+.keeperCouncilCard img {
+  object-fit: cover;
+  transition: transform 560ms ease;
+}
+
+.keeperCouncilCard::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(7, 16, 38, 0.02), rgba(7, 16, 38, 0.9)),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 24%, transparent), transparent 48%);
+}
+
+.keeperCouncilCard div {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  padding: 1rem;
+}
+
+.keeperCouncilCard span {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.keeperCouncilCard strong {
+  display: block;
+  max-width: 16ch;
+  margin-top: 0.32rem;
+  color: var(--cream);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.45rem, 2.6vw, 2.35rem);
+  line-height: 0.94;
+}
+
+.keeperCouncilCard p {
+  margin: 0.45rem 0 0;
+  color: rgba(255, 248, 232, 0.74);
+  font-size: 0.9rem;
+}
+
+.keeperCouncilCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 34px 88px rgba(1, 8, 26, 0.38);
+}
+
+.keeperCouncilCard:hover img {
+  transform: scale(1.045);
+}
+
+.networkExampleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.networkExampleCard {
+  display: flex;
+  justify-content: center;
+  min-height: 288px;
+  align-items: center;
+  border: 1px solid rgba(19, 33, 63, 0.08);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.78), rgba(255, 243, 216, 0.62));
+  padding: 0.85rem 0.7rem;
+  box-shadow: 0 20px 52px rgba(18, 22, 36, 0.07);
+  animation: cardArrive 620ms ease-out both;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.networkExampleCard:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.networkExampleCard:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.networkExampleCard:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.networkExampleCard:nth-child(5) {
+  animation-delay: 240ms;
+}
+
+.networkExampleCard:nth-child(6) {
+  animation-delay: 300ms;
+}
+
+.networkExampleCard:nth-child(7) {
+  animation-delay: 360ms;
+}
+
+.networkExampleCard:hover {
+  border-color: rgba(240, 196, 86, 0.36);
+  box-shadow: 0 28px 66px rgba(18, 22, 36, 0.11);
+  transform: translateY(-3px);
+}
+
+.doorCard {
+  position: relative;
+  min-height: 290px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, rgba(255, 248, 232, 0.12));
+  border-radius: 8px;
+  background: #0c1732;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 24px 70px rgba(1, 8, 26, 0.28);
+}
+
+.doorCard img {
+  object-fit: cover;
+  transition: transform 420ms ease;
+}
+
+.doorCard:hover img {
+  transform: scale(1.04);
+}
+
+.doorCard::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(7, 16, 38, 0.04), rgba(7, 16, 38, 0.9)),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 30%, transparent), transparent 42%);
+}
+
+.doorCard div {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  padding: 1rem;
+}
+
+.doorCard strong {
+  display: block;
+  margin-top: 0.26rem;
+  color: var(--cream);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.48rem;
+  line-height: 0.96;
+}
+
+.doorCard p {
+  margin: 0.35rem 0 0;
+  color: rgba(255, 248, 232, 0.74);
+  font-size: 0.86rem;
+}
+
+.listeningGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.72rem;
+  margin-top: 1rem;
+}
+
+.listeningCard {
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, rgba(255, 248, 232, 0.1));
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.08), rgba(255, 248, 232, 0.03));
+  padding: 0.82rem;
+}
+
+.listeningCard strong {
+  font-size: 0.98rem;
+}
+
+.listeningCard p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 0.78rem;
+}
+
+.pathGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pathCard {
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, rgba(19, 33, 63, 0.1));
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.96), rgba(255, 243, 216, 0.88));
+  padding: 1rem;
+  box-shadow: 0 20px 52px rgba(18, 22, 36, 0.08);
+}
+
+.pathCard strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--ink);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.38rem;
+  line-height: 0.98;
+}
+
+.pathCard p {
+  margin: 0.58rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.48;
+}
+
+.atlasCta {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.54fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.2rem;
+  border: 1px solid rgba(19, 33, 63, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(19, 33, 63, 0.96), rgba(16, 32, 68, 0.96));
+  padding: 1.1rem;
+  color: var(--cream);
+}
+
+.atlasCta .sectionTitle {
+  color: var(--cream);
+  font-size: 2.45rem;
+}
+
+.atlasCta p:not(.eyebrow) {
+  margin: 0;
+  color: rgba(255, 248, 232, 0.72);
+  line-height: 1.52;
+}
+
+.atlasCta .primaryAction {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 1.15rem;
+  color: #111a34;
+  font-weight: 950;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.stepGrid,
+.trustGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.storyGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.listenStrip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.listenCard,
+.assuranceCard,
+.reviewCard {
+  border: 1px solid rgba(19, 33, 63, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.92), rgba(255, 243, 216, 0.84));
+  padding: 1rem;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.assuranceGrid,
+.reviewGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.assuranceCard {
+  background:
+    linear-gradient(180deg, rgba(19, 33, 63, 0.94), rgba(16, 32, 68, 0.94));
+}
+
+.assuranceCard strong,
+.assuranceCard p {
+  color: var(--cream);
+}
+
+.assuranceCard p {
+  color: rgba(255, 248, 232, 0.72);
+}
+
+.reviewCard {
+  border-color: rgba(85, 215, 204, 0.18);
+}
+
+.storyImageCard {
+  position: relative;
+  min-height: 310px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #0c1732;
+  transition:
+    box-shadow 240ms ease,
+    transform 240ms ease;
+}
+
+.storyImageCard img {
+  object-fit: cover;
+  transition: transform 520ms ease;
+}
+
+.storyImageCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 72px rgba(1, 8, 26, 0.24);
+}
+
+.storyImageCard:hover img {
+  transform: scale(1.04);
+}
+
+.storyImageCard div {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1rem;
+  background: linear-gradient(180deg, transparent, rgba(7, 16, 38, 0.9));
+}
+
+.storyImageCard strong,
+.storyImageCard span {
+  display: block;
+}
+
+.storyImageCard strong {
+  color: var(--cream);
+  font-size: 1.12rem;
+}
+
+.storyImageCard span {
+  margin-top: 0.2rem;
+  color: rgba(255, 248, 232, 0.7);
+  font-size: 0.86rem;
+}
+
+.fundMock {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgba(19, 33, 63, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 248, 232, 0.96), rgba(255, 243, 216, 0.84)),
+    linear-gradient(90deg, rgba(240, 196, 86, 0.12), rgba(85, 215, 204, 0.1));
+  padding: 1rem;
+  box-shadow: 0 26px 70px rgba(18, 22, 36, 0.12);
+}
+
+.fundRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(19, 33, 63, 0.1);
+  padding-bottom: 0.8rem;
+}
+
+.fundRow:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.fundRow span {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.fundRow strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.filterTile {
+  border: 1px solid rgba(19, 33, 63, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 248, 232, 0.94);
+  box-shadow: 0 20px 52px rgba(18, 22, 36, 0.08);
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.filterTile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 64px rgba(18, 22, 36, 0.12);
+}
+
+.filterPreview {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #efe4c8;
+}
+
+.filterPreview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.filterPreview::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.filterWarm img {
+  filter: saturate(1.04) contrast(1.03) sepia(0.08);
+}
+
+.filterWarm::after {
+  background: linear-gradient(180deg, rgba(255, 238, 176, 0.12), rgba(139, 87, 24, 0.1));
+}
+
+.filterField::after {
+  border: 1px solid rgba(255, 227, 138, 0.72);
+  background:
+    linear-gradient(160deg, transparent 0 34%, rgba(255, 227, 138, 0.34) 34.4% 35%, transparent 35.5% 100%),
+    radial-gradient(circle at 74% 18%, rgba(255, 227, 138, 0.5), transparent 24%),
+    radial-gradient(circle at 18% 80%, rgba(85, 215, 204, 0.2), transparent 30%);
+  box-shadow: inset 0 0 46px rgba(255, 227, 138, 0.28);
+}
+
+.filterPaper img {
+  filter: saturate(0.96) contrast(0.98) brightness(1.04);
+}
+
+.filterPaper::after {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 228, 0.18), rgba(233, 199, 129, 0.14)),
+    repeating-linear-gradient(0deg, rgba(90, 68, 36, 0.05) 0 1px, transparent 1px 5px);
+  mix-blend-mode: multiply;
+}
+
+.filterCopy {
+  padding: 0.95rem;
+}
+
+.filterCopy strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.filterCopy p {
+  margin: 0.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.inlineCard {
+  width: fit-content;
+  margin-top: 1.5rem;
+  transform: rotate(2deg);
+}
+
+@keyframes atlasPulse {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+
+  50% {
+    opacity: 0.78;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes softReveal {
+  from {
+    opacity: 0.001;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pathGlow {
+  0%,
+  100% {
+    opacity: 0.22;
+    background-position: 0% 50%;
+  }
+
+  50% {
+    opacity: 0.58;
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes centralBreathe {
+  0%,
+  100% {
+    opacity: 0.64;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 0.86;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes cardArrive {
+  from {
+    opacity: 0.001;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1040px) {
+  .heroInner,
+  .split,
+  .cardRail,
+  .districtList,
+  .stepGrid,
+  .trustGrid,
+  .storyGrid,
+  .filterGrid,
+  .memoryGrid,
+    .doorGrid,
+    .networkPulseGrid,
+    .networkStoryGrid,
+    .networkExampleGrid,
+    .keeperCouncilGrid,
+    .pathGrid,
+    .stageRibbon,
+  .listenStrip,
+  .assuranceGrid,
+  .reviewGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .heroStats,
+  .mapLegend,
+  .listeningGrid,
+  .atlasCta {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .atlasWorkbench {
+    grid-template-columns: 1fr;
+  }
+
+  .atlasSidebar {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr);
+  }
+
+  .heroCard {
+    justify-self: start;
+  }
+
+  .atlasMap {
+    min-height: 650px;
+  }
+
+  .district {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .heroInner,
+  .section,
+  .wideSection {
+    width: min(100% - 28px, 1240px);
+  }
+
+  .heroInner,
+  .split,
+  .cardRail,
+  .districtList,
+  .stepGrid,
+  .trustGrid,
+  .storyGrid,
+  .filterGrid,
+  .heroStats,
+  .mapLegend,
+  .memoryGrid,
+  .memoryPlacement,
+  .doorGrid,
+  .networkPulseGrid,
+  .networkStoryGrid,
+  .networkExampleGrid,
+  .keeperCouncilGrid,
+  .listeningGrid,
+  .pathGrid,
+  .atlasCta,
+  .atlasSidebar,
+  .stageRibbon,
+  .listenStrip,
+  .assuranceGrid,
+  .reviewGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .heroInner {
+    min-height: auto;
+    padding: 2.5rem 0 4rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.9rem, 13.5vw, 4.45rem);
+    line-height: 0.94;
+  }
+
+  .lead,
+  .sectionHeader p:not(.eyebrow),
+  .bodyCopy {
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .actions,
+  .actions a {
+    width: 100%;
+  }
+
+  .heroCard {
+    justify-self: center;
+    transform: rotate(-2deg);
+  }
+
+  .visualPanel,
+  .atlasMap {
+    min-height: 310px;
+  }
+
+  .atlasFilters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .memoryDock {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    justify-content: center;
+    margin-top: -6rem;
+    padding-bottom: 2rem;
+    transform: none;
+  }
+
+  .memoryDock > *:last-child {
+    display: none;
+  }
+
+  .centralArrival,
+  .networkPathOne,
+  .networkPathTwo,
+  .networkPathThree {
+    display: none;
+  }
+
+  .doorCard {
+    min-height: 240px;
+  }
+
+  .keeperCouncilCard,
+  .keeperCouncilCard:first-child,
+  .keeperCouncilCard:nth-child(3) {
+    grid-column: auto;
+  }
+
+  .keeperCouncilCard {
+    min-height: 260px;
+  }
+
+  .atlasCta .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .atlasCta .primaryAction {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroCopy,
+  .heroCard,
+  .sectionHeader,
+  .atlasMap,
+  .signalNode,
+  .centralArrival span,
+  .networkPathOne,
+  .networkPathTwo,
+  .networkPathThree,
+  .networkExampleCard,
+  .keeperCouncilCard,
+  .networkStoryCard,
+  .networkPulseCard {
+    animation: none;
+  }
+
+  .districtCard,
+  .stepCard,
+  .storyCard,
+  .trustCard,
+  .stageCard,
+  .listenCard,
+  .reviewCard,
+  .memoryPlacement,
+  .networkStoryCard,
+  .networkStoryImage img,
+  .networkExampleCard,
+  .keeperCouncilCard,
+  .keeperCouncilCard img,
+  .doorCard img,
+  .storyImageCard,
+  .storyImageCard img,
+  .filterTile {
+    transition: none;
+  }
+}

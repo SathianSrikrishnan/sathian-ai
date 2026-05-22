@@ -37,8 +37,14 @@ export async function middleware(request: NextRequest) {
 
   // ── Supabase session refresh for TFN app + API routes ──
   // Captures the response so auth cookies propagate through domain rewrites.
-  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
-  const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
+  const isTfnApp =
+    pathname.startsWith('/toothfairy/app') ||
+    pathname.startsWith('/app/') ||
+    pathname.startsWith('/toothlight')
+  const isTfnApi =
+    pathname.startsWith('/api/toothfairy/') ||
+    pathname.startsWith('/api/toothlight/') ||
+    pathname.startsWith('/api/auth/')
   const hasSupabaseConfig = Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -51,6 +57,7 @@ export async function middleware(request: NextRequest) {
   // Helper: create a rewrite that preserves auth cookies from session refresh
   const rewriteWithCookies = (dest: URL) => {
     const res = NextResponse.rewrite(dest)
+    res.headers.set('Cache-Control', 'no-transform')
     if (supabaseResponse) {
       supabaseResponse.cookies.getAll().forEach(cookie => {
         res.cookies.set(cookie.name, cookie.value)
@@ -112,6 +119,10 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/network/')) {
       return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
     }
+    // V4 Toothlight routes are their own product surface, not /toothfairy-prefixed pages.
+    if (pathname === '/toothlight' || pathname.startsWith('/toothlight/')) {
+      return rewriteWithCookies(new URL(pathname, request.url))
+    }
     // Bare /toothfairy on TFN domain → redirect to root (clean URL, and
     // prevents the catch-all from double-prefixing to /toothfairy/toothfairy)
     if (pathname === '/toothfairy') {
@@ -143,7 +154,15 @@ export async function middleware(request: NextRequest) {
 
   // Only apply rate limiting / CORS to API routes
   if (!pathname.startsWith('/api/')) {
-    return NextResponse.next()
+    const response = NextResponse.next()
+    if (
+      pathname.startsWith('/toothfairy') ||
+      pathname.startsWith('/toothlight') ||
+      pathname.startsWith('/tooth/')
+    ) {
+      response.headers.set('Cache-Control', 'no-transform')
+    }
+    return response
   }
 
   // --- CORS check ---

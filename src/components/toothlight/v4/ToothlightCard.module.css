@@ -1,0 +1,239 @@
+.card {
+  --card-ink: #213033;
+  --card-muted: #68777a;
+  --glow-a: rgba(246, 201, 95, 0.65);
+  --glow-b: rgba(132, 224, 205, 0.32);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: min(100%, 22rem);
+  overflow: hidden;
+  border: 1px solid rgba(35, 47, 50, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 249, 0.96)),
+    radial-gradient(circle at 18% 8%, rgba(246, 201, 95, 0.2), transparent 34%);
+  box-shadow: 0 18px 46px rgba(21, 35, 38, 0.18);
+  color: var(--card-ink);
+  isolation: isolate;
+}
+
+.glowShell {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.62),
+    inset 0 0 22px var(--glow-b),
+    0 0 34px var(--glow-a);
+  opacity: 0.74;
+  z-index: 2;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  min-height: 11rem;
+  overflow: hidden;
+  background: #eaf1ef;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.95), rgba(246, 201, 95, 0.24) 36%, transparent 62%),
+    linear-gradient(135deg, #e8f3f1, #f9f3dd 48%, #e9eef8);
+}
+
+.placeholder span {
+  max-width: 12ch;
+  color: rgba(33, 48, 51, 0.62);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.sourceGlow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 26% 18%, var(--glow-a), transparent 28%),
+    radial-gradient(circle at 78% 64%, var(--glow-b), transparent 36%);
+  mix-blend-mode: screen;
+  opacity: 0.62;
+  pointer-events: none;
+  animation: cardPulse 4.6s ease-in-out infinite;
+}
+
+.body {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 0.95rem 1rem;
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  color: var(--card-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.kicker span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.25rem;
+  border: 1px solid rgba(33, 48, 51, 0.1);
+  border-radius: 999px;
+  padding: 0 0.48rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.body h3 {
+  margin: 0;
+  font-size: clamp(1.02rem, 1rem + 0.4vw, 1.28rem);
+  line-height: 1.06;
+  letter-spacing: 0;
+}
+
+.body p {
+  margin: 0;
+  color: #4f6164;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.body time {
+  color: var(--card-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.draftGlow {
+  --glow-a: rgba(191, 199, 213, 0.45);
+  --glow-b: rgba(220, 229, 230, 0.32);
+}
+
+.spark {
+  --glow-a: rgba(246, 201, 95, 0.72);
+  --glow-b: rgba(132, 224, 205, 0.42);
+}
+
+.noteStarted {
+  --glow-a: rgba(247, 167, 186, 0.68);
+  --glow-b: rgba(246, 201, 95, 0.38);
+}
+
+.sealed {
+  --glow-a: rgba(191, 199, 213, 0.82);
+  --glow-b: rgba(216, 243, 255, 0.48);
+}
+
+.smileFundActive {
+  --glow-a: rgba(234, 163, 64, 0.78);
+  --glow-b: rgba(143, 230, 198, 0.38);
+}
+
+.constellated {
+  --glow-a: rgba(122, 184, 255, 0.74);
+  --glow-b: rgba(246, 201, 95, 0.48);
+}
+
+.noteThread,
+.sealMark {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.8rem;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.noteThread {
+  width: 4rem;
+  height: 2.7rem;
+  border-bottom: 2px solid rgba(247, 167, 186, 0.82);
+  border-left: 2px solid rgba(246, 201, 95, 0.7);
+  border-radius: 0 0 0 22px;
+  opacity: 0.9;
+}
+
+.sealMark {
+  width: 2.7rem;
+  height: 2.7rem;
+  border: 1px solid rgba(191, 199, 213, 0.9);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 38%, rgba(191, 199, 213, 0.62) 39% 42%, transparent 43%),
+    linear-gradient(135deg, rgba(216, 243, 255, 0.55), rgba(255, 255, 255, 0.7));
+  box-shadow: 0 0 18px rgba(216, 243, 255, 0.68);
+}
+
+.familyNodes {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.familyNode {
+  --node-x: calc(16% + (var(--node-index) * 18%));
+  position: absolute;
+  top: 0.68rem;
+  left: min(var(--node-x), 84%);
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: #7ab8ff;
+  box-shadow: 0 0 0 4px rgba(122, 184, 255, 0.14), 0 0 16px rgba(122, 184, 255, 0.9);
+}
+
+.familyNode[data-kind='family_note'] {
+  background: #f7a7ba;
+  box-shadow: 0 0 0 4px rgba(247, 167, 186, 0.14), 0 0 16px rgba(247, 167, 186, 0.82);
+}
+
+.familyNode[data-kind='family_gift'] {
+  background: #eaa340;
+  box-shadow: 0 0 0 4px rgba(234, 163, 64, 0.16), 0 0 16px rgba(234, 163, 64, 0.86);
+}
+
+.familyNode[data-kind='family_note_gift'] {
+  background: #8fe6c6;
+  box-shadow: 0 0 0 4px rgba(143, 230, 198, 0.14), 0 0 16px rgba(143, 230, 198, 0.84);
+}
+
+@keyframes cardPulse {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sourceGlow {
+    animation: none;
+  }
+}

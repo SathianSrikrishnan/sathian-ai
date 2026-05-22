@@ -1,0 +1,78 @@
+.sequence {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  isolation: isolate;
+}
+
+.cardSlot {
+  position: relative;
+  z-index: 2;
+  transform: translateY(0);
+  transition: transform 420ms ease;
+}
+
+.active .cardSlot {
+  transform: translateY(-0.2rem);
+}
+
+.glowRing {
+  position: absolute;
+  inset: 6% 10%;
+  z-index: 1;
+  border: 1px solid rgba(246, 201, 95, 0.28);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(246, 201, 95, 0.24), transparent 58%),
+    radial-gradient(circle at 68% 35%, rgba(143, 230, 198, 0.18), transparent 42%);
+  filter: blur(2px);
+  opacity: 0;
+  transform: scale(0.88);
+}
+
+.active .glowRing {
+  animation: draftGlowForm 2.8s ease-in-out infinite;
+}
+
+.readyMark {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  border: 1px solid rgba(246, 201, 95, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #6d4c0d;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  padding: 0.28rem 0.52rem;
+  box-shadow: 0 0 20px rgba(246, 201, 95, 0.18);
+}
+
+@keyframes draftGlowForm {
+  0%,
+  100% {
+    opacity: 0.36;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.88;
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardSlot {
+    transition: none;
+    transform: none;
+  }
+
+  .active .glowRing {
+    animation: none;
+    opacity: 0.58;
+    transform: scale(1);
+  }
+}

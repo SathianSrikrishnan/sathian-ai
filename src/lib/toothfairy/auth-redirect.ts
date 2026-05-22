@@ -1,4 +1,4 @@
-const SAFE_AUTH_PATH_PREFIXES = ["/app", "/toothfairy"]
+const SAFE_AUTH_PATH_PREFIXES = ["/app", "/toothfairy", "/toothlight"]
 
 function isSafeAuthPath(pathname: string) {
   return SAFE_AUTH_PATH_PREFIXES.some(
