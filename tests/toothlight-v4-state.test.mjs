@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 const root = process.cwd()
 const statePath = resolve(root, 'src/lib/toothlight/toothlight-states.ts')
 const glowPath = resolve(root, 'src/lib/toothlight/glow-filters.ts')
+const treatmentPath = resolve(root, 'src/lib/toothlight/visual-treatments.ts')
 const failures = []
 
 function assert(condition, message) {
@@ -12,9 +13,11 @@ function assert(condition, message) {
 
 assert(existsSync(statePath), 'state model file must exist')
 assert(existsSync(glowPath), 'glow filter file must exist')
+assert(existsSync(treatmentPath), 'visual treatment catalog must exist')
 
 const stateSource = existsSync(statePath) ? readFileSync(statePath, 'utf8') : ''
 const glowSource = existsSync(glowPath) ? readFileSync(glowPath, 'utf8') : ''
+const treatmentSource = existsSync(treatmentPath) ? readFileSync(treatmentPath, 'utf8') : ''
 
 for (const token of [
   'draft_glow',
@@ -40,16 +43,20 @@ assert(
   'state model must define FamilyNodeKind',
 )
 
-const filterIdMatches = glowSource.match(/id:\s*['"][a-z0-9_-]+['"]/g) || []
-assert(filterIdMatches.length >= 8, 'glow catalog must define at least 8 glow filters')
+const treatmentIdMatches = treatmentSource.match(/id:\s*['"][a-z0-9_-]+['"]/g) || []
+assert(treatmentIdMatches.length >= 5, 'visual treatment catalog must define at least 5 meaningful styles')
 assert(
-  /DEFAULT_GLOW_FILTER_ID|defaultGlowFilter|getRecommendedGlow/.test(glowSource),
-  'glow catalog must expose a recommended/default glow',
+  /DEFAULT_VISUAL_TREATMENT_ID|defaultVisualTreatment|getRecommendedLightStyle/.test(treatmentSource),
+  'visual treatment catalog must expose a recommended/default style',
 )
 assert(
-  /descriptionForInternalUse/.test(glowSource),
-  'glow filters must keep longer descriptions internal',
+  /descriptionForInternalUse/.test(treatmentSource),
+  'visual treatments must keep longer descriptions internal',
 )
+assert(/Keepsake Glow/.test(treatmentSource), 'default style should use product language, not generic glow names')
+assert(!/label:\s*['"]Seal['"]/.test(treatmentSource), 'Seal must be a note state, not a creation style')
+assert(/LIGHT_STYLE_VERSION/.test(treatmentSource), 'visual treatment catalog must include a saved rendering version')
+assert(/visual-treatments/.test(glowSource), 'legacy glow catalog must delegate to visual treatments for compatibility')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-state: ${failures.length} issue(s)`)

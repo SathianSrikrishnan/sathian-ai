@@ -4,7 +4,8 @@ import { resolve } from 'node:path'
 const root = process.cwd()
 const pagePath = resolve(root, 'src/app/toothlight/make/page.tsx')
 const clientPath = resolve(root, 'src/components/toothlight/v4/ToothlightMakeClient.tsx')
-const glowPath = resolve(root, 'src/components/toothlight/v4/GlowPicker.tsx')
+const carouselPath = resolve(root, 'src/components/toothlight/v4/LightStyleCarousel.tsx')
+const previewPath = resolve(root, 'src/components/toothlight/v4/ToothlightPreview.tsx')
 const failures = []
 
 function assert(condition, message) {
@@ -13,16 +14,18 @@ function assert(condition, message) {
 
 const page = readFileSync(pagePath, 'utf8')
 const client = existsSync(clientPath) ? readFileSync(clientPath, 'utf8') : ''
-const glowPicker = existsSync(glowPath) ? readFileSync(glowPath, 'utf8') : ''
+const carousel = existsSync(carouselPath) ? readFileSync(carouselPath, 'utf8') : ''
 
 assert(page.includes('ToothlightMakeClient'), '/toothlight/make must use the V4 client component')
 assert(existsSync(clientPath), 'ToothlightMakeClient must exist')
-assert(existsSync(glowPath), 'GlowPicker must exist')
+assert(existsSync(carouselPath), 'LightStyleCarousel must exist')
+assert(existsSync(previewPath), 'ToothlightPreview must exist')
 assert(
   /DrawingCanvasV2/.test(client),
   'creation shell must import or wrap DrawingCanvasV2',
 )
-assert(client.includes('GlowPicker'), 'creation shell must use GlowPicker')
+assert(client.includes('LightStyleCarousel'), 'creation shell must use LightStyleCarousel')
+assert(client.includes('ToothlightPreview'), 'creation shell must use ToothlightPreview')
 assert(
   client.includes('TOOTHLIGHT_DRAFT_STORAGE_KEY') || client.includes('toothlight:v4:draft'),
   'creation shell must store V4 draft under a Toothlight-specific localStorage key',
@@ -35,10 +38,16 @@ assert(
   !/Continue with Google/.test(client.split('Save this Toothlight')[0] ?? ''),
   'creation must happen before Google/account language appears',
 )
-assert(
-  /GLOW_FILTERS|getRecommendedGlow|getGlowFilter/.test(glowPicker),
-  'GlowPicker must use the deterministic V4 glow catalog',
-)
+assert(/Add photo or drawing/.test(client), 'photo/drawing must be the first creation step')
+assert(!/Create the glow first/.test(client), 'make flow must no longer start with the old glow-first headline')
+assert(/Choose a Light Style/.test(client), 'UI must rename glow filters to Light Styles')
+assert(/treatmentId/.test(client), 'draft must store selected treatmentId')
+assert(/renderedImageSrc/.test(client), 'draft must include the rendered Toothlight preview image')
+assert(/captureToothlightPreviewImage/.test(client), 'save flow must capture the visual preview before saving')
+assert(/sourceImageSrc/.test(client), 'draft must preserve the original/source image')
+assert(/logToothlightClientEvent/.test(client), 'make flow must log funnel events')
+assert(/make_step_viewed|source_added|treatment_selected|story_completed|save_clicked/i.test(client), 'make flow must log creation funnel milestones')
+assert(/LIGHT_STYLE_TREATMENTS|getRecommendedLightStyle/.test(carousel), 'LightStyleCarousel must use deterministic Light Style catalog')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-make: ${failures.length} issue(s)`)

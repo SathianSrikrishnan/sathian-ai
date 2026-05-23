@@ -25,7 +25,11 @@ const fallbackToothlight: LocalToothlight = {
   toothName: 'Toothlight',
   caption: 'First tooth. Big smile.',
   imageSrc: null,
-  glowId: 'starlace',
+  sourceImageSrc: null,
+  renderedImageSrc: null,
+  glowId: 'keepsake-glow',
+  treatmentId: 'keepsake-glow',
+  treatmentVersion: 'deterministic-css-v1',
   shareUrl: '/toothlight/t/demo-toothlight',
   savedAt: new Date(0).toISOString(),
 }
@@ -61,8 +65,12 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           childName: persisted.childName,
           toothName: persisted.toothName,
           caption: persisted.caption,
-          imageSrc: persisted.imageSrc,
+          imageSrc: persisted.renderedImageSrc ?? persisted.imageSrc,
+          sourceImageSrc: persisted.sourceImageSrc ?? persisted.imageSrc,
+          renderedImageSrc: persisted.renderedImageSrc ?? persisted.imageSrc,
           glowId: persisted.glowId,
+          treatmentId: persisted.treatmentId ?? persisted.glowId,
+          treatmentVersion: persisted.treatmentVersion,
           shareUrl: persisted.shareUrl,
           savedAt: persisted.savedAt,
         },
@@ -88,7 +96,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
   const noteStatus = futureNote?.status ?? 'none'
   const state = getToothlightVisualState({
     hasSourcePhoto: Boolean(current.imageSrc),
-    hasGlow: Boolean(current.glowId),
+    hasGlow: Boolean(current.treatmentId ?? current.glowId),
     futureNoteStatus: noteStatus,
     hasFullFutureNote: noteStatus === 'sealed',
     hasShortSeedNote: noteStatus === 'seed' || noteStatus === 'started',
@@ -144,7 +152,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
       <div className={styles.cardColumn}>
         <ToothlightCard
-          imageSrc={current.imageSrc}
+          imageSrc={current.renderedImageSrc ?? current.imageSrc}
           title={title}
           caption={current.caption}
           createdLabel={statusLabel}

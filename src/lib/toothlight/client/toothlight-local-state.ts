@@ -11,7 +11,11 @@ export type LocalToothlight = {
   toothName: string
   caption: string
   imageSrc: string | null
+  sourceImageSrc?: string | null
+  renderedImageSrc?: string | null
   glowId: string
+  treatmentId?: string
+  treatmentVersion?: string
   shareUrl: string
   savedAt: string
 }

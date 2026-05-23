@@ -1,115 +1,87 @@
 .shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 16% 5%, rgba(246, 201, 95, 0.16), transparent 24rem),
-    radial-gradient(circle at 90% 12%, rgba(122, 184, 255, 0.14), transparent 25rem),
+    radial-gradient(circle at 8% 0%, rgba(246, 201, 95, 0.16), transparent 18rem),
+    radial-gradient(circle at 98% 8%, rgba(122, 184, 255, 0.14), transparent 21rem),
     linear-gradient(180deg, #fbf8ef, #eef7f2 58%, #fbf8ef);
   color: #17262a;
   font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
 }
 
-.workbench {
-  display: grid;
+.topbar {
+  display: flex;
   width: min(100% - 1.5rem, 1120px);
-  grid-template-columns: 1fr;
-  gap: 1.4rem;
   align-items: center;
+  justify-content: space-between;
   margin: 0 auto;
-  padding: 1.25rem 0 2rem;
+  padding: 1rem 0 0.65rem;
 }
 
-.copy {
-  display: grid;
-  gap: 0.85rem;
-}
-
+.topbar span,
 .backLink {
-  width: fit-content;
-  color: #5f7175;
-  font-size: 0.88rem;
-  font-weight: 850;
+  color: #586d70;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0;
   text-decoration: none;
 }
 
-.eyebrow {
-  margin: 0;
-  color: #9d6b17;
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
-.copy h1 {
-  margin: 0;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 3.1rem;
-  line-height: 0.94;
-  letter-spacing: 0;
-}
-
-.copy p:not(.eyebrow) {
-  max-width: 34rem;
-  margin: 0;
-  color: #34484d;
-  font-size: 1rem;
-  line-height: 1.55;
-}
-
-.previewColumn {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.controls {
+.creator {
   display: grid;
   width: min(100% - 1.5rem, 1120px);
   grid-template-columns: 1fr;
-  gap: 0.85rem;
+  gap: 0.86rem;
   margin: 0 auto;
   padding: 0 0 3rem;
 }
 
-.panel {
-  display: grid;
-  gap: 0.9rem;
+.sourceFirst,
+.previewStage,
+.panel,
+.savePanel {
   border: 1px solid rgba(23, 38, 42, 0.1);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.76);
-  padding: 0.95rem;
+  background: rgba(255, 255, 255, 0.78);
   box-shadow: 0 16px 42px rgba(25, 42, 46, 0.08);
 }
 
-.panelHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.panelHeader span {
+.sourceFirst {
   display: grid;
-  width: 1.9rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border-radius: 999px;
-  background: #f6c95f;
-  color: #32240c;
-  font-size: 0.8rem;
-  font-weight: 900;
+  gap: 0.78rem;
+  padding: 1rem;
 }
 
-.panelHeader h2 {
+.eyebrow,
+.saveKicker {
   margin: 0;
-  font-size: 1.05rem;
+  color: #9d6b17;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.sourceFirst h1 {
+  margin: 0;
+  max-width: 9ch;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.35rem, 16vw, 3.65rem);
+  line-height: 0.92;
   letter-spacing: 0;
 }
 
+.sourceFirst p:not(.eyebrow),
+.savePanel p:not(.accountHint):not(.savedLine):not(.saveKicker) {
+  margin: 0;
+  color: #35494e;
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
 .uploadBox {
+  position: relative;
   display: grid;
-  min-height: 8rem;
+  min-height: 9.5rem;
   place-items: center;
   border: 1px dashed rgba(23, 38, 42, 0.22);
   border-radius: 8px;
@@ -130,43 +102,34 @@
 }
 
 .uploadBox strong {
-  font-size: 1rem;
+  font-size: 1.02rem;
 }
 
 .uploadBox span {
   color: #6c7d80;
-  font-size: 0.82rem;
-  font-weight: 800;
+  font-size: 0.8rem;
+  font-weight: 850;
 }
 
 .secondaryButton,
-.primaryButton {
+.primaryButton,
+.stepRail button {
   display: inline-flex;
-  min-height: 2.8rem;
+  min-height: 2.85rem;
   align-items: center;
   justify-content: center;
-  border: 0;
   border-radius: 999px;
   cursor: pointer;
   font: inherit;
-  font-weight: 900;
+  font-weight: 950;
+  letter-spacing: 0;
 }
 
-.secondaryButton {
+.secondaryButton,
+.stepRail button {
   border: 1px solid rgba(23, 38, 42, 0.14);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.86);
   color: #25373c;
-}
-
-.primaryButton {
-  background: linear-gradient(135deg, #f6c95f, #eaa340);
-  color: #1f2b15;
-  box-shadow: 0 14px 30px rgba(234, 163, 64, 0.24);
-}
-
-.primaryButton:disabled {
-  cursor: progress;
-  opacity: 0.72;
 }
 
 .drawingWrap {
@@ -174,6 +137,65 @@
   border: 1px solid rgba(23, 38, 42, 0.1);
   border-radius: 8px;
   background: #fff;
+}
+
+.previewStage {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  padding: 0.86rem;
+}
+
+.stepRail {
+  display: grid;
+  width: min(100%, 25rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.stepRail button {
+  min-height: 2.35rem;
+  font-size: 0.78rem;
+}
+
+.stepRail .activeStep {
+  border-color: rgba(234, 163, 64, 0.58);
+  background: #f6c95f;
+  color: #32240c;
+}
+
+.panel {
+  display: grid;
+  gap: 0.86rem;
+  min-width: 0;
+  padding: 0.95rem;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.panelHeader span {
+  display: grid;
+  width: 1.9rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 999px;
+  background: #f6c95f;
+  color: #32240c;
+  font-size: 0.8rem;
+  font-weight: 950;
+}
+
+.panelHeader h2,
+.savePanel h2 {
+  margin: 0;
+  color: #17262a;
+  font-size: 1.08rem;
+  line-height: 1.12;
+  letter-spacing: 0;
 }
 
 .field {
@@ -204,6 +226,35 @@
   resize: vertical;
 }
 
+.savePanel {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.primaryButton {
+  border: 0;
+  background: linear-gradient(135deg, #f6c95f, #eaa340);
+  color: #1f2b15;
+  box-shadow: 0 14px 30px rgba(234, 163, 64, 0.24);
+}
+
+.primaryButton:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.accountHint {
+  margin: -0.35rem 0 0;
+  color: #6a7a7e;
+  font-size: 0.8rem;
+  font-weight: 850;
+  line-height: 1.35;
+  text-align: center;
+}
+
 .savedLine {
   margin: 0;
   color: #2d5d50;
@@ -212,34 +263,45 @@
   line-height: 1.42;
 }
 
-.accountHint {
-  margin: -0.35rem 0 0;
-  color: #6a7a7e;
-  font-size: 0.8rem;
-  font-weight: 800;
-  line-height: 1.35;
-  text-align: center;
-}
-
 .savedLine a {
   color: inherit;
   font-weight: 950;
 }
 
 @media (min-width: 860px) {
-  .workbench {
-    min-height: 38rem;
-    grid-template-columns: minmax(0, 0.85fr) minmax(20rem, 0.7fr);
-    gap: 2rem;
-    padding-top: 2rem;
-  }
-
-  .copy h1 {
-    font-size: 4.6rem;
-  }
-
-  .controls {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr) minmax(0, 1fr);
+  .creator {
+    grid-template-columns: minmax(0, 0.95fr) minmax(22rem, 0.85fr);
+    grid-template-areas:
+      "source preview"
+      "style preview"
+      "story save";
+    gap: 1rem;
     align-items: start;
+  }
+
+  .sourceFirst {
+    grid-area: source;
+  }
+
+  .sourceFirst h1 {
+    font-size: 4.2rem;
+  }
+
+  .previewStage {
+    position: sticky;
+    top: 1rem;
+    grid-area: preview;
+  }
+
+  .panel[aria-label='Choose a Light Style'] {
+    grid-area: style;
+  }
+
+  .panel[aria-label='Add the story'] {
+    grid-area: story;
+  }
+
+  .savePanel {
+    grid-area: save;
   }
 }

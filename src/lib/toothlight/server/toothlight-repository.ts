@@ -17,7 +17,11 @@ export type PersistedToothlight = {
   toothName: string
   caption: string
   imageSrc: string | null
+  sourceImageSrc: string | null
+  renderedImageSrc: string | null
   glowId: string
+  treatmentId: string
+  treatmentVersion: string
   shareUrl: string
   savedAt: string
   futureNoteStatus: FutureNoteStatus
@@ -56,6 +60,8 @@ export async function savePersistedToothlight(
   if (!client) return null
 
   const validated = validateToothlightDraft(draft)
+  const sourceImageUri = persistableImageUri(validated.sourceImageSrc)
+  const renderedImageUri = persistableImageUri(validated.renderedImageSrc ?? validated.imageSrc)
   const { data, error } = await client
     .from('tfn_toothlights')
     .insert({
@@ -64,12 +70,18 @@ export async function savePersistedToothlight(
       tooth_name: validated.toothName,
       caption: validated.caption,
       glow_id: validated.glowId,
-      image_uri: persistableImageUri(validated.imageSrc),
+      image_uri: renderedImageUri ?? sourceImageUri,
+      source_image_uri: sourceImageUri,
+      rendered_image_uri: renderedImageUri,
+      treatment_id: validated.treatmentId,
+      treatment_version: validated.treatmentVersion,
       smile_fund_status: 'none',
       share_status: 'family_link',
       unlock_age: 10,
     })
-    .select('id, child_name, tooth_name, caption, glow_id, image_uri, created_at')
+    .select(
+      'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at',
+    )
     .single()
 
   if (error) throw new Error(error.message)
@@ -79,9 +91,13 @@ export async function savePersistedToothlight(
     toothlightId: data.id,
     milestonePda: '',
     childProfilePda: '',
-    imageUri: data.image_uri ?? '',
+    imageUri: data.rendered_image_uri ?? data.image_uri ?? '',
+    sourceImageUri: data.source_image_uri ?? undefined,
+    renderedImageUri: data.rendered_image_uri ?? undefined,
     metadataUri: '',
     shareUrl: `/toothlight/t/${data.id}`,
+    treatmentId: data.treatment_id ?? validated.treatmentId,
+    treatmentVersion: data.treatment_version ?? validated.treatmentVersion,
     status: 'saved' as const,
   }
 }
@@ -94,7 +110,9 @@ export async function getPersistedToothlight(
 
   const { data: toothlight, error } = await client
     .from('tfn_toothlights')
-    .select('id, child_name, tooth_name, caption, glow_id, image_uri, created_at, smile_fund_status')
+    .select(
+      'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at, smile_fund_status',
+    )
     .eq('id', toothlightId)
     .maybeSingle()
 
@@ -121,8 +139,12 @@ export async function getPersistedToothlight(
     childName: toothlight.child_name ?? 'Your child',
     toothName: toothlight.tooth_name ?? 'Toothlight',
     caption: toothlight.caption ?? 'A small tooth became a bright memory.',
-    imageSrc: toothlight.image_uri ?? null,
+    imageSrc: toothlight.rendered_image_uri ?? toothlight.image_uri ?? null,
+    sourceImageSrc: toothlight.source_image_uri ?? toothlight.image_uri ?? null,
+    renderedImageSrc: toothlight.rendered_image_uri ?? toothlight.image_uri ?? null,
     glowId: toothlight.glow_id ?? 'starlace',
+    treatmentId: toothlight.treatment_id ?? toothlight.glow_id ?? 'keepsake-glow',
+    treatmentVersion: toothlight.treatment_version ?? 'legacy-glow-v0',
     shareUrl: `/toothlight/t/${toothlight.id}`,
     savedAt: toothlight.created_at ?? new Date().toISOString(),
     futureNoteStatus: coerceFutureNoteStatus(futureNote?.status),

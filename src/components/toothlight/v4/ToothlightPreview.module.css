@@ -1,0 +1,182 @@
+.preview {
+  --treatment-accent: #f3c85d;
+  --treatment-secondary: #8edcc7;
+  position: relative;
+  display: grid;
+  width: min(100%, 25rem);
+  overflow: hidden;
+  border: 1px solid rgba(21, 35, 38, 0.14);
+  border-radius: 8px;
+  background: #fffdf7;
+  box-shadow: 0 18px 42px rgba(20, 34, 36, 0.16);
+  color: #17262a;
+  isolation: isolate;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 4.65;
+  min-height: 18rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.94), transparent 35%),
+    linear-gradient(135deg, #fff8e5, #e9f4f2);
+}
+
+.sourceImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--treatment-accent), transparent 56%), transparent 35%),
+    radial-gradient(circle at 75% 68%, color-mix(in srgb, var(--treatment-secondary), transparent 64%), transparent 34%),
+    linear-gradient(135deg, #fffdf3, #e8f4f1);
+}
+
+.placeholder span {
+  max-width: 10rem;
+  color: rgba(23, 38, 42, 0.58);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.treatmentWash,
+.edgeLight,
+.sparkLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.treatmentWash {
+  background:
+    radial-gradient(circle at 32% 18%, color-mix(in srgb, var(--treatment-accent), transparent 30%), transparent 28%),
+    radial-gradient(circle at 82% 66%, color-mix(in srgb, var(--treatment-secondary), transparent 42%), transparent 34%);
+  mix-blend-mode: screen;
+  opacity: 0.74;
+}
+
+.edgeLight {
+  border: 1px solid color-mix(in srgb, var(--treatment-accent), transparent 34%);
+  box-shadow:
+    inset 0 0 1.7rem color-mix(in srgb, var(--treatment-secondary), transparent 64%),
+    inset 0 0 4.2rem color-mix(in srgb, var(--treatment-accent), transparent 72%);
+}
+
+.sparkLayer {
+  background:
+    radial-gradient(circle at 22% 24%, rgba(255, 255, 255, 0.92) 0 0.18rem, transparent 0.2rem),
+    radial-gradient(circle at 72% 20%, color-mix(in srgb, var(--treatment-accent), #fff 18%) 0 0.16rem, transparent 0.18rem),
+    radial-gradient(circle at 78% 78%, color-mix(in srgb, var(--treatment-secondary), #fff 12%) 0 0.22rem, transparent 0.24rem);
+  opacity: 0.86;
+  animation: previewPulse 4.8s ease-in-out infinite;
+}
+
+.body {
+  display: grid;
+  gap: 0.38rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.88rem 0.95rem 1rem;
+}
+
+.body span {
+  width: fit-content;
+  border: 1px solid color-mix(in srgb, var(--treatment-accent), transparent 52%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--treatment-accent), transparent 86%);
+  color: #34484d;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  padding: 0.18rem 0.52rem;
+  text-transform: uppercase;
+}
+
+.body h2 {
+  margin: 0;
+  color: #17262a;
+  font-size: 1.16rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.body p {
+  margin: 0;
+  color: #4c6064;
+  font-size: 0.9rem;
+  line-height: 1.36;
+}
+
+.nightlight .media {
+  background: linear-gradient(145deg, #17313d, #d8f3ff);
+}
+
+.nightlight .sourceImage {
+  filter: saturate(0.92) contrast(1.04) brightness(0.94);
+}
+
+.nightlight .treatmentWash {
+  mix-blend-mode: soft-light;
+}
+
+.storybookInk .media {
+  background:
+    linear-gradient(90deg, rgba(38, 61, 65, 0.11) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(38, 61, 65, 0.08) 1px, transparent 1px),
+    #fff8df;
+  background-size: 1rem 1rem;
+}
+
+.storybookInk .sourceImage {
+  filter: saturate(0.76) contrast(1.18);
+}
+
+.storybookInk .treatmentWash {
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+
+.luckyPenny .sparkLayer {
+  background:
+    radial-gradient(circle at 22% 24%, #eaa340 0 0.26rem, transparent 0.28rem),
+    radial-gradient(circle at 76% 30%, rgba(255, 255, 255, 0.92) 0 0.18rem, transparent 0.2rem),
+    radial-gradient(circle at 72% 78%, #72d7bd 0 0.18rem, transparent 0.2rem);
+}
+
+.confettiLight .sparkLayer {
+  background:
+    radial-gradient(circle at 18% 24%, #ff7f62 0 0.2rem, transparent 0.22rem),
+    radial-gradient(circle at 66% 18%, #7ab8ff 0 0.18rem, transparent 0.2rem),
+    radial-gradient(circle at 78% 72%, #f3c85d 0 0.24rem, transparent 0.26rem),
+    radial-gradient(circle at 36% 78%, #8edcc7 0 0.16rem, transparent 0.18rem);
+}
+
+@keyframes previewPulse {
+  0%,
+  100% {
+    opacity: 0.68;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.96;
+    transform: scale(1.012);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkLayer {
+    animation: none;
+  }
+}

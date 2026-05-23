@@ -1,11 +1,18 @@
-import { getGlowFilter } from '@/lib/toothlight/glow-filters'
+import {
+  LIGHT_STYLE_VERSION,
+  getLightStyle,
+} from '@/lib/toothlight/visual-treatments'
 
 export type ToothlightSaveDraft = {
   childName?: string
   toothName?: string
   caption?: string
   imageSrc?: string | null
+  sourceImageSrc?: string | null
+  renderedImageSrc?: string | null
   glowId?: string
+  treatmentId?: string
+  treatmentVersion?: string
 }
 
 export type ToothlightSaveResult = {
@@ -14,8 +21,12 @@ export type ToothlightSaveResult = {
   milestonePda: string
   childProfilePda: string
   imageUri: string
+  sourceImageUri?: string
+  renderedImageUri?: string
   metadataUri: string
   shareUrl: string
+  treatmentId?: string
+  treatmentVersion?: string
   status: 'demo' | 'adapter_unavailable' | 'saved'
 }
 
@@ -23,7 +34,10 @@ export type SaveToothlightAdapter = {
   save: (input: {
     userId: string
     draft: Required<Pick<ToothlightSaveDraft, 'childName' | 'toothName' | 'caption' | 'glowId'>> &
-      Pick<ToothlightSaveDraft, 'imageSrc'>
+      Pick<
+        ToothlightSaveDraft,
+        'imageSrc' | 'sourceImageSrc' | 'renderedImageSrc' | 'treatmentId' | 'treatmentVersion'
+      >
   }) => Promise<ToothlightSaveResult>
 }
 
@@ -31,14 +45,21 @@ export function validateToothlightDraft(draft: ToothlightSaveDraft) {
   const childName = cleanText(draft.childName, 40) || 'Your child'
   const toothName = cleanText(draft.toothName, 44) || 'Toothlight'
   const caption = cleanText(draft.caption, 180) || 'A small tooth became a bright memory.'
-  const glow = getGlowFilter(draft.glowId)
+  const treatment = getLightStyle(draft.treatmentId ?? draft.glowId)
+  const sourceImageSrc = draft.sourceImageSrc ?? draft.imageSrc ?? null
+  const renderedImageSrc = draft.renderedImageSrc ?? draft.imageSrc ?? sourceImageSrc
+  const treatmentVersion = cleanText(draft.treatmentVersion, 40) || LIGHT_STYLE_VERSION
 
   return {
     childName,
     toothName,
     caption,
-    imageSrc: draft.imageSrc ?? null,
-    glowId: glow.id,
+    imageSrc: renderedImageSrc,
+    sourceImageSrc,
+    renderedImageSrc,
+    glowId: treatment.id,
+    treatmentId: treatment.id,
+    treatmentVersion,
   }
 }
 
@@ -76,9 +97,13 @@ export function demoSaveToothlight(draft: ToothlightSaveDraft): ToothlightSaveRe
     toothlightId: 'demo-toothlight',
     milestonePda: 'demo-milestone-pda',
     childProfilePda: 'demo-child-profile-pda',
-    imageUri: validated.imageSrc ?? 'https://example.test/toothlight-image.png',
+    imageUri: validated.renderedImageSrc ?? 'https://example.test/toothlight-image.png',
+    sourceImageUri: validated.sourceImageSrc ?? undefined,
+    renderedImageUri: validated.renderedImageSrc ?? undefined,
     metadataUri: 'https://example.test/toothlight-metadata.json',
     shareUrl: '/toothlight/t/demo-toothlight',
+    treatmentId: validated.treatmentId,
+    treatmentVersion: validated.treatmentVersion,
     status: 'demo',
   }
 }

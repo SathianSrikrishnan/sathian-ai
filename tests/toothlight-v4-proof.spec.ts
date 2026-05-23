@@ -7,7 +7,8 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await page.getByRole('link', { name: /Create a Toothlight/i }).first().click()
 
   await expect(page).toHaveURL(/\/toothlight\/make/)
-  await expect(page.getByRole('heading', { name: /Create the glow first/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Add photo or drawing/i })).toBeVisible()
+  await expect(page.locator('article[data-treatment="keepsake-glow"]')).toBeVisible()
 
   const fileInput = page.locator('input[type="file"]').first()
   await fileInput.setInputFiles({
@@ -19,7 +20,8 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
     ),
   })
 
-  await page.getByRole('button', { name: /Moon/i }).click()
+  await page.getByRole('button', { name: /Nightlight/i }).click()
+  await expect(page.locator('article[data-treatment="nightlight"]')).toBeVisible()
   await page.getByPlaceholder('Kai').fill('Kai')
   await page.getByPlaceholder('First Tooth').fill('First Tooth')
   await page.getByPlaceholder(/Lost after breakfast/i).fill('Lost after breakfast and showed everyone.')

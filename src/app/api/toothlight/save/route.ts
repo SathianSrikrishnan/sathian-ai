@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       userId: 'test-user',
       toothlightId: result.toothlightId,
       eventName: 'toothlight_save_demo',
-      properties: { glowId: payload.glowId ?? null },
+      properties: { treatmentId: payload.treatmentId ?? payload.glowId ?? null },
     })
     return NextResponse.json(result)
   }
@@ -49,13 +49,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Parent account required to save this Toothlight.' }, { status: 401 })
   }
 
-  const imageUri = await uploadToothlightImage({
+  const sourceImageUri = await uploadToothlightImage({
     userId: user.id,
-    imageSrc: payload.imageSrc,
+    imageSrc: payload.sourceImageSrc ?? payload.imageSrc,
+    pathPrefix: 'source',
   })
+  const renderedImageUri = await uploadToothlightImage({
+    userId: user.id,
+    imageSrc: payload.renderedImageSrc ?? payload.imageSrc,
+    pathPrefix: 'rendered',
+  })
+  const imageUri = renderedImageUri ?? sourceImageUri ?? payload.imageSrc
   const result = await savePersistedToothlight({
     userId: user.id,
-    draft: { ...payload, imageSrc: imageUri ?? payload.imageSrc },
+    draft: {
+      ...payload,
+      sourceImageSrc: sourceImageUri ?? payload.sourceImageSrc ?? payload.imageSrc,
+      renderedImageSrc: renderedImageUri ?? payload.renderedImageSrc ?? payload.imageSrc,
+      imageSrc: imageUri,
+    },
   })
 
   if (!result) {
@@ -66,7 +78,7 @@ export async function POST(request: NextRequest) {
     userId: user.id,
     toothlightId: result.toothlightId,
     eventName: 'toothlight_save_attempted',
-    properties: { status: result.status, glowId: payload.glowId ?? null },
+    properties: { status: result.status, treatmentId: payload.treatmentId ?? payload.glowId ?? null },
   })
 
   return NextResponse.json(result)
@@ -80,7 +92,11 @@ async function readPayload(request: NextRequest): Promise<ToothlightSaveDraft> {
       toothName: body.toothName,
       caption: body.caption,
       imageSrc: body.imageSrc,
+      sourceImageSrc: body.sourceImageSrc,
+      renderedImageSrc: body.renderedImageSrc,
       glowId: body.glowId,
+      treatmentId: body.treatmentId,
+      treatmentVersion: body.treatmentVersion,
     }
   } catch {
     return {}
