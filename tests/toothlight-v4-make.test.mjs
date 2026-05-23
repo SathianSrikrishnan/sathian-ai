@@ -45,9 +45,17 @@ assert(/treatmentId/.test(client), 'draft must store selected treatmentId')
 assert(/renderedImageSrc/.test(client), 'draft must include the rendered Toothlight preview image')
 assert(/captureToothlightPreviewImage/.test(client), 'save flow must capture the visual preview before saving')
 assert(/sourceImageSrc/.test(client), 'draft must preserve the original/source image')
+assert(/MAX_SOURCE_IMAGE_SIDE/.test(client), 'uploaded images must be resized before save')
+assert(/toDataURL\('image\/jpeg'/.test(client), 'source and rendered images must be compressed before save')
+assert(/readSaveResponse/.test(client), 'save flow must handle non-JSON platform errors cleanly')
 assert(/logToothlightClientEvent/.test(client), 'make flow must log funnel events')
 assert(/make_step_viewed|source_added|treatment_selected|story_completed|save_clicked/i.test(client), 'make flow must log creation funnel milestones')
 assert(/LIGHT_STYLE_TREATMENTS|getRecommendedLightStyle/.test(carousel), 'LightStyleCarousel must use deterministic Light Style catalog')
+
+const saveFetchBody = client.match(/fetch\('\/api\/toothlight\/save'[\s\S]*?body: JSON\.stringify\(\{([\s\S]*?)\}\),\n\s*\}\)/)?.[1] ?? ''
+assert(saveFetchBody.includes('sourceImageSrc'), 'save request must include the compressed source image')
+assert(saveFetchBody.includes('renderedImageSrc'), 'save request must include the compressed rendered image')
+assert(!/\bimageSrc:/.test(saveFetchBody), 'save request must not duplicate the rendered image as imageSrc')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-make: ${failures.length} issue(s)`)

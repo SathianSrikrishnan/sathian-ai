@@ -45,6 +45,11 @@ type StoredToothlightDraft = Partial<ToothlightDraft> & {
   glowId?: string
 }
 
+const MAX_SOURCE_IMAGE_SIDE = 1400
+const PREVIEW_IMAGE_WIDTH = 900
+const PREVIEW_IMAGE_HEIGHT = 1125
+const IMAGE_EXPORT_QUALITY = 0.82
+
 const defaultDraft: ToothlightDraft = {
   childName: '',
   toothName: '',
@@ -132,14 +137,18 @@ export function ToothlightMakeClient() {
 
   function handleImageFile(file: File | null) {
     if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      const sourceImageSrc = typeof reader.result === 'string' ? reader.result : null
+    void prepareUploadedImage(file)
+  }
+
+  async function prepareUploadedImage(file: File) {
+    try {
+      const sourceImageSrc = await normalizeImageFile(file)
       updateDraft({ sourceImageSrc, renderedImageSrc: null })
       setActiveStep('style')
       logToothlightClientEvent('source_added', { source: 'upload' })
+    } catch {
+      setSaveMessage('That photo could not be prepared. Try a different image.')
     }
-    reader.readAsDataURL(file)
   }
 
   function selectTreatment(treatmentId: string) {
@@ -178,7 +187,6 @@ export function ToothlightMakeClient() {
           childName: saveDraft.childName,
           toothName: saveDraft.toothName,
           caption: saveDraft.caption,
-          imageSrc: saveDraft.renderedImageSrc ?? saveDraft.sourceImageSrc,
           sourceImageSrc: saveDraft.sourceImageSrc,
           renderedImageSrc: saveDraft.renderedImageSrc,
           glowId: saveDraft.treatmentId,
@@ -186,7 +194,7 @@ export function ToothlightMakeClient() {
           treatmentVersion: saveDraft.treatmentVersion,
         }),
       })
-      const result = await response.json()
+      const result = await readSaveResponse(response)
 
       if (!response.ok) {
         if (isParentAuthRequired(response.status)) {
@@ -196,6 +204,10 @@ export function ToothlightMakeClient() {
           return
         }
         throw new Error(result.error || 'Save is not ready yet.')
+      }
+
+      if (!result.toothlightId) {
+        throw new Error('Save completed without a Toothlight id.')
       }
 
       setSaved(true)
@@ -224,6 +236,18 @@ export function ToothlightMakeClient() {
       setSaveMessage(error instanceof Error ? error.message : 'Save is not ready yet.')
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  async function prepareDrawnImage(dataUrl: string) {
+    try {
+      const sourceImageSrc = await normalizeImageDataUrl(dataUrl)
+      updateDraft({ sourceImageSrc, renderedImageSrc: null })
+      setShowDrawing(false)
+      setActiveStep('style')
+      logToothlightClientEvent('source_added', { source: 'drawing' })
+    } catch {
+      setSaveMessage('That drawing could not be prepared. Try again.')
     }
   }
 
@@ -266,10 +290,7 @@ export function ToothlightMakeClient() {
               <DrawingCanvasV2
                 initialBackground={draft.sourceImageSrc}
                 onDone={(dataUrl) => {
-                  updateDraft({ sourceImageSrc: dataUrl, renderedImageSrc: null })
-                  setShowDrawing(false)
-                  setActiveStep('style')
-                  logToothlightClientEvent('source_added', { source: 'drawing' })
+                  void prepareDrawnImage(dataUrl)
                 }}
               />
             </div>
@@ -403,8 +424,8 @@ async function captureToothlightPreviewImage({
 
   const treatment = getLightStyle(treatmentId)
   const canvas = document.createElement('canvas')
-  canvas.width = 1080
-  canvas.height = 1350
+  canvas.width = PREVIEW_IMAGE_WIDTH
+  canvas.height = PREVIEW_IMAGE_HEIGHT
   const context = canvas.getContext('2d')
   if (!context) return sourceImageSrc
 
@@ -418,7 +439,7 @@ async function captureToothlightPreviewImage({
   if (sourceImageSrc) {
     try {
       const image = await loadCanvasImage(sourceImageSrc)
-      drawCoverImage(context, image, 0, 0, canvas.width, 1000)
+      drawCoverImage(context, image, 0, 0, canvas.width, 835)
     } catch {
       drawPlaceholder(context, treatment.accent)
     }
@@ -429,26 +450,81 @@ async function captureToothlightPreviewImage({
   context.globalAlpha = 0.34
   context.fillStyle = treatment.accent
   context.beginPath()
-  context.arc(330, 220, 210, 0, Math.PI * 2)
+  context.arc(275, 185, 175, 0, Math.PI * 2)
   context.fill()
   context.fillStyle = treatment.secondaryAccent
   context.beginPath()
-  context.arc(850, 760, 260, 0, Math.PI * 2)
+  context.arc(710, 635, 215, 0, Math.PI * 2)
   context.fill()
   context.globalAlpha = 1
 
   context.fillStyle = 'rgba(255,255,255,0.92)'
-  context.fillRect(0, 1000, canvas.width, 350)
+  context.fillRect(0, 835, canvas.width, 290)
   context.fillStyle = '#17262a'
-  context.font = '700 42px serif'
-  context.fillText(treatment.label.toUpperCase(), 72, 1090)
-  context.font = '700 62px serif'
-  context.fillText(title.slice(0, 32), 72, 1170)
+  context.font = '700 34px serif'
+  context.fillText(treatment.label.toUpperCase(), 60, 910)
+  context.font = '700 52px serif'
+  context.fillText(title.slice(0, 32), 60, 978)
   context.fillStyle = '#4c6064'
-  context.font = '400 38px sans-serif'
-  context.fillText(caption.slice(0, 54), 72, 1240)
+  context.font = '400 32px sans-serif'
+  context.fillText(caption.slice(0, 54), 60, 1035)
 
-  return canvas.toDataURL('image/png')
+  return canvas.toDataURL('image/jpeg', IMAGE_EXPORT_QUALITY)
+}
+
+async function normalizeImageFile(file: File) {
+  const dataUrl = await readFileAsDataUrl(file)
+  return normalizeImageDataUrl(dataUrl)
+}
+
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result)
+      } else {
+        reject(new Error('Image file could not be read.'))
+      }
+    }
+    reader.onerror = () => reject(new Error('Image file could not be read.'))
+    reader.readAsDataURL(file)
+  })
+}
+
+async function normalizeImageDataUrl(dataUrl: string) {
+  if (typeof document === 'undefined') return dataUrl
+
+  const image = await loadCanvasImage(dataUrl)
+  const scale = Math.min(1, MAX_SOURCE_IMAGE_SIDE / Math.max(image.naturalWidth, image.naturalHeight))
+  const width = Math.max(1, Math.round(image.naturalWidth * scale))
+  const height = Math.max(1, Math.round(image.naturalHeight * scale))
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const context = canvas.getContext('2d')
+  if (!context) return dataUrl
+
+  context.drawImage(image, 0, 0, width, height)
+  return canvas.toDataURL('image/jpeg', IMAGE_EXPORT_QUALITY)
+}
+
+async function readSaveResponse(response: Response): Promise<{
+  error?: string
+  shareUrl?: string
+  toothlightId?: string
+}> {
+  const contentType = response.headers.get('content-type') ?? ''
+  if (contentType.includes('application/json')) {
+    return response.json()
+  }
+
+  const bodyText = await response.text().catch(() => '')
+  if (bodyText.toLowerCase().includes('request en') || response.status === 413) {
+    return { error: 'That photo made the save too large. Try once more, or choose a smaller photo.' }
+  }
+
+  return { error: bodyText || 'Save is not ready yet.' }
 }
 
 function loadCanvasImage(src: string) {
@@ -482,12 +558,15 @@ function drawCoverImage(
 }
 
 function drawPlaceholder(context: CanvasRenderingContext2D, accent: string) {
+  const centerX = context.canvas.width / 2
+  const centerY = Math.min(460, context.canvas.height * 0.4)
+
   context.fillStyle = 'rgba(255, 255, 255, 0.8)'
   context.beginPath()
-  context.arc(540, 460, 210, 0, Math.PI * 2)
+  context.arc(centerX, centerY, 175, 0, Math.PI * 2)
   context.fill()
   context.fillStyle = accent
   context.beginPath()
-  context.arc(540, 460, 118, 0, Math.PI * 2)
+  context.arc(centerX, centerY, 98, 0, Math.PI * 2)
   context.fill()
 }
