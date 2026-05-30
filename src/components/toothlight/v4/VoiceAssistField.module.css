@@ -1,0 +1,89 @@
+.field {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.labelRow {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.labelRow label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.labelRow span {
+  color: #5f7175;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.labelRow textarea {
+  width: 100%;
+  border: 1px solid rgba(23, 38, 42, 0.14);
+  border-radius: 8px;
+  background: #fff;
+  color: #17262a;
+  font: inherit;
+  font-size: 1rem;
+  letter-spacing: 0;
+  padding: 0.78rem 0.85rem;
+  resize: vertical;
+}
+
+.micButton {
+  display: inline-flex;
+  min-height: 2.45rem;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 0.44rem;
+  border: 1px solid rgba(23, 38, 42, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #173c33;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 950;
+  padding: 0 0.82rem;
+}
+
+.micButton[data-listening='true'] {
+  border-color: rgba(234, 163, 64, 0.46);
+  background: rgba(246, 201, 95, 0.26);
+}
+
+.micIcon {
+  display: block;
+  width: 0.64rem;
+  height: 0.9rem;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  box-shadow: 0 0.42rem 0 -0.18rem currentColor;
+}
+
+.voicePrompt,
+.voiceStatus {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.voicePrompt {
+  color: #607276;
+}
+
+.voiceStatus {
+  color: #2d5d50;
+}
+
+@media (min-width: 620px) {
+  .labelRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+

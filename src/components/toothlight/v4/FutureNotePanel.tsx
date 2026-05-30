@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 import { saveLocalFutureNote } from '@/lib/toothlight/client/toothlight-local-state'
 import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
+import { VoiceAssistField } from './VoiceAssistField'
 import styles from './FutureNotePanel.module.css'
 
 type FutureNotePanelProps = {
@@ -82,15 +83,14 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         </p>
       </div>
 
-      <label className={styles.field}>
-        <span>Private note for later</span>
-        <textarea
-          value={sealedText}
-          onChange={(event) => setSealedText(event.target.value)}
-          placeholder="Write what you want them to receive later."
-          rows={6}
-        />
-      </label>
+      <VoiceAssistField
+        label="Private note for later"
+        value={sealedText}
+        onChange={setSealedText}
+        placeholder="Write what you want them to receive later."
+        rows={6}
+        voicePrompt="Say the note, then edit before sealing."
+      />
 
       <label className={styles.field}>
         <span>Unlock age</span>
