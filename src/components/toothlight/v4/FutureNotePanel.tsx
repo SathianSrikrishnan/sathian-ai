@@ -1,33 +1,46 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 
 import { saveLocalFutureNote } from '@/lib/toothlight/client/toothlight-local-state'
+import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
 import styles from './FutureNotePanel.module.css'
 
 type FutureNotePanelProps = {
   toothlightId: string
   initialStatus?: 'none' | 'seed' | 'started' | 'sealed'
+  handoff?: boolean
 }
 
-export function FutureNotePanel({ toothlightId, initialStatus = 'none' }: FutureNotePanelProps) {
-  const [seedNote, setSeedNote] = useState('')
+type NoteSaveResponse = {
+  error?: string
+  status?: string
+  unlockAge?: number
+}
+
+export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff = false }: FutureNotePanelProps) {
   const [sealedText, setSealedText] = useState('')
   const [unlockAge, setUnlockAge] = useState(10)
   const [status, setStatus] = useState(initialStatus)
   const [message, setMessage] = useState('')
   const [saving, setSaving] = useState(false)
+  const canSealNote = sealedText.trim().length > 0 && !saving
 
   async function saveNote() {
+    if (!canSealNote) {
+      setMessage('Add the private note before sealing it for later.')
+      return
+    }
     setSaving(true)
     setMessage('')
     try {
       const response = await fetch(`/api/toothlight/${toothlightId}/future-note`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seedNote, sealedText, unlockAge }),
+        body: JSON.stringify({ sealedText, unlockAge }),
       })
-      const result = await response.json()
+      const result = await readJsonResponse(response)
       if (!response.ok) throw new Error(result.error || 'Note save is not ready yet.')
       setStatus(result.status === 'sealed' ? 'sealed' : 'seed')
       saveLocalFutureNote({
@@ -36,7 +49,16 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none' }: Future
         unlockAge: result.unlockAge ?? unlockAge,
         updatedAt: new Date().toISOString(),
       })
-      setMessage(result.status === 'sealed' ? 'Sealed for later' : 'Note Started')
+      logToothlightClientEvent('note_completed', {
+        toothlightId,
+        status: result.status,
+        unlockAge: result.unlockAge ?? unlockAge,
+      })
+      setMessage(
+        result.status === 'sealed'
+          ? 'Sealed for later. The child can see the Toothlight, not the note.'
+          : 'Note Started',
+      )
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Note save is not ready yet.')
     } finally {
@@ -53,22 +75,14 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none' }: Future
       </div>
 
       <div className={styles.copy}>
-        <p className={styles.eyebrow}>Write a note for later</p>
-        <h1>Save a few words for the future.</h1>
+        <p className={styles.eyebrow}>{handoff ? 'Seal the future note' : 'Write a note for later'}</p>
+        <h1>{handoff ? 'Close the time capsule.' : 'Save a few words for the future.'}</h1>
         <p>
-          The child can revisit the Toothlight now. This private note stays for
-          the unlock moment.
+          {handoff
+            ? 'The memory is ready. Add one private parent note, choose when it opens, then seal it.'
+            : 'The child can revisit the Toothlight now. One private note stays for the unlock moment.'}
         </p>
       </div>
-
-      <label className={styles.field}>
-        <span>Small note starter</span>
-        <input
-          value={seedNote}
-          onChange={(event) => setSeedNote(event.target.value)}
-          placeholder="I want you to remember how proud I was today."
-        />
-      </label>
 
       <label className={styles.field}>
         <span>Private note for later</span>
@@ -89,11 +103,35 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none' }: Future
         </select>
       </label>
 
-      <button type="button" onClick={saveNote} disabled={saving} className={styles.primaryButton}>
-        {saving ? 'Saving note' : 'Seal the note'}
+      <button type="button" onClick={saveNote} disabled={!canSealNote} className={styles.primaryButton}>
+        {saving ? 'Saving note' : `Seal the note for age ${unlockAge}`}
       </button>
 
       {message && <p className={styles.message}>{message}</p>}
+      {status === 'sealed' && (
+        <div className={styles.sealedMoment} aria-label="Sealed future note confirmation">
+          <strong>Sealed for later</strong>
+          <span>Public status is visible. The private note content stays closed.</span>
+          <p>Next: invite family. Family can add a note for later, with a gift optional.</p>
+          <div>
+            <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
+            <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>
+          </div>
+        </div>
+      )}
     </section>
   )
+}
+
+async function readJsonResponse(response: Response): Promise<NoteSaveResponse> {
+  const text = await response.text()
+  if (!text.trim()) return {}
+
+  try {
+    return JSON.parse(text) as NoteSaveResponse
+  } catch {
+    return {
+      error: response.ok ? 'Unexpected note save response.' : 'Note save is not ready yet.',
+    }
+  }
 }

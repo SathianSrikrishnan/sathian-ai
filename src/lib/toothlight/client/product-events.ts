@@ -2,13 +2,23 @@ export const allowedToothlightClientEvents = [
   'make_viewed',
   'make_step_viewed',
   'source_added',
+  'photo_added',
   'drawing_opened',
   'treatment_selected',
+  'style_previewed',
+  'ai_render_started',
+  'ai_render_completed',
+  'ai_render_option_selected',
+  'ai_render_failed',
   'story_completed',
+  'save_attempted',
   'save_clicked',
+  'save_completed',
   'save_succeeded',
   'auth_started',
   'auth_returned',
+  'note_completed',
+  'family_contribution_completed',
 ] as const
 
 export type ToothlightClientEventName = (typeof allowedToothlightClientEvents)[number]

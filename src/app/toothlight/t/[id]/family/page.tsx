@@ -19,10 +19,9 @@ export default function FamilyPage({ params }: FamilyPageProps) {
             Saved Toothlight
           </Link>
           <p className={styles.eyebrow}>Family</p>
-          <h1>Add a gift and a note for later.</h1>
+          <h1>Invite family.</h1>
           <p>
-            Family can join the memory with a short future message. The gift
-            path is demo-safe in this first proof.
+            Family can join the memory with their own short future note. Gift optional.
           </p>
           <ToothlightCard
             title="Kai's Toothlight"

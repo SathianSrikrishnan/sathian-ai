@@ -50,6 +50,30 @@
   line-height: 1.5;
 }
 
+.familyNoteDefault {
+  display: grid;
+  gap: 0.24rem;
+  border: 1px solid rgba(45, 106, 85, 0.14);
+  border-radius: 8px;
+  background:
+    linear-gradient(120deg, rgba(143, 230, 198, 0.18), transparent 48%),
+    rgba(255, 255, 255, 0.76);
+  padding: 0.74rem;
+}
+
+.familyNoteDefault strong {
+  color: #173c33;
+  font-size: 0.88rem;
+  line-height: 1.1;
+}
+
+.familyNoteDefault span {
+  color: #5a6f73;
+  font-size: 0.78rem;
+  font-weight: 820;
+  line-height: 1.28;
+}
+
 .field {
   display: grid;
   gap: 0.35rem;
@@ -126,6 +150,36 @@
 .message {
   color: #2d5d50;
   font-weight: 850;
+}
+
+.completionPanel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(45, 106, 85, 0.16);
+  border-radius: 8px;
+  background: rgba(238, 250, 244, 0.78);
+  padding: 0.75rem;
+}
+
+.completionPanel strong {
+  color: #173c33;
+  font-size: 0.88rem;
+}
+
+.completionPanel a {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  border: 1px solid rgba(23, 38, 42, 0.12);
+  border-radius: 999px;
+  color: #173c33;
+  font-size: 0.78rem;
+  font-weight: 950;
+  padding: 0 0.72rem;
+  text-decoration: none;
 }
 
 @media (min-width: 780px) {

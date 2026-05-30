@@ -1,3 +1,5 @@
+import type { ToothlightStoryFocus } from "@/lib/toothlight/product-render-mode"
+
 export type EnhanceCharm = "sparkle" | "glow" | "magic"
 export type MagicStyleId =
   | "tanda-glow"
@@ -24,9 +26,18 @@ export type EnhanceTradition =
 
 export interface EnhanceRequest {
   drawingDataUrl: string
+  sourceImageDataUrl?: string | null
+  drawingLayerDataUrl?: string | null
+  compositionImageDataUrl?: string | null
+  layerMode?: "layered" | "flattened"
   tradition: EnhanceTradition
   charms?: EnhanceCharm[]
   style?: MagicStyleId
+  promptOverride?: string
+  productRenderModeId?: string
+  productStyleId?: string
+  productCreativePass?: number
+  productStoryFocus?: ToothlightStoryFocus
 }
 
 export interface EnhanceResult {
@@ -37,6 +48,8 @@ export interface EnhanceResult {
   generationMs: number
   remaining: number
   credits?: MagicCreditStatus
+  renderMode?: "layered" | "flattened"
+  modelUsed?: string
 }
 
 export interface MagicCreditStatus {
@@ -102,6 +115,40 @@ async function compressIfNeeded(dataUrl: string, maxChars = 2_600_000): Promise<
   })
 }
 
+async function compressTransparentLayerIfNeeded(
+  dataUrl: string | null | undefined,
+  maxChars = 1_800_000
+): Promise<string | null | undefined> {
+  if (!dataUrl || typeof window === "undefined" || dataUrl.length <= maxChars) {
+    return dataUrl
+  }
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const maxDim = 1024
+      let { width, height } = img
+      if (width > maxDim || height > maxDim) {
+        const scale = maxDim / Math.max(width, height)
+        width = Math.round(width * scale)
+        height = Math.round(height * scale)
+      }
+      const canvas = document.createElement("canvas")
+      canvas.width = width
+      canvas.height = height
+      const ctx = canvas.getContext("2d")
+      if (!ctx) {
+        resolve(dataUrl)
+        return
+      }
+      ctx.clearRect(0, 0, width, height)
+      ctx.drawImage(img, 0, 0, width, height)
+      resolve(canvas.toDataURL("image/png"))
+    }
+    img.onerror = () => resolve(dataUrl)
+    img.src = dataUrl
+  })
+}
+
 export async function callEnhance(
   req: EnhanceRequest
 ): Promise<EnhanceOutcome> {
@@ -113,11 +160,26 @@ export async function callEnhance(
 
   try {
     const drawingDataUrl = await compressIfNeeded(req.drawingDataUrl)
+    const sourceImageDataUrl = req.sourceImageDataUrl
+      ? await compressIfNeeded(req.sourceImageDataUrl)
+      : req.sourceImageDataUrl
+    const compositionImageDataUrl = req.compositionImageDataUrl
+      ? await compressIfNeeded(req.compositionImageDataUrl)
+      : req.compositionImageDataUrl
+    const drawingLayerDataUrl = await compressTransparentLayerIfNeeded(
+      req.drawingLayerDataUrl
+    )
     const res = await fetch("/api/toothfairy/enhance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
-      body: JSON.stringify({ ...req, drawingDataUrl }),
+      body: JSON.stringify({
+        ...req,
+        drawingDataUrl,
+        sourceImageDataUrl,
+        drawingLayerDataUrl,
+        compositionImageDataUrl,
+      }),
     })
 
     if (res.ok) {

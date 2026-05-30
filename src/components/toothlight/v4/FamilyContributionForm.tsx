@@ -1,8 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 
 import { saveLocalFamilyContribution } from '@/lib/toothlight/client/toothlight-local-state'
+import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
 import { FamilyNodeOrbit } from './FamilyNodeOrbit'
 import styles from './FamilyContributionForm.module.css'
 
@@ -10,18 +12,29 @@ type FamilyContributionFormProps = {
   toothlightId: string
 }
 
+type FamilyContributionResponse = {
+  error?: string
+  contributionId?: string
+  contributorName?: string
+  nodeKind?: 'family_note' | 'family_gift' | 'family_note_gift'
+  noteOnly?: boolean
+  giftAmountCents?: number
+}
+
 export function FamilyContributionForm({ toothlightId }: FamilyContributionFormProps) {
   const [contributorName, setContributorName] = useState('')
   const [noteText, setNoteText] = useState('')
   const [giftAmount, setGiftAmount] = useState('25')
-  const [includeGift, setIncludeGift] = useState(true)
-  const [nodeKind, setNodeKind] = useState<'family_note' | 'family_gift' | 'family_note_gift'>('family_note_gift')
+  const [includeGift, setIncludeGift] = useState(false)
+  const [nodeKind, setNodeKind] = useState<'family_note' | 'family_gift' | 'family_note_gift'>('family_note')
   const [message, setMessage] = useState('')
+  const [contributionSaved, setContributionSaved] = useState(false)
   const [saving, setSaving] = useState(false)
 
   async function submitContribution(noteOnly = false) {
     setSaving(true)
     setMessage('')
+    setContributionSaved(false)
     try {
       const response = await fetch(`/api/toothlight/${toothlightId}/family-contribution`, {
         method: 'POST',
@@ -33,18 +46,27 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
           giftAmountCents: noteOnly || !includeGift ? 0 : Number(giftAmount) * 100,
         }),
       })
-      const result = await response.json()
+      const result = await readJsonResponse(response)
       if (!response.ok) throw new Error(result.error || 'Contribution is not ready yet.')
-      setNodeKind(result.nodeKind)
+      const savedNodeKind = result.nodeKind ?? 'family_note'
+      const savedNoteOnly = result.noteOnly ?? true
+      setNodeKind(savedNodeKind)
       saveLocalFamilyContribution({
-        id: result.contributionId,
+        id: result.contributionId ?? `local-${Date.now()}`,
         toothlightId,
-        contributorName: result.contributorName,
-        nodeKind: result.nodeKind,
-        noteOnly: result.noteOnly,
+        contributorName: result.contributorName ?? contributorName,
+        nodeKind: savedNodeKind,
+        noteOnly: savedNoteOnly,
         createdAt: new Date().toISOString(),
       })
-      setMessage(result.noteOnly ? 'Note added for later.' : 'Gift and note added for later.')
+      logToothlightClientEvent('family_contribution_completed', {
+        toothlightId,
+        nodeKind: savedNodeKind,
+        noteOnly: savedNoteOnly,
+        giftAmountCents: result.giftAmountCents ?? 0,
+      })
+      setContributionSaved(true)
+      setMessage(savedNoteOnly ? 'Note added for later.' : 'Gift and note added for later.')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Contribution is not ready yet.')
     } finally {
@@ -53,17 +75,21 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
   }
 
   return (
-    <section className={styles.panel} aria-label="Add a gift and a note for later">
+    <section className={styles.panel} aria-label="Add a note for later">
       <div className={styles.visual}>
         <FamilyNodeOrbit nodes={[{ id: 'current', kind: nodeKind }]} />
       </div>
       <div className={styles.form}>
-        <p className={styles.eyebrow}>Family note</p>
-        <h1>Add a gift and a note for later.</h1>
+        <p className={styles.eyebrow}>Family invite</p>
+        <h1>Family note for later.</h1>
         <p>
-          Leave a short message the child can receive with this Toothlight when
-          the future moment opens.
+          Family can add one short note to the Toothlight. Gift optional.
         </p>
+
+        <div className={styles.familyNoteDefault} aria-label="Family note default">
+          <strong>Default: family note</strong>
+          <span>A gift can be added, but the family memory stands on its own.</span>
+        </div>
 
         <label className={styles.field}>
           <span>Your name</span>
@@ -82,7 +108,7 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
 
         <label className={styles.toggle}>
           <input type="checkbox" checked={includeGift} onChange={(event) => setIncludeGift(event.target.checked)} />
-          <span>Add a small gift</span>
+          <span>Gift optional</span>
         </label>
 
         {includeGift && (
@@ -97,22 +123,32 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
         )}
 
         <div className={styles.actions}>
-          <button type="button" onClick={() => submitContribution(false)} disabled={saving}>
-            Add a gift and a note for later
-          </button>
-          <button
-            type="button"
-            className={styles.secondaryButton}
-            data-path="note-only"
-            onClick={() => submitContribution(true)}
-            disabled={saving}
-          >
-            Add note only
+          <button type="button" onClick={() => submitContribution(!includeGift)} disabled={saving}>
+            {includeGift ? 'Add gift and family note' : 'Add family note'}
           </button>
         </div>
 
         {message && <p className={styles.message}>{message}</p>}
+        {contributionSaved && (
+          <div className={styles.completionPanel} aria-label="Family contribution saved">
+            <strong>Family note added.</strong>
+            <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
+          </div>
+        )}
       </div>
     </section>
   )
+}
+
+async function readJsonResponse(response: Response): Promise<FamilyContributionResponse> {
+  const text = await response.text()
+  if (!text.trim()) return {}
+
+  try {
+    return JSON.parse(text) as FamilyContributionResponse
+  } catch {
+    return {
+      error: response.ok ? 'Unexpected contribution response.' : 'Contribution is not ready yet.',
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import { fal } from "@fal-ai/client"
 import {
+  MAGIC_LAYERED_MODEL,
   MAGIC_MODEL,
   buildMagicPrompt,
   getMagicStyle,
@@ -79,12 +80,19 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
 function buildPrompt(
   tradition: EnhanceTradition,
   charms: EnhanceCharm[],
-  style?: MagicStyleId
+  style?: MagicStyleId,
+  layerMode?: "layered" | "flattened",
+  promptOverride?: string
 ): string {
+  if (promptOverride?.trim()) {
+    return promptOverride.trim()
+  }
+
   if (style) {
     return buildMagicPrompt({
       style: getMagicStyle(style),
       tradition,
+      layerMode,
     })
   }
 
@@ -103,14 +111,24 @@ function buildPrompt(
   }
 
   const accent = parts.join(", and ")
-  return `Create a visible but gentle magical polish for this lost-tooth memory image. Keep every existing child or parent drawing mark exactly where it is, including lines, colors, handwriting, highlights, and marker strokes. Do not erase, repaint, smooth, or correct any existing marks. Add a warm storybook finish around the memory: ${accent}, a soft luminous edge, brighter tooth-focused light, and a delicate memory-card glow. The result should clearly look more magical than the input while preserving the original photo and drawings.`
+  return [
+    "Create a meaningful global image edit for this lost-tooth memory so the whole picture changes visibly.",
+    "Preserve the real source photo as the emotional anchor: keep the face identity, tooth or smile moment, pose, camera angle, room layout, and object placement recognizable.",
+    "Reinterpret child marks, parent marks, handwriting, highlights, and marker strokes into the magical style; restyle handwriting as playful designed lettering and restyle child marks as integrated graphic strokes, not pixel-perfect or pasted back unchanged.",
+    `Use these story cues around the memory: ${accent}, with a luminous edge, tooth-focused light, and a polished memory-card glow.`,
+    "Do not replace the child, do not invent a different scene, and do not erase the handmade meaning. The result should feel AI-enhanced, abstract, tinted, and special while the family can still recognize the original memory.",
+  ].join(" ")
 }
 
 export interface EnhanceRequest {
   imageDataUrl: string
+  sourceImageDataUrl?: string | null
+  drawingLayerDataUrl?: string | null
+  compositionImageDataUrl?: string | null
   tradition: EnhanceTradition
   charms?: EnhanceCharm[]
   style?: MagicStyleId
+  promptOverride?: string
 }
 
 export interface EnhanceResult {
@@ -118,23 +136,52 @@ export interface EnhanceResult {
   prompt: string
   generationMs: number
   styleUsed?: MagicStyleId
+  renderMode: "layered" | "flattened"
+  modelUsed: string
 }
 
 export async function enhanceDrawing(
   req: EnhanceRequest
 ): Promise<EnhanceResult> {
-  const prompt = buildPrompt(req.tradition, req.charms ?? [], req.style)
+  const renderMode =
+    req.sourceImageDataUrl && req.drawingLayerDataUrl ? "layered" : "flattened"
+  const modelUsed = renderMode === "layered" ? MAGIC_LAYERED_MODEL : MAGIC_MODEL
+  const prompt = buildPrompt(
+    req.tradition,
+    req.charms ?? [],
+    req.style,
+    renderMode,
+    req.promptOverride
+  )
   const startedAt = Date.now()
+  const sourceImageForLayer = req.sourceImageDataUrl ?? req.imageDataUrl
+  const drawingLayerForLayer = req.drawingLayerDataUrl ?? req.imageDataUrl
+  const compositionImageForLayer = req.compositionImageDataUrl ?? req.imageDataUrl
+  const safetyTolerance = "2" as const
+  const input =
+    renderMode === "layered"
+      ? {
+          prompt,
+          image_urls: [
+            compositionImageForLayer,
+            sourceImageForLayer,
+            drawingLayerForLayer
+          ],
+          num_images: 1,
+          guidance_scale: 6.75,
+          safety_tolerance: safetyTolerance,
+        }
+      : {
+          prompt,
+          image_url: req.imageDataUrl,
+          num_images: 1,
+          guidance_scale: 6.75,
+          safety_tolerance: safetyTolerance,
+        }
 
   const result = (await withTimeout(
-    fal.subscribe(MAGIC_MODEL, {
-      input: {
-        prompt,
-        image_url: req.imageDataUrl,
-        num_images: 1,
-        guidance_scale: 4.25,
-        safety_tolerance: "2",
-      },
+    fal.subscribe(modelUsed, {
+      input,
       logs: false,
     }),
     PROVIDER_TIMEOUT_MS
@@ -150,5 +197,7 @@ export async function enhanceDrawing(
     prompt,
     generationMs: Date.now() - startedAt,
     styleUsed: req.style,
+    renderMode,
+    modelUsed,
   }
 }

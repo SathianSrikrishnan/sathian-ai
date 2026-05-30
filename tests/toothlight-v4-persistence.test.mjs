@@ -51,6 +51,8 @@ assert(familyRoute.includes('savePersistedFamilyContribution'), 'family route mu
 assert(readRoute.includes('getPersistedToothlight'), 'read route must use persisted Toothlight helper')
 assert(/statusOnly|noContent|futureNoteStatus/.test(readRoute), 'read route must expose status-only note data')
 assert(!/note_body_encrypted|sealedText|noteText/.test(readRoute), 'read route must not expose private note content')
+assert(/params\.id === 'demo-toothlight'/.test(readRoute), 'read route must serve the demo Toothlight without querying Supabase')
+assert(/isValidToothlightId/.test(readRoute), 'read route must reject malformed ids before querying Supabase')
 assert(/fetch\(`\/api\/toothlight\/\$\{toothlightId\}`/.test(savedClient), 'saved client must fetch persisted state')
 assert(savedClient.includes('applyPersistedToothlight'), 'saved client must merge persisted state into UI')
 

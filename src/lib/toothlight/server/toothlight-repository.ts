@@ -11,6 +11,18 @@ import { validateToothlightDraft } from './save-toothlight'
 
 type RepositoryClient = SupabaseClient<any, 'public', any>
 
+const CURRENT_TOOTHLIGHT_SAVE_SELECT =
+  'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, artwork_image_uri, drawing_layer_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at'
+
+const LEGACY_TOOTHLIGHT_SAVE_SELECT =
+  'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at'
+
+const CURRENT_TOOTHLIGHT_SELECT =
+  'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, artwork_image_uri, drawing_layer_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at, smile_fund_status'
+
+const LEGACY_TOOTHLIGHT_SELECT =
+  'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at, smile_fund_status'
+
 export type PersistedToothlight = {
   toothlightId: string
   childName: string
@@ -18,6 +30,8 @@ export type PersistedToothlight = {
   caption: string
   imageSrc: string | null
   sourceImageSrc: string | null
+  artworkImageSrc: string | null
+  drawingLayerImageSrc: string | null
   renderedImageSrc: string | null
   glowId: string
   treatmentId: string
@@ -61,7 +75,82 @@ export async function savePersistedToothlight(
 
   const validated = validateToothlightDraft(draft)
   const sourceImageUri = persistableImageUri(validated.sourceImageSrc)
+  const artworkImageUri = persistableImageUri(validated.artworkImageSrc)
+  const drawingLayerImageUri = persistableImageUri(validated.drawingLayerImageSrc)
   const renderedImageUri = persistableImageUri(validated.renderedImageSrc ?? validated.imageSrc)
+  const { data, error } = await client
+    .from('tfn_toothlights')
+    .insert({
+      user_id: userId,
+      child_name: validated.childName,
+      tooth_name: validated.toothName,
+      caption: validated.caption,
+      glow_id: validated.glowId,
+      image_uri: renderedImageUri ?? sourceImageUri,
+      source_image_uri: sourceImageUri,
+      artwork_image_uri: artworkImageUri,
+      drawing_layer_image_uri: drawingLayerImageUri,
+      rendered_image_uri: renderedImageUri,
+      treatment_id: validated.treatmentId,
+      treatment_version: validated.treatmentVersion,
+      layer_manifest: {
+        version: 1,
+        hasSourcePhoto: Boolean(sourceImageUri),
+        hasArtworkComposite: Boolean(artworkImageUri),
+        hasDrawingLayer: Boolean(drawingLayerImageUri),
+        source: sourceImageUri ? 'source_image_uri' : null,
+        artwork: artworkImageUri ? 'artwork_image_uri' : null,
+        drawingLayer: drawingLayerImageUri ? 'drawing_layer_image_uri' : null,
+        rendered: renderedImageUri ? 'rendered_image_uri' : null,
+      },
+      smile_fund_status: 'none',
+      share_status: 'family_link',
+      unlock_age: 10,
+    })
+    .select(CURRENT_TOOTHLIGHT_SAVE_SELECT)
+    .single()
+
+  if (error && isMissingColumnError(error)) {
+    return savePersistedToothlightLegacy(
+      { userId, validated, sourceImageUri, renderedImageUri },
+      client,
+    )
+  }
+
+  if (error) throw new Error(error.message)
+
+  return {
+    success: true,
+    toothlightId: data.id,
+    milestonePda: '',
+    childProfilePda: '',
+    imageUri: data.rendered_image_uri ?? data.image_uri ?? '',
+    sourceImageUri: data.source_image_uri ?? undefined,
+    artworkImageUri: data.artwork_image_uri ?? undefined,
+    drawingLayerImageUri: data.drawing_layer_image_uri ?? undefined,
+    renderedImageUri: data.rendered_image_uri ?? undefined,
+    metadataUri: '',
+    shareUrl: `/toothlight/t/${data.id}`,
+    treatmentId: data.treatment_id ?? validated.treatmentId,
+    treatmentVersion: data.treatment_version ?? validated.treatmentVersion,
+    status: 'saved' as const,
+  }
+}
+
+async function savePersistedToothlightLegacy(
+  {
+    userId,
+    validated,
+    sourceImageUri,
+    renderedImageUri,
+  }: {
+    userId: string
+    validated: ReturnType<typeof validateToothlightDraft>
+    sourceImageUri: string | null
+    renderedImageUri: string | null
+  },
+  client: RepositoryClient,
+) {
   const { data, error } = await client
     .from('tfn_toothlights')
     .insert({
@@ -79,9 +168,7 @@ export async function savePersistedToothlight(
       share_status: 'family_link',
       unlock_age: 10,
     })
-    .select(
-      'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at',
-    )
+    .select(LEGACY_TOOTHLIGHT_SAVE_SELECT)
     .single()
 
   if (error) throw new Error(error.message)
@@ -93,6 +180,8 @@ export async function savePersistedToothlight(
     childProfilePda: '',
     imageUri: data.rendered_image_uri ?? data.image_uri ?? '',
     sourceImageUri: data.source_image_uri ?? undefined,
+    artworkImageUri: undefined,
+    drawingLayerImageUri: undefined,
     renderedImageUri: data.rendered_image_uri ?? undefined,
     metadataUri: '',
     shareUrl: `/toothlight/t/${data.id}`,
@@ -108,13 +197,24 @@ export async function getPersistedToothlight(
 ): Promise<PersistedToothlight | null> {
   if (!client) return null
 
-  const { data: toothlight, error } = await client
+  const currentResult = await client
     .from('tfn_toothlights')
-    .select(
-      'id, child_name, tooth_name, caption, glow_id, image_uri, source_image_uri, rendered_image_uri, treatment_id, treatment_version, created_at, smile_fund_status',
-    )
+    .select(CURRENT_TOOTHLIGHT_SELECT)
     .eq('id', toothlightId)
     .maybeSingle()
+  let toothlight: any = currentResult.data
+  let error = currentResult.error
+
+  if (error && isMissingColumnError(error)) {
+    const legacyResult = await client
+      .from('tfn_toothlights')
+      .select(LEGACY_TOOTHLIGHT_SELECT)
+      .eq('id', toothlightId)
+      .maybeSingle()
+
+    toothlight = legacyResult.data
+    error = legacyResult.error
+  }
 
   if (error) throw new Error(error.message)
   if (!toothlight) return null
@@ -141,9 +241,11 @@ export async function getPersistedToothlight(
     caption: toothlight.caption ?? 'A small tooth became a bright memory.',
     imageSrc: toothlight.rendered_image_uri ?? toothlight.image_uri ?? null,
     sourceImageSrc: toothlight.source_image_uri ?? toothlight.image_uri ?? null,
+    artworkImageSrc: toothlight.artwork_image_uri ?? null,
+    drawingLayerImageSrc: toothlight.drawing_layer_image_uri ?? null,
     renderedImageSrc: toothlight.rendered_image_uri ?? toothlight.image_uri ?? null,
-    glowId: toothlight.glow_id ?? 'starlace',
-    treatmentId: toothlight.treatment_id ?? toothlight.glow_id ?? 'keepsake-glow',
+    glowId: toothlight.glow_id ?? 'golden-locket',
+    treatmentId: toothlight.treatment_id ?? toothlight.glow_id ?? 'golden-locket',
     treatmentVersion: toothlight.treatment_version ?? 'legacy-glow-v0',
     shareUrl: `/toothlight/t/${toothlight.id}`,
     savedAt: toothlight.created_at ?? new Date().toISOString(),
@@ -247,6 +349,15 @@ function persistableImageUri(imageSrc: string | null | undefined) {
   if (imageSrc.startsWith('http://') || imageSrc.startsWith('https://')) return imageSrc
   if (imageSrc.length < 180_000) return imageSrc
   return null
+}
+
+function isMissingColumnError(error: unknown) {
+  const message =
+    typeof error === 'object' && error && 'message' in error
+      ? String((error as { message?: unknown }).message ?? '')
+      : String(error ?? '')
+
+  return /column .* does not exist|could not find .* column/i.test(message)
 }
 
 function coerceFutureNoteStatus(value: unknown): FutureNoteStatus {

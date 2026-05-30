@@ -27,9 +27,9 @@ const fallbackToothlight: LocalToothlight = {
   imageSrc: null,
   sourceImageSrc: null,
   renderedImageSrc: null,
-  glowId: 'keepsake-glow',
-  treatmentId: 'keepsake-glow',
-  treatmentVersion: 'deterministic-css-v1',
+  glowId: 'golden-locket',
+  treatmentId: 'golden-locket',
+  treatmentVersion: 'deterministic-css-v2',
   shareUrl: '/toothlight/t/demo-toothlight',
   savedAt: new Date(0).toISOString(),
 }
@@ -110,6 +110,45 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
   const statusLabel =
     noteStatus === 'sealed' ? 'Sealed for later' : noteStatus === 'seed' || noteStatus === 'started' ? 'Note Started' : 'No note yet'
+  const noteCtaLabel = noteStatus === 'sealed' ? 'Review sealed status' : 'Seal the future note'
+  const privateNoteStatus =
+    noteStatus === 'sealed'
+      ? 'Private note sealed'
+      : noteStatus === 'seed' || noteStatus === 'started'
+        ? 'Note started'
+        : 'Ready to seal'
+  const noteStatusDetail =
+    noteStatus === 'sealed'
+      ? 'The private note is sealed. The public page only shows status.'
+      : 'Parent note is the next step. The child can see the Toothlight, not the note.'
+  const familyStatus = familyNodes.length ? `${familyNodes.length} family note${familyNodes.length === 1 ? '' : 's'}` : 'Invite family'
+  const capsuleChecklist = [
+    {
+      label: 'Memory saved',
+      detail: current.caption || 'The child-facing Toothlight is ready.',
+      state: 'done',
+    },
+    {
+      label: 'Future note',
+      detail: privateNoteStatus,
+      state: noteStatus === 'sealed' ? 'done' : 'next',
+    },
+    {
+      label: 'Family invite',
+      detail: familyStatus,
+      state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
+    },
+    {
+      label: 'Smile Fund optional',
+      detail: 'Connect later when ready.',
+      state: 'idle',
+    },
+  ]
+  const nextStepTitle = noteStatus === 'sealed' ? 'Next: invite family' : 'Next: seal the future note'
+  const nextStepDetail =
+    noteStatus === 'sealed'
+      ? 'Family can add a note for later. A gift or Smile Fund contribution stays optional.'
+      : 'Seal the parent note first, then invite family when the time capsule is ready.'
 
   return (
     <div className={styles.shell}>
@@ -118,17 +157,27 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           Toothlight
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
-        <h1>{statusLabel === 'No note yet' ? 'Saved for later.' : `${statusLabel}.`}</h1>
+        <h1>Toothlight time capsule.</h1>
         <p>
-          The child can revisit the Toothlight now without seeing the private
-          note. Parents control the note for later, Smile Fund, and family
-          invite.
+          The memory is saved. The private note, family invite, and optional
+          Smile Fund can be added around it without changing the child-facing
+          Toothlight.
         </p>
+
+        <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
+          {capsuleChecklist.map((item, index) => (
+            <div key={item.label} className={styles.capsuleStep} data-state={item.state}>
+              <span>{index + 1}</span>
+              <strong>{item.label}</strong>
+              <small>{item.detail}</small>
+            </div>
+          ))}
+        </div>
 
         <div className={styles.statusGrid}>
           <div className={styles.status}>
             <strong>{statusLabel}</strong>
-            <span>Status can show without content.</span>
+            <span>{noteStatusDetail}</span>
           </div>
           <div className={styles.status}>
             <strong>Smile Fund</strong>
@@ -140,14 +189,27 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           </div>
         </div>
 
-        <div className={styles.actions}>
-          <Link href={`/toothlight/t/${toothlightId}/note`} className={`${styles.actionLink} ${styles.primary}`}>
-            Write a note for later
-          </Link>
-          <Link href={`/toothlight/t/${toothlightId}/family`} className={`${styles.actionLink} ${styles.secondary}`}>
-            Invite family
-          </Link>
+        <div className={styles.nextStepPanel} aria-label="Next step">
+          <div>
+            <strong>{nextStepTitle}</strong>
+            <span>{nextStepDetail}</span>
+          </div>
+          <div className={styles.nextActions}>
+            <Link
+              href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/family` : `/toothlight/t/${toothlightId}/note?handoff=1`}
+              className={`${styles.actionLink} ${styles.primary}`}
+            >
+              {noteStatus === 'sealed' ? 'Invite family' : 'Seal the future note'}
+            </Link>
+            <Link
+              href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/note` : `/toothlight/t/${toothlightId}/family`}
+              className={`${styles.actionLink} ${styles.secondary}`}
+            >
+              {noteStatus === 'sealed' ? noteCtaLabel : 'Invite family later'}
+            </Link>
+          </div>
         </div>
+
       </section>
 
       <div className={styles.cardColumn}>

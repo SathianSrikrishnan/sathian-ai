@@ -5,6 +5,7 @@ const root = process.cwd()
 const statePath = resolve(root, 'src/lib/toothlight/toothlight-states.ts')
 const glowPath = resolve(root, 'src/lib/toothlight/glow-filters.ts')
 const treatmentPath = resolve(root, 'src/lib/toothlight/visual-treatments.ts')
+const localStatePath = resolve(root, 'src/lib/toothlight/client/toothlight-local-state.ts')
 const failures = []
 
 function assert(condition, message) {
@@ -14,10 +15,12 @@ function assert(condition, message) {
 assert(existsSync(statePath), 'state model file must exist')
 assert(existsSync(glowPath), 'glow filter file must exist')
 assert(existsSync(treatmentPath), 'visual treatment catalog must exist')
+assert(existsSync(localStatePath), 'local Toothlight state helper must exist')
 
 const stateSource = existsSync(statePath) ? readFileSync(statePath, 'utf8') : ''
 const glowSource = existsSync(glowPath) ? readFileSync(glowPath, 'utf8') : ''
 const treatmentSource = existsSync(treatmentPath) ? readFileSync(treatmentPath, 'utf8') : ''
+const localStateSource = existsSync(localStatePath) ? readFileSync(localStatePath, 'utf8') : ''
 
 for (const token of [
   'draft_glow',
@@ -53,10 +56,11 @@ assert(
   /descriptionForInternalUse/.test(treatmentSource),
   'visual treatments must keep longer descriptions internal',
 )
-assert(/Keepsake Glow/.test(treatmentSource), 'default style should use product language, not generic glow names')
+assert(/Golden Locket/.test(treatmentSource), 'default style should use product language, not generic glow names')
 assert(!/label:\s*['"]Seal['"]/.test(treatmentSource), 'Seal must be a note state, not a creation style')
 assert(/LIGHT_STYLE_VERSION/.test(treatmentSource), 'visual treatment catalog must include a saved rendering version')
 assert(/visual-treatments/.test(glowSource), 'legacy glow catalog must delegate to visual treatments for compatibility')
+assert(/drawingLayerImageSrc/.test(localStateSource), 'local saved Toothlights must preserve the transparent drawing layer reference')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-state: ${failures.length} issue(s)`)

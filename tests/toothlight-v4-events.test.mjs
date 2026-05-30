@@ -39,12 +39,20 @@ for (const eventName of [
   'make_viewed',
   'make_step_viewed',
   'source_added',
+  'photo_added',
   'drawing_opened',
   'treatment_selected',
+  'style_previewed',
+  'ai_render_started',
+  'ai_render_completed',
   'story_completed',
+  'save_attempted',
   'save_clicked',
+  'save_completed',
   'save_succeeded',
   'auth_started',
+  'note_completed',
+  'family_contribution_completed',
 ]) {
   assert(clientEvents.includes(eventName) || route.includes(eventName) || make.includes(eventName), `event taxonomy must include ${eventName}`)
 }

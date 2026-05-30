@@ -18,6 +18,15 @@ const howSteps = [
   { label: 'Share', detail: 'Family gift and note' },
 ]
 
+const FRONT_DOOR_BEATS = [
+  { label: 'Photo + drawing', detail: 'Child-made memory' },
+  { label: 'AI Toothlight', detail: 'Story object' },
+  { label: 'Sealed note', detail: 'Parent message for later' },
+  { label: 'Family + Smile Fund', detail: 'Optional next layer' },
+]
+
+const trustPills = ['Create before sign-in', 'Original stays saved', 'Parent controls the note']
+
 export default function ToothlightV4EntryPage() {
   return (
     <main className={styles.page}>
@@ -44,6 +53,20 @@ export default function ToothlightV4EntryPage() {
             Turn a lost tooth into a glowing time capsule: photo, drawing,
             story, note for later, and optional Smile Fund.
           </p>
+          <ol className={styles.beatRail} aria-label="10-second Toothlight story">
+            {FRONT_DOOR_BEATS.map((beat, index) => (
+              <li key={beat.label}>
+                <span>{index + 1}</span>
+                <strong>{beat.label}</strong>
+                <small>{beat.detail}</small>
+              </li>
+            ))}
+          </ol>
+          <div className={styles.trustPills} aria-label="Parent trust cues">
+            {trustPills.map((pill) => (
+              <span key={pill}>{pill}</span>
+            ))}
+          </div>
           <div className={styles.actions}>
             <Link href="/toothlight/make" className={styles.primaryAction}>
               Create a Toothlight
@@ -52,6 +75,9 @@ export default function ToothlightV4EntryPage() {
               See the ritual
             </a>
           </div>
+          <p className={styles.heroNote}>
+            Start with the memory. Save and seal only when it feels right.
+          </p>
           <p className={styles.trustLine}>
             Tanda helps make the memory. Parents decide what gets saved.
           </p>

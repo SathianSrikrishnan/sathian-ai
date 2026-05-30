@@ -1,5 +1,8 @@
 import { defineConfig, devices } from 'playwright/test';
 
+const testPort = process.env.PLAYWRIGHT_PORT ?? '3000';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${testPort}`;
+
 /**
  * Playwright config for TFN E2E mobile regression tests.
  *
@@ -20,7 +23,7 @@ export default defineConfig({
     timeout: 15_000,
   },
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL,
     trace: 'on-first-retry',
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
@@ -40,10 +43,11 @@ export default defineConfig({
     // env both via Playwright's webServer.env (passed to the child process)
     // and ALSO via process.env.NEXT_PUBLIC_TEST_MODE so Next.js bundles the
     // value into the client during dev compilation.
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    command: `npm run dev -- -p ${testPort}`,
+    url: baseURL,
     env: {
       NEXT_PUBLIC_TEST_MODE: 'true',
+      PORT: testPort,
       // Next inlines NEXT_PUBLIC_* at compile time — make absolutely sure it's
       // present in the child process env when bundling happens.
       NODE_ENV: process.env.NODE_ENV ?? 'development',

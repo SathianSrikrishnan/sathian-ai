@@ -8,6 +8,7 @@ const saveServicePath = resolve(root, 'src/lib/toothlight/server/save-toothlight
 const repositoryPath = resolve(root, 'src/lib/toothlight/server/toothlight-repository.ts')
 const mediaPath = resolve(root, 'src/lib/toothlight/server/toothlight-media.ts')
 const localStatePath = resolve(root, 'src/lib/toothlight/client/toothlight-local-state.ts')
+const makeClientPath = resolve(root, 'src/components/toothlight/v4/ToothlightMakeClient.tsx')
 const failures = []
 
 function assert(condition, message) {
@@ -22,6 +23,7 @@ const saveService = readFileSync(saveServicePath, 'utf8')
 const repository = readFileSync(repositoryPath, 'utf8')
 const media = readFileSync(mediaPath, 'utf8')
 const localState = readFileSync(localStatePath, 'utf8')
+const makeClient = readFileSync(makeClientPath, 'utf8')
 
 for (const column of ['source_image_uri', 'rendered_image_uri', 'treatment_id', 'treatment_version']) {
   assert(migration.includes(column), `migration must add ${column}`)
@@ -40,6 +42,14 @@ assert(/pathPrefix/.test(media), 'media helper must support storage path prefixe
 assert(/sourceImageSrc/.test(localState), 'local saved Toothlight state must keep source image')
 assert(/renderedImageSrc/.test(localState), 'local saved Toothlight state must keep rendered image')
 assert(/treatmentId/.test(localState), 'local saved Toothlight state must keep treatment id')
+assert(
+  /const renderedImageSrc\s*=\s*draft\.aiRenderedImageSrc\s*\?\?[\s\S]*creationImageSrc/.test(makeClient),
+  'save flow must prefer the AI final, then the composed artwork, before capturing a fallback preview card',
+)
+assert(
+  /captureToothlightPreviewImage[\s\S]*\?\? creationImageSrc/.test(makeClient),
+  'preview-card capture should only be a last fallback when no composed image exists',
+)
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-rendered-image: ${failures.length} issue(s)`)

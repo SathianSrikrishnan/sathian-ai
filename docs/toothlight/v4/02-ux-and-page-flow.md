@@ -1,7 +1,7 @@
 # Toothlight V4 UX And Page Flow
 
 Date: 2026-05-21
-Status: working draft
+Status: working draft; 2026-05-30 product loop checkpoint captured in `08-product-loop-checkpoint.md`
 
 ## UX Principle
 
@@ -14,6 +14,9 @@ The product entry must explain the transformation visually in the first 2 to 3 s
 This should happen through animation, first-load imagery, or a very tight visual sequence. It should not depend on long explanatory copy.
 
 ## Primary Mobile Flow
+
+Checkpoint note:
+The first visitor-test loop is now Make -> AI final -> Save -> one private future note -> family invite -> saved Toothlight. Smile Fund remains optional, and the AI render direction is good enough for testing even though it is not final.
 
 ### 1. Make The Toothlight
 

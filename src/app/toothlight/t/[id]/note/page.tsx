@@ -7,9 +7,14 @@ type FutureNotePageProps = {
   params: {
     id: string
   }
+  searchParams?: {
+    handoff?: string
+  }
 }
 
-export default function FutureNotePage({ params }: FutureNotePageProps) {
+export default function FutureNotePage({ params, searchParams }: FutureNotePageProps) {
+  const handoff = searchParams?.handoff === '1'
+
   return (
     <main className={styles.page}>
       <div className={styles.shell}>
@@ -18,13 +23,14 @@ export default function FutureNotePage({ params }: FutureNotePageProps) {
             Saved Toothlight
           </Link>
           <p className={styles.eyebrow}>Parent note</p>
-          <h1>Write a note for later.</h1>
+          <h1>{handoff ? 'Seal the future note.' : 'Write a note for later.'}</h1>
           <p>
-            Start short, then seal it when it feels right. The public page can
-            show the status without revealing the private note.
+            {handoff
+              ? 'The Toothlight is saved. This parent-only step seals the private note before the child-facing memory is shared.'
+              : 'Start short, then seal it when it feels right. The public page can show the status without revealing the private note.'}
           </p>
         </section>
-        <FutureNotePanel toothlightId={params.id} />
+        <FutureNotePanel toothlightId={params.id} handoff={handoff} />
       </div>
     </main>
   )

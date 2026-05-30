@@ -32,6 +32,14 @@ assert(
   'card CSS must define stable aspect ratio',
 )
 assert(
+  /object-fit:\s*contain/.test(css),
+  'saved Toothlight card must contain saved square artwork instead of cropping it',
+)
+assert(
+  /object-position:\s*center\s+center/.test(css),
+  'saved Toothlight card image must stay visually centered',
+)
+assert(
   /prefers-reduced-motion/.test(css),
   'card CSS must include reduced-motion handling',
 )
