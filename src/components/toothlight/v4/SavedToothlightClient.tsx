@@ -117,10 +117,6 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       : noteStatus === 'seed' || noteStatus === 'started'
         ? 'Note started'
         : 'Ready to seal'
-  const noteStatusDetail =
-    noteStatus === 'sealed'
-      ? 'The private note is sealed. The public page only shows status.'
-      : 'Parent note is the next step. The child can see the Toothlight, not the note.'
   const familyStatus = familyNodes.length ? `${familyNodes.length} family note${familyNodes.length === 1 ? '' : 's'}` : 'Invite family'
   const capsuleChecklist = [
     {
@@ -140,15 +136,15 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
     },
     {
       label: 'Smile Fund optional',
-      detail: 'Connect later when ready.',
+      detail: 'Later',
       state: 'idle',
     },
   ]
   const nextStepTitle = noteStatus === 'sealed' ? 'Next: invite family' : 'Next: seal the future note'
   const nextStepDetail =
     noteStatus === 'sealed'
-      ? 'Family can add a note for later. A gift or Smile Fund contribution stays optional.'
-      : 'Seal the parent note first, then invite family when the time capsule is ready.'
+      ? 'Family can add a note. Gifts stay optional.'
+      : 'One private note closes the time capsule.'
 
   return (
     <div className={styles.shell}>
@@ -158,11 +154,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
         <h1>Toothlight time capsule.</h1>
-        <p>
-          The memory is saved. The private note, family invite, and optional
-          Smile Fund can be added around it without changing the child-facing
-          Toothlight.
-        </p>
+        <p>Saved. Add the private note, then invite family when ready.</p>
 
         <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
           {capsuleChecklist.map((item, index) => (
@@ -172,21 +164,6 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
               <small>{item.detail}</small>
             </div>
           ))}
-        </div>
-
-        <div className={styles.statusGrid}>
-          <div className={styles.status}>
-            <strong>{statusLabel}</strong>
-            <span>{noteStatusDetail}</span>
-          </div>
-          <div className={styles.status}>
-            <strong>Smile Fund</strong>
-            <span>Optional savings layer is ready to connect.</span>
-          </div>
-          <div className={styles.status}>
-            <strong>Family nodes</strong>
-            <span>{familyNodes.length ? `${familyNodes.length} added` : 'Invite family when ready'}</span>
-          </div>
         </div>
 
         <div className={styles.nextStepPanel} aria-label="Next step">

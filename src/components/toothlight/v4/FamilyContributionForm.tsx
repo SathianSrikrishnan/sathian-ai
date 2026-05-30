@@ -82,14 +82,8 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
       <div className={styles.form}>
         <p className={styles.eyebrow}>Family invite</p>
         <h1>Family note for later.</h1>
-        <p>
-          Family can add one short note to the Toothlight. Gift optional.
-        </p>
-
-        <div className={styles.familyNoteDefault} aria-label="Family note default">
-          <strong>Default: family note</strong>
-          <span>A gift can be added, but the family memory stands on its own.</span>
-        </div>
+        <p>Add one note. Gift optional.</p>
+        <div className={styles.familyNoteDefault}>Note first. Gift optional.</div>
 
         <label className={styles.field}>
           <span>Your name</span>
@@ -108,7 +102,7 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
 
         <label className={styles.toggle}>
           <input type="checkbox" checked={includeGift} onChange={(event) => setIncludeGift(event.target.checked)} />
-          <span>Gift optional</span>
+          <span>Add optional gift</span>
         </label>
 
         {includeGift && (

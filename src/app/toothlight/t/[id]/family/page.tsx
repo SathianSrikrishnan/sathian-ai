@@ -20,9 +20,7 @@ export default function FamilyPage({ params }: FamilyPageProps) {
           </Link>
           <p className={styles.eyebrow}>Family</p>
           <h1>Invite family.</h1>
-          <p>
-            Family can join the memory with their own short future note. Gift optional.
-          </p>
+          <p>Family can add a short note for later. Gifts stay optional.</p>
           <ToothlightCard
             title="Kai's Toothlight"
             caption="First tooth. Big smile."

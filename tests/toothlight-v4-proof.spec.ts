@@ -30,7 +30,7 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await expect(page.getByText(/Saved\. Seal the parent note next/i)).toBeVisible()
 
   await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/note\?handoff=1/, { timeout: 8_000 })
-  await expect(page.getByRole('heading', { name: /Seal the future note/i }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Seal the note/i }).first()).toBeVisible()
   await expect(page.getByText(/Small note starter/i)).toHaveCount(0)
   await page.getByPlaceholder(/receive later/i).fill('One day, I hope this reminds you how loved you were.')
   await page.getByRole('button', { name: /Seal the note/i }).click()

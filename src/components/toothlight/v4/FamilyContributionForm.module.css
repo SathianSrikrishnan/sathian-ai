@@ -51,27 +51,14 @@
 }
 
 .familyNoteDefault {
-  display: grid;
-  gap: 0.24rem;
+  width: fit-content;
   border: 1px solid rgba(45, 106, 85, 0.14);
-  border-radius: 8px;
-  background:
-    linear-gradient(120deg, rgba(143, 230, 198, 0.18), transparent 48%),
-    rgba(255, 255, 255, 0.76);
-  padding: 0.74rem;
-}
-
-.familyNoteDefault strong {
+  border-radius: 999px;
+  background: rgba(238, 250, 244, 0.78);
   color: #173c33;
-  font-size: 0.88rem;
-  line-height: 1.1;
-}
-
-.familyNoteDefault span {
-  color: #5a6f73;
   font-size: 0.78rem;
-  font-weight: 820;
-  line-height: 1.28;
+  font-weight: 900;
+  padding: 0.42rem 0.68rem;
 }
 
 .field {

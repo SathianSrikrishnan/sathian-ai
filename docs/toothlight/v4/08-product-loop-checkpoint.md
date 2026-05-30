@@ -145,7 +145,7 @@ Remove-Item Env:\PLAYWRIGHT_PORT
 ## Next priorities
 
 1. UX simplification pass:
-   Reduce copy on the saved, note, and family pages; keep the actions clear and visual.
+   Initial pass applied after the checkpoint: saved, note, and family pages now use shorter copy, fewer explanatory panels, and clearer primary actions.
 
 2. Production readiness pass:
    Confirm Vercel env vars, Supabase schema, Supabase storage, auth callback URLs, and image generation keys.

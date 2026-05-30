@@ -26,6 +26,8 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
   const [message, setMessage] = useState('')
   const [saving, setSaving] = useState(false)
   const canSealNote = sealedText.trim().length > 0 && !saving
+  const statusLabel =
+    status === 'sealed' ? 'Sealed for later' : status === 'seed' || status === 'started' ? 'Note Started' : 'No note'
 
   async function saveNote() {
     if (!canSealNote) {
@@ -68,19 +70,15 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
 
   return (
     <section className={styles.panel} aria-label="Write a note for later">
-      <div className={styles.statusRail} aria-label="Future note status">
-        <span className={status === 'none' ? styles.active : ''}>No note</span>
-        <span className={status === 'seed' || status === 'started' ? styles.active : ''}>Note Started</span>
-        <span className={status === 'sealed' ? styles.active : ''}>Sealed for later</span>
-      </div>
+      <div className={styles.statusPill} aria-label="Future note status">{statusLabel}</div>
 
       <div className={styles.copy}>
         <p className={styles.eyebrow}>{handoff ? 'Seal the future note' : 'Write a note for later'}</p>
-        <h1>{handoff ? 'Close the time capsule.' : 'Save a few words for the future.'}</h1>
+        <h1>{handoff ? 'Seal the note.' : 'Write for later.'}</h1>
         <p>
           {handoff
-            ? 'The memory is ready. Add one private parent note, choose when it opens, then seal it.'
-            : 'The child can revisit the Toothlight now. One private note stays for the unlock moment.'}
+            ? 'One private parent note opens at the chosen age.'
+            : 'The Toothlight stays visible. The note stays closed.'}
         </p>
       </div>
 
@@ -90,7 +88,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
           value={sealedText}
           onChange={(event) => setSealedText(event.target.value)}
           placeholder="Write what you want them to receive later."
-          rows={7}
+          rows={6}
         />
       </label>
 
@@ -104,15 +102,15 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
       </label>
 
       <button type="button" onClick={saveNote} disabled={!canSealNote} className={styles.primaryButton}>
-        {saving ? 'Saving note' : `Seal the note for age ${unlockAge}`}
+        {saving ? 'Saving note' : 'Seal the note'}
       </button>
 
       {message && <p className={styles.message}>{message}</p>}
       {status === 'sealed' && (
         <div className={styles.sealedMoment} aria-label="Sealed future note confirmation">
           <strong>Sealed for later</strong>
-          <span>Public status is visible. The private note content stays closed.</span>
-          <p>Next: invite family. Family can add a note for later, with a gift optional.</p>
+          <span>The private note stays closed.</span>
+          <p>Next: invite family. Family can add a note for later.</p>
           <div>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
             <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>

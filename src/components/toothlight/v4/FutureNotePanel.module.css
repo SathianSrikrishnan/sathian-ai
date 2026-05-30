@@ -9,15 +9,10 @@
   box-shadow: 0 18px 44px rgba(25, 42, 46, 0.08);
 }
 
-.statusRail {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.45rem;
-}
-
-.statusRail span {
-  display: grid;
-  min-height: 2.3rem;
+.statusPill {
+  display: inline-grid;
+  min-height: 2.15rem;
+  width: fit-content;
   place-items: center;
   border: 1px solid rgba(23, 38, 42, 0.1);
   border-radius: 999px;
@@ -26,13 +21,8 @@
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0;
+  padding: 0 0.82rem;
   text-align: center;
-}
-
-.statusRail .active {
-  border-color: rgba(234, 163, 64, 0.36);
-  background: rgba(246, 201, 95, 0.24);
-  color: #553a0a;
 }
 
 .copy {
@@ -171,10 +161,6 @@
 }
 
 @media (max-width: 560px) {
-  .statusRail {
-    grid-template-columns: 1fr;
-  }
-
   .copy h1 {
     font-size: 2rem;
   }
