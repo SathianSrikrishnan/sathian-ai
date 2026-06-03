@@ -86,6 +86,7 @@ Current behavior:
 
 - family can add one note for later;
 - an optional gift can travel with that family note;
+- the family invite page carries forward the saved Toothlight image, title, caption, and family nodes;
 - the form shows a clear completion state;
 - completion links back to the saved Toothlight.
 
@@ -97,7 +98,7 @@ The saved page is the current end-to-end loop status page. It should show the sa
 
 Current limitation:
 
-There is still too much explanatory copy. The next UX pass should reduce wording and make the saved state more visual.
+There is still too much explanatory copy across the full loop. The saved and family pages have started moving toward shorter status language, with the family page now showing one primary visual object: the saved Toothlight.
 
 ## What is intentionally deferred
 

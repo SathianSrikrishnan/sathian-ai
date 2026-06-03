@@ -1,7 +1,4 @@
-import Link from 'next/link'
-
-import { FamilyContributionForm } from '@/components/toothlight/v4/FamilyContributionForm'
-import { ToothlightCard } from '@/components/toothlight/v4/ToothlightCard'
+import { FamilyInviteClient } from '@/components/toothlight/v4/FamilyInviteClient'
 import styles from '../detail.module.css'
 
 type FamilyPageProps = {
@@ -13,27 +10,7 @@ type FamilyPageProps = {
 export default function FamilyPage({ params }: FamilyPageProps) {
   return (
     <main className={styles.page}>
-      <div className={styles.shell}>
-        <section className={styles.copy}>
-          <Link href={`/toothlight/t/${params.id}`} className={styles.backLink}>
-            Saved Toothlight
-          </Link>
-          <p className={styles.eyebrow}>Family</p>
-          <h1>Invite family.</h1>
-          <p>Family can add a short note for later. Gifts stay optional.</p>
-          <ToothlightCard
-            title="Kai's Toothlight"
-            caption="First tooth. Big smile."
-            createdLabel="Family view"
-            visualState="constellated"
-            familyNodes={[
-              { id: 'note-node', kind: 'family_note' },
-              { id: 'gift-node', kind: 'family_gift' },
-            ]}
-          />
-        </section>
-        <FamilyContributionForm toothlightId={params.id} />
-      </div>
+      <FamilyInviteClient toothlightId={params.id} />
     </main>
   )
 }

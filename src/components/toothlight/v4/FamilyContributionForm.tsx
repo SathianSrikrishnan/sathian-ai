@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { saveLocalFamilyContribution } from '@/lib/toothlight/client/toothlight-local-state'
+import { saveLocalFamilyContribution, type LocalFamilyContribution } from '@/lib/toothlight/client/toothlight-local-state'
 import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
-import { FamilyNodeOrbit } from './FamilyNodeOrbit'
 import styles from './FamilyContributionForm.module.css'
 
 type FamilyContributionFormProps = {
   toothlightId: string
+  onContributionSaved?: (contribution: LocalFamilyContribution) => void
 }
 
 type FamilyContributionResponse = {
@@ -21,12 +21,11 @@ type FamilyContributionResponse = {
   giftAmountCents?: number
 }
 
-export function FamilyContributionForm({ toothlightId }: FamilyContributionFormProps) {
+export function FamilyContributionForm({ toothlightId, onContributionSaved }: FamilyContributionFormProps) {
   const [contributorName, setContributorName] = useState('')
   const [noteText, setNoteText] = useState('')
   const [giftAmount, setGiftAmount] = useState('25')
   const [includeGift, setIncludeGift] = useState(false)
-  const [nodeKind, setNodeKind] = useState<'family_note' | 'family_gift' | 'family_note_gift'>('family_note')
   const [message, setMessage] = useState('')
   const [contributionSaved, setContributionSaved] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -50,15 +49,16 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
       if (!response.ok) throw new Error(result.error || 'Contribution is not ready yet.')
       const savedNodeKind = result.nodeKind ?? 'family_note'
       const savedNoteOnly = result.noteOnly ?? true
-      setNodeKind(savedNodeKind)
-      saveLocalFamilyContribution({
+      const contribution: LocalFamilyContribution = {
         id: result.contributionId ?? `local-${Date.now()}`,
         toothlightId,
         contributorName: result.contributorName ?? contributorName,
         nodeKind: savedNodeKind,
         noteOnly: savedNoteOnly,
         createdAt: new Date().toISOString(),
-      })
+      }
+      saveLocalFamilyContribution(contribution)
+      onContributionSaved?.(contribution)
       logToothlightClientEvent('family_contribution_completed', {
         toothlightId,
         nodeKind: savedNodeKind,
@@ -76,13 +76,10 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
 
   return (
     <section className={styles.panel} aria-label="Add a note for later">
-      <div className={styles.visual}>
-        <FamilyNodeOrbit nodes={[{ id: 'current', kind: nodeKind }]} />
-      </div>
       <div className={styles.form}>
         <p className={styles.eyebrow}>Family invite</p>
-        <h1>Family note for later.</h1>
-        <p>Add one note. Gift optional.</p>
+        <h1>Add a family note.</h1>
+        <p>One note for later. Gift optional.</p>
         <div className={styles.familyNoteDefault}>Note first. Gift optional.</div>
 
         <label className={styles.field}>
@@ -91,7 +88,7 @@ export function FamilyContributionForm({ toothlightId }: FamilyContributionFormP
         </label>
 
         <label className={styles.field}>
-          <span>Note for later</span>
+          <span>Family note for later</span>
           <textarea
             value={noteText}
             onChange={(event) => setNoteText(event.target.value)}

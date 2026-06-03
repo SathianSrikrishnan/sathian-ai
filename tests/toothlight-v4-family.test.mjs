@@ -3,6 +3,7 @@ import { resolve } from 'node:path'
 
 const root = process.cwd()
 const familyPagePath = resolve(root, 'src/app/toothlight/t/[id]/family/page.tsx')
+const familyInviteClientPath = resolve(root, 'src/components/toothlight/v4/FamilyInviteClient.tsx')
 const formPath = resolve(root, 'src/components/toothlight/v4/FamilyContributionForm.tsx')
 const orbitPath = resolve(root, 'src/components/toothlight/v4/FamilyNodeOrbit.tsx')
 const routePath = resolve(root, 'src/app/api/toothlight/[id]/family-contribution/route.ts')
@@ -15,6 +16,7 @@ function assert(condition, message) {
 
 for (const [path, label] of [
   [familyPagePath, 'family page'],
+  [familyInviteClientPath, 'FamilyInviteClient'],
   [formPath, 'FamilyContributionForm'],
   [orbitPath, 'FamilyNodeOrbit'],
   [routePath, 'family contribution API'],
@@ -23,13 +25,24 @@ for (const [path, label] of [
   assert(existsSync(path), `${label} must exist`)
 }
 
-const source = [familyPagePath, formPath, orbitPath, routePath, helperPath]
+const familyPage = existsSync(familyPagePath) ? readFileSync(familyPagePath, 'utf8') : ''
+const familyInviteClient = existsSync(familyInviteClientPath) ? readFileSync(familyInviteClientPath, 'utf8') : ''
+const familyForm = existsSync(formPath) ? readFileSync(formPath, 'utf8') : ''
+
+const source = [familyPagePath, familyInviteClientPath, formPath, orbitPath, routePath, helperPath]
   .filter(existsSync)
   .map((path) => readFileSync(path, 'utf8'))
   .join('\n')
 
 assert(/Invite family/.test(source), 'family page must read as an invite step')
-assert(/Family note for later/.test(source), 'family flow must label the optional family note clearly')
+assert(/FamilyInviteClient/.test(familyPage), 'family route must delegate to the client invite surface')
+assert(/readLocalToothlight/.test(familyInviteClient), 'family invite must read the saved Toothlight from local preview storage')
+assert(/readLocalFamilyContributions/.test(familyInviteClient), 'family invite must show existing family nodes from local preview storage')
+assert(/\/api\/toothlight\/\$\{toothlightId\}/.test(familyInviteClient), 'family invite must hydrate from the persisted Toothlight API when available')
+assert(!/Kai's Toothlight/.test(familyPage + familyInviteClient), 'family invite must not hard-code the demo Toothlight')
+assert(!/First tooth\. Big smile\./.test(familyPage + familyInviteClient), 'family invite must not hard-code the demo caption')
+assert(!/FamilyNodeOrbit/.test(familyForm), 'family form must not show a second decorative orbit image beside the real Toothlight')
+assert(/Add a family note/.test(source), 'family flow must label the optional family note clearly')
 assert(/Add family note/.test(source), 'family primary CTA must submit the family note path')
 assert(/View saved Toothlight/.test(source), 'family completion must offer a return to the saved Toothlight')
 assert(/Gift optional/.test(source), 'family flow must frame gift as optional')

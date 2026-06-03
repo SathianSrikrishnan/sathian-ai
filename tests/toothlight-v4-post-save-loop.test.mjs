@@ -6,6 +6,7 @@ const savedClientPath = resolve(root, 'src/components/toothlight/v4/SavedToothli
 const savedCssPath = resolve(root, 'src/components/toothlight/v4/SavedToothlightClient.module.css')
 const notePanelPath = resolve(root, 'src/components/toothlight/v4/FutureNotePanel.tsx')
 const familyPagePath = resolve(root, 'src/app/toothlight/t/[id]/family/page.tsx')
+const familyInviteClientPath = resolve(root, 'src/components/toothlight/v4/FamilyInviteClient.tsx')
 const familyFormPath = resolve(root, 'src/components/toothlight/v4/FamilyContributionForm.tsx')
 const familyCssPath = resolve(root, 'src/components/toothlight/v4/FamilyContributionForm.module.css')
 const failures = []
@@ -18,6 +19,7 @@ const savedClient = existsSync(savedClientPath) ? readFileSync(savedClientPath, 
 const savedCss = existsSync(savedCssPath) ? readFileSync(savedCssPath, 'utf8') : ''
 const notePanel = existsSync(notePanelPath) ? readFileSync(notePanelPath, 'utf8') : ''
 const familyPage = existsSync(familyPagePath) ? readFileSync(familyPagePath, 'utf8') : ''
+const familyInviteClient = existsSync(familyInviteClientPath) ? readFileSync(familyInviteClientPath, 'utf8') : ''
 const familyForm = existsSync(familyFormPath) ? readFileSync(familyFormPath, 'utf8') : ''
 const familyCss = existsSync(familyCssPath) ? readFileSync(familyCssPath, 'utf8') : ''
 
@@ -39,9 +41,12 @@ assert(/Family can add a note for later/.test(notePanel), 'sealed note confirmat
 assert(/View saved Toothlight/.test(notePanel), 'sealed note confirmation must link back to the saved Toothlight')
 assert(!/Small note starter/.test(notePanel), 'future note handoff must not ask for two parent notes')
 
-assert(/Invite family/.test(familyPage + familyForm), 'family flow must read as an optional family invite step')
-assert(/Family note for later/.test(familyForm), 'family form must distinguish the family note from the parent note')
-assert(/Gift optional/.test(familyPage + familyForm), 'family flow must frame the gift as optional')
+assert(/Invite family/.test(familyPage + familyInviteClient + familyForm), 'family flow must read as an optional family invite step')
+assert(/readLocalToothlight/.test(familyInviteClient), 'family invite must carry forward the saved Toothlight visual')
+assert(!/Kai's Toothlight/.test(familyPage + familyInviteClient), 'family invite must not show the demo Toothlight after a real save')
+assert(!/FamilyNodeOrbit/.test(familyForm), 'family form must not show a second unrelated visual')
+assert(/Add a family note/.test(familyInviteClient + familyForm), 'family form must distinguish the family note from the parent note')
+assert(/Gift optional/.test(familyPage + familyInviteClient + familyForm), 'family flow must frame the gift as optional')
 assert(/useState\(false\)/.test(familyForm), 'family gift checkbox must default off')
 assert(/Add family note/.test(familyForm), 'family primary CTA must submit the family note path')
 assert(/View saved Toothlight/.test(familyForm), 'family completion must offer a return to the saved Toothlight')
