@@ -24,7 +24,12 @@ type MinimalSpeechRecognition = {
       }) => void)
     | null
   onend: (() => void) | null
-  onerror: (() => void) | null
+  onerror:
+    | ((event: {
+        error?: string
+        message?: string
+      }) => void)
+    | null
   start: () => void
   stop: () => void
 }
@@ -47,6 +52,29 @@ function joinTranscript(currentText: string, transcript: string) {
   return `${currentText.trimEnd()} ${cleaned}`
 }
 
+function getSpeechErrorMessage(errorName: string) {
+  if (errorName === 'not-allowed' || errorName === 'service-not-allowed') {
+    return 'Microphone blocked. Allow mic permission or type instead.'
+  }
+  if (errorName === 'audio-capture') {
+    return 'No microphone was found. Type instead.'
+  }
+  if (errorName === 'network') {
+    return 'Browser voice failed. Try Record instead.'
+  }
+  if (errorName === 'no-speech') {
+    return 'No speech heard. Try again or use Record.'
+  }
+  return 'Voice missed that. Try Record or type instead.'
+}
+
+function getRecorderMimeType() {
+  if (typeof MediaRecorder === 'undefined') return ''
+  if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) return 'audio/webm;codecs=opus'
+  if (MediaRecorder.isTypeSupported('audio/webm')) return 'audio/webm'
+  return ''
+}
+
 export function VoiceAssistField({
   label,
   value,
@@ -56,9 +84,16 @@ export function VoiceAssistField({
   voicePrompt = 'Say it instead.',
 }: VoiceAssistFieldProps) {
   const [speechSupported, setSpeechSupported] = useState(false)
+  const [recorderSupported, setRecorderSupported] = useState(false)
+  const [speechFallbackMode, setSpeechFallbackMode] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isTranscribing, setIsTranscribing] = useState(false)
   const [voiceStatus, setVoiceStatus] = useState('')
   const recognitionRef = useRef<MinimalSpeechRecognition | null>(null)
+  const recorderRef = useRef<MediaRecorder | null>(null)
+  const streamRef = useRef<MediaStream | null>(null)
+  const chunksRef = useRef<BlobPart[]>([])
   const valueRef = useRef(value)
   const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -68,6 +103,9 @@ export function VoiceAssistField({
 
   useEffect(() => {
     setSpeechSupported(getSpeechRecognitionCtor() !== null)
+    setRecorderSupported(
+      typeof navigator.mediaDevices?.getUserMedia === 'function' && typeof MediaRecorder !== 'undefined',
+    )
     return () => {
       if (stopTimerRef.current) clearTimeout(stopTimerRef.current)
       try {
@@ -75,6 +113,12 @@ export function VoiceAssistField({
       } catch {
         // Speech recognition can throw if it is already stopped.
       }
+      try {
+        recorderRef.current?.stop()
+      } catch {
+        // Recorder can throw if it is already stopped.
+      }
+      streamRef.current?.getTracks().forEach((track) => track.stop())
     }
   }, [])
 
@@ -101,11 +145,98 @@ export function VoiceAssistField({
     [onChange],
   )
 
+  const transcribeRecording = useCallback(
+    async (audioBlob: Blob) => {
+      setIsTranscribing(true)
+      setVoiceStatus('Writing your note...')
+      try {
+        const formData = new FormData()
+        formData.append('audio', audioBlob, 'toothlight-note.webm')
+        const response = await fetch('/api/toothlight/voice-transcribe', {
+          method: 'POST',
+          body: formData,
+        })
+        const result = (await response.json()) as { text?: string; error?: string }
+        if (!response.ok) throw new Error(result.error || 'Voice transcription failed.')
+        if (!result.text?.trim()) {
+          setVoiceStatus('No speech heard. Type or try again.')
+          return
+        }
+        appendTranscript(result.text)
+      } catch (error) {
+        setVoiceStatus(error instanceof Error ? error.message : 'Voice transcription failed. Type instead.')
+      } finally {
+        setIsTranscribing(false)
+      }
+    },
+    [appendTranscript],
+  )
+
+  const stopRecording = useCallback(() => {
+    if (stopTimerRef.current) {
+      clearTimeout(stopTimerRef.current)
+      stopTimerRef.current = null
+    }
+    try {
+      recorderRef.current?.stop()
+    } catch {
+      setIsRecording(false)
+    }
+  }, [])
+
+  const startRecording = useCallback(async () => {
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      setRecorderSupported(false)
+      setVoiceStatus('Recording is unavailable here. Type instead.')
+      return
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const mimeType = getRecorderMimeType()
+      const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream)
+
+      chunksRef.current = []
+      streamRef.current = stream
+      recorderRef.current = recorder
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunksRef.current.push(event.data)
+      }
+      recorder.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop())
+        setIsRecording(false)
+        const audioBlob = new Blob(chunksRef.current, { type: recorder.mimeType || 'audio/webm' })
+        chunksRef.current = []
+        if (audioBlob.size < 500) {
+          setVoiceStatus('No speech heard. Type or try again.')
+          return
+        }
+        void transcribeRecording(audioBlob)
+      }
+
+      recorder.start()
+      setIsRecording(true)
+      setVoiceStatus('Recording... tap Stop when done.')
+      stopTimerRef.current = setTimeout(() => {
+        stopRecording()
+      }, 12000)
+    } catch {
+      setIsRecording(false)
+      setVoiceStatus('Microphone blocked. Allow mic permission or type instead.')
+    }
+  }, [stopRecording, transcribeRecording])
+
   const startListening = useCallback(() => {
     const Ctor = getSpeechRecognitionCtor()
     if (!Ctor) {
       setSpeechSupported(false)
-      setVoiceStatus('Voice is unavailable here. Type instead.')
+      if (recorderSupported) {
+        setSpeechFallbackMode(true)
+        void startRecording()
+      } else {
+        setVoiceStatus('Voice is unavailable here. Type instead.')
+      }
       return
     }
 
@@ -128,9 +259,11 @@ export function VoiceAssistField({
         stopTimerRef.current = null
       }
     }
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      const errorName = event.error ?? 'unknown'
       setIsListening(false)
-      setVoiceStatus('Voice missed that. Type or try again.')
+      setSpeechFallbackMode(true)
+      setVoiceStatus(getSpeechErrorMessage(errorName))
     }
 
     recognitionRef.current = recognition
@@ -145,7 +278,35 @@ export function VoiceAssistField({
       setIsListening(false)
       setVoiceStatus('Voice missed that. Type or try again.')
     }
-  }, [appendTranscript, stopListening])
+  }, [appendTranscript, recorderSupported, startRecording, stopListening])
+
+  const canUseVoice = speechSupported || recorderSupported
+  const useRecorder = speechFallbackMode || !speechSupported
+  const isBusy = isListening || isRecording || isTranscribing
+  const buttonLabel = isTranscribing ? 'Writing' : isListening || isRecording ? 'Stop' : useRecorder ? 'Record' : 'Mic'
+  const buttonAriaLabel =
+    isListening || isRecording
+      ? 'Stop voice input'
+      : useRecorder
+        ? 'Start recorded voice input'
+        : 'Start voice input'
+
+  const handleVoiceButton = useCallback(() => {
+    if (isListening) {
+      stopListening()
+      return
+    }
+    if (isRecording) {
+      stopRecording()
+      return
+    }
+    if (isTranscribing) return
+    if (useRecorder) {
+      void startRecording()
+    } else {
+      startListening()
+    }
+  }, [isListening, isRecording, isTranscribing, startListening, startRecording, stopListening, stopRecording, useRecorder])
 
   return (
     <div className={styles.field}>
@@ -159,22 +320,22 @@ export function VoiceAssistField({
             rows={rows}
           />
         </label>
-        {speechSupported && (
+        {canUseVoice && (
           <button
             type="button"
             className={styles.micButton}
-            onClick={isListening ? stopListening : startListening}
-            aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
-            data-listening={isListening ? 'true' : 'false'}
+            onClick={handleVoiceButton}
+            disabled={isTranscribing}
+            aria-label={buttonAriaLabel}
+            data-listening={isBusy ? 'true' : 'false'}
           >
             <span aria-hidden="true" className={styles.micIcon} />
-            {isListening ? 'Stop' : 'Mic'}
+            {buttonLabel}
           </button>
         )}
       </div>
-      {speechSupported && <p className={styles.voicePrompt}>{voicePrompt}</p>}
+      {canUseVoice && <p className={styles.voicePrompt}>{voicePrompt}</p>}
       {voiceStatus && <p className={styles.voiceStatus}>{voiceStatus}</p>}
     </div>
   )
 }
-

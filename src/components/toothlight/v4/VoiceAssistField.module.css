@@ -55,6 +55,11 @@
   background: rgba(246, 201, 95, 0.26);
 }
 
+.micButton:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
 .micIcon {
   display: block;
   width: 0.64rem;
@@ -86,4 +91,3 @@
     align-items: end;
   }
 }
-

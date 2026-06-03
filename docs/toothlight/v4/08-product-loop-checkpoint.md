@@ -113,7 +113,9 @@ There is still too much explanatory copy. The next UX pass should reduce wording
 
 Voice should enter as assistive input, not a full real-time Tanda agent. The first implementation target is the parent future note: the parent can tap a mic button, speak the note, review the transcript in the same text field, edit it, then seal it. Approved text remains the saved source of truth.
 
-The first fast path should use browser speech recognition where available, with the normal text field always visible as the fallback. Server transcription, Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
+The first fast path uses browser speech recognition where available, with the normal text field always visible as the fallback. If browser speech fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
+
+Production voice transcription is intentionally opt-in. It requires `OPENAI_API_KEY` plus `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`; Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
 
 ## First-testing acceptance bar
 
