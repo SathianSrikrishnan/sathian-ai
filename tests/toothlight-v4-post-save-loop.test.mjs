@@ -22,13 +22,16 @@ const familyForm = existsSync(familyFormPath) ? readFileSync(familyFormPath, 'ut
 const familyCss = existsSync(familyCssPath) ? readFileSync(familyCssPath, 'utf8') : ''
 
 assert(/Toothlight time capsule/.test(savedClient), 'saved page must frame the object as a Toothlight time capsule')
-for (const label of ['Memory saved', 'Future note', 'Family invite', 'Smile Fund optional']) {
+for (const label of ['Memory saved', 'Future note', 'Family note + gift']) {
   assert(savedClient.includes(label), `saved page must show ${label} in the capsule checklist`)
 }
+assert(!savedClient.includes('Smile Fund optional'), 'saved page must not treat Smile Fund as a separate post-save step')
+assert(!/smileFundStatus:\s*'active'/.test(savedClient), 'saved page must not force Smile Fund active before a family gift exists')
 assert(/privateNoteStatus/.test(savedClient), 'saved page must compute private note status separately from public card state')
 assert(/nextStepPanel/.test(savedClient + savedCss), 'saved page must include a clear next-step panel')
 assert(/capsuleChecklist/.test(savedClient + savedCss), 'saved page must style the capsule checklist')
 assert(/Invite family/.test(savedClient), 'saved page must make family invitation the post-seal next action')
+assert(/note and optional gift/.test(savedClient), 'saved page must explain that family invite includes the optional gift path')
 assert(!/audit page/i.test(savedClient), 'saved page copy must not describe the customer-facing object as an audit page')
 
 assert(/Next: invite family/.test(notePanel), 'sealed note confirmation must point to the family invite next')

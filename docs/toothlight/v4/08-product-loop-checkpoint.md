@@ -15,7 +15,7 @@ The first product loop is intentionally small:
 4. The original memory remains preserved.
 5. The parent saves the Toothlight.
 6. The parent can seal one private future note.
-7. Family can add a note, with gifting and Smile Fund treated as optional follow-on layers.
+7. Family can add a note and optional gift for later; Smile Fund language stays folded into this family invite path.
 
 The render quality is good enough for the first 20 to 50 visitor tests. It is not the final long-term creative system. The immediate product value is the end-to-end ritual: make something together, save it, seal a note for later, and invite family around the memory.
 
@@ -53,8 +53,7 @@ The saved page uses a checklist:
 
 - memory saved;
 - future note;
-- family invite;
-- Smile Fund optional.
+- family note + gift.
 
 The next user action should be contextual. If no private note is sealed, the page should guide to the note step. If the note exists, it should guide to family invite. Smile Fund stays optional until the product proves the emotional loop.
 
@@ -86,7 +85,7 @@ The family step should read as optional support around the memory, not as a requ
 Current behavior:
 
 - family can add one note for later;
-- gift amount remains optional;
+- an optional gift can travel with that family note;
 - the form shows a clear completion state;
 - completion links back to the saved Toothlight.
 
@@ -94,7 +93,7 @@ Current behavior:
 
 Route: `/toothlight/t/[id]`
 
-The saved page is the current audit page for the end-to-end loop. It should show the saved Toothlight, note status, family status, and Smile Fund status without exposing crypto or database details.
+The saved page is the current end-to-end loop status page. It should show the saved Toothlight, note status, and family invite status without exposing crypto, payment-provider, or database details.
 
 Current limitation:
 

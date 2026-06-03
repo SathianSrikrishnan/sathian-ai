@@ -94,13 +94,14 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
   const current = toothlight ?? { ...fallbackToothlight, toothlightId }
   const noteStatus = futureNote?.status ?? 'none'
+  const hasFamilyGift = familyNodes.some((node) => node.nodeKind === 'family_gift' || node.nodeKind === 'family_note_gift')
   const state = getToothlightVisualState({
     hasSourcePhoto: Boolean(current.imageSrc),
     hasGlow: Boolean(current.treatmentId ?? current.glowId),
     futureNoteStatus: noteStatus,
     hasFullFutureNote: noteStatus === 'sealed',
     hasShortSeedNote: noteStatus === 'seed' || noteStatus === 'started',
-    smileFundStatus: 'active',
+    smileFundStatus: hasFamilyGift ? 'active' : 'none',
     familyNodes: familyNodes.map((node) => node.nodeKind),
   })
   const title = useMemo(
@@ -117,7 +118,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       : noteStatus === 'seed' || noteStatus === 'started'
         ? 'Note started'
         : 'Ready to seal'
-  const familyStatus = familyNodes.length ? `${familyNodes.length} family note${familyNodes.length === 1 ? '' : 's'}` : 'Invite family'
+  const familyStatus = familyNodes.length ? `${familyNodes.length} family addition${familyNodes.length === 1 ? '' : 's'}` : 'Invite family'
   const capsuleChecklist = [
     {
       label: 'Memory saved',
@@ -130,20 +131,15 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       state: noteStatus === 'sealed' ? 'done' : 'next',
     },
     {
-      label: 'Family invite',
+      label: 'Family note + gift',
       detail: familyStatus,
       state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
-    },
-    {
-      label: 'Smile Fund optional',
-      detail: 'Later',
-      state: 'idle',
     },
   ]
   const nextStepTitle = noteStatus === 'sealed' ? 'Next: invite family' : 'Next: seal the future note'
   const nextStepDetail =
     noteStatus === 'sealed'
-      ? 'Family can add a note. Gifts stay optional.'
+      ? 'Family can add a note and optional gift for later.'
       : 'One private note closes the time capsule.'
 
   return (
@@ -154,7 +150,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
         <h1>Toothlight time capsule.</h1>
-        <p>Saved. Add the private note, then invite family when ready.</p>
+        <p>Saved. Seal the note, then invite family to add a note or gift.</p>
 
         <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
           {capsuleChecklist.map((item, index) => (
