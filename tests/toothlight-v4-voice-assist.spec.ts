@@ -87,3 +87,43 @@ test('Voice Assist falls back to recording when browser speech fails', async ({ 
   await expect(page.getByText(/Browser voice failed\. Try Record instead\./)).toBeVisible()
   await expect(page.getByRole('button', { name: /start recorded voice input/i })).toBeVisible()
 })
+
+test('Voice Assist explains how to recover when the microphone is already blocked', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.assign(window, {
+      SpeechRecognition: undefined,
+      webkitSpeechRecognition: undefined,
+    })
+
+    class FakeMediaRecorder {
+      static isTypeSupported() {
+        return true
+      }
+    }
+
+    Object.assign(window, {
+      MediaRecorder: FakeMediaRecorder,
+    })
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => {
+          throw new DOMException('Permission denied', 'NotAllowedError')
+        },
+      },
+    })
+    Object.defineProperty(navigator, 'permissions', {
+      configurable: true,
+      value: {
+        query: async () => ({ state: 'denied' }),
+      },
+    })
+  })
+
+  await page.goto('/toothlight/t/demo-toothlight/note?handoff=1', { waitUntil: 'load' })
+
+  await page.getByRole('button', { name: /start recorded voice input/i }).click()
+  await expect(page.getByText(/If no prompt appeared/i)).toBeVisible()
+  await expect(page.getByText(/address bar/i)).toBeVisible()
+  await expect(page.getByText(/Microphone to Allow/i)).toBeVisible()
+})

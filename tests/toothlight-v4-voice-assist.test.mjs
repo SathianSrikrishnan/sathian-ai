@@ -32,6 +32,8 @@ assert(/appendTranscript|joinTranscript|currentText/i.test(component), 'voice as
 assert(/MediaRecorder|getUserMedia/.test(component), 'voice assist must fall back to recording when browser speech fails')
 assert(/\/api\/toothlight\/voice-transcribe/.test(component), 'voice assist fallback must call the Toothlight transcription route')
 assert(/not-allowed|audio-capture|network|no-speech/.test(component), 'voice assist must show specific speech failure reasons')
+assert(/permissions\.query/.test(component), 'voice assist must check whether microphone permission was already denied')
+assert(/address bar/.test(component) && /Microphone to Allow/.test(component), 'voice assist must explain how to recover if no permission prompt appears')
 assert(/textarea/.test(component), 'voice assist must keep typed fallback visible')
 assert(/onChange/.test(component), 'voice assist must keep approved text controlled by the parent')
 assert(!/\/api\/voice|ElevenLabs|conversation/.test(component), 'voice assist MVP must not call the generic voice-agent APIs')

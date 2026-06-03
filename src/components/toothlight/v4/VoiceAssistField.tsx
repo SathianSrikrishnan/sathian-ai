@@ -35,6 +35,10 @@ type MinimalSpeechRecognition = {
 }
 
 type SpeechRecognitionCtor = new () => MinimalSpeechRecognition
+type MicrophonePermissionState = PermissionState | null
+
+const MICROPHONE_PERMISSION_HELP =
+  'Microphone is blocked. If no prompt appeared, click the site icon in the address bar, set Microphone to Allow, then reload. You can also type the note.'
 
 function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
   if (typeof window === 'undefined') return null
@@ -54,7 +58,7 @@ function joinTranscript(currentText: string, transcript: string) {
 
 function getSpeechErrorMessage(errorName: string) {
   if (errorName === 'not-allowed' || errorName === 'service-not-allowed') {
-    return 'Microphone blocked. Allow mic permission or type instead.'
+    return MICROPHONE_PERMISSION_HELP
   }
   if (errorName === 'audio-capture') {
     return 'No microphone was found. Type instead.'
@@ -66,6 +70,24 @@ function getSpeechErrorMessage(errorName: string) {
     return 'No speech heard. Try again or use Record.'
   }
   return 'Voice missed that. Try Record or type instead.'
+}
+
+async function getMicrophonePermissionState(): Promise<MicrophonePermissionState> {
+  if (typeof navigator === 'undefined' || typeof navigator.permissions?.query !== 'function') return null
+
+  try {
+    const permission = await navigator.permissions.query({ name: 'microphone' as PermissionName })
+    return permission.state
+  } catch {
+    return null
+  }
+}
+
+function isMicrophonePermissionError(error: unknown) {
+  return (
+    error instanceof DOMException &&
+    (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
+  )
 }
 
 function getRecorderMimeType() {
@@ -192,6 +214,12 @@ export function VoiceAssistField({
     }
 
     try {
+      const permissionState = await getMicrophonePermissionState()
+      if (permissionState === 'denied') {
+        setVoiceStatus(MICROPHONE_PERMISSION_HELP)
+        return
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       const mimeType = getRecorderMimeType()
       const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream)
@@ -221,9 +249,9 @@ export function VoiceAssistField({
       stopTimerRef.current = setTimeout(() => {
         stopRecording()
       }, 12000)
-    } catch {
+    } catch (error) {
       setIsRecording(false)
-      setVoiceStatus('Microphone blocked. Allow mic permission or type instead.')
+      setVoiceStatus(isMicrophonePermissionError(error) ? MICROPHONE_PERMISSION_HELP : 'Microphone failed. Type instead.')
     }
   }, [stopRecording, transcribeRecording])
 
