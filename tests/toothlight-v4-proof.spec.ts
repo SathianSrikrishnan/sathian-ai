@@ -30,7 +30,7 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await expect(page.getByText(/Saved\. Seal the parent note next/i)).toBeVisible()
 
   await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/note\?handoff=1/, { timeout: 8_000 })
-  await expect(page.getByRole('heading', { name: /Seal the note/i }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Say or type the note/i })).toBeVisible()
   await expect(page.getByText(/Small note starter/i)).toHaveCount(0)
   await page.getByPlaceholder(/receive later/i).fill('One day, I hope this reminds you how loved you were.')
   await page.getByRole('button', { name: /Seal the note/i }).click()
@@ -40,9 +40,10 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
 
   await page.goto('/toothlight/t/demo-toothlight/family', { waitUntil: 'load' })
   await expect(page.getByRole('heading', { name: /Invite family/i }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Add a note or gift/i })).toBeVisible()
   await page.getByPlaceholder('Nana').fill('Nana')
   await page.getByPlaceholder(/how loved/i).fill('I am saving this little note for your future smile.')
-  await page.getByRole('button', { name: /Add family note/i }).click()
+  await page.getByRole('button', { name: /Add to Toothlight/i }).click()
   await expect(page.getByText(/Note added for later/i)).toBeVisible()
   await expect(page.getByRole('link', { name: /View saved Toothlight/i })).toBeVisible()
 })
