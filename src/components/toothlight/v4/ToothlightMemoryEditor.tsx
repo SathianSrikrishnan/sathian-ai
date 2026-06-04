@@ -81,8 +81,6 @@ export function ToothlightMemoryEditor({
       />
 
       <div className={styles.intro}>
-        <p className={styles.eyebrow}>Make the memory</p>
-        <h1>Add the tooth.</h1>
         <p>
           Start with a photo of your tooth, your smile, or anything you want to create.
           Draw on it, make it your own, then enhance it with an AI filter.

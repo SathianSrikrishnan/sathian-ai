@@ -7,7 +7,8 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await page.getByRole('link', { name: /Create a Toothlight/i }).first().click()
 
   await expect(page).toHaveURL(/\/toothlight\/make/)
-  await expect(page.getByRole('heading', { name: /Add the tooth/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Add the tooth/i })).toHaveCount(0)
+  await expect(page.getByText(/Start with a photo of your tooth/i)).toBeVisible()
   await expect(page.locator('article[data-treatment="golden-locket"]')).toBeVisible()
 
   const fileInput = page.locator('input[type="file"]').first()

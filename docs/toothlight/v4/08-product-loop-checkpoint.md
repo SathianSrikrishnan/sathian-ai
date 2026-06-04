@@ -27,6 +27,8 @@ Route: `/toothlight/make`
 
 The parent starts with a photo, camera capture, or drawing. The child drawing layer is treated as input to the Toothlight object, not as a separate sticker product.
 
+The memory step now keeps the intro minimal: one helper sentence before the photo, camera, and drawing controls.
+
 The default render action is the 3D/story-object Toothlight direction. The Light Style options remain available because they give the system enough variety for testing and can map back to fairy-world story objects later.
 
 ### 2. AI final
