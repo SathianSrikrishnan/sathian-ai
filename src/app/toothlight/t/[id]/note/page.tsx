@@ -23,11 +23,11 @@ export default function FutureNotePage({ params, searchParams }: FutureNotePageP
             Saved Toothlight
           </Link>
           <p className={styles.eyebrow}>Parent note</p>
-          <h1>{handoff ? 'Seal the note.' : 'Write for later.'}</h1>
+          <h1>{handoff ? 'Parent note.' : 'Note for later.'}</h1>
           <p>
             {handoff
-              ? 'One private note. One unlock age. Then the time capsule is closed.'
-              : 'The public page shows status only. The private note stays closed.'}
+              ? 'Say or type the private note.'
+              : 'The private note stays closed.'}
           </p>
         </section>
         <FutureNotePanel toothlightId={params.id} handoff={handoff} />

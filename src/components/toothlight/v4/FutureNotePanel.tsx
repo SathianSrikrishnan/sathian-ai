@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { saveLocalFutureNote } from '@/lib/toothlight/client/toothlight-local-state'
+import { readLocalFutureNote, saveLocalFutureNote } from '@/lib/toothlight/client/toothlight-local-state'
 import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
 import { VoiceAssistField } from './VoiceAssistField'
 import styles from './FutureNotePanel.module.css'
@@ -14,10 +14,19 @@ type FutureNotePanelProps = {
   handoff?: boolean
 }
 
+type FutureNoteStatus = NonNullable<FutureNotePanelProps['initialStatus']>
+
 type NoteSaveResponse = {
   error?: string
   status?: string
   unlockAge?: number
+}
+
+type ToothlightStatusResponse = {
+  toothlight?: {
+    futureNoteStatus?: unknown
+    unlockAge?: unknown
+  }
 }
 
 export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff = false }: FutureNotePanelProps) {
@@ -29,6 +38,36 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
   const canSealNote = sealedText.trim().length > 0 && !saving
   const statusLabel =
     status === 'sealed' ? 'Sealed for later' : status === 'seed' || status === 'started' ? 'Note Started' : 'No note'
+
+  useEffect(() => {
+    setStatus(initialStatus)
+    const localNote = readLocalFutureNote(toothlightId)
+    if (localNote) {
+      setStatus(localNote.status)
+      setUnlockAge(localNote.unlockAge)
+    }
+
+    let cancelled = false
+    async function hydratePersistedStatus() {
+      try {
+        const response = await fetch(`/api/toothlight/${toothlightId}`)
+        if (!response.ok) return
+        const result = await readToothlightStatusResponse(response)
+        const futureNoteStatus = result.toothlight?.futureNoteStatus
+        if (!cancelled && isFutureNoteStatus(futureNoteStatus)) {
+          setStatus(futureNoteStatus)
+          setUnlockAge(Number(result.toothlight?.unlockAge ?? 10))
+        }
+      } catch {
+        // Local status is enough for the preview flow when the API is unavailable.
+      }
+    }
+
+    hydratePersistedStatus()
+    return () => {
+      cancelled = true
+    }
+  }, [initialStatus, toothlightId])
 
   async function saveNote() {
     if (!canSealNote) {
@@ -59,7 +98,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
       })
       setMessage(
         result.status === 'sealed'
-          ? 'Sealed for later. The child can see the Toothlight, not the note.'
+          ? 'Sealed. The note stays private.'
           : 'Note Started',
       )
     } catch (error) {
@@ -75,12 +114,8 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
 
       <div className={styles.copy}>
         <p className={styles.eyebrow}>{handoff ? 'Seal the future note' : 'Write a note for later'}</p>
-        <h1>{handoff ? 'Seal the note.' : 'Write for later.'}</h1>
-        <p>
-          {handoff
-            ? 'One private parent note opens at the chosen age.'
-            : 'The Toothlight stays visible. The note stays closed.'}
-        </p>
+        <h1>{handoff ? 'Say or type the note.' : 'Write for later.'}</h1>
+        <p>{handoff ? 'It opens at the age you choose.' : 'The note stays closed.'}</p>
       </div>
 
       <VoiceAssistField
@@ -110,7 +145,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         <div className={styles.sealedMoment} aria-label="Sealed future note confirmation">
           <strong>Sealed for later</strong>
           <span>The private note stays closed.</span>
-          <p>Next: invite family. Family can add a note for later.</p>
+          <p>Next: invite family for a note or gift.</p>
           <div>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
             <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>
@@ -132,4 +167,19 @@ async function readJsonResponse(response: Response): Promise<NoteSaveResponse> {
       error: response.ok ? 'Unexpected note save response.' : 'Note save is not ready yet.',
     }
   }
+}
+
+async function readToothlightStatusResponse(response: Response): Promise<ToothlightStatusResponse> {
+  const text = await response.text()
+  if (!text.trim()) return {}
+
+  try {
+    return JSON.parse(text) as ToothlightStatusResponse
+  } catch {
+    return {}
+  }
+}
+
+function isFutureNoteStatus(value: unknown): value is FutureNoteStatus {
+  return value === 'none' || value === 'seed' || value === 'started' || value === 'sealed'
 }

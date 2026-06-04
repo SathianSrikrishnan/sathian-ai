@@ -98,7 +98,12 @@ The saved page is the current end-to-end loop status page. It should show the sa
 
 Current limitation:
 
-There is still too much explanatory copy across the full loop. The saved and family pages have started moving toward shorter status language, with the family page now showing one primary visual object: the saved Toothlight.
+There is still some explanatory copy across the full loop, but the post-save pages have started moving toward shorter status language:
+
+- saved page uses a short next-action label and helper;
+- note handoff leads with saying or typing the private note;
+- note review restores sealed status from local preview storage or the saved Toothlight API;
+- family page shows one primary visual object: the saved Toothlight.
 
 ## What is intentionally deferred
 

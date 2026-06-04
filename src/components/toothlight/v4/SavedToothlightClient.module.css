@@ -161,7 +161,7 @@
 
 .nextStepPanel > div:first-child {
   display: grid;
-  gap: 0.28rem;
+  gap: 0.18rem;
 }
 
 .nextStepPanel strong {
@@ -171,6 +171,13 @@
 }
 
 .nextStepPanel span {
+  color: #17262a;
+  font-size: 1.22rem;
+  font-weight: 920;
+  line-height: 1.18;
+}
+
+.nextStepPanel small {
   color: #52666a;
   font-size: 0.86rem;
   font-weight: 820;

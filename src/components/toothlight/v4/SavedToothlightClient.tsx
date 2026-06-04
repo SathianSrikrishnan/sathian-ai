@@ -136,11 +136,8 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
     },
   ]
-  const nextStepTitle = noteStatus === 'sealed' ? 'Next: invite family' : 'Next: seal the future note'
-  const nextStepDetail =
-    noteStatus === 'sealed'
-      ? 'Family can add a note and optional gift for later.'
-      : 'One private note closes the time capsule.'
+  const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal the future note'
+  const nextStepHelper = noteStatus === 'sealed' ? 'Add a note and optional gift.' : 'Private note first.'
 
   return (
     <div className={styles.shell}>
@@ -150,7 +147,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
         <h1>Toothlight time capsule.</h1>
-        <p>Saved. Seal the note, then invite family to add a note or gift.</p>
+        <p>Saved. Next: {nextStepLabel}.</p>
 
         <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
           {capsuleChecklist.map((item, index) => (
@@ -162,10 +159,11 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           ))}
         </div>
 
-        <div className={styles.nextStepPanel} aria-label="Next step">
+        <div className={styles.nextStepPanel} aria-label="Next action">
           <div>
-            <strong>{nextStepTitle}</strong>
-            <span>{nextStepDetail}</span>
+            <strong>Next</strong>
+            <span>{nextStepLabel}</span>
+            <small>{nextStepHelper}</small>
           </div>
           <div className={styles.nextActions}>
             <Link
