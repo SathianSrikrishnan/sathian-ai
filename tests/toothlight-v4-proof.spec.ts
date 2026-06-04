@@ -25,7 +25,7 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await expect(page.locator('article[data-treatment="moon-window"]')).toBeVisible()
   await page.getByPlaceholder('Kai').fill('Kai')
   await page.getByPlaceholder('First Tooth').fill('First Tooth')
-  await page.getByPlaceholder(/Lost after breakfast/i).fill('Lost after breakfast and showed everyone.')
+  await page.getByPlaceholder(/Say the memory/i).fill('Lost after breakfast and showed everyone.')
 
   await page.getByRole('button', { name: /Save this Toothlight/i }).click()
   await expect(page.getByText(/Saved\. Seal the parent note next/i)).toBeVisible()

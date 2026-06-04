@@ -36,6 +36,7 @@ import { LightStyleCarousel } from './LightStyleCarousel'
 import { SaveFlightSequence } from './SaveFlightSequence'
 import { ToothlightMemoryEditor } from './ToothlightMemoryEditor'
 import { ToothlightPreview } from './ToothlightPreview'
+import { VoiceAssistField } from './VoiceAssistField'
 import styles from './ToothlightMakeClient.module.css'
 
 type ToothlightAiRenderOption = {
@@ -85,6 +86,7 @@ const PREVIEW_IMAGE_HEIGHT = 1125
 const IMAGE_EXPORT_QUALITY = 0.82
 const TOOTHLIGHT_PENDING_AI_RENDER_STORAGE_KEY = 'toothlight:v4:pending-ai-render'
 const MAX_AI_RENDER_OPTIONS = 6
+const GOOGLE_ACCOUNT_STORAGE_COPY = 'Google keeps it in your parent account.'
 const MAKE_FLOW_STEPS = [
   { id: 'memory', label: 'Memory', href: '#toothlight-memory-step' },
   { id: 'style', label: 'Style', href: '#toothlight-style-step' },
@@ -607,44 +609,50 @@ export function ToothlightMakeClient() {
 
         <section
           id="toothlight-story-step"
-          className={styles.panel}
-          aria-label="Add the story"
+          className={`${styles.panel} ${styles.storyPanel}`}
+          aria-label="Child story"
         >
           <div className={styles.panelHeader}>
             <span>3</span>
-            <h2>Add the story</h2>
+            <h2>Child story</h2>
           </div>
-          <label className={styles.field}>
-            <span>Child name</span>
-            <input
-              value={draft.childName}
-              onChange={(event) => updateDraft({ childName: event.target.value })}
-              placeholder="Kai"
-            />
-          </label>
-          <label className={styles.field}>
-            <span>Toothlight name</span>
-            <input
-              value={draft.toothName}
-              onChange={(event) => updateDraft({ toothName: event.target.value })}
-              placeholder="First Tooth"
-            />
-          </label>
-          <label className={styles.field}>
-            <span>What happened?</span>
-            <textarea
-              value={draft.caption}
-              onChange={(event) => updateDraft({ caption: event.target.value })}
-              placeholder="Lost after breakfast and showed everyone."
-              rows={3}
-            />
-          </label>
+          <div className={styles.storyQuickFields}>
+            <label className={styles.thumbField}>
+              <span>Child</span>
+              <input
+                value={draft.childName}
+                onChange={(event) => updateDraft({ childName: event.target.value })}
+                placeholder="Kai"
+                aria-label="Child name"
+              />
+            </label>
+            <label className={styles.thumbField}>
+              <span>Toothlight</span>
+              <input
+                value={draft.toothName}
+                onChange={(event) => updateDraft({ toothName: event.target.value })}
+                placeholder="First Tooth"
+                aria-label="Toothlight name"
+              />
+            </label>
+          </div>
+          <VoiceAssistField
+            label="Memory"
+            value={draft.caption}
+            onChange={(caption) => updateDraft({ caption })}
+            placeholder="Say the memory."
+            rows={3}
+            voicePrompt="Tap mic. Talk. Save."
+            successMessage="Added. You can edit it before saving."
+            transcribingMessage="Writing the memory..."
+          />
         </section>
 
         <section
           id="toothlight-save-step"
           className={styles.savePanel}
           aria-label="Save this Toothlight"
+          aria-description={GOOGLE_ACCOUNT_STORAGE_COPY}
         >
           <SaveFlightSequence
             mode="child"
@@ -654,9 +662,8 @@ export function ToothlightMakeClient() {
             onComplete={() => router.push(noteHandoffUrl)}
           />
           <div>
-            <p className={styles.saveKicker}>{visualState === 'spark' ? 'Preview ready' : 'Draft preview'}</p>
+            <p className={styles.saveKicker}>{visualState === 'spark' ? 'Ready' : 'Draft'}</p>
             <h2>Save this Toothlight.</h2>
-            <p>After saving, seal the private note for later. Smile Fund stays optional.</p>
           </div>
           <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving Toothlight' : 'Save this Toothlight'}
@@ -666,7 +673,6 @@ export function ToothlightMakeClient() {
               Seal the future note
             </Link>
           )}
-          <p className={styles.accountHint}>Google keeps it in your parent account.</p>
           {saveMessage && (
             <p className={styles.savedLine}>
               {saveMessage}

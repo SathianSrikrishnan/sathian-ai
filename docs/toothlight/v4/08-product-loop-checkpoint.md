@@ -121,11 +121,13 @@ There is still some explanatory copy across the full loop, but the post-save pag
 
 ## Voice Assist layer
 
-Voice should enter as assistive input, not a full real-time Tanda agent. The first implementation target is the parent future note: the parent can tap a mic button, speak the note, review the transcript in the same text field, edit it, then seal it. Approved text remains the saved source of truth.
+Voice should enter as assistive input, not a full real-time Tanda agent. The first implementation targets are the child's public memory line in `/toothlight/make` and the parent future note: the user can tap a mic button, speak, review the transcript in the same text field, edit it, then save or seal it. Approved text remains the saved source of truth.
 
 The first fast path uses browser speech recognition where available, with the normal text field always visible as the fallback. If browser speech fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
 
 Production voice transcription is intentionally opt-in. It requires `OPENAI_API_KEY` plus `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`; Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
+
+The make flow story step now treats the story as a thumb-first capture card: two short fields for child and Toothlight name, one voice-assisted memory field, and a stripped save panel beside it.
 
 ## First-testing acceptance bar
 

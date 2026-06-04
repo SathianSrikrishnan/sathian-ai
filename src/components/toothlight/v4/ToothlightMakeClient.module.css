@@ -424,6 +424,51 @@
   letter-spacing: 0;
 }
 
+.storyPanel {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(246, 201, 95, 0.24), transparent 12rem),
+    linear-gradient(145deg, rgba(238, 248, 242, 0.88), rgba(255, 255, 255, 0.82));
+}
+
+.storyPanel .panelHeader {
+  align-items: center;
+}
+
+.storyPanel .panelHeader h2 {
+  font-size: 1.28rem;
+}
+
+.storyQuickFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.52rem;
+}
+
+.thumbField {
+  display: grid;
+  gap: 0.34rem;
+}
+
+.thumbField span {
+  color: #546a6f;
+  font-size: 0.76rem;
+  font-weight: 950;
+}
+
+.thumbField input {
+  width: 100%;
+  min-height: 3.4rem;
+  border: 1px solid rgba(23, 38, 42, 0.14);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84));
+  color: #17262a;
+  font: inherit;
+  font-size: 1.02rem;
+  letter-spacing: 0;
+  padding: 0.84rem 0.9rem;
+}
+
 .field {
   display: grid;
   gap: 0.35rem;
@@ -564,7 +609,7 @@
     grid-area: preview;
   }
 
-  .panel[aria-label='Add the story'] {
+  .storyPanel {
     grid-area: story;
   }
 

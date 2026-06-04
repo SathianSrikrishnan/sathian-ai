@@ -11,6 +11,8 @@ type VoiceAssistFieldProps = {
   placeholder: string
   rows?: number
   voicePrompt?: string
+  successMessage?: string
+  transcribingMessage?: string
 }
 
 type MinimalSpeechRecognition = {
@@ -104,6 +106,8 @@ export function VoiceAssistField({
   placeholder,
   rows = 5,
   voicePrompt = 'Say it instead.',
+  successMessage = 'Added. You can edit it before sealing.',
+  transcribingMessage = 'Writing your note...',
 }: VoiceAssistFieldProps) {
   const [speechSupported, setSpeechSupported] = useState(false)
   const [recorderSupported, setRecorderSupported] = useState(false)
@@ -162,15 +166,15 @@ export function VoiceAssistField({
       const nextText = joinTranscript(valueRef.current, transcript)
       valueRef.current = nextText
       onChange(nextText)
-      setVoiceStatus('Added. You can edit it before sealing.')
+      setVoiceStatus(successMessage)
     },
-    [onChange],
+    [onChange, successMessage],
   )
 
   const transcribeRecording = useCallback(
     async (audioBlob: Blob) => {
       setIsTranscribing(true)
-      setVoiceStatus('Writing your note...')
+      setVoiceStatus(transcribingMessage)
       try {
         const formData = new FormData()
         formData.append('audio', audioBlob, 'toothlight-note.webm')
