@@ -131,13 +131,13 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       state: noteStatus === 'sealed' ? 'done' : 'next',
     },
     {
-      label: 'Family note + gift',
+      label: 'Family note or gift',
       detail: familyStatus,
       state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
     },
   ]
   const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal the future note'
-  const nextStepHelper = noteStatus === 'sealed' ? 'Add a note and optional gift.' : 'Private note first.'
+  const nextStepHelper = noteStatus === 'sealed' ? 'Add a family note or gift.' : 'Private note first.'
 
   return (
     <div className={styles.shell}>

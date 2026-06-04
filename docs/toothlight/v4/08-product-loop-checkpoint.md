@@ -53,7 +53,7 @@ The saved page uses a checklist:
 
 - memory saved;
 - future note;
-- family note + gift.
+- family note or gift.
 
 The next user action should be contextual. If no private note is sealed, the page should guide to the note step. If the note exists, it should guide to family invite. Smile Fund stays optional until the product proves the emotional loop.
 
@@ -84,8 +84,8 @@ The family step should read as optional support around the memory, not as a requ
 
 Current behavior:
 
-- family can add one note for later;
-- an optional gift can travel with that family note;
+- family can add a note for later;
+- a gift can travel with that note, but the note remains the default path;
 - the family invite page carries forward the saved Toothlight image, title, caption, and family nodes;
 - the form shows a clear completion state;
 - completion links back to the saved Toothlight.
@@ -103,7 +103,8 @@ There is still some explanatory copy across the full loop, but the post-save pag
 - saved page uses a short next-action label and helper;
 - note handoff leads with saying or typing the private note;
 - note review restores sealed status from local preview storage or the saved Toothlight API;
-- family page shows one primary visual object: the saved Toothlight.
+- family page shows one primary visual object: the saved Toothlight;
+- family invite and gift now read as one family step rather than a separate Smile Fund flow.
 
 ## What is intentionally deferred
 

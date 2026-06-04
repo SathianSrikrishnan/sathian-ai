@@ -24,6 +24,10 @@ for (const token of ['draft_glow', 'note_started', 'sealed', 'constellated']) {
 
 assert(component.includes('aria-label'), 'card must expose an accessible aria-label')
 assert(
+  !/Family gift linked|Gift linked/.test(component),
+  'card status language must describe family gifts without fund-style linked wording',
+)
+assert(
   !component.includes('toothlight-data'),
   'card must not depend on V3 demo memory arrays from toothlight-data.ts',
 )

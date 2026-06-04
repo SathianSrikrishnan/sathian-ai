@@ -78,9 +78,9 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
     <section className={styles.panel} aria-label="Add a note for later">
       <div className={styles.form}>
         <p className={styles.eyebrow}>Family invite</p>
-        <h1>Add a family note.</h1>
-        <p>One note for later. Gift optional.</p>
-        <div className={styles.familyNoteDefault}>Note first. Gift optional.</div>
+        <h1>Add a note or gift.</h1>
+        <p>A note is enough. A gift can wait.</p>
+        <div className={styles.familyNoteDefault}>Note first. Gift only if they want.</div>
 
         <label className={styles.field}>
           <span>Your name</span>
@@ -88,7 +88,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
         </label>
 
         <label className={styles.field}>
-          <span>Family note for later</span>
+          <span>Note for later</span>
           <textarea
             value={noteText}
             onChange={(event) => setNoteText(event.target.value)}
@@ -99,7 +99,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
 
         <label className={styles.toggle}>
           <input type="checkbox" checked={includeGift} onChange={(event) => setIncludeGift(event.target.checked)} />
-          <span>Add optional gift</span>
+          <span>Include a gift</span>
         </label>
 
         {includeGift && (
@@ -115,14 +115,14 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
 
         <div className={styles.actions}>
           <button type="button" onClick={() => submitContribution(!includeGift)} disabled={saving}>
-            {includeGift ? 'Add gift and family note' : 'Add family note'}
+            Add to Toothlight
           </button>
         </div>
 
         {message && <p className={styles.message}>{message}</p>}
         {contributionSaved && (
           <div className={styles.completionPanel} aria-label="Family contribution saved">
-            <strong>Family note added.</strong>
+            <strong>Added to Toothlight.</strong>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
           </div>
         )}

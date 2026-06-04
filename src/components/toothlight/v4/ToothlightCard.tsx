@@ -17,7 +17,7 @@ const stateLabels = {
   spark: 'Glow ready',
   note_started: 'Note Started',
   sealed: 'Sealed for later',
-  smile_fund_active: 'Family gift linked',
+  smile_fund_active: 'Family gift added',
   constellated: 'Family constellation added',
 }
 
@@ -34,7 +34,7 @@ export function ToothlightCard({
   const isConstellated = visualState === 'constellated' || familyNodes.length > 0
   const accessibleStatus = [
     stateLabels[visualState],
-    smileFundActive ? 'Family gift linked' : null,
+    smileFundActive ? 'Family gift added' : null,
     isConstellated ? `${familyNodes.length} family node${familyNodes.length === 1 ? '' : 's'}` : null,
   ]
     .filter(Boolean)
@@ -67,7 +67,7 @@ export function ToothlightCard({
       <div className={styles.body}>
         <div className={styles.kicker}>
           <span>{stateLabels[visualState]}</span>
-          {smileFundActive && <span>Gift linked</span>}
+          {smileFundActive && <span>Gift added</span>}
         </div>
         <h3>{title}</h3>
         {caption && <p>{caption}</p>}
