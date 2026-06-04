@@ -85,27 +85,6 @@ const PREVIEW_IMAGE_HEIGHT = 1125
 const IMAGE_EXPORT_QUALITY = 0.82
 const TOOTHLIGHT_PENDING_AI_RENDER_STORAGE_KEY = 'toothlight:v4:pending-ai-render'
 const MAX_AI_RENDER_OPTIONS = 6
-const STORY_FOCUS_OPTIONS: readonly {
-  id: StoryFocusId
-  label: string
-  brief: string
-}[] = [
-  {
-    id: 'memory',
-    label: 'Memory',
-    brief: 'kept close',
-  },
-  {
-    id: 'marks',
-    label: 'Drawing',
-    brief: 'object lines',
-  },
-  {
-    id: 'keeper',
-    label: 'Story',
-    brief: 'story path',
-  },
-]
 const MAKE_FLOW_STEPS = [
   { id: 'memory', label: 'Memory', href: '#toothlight-memory-step' },
   { id: 'style', label: 'Style', href: '#toothlight-style-step' },
@@ -213,8 +192,6 @@ export function ToothlightMakeClient() {
 
   const caption = draft.caption.trim() || 'Add one line from the day.'
   const selectedTreatment = getLightStyle(draft.treatmentId)
-  const selectedStoryFocus =
-    STORY_FOCUS_OPTIONS.find((option) => option.id === draft.storyFocus) ?? STORY_FOCUS_OPTIONS[2]
   const creationImageSrc = getCreationImageSrc(draft)
   const hasMemory = Boolean(creationImageSrc)
   const hasAiFinal = Boolean(draft.aiRenderedImageSrc)
@@ -285,12 +262,6 @@ export function ToothlightMakeClient() {
     setAiRenderMessage('')
     logToothlightClientEvent('treatment_selected', { treatmentId })
     logToothlightClientEvent('style_previewed', { treatmentId })
-  }
-
-  function selectStoryFocus(storyFocus: StoryFocusId) {
-    updateDraft({ storyFocus, renderedImageSrc: null, aiRenderedImageSrc: null })
-    setAiRenderState('idle')
-    setAiRenderMessage('')
   }
 
   async function handleAiRender() {
@@ -581,53 +552,20 @@ export function ToothlightMakeClient() {
             className={styles.studioStyleDock}
             aria-label="Studio styles and AI filter"
           >
-            <div className={styles.studioDockHeader}>
-              <div>
-                <p className={styles.eyebrow}>AI filter studio</p>
-                <h2>Choose a Light Style</h2>
-              </div>
-              <span>{selectedTreatment.visualPromise}</span>
-            </div>
             <LightStyleCarousel selectedId={draft.treatmentId} onSelect={selectTreatment} />
             <div className={styles.aiRenderBox}>
-              <div>
-                <strong>
-                  {toothlightProductRenderContract.childLabel}.
-                </strong>
-                <p>
-                  AI creates a story object from the memory and drawing. Original stays saved.
-                </p>
-                <p className={styles.objectBrief}>
-                  Story target: {selectedTreatment.keeperName}'s {selectedTreatment.keeperObject}. Drawing becomes {selectedStoryFocus.brief}.
-                </p>
-              </div>
-              <div className={styles.storyFocusControl} aria-label="Story focus">
-                <span>Story focus</span>
-                <div className={styles.storyFocusOptions} role="group" aria-label="Story focus">
-                  {STORY_FOCUS_OPTIONS.map((option) => (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className={styles.storyFocusOption}
-                      data-selected={draft.storyFocus === option.id}
-                      onClick={() => selectStoryFocus(option.id)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <button
                 type="button"
-                className={styles.secondaryButton}
+                className={styles.previewButton}
                 onClick={handleAiRender}
                 disabled={!creationImageSrc || aiRenderState === 'rendering'}
+                aria-label={`${toothlightProductRenderContract.childLabel}: ${selectedTreatment.label}`}
               >
                 {aiRenderState === 'rendering'
-                  ? 'Rendering final image'
+                  ? 'Previewing'
                   : draft.aiRenderOptions.length > 0
-                    ? 'Render another AI final'
-                    : 'Render AI final image'}
+                    ? 'Preview another'
+                    : 'Preview AI final'}
               </button>
               {aiRenderMessage && (
                 <p className={styles.aiRenderMessage} data-state={aiRenderState}>
@@ -636,10 +574,6 @@ export function ToothlightMakeClient() {
               )}
               {draft.aiRenderOptions.length > 0 && (
                 <div className={styles.aiVariationRail} aria-label="AI final options">
-                  <div className={styles.aiVariationHeader}>
-                    <strong>AI final options</strong>
-                    <span>{draft.aiRenderOptions.length} saved</span>
-                  </div>
                   <div className={styles.aiVariationGrid}>
                     {draft.aiRenderOptions.map((option, index) => (
                       <button
@@ -651,8 +585,6 @@ export function ToothlightMakeClient() {
                         aria-label={`Use ${option.treatmentLabel} AI final ${index + 1}`}
                       >
                         <img src={option.imageSrc} alt="" aria-hidden="true" />
-                        <span>{index === 0 ? 'Latest' : `Option ${index + 1}`}</span>
-                        <small>{option.treatmentLabel}</small>
                       </button>
                     ))}
                   </div>

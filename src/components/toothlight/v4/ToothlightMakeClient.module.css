@@ -295,7 +295,7 @@
 
 .aiRenderBox {
   display: grid;
-  gap: 0.72rem;
+  gap: 0.55rem;
   border: 1px solid rgba(23, 38, 42, 0.1);
   border-radius: 8px;
   background:
@@ -304,65 +304,31 @@
   padding: 0.82rem;
 }
 
-.aiRenderBox strong {
-  color: #17262a;
-  font-size: 0.92rem;
-  line-height: 1.1;
-}
-
-.aiRenderBox p {
-  margin: 0.22rem 0 0;
-  color: #586b70;
-  font-size: 0.8rem;
-  font-weight: 760;
-  line-height: 1.35;
-}
-
-.aiRenderBox .objectBrief {
-  color: #33484c;
-  font-size: 0.76rem;
-  font-weight: 880;
-}
-
-.storyFocusControl {
-  display: grid;
-  gap: 0.42rem;
-}
-
-.storyFocusControl > span {
-  color: #617377;
-  font-size: 0.72rem;
-  font-weight: 950;
-}
-
-.storyFocusOptions {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.28rem;
-  border: 1px solid rgba(23, 38, 42, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.76);
-  padding: 0.22rem;
-}
-
-.storyFocusOption {
-  min-width: 0;
-  min-height: 2rem;
+.previewButton {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: 999px;
-  background: transparent;
-  color: #41555a;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.72), transparent 32%),
+    linear-gradient(135deg, #f6c95f, #eaa340);
+  color: #1f2b15;
   cursor: pointer;
   font: inherit;
-  font-size: 0.74rem;
+  font-size: 0.98rem;
   font-weight: 950;
   letter-spacing: 0;
+  box-shadow:
+    0 13px 30px rgba(234, 163, 64, 0.22),
+    0 0 1.4rem rgba(246, 201, 95, 0.26);
 }
 
-.storyFocusOption[data-selected='true'] {
-  background: linear-gradient(135deg, rgba(246, 201, 95, 0.95), rgba(234, 163, 64, 0.86));
-  color: #1f2b15;
-  box-shadow: 0 7px 16px rgba(234, 163, 64, 0.18);
+.previewButton:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.18);
+  opacity: 0.62;
 }
 
 .aiRenderMessage {
@@ -387,26 +353,6 @@
   min-width: 0;
   border-top: 1px solid rgba(23, 38, 42, 0.1);
   padding-top: 0.7rem;
-}
-
-.aiVariationHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
-}
-
-.aiVariationHeader strong {
-  color: #17262a;
-  font-size: 0.82rem;
-  line-height: 1;
-}
-
-.aiVariationHeader span {
-  color: #65777b;
-  font-size: 0.72rem;
-  font-weight: 900;
-  white-space: nowrap;
 }
 
 .aiVariationGrid {
@@ -441,23 +387,14 @@
   object-fit: cover;
 }
 
-.aiVariationOption span,
-.aiVariationOption small {
-  min-width: 0;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
-}
-
-.aiVariationOption span {
-  font-size: 0.72rem;
-  font-weight: 950;
-}
-
-.aiVariationOption small {
-  color: #66787c;
-  font-size: 0.66rem;
-  font-weight: 850;
 }
 
 .panelHeader {

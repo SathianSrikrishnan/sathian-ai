@@ -22,11 +22,7 @@ const contract = existsSync(contractPath) ? readFileSync(contractPath, 'utf8') :
 assert(/type StoryFocusId/.test(makeClient), 'Make draft must define a story-focus mode')
 assert(/storyFocus:\s*StoryFocusId/.test(makeClient), 'Make draft must store story focus')
 assert(/storyFocus:\s*['"]keeper['"]/.test(makeClient), 'Story focus must default to the story-world interpretation')
-assert(/Story focus/.test(makeClient), 'Make UI must expose a compact story-focus control')
-for (const label of ['Memory', 'Drawing', 'Story']) {
-  assert(makeClient.includes(label), `Story focus control must include ${label}`)
-}
-assert(/storyFocusControl/.test(makeStyles), 'Make styles must include the story focus segmented control')
+assert(!/Story focus|storyFocusControl|storyFocusOptions|storyFocusOption/.test(makeClient + makeStyles), 'Make UI must hide the story-focus control for the simplified flow')
 assert(/productStoryFocus\?:/.test(enhanceClient), 'Enhance client must send the selected story focus')
 assert(/productStoryFocus:\s*draft\.storyFocus/.test(makeClient), 'Make must pass story focus to the AI endpoint')
 assert(/productStoryFocus/.test(enhanceRoute), 'Enhance route must read productStoryFocus')
@@ -40,7 +36,7 @@ assert(/abstractDrawingLayerForStory/.test(makeClient), 'Make must abstract the 
 assert(/drawingLayerDataUrl:\s*aiReferences\.drawingLayerDataUrl/.test(makeClient), 'AI render must send the prepared drawing reference, not always the raw layer')
 assert(/compositionImageDataUrl:\s*aiReferences\.compositionImageDataUrl/.test(makeClient), 'AI render must send the prepared composition reference')
 assert(/drawingLayerImageSrc:\s*aiReferences\.finalDrawingLayerDataUrl/.test(makeClient), 'AI final post-processing must use the abstracted story drawing layer')
-assert(/Story target/.test(makeClient), 'AI render box must use concise story target copy')
+assert(!/Story target/.test(makeClient), 'AI render box must not expose story target copy in the simplified flow')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-story-focus: ${failures.length} issue(s)`)

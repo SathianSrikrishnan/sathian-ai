@@ -28,8 +28,9 @@ assert(/flowStep/.test(makeClient + makeStyles), 'Make progress rail must style 
 assert(/nextActionCard/.test(makeClient + makeStyles), 'Make page must show the current next action')
 
 assert(/selectedTreatment/.test(carousel), 'Style picker must expose selected style details')
-assert(/styleStoryPanel/.test(carousel + carouselStyles), 'Style picker must move lore into one compact selected-style panel')
-assert(/storyHref/.test(carousel), 'Style picker must link selected keepers back to their story source')
+assert(/keeperMark/.test(carousel + carouselStyles), 'Style picker must move lore into image-like keeper medallions')
+assert(/storyHref/.test(carousel), 'Style picker must retain story source metadata for accessible labels')
+assert(!/styleStoryPanel/.test(carousel + carouselStyles), 'Style picker must remove the selected-style text panel')
 assert(!/min-height:\s*10\.6rem/.test(carouselStyles), 'Style options should no longer be tall lore cards')
 
 if (failures.length > 0) {

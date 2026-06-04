@@ -31,6 +31,8 @@ The memory step now keeps the intro minimal: one helper sentence before the phot
 
 The default render action is the 3D/story-object Toothlight direction. The Light Style options remain available because they give the system enough variety for testing and can map back to fairy-world story objects later.
 
+The style and render section is now visual-first: six image tiles, keeper medallions in the tile corners, and one AI preview button. Style names, keeper names, and lore remain in accessible labels and prompt metadata rather than visible explanatory copy.
+
 ### 2. AI final
 
 The current render direction is a Toothlight object, not a pure photo filter.

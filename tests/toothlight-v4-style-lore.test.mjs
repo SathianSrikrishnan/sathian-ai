@@ -45,10 +45,11 @@ for (const path of [
   assert(treatments.includes(path), `style lore must link to ${path}`)
 }
 
-assert(/keeperName/.test(carousel), 'Light Style picker must show keeper names')
-assert(/keeperObject/.test(carousel), 'Light Style picker must show story objects')
-assert(/keeperCue/.test(carousel), 'Light Style picker must show keeper cues')
-assert(/keeperBadge|keeperObject|keeperCue/.test(carouselCss), 'style picker CSS must support lore labels')
+assert(/keeperName/.test(carousel), 'Light Style picker must keep keeper names in accessible image labels')
+assert(/keeperObject/.test(carousel), 'Light Style picker must keep story objects in accessible image labels')
+assert(/keeperCue|storySymbol/.test(carousel), 'Light Style picker must keep keeper cues as visual symbol metadata')
+assert(/keeperMark|data-keeper|data-symbol/.test(carouselCss + carousel), 'style picker CSS must support lore medallion images')
+assert(!/styleStoryPanel|Open \$\{selectedTreatment\.keeperName\} story|<span className=\{styles\.keeperBadge\}>/.test(carousel), 'style picker must not show lore as text-heavy labels')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-style-lore: ${failures.length} issue(s)`)

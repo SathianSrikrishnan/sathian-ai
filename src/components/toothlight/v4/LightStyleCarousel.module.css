@@ -6,9 +6,9 @@
 
 .carousel {
   display: grid;
-  grid-auto-columns: minmax(7.15rem, 38%);
+  grid-auto-columns: minmax(5.6rem, 28%);
   grid-auto-flow: column;
-  gap: 0.5rem;
+  gap: 0.46rem;
   overflow-x: auto;
   padding: 0.1rem 0.05rem 0.46rem;
   scroll-snap-type: x mandatory;
@@ -18,9 +18,8 @@
 .option {
   position: relative;
   display: grid;
-  min-height: 7.35rem;
-  align-content: start;
-  gap: 0.38rem;
+  min-height: 5.85rem;
+  align-content: stretch;
   border: 1px solid rgba(23, 38, 42, 0.12);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.78);
@@ -29,7 +28,7 @@
   font: inherit;
   font-weight: 900;
   letter-spacing: 0;
-  padding: 0.45rem;
+  padding: 0.34rem;
   scroll-snap-align: start;
   text-align: left;
 }
@@ -38,7 +37,21 @@
   border-color: color-mix(in srgb, var(--style-accent), #17262a 16%);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.65),
-    0 0 0 2px color-mix(in srgb, var(--style-accent), transparent 72%);
+    0 0 0 2px color-mix(in srgb, var(--style-accent), transparent 68%),
+    0 0 1.35rem color-mix(in srgb, var(--style-accent), transparent 48%);
+}
+
+.option[data-recommended='true']::after {
+  position: absolute;
+  top: 0.42rem;
+  right: 0.42rem;
+  width: 0.52rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+  background: #f6c95f;
+  box-shadow: 0 0 0.9rem rgba(246, 201, 95, 0.72);
+  content: '';
 }
 
 .swatch {
@@ -66,135 +79,83 @@
     0 0 1.5rem color-mix(in srgb, var(--style-accent), transparent 20%);
 }
 
-.label {
-  display: block;
-  min-width: 0;
-  overflow: hidden;
-  font-size: 0.78rem;
-  line-height: 1.08;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.keeperBadge {
-  display: inline-flex;
-  width: fit-content;
-  max-width: 100%;
-  min-height: 1.32rem;
-  align-items: center;
-  border: 1px solid color-mix(in srgb, var(--style-accent), #17262a 18%);
+.keeperMark {
+  position: absolute;
+  right: 0.42rem;
+  bottom: 0.42rem;
+  display: grid;
+  width: 1.42rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.74);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--style-accent), white 78%);
-  color: #26383c;
-  font-size: 0.56rem;
-  font-weight: 950;
-  line-height: 1;
-  padding: 0 0.48rem;
-}
-
-.promise {
-  display: block;
-  color: #607276;
-  font-size: 0.68rem;
-  font-weight: 760;
-  line-height: 1.2;
-}
-
-.keeperObject,
-.keeperCue {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-}
-
-.keeperObject {
-  color: #26383c;
-  font-size: 0.66rem;
-  font-weight: 950;
-  line-height: 1.14;
-  -webkit-line-clamp: 1;
-}
-
-.keeperCue {
-  color: #52666a;
-  font-size: 0.61rem;
-  font-weight: 840;
-  line-height: 1.18;
-  -webkit-line-clamp: 2;
-}
-
-.option small {
-  color: #80601c;
-  font-size: 0.62rem;
-  line-height: 1;
-}
-
-.styleStoryPanel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.62rem;
-  border: 1px solid color-mix(in srgb, var(--style-accent), #17262a 18%);
-  border-radius: 8px;
   background:
-    linear-gradient(118deg, color-mix(in srgb, var(--style-accent), white 78%), transparent 48%),
-    linear-gradient(302deg, color-mix(in srgb, var(--style-secondary), white 82%), rgba(255, 255, 255, 0.84));
-  padding: 0.68rem;
+    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.92), transparent 24%),
+    color-mix(in srgb, var(--style-accent), white 36%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 68%),
+    0 0 1.1rem color-mix(in srgb, var(--style-accent), transparent 38%);
 }
 
-.styleStoryPanel > div:first-child {
-  display: grid;
-  gap: 0.28rem;
+.keeperMark i,
+.keeperMark::before,
+.keeperMark::after {
+  display: block;
+  content: '';
 }
 
-.styleStoryPanel strong {
-  color: #17262a;
-  font-size: 0.94rem;
-  line-height: 1.05;
+.keeperMark i {
+  width: 54%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--style-secondary), #17262a 12%);
 }
 
-.styleStoryPanel p,
-.styleStoryPanel dl,
-.styleStoryPanel dd {
-  margin: 0;
+.option[data-keeper='tanda'] .keeperMark i {
+  border-radius: 45% 55% 48% 52%;
+  background:
+    linear-gradient(90deg, transparent 44%, rgba(94, 58, 20, 0.55) 46% 54%, transparent 56%),
+    color-mix(in srgb, var(--style-secondary), white 16%);
 }
 
-.styleStoryPanel p {
-  color: #43575b;
-  font-size: 0.76rem;
-  font-weight: 840;
-  line-height: 1.25;
+.option[data-keeper='kkachi'] .keeperMark i {
+  width: 62%;
+  border-radius: 100% 18% 100% 18%;
+  transform: rotate(-26deg);
 }
 
-.styleStoryPanel dl {
-  display: grid;
-  gap: 0.36rem;
+.option[data-keeper='anna-bogle'] .keeperMark i {
+  width: 58%;
+  clip-path: polygon(50% 0, 70% 28%, 100% 32%, 78% 54%, 84% 86%, 50% 68%, 16% 86%, 22% 54%, 0 32%, 30% 28%);
 }
 
-.styleStoryPanel dt {
-  color: #687b7f;
-  font-size: 0.58rem;
-  font-weight: 950;
-  line-height: 1;
-  text-transform: uppercase;
+.option[data-keeper='ratoncito-perez'] .keeperMark i {
+  width: 58%;
+  border-radius: 50% 50% 42% 42%;
+  box-shadow:
+    -0.28rem -0.2rem 0 -0.14rem color-mix(in srgb, var(--style-secondary), #17262a 12%),
+    0.28rem -0.2rem 0 -0.14rem color-mix(in srgb, var(--style-secondary), #17262a 12%);
 }
 
-.styleStoryPanel dd {
-  display: -webkit-box;
+.option[data-keeper='waraba'] .keeperMark i {
+  width: 56%;
+  clip-path: polygon(50% 0, 66% 34%, 100% 38%, 74% 58%, 84% 100%, 50% 72%, 16% 100%, 26% 58%, 0 38%, 34% 34%);
+}
+
+.option[data-keeper='daga'] .keeperMark i {
+  width: 58%;
+  border-radius: 30% 70% 62% 38%;
+  transform: rotate(18deg);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  color: #22363a;
-  font-size: 0.72rem;
-  font-weight: 900;
-  line-height: 1.18;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.styleStoryPanel a {
-  color: #254a7d;
-  font-size: 0.72rem;
-  font-weight: 950;
-  line-height: 1.2;
-  text-decoration: none;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .swatchMoon {
@@ -298,14 +259,5 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: visible;
     padding-bottom: 0;
-  }
-
-  .styleStoryPanel {
-    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) auto;
-    align-items: center;
-  }
-
-  .styleStoryPanel dl {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

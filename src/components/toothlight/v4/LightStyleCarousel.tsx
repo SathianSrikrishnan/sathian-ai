@@ -1,7 +1,6 @@
 'use client'
 
 import clsx from 'clsx'
-import Link from 'next/link'
 
 import {
   LIGHT_STYLE_TREATMENTS,
@@ -27,7 +26,7 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
         ['--style-secondary' as string]: selectedTreatment.secondaryAccent,
       }}
     >
-      <div className={styles.carousel} aria-label="Choose a Light Style">
+      <div className={styles.carousel} aria-label="Light Style choices">
         {LIGHT_STYLE_TREATMENTS.map((treatment) => {
           const selected = selectedId === treatment.id
           return (
@@ -41,6 +40,10 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
               }}
               aria-pressed={selected}
               data-treatment={treatment.id}
+              data-keeper={treatment.keeperName.toLowerCase().replace(/\s+/g, '-')}
+              data-symbol={treatment.storySymbol}
+              data-story-href={treatment.storyHref}
+              data-recommended={treatment.id === recommended.id}
               aria-label={`${treatment.label}. ${treatment.visualPromise} Keeper: ${treatment.keeperName}. Story object: ${treatment.keeperObject}. Object form: ${treatment.objectForm}`}
               onClick={() => onSelect(treatment.id)}
             >
@@ -50,31 +53,12 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
               >
                 <span />
               </span>
-              <span className={styles.label}>{treatment.label}</span>
-              <span className={styles.keeperBadge}>{treatment.keeperName}</span>
-              {treatment.id === recommended.id && <small>Recommended</small>}
+              <span className={styles.keeperMark} aria-hidden="true">
+                <i />
+              </span>
             </button>
           )
         })}
-      </div>
-
-      <div className={styles.styleStoryPanel} aria-label={`${selectedTreatment.label} story source`}>
-        <div>
-          <span className={styles.keeperBadge}>{selectedTreatment.keeperName}</span>
-          <strong>{selectedTreatment.label}</strong>
-          <p>{selectedTreatment.visualPromise}</p>
-        </div>
-        <dl>
-          <div>
-            <dt>Story object</dt>
-            <dd>{selectedTreatment.keeperObject}</dd>
-          </div>
-          <div>
-            <dt>Keeper cue</dt>
-            <dd>{selectedTreatment.keeperCue}</dd>
-          </div>
-        </dl>
-        <Link href={selectedTreatment.storyHref}>Open {selectedTreatment.keeperName} story</Link>
       </div>
     </div>
   )
