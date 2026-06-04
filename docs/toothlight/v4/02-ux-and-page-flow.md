@@ -16,7 +16,7 @@ This should happen through animation, first-load imagery, or a very tight visual
 ## Primary Mobile Flow
 
 Checkpoint note:
-The first visitor-test loop is now Make -> AI final -> Save -> one private future note -> family invite -> saved Toothlight. Smile Fund remains optional, and the AI render direction is good enough for testing even though it is not final.
+The first visitor-test loop is now Make -> AI final -> Save -> one private parent note -> family note + optional gift -> saved Toothlight. Smile Fund remains folded into the family invite path, and the AI render direction is good enough for testing even though it is not final.
 
 ### 1. Make The Toothlight
 
@@ -96,15 +96,15 @@ Email jobs:
 - invite family sharing;
 - introduce Smile Fund as optional.
 
-### 6. Future Letter
+### 6. Parent Note
 
 Purpose:
 Create the emotional value layer.
 
 Flow:
 
-- choose unlock date;
-- write short note;
+- choose unlock age;
+- say or type one short private note;
 - optionally ask AI for a draft;
 - preview locked-letter status;
 - save privately.
@@ -124,11 +124,11 @@ Convert sharing into notes and gifts.
 
 Default action:
 
-- `Add a gift and a note for later`
+- `Add family note`
 
-Secondary action:
+Optional toggle:
 
-- `Add a note only`
+- `Add optional gift`
 
 Rules:
 
@@ -145,7 +145,7 @@ Recommended route map:
 - `/toothlight/make` - mobile-first creation flow.
 - `/toothlight/save` - parent save/account step.
 - `/toothlight/t/[id]` - saved Toothlight share page.
-- `/toothlight/t/[id]/letter` - parent future-letter editor.
+- `/toothlight/t/[id]/note` - parent note editor.
 - `/toothlight/t/[id]/family` - family contribution page.
 - `/toothlight/dashboard` - parent dashboard.
 - `/toothlight/parents` - trust, privacy, and Smile Fund explanation.

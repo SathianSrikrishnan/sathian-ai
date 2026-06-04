@@ -6,9 +6,9 @@
 
 .carousel {
   display: grid;
-  grid-auto-columns: minmax(5.6rem, 28%);
+  grid-auto-columns: minmax(8rem, 38%);
   grid-auto-flow: column;
-  gap: 0.46rem;
+  gap: 0.52rem;
   overflow-x: auto;
   padding: 0.1rem 0.05rem 0.46rem;
   scroll-snap-type: x mandatory;
@@ -18,17 +18,21 @@
 .option {
   position: relative;
   display: grid;
-  min-height: 5.85rem;
-  align-content: stretch;
+  min-height: 8.7rem;
+  grid-template-rows: auto minmax(2.4rem, auto);
+  align-content: start;
+  gap: 0.42rem;
   border: 1px solid rgba(23, 38, 42, 0.12);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.78);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(247, 250, 246, 0.82)),
+    color-mix(in srgb, var(--style-accent), white 86%);
   color: #182a2e;
   cursor: pointer;
   font: inherit;
   font-weight: 900;
   letter-spacing: 0;
-  padding: 0.34rem;
+  padding: 0.42rem;
   scroll-snap-align: start;
   text-align: left;
 }
@@ -38,14 +42,15 @@
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.65),
     0 0 0 2px color-mix(in srgb, var(--style-accent), transparent 68%),
-    0 0 1.35rem color-mix(in srgb, var(--style-accent), transparent 48%);
+    0 0 1.8rem color-mix(in srgb, var(--style-accent), transparent 42%),
+    0 14px 28px color-mix(in srgb, var(--style-accent), transparent 74%);
 }
 
 .option[data-recommended='true']::after {
   position: absolute;
-  top: 0.42rem;
-  right: 0.42rem;
-  width: 0.52rem;
+  top: 0.58rem;
+  left: 0.58rem;
+  width: 0.46rem;
   aspect-ratio: 1;
   border: 1px solid rgba(255, 255, 255, 0.86);
   border-radius: 999px;
@@ -58,7 +63,7 @@
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 1.68;
+  aspect-ratio: 1.42;
   overflow: hidden;
   border-radius: 7px;
   background:
@@ -79,73 +84,62 @@
     0 0 1.5rem color-mix(in srgb, var(--style-accent), transparent 20%);
 }
 
-.keeperMark {
+.keeperPortrait {
   position: absolute;
-  right: 0.42rem;
-  bottom: 0.42rem;
+  right: 0.62rem;
+  top: 0.66rem;
   display: grid;
-  width: 1.42rem;
+  width: 2.48rem;
   aspect-ratio: 1;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.92);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.92), transparent 24%),
-    color-mix(in srgb, var(--style-accent), white 36%);
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--style-accent), white 44%), transparent 72%),
+    rgba(255, 255, 255, 0.82);
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 68%),
-    0 0 1.1rem color-mix(in srgb, var(--style-accent), transparent 38%);
+    0 0.4rem 1.05rem rgba(23, 38, 42, 0.15),
+    0 0 1.1rem color-mix(in srgb, var(--style-accent), transparent 42%);
 }
 
-.keeperMark i,
-.keeperMark::before,
-.keeperMark::after {
+.keeperPortrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--keeper-focus, 50% 40%);
+}
+
+.caption {
+  display: grid;
+  gap: 0.08rem;
+  min-width: 0;
+  padding: 0 0.06rem 0.08rem;
+}
+
+.styleName,
+.keeperName {
   display: block;
-  content: '';
+  min-width: 0;
+  overflow: hidden;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.keeperMark i {
-  width: 54%;
-  aspect-ratio: 1;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--style-secondary), #17262a 12%);
+.styleName {
+  color: #17262a;
+  font-size: 0.74rem;
+  font-weight: 950;
+  line-height: 1.1;
 }
 
-.option[data-keeper='tanda'] .keeperMark i {
-  border-radius: 45% 55% 48% 52%;
-  background:
-    linear-gradient(90deg, transparent 44%, rgba(94, 58, 20, 0.55) 46% 54%, transparent 56%),
-    color-mix(in srgb, var(--style-secondary), white 16%);
-}
-
-.option[data-keeper='kkachi'] .keeperMark i {
-  width: 62%;
-  border-radius: 100% 18% 100% 18%;
-  transform: rotate(-26deg);
-}
-
-.option[data-keeper='anna-bogle'] .keeperMark i {
-  width: 58%;
-  clip-path: polygon(50% 0, 70% 28%, 100% 32%, 78% 54%, 84% 86%, 50% 68%, 16% 86%, 22% 54%, 0 32%, 30% 28%);
-}
-
-.option[data-keeper='ratoncito-perez'] .keeperMark i {
-  width: 58%;
-  border-radius: 50% 50% 42% 42%;
-  box-shadow:
-    -0.28rem -0.2rem 0 -0.14rem color-mix(in srgb, var(--style-secondary), #17262a 12%),
-    0.28rem -0.2rem 0 -0.14rem color-mix(in srgb, var(--style-secondary), #17262a 12%);
-}
-
-.option[data-keeper='waraba'] .keeperMark i {
-  width: 56%;
-  clip-path: polygon(50% 0, 66% 34%, 100% 38%, 74% 58%, 84% 100%, 50% 72%, 16% 100%, 26% 58%, 0 38%, 34% 34%);
-}
-
-.option[data-keeper='daga'] .keeperMark i {
-  width: 58%;
-  border-radius: 30% 70% 62% 38%;
-  transform: rotate(18deg);
+.keeperName {
+  color: color-mix(in srgb, var(--style-accent), #17262a 34%);
+  font-size: 0.62rem;
+  font-weight: 950;
+  line-height: 1;
 }
 
 .srOnly {

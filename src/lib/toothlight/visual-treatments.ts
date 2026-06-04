@@ -31,6 +31,9 @@ export type VisualTreatment = {
   keeperName: string
   keeperObject: string
   keeperCue: string
+  keeperImageSrc: string
+  keeperImageAlt: string
+  keeperImageFocus: string
   storyHref: string
   renderIntensity: number
   storySymbol: string
@@ -77,6 +80,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Tanda',
     keeperObject: 'Corn drawing Toothlight',
     keeperCue: 'Satchel stitch and first Network light.',
+    keeperImageSrc: '/story-assets/tanda/tf-05-tanda.png',
+    keeperImageAlt: 'Tanda, the Tooth Fairy Network guide',
+    keeperImageFocus: '50% 34%',
     storyHref: '/toothfairy/story/tanda',
     renderIntensity: 0.72,
     storySymbol: 'locket-halo',
@@ -119,6 +125,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Kkachi',
     keeperObject: 'Feather-song line',
     keeperCue: 'Magpie feather, roof song, silver route.',
+    keeperImageSrc: '/story-assets/characters/char-kkachi.png',
+    keeperImageAlt: 'Kkachi, the magpie keeper',
+    keeperImageFocus: '70% 42%',
     storyHref: '/toothfairy/story/korea',
     renderIntensity: 0.76,
     storySymbol: 'moon-window',
@@ -161,6 +170,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Anna Bogle',
     keeperObject: 'Clover-gold proof',
     keeperCue: 'Clover wrap, gold beside the memory.',
+    keeperImageSrc: '/story-assets/characters/char-anna-bogle-v2.png',
+    keeperImageAlt: 'Anna Bogle, the Irish keeper',
+    keeperImageFocus: '50% 34%',
     storyHref: '/toothfairy/story/anna-bogle',
     renderIntensity: 0.86,
     storySymbol: 'storybook-frame',
@@ -203,6 +215,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Ratoncito Perez',
     keeperObject: 'Stamped receipt',
     keeperCue: 'Mouse seal, two lights, proof of care.',
+    keeperImageSrc: '/story-assets/ratoncito-perez/rp-02-mouse.png',
+    keeperImageAlt: 'Ratoncito Perez, the mouse keeper',
+    keeperImageFocus: '42% 72%',
     storyHref: '/toothfairy/story/ratoncito-perez',
     renderIntensity: 0.82,
     storySymbol: 'rainbow-orbit',
@@ -245,6 +260,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Waraba',
     keeperObject: 'Threshold stone',
     keeperCue: 'Amber paw-light at the border.',
+    keeperImageSrc: '/story-assets/characters/char-waraba.png',
+    keeperImageAlt: 'Waraba, the threshold keeper',
+    keeperImageFocus: '50% 32%',
     storyHref: '/toothfairy/story/waraba-edge-light',
     renderIntensity: 0.78,
     storySymbol: 'pillow-star',
@@ -287,6 +305,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperName: 'Daga',
     keeperObject: 'Moon-calendar pawprints',
     keeperCue: 'One-year wish tracks and note ribbon.',
+    keeperImageSrc: '/story-assets/daga-one-year-wish/site/story-06-daga-site-portrait.png',
+    keeperImageAlt: 'Daga, the family-note keeper',
+    keeperImageFocus: '68% 38%',
     storyHref: '/toothfairy/story/daga-one-year-wish',
     renderIntensity: 0.74,
     storySymbol: 'family-lantern',

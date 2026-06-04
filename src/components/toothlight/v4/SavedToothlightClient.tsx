@@ -111,33 +111,33 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
   const statusLabel =
     noteStatus === 'sealed' ? 'Sealed for later' : noteStatus === 'seed' || noteStatus === 'started' ? 'Note Started' : 'No note yet'
-  const noteCtaLabel = noteStatus === 'sealed' ? 'Review sealed status' : 'Seal the future note'
+  const noteCtaLabel = noteStatus === 'sealed' ? 'Review note' : 'Seal note'
   const privateNoteStatus =
     noteStatus === 'sealed'
       ? 'Private note sealed'
       : noteStatus === 'seed' || noteStatus === 'started'
         ? 'Note started'
         : 'Ready to seal'
-  const familyStatus = familyNodes.length ? `${familyNodes.length} family addition${familyNodes.length === 1 ? '' : 's'}` : 'Invite family'
+  const familyStatus = familyNodes.length ? `${familyNodes.length} added` : 'Invite family'
   const capsuleChecklist = [
     {
-      label: 'Memory saved',
+      label: 'Memory',
       detail: current.caption || 'The child-facing Toothlight is ready.',
       state: 'done',
     },
     {
-      label: 'Future note',
+      label: 'Parent note',
       detail: privateNoteStatus,
       state: noteStatus === 'sealed' ? 'done' : 'next',
     },
     {
-      label: 'Family note or gift',
+      label: 'Family note + gift',
       detail: familyStatus,
       state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
     },
   ]
-  const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal the future note'
-  const nextStepHelper = noteStatus === 'sealed' ? 'Add a family note or gift.' : 'Private note first.'
+  const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal note'
+  const nextStepHelper = noteStatus === 'sealed' ? 'Note first. Gift optional.' : 'Private parent note.'
 
   return (
     <div className={styles.shell}>
@@ -147,7 +147,7 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
         <h1>Toothlight time capsule.</h1>
-        <p>Saved. Next: {nextStepLabel}.</p>
+        <p>{noteStatus === 'sealed' ? 'Saved. Invite family when ready.' : 'Saved. Seal the note next.'}</p>
 
         <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
           {capsuleChecklist.map((item, index) => (
@@ -170,13 +170,13 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
               href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/family` : `/toothlight/t/${toothlightId}/note?handoff=1`}
               className={`${styles.actionLink} ${styles.primary}`}
             >
-              {noteStatus === 'sealed' ? 'Invite family' : 'Seal the future note'}
+              {noteStatus === 'sealed' ? 'Invite family' : 'Seal note'}
             </Link>
             <Link
               href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/note` : `/toothlight/t/${toothlightId}/family`}
               className={`${styles.actionLink} ${styles.secondary}`}
             >
-              {noteStatus === 'sealed' ? noteCtaLabel : 'Invite family later'}
+              {noteStatus === 'sealed' ? noteCtaLabel : 'Family can wait'}
             </Link>
           </div>
         </div>

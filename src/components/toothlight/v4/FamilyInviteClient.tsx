@@ -133,7 +133,7 @@ export function FamilyInviteClient({ toothlightId }: FamilyInviteClientProps) {
         </Link>
         <p className={styles.eyebrow}>Family invite</p>
         <h1>Invite family.</h1>
-        <p>A note is enough. A gift can travel with it.</p>
+        <p>Note first. Gift optional.</p>
         {showMemoryCard ? (
           <ToothlightCard
             imageSrc={current.renderedImageSrc ?? current.imageSrc}

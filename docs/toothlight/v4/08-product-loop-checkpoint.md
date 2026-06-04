@@ -1,7 +1,7 @@
 # Toothlight V4 Product Loop Checkpoint
 
 Date: 2026-05-30
-Status: local preview checkpoint for first visitor testing
+Status: local preview checkpoint for first 20 to 50 visitor testing
 
 ## Locked product thesis
 
@@ -31,7 +31,7 @@ The memory step now keeps the intro minimal: one helper sentence before the phot
 
 The default render action is the 3D/story-object Toothlight direction. The Light Style options remain available because they give the system enough variety for testing and can map back to fairy-world story objects later.
 
-The style and render section is now visual-first: six image tiles, keeper medallions in the tile corners, and one AI preview button. Style names, keeper names, and lore remain in accessible labels and prompt metadata rather than visible explanatory copy.
+The style and render section is now visual-first: six image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one AI preview button. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
 
 ### 2. AI final
 
@@ -53,13 +53,13 @@ The drawing translation is still inconsistent and can look repetitive. This is a
 
 After the parent saves, the saved page should frame the Toothlight as a time capsule rather than a finished financial product.
 
-The saved page uses a checklist:
+The saved page uses a three-item checklist:
 
-- memory saved;
-- future note;
-- family note or gift.
+- Memory;
+- Parent note;
+- Family note + gift.
 
-The next user action should be contextual. If no private note is sealed, the page should guide to the note step. If the note exists, it should guide to family invite. Smile Fund stays optional until the product proves the emotional loop.
+The next user action should be contextual. If no private note is sealed, the page should guide to `Seal note`. If the note exists, it should guide to `Invite family`. Smile Fund stays folded into the family note + optional gift path until the product proves the emotional loop.
 
 ### 4. Future note
 
@@ -71,6 +71,7 @@ Required behavior:
 
 - one note field;
 - unlock age selector;
+- short voice-first prompt: `Tap mic. Talk. Seal.`;
 - clear seal action;
 - safe JSON error handling;
 - demo route works in local preview;
@@ -90,6 +91,7 @@ Current behavior:
 
 - family can add a note for later;
 - a gift can travel with that note, but the note remains the default path;
+- visitor-facing language is `Family note + gift`, `Note first. Gift optional.`, and `Add family note`;
 - the family invite page carries forward the saved Toothlight image, title, caption, and family nodes;
 - the form shows a clear completion state;
 - completion links back to the saved Toothlight.
@@ -105,10 +107,10 @@ Current limitation:
 There is still some explanatory copy across the full loop, but the post-save pages have started moving toward shorter status language:
 
 - saved page uses a short next-action label and helper;
-- note handoff leads with saying or typing the private note;
+- note handoff leads with one parent note and the fast mic/text prompt;
 - note review restores sealed status from local preview storage or the saved Toothlight API;
 - family page shows one primary visual object: the saved Toothlight;
-- family invite and gift now read as one family step rather than a separate Smile Fund flow.
+- family invite and gift now read as one `Family note + gift` step rather than a separate Smile Fund flow.
 
 ## What is intentionally deferred
 

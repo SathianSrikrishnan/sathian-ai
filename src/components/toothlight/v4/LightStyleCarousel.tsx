@@ -37,6 +37,7 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
               style={{
                 ['--style-accent' as string]: treatment.accent,
                 ['--style-secondary' as string]: treatment.secondaryAccent,
+                ['--keeper-focus' as string]: treatment.keeperImageFocus,
               }}
               aria-pressed={selected}
               data-treatment={treatment.id}
@@ -53,8 +54,12 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
               >
                 <span />
               </span>
-              <span className={styles.keeperMark} aria-hidden="true">
-                <i />
+              <span className={styles.keeperPortrait} aria-hidden="true">
+                <img src={treatment.keeperImageSrc} alt="" />
+              </span>
+              <span className={styles.caption} aria-hidden="true">
+                <span className={styles.styleName}>{treatment.label}</span>
+                <span className={styles.keeperName}>{treatment.keeperName}</span>
               </span>
             </button>
           )

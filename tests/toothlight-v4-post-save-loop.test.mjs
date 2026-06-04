@@ -24,7 +24,7 @@ const familyForm = existsSync(familyFormPath) ? readFileSync(familyFormPath, 'ut
 const familyCss = existsSync(familyCssPath) ? readFileSync(familyCssPath, 'utf8') : ''
 
 assert(/Toothlight time capsule/.test(savedClient), 'saved page must frame the object as a Toothlight time capsule')
-for (const label of ['Memory saved', 'Future note', 'Family note or gift']) {
+for (const label of ['Memory', 'Parent note', 'Family note + gift']) {
   assert(savedClient.includes(label), `saved page must show ${label} in the capsule checklist`)
 }
 assert(!savedClient.includes('Smile Fund optional'), 'saved page must not treat Smile Fund as a separate post-save step')
@@ -35,12 +35,13 @@ assert(/nextStepHelper/.test(savedClient), 'saved page must compute a short next
 assert(/nextStepPanel/.test(savedClient + savedCss), 'saved page must include a clear next-step panel')
 assert(/capsuleChecklist/.test(savedClient + savedCss), 'saved page must style the capsule checklist')
 assert(/Invite family/.test(savedClient), 'saved page must make family invitation the post-seal next action')
-assert(/family note or gift/.test(savedClient), 'saved page must explain that family invite includes the optional gift path')
+assert(/Note first\. Gift optional\./.test(savedClient), 'saved page must explain the family invite as one note-first optional gift path')
 assert(!/audit page/i.test(savedClient), 'saved page copy must not describe the customer-facing object as an audit page')
-assert(!/One private note closes the time capsule|Family can add a note and optional gift for later|Saved\. Seal the note, then invite family|Family note \+ gift|Add a note and optional gift/.test(savedClient), 'saved page must avoid long explanatory next-step copy')
+assert(!/One private note closes the time capsule|Family can add a note and optional gift for later|Saved\. Seal the note, then invite family|Family note or gift|Add a note and optional gift/.test(savedClient), 'saved page must avoid long explanatory next-step copy')
 
-assert(/Say or type the note/.test(notePanel), 'future note panel must lead with the practical voice/text action')
-assert(/Next: invite family for a note or gift/.test(notePanel), 'sealed note confirmation must point to the family note and gift path')
+assert(/Seal the note/.test(notePanel), 'future note panel must lead with sealing the parent note')
+assert(/Tap mic\. Talk\. Seal\./.test(notePanel), 'future note voice prompt must be fast enough for the practical parent flow')
+assert(/Next: invite family\./.test(notePanel), 'sealed note confirmation must point to the family invite path')
 assert(/View saved Toothlight/.test(notePanel), 'sealed note confirmation must link back to the saved Toothlight')
 assert(!/Small note starter/.test(notePanel), 'future note handoff must not ask for two parent notes')
 
@@ -48,11 +49,12 @@ assert(/Invite family/.test(familyPage + familyInviteClient + familyForm), 'fami
 assert(/readLocalToothlight/.test(familyInviteClient), 'family invite must carry forward the saved Toothlight visual')
 assert(!/Kai's Toothlight/.test(familyPage + familyInviteClient), 'family invite must not show the demo Toothlight after a real save')
 assert(!/FamilyNodeOrbit/.test(familyForm), 'family form must not show a second unrelated visual')
-assert(/Add a note or gift/.test(familyInviteClient + familyForm), 'family form must combine note and gift as one family action')
-assert(/A note is enough/.test(familyPage + familyInviteClient + familyForm), 'family flow must frame note as the default path')
+assert(/Family note \+ gift/.test(familyInviteClient + familyForm), 'family form must combine note and gift as one family action')
+assert(/Note first\. Gift optional\./.test(familyPage + familyInviteClient + familyForm + savedClient), 'family flow must frame note as the default path')
 assert(/useState\(false\)/.test(familyForm), 'family gift checkbox must default off')
-assert(/Include a gift/.test(familyForm), 'family gift control must read as part of the same family action')
-assert(/Add to Toothlight/.test(familyForm), 'family primary CTA must add the contribution to the Toothlight')
+assert(/Add optional gift/.test(familyForm), 'family gift control must read as part of the same family action')
+assert(/Add family note/.test(familyForm), 'family primary CTA must add the contribution to the Toothlight')
+assert(/Add note \+ gift/.test(familyForm), 'family primary CTA must switch when a gift is included')
 assert(/View saved Toothlight/.test(familyForm), 'family completion must offer a return to the saved Toothlight')
 assert(/familyNoteDefault/.test(familyCss), 'family form must style the note-first default state')
 assert(!/Gift linked|Family gift linked/.test(familyInviteClient + familyForm + savedClient), 'family copy must not expose fund-style linked language')

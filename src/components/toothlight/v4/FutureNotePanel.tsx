@@ -113,9 +113,9 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
       <div className={styles.statusPill} aria-label="Future note status">{statusLabel}</div>
 
       <div className={styles.copy}>
-        <p className={styles.eyebrow}>{handoff ? 'Seal the future note' : 'Write a note for later'}</p>
-        <h1>{handoff ? 'Say or type the note.' : 'Write for later.'}</h1>
-        <p>{handoff ? 'It opens at the age you choose.' : 'The note stays closed.'}</p>
+        <p className={styles.eyebrow}>Parent note</p>
+        <h1>Seal the note.</h1>
+        <p>{handoff ? 'Tap mic, talk, then seal.' : 'The note stays closed.'}</p>
       </div>
 
       <VoiceAssistField
@@ -124,7 +124,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         onChange={setSealedText}
         placeholder="Write what you want them to receive later."
         rows={6}
-        voicePrompt="Say the note, then edit before sealing."
+        voicePrompt="Tap mic. Talk. Seal."
       />
 
       <label className={styles.field}>
@@ -145,7 +145,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         <div className={styles.sealedMoment} aria-label="Sealed future note confirmation">
           <strong>Sealed for later</strong>
           <span>The private note stays closed.</span>
-          <p>Next: invite family for a note or gift.</p>
+          <p>Next: invite family.</p>
           <div>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
             <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>

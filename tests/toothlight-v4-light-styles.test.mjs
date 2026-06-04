@@ -59,6 +59,9 @@ for (const token of [
   'aiTransformationBrief',
   'renderIntensity',
   'storySymbol',
+  'keeperImageSrc',
+  'keeperImageAlt',
+  'keeperImageFocus',
   'cssFilter',
   'canvasFilter',
   'brushAccent',
@@ -86,10 +89,19 @@ assert(/LIGHT_STYLE_TREATMENTS/.test(carousel), 'LightStyleCarousel must use the
 assert(/aria-pressed/.test(carousel), 'LightStyleCarousel must expose selected state accessibly')
 assert(/data-treatment/.test(carousel), 'LightStyleCarousel buttons must expose treatment ids')
 assert(/visualPromise/.test(carousel), 'LightStyleCarousel must keep the visual promise in accessible labels')
-assert(/keeperMark/.test(carousel + carouselCss), 'LightStyleCarousel must render keeper lore as visual medallions')
-assert(/aria-label=\{`\$\{treatment\.label\}/.test(carousel), 'LightStyleCarousel must keep style names in accessible labels instead of visible text')
-assert(!/styleStoryPanel|Open \$\{selectedTreatment\.keeperName\} story|<span className=\{styles\.label\}>/.test(carousel), 'LightStyleCarousel must remove the text-heavy selected lore panel')
+assert(/keeperPortrait/.test(carousel + carouselCss), 'LightStyleCarousel must render real keeper portrait chips')
+assert(/src=\{treatment\.keeperImageSrc\}/.test(carousel), 'LightStyleCarousel must use keeper images from the catalog')
+assert(/styleName/.test(carousel + carouselCss), 'LightStyleCarousel must show one visible style label')
+assert(/keeperName/.test(carousel + carouselCss), 'LightStyleCarousel must show one visible keeper label')
+assert(/aria-label=\{`\$\{treatment\.label\}/.test(carousel), 'LightStyleCarousel must keep rich style names in accessible labels')
+assert(!/styleStoryPanel|Open \$\{selectedTreatment\.keeperName\} story|<p|visualPromise\}<\/span>/.test(carousel), 'LightStyleCarousel must remove text-heavy lore panels and paragraphs')
 assert(/grid-auto-flow|overflow-x|scroll-snap/i.test(carouselCss), 'carousel CSS must be mobile-first horizontal selection')
+
+const keeperImageSrcs = [...catalog.matchAll(/keeperImageSrc:\s*'([^']+)'/g)].map((match) => match[1])
+assert(keeperImageSrcs.length >= 6, 'each Light Style must have a keeper image source')
+for (const imageSrc of keeperImageSrcs) {
+  assert(existsSync(resolve(root, `public${imageSrc}`)), `keeper image must exist: ${imageSrc}`)
+}
 assert(/source photo|real photo/i.test(magicStudio), 'AI render prompt must preserve source photo language')
 assert(/face identity|camera angle|child marks/i.test(magicStudio), 'AI render prompt must preserve identity, camera angle, and child marks')
 assert(/reinterpret child marks|restyle child marks|restyle handwriting/i.test(magicStudio), 'AI prompt must ask the model to restyle child marks instead of freezing them')

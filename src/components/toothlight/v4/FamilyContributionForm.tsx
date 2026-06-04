@@ -66,7 +66,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
         giftAmountCents: result.giftAmountCents ?? 0,
       })
       setContributionSaved(true)
-      setMessage(savedNoteOnly ? 'Note added for later.' : 'Gift and note added for later.')
+      setMessage(savedNoteOnly ? 'Family note added.' : 'Note + gift added.')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Contribution is not ready yet.')
     } finally {
@@ -78,9 +78,9 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
     <section className={styles.panel} aria-label="Add a note for later">
       <div className={styles.form}>
         <p className={styles.eyebrow}>Family invite</p>
-        <h1>Add a note or gift.</h1>
-        <p>A note is enough. A gift can wait.</p>
-        <div className={styles.familyNoteDefault}>Note first. Gift only if they want.</div>
+        <h1>Family note + gift.</h1>
+        <p>Note first. Gift optional.</p>
+        <div className={styles.familyNoteDefault}>A note is enough.</div>
 
         <label className={styles.field}>
           <span>Your name</span>
@@ -99,7 +99,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
 
         <label className={styles.toggle}>
           <input type="checkbox" checked={includeGift} onChange={(event) => setIncludeGift(event.target.checked)} />
-          <span>Include a gift</span>
+          <span>Add optional gift</span>
         </label>
 
         {includeGift && (
@@ -115,7 +115,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
 
         <div className={styles.actions}>
           <button type="button" onClick={() => submitContribution(!includeGift)} disabled={saving}>
-            Add to Toothlight
+            {includeGift ? 'Add note + gift' : 'Add family note'}
           </button>
         </div>
 
