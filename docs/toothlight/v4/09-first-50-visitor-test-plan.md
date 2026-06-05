@@ -87,7 +87,9 @@ A test pass is valid when:
 - Voice Assist is assistive input, not a live Tanda voice agent.
 - Browser speech recognition depends on the browser. Recording fallback uses `/api/toothlight/voice-transcribe`.
 - Production voice transcription requires `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.
+- `/api/toothlight/health` reports whether production voice transcription is enabled, disabled, or missing its OpenAI key.
 - Parent note sealing requires `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` as a 32-byte base64 server value.
+- Preview health checks require `TFN_ADMIN_SECRET`, `TOOTHFAIRY_ADMIN_SECRET`, or `CRON_SECRET`; without one, the health route intentionally returns 404.
 - MoonPay, Coinbase, and other on-ramp/provider funding paths are deferred for this visitor test.
 - Smart contract audit, mainnet minting, and production Smile Fund funding are deferred.
 
@@ -131,6 +133,13 @@ Run build:
 
 ```powershell
 npm run build
+```
+
+Run the preview health check after Vercel is ready:
+
+```powershell
+Invoke-WebRequest -UseBasicParsing "https://<preview-domain>/api/toothlight/health" `
+  -Headers @{ "x-tfn-admin-secret" = "<admin secret>" }
 ```
 
 Run the mobile proof path:

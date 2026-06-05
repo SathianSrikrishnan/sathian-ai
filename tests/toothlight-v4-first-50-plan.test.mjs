@@ -42,6 +42,8 @@ assert(/http:\/\/localhost:3000\/toothlight/.test(plan), 'plan must include the 
 assert(/http:\/\/<LAN-IP>:3000\/toothlight/.test(plan), 'plan must include a LAN phone Toothlight link template')
 assert(/OPENAI_API_KEY/.test(plan), 'plan must call out voice transcription key requirement')
 assert(/TOOTHLIGHT_NOTE_ENCRYPTION_KEY/.test(plan), 'plan must call out note encryption key requirement')
+assert(/TFN_ADMIN_SECRET/.test(plan), 'plan must call out the admin secret required for preview health checks')
+assert(/\/api\/toothlight\/health/.test(plan), 'plan must include the Toothlight health route check')
 assert(/MoonPay|Coinbase|on-ramp/i.test(plan), 'plan must mark on-ramp/provider funding as deferred')
 assert(/npm run build/.test(plan), 'plan must include build verification')
 assert(/toothlight-v4-\*\.test\.mjs/.test(plan), 'plan must include the Toothlight V4 source test command')
