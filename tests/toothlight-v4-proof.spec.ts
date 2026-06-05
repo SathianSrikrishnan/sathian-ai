@@ -37,9 +37,11 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
   await page.getByRole('button', { name: /Seal the note/i }).click()
   await expect(page.getByText(/Sealed for later/i).first()).toBeVisible()
   await page.getByRole('link', { name: /View saved Toothlight/i }).click()
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight$/, { timeout: 8_000 })
   await expect(page.getByText(/Review note/i).first()).toBeVisible()
 
-  await page.goto('/toothlight/t/demo-toothlight/family', { waitUntil: 'load' })
+  await page.getByRole('link', { name: /Invite family/i }).first().click()
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/family$/, { timeout: 8_000 })
   await expect(page.getByRole('heading', { name: /Invite family/i }).first()).toBeVisible()
   await expect(page.getByRole('heading', { name: /Family note \+ gift/i })).toBeVisible()
   await page.getByPlaceholder('Nana').fill('Nana')

@@ -109,8 +109,14 @@ for (const imageSrc of keeperImageSrcs) {
 }
 const objectImageSrcs = [...catalog.matchAll(/objectImageSrc:\s*'([^']+)'/g)].map((match) => match[1])
 assert(objectImageSrcs.length >= 6, 'each Light Style must have an object image source')
+assert(
+  existsSync(resolve(root, 'public/toothlight/style-objects/product-renders/toothlight-style-contact-sheet-source.png')),
+  'rendered object source contact sheet must be preserved in the project',
+)
 for (const imageSrc of objectImageSrcs) {
   assert(imageSrc.startsWith('/toothlight/style-objects/'), `object image must live in the Toothlight style object asset set: ${imageSrc}`)
+  assert(imageSrc.includes('/product-renders/'), `object image must use the rendered product asset set: ${imageSrc}`)
+  assert(/\.(jpg|jpeg|png|webp)$/.test(imageSrc), `object image must be a raster asset: ${imageSrc}`)
   assert(existsSync(resolve(root, `public${imageSrc}`)), `object image must exist: ${imageSrc}`)
   assert(!keeperImageSrcs.includes(imageSrc), `object image must not reuse keeper portrait: ${imageSrc}`)
 }

@@ -54,7 +54,7 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 - finger drawing works on top of the photo.
 - Brush colors stay reachable.
 - Done closes the drawing studio and preserves the drawing.
-- Selecting each Light Style updates the preview card.
+- Selecting each Light Style updates the preview card and the style picker shows six rendered Toothlight object images.
 - AI preview creates or displays a usable Toothlight final.
 - Saved AI options remain visible after multiple previews.
 - Child story fields are visible and the Mic control is usable when supported.
@@ -83,7 +83,7 @@ A test pass is valid when:
 ## Known limits
 
 - AI object quality is good enough for early feedback but not final.
-- The six Light Style object images are source-controlled placeholders until richer product renders are approved.
+- The six Light Style object images are source-controlled generated product renders. They are ready for first-50 testing, but not final brand/commerce artwork.
 - Voice Assist is assistive input, not a live Tanda voice agent.
 - Browser speech recognition depends on the browser. Recording fallback uses `/api/toothlight/voice-transcribe`.
 - Production voice transcription requires `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.
@@ -138,6 +138,7 @@ Run the mobile proof path:
 ```powershell
 $env:PLAYWRIGHT_PORT = '3100'
 npx playwright test tests/toothlight-v4-proof.spec.ts --project="Mobile Chrome"
+npx playwright test tests/toothlight-v4-proof.spec.ts --project="Mobile Safari"
 Remove-Item Env:\PLAYWRIGHT_PORT
 ```
 
