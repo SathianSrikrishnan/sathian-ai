@@ -21,6 +21,12 @@ The render quality is good enough for the first 20 to 50 visitor tests. It is no
 
 ## Current core flow
 
+### 0. Entry
+
+Route: `/toothlight`
+
+The entry page now introduces the product loop as `Photo + drawing`, `AI Toothlight`, `Sealed note`, and `Family note + gift`. Smile Fund language should not appear as a separate first-visit step on this page; the first tester read is family can add a note and optional gift later.
+
 ### 1. Make
 
 Route: `/toothlight/make`

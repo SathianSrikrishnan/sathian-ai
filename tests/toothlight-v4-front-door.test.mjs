@@ -14,9 +14,10 @@ const page = existsSync(pagePath) ? readFileSync(pagePath, 'utf8') : ''
 const css = existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : ''
 
 assert(/FRONT_DOOR_BEATS/.test(page), 'entry page must define a compact first-viewport product story')
-for (const beat of ['Photo + drawing', 'AI Toothlight', 'Sealed note', 'Family + Smile Fund']) {
+for (const beat of ['Photo + drawing', 'AI Toothlight', 'Sealed note', 'Family note + gift']) {
   assert(page.includes(beat), `front-door story must include ${beat}`)
 }
+assert(!/Family \+ Smile Fund|optional Smile Fund|links a Smile Fund/i.test(page), 'front door must fold Smile Fund into the family note and optional gift path')
 for (const cue of ['Create before sign-in', 'Original stays saved', 'Parent controls the note']) {
   assert(page.includes(cue), `front-door trust cue must include ${cue}`)
 }
