@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 import { saveLocalFamilyContribution, type LocalFamilyContribution } from '@/lib/toothlight/client/toothlight-local-state'
 import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
+import { VoiceAssistField } from './VoiceAssistField'
 import styles from './FamilyContributionForm.module.css'
 
 type FamilyContributionFormProps = {
@@ -87,15 +88,16 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
           <input value={contributorName} onChange={(event) => setContributorName(event.target.value)} placeholder="Nana" />
         </label>
 
-        <label className={styles.field}>
-          <span>Note for later</span>
-          <textarea
-            value={noteText}
-            onChange={(event) => setNoteText(event.target.value)}
-            placeholder="I hope this reminds you how loved you are."
-            rows={4}
-          />
-        </label>
+        <VoiceAssistField
+          label="Note for later"
+          value={noteText}
+          onChange={setNoteText}
+          placeholder="I hope this reminds you how loved you are."
+          rows={4}
+          voicePrompt="Tap mic. Talk. Add note."
+          successMessage="Note added. You can edit it."
+          transcribingMessage="Writing the family note..."
+        />
 
         <label className={styles.toggle}>
           <input type="checkbox" checked={includeGift} onChange={(event) => setIncludeGift(event.target.checked)} />

@@ -51,6 +51,8 @@ assert(!/Kai's Toothlight/.test(familyPage + familyInviteClient), 'family invite
 assert(!/FamilyNodeOrbit/.test(familyForm), 'family form must not show a second unrelated visual')
 assert(/Family note \+ gift/.test(familyInviteClient + familyForm), 'family form must combine note and gift as one family action')
 assert(/Note first\. Gift optional\./.test(familyPage + familyInviteClient + familyForm + savedClient), 'family flow must frame note as the default path')
+assert(/VoiceAssistField/.test(familyForm), 'family invite must use the voice-assisted note field')
+assert(/Tap mic\. Talk\. Add note\./.test(familyForm), 'family invite voice copy must stay short')
 assert(/useState\(false\)/.test(familyForm), 'family gift checkbox must default off')
 assert(/Add optional gift/.test(familyForm), 'family gift control must read as part of the same family action')
 assert(/Add family note/.test(familyForm), 'family primary CTA must add the contribution to the Toothlight')
