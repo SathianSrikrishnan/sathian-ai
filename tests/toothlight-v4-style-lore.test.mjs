@@ -15,7 +15,16 @@ const treatments = existsSync(treatmentsPath) ? readFileSync(treatmentsPath, 'ut
 const carousel = existsSync(carouselPath) ? readFileSync(carouselPath, 'utf8') : ''
 const carouselCss = existsSync(carouselCssPath) ? readFileSync(carouselCssPath, 'utf8') : ''
 
-for (const field of ['keeperName', 'keeperObject', 'keeperCue', 'storyHref', 'keeperImageSrc', 'keeperImageAlt']) {
+for (const field of [
+  'keeperName',
+  'keeperObject',
+  'keeperCue',
+  'storyHref',
+  'keeperImageSrc',
+  'keeperImageAlt',
+  'objectImageSrc',
+  'objectImageAlt',
+]) {
   assert(treatments.includes(field), `Light Style catalog must include ${field}`)
 }
 
@@ -50,6 +59,8 @@ assert(/keeperObject/.test(carousel), 'Light Style picker must keep story object
 assert(/keeperCue|storySymbol/.test(carousel), 'Light Style picker must keep keeper cues as visual symbol metadata')
 assert(/keeperPortrait|data-keeper|data-symbol/.test(carouselCss + carousel), 'style picker CSS must support keeper portrait chips')
 assert(/src=\{treatment\.keeperImageSrc\}/.test(carousel), 'style picker must use real keeper images instead of abstract marker dots')
+assert(/objectImage/.test(carousel + carouselCss), 'style picker must show real object art in each tile')
+assert(/src=\{treatment\.objectImageSrc\}/.test(carousel), 'style picker must use the per-style object art')
 assert(/styleName/.test(carousel) && /keeperName/.test(carousel), 'style picker must show short visible labels so families know what they are choosing')
 assert(!/styleStoryPanel|Open \$\{selectedTreatment\.keeperName\} story|<span className=\{styles\.keeperBadge\}>|keeperMark/.test(carousel), 'style picker must not show lore as text-heavy labels or abstract medallion dots')
 

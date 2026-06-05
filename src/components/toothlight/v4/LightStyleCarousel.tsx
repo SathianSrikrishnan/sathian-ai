@@ -38,6 +38,7 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
                 ['--style-accent' as string]: treatment.accent,
                 ['--style-secondary' as string]: treatment.secondaryAccent,
                 ['--keeper-focus' as string]: treatment.keeperImageFocus,
+                ['--object-focus' as string]: treatment.objectImageFocus,
               }}
               aria-pressed={selected}
               data-treatment={treatment.id}
@@ -52,7 +53,8 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
                 className={clsx(styles.swatch, styles[treatment.swatchClass])}
                 aria-hidden="true"
               >
-                <span />
+                <img className={styles.objectImage} src={treatment.objectImageSrc} alt="" />
+                <span className={styles.swatchGlow} />
               </span>
               <span className={styles.keeperPortrait} aria-hidden="true">
                 <img src={treatment.keeperImageSrc} alt="" />

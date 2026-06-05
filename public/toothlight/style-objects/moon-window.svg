@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 450" role="img" aria-label="Moon window Toothlight object">
+  <defs>
+    <linearGradient id="night" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0d2234"/>
+      <stop offset=".5" stop-color="#6eb7ee"/>
+      <stop offset="1" stop-color="#eefaff"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".35" stop-color="#b8d9ea"/>
+      <stop offset=".72" stop-color="#f3fbff"/>
+      <stop offset="1" stop-color="#6e8797"/>
+    </linearGradient>
+    <radialGradient id="pane" cx="42%" cy="26%" r="72%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".88"/>
+      <stop offset=".42" stop-color="#c9eeff" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#23445c" stop-opacity=".42"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="450" rx="34" fill="url(#night)"/>
+  <circle cx="488" cy="89" r="28" fill="#f9fdff" opacity=".82"/>
+  <path d="M134 343c60-38 124-38 191 0 60 35 116 33 168-5" fill="none" stroke="#d8f4ff" stroke-width="12" stroke-linecap="round" opacity=".28"/>
+  <g filter="url(#glow)">
+    <path d="M205 338V203c0-75 52-137 116-137s116 62 116 137v135z" fill="url(#silver)"/>
+    <path d="M230 315V207c0-62 41-113 91-113s91 51 91 113v108z" fill="url(#pane)"/>
+    <path d="M321 95v220M266 126v189M376 126v189M230 214h182" fill="none" stroke="#f2fbff" stroke-width="6" opacity=".6"/>
+    <path d="M213 332h216" stroke="#6e8797" stroke-width="12" stroke-linecap="round"/>
+    <path d="M250 275c28-22 68-28 119-16" stroke="#e7f7ff" stroke-width="10" stroke-linecap="round" opacity=".72"/>
+    <path d="M238 169c34-49 92-69 154-33" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity=".38"/>
+    <path d="M321 62c0-19 36-19 36 0v31h-36z" fill="url(#silver)"/>
+  </g>
+  <g fill="#e7f7ff" opacity=".8">
+    <circle cx="142" cy="96" r="4"/>
+    <circle cx="508" cy="222" r="3"/>
+    <circle cx="462" cy="156" r="4"/>
+    <circle cx="178" cy="171" r="3"/>
+  </g>
+</svg>

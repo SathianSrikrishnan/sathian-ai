@@ -34,6 +34,9 @@ export type VisualTreatment = {
   keeperImageSrc: string
   keeperImageAlt: string
   keeperImageFocus: string
+  objectImageSrc: string
+  objectImageAlt: string
+  objectImageFocus: string
   storyHref: string
   renderIntensity: number
   storySymbol: string
@@ -83,6 +86,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/tanda/tf-05-tanda.png',
     keeperImageAlt: 'Tanda, the Tooth Fairy Network guide',
     keeperImageFocus: '50% 34%',
+    objectImageSrc: '/toothlight/style-objects/golden-locket.svg',
+    objectImageAlt: 'Round golden locket Toothlight object',
+    objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/tanda',
     renderIntensity: 0.72,
     storySymbol: 'locket-halo',
@@ -128,6 +134,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-kkachi.png',
     keeperImageAlt: 'Kkachi, the magpie keeper',
     keeperImageFocus: '70% 42%',
+    objectImageSrc: '/toothlight/style-objects/moon-window.svg',
+    objectImageAlt: 'Arched moon window Toothlight object',
+    objectImageFocus: '50% 54%',
     storyHref: '/toothfairy/story/korea',
     renderIntensity: 0.76,
     storySymbol: 'moon-window',
@@ -173,6 +182,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-anna-bogle-v2.png',
     keeperImageAlt: 'Anna Bogle, the Irish keeper',
     keeperImageFocus: '50% 34%',
+    objectImageSrc: '/toothlight/style-objects/storybook-velvet.svg',
+    objectImageAlt: 'Storybook page charm Toothlight object',
+    objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/anna-bogle',
     renderIntensity: 0.86,
     storySymbol: 'storybook-frame',
@@ -218,6 +230,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/ratoncito-perez/rp-02-mouse.png',
     keeperImageAlt: 'Ratoncito Perez, the mouse keeper',
     keeperImageFocus: '42% 72%',
+    objectImageSrc: '/toothlight/style-objects/rainbow-room.svg',
+    objectImageAlt: 'Transparent acrylic tooth charm Toothlight object',
+    objectImageFocus: '50% 55%',
     storyHref: '/toothfairy/story/ratoncito-perez',
     renderIntensity: 0.82,
     storySymbol: 'rainbow-orbit',
@@ -263,6 +278,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-waraba.png',
     keeperImageAlt: 'Waraba, the threshold keeper',
     keeperImageFocus: '50% 32%',
+    objectImageSrc: '/toothlight/style-objects/pillow-spark.svg',
+    objectImageAlt: 'Stitched pillow badge Toothlight object',
+    objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/waraba-edge-light',
     renderIntensity: 0.78,
     storySymbol: 'pillow-star',
@@ -308,6 +326,9 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/daga-one-year-wish/site/story-06-daga-site-portrait.png',
     keeperImageAlt: 'Daga, the family-note keeper',
     keeperImageFocus: '68% 38%',
+    objectImageSrc: '/toothlight/style-objects/family-lantern.svg',
+    objectImageAlt: 'Folded family lantern Toothlight object',
+    objectImageFocus: '50% 54%',
     storyHref: '/toothfairy/story/daga-one-year-wish',
     renderIntensity: 0.74,
     storySymbol: 'family-lantern',

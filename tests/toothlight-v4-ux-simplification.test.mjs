@@ -29,6 +29,7 @@ assert(/nextActionCard/.test(makeClient + makeStyles), 'Make page must show the 
 
 assert(/selectedTreatment/.test(carousel), 'Style picker must expose selected style details')
 assert(/keeperPortrait/.test(carousel + carouselStyles), 'Style picker must move lore into real keeper image chips')
+assert(/objectImage/.test(carousel + carouselStyles), 'Style picker must use product object images as the main tile visual')
 assert(/styleName/.test(carousel + carouselStyles), 'Style picker must keep one visible style label per image tile')
 assert(/keeperName/.test(carousel + carouselStyles), 'Style picker must keep one visible keeper label per image tile')
 assert(/storyHref/.test(carousel), 'Style picker must retain story source metadata for accessible labels')

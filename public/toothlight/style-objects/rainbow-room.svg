@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 450" role="img" aria-label="Rainbow acrylic Toothlight object">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7ec"/>
+      <stop offset=".5" stop-color="#f3fbff"/>
+      <stop offset="1" stop-color="#e9f7ef"/>
+    </linearGradient>
+    <linearGradient id="acrylic" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".82"/>
+      <stop offset=".34" stop-color="#79d7ff" stop-opacity=".35"/>
+      <stop offset=".68" stop-color="#ff7862" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity=".72"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="26" stdDeviation="18" flood-color="#27495a" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <rect width="640" height="450" rx="34" fill="url(#bg)"/>
+  <circle cx="136" cy="98" r="20" fill="#ff7862" opacity=".75"/>
+  <circle cx="504" cy="114" r="16" fill="#62b8ff" opacity=".75"/>
+  <circle cx="462" cy="342" r="18" fill="#f2be4a" opacity=".72"/>
+  <g filter="url(#shadow)">
+    <path d="M321 75c65 0 123 49 123 116 0 52-31 88-53 127-18 31-26 58-42 58-15 0-19-42-31-42-13 0-18 42-34 42-15 0-23-26-41-57-23-40-54-78-54-128 0-67 58-116 132-116z" fill="url(#acrylic)" stroke="#ffffff" stroke-width="18" opacity=".94"/>
+    <path d="M321 75c65 0 123 49 123 116 0 52-31 88-53 127-18 31-26 58-42 58-15 0-19-42-31-42-13 0-18 42-34 42-15 0-23-26-41-57-23-40-54-78-54-128 0-67 58-116 132-116z" fill="none" stroke="#62b8ff" stroke-width="6" opacity=".48"/>
+    <circle cx="320" cy="73" r="33" fill="none" stroke="#b9e8ff" stroke-width="14"/>
+    <path d="M236 186c45-47 105-60 180-23" fill="none" stroke="#ffffff" stroke-width="15" stroke-linecap="round" opacity=".62"/>
+    <path d="M214 264c60-18 101-12 139 20 27 23 57 25 95 5" fill="none" stroke="#ff7862" stroke-width="11" stroke-linecap="round" opacity=".82"/>
+    <path d="M230 304c43 20 81 20 115 0" fill="none" stroke="#62b8ff" stroke-width="9" stroke-linecap="round" opacity=".8"/>
+    <path d="M250 128l150 220M402 128L250 338" stroke="#ffffff" stroke-width="4" opacity=".28"/>
+  </g>
+  <g fill="#27495a" opacity=".16">
+    <circle cx="188" cy="340" r="5"/>
+    <circle cx="528" cy="244" r="4"/>
+    <circle cx="92" cy="252" r="4"/>
+  </g>
+</svg>

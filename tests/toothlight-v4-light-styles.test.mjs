@@ -62,6 +62,9 @@ for (const token of [
   'keeperImageSrc',
   'keeperImageAlt',
   'keeperImageFocus',
+  'objectImageSrc',
+  'objectImageAlt',
+  'objectImageFocus',
   'cssFilter',
   'canvasFilter',
   'brushAccent',
@@ -91,6 +94,8 @@ assert(/data-treatment/.test(carousel), 'LightStyleCarousel buttons must expose 
 assert(/visualPromise/.test(carousel), 'LightStyleCarousel must keep the visual promise in accessible labels')
 assert(/keeperPortrait/.test(carousel + carouselCss), 'LightStyleCarousel must render real keeper portrait chips')
 assert(/src=\{treatment\.keeperImageSrc\}/.test(carousel), 'LightStyleCarousel must use keeper images from the catalog')
+assert(/objectImage/.test(carousel + carouselCss), 'LightStyleCarousel must render object artwork as the main tile image')
+assert(/src=\{treatment\.objectImageSrc\}/.test(carousel), 'LightStyleCarousel must use object images from the catalog')
 assert(/styleName/.test(carousel + carouselCss), 'LightStyleCarousel must show one visible style label')
 assert(/keeperName/.test(carousel + carouselCss), 'LightStyleCarousel must show one visible keeper label')
 assert(/aria-label=\{`\$\{treatment\.label\}/.test(carousel), 'LightStyleCarousel must keep rich style names in accessible labels')
@@ -101,6 +106,13 @@ const keeperImageSrcs = [...catalog.matchAll(/keeperImageSrc:\s*'([^']+)'/g)].ma
 assert(keeperImageSrcs.length >= 6, 'each Light Style must have a keeper image source')
 for (const imageSrc of keeperImageSrcs) {
   assert(existsSync(resolve(root, `public${imageSrc}`)), `keeper image must exist: ${imageSrc}`)
+}
+const objectImageSrcs = [...catalog.matchAll(/objectImageSrc:\s*'([^']+)'/g)].map((match) => match[1])
+assert(objectImageSrcs.length >= 6, 'each Light Style must have an object image source')
+for (const imageSrc of objectImageSrcs) {
+  assert(imageSrc.startsWith('/toothlight/style-objects/'), `object image must live in the Toothlight style object asset set: ${imageSrc}`)
+  assert(existsSync(resolve(root, `public${imageSrc}`)), `object image must exist: ${imageSrc}`)
+  assert(!keeperImageSrcs.includes(imageSrc), `object image must not reuse keeper portrait: ${imageSrc}`)
 }
 assert(/source photo|real photo/i.test(magicStudio), 'AI render prompt must preserve source photo language')
 assert(/face identity|camera angle|child marks/i.test(magicStudio), 'AI render prompt must preserve identity, camera angle, and child marks')

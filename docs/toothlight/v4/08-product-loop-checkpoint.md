@@ -31,7 +31,7 @@ The memory step now keeps the intro minimal: one helper sentence before the phot
 
 The default render action is the 3D/story-object Toothlight direction. The Light Style options remain available because they give the system enough variety for testing and can map back to fairy-world story objects later.
 
-The style and render section is now visual-first: six image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one AI preview button. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
+The style and render section is now visual-first: six object image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one AI preview button. The current object images live in `public/toothlight/style-objects/` and cover Golden Locket, Moon Window, Storybook Velvet, Rainbow Room, Pillow Spark, and Family Lantern. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
 
 ### 2. AI final
 
@@ -166,14 +166,17 @@ Remove-Item Env:\PLAYWRIGHT_PORT
 
 ## Next priorities
 
-1. UX simplification pass:
+1. Object-image quality pass:
+   The style picker now uses real in-repo object thumbnails instead of abstract swatches. The next visual upgrade is replacing these source-controlled SVG placeholders with higher-fidelity generated product-object art when the six object forms are approved.
+
+2. UX simplification pass:
    Initial pass applied after the checkpoint: saved, note, and family pages now use shorter copy, fewer explanatory panels, and clearer primary actions.
 
-2. Production readiness pass:
+3. Production readiness pass:
    Confirm Vercel env vars, Supabase schema, Supabase storage, auth callback URLs, and image generation keys.
 
-3. Fresh end-to-end QA:
+4. Fresh end-to-end QA:
    Test from a clean browser session, then test again as a signed-in parent using a real save.
 
-4. Preview deployment:
+5. Preview deployment:
    Push the checkpoint branch and use the Vercel preview URL for mobile testing before any production merge.

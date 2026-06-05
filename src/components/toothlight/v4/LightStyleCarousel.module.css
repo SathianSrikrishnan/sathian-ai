@@ -61,9 +61,10 @@
 
 .swatch {
   position: relative;
-  display: block;
+  display: grid;
   width: 100%;
   aspect-ratio: 1.42;
+  place-items: center;
   overflow: hidden;
   border-radius: 7px;
   background:
@@ -72,16 +73,34 @@
     linear-gradient(135deg, #fffdf4, #eaf5f2);
 }
 
-.swatch span {
+.objectImage {
   position: absolute;
-  inset: 19% 18%;
+  z-index: 2;
+  inset: 0.12rem;
+  width: calc(100% - 0.24rem);
+  height: calc(100% - 0.24rem);
+  object-fit: contain;
+  object-position: var(--object-focus, 50% 52%);
+  filter:
+    drop-shadow(0 0.55rem 0.72rem rgba(23, 38, 42, 0.2))
+    saturate(1.08)
+    contrast(1.02);
+}
+
+.swatchGlow {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
   border-radius: 7px;
   background:
-    linear-gradient(112deg, rgba(255, 255, 255, 0.76), transparent 42%),
-    linear-gradient(22deg, color-mix(in srgb, var(--style-accent), transparent 18%), color-mix(in srgb, var(--style-secondary), transparent 36%));
+    linear-gradient(112deg, rgba(255, 255, 255, 0.48), transparent 34%),
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.54), transparent 22%),
+    radial-gradient(circle at 82% 76%, color-mix(in srgb, var(--style-secondary), transparent 62%), transparent 34%);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.44),
-    0 0 1.5rem color-mix(in srgb, var(--style-accent), transparent 20%);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38),
+    inset 0 0 1.4rem color-mix(in srgb, var(--style-accent), transparent 62%);
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
 .keeperPortrait {
@@ -159,13 +178,14 @@
     linear-gradient(140deg, #162b37, #d8f3ff);
 }
 
-.swatchMoon span {
+.swatchMoon .swatchGlow {
   border-radius: 999px 999px 0.45rem 0.45rem;
   background:
     linear-gradient(90deg, rgba(231, 247, 255, 0.7) 1px, transparent 1px),
     linear-gradient(0deg, rgba(94, 169, 232, 0.28) 1px, transparent 1px),
-    rgba(255, 255, 255, 0.24);
+    rgba(255, 255, 255, 0.08);
   background-size: 0.72rem 0.72rem;
+  opacity: 0.38;
 }
 
 .swatchVelvet {
@@ -176,11 +196,12 @@
   background-size: 0.8rem 0.8rem;
 }
 
-.swatchVelvet span {
+.swatchVelvet .swatchGlow {
   border-radius: 4px;
   background:
     repeating-linear-gradient(28deg, rgba(38, 61, 65, 0.24) 0 1px, transparent 1px 8px),
     linear-gradient(135deg, rgba(255, 248, 222, 0.74), rgba(193, 108, 141, 0.32));
+  opacity: 0.32;
 }
 
 .swatchLantern {
@@ -190,13 +211,14 @@
     linear-gradient(135deg, #fff4de, #e3f4e9);
 }
 
-.swatchLantern span {
+.swatchLantern .swatchGlow {
   border-radius: 1.2rem 1.2rem 0.5rem 0.5rem;
   background:
     linear-gradient(90deg, rgba(41, 75, 55, 0.16) 1px, transparent 1px),
     radial-gradient(circle at 26% 28%, rgba(233, 138, 75, 0.88), transparent 38%),
     rgba(255, 246, 224, 0.74);
   background-size: 0.65rem 100%, auto, auto;
+  opacity: 0.32;
 }
 
 .swatchRainbow {
@@ -207,13 +229,14 @@
     linear-gradient(135deg, #fffaf3, #eaf5f2);
 }
 
-.swatchRainbow span {
+.swatchRainbow .swatchGlow {
   border-radius: 6px;
   background:
     radial-gradient(circle at 18% 24%, rgba(255, 120, 98, 0.82) 0 0.25rem, transparent 0.27rem),
     radial-gradient(circle at 76% 28%, rgba(98, 184, 255, 0.84) 0 0.22rem, transparent 0.24rem),
     repeating-linear-gradient(90deg, rgba(39, 73, 90, 0.18) 0 1px, transparent 1px 10px),
     linear-gradient(120deg, rgba(255, 120, 98, 0.3), rgba(98, 184, 255, 0.34));
+  opacity: 0.3;
 }
 
 .swatchSpark {
@@ -224,12 +247,13 @@
     linear-gradient(135deg, #fff9e2, #f0ebff);
 }
 
-.swatchSpark span {
+.swatchSpark .swatchGlow {
   border-radius: 5px;
   background:
     repeating-linear-gradient(45deg, rgba(59, 43, 102, 0.2) 0 1px, transparent 1px 9px),
     radial-gradient(circle at 24% 28%, rgba(247, 216, 115, 0.9) 0 0.24rem, transparent 0.26rem),
     linear-gradient(135deg, rgba(255, 249, 226, 0.8), rgba(176, 138, 243, 0.24));
+  opacity: 0.34;
 }
 
 .swatchLocket {
@@ -239,12 +263,13 @@
     #fff8e2;
 }
 
-.swatchLocket span {
+.swatchLocket .swatchGlow {
   border-radius: 8px;
   background:
     linear-gradient(118deg, rgba(255, 255, 255, 0.78), transparent 32%),
     repeating-linear-gradient(100deg, rgba(94, 58, 20, 0.12) 0 1px, transparent 1px 12px),
     linear-gradient(135deg, rgba(242, 190, 74, 0.5), rgba(128, 214, 196, 0.28));
+  opacity: 0.28;
 }
 
 @media (min-width: 760px) {
