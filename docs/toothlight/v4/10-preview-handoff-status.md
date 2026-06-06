@@ -49,6 +49,7 @@ The known preview domain is not ready for public first-50 testing:
 - `https://toothlight-preview.sathian.ai/toothlight/make` returned `401 Unauthorized`.
 - GitHub PR #7 is open, merge state is `CLEAN`, and has no Vercel bot comment or status checks attached to the latest commit.
 - The Vercel connector returned `403 Forbidden` for the project scope, so deployment inspection requires Vercel re-authentication or a token with access to the `sathiansrikrishnans-projects` scope.
+- A later attempt to create a temporary Vercel access link returned `token_expired`, so the connector must be signed in again before it can create a protected-preview bypass link.
 
 ## Environment gates
 
@@ -61,4 +62,4 @@ Before external preview testing:
 
 ## Next handoff action
 
-Use local phone testing now. Do not invite the full first-50 group until a preview deployment is reachable without a 401 or a temporary Vercel share/bypass link is created for the testing window.
+Use local phone testing now. Do not invite the full first-50 group until Vercel is re-authenticated and a preview deployment is reachable without a 401, or a temporary Vercel share/bypass link is created for the testing window.

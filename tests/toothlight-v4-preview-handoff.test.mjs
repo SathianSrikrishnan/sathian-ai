@@ -28,6 +28,8 @@ for (const text of [
   '401 Unauthorized',
   'merge state is `CLEAN`',
   'Vercel connector returned `403 Forbidden`',
+  'token_expired',
+  'Vercel is re-authenticated',
   'TFN_ADMIN_SECRET',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
   'OPENAI_API_KEY',
