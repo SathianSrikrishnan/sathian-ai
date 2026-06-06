@@ -1,0 +1,45 @@
+# Toothlight V4 First 50 Readiness Audit
+
+Date: 2026-06-06
+Status: local-ready; external preview blocked by Vercel access
+
+## Decision
+
+The local Toothlight MVP is ready for Sathian-led testing on browser and phone. It is not ready to send to the full first-50 visitor group until Vercel preview access is restored and one signed-in preview pass is completed.
+
+## What is ready
+
+| Area | Status | Evidence |
+| --- | --- | --- |
+| Entry route | Ready locally | `http://localhost:3000/toothlight` returned `200 OK`. |
+| Make route | Ready locally | `http://localhost:3000/toothlight/make` returned `200 OK`. |
+| Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.102:3000/toothlight/make`. |
+| Visual-first make flow | Ready for first testing | Six generated Toothlight object images are committed in `public/toothlight/style-objects/product-renders/v4/`. |
+| AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
+| Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
+| Family invite handoff | Ready locally | Mobile proof covered family route and family contribution. |
+| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`. |
+| Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
+
+## What is blocked
+
+| Area | Status | Why |
+| --- | --- | --- |
+| Public preview URL | Blocked | `https://toothlight-preview.sathian.ai/toothlight` and `/toothlight/make` returned `401 Unauthorized`. |
+| Vercel inspection/share link | Blocked | Vercel connector first returned project-scope `403 Forbidden`, then returned `token_expired`. |
+| First-50 external invite | Hold | Needs a reachable preview deployment or temporary Vercel bypass link. |
+
+## Open product limits
+
+- AI object quality is good enough for first feedback, not final brand art.
+- Voice is an assistive input path, not a live Tanda guide.
+- Smile Fund funding, MoonPay, Coinbase, wallet handoff, and contract/mainnet work stay outside this first-50 product loop.
+- Parent note sealing still depends on `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` being configured in the target environment.
+- Voice transcription still depends on `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true` in the target environment.
+
+## Next action
+
+1. Keep local testing active at `http://localhost:3000/toothlight/make`.
+2. Re-authenticate Vercel or create a temporary protected-preview bypass link.
+3. Run one signed-in preview pass: make, save, seal note, invite family.
+4. Only then invite the first small outside group.

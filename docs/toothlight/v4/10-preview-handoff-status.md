@@ -7,8 +7,9 @@ Status: local-ready; public preview access not yet ready
 
 - Branch: `codex/toothlight-v4-creation-ux`
 - Pull request: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
-- Latest checkpoint commit: `690c4426eff796f861ad487d06f470bb80345647`
-- Latest checkpoint label: `Document Toothlight preview handoff status`
+- Latest checkpoint commit: `bfb78d1c61ab0b2371d4510400334eda360c1f40`
+- Latest checkpoint label: `Record Vercel preview auth blocker`
+- Preview handoff doc commit: `690c4426eff796f861ad487d06f470bb80345647`
 - Style object checkpoint commit: `418a7fe4d9670caa1f20de237e75b3f4f4f7a586`
 
 ## Local test links
