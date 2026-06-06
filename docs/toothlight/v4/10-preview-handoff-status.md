@@ -7,8 +7,9 @@ Status: local-ready; public preview access not yet ready
 
 - Branch: `codex/toothlight-v4-creation-ux`
 - Pull request: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
-- Latest checkpoint commit: `418a7fe4d9670caa1f20de237e75b3f4f4f7a586`
-- Commit label: `Add v4 Toothlight style object checkpoint`
+- Latest checkpoint commit: `690c4426eff796f861ad487d06f470bb80345647`
+- Latest checkpoint label: `Document Toothlight preview handoff status`
+- Style object checkpoint commit: `418a7fe4d9670caa1f20de237e75b3f4f4f7a586`
 
 ## Local test links
 
@@ -33,6 +34,11 @@ Generated flow routes:
   - `toothlight-v4-ux-simplification`
   - `toothlight-v4-first-50-plan`
 - Full Toothlight V4 source tests passed before the checkpoint commit.
+- Full Toothlight V4 source tests passed again after the preview handoff checkpoint.
+- Mobile proof passed on both Playwright projects:
+  - `Mobile Chrome`
+  - `Mobile Safari`
+- The mobile proof covered entry, make, save, parent note, saved Toothlight, family invite, and family contribution on the local test server.
 - `npm run build` completed successfully before the checkpoint commit. The build still printed existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
 
 ## Preview gap
@@ -41,7 +47,7 @@ The known preview domain is not ready for public first-50 testing:
 
 - `https://toothlight-preview.sathian.ai/toothlight` returned `401 Unauthorized`.
 - `https://toothlight-preview.sathian.ai/toothlight/make` returned `401 Unauthorized`.
-- GitHub PR #7 has no Vercel bot comment and no status checks attached to the latest commit.
+- GitHub PR #7 is open, merge state is `CLEAN`, and has no Vercel bot comment or status checks attached to the latest commit.
 - The Vercel connector returned `403 Forbidden` for the project scope, so deployment inspection requires Vercel re-authentication or a token with access to the `sathiansrikrishnans-projects` scope.
 
 ## Environment gates
