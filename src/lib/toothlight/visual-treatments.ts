@@ -47,7 +47,7 @@ export type VisualTreatment = {
   descriptionForInternalUse: string
 }
 
-export const LIGHT_STYLE_VERSION = 'product-renders-v3'
+export const LIGHT_STYLE_VERSION = 'product-renders-v4'
 export const DEFAULT_VISUAL_TREATMENT_ID = 'golden-locket'
 
 export const LIGHT_STYLE_TREATMENTS = [
@@ -86,7 +86,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/tanda/tf-05-tanda.png',
     keeperImageAlt: 'Tanda, the Tooth Fairy Network guide',
     keeperImageFocus: '50% 34%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/golden-locket-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/golden-locket-product.jpg',
     objectImageAlt: 'Rendered round golden locket Toothlight object',
     objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/tanda',
@@ -134,7 +134,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-kkachi.png',
     keeperImageAlt: 'Kkachi, the magpie keeper',
     keeperImageFocus: '70% 42%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/moon-window-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg',
     objectImageAlt: 'Rendered arched moon window Toothlight object',
     objectImageFocus: '50% 54%',
     storyHref: '/toothfairy/story/korea',
@@ -182,7 +182,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-anna-bogle-v2.png',
     keeperImageAlt: 'Anna Bogle, the Irish keeper',
     keeperImageFocus: '50% 34%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/storybook-velvet-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/storybook-velvet-product.jpg',
     objectImageAlt: 'Rendered storybook page charm Toothlight object',
     objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/anna-bogle',
@@ -230,7 +230,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/ratoncito-perez/rp-02-mouse.png',
     keeperImageAlt: 'Ratoncito Perez, the mouse keeper',
     keeperImageFocus: '42% 72%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/rainbow-room-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/rainbow-room-product.jpg',
     objectImageAlt: 'Rendered transparent acrylic tooth charm Toothlight object',
     objectImageFocus: '50% 55%',
     storyHref: '/toothfairy/story/ratoncito-perez',
@@ -278,7 +278,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/characters/char-waraba.png',
     keeperImageAlt: 'Waraba, the threshold keeper',
     keeperImageFocus: '50% 32%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/pillow-spark-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/pillow-spark-product.jpg',
     objectImageAlt: 'Rendered stitched pillow badge Toothlight object',
     objectImageFocus: '50% 52%',
     storyHref: '/toothfairy/story/waraba-edge-light',
@@ -326,7 +326,7 @@ export const LIGHT_STYLE_TREATMENTS = [
     keeperImageSrc: '/story-assets/daga-one-year-wish/site/story-06-daga-site-portrait.png',
     keeperImageAlt: 'Daga, the family-note keeper',
     keeperImageFocus: '68% 38%',
-    objectImageSrc: '/toothlight/style-objects/product-renders/family-lantern-product.jpg',
+    objectImageSrc: '/toothlight/style-objects/product-renders/v4/family-lantern-product.jpg',
     objectImageAlt: 'Rendered folded family lantern Toothlight object',
     objectImageFocus: '50% 54%',
     storyHref: '/toothfairy/story/daga-one-year-wish',

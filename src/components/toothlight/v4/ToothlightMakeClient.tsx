@@ -563,11 +563,12 @@ export function ToothlightMakeClient() {
                 disabled={!creationImageSrc || aiRenderState === 'rendering'}
                 aria-label={`${toothlightProductRenderContract.childLabel}: ${selectedTreatment.label}`}
               >
+                <span className={styles.srOnly}>Preview AI final</span>
                 {aiRenderState === 'rendering'
-                  ? 'Previewing'
+                  ? 'Making'
                   : draft.aiRenderOptions.length > 0
-                    ? 'Preview another'
-                    : 'Preview AI final'}
+                    ? 'Make another'
+                    : toothlightProductRenderContract.childLabel}
               </button>
               {aiRenderMessage && (
                 <p className={styles.aiRenderMessage} data-state={aiRenderState}>
@@ -614,7 +615,7 @@ export function ToothlightMakeClient() {
         >
           <div className={styles.panelHeader}>
             <span>3</span>
-            <h2>Child story</h2>
+            <h2>Story</h2>
           </div>
           <div className={styles.storyQuickFields}>
             <label className={styles.thumbField}>
@@ -663,7 +664,7 @@ export function ToothlightMakeClient() {
           />
           <div>
             <p className={styles.saveKicker}>{visualState === 'spark' ? 'Ready' : 'Draft'}</p>
-            <h2>Save this Toothlight.</h2>
+            <h2>Save.</h2>
           </div>
           <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving Toothlight' : 'Save this Toothlight'}
@@ -776,8 +777,8 @@ function getNextAction({
 }) {
   if (saved) return 'Seal the future note'
   if (!hasMemory) return 'Add photo or drawing'
-  if (!hasAiFinal) return 'Choose a style or render AI final'
-  if (!hasStoryDetails) return 'Add name and memory line'
+  if (!hasAiFinal) return 'Make it a Toothlight'
+  if (!hasStoryDetails) return 'Add story'
   return 'Save this Toothlight'
 }
 

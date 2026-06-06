@@ -112,7 +112,7 @@ export function ToothlightMemoryEditor({
             </button>
           </div>
           <div className={styles.brushSet} aria-label={`${selectedTreatment.label} brush set`}>
-            <span>{selectedTreatment.label} brush set</span>
+            <span className={styles.srOnly}>{selectedTreatment.label} brush set</span>
             <div className={styles.swatches} aria-hidden="true">
               <i style={{ background: selectedTreatment.brushAccent }} />
               <i style={{ background: selectedTreatment.brushSecondaryAccent }} />

@@ -113,9 +113,14 @@ assert(
   existsSync(resolve(root, 'public/toothlight/style-objects/product-renders/toothlight-style-contact-sheet-source.png')),
   'rendered object source contact sheet must be preserved in the project',
 )
+assert(
+  existsSync(resolve(root, 'public/toothlight/style-objects/product-renders/v4/toothlight-style-contact-sheet-source.png')),
+  'v4 rendered object source contact sheet must be preserved in the project',
+)
 for (const imageSrc of objectImageSrcs) {
   assert(imageSrc.startsWith('/toothlight/style-objects/'), `object image must live in the Toothlight style object asset set: ${imageSrc}`)
   assert(imageSrc.includes('/product-renders/'), `object image must use the rendered product asset set: ${imageSrc}`)
+  assert(imageSrc.includes('/product-renders/v4/'), `object image must use the v4 rendered product asset set: ${imageSrc}`)
   assert(/\.(jpg|jpeg|png|webp)$/.test(imageSrc), `object image must be a raster asset: ${imageSrc}`)
   assert(existsSync(resolve(root, `public${imageSrc}`)), `object image must exist: ${imageSrc}`)
   assert(!keeperImageSrcs.includes(imageSrc), `object image must not reuse keeper portrait: ${imageSrc}`)

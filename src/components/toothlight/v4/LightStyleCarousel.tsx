@@ -55,6 +55,7 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
               >
                 <img className={styles.objectImage} src={treatment.objectImageSrc} alt="" />
                 <span className={styles.swatchGlow} />
+                <span className={styles.selectedRing} />
               </span>
               <span className={styles.keeperPortrait} aria-hidden="true">
                 <img src={treatment.keeperImageSrc} alt="" />

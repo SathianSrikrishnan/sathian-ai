@@ -6,11 +6,11 @@
 
 .carousel {
   display: grid;
-  grid-auto-columns: minmax(8.8rem, 42%);
+  grid-auto-columns: minmax(10.5rem, 58%);
   grid-auto-flow: column;
-  gap: 0.58rem;
+  gap: 0.62rem;
   overflow-x: auto;
-  padding: 0.1rem 0.05rem 0.46rem;
+  padding: 0.12rem 0.06rem 0.5rem;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
 }
@@ -18,21 +18,17 @@
 .option {
   position: relative;
   display: grid;
-  min-height: 10.2rem;
-  grid-template-rows: auto minmax(2.4rem, auto);
-  align-content: start;
-  gap: 0.42rem;
+  min-height: 12.35rem;
   border: 1px solid rgba(23, 38, 42, 0.12);
   border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 246, 0.9)),
-    color-mix(in srgb, var(--style-accent), white 86%);
+  background: rgba(255, 255, 255, 0.82);
   color: #182a2e;
   cursor: pointer;
   font: inherit;
   font-weight: 900;
   letter-spacing: 0;
-  padding: 0.42rem 0.42rem 0.5rem;
+  overflow: hidden;
+  padding: 0;
   scroll-snap-align: start;
   text-align: left;
 }
@@ -61,7 +57,7 @@
 .option[data-recommended='true']::after {
   position: absolute;
   top: 0.58rem;
-  left: 0.58rem;
+  right: 0.58rem;
   width: 0.46rem;
   aspect-ratio: 1;
   border: 1px solid rgba(255, 255, 255, 0.86);
@@ -75,10 +71,11 @@
   position: relative;
   display: grid;
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
+  min-height: 12.35rem;
   place-items: center;
   overflow: hidden;
-  border-radius: 7px;
+  border-radius: 8px;
   background:
     radial-gradient(circle at 30% 22%, color-mix(in srgb, var(--style-accent), transparent 8%), transparent 20%),
     radial-gradient(circle at 74% 62%, color-mix(in srgb, var(--style-secondary), transparent 16%), transparent 30%),
@@ -94,8 +91,9 @@
   object-fit: cover;
   object-position: var(--object-focus, 50% 52%);
   filter:
-    saturate(1.04)
-    contrast(1.02);
+    saturate(1.08)
+    contrast(1.04);
+  transform: scale(1.01);
 }
 
 .swatchGlow {
@@ -114,13 +112,29 @@
   pointer-events: none;
 }
 
+.selectedRing {
+  position: absolute;
+  z-index: 6;
+  inset: 0.48rem;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+.selected .selectedRing {
+  border-color: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 20%),
+    0 0 1.2rem color-mix(in srgb, var(--style-accent), transparent 30%);
+}
+
 .keeperPortrait {
   position: absolute;
-  z-index: 5;
-  left: 0.64rem;
-  top: 0.64rem;
+  z-index: 7;
+  left: 0.7rem;
+  top: 0.7rem;
   display: grid;
-  width: 2.08rem;
+  width: 2.55rem;
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
@@ -143,12 +157,21 @@
 }
 
 .caption {
-  position: relative;
-  z-index: 4;
+  position: absolute;
+  z-index: 8;
+  right: 0.62rem;
+  bottom: 0.62rem;
+  left: 0.62rem;
   display: grid;
-  gap: 0.08rem;
+  gap: 0.1rem;
   min-width: 0;
-  padding: 0 0.06rem 0.08rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.68));
+  padding: 0.44rem 0.52rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.6rem 1.4rem rgba(23, 38, 42, 0.1);
 }
 
 .styleName,
@@ -163,14 +186,14 @@
 
 .styleName {
   color: #17262a;
-  font-size: 0.74rem;
+  font-size: 0.82rem;
   font-weight: 950;
   line-height: 1.1;
 }
 
 .keeperName {
   color: color-mix(in srgb, var(--style-accent), #17262a 34%);
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   font-weight: 950;
   line-height: 1;
 }
@@ -290,6 +313,7 @@
   .carousel {
     grid-auto-flow: initial;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.72rem;
     overflow: visible;
     padding-bottom: 0;
   }

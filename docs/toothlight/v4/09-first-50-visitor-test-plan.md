@@ -54,8 +54,8 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 - finger drawing works on top of the photo.
 - Brush colors stay reachable.
 - Done closes the drawing studio and preserves the drawing.
-- Selecting each Light Style updates the preview card and the style picker shows six rendered Toothlight object images.
-- AI preview creates or displays a usable Toothlight final.
+- Selecting each Light Style updates the preview card and the style picker shows six rendered v4 Toothlight object images.
+- `Make it a Toothlight` creates or displays a usable AI Toothlight final; this is the AI preview action.
 - Saved AI options remain visible after multiple previews.
 - Child story fields are visible and the Mic control is usable when supported.
 - Save this Toothlight creates a saved Toothlight and hands off to the note route.
@@ -83,7 +83,7 @@ A test pass is valid when:
 ## Known limits
 
 - AI object quality is good enough for early feedback but not final.
-- The six Light Style object images are source-controlled generated product renders. They are ready for first-50 testing, but not final brand/commerce artwork.
+- The six Light Style object images are source-controlled generated v4 product renders in `public/toothlight/style-objects/product-renders/v4/`. They are ready for first-50 testing, but not final brand/commerce artwork.
 - Voice Assist is assistive input, not a live Tanda voice agent.
 - Browser speech recognition depends on the browser. Recording fallback uses `/api/toothlight/voice-transcribe`.
 - Production voice transcription requires `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.

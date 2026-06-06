@@ -37,7 +37,7 @@ The memory step now keeps the intro minimal: one helper sentence before the phot
 
 The default render action is the 3D/story-object Toothlight direction. The Light Style options remain available because they give the system enough variety for testing and can map back to fairy-world story objects later.
 
-The style and render section is now visual-first: six rendered object image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one AI preview button. The current product renders live in `public/toothlight/style-objects/product-renders/` and cover Golden Locket, Moon Window, Storybook Velvet, Rainbow Room, Pillow Spark, and Family Lantern. The generated contact sheet source is preserved in the same folder for auditability. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
+The style and render section is now visual-first: six rendered object image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one `Make it a Toothlight` action. The current v4 product renders live in `public/toothlight/style-objects/product-renders/v4/` and cover Golden Locket, Moon Window, Storybook Velvet, Rainbow Room, Pillow Spark, and Family Lantern. The generated contact sheet source is preserved in the same folder for auditability. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
 
 ### 2. AI final
 
