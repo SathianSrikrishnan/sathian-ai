@@ -53,6 +53,7 @@ Generated flow routes:
   - `Mobile Chrome`
   - `Mobile Safari`
 - The mobile proof covered entry, make, save, parent note, saved Toothlight, family invite, and family contribution on the local test server.
+- Continuation check on 2026-06-07 updated the mobile proof for the simplified story labels and reran the combined Playwright mobile proof plus voice-assist suite; `8 passed` across `Mobile Safari` and `Mobile Chrome`.
 - Desktop and mobile Playwright screenshots of `/toothlight/make` were captured after the visual simplification pass.
 - Full production build passed with `npm.cmd run build` after the local `.next` cache was rebuilt with write access. The build generated `/toothlight`, `/toothlight/make`, `/toothlight/t/[id]`, `/toothlight/t/[id]/note`, and `/toothlight/t/[id]/family`.
 - The previous build timeout is retired as a local environment/cache issue. After the generated cache was moved, non-elevated startup showed `EPERM` creating `.next`; the elevated build completed successfully. The build still prints existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.

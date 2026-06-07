@@ -19,7 +19,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally | Mobile proof covered family route and family contribution. |
-| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`. |
+| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof plus voice-assist suite rerun on 2026-06-07. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
@@ -31,6 +31,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Local make route still returns `200 OK` at `http://localhost:3000/toothlight/make`.
 - Same-Wi-Fi phone make route still returns `200 OK` at `http://192.168.1.104:3000/toothlight/make`.
 - Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.
+- Combined Playwright mobile proof plus voice-assist suite passed on 2026-06-07 with `8 passed`.
 - Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
 
 ## What is blocked

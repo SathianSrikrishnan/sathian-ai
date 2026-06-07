@@ -1,6 +1,10 @@
 import { expect, test } from 'playwright/test'
 
 test('Toothlight V4 first proof mobile path', async ({ page }) => {
+  await page.setExtraHTTPHeaders({
+    'x-forwarded-for': test.info().project.name === 'Mobile Safari' ? '203.0.113.41' : '203.0.113.42',
+  })
+
   await page.goto('/toothlight', { waitUntil: 'load' })
 
   await expect(page.getByLabel(/Product Entry Read/i)).toBeVisible()
@@ -23,9 +27,9 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
 
   await page.getByRole('button', { name: /Moon Window/i }).click()
   await expect(page.locator('article[data-treatment="moon-window"]')).toBeVisible()
-  await page.getByPlaceholder('Kai').fill('Kai')
-  await page.getByPlaceholder('First Tooth').fill('First Tooth')
-  await page.getByPlaceholder(/Say the memory/i).fill('Lost after breakfast and showed everyone.')
+  await page.getByLabel('Child name').fill('Kai')
+  await page.getByLabel('Toothlight name').fill('First Tooth')
+  await page.getByLabel('Memory note').fill('Lost after breakfast and showed everyone.')
 
   await page.getByRole('button', { name: /Save this Toothlight/i }).click()
   await expect(page.getByText(/Saved\. Seal the parent note next/i)).toBeVisible()
