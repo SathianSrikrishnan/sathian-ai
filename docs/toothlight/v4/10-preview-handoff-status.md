@@ -38,6 +38,7 @@ Generated flow routes:
 ## Verification evidence
 
 - `/toothlight/make` returned `200` locally after the dev server was restarted.
+- Continuation check on 2026-06-07 reconfirmed `http://localhost:3000/toothlight/make` and `http://192.168.1.104:3000/toothlight/make` both return `200 OK`.
 - Focused checks passed:
   - `toothlight-v4-light-styles`
   - `toothlight-v4-ai-variations`
@@ -55,11 +56,13 @@ Generated flow routes:
 - Desktop and mobile Playwright screenshots of `/toothlight/make` were captured after the visual simplification pass.
 - Full production build passed with `npm.cmd run build` after the local `.next` cache was rebuilt with write access. The build generated `/toothlight`, `/toothlight/make`, `/toothlight/t/[id]`, `/toothlight/t/[id]/note`, and `/toothlight/t/[id]/family`.
 - The previous build timeout is retired as a local environment/cache issue. After the generated cache was moved, non-elevated startup showed `EPERM` creating `.next`; the elevated build completed successfully. The build still prints existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
+- Continuation check on 2026-06-07 reran the focused Toothlight V4 checks, TypeScript compile check, and `npm.cmd run build`; all passed with the same known unrelated warnings.
 - Clean Vercel preview build passed from an exported clean copy of commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, avoiding unrelated local analytics/reporting work.
 - Authenticated Vercel route checks passed:
   - `vercel curl /toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
   - `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returned `200 OK`.
   - `vercel curl /toothlight/t/demo-toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
+- Continuation check on 2026-06-07 reconfirmed `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
 
 ## Preview gap
 

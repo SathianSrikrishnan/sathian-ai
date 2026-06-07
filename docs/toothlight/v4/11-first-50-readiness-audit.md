@@ -22,9 +22,16 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
-| Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access. |
+| Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
 | Clean Vercel preview | Ready for Sathian pass | `dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE` is `READY`, built from clean commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass was created for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
+
+## Latest continuation proof
+
+- Local make route still returns `200 OK` at `http://localhost:3000/toothlight/make`.
+- Same-Wi-Fi phone make route still returns `200 OK` at `http://192.168.1.104:3000/toothlight/make`.
+- Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.
+- Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
 
 ## What is blocked
 
