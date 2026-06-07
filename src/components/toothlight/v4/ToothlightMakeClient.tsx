@@ -26,7 +26,6 @@ import {
   getRecommendedLightStyle,
 } from '@/lib/toothlight/visual-treatments'
 import type { LayeredDrawingExport } from '@/components/toothfairy/app/drawing-canvas-v2'
-import { getToothlightVisualState } from '@/lib/toothlight/toothlight-states'
 import {
   buildToothlightProductPrompt,
   toothlightProductRenderContract,
@@ -216,11 +215,6 @@ export function ToothlightMakeClient() {
       saved,
     }),
   }))
-  const visualState = getToothlightVisualState({
-    hasSourcePhoto: Boolean(creationImageSrc),
-    hasGlow: Boolean(draft.treatmentId),
-  }).visualState
-
   function commitDraft(updater: (current: ToothlightDraft) => ToothlightDraft) {
     setDraft(updater)
     setSaved(false)
@@ -615,7 +609,7 @@ export function ToothlightMakeClient() {
         >
           <div className={styles.panelHeader}>
             <span>3</span>
-            <h2>Story</h2>
+            <h2>Tell it.</h2>
           </div>
           <div className={styles.storyQuickFields}>
             <label className={styles.thumbField}>
@@ -663,10 +657,7 @@ export function ToothlightMakeClient() {
             saveSucceeded={saved}
             onComplete={() => router.push(noteHandoffUrl)}
           />
-          <div>
-            <p className={styles.saveKicker}>{visualState === 'spark' ? 'Ready' : 'Draft'}</p>
-            <h2>Save.</h2>
-          </div>
+          <h2 className={styles.srOnly}>Save this Toothlight</h2>
           <button type="button" className={styles.primaryButton} onClick={handleSave} disabled={isSaving}>
             {isSaving ? 'Saving Toothlight' : 'Save this Toothlight'}
           </button>
@@ -779,7 +770,7 @@ function getNextAction({
   if (saved) return 'Seal the future note'
   if (!hasMemory) return 'Add photo or drawing'
   if (!hasAiFinal) return 'Make it a Toothlight'
-  if (!hasStoryDetails) return 'Add story'
+  if (!hasStoryDetails) return 'Tell the story'
   return 'Save this Toothlight'
 }
 

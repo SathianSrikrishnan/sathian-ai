@@ -97,7 +97,7 @@ export function ToothlightMemoryEditor({
             />
           ) : (
             <div className={styles.placeholder}>
-              Add the tooth photo, then draw what happened around it.
+              Add photo
             </div>
           )}
           <div className={styles.styleAura} aria-hidden="true" />

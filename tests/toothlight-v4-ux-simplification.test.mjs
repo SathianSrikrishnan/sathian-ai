@@ -26,6 +26,10 @@ assert(/nextAction/.test(makeClient), 'Make page must compute the next action in
 assert(/flowRail/.test(makeClient + makeStyles), 'Make page must render and style the progress rail')
 assert(/flowStep/.test(makeClient + makeStyles), 'Make progress rail must style individual steps')
 assert(/nextActionCard/.test(makeClient + makeStyles), 'Make page must show the current next action')
+assert(
+  /@media \(max-width: 520px\)[\s\S]*\.nextActionCard\s*\{[\s\S]*display:\s*none/.test(makeStyles),
+  'Make page must hide the extra next-action strip on small mobile screens',
+)
 
 assert(/selectedTreatment/.test(carousel), 'Style picker must expose selected style details')
 assert(/keeperPortrait/.test(carousel + carouselStyles), 'Style picker must move lore into real keeper image chips')
