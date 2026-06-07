@@ -28,6 +28,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 
 ## Latest continuation proof
 
+- Latest proof commit: `caece212b50aa12844245fc35fcc76fa27867a35`.
 - Local make route still returns `200 OK` at `http://localhost:3000/toothlight/make`.
 - Same-Wi-Fi phone make route still returns `200 OK` at `http://192.168.1.104:3000/toothlight/make`.
 - Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.

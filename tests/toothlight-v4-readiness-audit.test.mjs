@@ -34,6 +34,7 @@ for (const text of [
   'dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE',
   '8ad3beb2c9f964060c299f3133dea85019b633c9',
   'https://toothlight-preview.sathian.ai',
+  'caece212b50aa12844245fc35fcc76fa27867a35',
   'Protected preview bypass',
   'shareable-link protection bypass',
   'Unauthenticated browser proof',

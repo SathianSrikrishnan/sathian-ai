@@ -13,6 +13,8 @@ Status: local-ready, build-verified, and preview-deployed; external browser pass
 - Preview auth blocker commit: `bfb78d1c61ab0b2371d4510400334eda360c1f40`
 - Preview handoff doc commit: `690c4426eff796f861ad487d06f470bb80345647`
 - Style object checkpoint commit: `418a7fe4d9670caa1f20de237e75b3f4f4f7a586`
+- Continuation proof commit: `269b618df94b51b4c5f292c333a92df81e65af42`
+- Mobile proof stabilization commit: `caece212b50aa12844245fc35fcc76fa27867a35`
 
 ## Local test links
 

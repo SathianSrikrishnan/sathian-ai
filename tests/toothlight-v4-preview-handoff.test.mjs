@@ -25,6 +25,8 @@ for (const text of [
   'bfb78d1c61ab0b2371d4510400334eda360c1f40',
   '690c4426eff796f861ad487d06f470bb80345647',
   '418a7fe4d9670caa1f20de237e75b3f4f4f7a586',
+  '269b618df94b51b4c5f292c333a92df81e65af42',
+  'caece212b50aa12844245fc35fcc76fa27867a35',
   'http://localhost:3000/toothlight/make',
   'http://192.168.1.104:3000/toothlight/make',
   'https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app',
