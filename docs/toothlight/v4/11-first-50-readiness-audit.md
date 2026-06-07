@@ -1,7 +1,7 @@
 # Toothlight V4 First 50 Readiness Audit
 
-Date: 2026-06-06
-Status: local-ready; external preview blocked by Vercel access
+Date: 2026-06-07
+Status: local-ready and build-verified; external preview blocked by Vercel access
 
 ## Decision
 
@@ -22,6 +22,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
+| Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access. |
 
 ## What is blocked
 
@@ -30,7 +31,6 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Public preview URL | Blocked | `https://toothlight-preview.sathian.ai/toothlight` and `/toothlight/make` returned `401 Unauthorized`. |
 | Vercel inspection/share link | Blocked | Vercel connector first returned project-scope `403 Forbidden`, then returned `token_expired`. |
 | First-50 external invite | Hold | Needs a reachable preview deployment or temporary Vercel bypass link. |
-| Full Next build rerun | Needs retry | `npm.cmd run build` timed out before compile output in the current local environment; earlier build had passed, and current source/TypeScript checks pass. |
 
 ## Open product limits
 

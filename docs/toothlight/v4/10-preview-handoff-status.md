@@ -1,14 +1,14 @@
 # Toothlight V4 Preview Handoff Status
 
-Date: 2026-06-06
-Status: local-ready; public preview access not yet ready
+Date: 2026-06-07
+Status: local-ready and build-verified; public preview access not yet ready
 
 ## Current checkpoint
 
 - Branch: `codex/toothlight-v4-creation-ux`
 - Pull request: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
-- Latest checkpoint commit: `beceb341d5ef415cfedbbbaf551e2c7c9f17ab9f`
-- Latest checkpoint label: `Simplify Toothlight make flow visuals`
+- Readiness handoff checkpoint commit: `6b6601bf41fda67fc7a13716390ee7f4c98f3d30`
+- Visual simplification checkpoint commit: `beceb341d5ef415cfedbbbaf551e2c7c9f17ab9f`
 - First-50 readiness audit commit: `02362827ad7e20cac67c2012a49738ea6f1a99b0`
 - Preview auth blocker commit: `bfb78d1c61ab0b2371d4510400334eda360c1f40`
 - Preview handoff doc commit: `690c4426eff796f861ad487d06f470bb80345647`
@@ -45,8 +45,8 @@ Generated flow routes:
   - `Mobile Safari`
 - The mobile proof covered entry, make, save, parent note, saved Toothlight, family invite, and family contribution on the local test server.
 - Desktop and mobile Playwright screenshots of `/toothlight/make` were captured after the visual simplification pass.
-- `npm run build` completed successfully before the checkpoint commit. The build still printed existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
-- A later `npm.cmd run build` attempt after the visual simplification pass timed out before compile output. Source tests, TypeScript compile, local route checks, and screenshots passed; rerun the full Next build after clearing local Node process noise.
+- Full production build passed with `npm.cmd run build` after the local `.next` cache was rebuilt with write access. The build generated `/toothlight`, `/toothlight/make`, `/toothlight/t/[id]`, `/toothlight/t/[id]/note`, and `/toothlight/t/[id]/family`.
+- The previous build timeout is retired as a local environment/cache issue. After the generated cache was moved, non-elevated startup showed `EPERM` creating `.next`; the elevated build completed successfully. The build still prints existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
 
 ## Preview gap
 

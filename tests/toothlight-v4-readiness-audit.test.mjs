@@ -15,7 +15,7 @@ const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
 
 for (const text of [
   'First 50 Readiness Audit',
-  'local-ready; external preview blocked by Vercel access',
+  'local-ready and build-verified; external preview blocked by Vercel access',
   'not ready to send to the full first-50 visitor group',
   'http://localhost:3000/toothlight',
   'http://localhost:3000/toothlight/make',
@@ -27,8 +27,9 @@ for (const text of [
   'Mobile Chrome',
   'Mobile Safari',
   'npx.cmd tsc --noEmit --pretty false --incremental false',
+  'Production build',
   'npm.cmd run build',
-  'timed out before compile output',
+  'passed after the generated `.next` cache was rebuilt with write access',
   '401 Unauthorized',
   'token_expired',
   'MoonPay',
