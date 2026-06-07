@@ -61,8 +61,8 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
                 <img src={treatment.keeperImageSrc} alt="" />
               </span>
               <span className={styles.caption} aria-hidden="true">
-                <span className={styles.styleName}>{treatment.label}</span>
-                <span className={styles.keeperName}>{treatment.keeperName}</span>
+                <span className={styles.styleName}>{treatment.shortLabel}</span>
+                <span className={styles.keeperName}>{getKeeperShortLabel(treatment.keeperName)}</span>
               </span>
             </button>
           )
@@ -70,4 +70,8 @@ export function LightStyleCarousel({ selectedId, onSelect }: LightStyleCarouselP
       </div>
     </div>
   )
+}
+
+function getKeeperShortLabel(keeperName: string) {
+  return keeperName.split(' ')[0] || keeperName
 }

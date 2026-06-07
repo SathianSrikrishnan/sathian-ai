@@ -13,6 +13,7 @@ type VoiceAssistFieldProps = {
   voicePrompt?: string
   successMessage?: string
   transcribingMessage?: string
+  hideLabel?: boolean
 }
 
 type MinimalSpeechRecognition = {
@@ -108,6 +109,7 @@ export function VoiceAssistField({
   voicePrompt = 'Say it instead.',
   successMessage = 'Added. You can edit it before sealing.',
   transcribingMessage = 'Writing your note...',
+  hideLabel = false,
 }: VoiceAssistFieldProps) {
   const [speechSupported, setSpeechSupported] = useState(false)
   const [recorderSupported, setRecorderSupported] = useState(false)
@@ -315,7 +317,7 @@ export function VoiceAssistField({
   const canUseVoice = speechSupported || recorderSupported
   const useRecorder = speechFallbackMode || !speechSupported
   const isBusy = isListening || isRecording || isTranscribing
-  const buttonLabel = isTranscribing ? 'Writing' : isListening || isRecording ? 'Stop' : useRecorder ? 'Record' : 'Mic'
+  const buttonLabel = isTranscribing ? 'Writing' : isListening || isRecording ? 'Stop' : useRecorder ? 'Record' : 'Talk'
   const buttonAriaLabel =
     isListening || isRecording
       ? 'Stop voice input'
@@ -344,7 +346,7 @@ export function VoiceAssistField({
     <div className={styles.field}>
       <div className={styles.labelRow}>
         <label>
-          <span>{label}</span>
+          <span className={hideLabel ? styles.srOnly : undefined}>{label}</span>
           <textarea
             value={value}
             onChange={(event) => onChange(event.target.value)}

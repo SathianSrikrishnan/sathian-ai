@@ -619,33 +619,34 @@ export function ToothlightMakeClient() {
           </div>
           <div className={styles.storyQuickFields}>
             <label className={styles.thumbField}>
-              <span>Child</span>
+              <span className={styles.srOnly}>Child</span>
               <input
                 value={draft.childName}
                 onChange={(event) => updateDraft({ childName: event.target.value })}
-                placeholder="Kai"
+                placeholder="Child"
                 aria-label="Child name"
               />
             </label>
             <label className={styles.thumbField}>
-              <span>Toothlight</span>
+              <span className={styles.srOnly}>Toothlight</span>
               <input
                 value={draft.toothName}
                 onChange={(event) => updateDraft({ toothName: event.target.value })}
-                placeholder="First Tooth"
+                placeholder="Toothlight"
                 aria-label="Toothlight name"
               />
             </label>
           </div>
           <VoiceAssistField
-            label="Memory"
+            label="Memory note"
             value={draft.caption}
             onChange={(caption) => updateDraft({ caption })}
-            placeholder="Say the memory."
+            placeholder="Say what happened."
             rows={3}
             voicePrompt="Tap mic. Talk. Save."
             successMessage="Added. You can edit it before saving."
             transcribingMessage="Writing the memory..."
+            hideLabel
           />
         </section>
 

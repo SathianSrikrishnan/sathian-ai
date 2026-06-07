@@ -159,7 +159,9 @@
   border: 1px solid rgba(23, 38, 42, 0.1);
   border-radius: 8px;
   background:
-    linear-gradient(120deg, rgba(246, 201, 95, 0.14), transparent 42%),
+    radial-gradient(circle at 12% 8%, rgba(246, 201, 95, 0.22), transparent 12rem),
+    radial-gradient(circle at 88% 2%, rgba(122, 184, 255, 0.15), transparent 13rem),
+    linear-gradient(120deg, rgba(246, 201, 95, 0.1), transparent 42%),
     rgba(255, 255, 255, 0.72);
   padding: 0.72rem;
 }
@@ -301,7 +303,7 @@
   background:
     linear-gradient(120deg, rgba(246, 201, 95, 0.16), transparent 40%),
     linear-gradient(300deg, rgba(122, 184, 255, 0.12), rgba(255, 255, 255, 0.72));
-  padding: 0.82rem;
+  padding: 0.68rem;
 }
 
 .previewButton {
@@ -328,7 +330,8 @@
 .previewButton:disabled {
   cursor: not-allowed;
   filter: grayscale(0.18);
-  opacity: 0.62;
+  opacity: 0.84;
+  color: #35433f;
 }
 
 .aiRenderMessage {
@@ -428,6 +431,7 @@
   background:
     radial-gradient(circle at 10% 0%, rgba(246, 201, 95, 0.24), transparent 12rem),
     linear-gradient(145deg, rgba(238, 248, 242, 0.88), rgba(255, 255, 255, 0.82));
+  padding: 0.8rem;
 }
 
 .storyPanel .panelHeader {
@@ -446,7 +450,6 @@
 
 .thumbField {
   display: grid;
-  gap: 0.34rem;
 }
 
 .thumbField span {
@@ -457,16 +460,22 @@
 
 .thumbField input {
   width: 100%;
-  min-height: 3.4rem;
+  min-height: 3.65rem;
   border: 1px solid rgba(23, 38, 42, 0.14);
   border-radius: 8px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84));
   color: #17262a;
   font: inherit;
-  font-size: 1.02rem;
+  font-size: 1.08rem;
+  font-weight: 850;
   letter-spacing: 0;
-  padding: 0.84rem 0.9rem;
+  padding: 0.92rem 0.95rem;
+}
+
+.thumbField input::placeholder {
+  color: #8b999c;
+  opacity: 1;
 }
 
 .field {
