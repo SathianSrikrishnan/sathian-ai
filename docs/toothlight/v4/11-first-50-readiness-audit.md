@@ -23,7 +23,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` is `READY`, built from clean commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT` is `READY`, built from clean commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
@@ -37,10 +37,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.
 - Combined Playwright mobile proof plus voice-assist suite passed on 2026-06-07 with `8 passed`.
 - Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
-- Fresh clean preview deployment `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` was deployed from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`; the preview alias now points to it.
+- Fresh clean preview deployment `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT` was deployed from commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`; the preview alias now points to it.
 - Protected preview share link returned `200 OK` through ordinary HTTP and loaded in a headless mobile-sized Playwright browser on 2026-06-07.
 - Protected preview browser interaction reached the expected parent-auth boundary on 2026-06-07: save returned `401`, then redirected to Google sign-in.
 - After the make-flow polish commit, focused make-flow checks passed, TypeScript passed, `npm run build` passed, fresh desktop/mobile screenshots were captured, and the combined Playwright mobile proof plus voice-assist suite passed again with `8 passed`.
+- After the fresh alias update, authenticated Vercel curl returned `200 OK` for `/toothlight/make`, the protected preview share link returned `200 OK` by ordinary HTTP, and a mobile-sized protected preview screenshot showed the polished make page.
 
 ## What is blocked
 

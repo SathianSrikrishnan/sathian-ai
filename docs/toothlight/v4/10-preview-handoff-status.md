@@ -33,10 +33,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-7yqevxpl6-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ`
+- Clean preview deployment: `https://sathian-h3d7hzvuk-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -78,6 +78,9 @@ Generated flow routes:
   - `toothlight-v4-ux-simplification`
   - `toothlight-v4-light-styles`
 - TypeScript compile, `npm run build`, desktop screenshot, mobile screenshot, and the combined Playwright mobile proof plus voice-assist suite all passed after the make-flow polish commit.
+- Fresh Vercel preview deployment `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT` was created from clean checkpoint commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`; `toothlight-preview.sathian.ai` was reassigned to it.
+- Authenticated Vercel curl returned `200 OK` for `/toothlight/make` on the updated alias.
+- The protected preview share link returned `200 OK` by ordinary HTTP after the alias update, and a mobile-sized Playwright screenshot confirmed the deployed protected make page shows the polished UI.
 
 ## Preview gap
 
