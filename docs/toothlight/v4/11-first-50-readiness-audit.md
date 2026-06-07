@@ -15,11 +15,13 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Make route | Ready locally | `http://localhost:3000/toothlight/make` returned `200 OK`. |
 | Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.102:3000/toothlight/make`. |
 | Visual-first make flow | Ready for first testing | Six generated Toothlight object images are committed in `public/toothlight/style-objects/product-renders/v4/`. |
+| Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the child story step is reduced to child, Toothlight, and one talk/type memory field. |
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally | Mobile proof covered family route and family contribution. |
 | Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
+| TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 
 ## What is blocked
 
@@ -28,6 +30,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Public preview URL | Blocked | `https://toothlight-preview.sathian.ai/toothlight` and `/toothlight/make` returned `401 Unauthorized`. |
 | Vercel inspection/share link | Blocked | Vercel connector first returned project-scope `403 Forbidden`, then returned `token_expired`. |
 | First-50 external invite | Hold | Needs a reachable preview deployment or temporary Vercel bypass link. |
+| Full Next build rerun | Needs retry | `npm.cmd run build` timed out before compile output in the current local environment; earlier build had passed, and current source/TypeScript checks pass. |
 
 ## Open product limits
 
