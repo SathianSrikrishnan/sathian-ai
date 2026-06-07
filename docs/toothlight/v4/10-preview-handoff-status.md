@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
 Date: 2026-06-07
-Status: local-ready and build-verified; public preview access not yet ready
+Status: local-ready, build-verified, and preview-deployed; external browser pass pending
 
 ## Current checkpoint
 
@@ -27,6 +27,14 @@ Generated flow routes:
 - `/toothlight/t/[id]/note?handoff=1`
 - `/toothlight/t/[id]/family`
 
+## Current Vercel preview
+
+- Clean preview deployment: `https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE`
+- Preview alias: `https://toothlight-preview.sathian.ai`
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `8ad3beb2c9f964060c299f3133dea85019b633c9`.
+- A Vercel shareable-link protection bypass was created for the preview alias. The bypass token is intentionally not committed to the repository.
+
 ## Verification evidence
 
 - `/toothlight/make` returned `200` locally after the dev server was restarted.
@@ -47,16 +55,19 @@ Generated flow routes:
 - Desktop and mobile Playwright screenshots of `/toothlight/make` were captured after the visual simplification pass.
 - Full production build passed with `npm.cmd run build` after the local `.next` cache was rebuilt with write access. The build generated `/toothlight`, `/toothlight/make`, `/toothlight/t/[id]`, `/toothlight/t/[id]/note`, and `/toothlight/t/[id]/family`.
 - The previous build timeout is retired as a local environment/cache issue. After the generated cache was moved, non-elevated startup showed `EPERM` creating `.next`; the elevated build completed successfully. The build still prints existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
+- Clean Vercel preview build passed from an exported clean copy of commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, avoiding unrelated local analytics/reporting work.
+- Authenticated Vercel route checks passed:
+  - `vercel curl /toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
+  - `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returned `200 OK`.
+  - `vercel curl /toothlight/t/demo-toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
 
 ## Preview gap
 
-The known preview domain is not ready for public first-50 testing:
+The known preview domain is now updated, but one external-browser pass is still required before inviting the full first-50 group:
 
-- `https://toothlight-preview.sathian.ai/toothlight` returned `401 Unauthorized`.
-- `https://toothlight-preview.sathian.ai/toothlight/make` returned `401 Unauthorized`.
-- GitHub PR #7 is open, merge state is `CLEAN`, and has no Vercel bot comment or status checks attached to the latest commit.
-- The Vercel connector returned `403 Forbidden` for the project scope, so deployment inspection requires Vercel re-authentication or a token with access to the `sathiansrikrishnans-projects` scope.
-- A later attempt to create a temporary Vercel access link returned `token_expired`, so the connector must be signed in again before it can create a protected-preview bypass link.
+- GitHub PR #7 is open, merge state is `CLEAN`, and has no GitHub status checks attached to the latest commit.
+- The Vercel connector still returns `token_expired`, but the local Vercel CLI is authenticated as `sathian` and was used for the clean preview deployment.
+- Direct unauthenticated shell checks from the local Codex environment returned connection-level failures to Vercel edge URLs, while authenticated `vercel curl` checks returned `200 OK`. Verify the shareable preview link in a normal browser before broad sharing.
 
 ## Environment gates
 
@@ -69,4 +80,4 @@ Before external preview testing:
 
 ## Next handoff action
 
-Use local phone testing now. Do not invite the full first-50 group until Vercel is re-authenticated and a preview deployment is reachable without a 401, or a temporary Vercel share/bypass link is created for the testing window.
+Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one normal browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, and reaches family invite.

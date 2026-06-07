@@ -15,7 +15,7 @@ const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
 
 for (const text of [
   'First 50 Readiness Audit',
-  'local-ready and build-verified; external preview blocked by Vercel access',
+  'local-ready and build-verified; preview deployed with external browser pass pending',
   'not ready to send to the full first-50 visitor group',
   'http://localhost:3000/toothlight',
   'http://localhost:3000/toothlight/make',
@@ -30,14 +30,20 @@ for (const text of [
   'Production build',
   'npm.cmd run build',
   'passed after the generated `.next` cache was rebuilt with write access',
-  '401 Unauthorized',
+  'Clean Vercel preview',
+  'dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE',
+  '8ad3beb2c9f964060c299f3133dea85019b633c9',
+  'https://toothlight-preview.sathian.ai',
+  'Protected preview bypass',
+  'shareable-link protection bypass',
+  'Unauthenticated browser proof',
   'token_expired',
   'MoonPay',
   'Coinbase',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
   'OPENAI_API_KEY',
   'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true',
-  'Re-authenticate Vercel',
+  'normal browser/mobile preview pass',
 ]) {
   assert(doc.includes(text), `readiness audit must include ${text}`)
 }

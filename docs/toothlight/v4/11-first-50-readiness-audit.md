@@ -1,11 +1,11 @@
 # Toothlight V4 First 50 Readiness Audit
 
 Date: 2026-06-07
-Status: local-ready and build-verified; external preview blocked by Vercel access
+Status: local-ready and build-verified; preview deployed with external browser pass pending
 
 ## Decision
 
-The local Toothlight MVP is ready for Sathian-led testing on browser and phone. It is not ready to send to the full first-50 visitor group until Vercel preview access is restored and one signed-in preview pass is completed.
+The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed and the preview alias has a shareable-link bypass. It is not ready to send to the full first-50 visitor group until one normal browser/mobile pass confirms the share link end to end.
 
 ## What is ready
 
@@ -23,14 +23,16 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE` is `READY`, built from clean commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Protected preview bypass | Created | A Vercel shareable-link protection bypass was created for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 
 ## What is blocked
 
 | Area | Status | Why |
 | --- | --- | --- |
-| Public preview URL | Blocked | `https://toothlight-preview.sathian.ai/toothlight` and `/toothlight/make` returned `401 Unauthorized`. |
-| Vercel inspection/share link | Blocked | Vercel connector first returned project-scope `403 Forbidden`, then returned `token_expired`. |
-| First-50 external invite | Hold | Needs a reachable preview deployment or temporary Vercel bypass link. |
+| Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
+| Unauthenticated browser proof | Hold | Authenticated `vercel curl` checks return `200 OK`, but a normal browser/mobile pass against the share link is still required. |
+| First-50 external invite | Hold | Needs one confirmed share-link pass through make, note, saved Toothlight, and family invite. |
 
 ## Open product limits
 
@@ -43,6 +45,6 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 ## Next action
 
 1. Keep local testing active at `http://localhost:3000/toothlight/make`.
-2. Re-authenticate Vercel or create a temporary protected-preview bypass link.
-3. Run one signed-in preview pass: make, save, seal note, invite family.
+2. Open the Vercel share link for `https://toothlight-preview.sathian.ai/toothlight/make`.
+3. Run one normal browser/mobile preview pass: make, save, seal note, invite family.
 4. Only then invite the first small outside group.
