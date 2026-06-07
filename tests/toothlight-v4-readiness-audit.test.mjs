@@ -37,6 +37,7 @@ for (const text of [
   'Protected preview bypass',
   'shareable-link protection bypass',
   'Unauthenticated browser proof',
+  'ERR_INTERNET_DISCONNECTED',
   'token_expired',
   'MoonPay',
   'Coinbase',

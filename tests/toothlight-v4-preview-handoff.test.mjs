@@ -45,6 +45,7 @@ for (const text of [
   'elevated build completed successfully',
   'merge state is `CLEAN`',
   'token_expired',
+  'ERR_INTERNET_DISCONNECTED',
   'normal browser/mobile pass',
   'TFN_ADMIN_SECRET',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',

@@ -31,7 +31,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Area | Status | Why |
 | --- | --- | --- |
 | Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
-| Unauthenticated browser proof | Hold | Authenticated `vercel curl` checks return `200 OK`, but a normal browser/mobile pass against the share link is still required. |
+| Unauthenticated browser proof | Hold | Authenticated `vercel curl` checks return `200 OK`, but a normal browser/mobile pass against the share link is still required. Codex Playwright navigation to the share link failed with `ERR_INTERNET_DISCONNECTED`. |
 | First-50 external invite | Hold | Needs one confirmed share-link pass through make, note, saved Toothlight, and family invite. |
 
 ## Open product limits
