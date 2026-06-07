@@ -31,11 +31,11 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE`
+- Clean preview deployment: `https://sathian-7yqevxpl6-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `8ad3beb2c9f964060c299f3133dea85019b633c9`.
-- A Vercel shareable-link protection bypass was created for the preview alias. The bypass token is intentionally not committed to the repository.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`.
+- A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
 
@@ -60,12 +60,13 @@ Generated flow routes:
 - Full production build passed with `npm.cmd run build` after the local `.next` cache was rebuilt with write access. The build generated `/toothlight`, `/toothlight/make`, `/toothlight/t/[id]`, `/toothlight/t/[id]/note`, and `/toothlight/t/[id]/family`.
 - The previous build timeout is retired as a local environment/cache issue. After the generated cache was moved, non-elevated startup showed `EPERM` creating `.next`; the elevated build completed successfully. The build still prints existing unrelated warnings around bigint bindings, article cache URL parsing, and a dynamic Tooth Fairy API route.
 - Continuation check on 2026-06-07 reran the focused Toothlight V4 checks, TypeScript compile check, and `npm.cmd run build`; all passed with the same known unrelated warnings.
-- Clean Vercel preview build passed from an exported clean copy of commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, avoiding unrelated local analytics/reporting work.
+- Clean Vercel preview build passed from an exported clean copy of commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`, avoiding unrelated local analytics/reporting work.
 - Authenticated Vercel route checks passed:
-  - `vercel curl /toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
+  - `vercel curl /toothlight --deployment https://sathian-7yqevxpl6-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
   - `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returned `200 OK`.
-  - `vercel curl /toothlight/t/demo-toothlight --deployment https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
+  - `vercel curl /toothlight/t/demo-toothlight --deployment https://sathian-7yqevxpl6-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
 - Continuation check on 2026-06-07 reconfirmed `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
+- Fresh preview check on 2026-06-07 confirmed the alias points to `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` and `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
 
 ## Preview gap
 

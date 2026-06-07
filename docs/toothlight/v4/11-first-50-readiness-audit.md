@@ -23,8 +23,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE` is `READY`, built from clean commit `8ad3beb2c9f964060c299f3133dea85019b633c9`, and is aliased to `https://toothlight-preview.sathian.ai`. |
-| Protected preview bypass | Created | A Vercel shareable-link protection bypass was created for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` is `READY`, built from clean commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 
 ## Latest continuation proof
 
@@ -34,6 +34,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.
 - Combined Playwright mobile proof plus voice-assist suite passed on 2026-06-07 with `8 passed`.
 - Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
+- Fresh clean preview deployment `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` was deployed from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`; the preview alias now points to it.
 
 ## What is blocked
 
