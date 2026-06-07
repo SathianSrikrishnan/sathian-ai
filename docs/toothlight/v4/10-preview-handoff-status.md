@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
 Date: 2026-06-07
-Status: local-ready, build-verified, preview-deployed, and protected make-page browser verified; external end-to-end pass pending
+Status: local-ready, build-verified, preview-deployed, protected make-page browser verified, and save-auth boundary verified; authenticated end-to-end pass pending
 
 ## Current checkpoint
 
@@ -69,14 +69,15 @@ Generated flow routes:
 - Fresh preview check on 2026-06-07 confirmed the alias points to `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` and `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
 - Protected preview share-link check on 2026-06-07 returned `200 OK` through an ordinary HTTP request with page title `Create a Toothlight | Tooth Fairy Network`.
 - Protected preview share-link check on 2026-06-07 loaded `/toothlight/make` in a headless mobile-sized Playwright browser and captured a valid make-page screenshot. The bypass token is not committed.
+- Protected preview browser interaction probe on 2026-06-07 uploaded a test image, selected `Moon Window`, filled the child story fields, clicked `Save this Toothlight`, received `401` from `/api/toothlight/save`, and redirected to Google sign-in. That confirms the public make flow works up to the expected parent-auth save boundary.
 
 ## Preview gap
 
-The known preview domain is now updated and the protected make page loads in a browser, but one external end-to-end browser/mobile pass is still required before inviting the full first-50 group:
+The known preview domain is now updated and the protected make page works through the parent-auth save boundary, but one authenticated external end-to-end browser/mobile pass is still required before inviting the full first-50 group:
 
 - GitHub PR #7 is open, merge state is `CLEAN`, and has no GitHub status checks attached to the latest commit.
 - The Vercel connector still returns `token_expired`, but the local Vercel CLI is authenticated as `sathian` and was used for the clean preview deployment.
-- Direct unelevated shell checks from the local Codex environment returned connection-level failures to Vercel edge URLs, while elevated ordinary HTTP, elevated Playwright screenshot, and authenticated `vercel curl` checks returned `200 OK`. Verify the full shareable preview flow in a normal browser before broad sharing.
+- Direct unelevated shell checks from the local Codex environment returned connection-level failures to Vercel edge URLs, while elevated ordinary HTTP, elevated Playwright screenshot, elevated browser interaction, and authenticated `vercel curl` checks returned expected results. Verify the full shareable preview flow in an authenticated normal browser before broad sharing.
 
 ## Environment gates
 
@@ -89,4 +90,4 @@ Before external preview testing:
 
 ## Next handoff action
 
-Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one normal browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, and reaches family invite.
+Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one authenticated browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, and reaches family invite.

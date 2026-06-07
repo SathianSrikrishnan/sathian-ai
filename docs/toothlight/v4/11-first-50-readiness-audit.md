@@ -1,11 +1,11 @@
 # Toothlight V4 First 50 Readiness Audit
 
 Date: 2026-06-07
-Status: local-ready and build-verified; preview deployed with protected make-page browser proof and external end-to-end pass pending
+Status: local-ready and build-verified; preview deployed with protected make-page browser proof, save-auth boundary proof, and authenticated end-to-end pass pending
 
 ## Decision
 
-The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the preview alias has a shareable-link bypass, and the protected make page loads in a mobile-sized browser. It is not ready to send to the full first-50 visitor group until one normal browser/mobile pass confirms the share link end to end.
+The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the preview alias has a shareable-link bypass, and the protected make page works through the parent-auth save boundary in a mobile-sized browser. It is not ready to send to the full first-50 visitor group until one authenticated normal browser/mobile pass confirms the share link end to end.
 
 ## What is ready
 
@@ -26,6 +26,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Clean Vercel preview | Ready for Sathian pass | `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` is `READY`, built from clean commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
+| Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
 
 ## Latest continuation proof
 
@@ -37,14 +38,15 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
 - Fresh clean preview deployment `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` was deployed from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`; the preview alias now points to it.
 - Protected preview share link returned `200 OK` through ordinary HTTP and loaded in a headless mobile-sized Playwright browser on 2026-06-07.
+- Protected preview browser interaction reached the expected parent-auth boundary on 2026-06-07: save returned `401`, then redirected to Google sign-in.
 
 ## What is blocked
 
 | Area | Status | Why |
 | --- | --- | --- |
 | Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
-| External end-to-end browser proof | Hold | The protected make page now loads through ordinary HTTP and a headless mobile-sized browser, but a normal browser/mobile pass through make, note, saved Toothlight, and family invite is still required. |
-| First-50 external invite | Hold | Needs one confirmed share-link pass through make, note, saved Toothlight, and family invite. |
+| Authenticated end-to-end browser proof | Hold | The protected make page now works through the parent-auth save boundary, but a logged-in browser/mobile pass through make, note, saved Toothlight, and family invite is still required. |
+| First-50 external invite | Hold | Needs one confirmed authenticated share-link pass through make, note, saved Toothlight, and family invite. |
 
 ## Open product limits
 
@@ -58,5 +60,5 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 
 1. Keep local testing active at `http://localhost:3000/toothlight/make`.
 2. Open the Vercel share link for `https://toothlight-preview.sathian.ai/toothlight/make`.
-3. Run one normal browser/mobile preview pass: make, save, seal note, invite family.
+3. Run one authenticated normal browser/mobile preview pass: make, save, seal note, invite family.
 4. Only then invite the first small outside group.
