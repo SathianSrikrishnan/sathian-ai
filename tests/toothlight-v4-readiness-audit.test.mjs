@@ -15,7 +15,7 @@ const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
 
 for (const text of [
   'First 50 Readiness Audit',
-  'local-ready and build-verified; preview deployed with external browser pass pending',
+  'local-ready and build-verified; preview deployed with protected make-page browser proof and external end-to-end pass pending',
   'not ready to send to the full first-50 visitor group',
   'http://localhost:3000/toothlight',
   'http://localhost:3000/toothlight/make',
@@ -37,8 +37,10 @@ for (const text of [
   'caece212b50aa12844245fc35fcc76fa27867a35',
   'Protected preview bypass',
   'shareable-link protection bypass',
-  'Unauthenticated browser proof',
-  'ERR_INTERNET_DISCONNECTED',
+  'Protected make-page browser proof',
+  'ordinary HTTP',
+  'headless mobile-sized Playwright browser',
+  'External end-to-end browser proof',
   'token_expired',
   'MoonPay',
   'Coinbase',

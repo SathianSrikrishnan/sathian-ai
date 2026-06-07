@@ -1,11 +1,11 @@
 # Toothlight V4 First 50 Readiness Audit
 
 Date: 2026-06-07
-Status: local-ready and build-verified; preview deployed with external browser pass pending
+Status: local-ready and build-verified; preview deployed with protected make-page browser proof and external end-to-end pass pending
 
 ## Decision
 
-The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed and the preview alias has a shareable-link bypass. It is not ready to send to the full first-50 visitor group until one normal browser/mobile pass confirms the share link end to end.
+The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the preview alias has a shareable-link bypass, and the protected make page loads in a mobile-sized browser. It is not ready to send to the full first-50 visitor group until one normal browser/mobile pass confirms the share link end to end.
 
 ## What is ready
 
@@ -25,6 +25,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
 | Clean Vercel preview | Ready for Sathian pass | `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` is `READY`, built from clean commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
+| Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 
 ## Latest continuation proof
 
@@ -35,13 +36,14 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Combined Playwright mobile proof plus voice-assist suite passed on 2026-06-07 with `8 passed`.
 - Authenticated Vercel check still returns `200 OK` for `/toothlight/make` on `https://toothlight-preview.sathian.ai`.
 - Fresh clean preview deployment `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` was deployed from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`; the preview alias now points to it.
+- Protected preview share link returned `200 OK` through ordinary HTTP and loaded in a headless mobile-sized Playwright browser on 2026-06-07.
 
 ## What is blocked
 
 | Area | Status | Why |
 | --- | --- | --- |
 | Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
-| Unauthenticated browser proof | Hold | Authenticated `vercel curl` checks return `200 OK`, but a normal browser/mobile pass against the share link is still required. Codex Playwright navigation to the share link failed with `ERR_INTERNET_DISCONNECTED`. |
+| External end-to-end browser proof | Hold | The protected make page now loads through ordinary HTTP and a headless mobile-sized browser, but a normal browser/mobile pass through make, note, saved Toothlight, and family invite is still required. |
 | First-50 external invite | Hold | Needs one confirmed share-link pass through make, note, saved Toothlight, and family invite. |
 
 ## Open product limits

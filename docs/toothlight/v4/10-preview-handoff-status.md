@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
 Date: 2026-06-07
-Status: local-ready, build-verified, and preview-deployed; external browser pass pending
+Status: local-ready, build-verified, preview-deployed, and protected make-page browser verified; external end-to-end pass pending
 
 ## Current checkpoint
 
@@ -67,15 +67,16 @@ Generated flow routes:
   - `vercel curl /toothlight/t/demo-toothlight --deployment https://sathian-7yqevxpl6-sathiansrikrishnans-projects.vercel.app` returned `200 OK`.
 - Continuation check on 2026-06-07 reconfirmed `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
 - Fresh preview check on 2026-06-07 confirmed the alias points to `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` and `vercel curl /toothlight/make --deployment https://toothlight-preview.sathian.ai` returns `200 OK`.
+- Protected preview share-link check on 2026-06-07 returned `200 OK` through an ordinary HTTP request with page title `Create a Toothlight | Tooth Fairy Network`.
+- Protected preview share-link check on 2026-06-07 loaded `/toothlight/make` in a headless mobile-sized Playwright browser and captured a valid make-page screenshot. The bypass token is not committed.
 
 ## Preview gap
 
-The known preview domain is now updated, but one external-browser pass is still required before inviting the full first-50 group:
+The known preview domain is now updated and the protected make page loads in a browser, but one external end-to-end browser/mobile pass is still required before inviting the full first-50 group:
 
 - GitHub PR #7 is open, merge state is `CLEAN`, and has no GitHub status checks attached to the latest commit.
 - The Vercel connector still returns `token_expired`, but the local Vercel CLI is authenticated as `sathian` and was used for the clean preview deployment.
-- Direct unauthenticated shell checks from the local Codex environment returned connection-level failures to Vercel edge URLs, while authenticated `vercel curl` checks returned `200 OK`. Verify the shareable preview link in a normal browser before broad sharing.
-- A Playwright browser screenshot attempt against the share link launched successfully only with elevated permission, then failed with `ERR_INTERNET_DISCONNECTED`. Treat that as a Codex/browser-network limitation, not a Vercel build failure, because authenticated `vercel curl` returns `200 OK`.
+- Direct unelevated shell checks from the local Codex environment returned connection-level failures to Vercel edge URLs, while elevated ordinary HTTP, elevated Playwright screenshot, and authenticated `vercel curl` checks returned `200 OK`. Verify the full shareable preview flow in a normal browser before broad sharing.
 
 ## Environment gates
 
