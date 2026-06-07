@@ -15,7 +15,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Make route | Ready locally | `http://localhost:3000/toothlight/make` returned `200 OK`. |
 | Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.104:3000/toothlight/make`. |
 | Visual-first make flow | Ready for first testing | Six generated Toothlight object images are committed in `public/toothlight/style-objects/product-renders/v4/`. |
-| Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the child story step is reduced to child, Toothlight, and one talk/type memory field. |
+| Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the mobile next-action strip is hidden, the child story step keeps one talk/type memory field and says `Tell it.`, and the visible save panel is reduced to the primary save button. |
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally | Mobile proof covered family route and family contribution. |
@@ -31,6 +31,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 ## Latest continuation proof
 
 - Latest proof commit: `caece212b50aa12844245fc35fcc76fa27867a35`.
+- Latest make-flow polish commit: `1e4ade85edaf5718327e7bc24d34be7ca97dc576`.
 - Local make route still returns `200 OK` at `http://localhost:3000/toothlight/make`.
 - Same-Wi-Fi phone make route still returns `200 OK` at `http://192.168.1.104:3000/toothlight/make`.
 - Focused Toothlight V4 checks, TypeScript compile, and production build passed on 2026-06-07.
@@ -39,6 +40,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Fresh clean preview deployment `dpl_7HFSNTrLkQs1tT6gHK2vrjDRbCwZ` was deployed from commit `ca18b61bd1b56ef57500e6b29650c72f8b488d17`; the preview alias now points to it.
 - Protected preview share link returned `200 OK` through ordinary HTTP and loaded in a headless mobile-sized Playwright browser on 2026-06-07.
 - Protected preview browser interaction reached the expected parent-auth boundary on 2026-06-07: save returned `401`, then redirected to Google sign-in.
+- After the make-flow polish commit, focused make-flow checks passed, TypeScript passed, `npm run build` passed, fresh desktop/mobile screenshots were captured, and the combined Playwright mobile proof plus voice-assist suite passed again with `8 passed`.
 
 ## What is blocked
 

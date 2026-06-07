@@ -15,6 +15,8 @@ Status: local-ready, build-verified, preview-deployed, protected make-page brows
 - Style object checkpoint commit: `418a7fe4d9670caa1f20de237e75b3f4f4f7a586`
 - Continuation proof commit: `269b618df94b51b4c5f292c333a92df81e65af42`
 - Mobile proof stabilization commit: `caece212b50aa12844245fc35fcc76fa27867a35`
+- First-50 auth gate doc commit: `890ecf13c9123a9e958f93b7057bd74957421d60`
+- Make-flow polish commit: `1e4ade85edaf5718327e7bc24d34be7ca97dc576`
 
 ## Local test links
 
@@ -70,6 +72,12 @@ Generated flow routes:
 - Protected preview share-link check on 2026-06-07 returned `200 OK` through an ordinary HTTP request with page title `Create a Toothlight | Tooth Fairy Network`.
 - Protected preview share-link check on 2026-06-07 loaded `/toothlight/make` in a headless mobile-sized Playwright browser and captured a valid make-page screenshot. The bypass token is not committed.
 - Protected preview browser interaction probe on 2026-06-07 uploaded a test image, selected `Moon Window`, filled the child story fields, clicked `Save this Toothlight`, received `401` from `/api/toothlight/save`, and redirected to Google sign-in. That confirms the public make flow works up to the expected parent-auth save boundary.
+- Make-flow polish on 2026-06-07 hid the mobile next-action strip, reduced the empty memory placeholder to `Add photo`, changed the story prompt to `Tell it.`, and removed the redundant visible save heading while keeping the accessible save label.
+- Focused make-flow checks passed after the polish commit:
+  - `toothlight-v4-make`
+  - `toothlight-v4-ux-simplification`
+  - `toothlight-v4-light-styles`
+- TypeScript compile, `npm run build`, desktop screenshot, mobile screenshot, and the combined Playwright mobile proof plus voice-assist suite all passed after the make-flow polish commit.
 
 ## Preview gap
 
