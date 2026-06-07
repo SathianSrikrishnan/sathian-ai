@@ -26,7 +26,7 @@ for (const text of [
   '690c4426eff796f861ad487d06f470bb80345647',
   '418a7fe4d9670caa1f20de237e75b3f4f4f7a586',
   'http://localhost:3000/toothlight/make',
-  'http://192.168.1.102:3000/toothlight/make',
+  'http://192.168.1.104:3000/toothlight/make',
   'https://sathian-ohhj6x5i9-sathiansrikrishnans-projects.vercel.app',
   'dpl_2Ukbu414HdviqRR5oFX1GTuLTpYE',
   'https://toothlight-preview.sathian.ai',

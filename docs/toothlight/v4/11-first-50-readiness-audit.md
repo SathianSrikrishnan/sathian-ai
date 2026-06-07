@@ -13,7 +13,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | --- | --- | --- |
 | Entry route | Ready locally | `http://localhost:3000/toothlight` returned `200 OK`. |
 | Make route | Ready locally | `http://localhost:3000/toothlight/make` returned `200 OK`. |
-| Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.102:3000/toothlight/make`. |
+| Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.104:3000/toothlight/make`. |
 | Visual-first make flow | Ready for first testing | Six generated Toothlight object images are committed in `public/toothlight/style-objects/product-renders/v4/`. |
 | Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the child story step is reduced to child, Toothlight, and one talk/type memory field. |
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |

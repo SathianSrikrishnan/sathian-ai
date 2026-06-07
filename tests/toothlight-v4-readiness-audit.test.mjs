@@ -19,7 +19,7 @@ for (const text of [
   'not ready to send to the full first-50 visitor group',
   'http://localhost:3000/toothlight',
   'http://localhost:3000/toothlight/make',
-  'http://192.168.1.102:3000/toothlight/make',
+  'http://192.168.1.104:3000/toothlight/make',
   'public/toothlight/style-objects/product-renders/v4/',
   'Simplified make UI',
   'talk/type memory field',

@@ -18,8 +18,8 @@ Status: local-ready, build-verified, and preview-deployed; external browser pass
 
 - Browser entry: `http://localhost:3000/toothlight`
 - Browser make flow: `http://localhost:3000/toothlight/make`
-- Phone entry on same Wi-Fi: `http://192.168.1.102:3000/toothlight`
-- Phone make flow on same Wi-Fi: `http://192.168.1.102:3000/toothlight/make`
+- Phone entry on same Wi-Fi: `http://192.168.1.104:3000/toothlight`
+- Phone make flow on same Wi-Fi: `http://192.168.1.104:3000/toothlight/make`
 
 Generated flow routes:
 
