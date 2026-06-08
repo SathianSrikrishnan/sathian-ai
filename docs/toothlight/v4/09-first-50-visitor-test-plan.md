@@ -12,8 +12,9 @@ This pass is for the first 20 to 50 trusted visitors. The goal is to learn wheth
 3. Save the Toothlight.
 4. Seal one parent note.
 5. Invite family to add a note and optional gift.
+6. Preview the future reveal.
 
-Not production. Do not merge or launch broadly until the mobile checklist below passes on real phones and one signed-in parent completes the protected preview from make through family invite.
+Not production. Do not merge or launch broadly until the mobile checklist below passes on real phones and one signed-in parent completes the protected preview from make through reveal preview.
 
 ## Test routes
 
@@ -44,14 +45,15 @@ Generated flow routes:
 - `/toothlight/t/[id]`
 - `/toothlight/t/[id]/note?handoff=1`
 - `/toothlight/t/[id]/family`
+- `/toothlight/t/[id]/reveal?preview=1`
 
 Protected preview:
 
 - Alias: `https://toothlight-preview.sathian.ai`
 - Make route: `https://toothlight-preview.sathian.ai/toothlight/make`
 - Use the shareable protected-preview link from the chat when testing outside the local machine. The Vercel share token is intentionally not written into this repository.
-- Current clean preview deployment id: `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`.
-- Current preview checkpoint commit: `ddbe5bc4e1203401ee42341a029d72a373b917b6`.
+- Current clean preview deployment id: `dpl_XMjGkH348MtpFZss8M55CWXBjCZT`.
+- Current preview checkpoint commit: `8c334acab0f09a1a8204b724f043bee862bb0b57`.
 
 ## Mobile checklist
 
@@ -78,6 +80,7 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 - Family note + gift shows the saved Toothlight image, not a placeholder.
 - Family Mic is visible for the family note field.
 - Add family note creates a node and returns a visible completion state.
+- Preview reveal opens the future-opening audit route and shows the same Toothlight.
 
 ## Authenticated preview checklist
 
