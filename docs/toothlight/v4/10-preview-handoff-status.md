@@ -101,6 +101,8 @@ Generated flow routes:
 - Protected Vercel curl route checks on the environment-enabled deployment returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`.
 - `/api/toothlight/health` returned healthy with `ok` checks for `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE`, `OPENAI_API_KEY`, `tfn_toothlights`, `tfn_future_notes`, `tfn_family_contributions`, `tfn_product_events`, and `toothlight-images`.
 - Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming the live app still reaches the expected parent-account boundary.
+- Local retest after the checkpoint fast-forward on 2026-06-08 confirmed `http://localhost:3000/toothlight/make` returns `200 OK`, `http://192.168.1.104:3000/toothlight/make` returns `200 OK`, and the dev server is listening on `0.0.0.0:3000` for same-Wi-Fi phone testing.
+- Desktop and mobile screenshots of the current local make page confirmed the first screen is photo/draw first, the Light Style picker uses the six product object images with keeper portrait chips, and the mobile layout exposes the style carousel before the saved preview.
 
 ## Preview gap
 

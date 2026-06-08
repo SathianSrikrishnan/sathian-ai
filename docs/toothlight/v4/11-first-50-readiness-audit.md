@@ -60,6 +60,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Protected Vercel curl checks returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes.
 - `/api/toothlight/health` returned healthy with `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE`, `OPENAI_API_KEY`, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`.
 - Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming parent auth is still required before persistence.
+- Local retest after the checkpoint fast-forward confirmed `http://localhost:3000/toothlight/make` and `http://192.168.1.104:3000/toothlight/make` both return `200 OK`, with the dev server listening on `0.0.0.0:3000` for same-Wi-Fi phone testing.
+- Desktop and mobile screenshots confirmed the current make page is visual-first: photo/draw first, six product object Light Style images with keeper portrait chips, and the mobile style carousel visible before the saved preview.
 
 ## What is blocked
 
