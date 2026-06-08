@@ -107,4 +107,5 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 1. Keep local testing active at `http://localhost:3000/toothlight/make`.
 2. Open the Vercel share link for `https://toothlight-preview.sathian.ai/toothlight/make`.
 3. Run one authenticated normal browser/mobile preview pass: make, save, seal note, invite family, preview reveal.
-4. Only then invite the first small outside group.
+4. Record the pass in `docs/toothlight/v4/12-signed-in-validation-receipt.md`.
+5. Only then invite the first small outside group.
