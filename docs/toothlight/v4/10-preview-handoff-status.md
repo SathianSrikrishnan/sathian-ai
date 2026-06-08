@@ -33,6 +33,7 @@ Generated flow routes:
 - `/toothlight/t/[id]`
 - `/toothlight/t/[id]/note?handoff=1`
 - `/toothlight/t/[id]/family`
+- `/toothlight/t/[id]/reveal?preview=1`
 
 ## Current Vercel preview
 
@@ -114,6 +115,11 @@ Generated flow routes:
 - Latest style/story preview deployment `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` was deployed from clean checkpoint commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`.
 - Latest protected Vercel curl checks on the style/story deployment returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`.
 - Latest unauthenticated `/api/toothlight/save` POST check returned `401`, confirming the protected deployment still stops at the expected parent-auth boundary before persistence.
+- Future reveal checkpoint on 2026-06-08 added `/toothlight/t/[id]/reveal?preview=1` so the parent can audit the future-opening moment after saving, sealing the parent note, and inviting family.
+- Fresh local route checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/toothlight/t/demo-toothlight/reveal?preview=1`.
+- Full `tests/toothlight-v4-*.test.mjs` source suite passed after the reveal checkpoint, including the new `toothlight-v4-future-reveal` coverage.
+- `npm run build` passed after the reveal checkpoint and generated `/toothlight/t/[id]/reveal`; the same existing unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings remain.
+- Desktop and mobile screenshots were captured at `C:\tmp\toothlight-make-finish-pass-desktop.png`, `C:\tmp\toothlight-reveal-preview-desktop.png`, and `C:\tmp\toothlight-reveal-preview-mobile-v2.png`.
 
 ## Preview gap
 
@@ -135,4 +141,4 @@ Preview is now configured for the first signed-in test pass:
 
 ## Next handoff action
 
-Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one authenticated browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, and reaches family invite.
+Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one authenticated browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, reaches family invite, and opens `Preview reveal`.

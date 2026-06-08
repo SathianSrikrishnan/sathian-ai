@@ -90,6 +90,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         status: result.status === 'sealed' ? 'sealed' : 'seed',
         unlockAge: result.unlockAge ?? unlockAge,
         updatedAt: new Date().toISOString(),
+        sealedPreviewText: sealedText.trim(),
       })
       logToothlightClientEvent('note_completed', {
         toothlightId,
@@ -148,6 +149,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
           <p>Next: invite family.</p>
           <div>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
+            <Link href={`/toothlight/t/${toothlightId}/reveal?preview=1`}>Preview reveal</Link>
             <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>
           </div>
         </div>

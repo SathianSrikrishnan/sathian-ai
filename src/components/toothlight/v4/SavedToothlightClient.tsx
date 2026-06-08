@@ -178,6 +178,12 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
             >
               {noteStatus === 'sealed' ? noteCtaLabel : 'Family can wait'}
             </Link>
+            <Link
+              href={`/toothlight/t/${toothlightId}/reveal?preview=1`}
+              className={`${styles.actionLink} ${styles.secondary}`}
+            >
+              Preview reveal
+            </Link>
           </div>
         </div>
 

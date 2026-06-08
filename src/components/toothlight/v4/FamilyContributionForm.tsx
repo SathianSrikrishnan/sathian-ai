@@ -19,6 +19,7 @@ type FamilyContributionResponse = {
   contributorName?: string
   nodeKind?: 'family_note' | 'family_gift' | 'family_note_gift'
   noteOnly?: boolean
+  noteText?: string
   giftAmountCents?: number
 }
 
@@ -56,6 +57,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
         contributorName: result.contributorName ?? contributorName,
         nodeKind: savedNodeKind,
         noteOnly: savedNoteOnly,
+        notePreviewText: result.noteText ?? noteText.trim(),
         createdAt: new Date().toISOString(),
       }
       saveLocalFamilyContribution(contribution)
@@ -126,6 +128,7 @@ export function FamilyContributionForm({ toothlightId, onContributionSaved }: Fa
           <div className={styles.completionPanel} aria-label="Family contribution saved">
             <strong>Added to Toothlight.</strong>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
+            <Link href={`/toothlight/t/${toothlightId}/reveal?preview=1`}>Preview reveal</Link>
           </div>
         )}
       </div>

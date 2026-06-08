@@ -97,6 +97,7 @@ Run this once in a normal signed-in browser and once on a real phone before invi
 - Tap `Invite family`.
 - Add one family note. Treat the optional gift/Smile Fund as part of this same family contribution step, not a separate first-50 requirement.
 - Confirm the family page shows the saved Toothlight image, not a placeholder or unrelated object.
+- Open `Preview reveal` and confirm the future-opening page shows the same Toothlight, the child memory, the sealed parent note preview, and any family note preview.
 
 ## Pass criteria
 
@@ -109,6 +110,7 @@ A test pass is valid when:
 - the saved Toothlight can be opened by direct link;
 - the parent note page does not ask for two notes;
 - the family route carries forward the saved Toothlight image;
+- the reveal preview carries forward the same Toothlight and shows the future memory/note/family package;
 - a tester can complete the loop without needing wallet, MoonPay, Coinbase, or on-ramp setup.
 - the protected preview save step reaches Google sign-in when unauthenticated and resumes correctly when authenticated.
 
@@ -122,6 +124,7 @@ A test pass is valid when:
 - Production voice transcription requires `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.
 - `/api/toothlight/health` reports whether production voice transcription is enabled, disabled, or missing its OpenAI key.
 - Parent note sealing requires `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` as a 32-byte base64 server value.
+- `Preview reveal` uses browser-local preview text for immediate testing; the public saved Toothlight route and public Toothlight API remain status-only and do not expose private note bodies.
 - Preview health checks require `TFN_ADMIN_SECRET`, `TOOTHFAIRY_ADMIN_SECRET`, or `CRON_SECRET`; without one, the health route intentionally returns 404.
 - MoonPay, Coinbase, and other on-ramp/provider funding paths are deferred for this visitor test.
 - Smart contract audit, mainnet minting, and production Smile Fund funding are deferred.
@@ -190,7 +193,7 @@ Run the protected preview public save boundary check:
 ```text
 Open the protected preview link from the chat, create a Toothlight, and tap Save.
 Expected unauthenticated result: Google sign-in.
-Expected authenticated result: note handoff, then saved Toothlight, then family invite.
+Expected authenticated result: note handoff, then saved Toothlight, then family invite, then reveal preview.
 ```
 
 ## Release rule

@@ -20,6 +20,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally and preview-demo verified | Mobile proof covered family route and family contribution; protected preview demo family route now renders the Moon Window Toothlight image instead of a placeholder. |
+| Future reveal audit | Ready locally | `/toothlight/t/[id]/reveal?preview=1` shows the same Toothlight, memory, parent note preview, and family note preview while the public saved page/API remain status-only. |
 | Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof plus voice-assist suite rerun on 2026-06-07. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
@@ -74,14 +75,19 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Latest style/story preview deployment `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` was deployed from clean checkpoint commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`; the preview alias now points to `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`.
 - Latest protected Vercel curl checks on the style/story deployment returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes.
 - Latest unauthenticated save-boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming parent auth is still required before persistence.
+- Future reveal checkpoint on 2026-06-08 added `/toothlight/t/[id]/reveal?preview=1` as the parent audit route for the future-opening moment.
+- Fresh local route checks returned `200 OK` for make, saved Toothlight, note handoff, family invite, and reveal preview demo routes.
+- `toothlight-v4-future-reveal` passed, then the full `tests/toothlight-v4-*.test.mjs` source suite passed after the reveal checkpoint.
+- `npm run build` passed after the reveal checkpoint and generated `/toothlight/t/[id]/reveal`.
+- Desktop/mobile proof screenshots were captured at `C:\tmp\toothlight-make-finish-pass-desktop.png`, `C:\tmp\toothlight-reveal-preview-desktop.png`, and `C:\tmp\toothlight-reveal-preview-mobile-v2.png`.
 
 ## What is blocked
 
 | Area | Status | Why |
 | --- | --- | --- |
 | Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
-| Authenticated end-to-end browser proof | Hold | The protected make page now works through the parent-auth save boundary, but a logged-in browser/mobile pass through make, note, saved Toothlight, and family invite is still required. |
-| First-50 external invite | Hold | Needs one confirmed authenticated share-link pass through make, note, saved Toothlight, and family invite. |
+| Authenticated end-to-end browser proof | Hold | The protected make page now works through the parent-auth save boundary, but a logged-in browser/mobile pass through make, note, saved Toothlight, family invite, and reveal preview is still required. |
+| First-50 external invite | Hold | Needs one confirmed authenticated share-link pass through make, note, saved Toothlight, family invite, and reveal preview. |
 
 ## Open product limits
 
@@ -95,5 +101,5 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 
 1. Keep local testing active at `http://localhost:3000/toothlight/make`.
 2. Open the Vercel share link for `https://toothlight-preview.sathian.ai/toothlight/make`.
-3. Run one authenticated normal browser/mobile preview pass: make, save, seal note, invite family.
+3. Run one authenticated normal browser/mobile preview pass: make, save, seal note, invite family, preview reveal.
 4. Only then invite the first small outside group.

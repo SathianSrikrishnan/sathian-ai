@@ -121,6 +121,21 @@ There is still some explanatory copy across the full loop, but the post-save pag
 - family page shows one primary visual object: the saved Toothlight;
 - family invite and gift now read as one `Family note + gift` step rather than a separate Smile Fund flow.
 
+### 7. Future reveal preview
+
+Route: `/toothlight/t/[id]/reveal?preview=1`
+
+The reveal page is the parent audit view for the future-opening moment. It lets the parent confirm that the same Toothlight image, child-facing memory, sealed parent note, and family notes will come together later without exposing private note bodies on the normal saved Toothlight page.
+
+Current behavior:
+
+- saved, note, and family surfaces link to `Preview reveal`;
+- the reveal page carries forward the saved Toothlight card and image;
+- the opened preview shows the child memory, parent note, and family notes when local preview text exists;
+- the non-preview route stays in a locked future state;
+- the public Toothlight API remains status-only and does not expose private note text;
+- local-only preview text is stored in browser state after parent note sealing or family note submission so the creator can test the three-year reveal moment immediately.
+
 ## What is intentionally deferred
 
 - MoonPay, Coinbase, and other payment/provider integrations.
@@ -148,6 +163,7 @@ The local preview is ready for the next review when:
 - a saved Toothlight opens by direct link;
 - the parent note page seals one private note without throwing a runtime error;
 - the family page accepts a note and returns to the saved Toothlight;
+- the reveal preview shows the same Toothlight plus the future memory/note/family package;
 - demo routes work without signed-in browser state;
 - build and Toothlight V4 tests pass.
 

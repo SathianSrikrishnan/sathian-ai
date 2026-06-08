@@ -48,6 +48,7 @@ export type LocalFutureNote = {
   status: FutureNoteStatus
   unlockAge: number
   updatedAt: string
+  sealedPreviewText?: string
 }
 
 export type LocalFamilyContribution = {
@@ -57,6 +58,7 @@ export type LocalFamilyContribution = {
   nodeKind: FamilyNodeKind
   noteOnly: boolean
   createdAt: string
+  notePreviewText?: string
 }
 
 export function saveLocalToothlight(toothlight: LocalToothlight) {
