@@ -39,6 +39,8 @@ The default render action is the 3D/story-object Toothlight direction. The Light
 
 The style and render section is now visual-first: six rendered object image tiles, real keeper portrait chips in the tile corners, short style/keeper labels, and one `Make it a Toothlight` action. The current v4 product renders live in `public/toothlight/style-objects/product-renders/v4/` and cover Golden Locket, Moon Window, Storybook Velvet, Rainbow Room, Pillow Spark, and Family Lantern. The generated contact sheet source is preserved in the same folder for auditability. Longer lore remains in accessible labels and prompt metadata rather than visible explanatory copy.
 
+The latest image pass makes the object images the dominant control surface and keeps the keeper images as compact visual context, similar to a phone-style filter tray. It intentionally avoids sourcing outside artwork for the first-50 test; the six visible style objects and keeper portraits come from generated/source-controlled Toothlight and story assets already in the repo.
+
 ### 2. AI final
 
 The current render direction is a Toothlight object, not a pure photo filter.
@@ -136,7 +138,7 @@ The first fast path uses browser speech recognition where available, with the no
 
 Production voice transcription is intentionally opt-in. It requires `OPENAI_API_KEY` plus `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`; Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
 
-The make flow story step now treats the story as a thumb-first capture card: two short fields for child and Toothlight name, one voice-assisted memory field, and a stripped save panel beside it. The family invite uses the same assistive pattern with `Tap mic. Talk. Add note.` while keeping gifts optional.
+The make flow story step now treats the story as a thumb-first capture card: two short fields for child and Toothlight name, one voice-assisted memory field, and a stripped save panel beside it. The story card now includes a small keeper-to-Toothlight visual cue so the child story feels connected to the selected object style without adding explanatory copy. The mic action remains visible even when a browser does not expose speech or recorder support; unsupported environments fall back to a typed-note message instead of hiding the control. The family invite uses the same assistive pattern with `Tap mic. Talk. Add note.` while keeping gifts optional.
 
 ## First-testing acceptance bar
 

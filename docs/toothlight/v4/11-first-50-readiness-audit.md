@@ -16,6 +16,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Phone same-Wi-Fi route | Ready locally | Current LAN route is `http://192.168.1.104:3000/toothlight/make`. |
 | Visual-first make flow | Ready for first testing | Six generated Toothlight object images are committed in `public/toothlight/style-objects/product-renders/v4/`. |
 | Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the mobile next-action strip is hidden, the child story step keeps one talk/type memory field and says `Tell it.`, and the visible save panel is reduced to the primary save button. |
+| Style/story visual pass | Ready locally | Fresh desktop and tall mobile screenshots show stronger product-object cards, keeper image context, a keeper-to-Toothlight story cue, a visible `Record` action, and one primary `Save this Toothlight` action. |
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally and preview-demo verified | Mobile proof covered family route and family contribution; protected preview demo family route now renders the Moon Window Toothlight image instead of a placeholder. |
@@ -65,6 +66,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Latest clean PR checkpoint `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c` deployed as `dpl_254uYk49yxhAF6sBWMw414Kgufgb`; the preview alias now points to `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`.
 - Latest protected Vercel curl checks returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes; unauthenticated save still returns `401`.
 - Latest `/api/toothlight/health` check returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, product events, and image bucket all `ok`.
+- Style/story image pass on 2026-06-08 made the Light Style tray more image-dominant, kept keeper portraits visible, added the keeper-to-Toothlight story cue, and made the voice action stay visible with a typed fallback when browser voice support is unavailable.
+- Fresh local route check returned `200 OK` for `http://localhost:3000/toothlight/make` after the style/story image pass.
+- Fresh screenshots were captured at `C:\tmp\toothlight-make-style-story-pass-desktop.png` and `C:\tmp\toothlight-make-style-story-pass-mobile-tall.png`; the tall mobile screenshot shows the compact story block with visible `Record` and one primary `Save this Toothlight` action.
+- The full `tests/toothlight-v4-*.test.mjs` source suite passed after the style/story image pass.
+- `npm run build` passed after the style/story image pass with the known unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings.
 
 ## What is blocked
 

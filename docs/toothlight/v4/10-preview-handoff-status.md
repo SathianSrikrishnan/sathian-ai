@@ -106,6 +106,11 @@ Generated flow routes:
 - Latest clean PR checkpoint `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c` deployed as `dpl_254uYk49yxhAF6sBWMw414Kgufgb`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`.
 - Latest protected Vercel curl checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`; `/api/toothlight/save` still returned `401` for an unauthenticated POST.
 - Latest `/api/toothlight/health` check returned healthy with `ok` checks for note encryption, voice transcription, OpenAI, Supabase tables, product events, and the Toothlight image bucket.
+- Style/story image pass on 2026-06-08 made the Light Style tray more image-dominant, kept the keeper portraits as visible story context, added a keeper-to-Toothlight visual cue to the child story card, and made the voice action remain visible with typed fallback messaging when browser voice support is unavailable.
+- Fresh local route check returned `200 OK` for `http://localhost:3000/toothlight/make` after the style/story image pass.
+- Fresh desktop and tall mobile screenshots were captured at `C:\tmp\toothlight-make-style-story-pass-desktop.png` and `C:\tmp\toothlight-make-style-story-pass-mobile-tall.png`; the tall mobile screenshot shows the compact story block with the visible `Record` action and one primary `Save this Toothlight` action.
+- The full `tests/toothlight-v4-*.test.mjs` source suite passed after the style/story image pass.
+- `npm run build` passed after the style/story image pass. The build still prints the existing unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings.
 
 ## Preview gap
 

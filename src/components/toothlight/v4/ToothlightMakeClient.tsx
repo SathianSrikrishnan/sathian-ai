@@ -605,11 +605,27 @@ export function ToothlightMakeClient() {
         <section
           id="toothlight-story-step"
           className={`${styles.panel} ${styles.storyPanel}`}
+          style={{
+            ['--story-accent' as string]: selectedTreatment.accent,
+            ['--story-secondary' as string]: selectedTreatment.secondaryAccent,
+            ['--story-deep' as string]: selectedTreatment.deepAccent,
+            ['--story-object-focus' as string]: selectedTreatment.objectImageFocus,
+            ['--story-keeper-focus' as string]: selectedTreatment.keeperImageFocus,
+          }}
           aria-label="Child story"
         >
           <div className={styles.panelHeader}>
             <span>3</span>
             <h2>Tell it.</h2>
+          </div>
+          <div className={styles.storyVisualCue} aria-hidden="true">
+            <span className={styles.storyKeeperCue}>
+              <img src={selectedTreatment.keeperImageSrc} alt="" />
+            </span>
+            <span className={styles.storyLightPath} />
+            <span className={styles.storyObjectCue}>
+              <img src={selectedTreatment.objectImageSrc} alt="" />
+            </span>
           </div>
           <div className={styles.storyQuickFields}>
             <label className={styles.thumbField}>

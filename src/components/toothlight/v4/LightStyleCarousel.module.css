@@ -5,7 +5,7 @@
 
 .carousel {
   display: grid;
-  grid-auto-columns: minmax(8.8rem, 46%);
+  grid-auto-columns: minmax(9.25rem, 48%);
   grid-auto-flow: column;
   gap: 0.62rem;
   overflow-x: auto;
@@ -17,7 +17,7 @@
 .option {
   position: relative;
   display: grid;
-  min-height: 9.9rem;
+  min-height: 10.85rem;
   border: 1px solid rgba(23, 38, 42, 0.12);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.82);
@@ -30,6 +30,10 @@
   padding: 0;
   scroll-snap-align: start;
   text-align: left;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .option::before {
@@ -53,6 +57,10 @@
     0 14px 28px color-mix(in srgb, var(--style-accent), transparent 74%);
 }
 
+.option:active {
+  transform: scale(0.985);
+}
+
 .option[data-recommended='true']::after {
   position: absolute;
   top: 0.58rem;
@@ -71,7 +79,7 @@
   display: grid;
   width: 100%;
   height: 100%;
-  min-height: 9.9rem;
+  min-height: 10.85rem;
   place-items: center;
   overflow: hidden;
   border-radius: 8px;
@@ -92,7 +100,7 @@
   filter:
     saturate(1.08)
     contrast(1.04);
-  transform: scale(1.01);
+  transform: scale(1.04);
 }
 
 .swatchGlow {
@@ -130,10 +138,10 @@
 .keeperPortrait {
   position: absolute;
   z-index: 7;
-  left: 0.58rem;
-  top: 0.58rem;
+  left: 0.5rem;
+  top: 0.5rem;
   display: grid;
-  width: 2.38rem;
+  width: 3rem;
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
@@ -144,8 +152,8 @@
     rgba(255, 255, 255, 0.82);
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 68%),
-    0 0.4rem 1.05rem rgba(23, 38, 42, 0.15),
-    0 0 1.1rem color-mix(in srgb, var(--style-accent), transparent 42%);
+    0 0.5rem 1.2rem rgba(23, 38, 42, 0.18),
+    0 0 1.45rem color-mix(in srgb, var(--style-accent), transparent 38%);
 }
 
 .keeperPortrait img {
@@ -170,7 +178,7 @@
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 7px;
   background:
-    linear-gradient(130deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.68));
+    linear-gradient(130deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.72));
   padding: 0.38rem 0.46rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 0.6rem 1.4rem rgba(23, 38, 42, 0.1);

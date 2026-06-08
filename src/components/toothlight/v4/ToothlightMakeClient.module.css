@@ -426,7 +426,8 @@
 
 .storyPanel {
   background:
-    radial-gradient(circle at 10% 0%, rgba(246, 201, 95, 0.24), transparent 12rem),
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--story-accent, #f6c95f), transparent 76%), transparent 12rem),
+    radial-gradient(circle at 96% 4%, color-mix(in srgb, var(--story-secondary, #80d6c4), transparent 78%), transparent 13rem),
     linear-gradient(145deg, rgba(238, 248, 242, 0.88), rgba(255, 255, 255, 0.82));
   padding: 0.8rem;
 }
@@ -437,6 +438,86 @@
 
 .storyPanel .panelHeader h2 {
   font-size: 1.28rem;
+}
+
+.storyVisualCue {
+  position: relative;
+  display: grid;
+  min-height: 5.4rem;
+  grid-template-columns: auto minmax(2.2rem, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(23, 38, 42, 0.08);
+  border-radius: 8px;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.34)),
+    color-mix(in srgb, var(--story-accent, #f6c95f), #fff 84%);
+  padding: 0.62rem;
+}
+
+.storyVisualCue::after {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 26% 30%, color-mix(in srgb, var(--story-accent, #f6c95f), transparent 70%), transparent 28%),
+    radial-gradient(circle at 82% 70%, color-mix(in srgb, var(--story-secondary, #80d6c4), transparent 74%), transparent 32%);
+  content: '';
+  pointer-events: none;
+}
+
+.storyKeeperCue,
+.storyObjectCue {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow:
+    0 0.62rem 1.3rem rgba(23, 38, 42, 0.12),
+    0 0 1.5rem color-mix(in srgb, var(--story-accent, #f6c95f), transparent 58%);
+}
+
+.storyKeeperCue {
+  width: 3.35rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+}
+
+.storyObjectCue {
+  width: 4.6rem;
+  aspect-ratio: 1;
+  border-radius: 8px;
+}
+
+.storyKeeperCue img,
+.storyObjectCue img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.storyKeeperCue img {
+  object-position: var(--story-keeper-focus, 50% 40%);
+}
+
+.storyObjectCue img {
+  object-position: var(--story-object-focus, 50% 52%);
+}
+
+.storyLightPath {
+  position: relative;
+  z-index: 1;
+  height: 0.26rem;
+  min-width: 0;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, var(--story-accent, #f6c95f), rgba(255, 255, 255, 0.9), var(--story-secondary, #80d6c4));
+  box-shadow:
+    0 0 0.7rem color-mix(in srgb, var(--story-accent, #f6c95f), transparent 38%),
+    0 0 1.4rem color-mix(in srgb, var(--story-secondary, #80d6c4), transparent 48%);
 }
 
 .storyQuickFields {
@@ -457,17 +538,17 @@
 
 .thumbField input {
   width: 100%;
-  min-height: 3.65rem;
+  min-height: 3.5rem;
   border: 1px solid rgba(23, 38, 42, 0.14);
   border-radius: 8px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84));
   color: #17262a;
   font: inherit;
-  font-size: 1.08rem;
+  font-size: 1.02rem;
   font-weight: 850;
   letter-spacing: 0;
-  padding: 0.92rem 0.95rem;
+  padding: 0.82rem 0.88rem;
 }
 
 .thumbField input::placeholder {

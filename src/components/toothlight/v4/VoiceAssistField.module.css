@@ -1,6 +1,6 @@
 .field {
   display: grid;
-  gap: 0.42rem;
+  gap: 0.46rem;
 }
 
 .labelRow {
@@ -23,37 +23,53 @@
   width: 100%;
   border: 1px solid rgba(23, 38, 42, 0.14);
   border-radius: 8px;
-  background: #fff;
+  background:
+    radial-gradient(circle at 100% 100%, rgba(246, 201, 95, 0.08), transparent 42%),
+    #fff;
   color: #17262a;
   font: inherit;
   font-size: 1rem;
   letter-spacing: 0;
-  min-height: 7.2rem;
-  padding: 0.78rem 0.85rem;
+  min-height: 6.8rem;
+  padding: 0.88rem 0.95rem;
   resize: vertical;
 }
 
 .micButton {
   display: inline-flex;
-  min-height: 3.25rem;
-  width: fit-content;
+  min-height: 3.35rem;
+  width: 100%;
   align-items: center;
   justify-content: center;
   gap: 0.44rem;
-  border: 1px solid rgba(23, 38, 42, 0.12);
+  border: 1px solid rgba(234, 163, 64, 0.26);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  color: #173c33;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.72), transparent 32%),
+    linear-gradient(135deg, #f6c95f, #eaa340);
+  color: #1f2b15;
   cursor: pointer;
   font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.96rem;
   font-weight: 950;
-  padding: 0 1.05rem;
+  padding: 0 1.15rem;
+  box-shadow:
+    0 12px 24px rgba(234, 163, 64, 0.2),
+    0 0 1.2rem rgba(246, 201, 95, 0.22);
 }
 
 .micButton[data-listening='true'] {
-  border-color: rgba(234, 163, 64, 0.46);
-  background: rgba(246, 201, 95, 0.26);
+  border-color: rgba(45, 106, 85, 0.34);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.72), transparent 32%),
+    linear-gradient(135deg, rgba(128, 214, 196, 0.96), rgba(45, 106, 85, 0.28));
+  color: #173c33;
+}
+
+.micButton[data-available='false'] {
+  background: rgba(255, 255, 255, 0.82);
+  color: #5a6a6d;
+  box-shadow: none;
 }
 
 .micButton:disabled {
@@ -79,7 +95,7 @@
 }
 
 .voicePrompt {
-  color: #607276;
+  color: #5a6c70;
 }
 
 .voiceStatus {
@@ -100,5 +116,10 @@
   .labelRow {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
+  }
+
+  .micButton {
+    min-width: 8.4rem;
+    width: fit-content;
   }
 }

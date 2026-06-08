@@ -317,7 +317,13 @@ export function VoiceAssistField({
   const canUseVoice = speechSupported || recorderSupported
   const useRecorder = speechFallbackMode || !speechSupported
   const isBusy = isListening || isRecording || isTranscribing
-  const buttonLabel = isTranscribing ? 'Writing' : isListening || isRecording ? 'Stop' : useRecorder ? 'Record' : 'Talk'
+  const buttonLabel = isTranscribing
+    ? 'Writing'
+    : isListening || isRecording
+      ? 'Stop'
+      : useRecorder
+        ? 'Record'
+        : 'Talk'
   const buttonAriaLabel =
     isListening || isRecording
       ? 'Stop voice input'
@@ -335,12 +341,26 @@ export function VoiceAssistField({
       return
     }
     if (isTranscribing) return
+    if (!canUseVoice) {
+      setVoiceStatus('Voice is unavailable here. Type instead.')
+      return
+    }
     if (useRecorder) {
       void startRecording()
     } else {
       startListening()
     }
-  }, [isListening, isRecording, isTranscribing, startListening, startRecording, stopListening, stopRecording, useRecorder])
+  }, [
+    canUseVoice,
+    isListening,
+    isRecording,
+    isTranscribing,
+    startListening,
+    startRecording,
+    stopListening,
+    stopRecording,
+    useRecorder,
+  ])
 
   return (
     <div className={styles.field}>
@@ -354,21 +374,20 @@ export function VoiceAssistField({
             rows={rows}
           />
         </label>
-        {canUseVoice && (
-          <button
-            type="button"
-            className={styles.micButton}
-            onClick={handleVoiceButton}
-            disabled={isTranscribing}
-            aria-label={buttonAriaLabel}
-            data-listening={isBusy ? 'true' : 'false'}
-          >
-            <span aria-hidden="true" className={styles.micIcon} />
-            {buttonLabel}
-          </button>
-        )}
+        <button
+          type="button"
+          className={styles.micButton}
+          onClick={handleVoiceButton}
+          disabled={isTranscribing}
+          aria-label={buttonAriaLabel}
+          data-listening={isBusy ? 'true' : 'false'}
+          data-available={canUseVoice ? 'true' : 'false'}
+        >
+          <span aria-hidden="true" className={styles.micIcon} />
+          {buttonLabel}
+        </button>
       </div>
-      {canUseVoice && <p className={styles.voicePrompt}>{voicePrompt}</p>}
+      <p className={styles.voicePrompt}>{voicePrompt}</p>
       {voiceStatus && <p className={styles.voiceStatus}>{voiceStatus}</p>}
     </div>
   )
