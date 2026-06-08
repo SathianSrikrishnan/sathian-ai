@@ -25,7 +25,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` is `READY`, built from clean commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_XMjGkH348MtpFZss8M55CWXBjCZT` is `READY`, built from clean commit `8c334acab0f09a1a8204b724f043bee862bb0b57`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
@@ -80,6 +80,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - `toothlight-v4-future-reveal` passed, then the full `tests/toothlight-v4-*.test.mjs` source suite passed after the reveal checkpoint.
 - `npm run build` passed after the reveal checkpoint and generated `/toothlight/t/[id]/reveal`.
 - Desktop/mobile proof screenshots were captured at `C:\tmp\toothlight-make-finish-pass-desktop.png`, `C:\tmp\toothlight-reveal-preview-desktop.png`, and `C:\tmp\toothlight-reveal-preview-mobile-v2.png`.
+- Clean reveal preview deployment `dpl_XMjGkH348MtpFZss8M55CWXBjCZT` was deployed from commit `8c334acab0f09a1a8204b724f043bee862bb0b57`; `toothlight-preview.sathian.ai` now points to `https://sathian-2ljmdvi2v-sathiansrikrishnans-projects.vercel.app`.
+- Protected Vercel curl checks returned `200 OK` for make, saved Toothlight, note handoff, family invite, reveal preview, and demo Toothlight API routes.
+- The protected preview share link returned `200 OK` for make and reveal preview through ordinary HTTP.
+- Deployed mobile screenshot was captured at `C:\tmp\toothlight-reveal-preview-deployed-mobile.png`; it shows the open reveal title, parent note, family note, same Toothlight image, `Sealed for later`, and `Opened preview`.
+- Latest unauthenticated save-boundary check posted `{}` to `/api/toothlight/save` and returned `401`.
 
 ## What is blocked
 

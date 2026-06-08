@@ -37,10 +37,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr`
+- Clean preview deployment: `https://sathian-2ljmdvi2v-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_XMjGkH348MtpFZss8M55CWXBjCZT`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `8c334acab0f09a1a8204b724f043bee862bb0b57`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -120,6 +120,11 @@ Generated flow routes:
 - Full `tests/toothlight-v4-*.test.mjs` source suite passed after the reveal checkpoint, including the new `toothlight-v4-future-reveal` coverage.
 - `npm run build` passed after the reveal checkpoint and generated `/toothlight/t/[id]/reveal`; the same existing unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings remain.
 - Desktop and mobile screenshots were captured at `C:\tmp\toothlight-make-finish-pass-desktop.png`, `C:\tmp\toothlight-reveal-preview-desktop.png`, and `C:\tmp\toothlight-reveal-preview-mobile-v2.png`.
+- Clean reveal preview deployment `dpl_XMjGkH348MtpFZss8M55CWXBjCZT` was deployed from commit `8c334acab0f09a1a8204b724f043bee862bb0b57`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-2ljmdvi2v-sathiansrikrishnans-projects.vercel.app`.
+- Protected Vercel curl checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, `/toothlight/t/demo-toothlight/reveal?preview=1`, and `/api/toothlight/demo-toothlight`.
+- The protected preview share link returned `200 OK` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` through ordinary HTTP.
+- Deployed mobile screenshot was captured at `C:\tmp\toothlight-reveal-preview-deployed-mobile.png`; it shows the open reveal title, parent note, family note, same Toothlight image, `Sealed for later`, and `Opened preview`.
+- Latest unauthenticated `/api/toothlight/save` POST check returned `401`, confirming the reveal deployment still stops at the expected parent-auth boundary before persistence.
 
 ## Preview gap
 
