@@ -140,7 +140,7 @@ assert(!/context\.globalAlpha\s*=\s*0\.86[\s\S]*context\.drawImage\(drawingLayer
 assert(/render=1/.test(client), 'AI render auth return path must preserve the intent to render after Google sign-in')
 assert(/LIGHT_STYLE_TREATMENTS|getRecommendedLightStyle/.test(carousel), 'LightStyleCarousel must use deterministic Light Style catalog')
 
-const saveFetchBody = client.match(/fetch\('\/api\/toothlight\/save'[\s\S]*?body: JSON\.stringify\(\{([\s\S]*?)\}\),\n\s*\}\)/)?.[1] ?? ''
+const saveFetchBody = client.match(/fetch\('\/api\/toothlight\/save'[\s\S]*?body: JSON\.stringify\(\{([\s\S]*?)\}\),\r?\n\s*\}\)/)?.[1] ?? ''
 assert(saveFetchBody.includes('sourceImageSrc'), 'save request must include the compressed source image')
 assert(saveFetchBody.includes('renderedImageSrc'), 'save request must include the compressed rendered image')
 assert(saveFetchBody.includes('aiRenderedImageSrc'), 'save request must include the optional AI-rendered image field')
