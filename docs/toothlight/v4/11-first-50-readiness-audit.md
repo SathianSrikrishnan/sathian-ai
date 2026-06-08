@@ -92,6 +92,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Clean mobile voice preview deployment `dpl_djSqxwotyhttyxq6yekc1zPs59Me` was deployed from commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`; `toothlight-preview.sathian.ai` now points to `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`.
 - The protected preview share link returned `200 OK` for make and reveal preview on the mobile voice deployment.
 - `/api/toothlight/voice-transcribe` returned `400 {"error":"No audio provided."}` for an empty protected-preview POST, confirming the route is reachable and not disabled.
+- Mobile proof extension on 2026-06-08 now reaches `Preview reveal` after family contribution and verifies the reveal screen shows the same Toothlight memory, sealed parent note preview, family note preview, and Toothlight card title on both `Mobile Safari` and `Mobile Chrome`.
 
 ## What is blocked
 
