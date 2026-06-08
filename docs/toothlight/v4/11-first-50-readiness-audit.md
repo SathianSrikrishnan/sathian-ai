@@ -24,7 +24,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_254uYk49yxhAF6sBWMw414Kgufgb` is `READY`, built from clean commit `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` is `READY`, built from clean commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
@@ -71,6 +71,9 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Fresh screenshots were captured at `C:\tmp\toothlight-make-style-story-pass-desktop.png` and `C:\tmp\toothlight-make-style-story-pass-mobile-tall.png`; the tall mobile screenshot shows the compact story block with visible `Record` and one primary `Save this Toothlight` action.
 - The full `tests/toothlight-v4-*.test.mjs` source suite passed after the style/story image pass.
 - `npm run build` passed after the style/story image pass with the known unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings.
+- Latest style/story preview deployment `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` was deployed from clean checkpoint commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`; the preview alias now points to `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`.
+- Latest protected Vercel curl checks on the style/story deployment returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes.
+- Latest unauthenticated save-boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming parent auth is still required before persistence.
 
 ## What is blocked
 

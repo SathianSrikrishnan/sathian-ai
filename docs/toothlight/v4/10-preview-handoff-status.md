@@ -36,10 +36,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_254uYk49yxhAF6sBWMw414Kgufgb`
+- Clean preview deployment: `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -111,6 +111,9 @@ Generated flow routes:
 - Fresh desktop and tall mobile screenshots were captured at `C:\tmp\toothlight-make-style-story-pass-desktop.png` and `C:\tmp\toothlight-make-style-story-pass-mobile-tall.png`; the tall mobile screenshot shows the compact story block with the visible `Record` action and one primary `Save this Toothlight` action.
 - The full `tests/toothlight-v4-*.test.mjs` source suite passed after the style/story image pass.
 - `npm run build` passed after the style/story image pass. The build still prints the existing unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings.
+- Latest style/story preview deployment `dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr` was deployed from clean checkpoint commit `827ed6535fe4f382fdb02ccfc641bc004ac6c2d5`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app`.
+- Latest protected Vercel curl checks on the style/story deployment returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`.
+- Latest unauthenticated `/api/toothlight/save` POST check returned `401`, confirming the protected deployment still stops at the expected parent-auth boundary before persistence.
 
 ## Preview gap
 
