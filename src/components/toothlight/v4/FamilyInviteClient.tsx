@@ -35,6 +35,9 @@ const fallbackToothlight: LocalToothlight = {
   savedAt: new Date(0).toISOString(),
 }
 
+const demoToothlightImageSrc =
+  '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg'
+
 export function FamilyInviteClient({ toothlightId }: FamilyInviteClientProps) {
   const [toothlight, setToothlight] = useState<LocalToothlight | null>(null)
   const [futureNote, setFutureNote] = useState<LocalFutureNote | null>(null)
@@ -100,8 +103,23 @@ export function FamilyInviteClient({ toothlightId }: FamilyInviteClientProps) {
     }
   }, [toothlightId])
 
-  const current = toothlight ?? { ...fallbackToothlight, toothlightId }
-  const showMemoryCard = memoryLoaded || Boolean(toothlight)
+  const current =
+    toothlight ??
+    (toothlightId === 'demo-toothlight'
+      ? {
+          ...fallbackToothlight,
+          toothlightId,
+          childName: 'Kai',
+          toothName: 'First Tooth',
+          caption: 'Lost after breakfast and showed everyone.',
+          imageSrc: demoToothlightImageSrc,
+          sourceImageSrc: demoToothlightImageSrc,
+          renderedImageSrc: demoToothlightImageSrc,
+          glowId: 'moon-window',
+          treatmentId: 'moon-window',
+        }
+      : { ...fallbackToothlight, toothlightId })
+  const showMemoryCard = memoryLoaded || Boolean(toothlight) || toothlightId === 'demo-toothlight'
   const noteStatus = futureNote?.status ?? 'none'
   const hasFamilyGift = familyNodes.some((node) => node.nodeKind === 'family_gift' || node.nodeKind === 'family_note_gift')
   const state = getToothlightVisualState({

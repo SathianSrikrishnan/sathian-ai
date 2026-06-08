@@ -8,6 +8,9 @@ type RouteContext = {
   }
 }
 
+const DEMO_TOOTHLIGHT_IMAGE_SRC =
+  '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg'
+
 export async function GET(_request: NextRequest, { params }: RouteContext) {
   if (params.id === 'demo-toothlight') {
     return NextResponse.json(demoToothlightPayload())
@@ -57,9 +60,9 @@ function demoToothlightPayload() {
       childName: 'Kai',
       toothName: 'First Tooth',
       caption: 'Lost after breakfast and showed everyone.',
-      imageSrc: null,
-      sourceImageSrc: null,
-      renderedImageSrc: null,
+      imageSrc: DEMO_TOOTHLIGHT_IMAGE_SRC,
+      sourceImageSrc: DEMO_TOOTHLIGHT_IMAGE_SRC,
+      renderedImageSrc: DEMO_TOOTHLIGHT_IMAGE_SRC,
       glowId: 'moon-window',
       treatmentId: 'moon-window',
       treatmentVersion: 'deterministic-css-v2',

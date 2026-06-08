@@ -23,6 +23,7 @@ const saveRoute = readFileSync(saveRoutePath, 'utf8')
 const noteRoute = readFileSync(noteRoutePath, 'utf8')
 const familyRoute = readFileSync(familyRoutePath, 'utf8')
 const savedClient = readFileSync(savedClientPath, 'utf8')
+const demoImageSrc = '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg'
 
 for (const exportName of [
   'createSupabaseToothlightRepository',
@@ -52,9 +53,14 @@ assert(readRoute.includes('getPersistedToothlight'), 'read route must use persis
 assert(/statusOnly|noContent|futureNoteStatus/.test(readRoute), 'read route must expose status-only note data')
 assert(!/note_body_encrypted|sealedText|noteText/.test(readRoute), 'read route must not expose private note content')
 assert(/params\.id === 'demo-toothlight'/.test(readRoute), 'read route must serve the demo Toothlight without querying Supabase')
+assert(readRoute.includes(demoImageSrc), 'demo read route must return a real first-party Toothlight image')
+assert(/imageSrc:\s*DEMO_TOOTHLIGHT_IMAGE_SRC/.test(readRoute), 'demo read route must fill imageSrc')
+assert(/sourceImageSrc:\s*DEMO_TOOTHLIGHT_IMAGE_SRC/.test(readRoute), 'demo read route must fill sourceImageSrc')
+assert(/renderedImageSrc:\s*DEMO_TOOTHLIGHT_IMAGE_SRC/.test(readRoute), 'demo read route must fill renderedImageSrc')
 assert(/isValidToothlightId/.test(readRoute), 'read route must reject malformed ids before querying Supabase')
 assert(/fetch\(`\/api\/toothlight\/\$\{toothlightId\}`/.test(savedClient), 'saved client must fetch persisted state')
 assert(savedClient.includes('applyPersistedToothlight'), 'saved client must merge persisted state into UI')
+assert(savedClient.includes(demoImageSrc), 'saved page fallback must render a real Toothlight image')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-persistence: ${failures.length} issue(s)`)
