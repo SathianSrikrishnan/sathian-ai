@@ -9,8 +9,9 @@ This receipt is the final proof artifact for the first-50 gate. Fill it after on
 
 - Preview alias: `https://toothlight-preview.sathian.ai`
 - Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`
-- Current deployment id: `dpl_XMjGkH348MtpFZss8M55CWXBjCZT`
-- Current checkpoint commit: `8c334acab0f09a1a8204b724f043bee862bb0b57`
+- Current clean preview deployment: `https://sathian-r1uhhe14o-sathiansrikrishnans-projects.vercel.app`
+- Current deployment id: `dpl_9a4rUcceh3V61uHf6PK1VdHxBeHJ`
+- Current checkpoint commit: `ab9c69a415687b914311eaa704a88b144602cdf9`
 - PR: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
 
 ## Required Pass Path
