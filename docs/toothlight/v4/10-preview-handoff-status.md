@@ -19,6 +19,7 @@ Status: local-ready, build-verified, preview-deployed, protected make-page brows
 - Make-flow polish commit: `1e4ade85edaf5718327e7bc24d34be7ca97dc576`
 - Family demo image fallback commit: `13af986979d2e781ca2d798210e1e42d8f72daff`
 - Windows verifier hardening commit: `8ad68ecdf25e0ce92632526b1121d215cb21dedf`
+- Clean source proof commit: `ddbe5bc4e1203401ee42341a029d72a373b917b6`
 
 ## Local test links
 
@@ -35,10 +36,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-ktjvg9kt3-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn`
+- Clean preview deployment: `https://sathian-lelc70gmv-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `13af986979d2e781ca2d798210e1e42d8f72daff`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `ddbe5bc4e1203401ee42341a029d72a373b917b6`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -91,6 +92,10 @@ Generated flow routes:
 - Protected preview family action probe confirmed the Moon Window image and card were visible, `/api/toothlight/demo-toothlight/family-contribution` returned `200`, and the family completion link appeared.
 - Post-fix mobile proof rerun passed with `8 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, save, note, saved Toothlight, family invite, family contribution, and voice-assist recovery.
 - Continuation check on 2026-06-08 created a clean verification worktree at commit `8ad68ecdf25e0ce92632526b1121d215cb21dedf` and ran every `toothlight-v4-*.test.mjs` source check; all passed.
+- Latest clean PR checkpoint `ddbe5bc4e1203401ee42341a029d72a373b917b6` deployed as `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-lelc70gmv-sathiansrikrishnans-projects.vercel.app`.
+- Protected preview route checks on the latest alias returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, and `/toothlight/t/demo-toothlight/family`.
+- Latest protected demo Toothlight API check returned `imageSrc` and `renderedImageSrc` as `/toothlight/style-objects/product-renders/v4/moon-window-product.jpg`.
+- Latest protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in.
 
 ## Preview gap
 

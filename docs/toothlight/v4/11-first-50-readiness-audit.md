@@ -23,7 +23,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn` is `READY`, built from clean commit `13af986979d2e781ca2d798210e1e42d8f72daff`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC` is `READY`, built from clean commit `ddbe5bc4e1203401ee42341a029d72a373b917b6`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
@@ -51,6 +51,9 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Protected preview family action probe confirmed the Moon Window image and card were visible, `/api/toothlight/demo-toothlight/family-contribution` returned `200`, and the family completion link appeared.
 - Post-fix mobile proof rerun passed with `8 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, save, note, saved Toothlight, family invite, family contribution, and voice-assist recovery.
 - Continuation check on 2026-06-08 created a clean verification worktree at commit `8ad68ecdf25e0ce92632526b1121d215cb21dedf` and ran every `toothlight-v4-*.test.mjs` source check; all passed.
+- Latest clean PR checkpoint `ddbe5bc4e1203401ee42341a029d72a373b917b6` deployed as `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`; the preview alias now points to `https://sathian-lelc70gmv-sathiansrikrishnans-projects.vercel.app`.
+- Latest protected preview route checks returned `200 OK` for make, saved Toothlight, note handoff, and family invite demo routes.
+- Latest protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in.
 
 ## What is blocked
 
