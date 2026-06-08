@@ -38,6 +38,7 @@ for (const text of [
   'protected-preview make link',
   'Google sign-in',
   'Current clean preview deployment id',
+  'Current preview checkpoint commit',
   'same family contribution step',
 ]) {
   assert(plan.includes(text), `first-50 plan must include ${text}`)
@@ -48,7 +49,8 @@ assert(/http:\/\/<LAN-IP>:3000\/toothlight/.test(plan), 'plan must include a LAN
 assert(/http:\/\/192\.168\.1\.104:3000\/toothlight\/make/.test(plan), 'plan must include the latest concrete same-Wi-Fi phone make link')
 assert(/https:\/\/toothlight-preview\.sathian\.ai\/toothlight\/make/.test(plan), 'plan must include the protected preview make route')
 assert(/shareable protected-preview link from the chat/.test(plan), 'plan must tell testers to use the chat share link without committing the token')
-assert(/dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT/.test(plan), 'plan must include the current clean preview deployment id')
+assert(/dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn/.test(plan), 'plan must include the current clean preview deployment id')
+assert(/13af986979d2e781ca2d798210e1e42d8f72daff/.test(plan), 'plan must include the current preview checkpoint commit')
 assert(/OPENAI_API_KEY/.test(plan), 'plan must call out voice transcription key requirement')
 assert(/TOOTHLIGHT_NOTE_ENCRYPTION_KEY/.test(plan), 'plan must call out note encryption key requirement')
 assert(/TFN_ADMIN_SECRET/.test(plan), 'plan must call out the admin secret required for preview health checks')

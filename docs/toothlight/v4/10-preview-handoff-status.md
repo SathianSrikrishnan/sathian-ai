@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
 Date: 2026-06-07
-Status: local-ready, build-verified, preview-deployed, protected make-page browser verified, and save-auth boundary verified; authenticated end-to-end pass pending
+Status: local-ready, build-verified, preview-deployed, protected make-page browser verified, family-demo image verified, and save-auth boundary verified; authenticated end-to-end pass pending
 
 ## Current checkpoint
 
@@ -17,6 +17,7 @@ Status: local-ready, build-verified, preview-deployed, protected make-page brows
 - Mobile proof stabilization commit: `caece212b50aa12844245fc35fcc76fa27867a35`
 - First-50 auth gate doc commit: `890ecf13c9123a9e958f93b7057bd74957421d60`
 - Make-flow polish commit: `1e4ade85edaf5718327e7bc24d34be7ca97dc576`
+- Family demo image fallback commit: `13af986979d2e781ca2d798210e1e42d8f72daff`
 
 ## Local test links
 
@@ -33,10 +34,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-h3d7hzvuk-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT`
+- Clean preview deployment: `https://sathian-ktjvg9kt3-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `13af986979d2e781ca2d798210e1e42d8f72daff`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -82,6 +83,10 @@ Generated flow routes:
 - Authenticated Vercel curl returned `200 OK` for `/toothlight/make` on the updated alias.
 - The protected preview share link returned `200 OK` by ordinary HTTP after the alias update, and a mobile-sized Playwright screenshot confirmed the deployed protected make page shows the polished UI.
 - Fresh protected-preview save-boundary probe on 2026-06-07 uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in with state `/toothlight/make?save=1`.
+- Family demo image fallback fix on 2026-06-07 deployed clean checkpoint `13af986979d2e781ca2d798210e1e42d8f72daff` as `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn`; `toothlight-preview.sathian.ai` was reassigned to it.
+- Protected preview route checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, and `/toothlight/t/demo-toothlight/family`.
+- Protected demo Toothlight API check returned `imageSrc` and `renderedImageSrc` as `/toothlight/style-objects/product-renders/v4/moon-window-product.jpg`.
+- A mobile-sized protected preview screenshot of `/toothlight/t/demo-toothlight/family` confirmed the family page shows the Moon Window Toothlight image instead of a placeholder.
 
 ## Preview gap
 

@@ -1,7 +1,7 @@
 # Toothlight V4 First 50 Readiness Audit
 
 Date: 2026-06-07
-Status: local-ready and build-verified; preview deployed with protected make-page browser proof, save-auth boundary proof, and authenticated end-to-end pass pending
+Status: local-ready and build-verified; preview deployed with protected make-page browser proof, family-demo image proof, save-auth boundary proof, and authenticated end-to-end pass pending
 
 ## Decision
 
@@ -18,12 +18,12 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Simplified make UI | Ready locally | Style tiles now use short visible names, keeper image chips, and an image-led carousel/grid; the mobile next-action strip is hidden, the child story step keeps one talk/type memory field and says `Tell it.`, and the visible save panel is reduced to the primary save button. |
 | AI Toothlight preview | Ready for first testing | `Make it a Toothlight` flow is covered by Toothlight V4 source tests. |
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
-| Family invite handoff | Ready locally | Mobile proof covered family route and family contribution. |
+| Family invite handoff | Ready locally and preview-demo verified | Mobile proof covered family route and family contribution; protected preview demo family route now renders the Moon Window Toothlight image instead of a placeholder. |
 | Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof plus voice-assist suite rerun on 2026-06-07. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT` is `READY`, built from clean commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn` is `READY`, built from clean commit `13af986979d2e781ca2d798210e1e42d8f72daff`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
@@ -43,6 +43,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - After the make-flow polish commit, focused make-flow checks passed, TypeScript passed, `npm run build` passed, fresh desktop/mobile screenshots were captured, and the combined Playwright mobile proof plus voice-assist suite passed again with `8 passed`.
 - After the fresh alias update, authenticated Vercel curl returned `200 OK` for `/toothlight/make`, the protected preview share link returned `200 OK` by ordinary HTTP, and a mobile-sized protected preview screenshot showed the polished make page.
 - A fresh protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in with state `/toothlight/make?save=1`.
+- Latest family demo image fallback commit: `13af986979d2e781ca2d798210e1e42d8f72daff`.
+- Fresh family-fix preview deployment `dpl_Ce9ngWuGatRriQjUx1XbZszh2NHn` was deployed from commit `13af986979d2e781ca2d798210e1e42d8f72daff`; the preview alias now points to it.
+- Protected preview route checks returned `200 OK` for make, saved Toothlight, note handoff, and family invite demo routes.
+- Protected demo Toothlight API check returned the Moon Window product image in both `imageSrc` and `renderedImageSrc`.
+- A mobile-sized protected preview screenshot showed `/toothlight/t/demo-toothlight/family` rendering the Moon Window Toothlight card instead of the old placeholder.
 
 ## What is blocked
 
