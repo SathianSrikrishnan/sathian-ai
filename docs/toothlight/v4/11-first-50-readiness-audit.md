@@ -50,6 +50,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - A mobile-sized protected preview screenshot showed `/toothlight/t/demo-toothlight/family` rendering the Moon Window Toothlight card instead of the old placeholder.
 - Protected preview family action probe confirmed the Moon Window image and card were visible, `/api/toothlight/demo-toothlight/family-contribution` returned `200`, and the family completion link appeared.
 - Post-fix mobile proof rerun passed with `8 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, save, note, saved Toothlight, family invite, family contribution, and voice-assist recovery.
+- Continuation check on 2026-06-08 created a clean verification worktree at commit `8ad68ecdf25e0ce92632526b1121d215cb21dedf` and ran every `toothlight-v4-*.test.mjs` source check; all passed.
 
 ## What is blocked
 
