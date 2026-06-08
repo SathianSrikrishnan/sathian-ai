@@ -100,6 +100,17 @@ function getRecorderMimeType() {
   return ''
 }
 
+function shouldPreferRecordedVoiceInput() {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
+
+  const coarsePointer =
+    typeof window.matchMedia === 'function' &&
+    (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches)
+  const touchPoints = navigator.maxTouchPoints ?? 0
+
+  return coarsePointer || touchPoints > 0
+}
+
 export function VoiceAssistField({
   label,
   value,
@@ -113,6 +124,7 @@ export function VoiceAssistField({
 }: VoiceAssistFieldProps) {
   const [speechSupported, setSpeechSupported] = useState(false)
   const [recorderSupported, setRecorderSupported] = useState(false)
+  const [preferRecordedInput, setPreferRecordedInput] = useState(false)
   const [speechFallbackMode, setSpeechFallbackMode] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
@@ -131,10 +143,11 @@ export function VoiceAssistField({
   }, [value])
 
   useEffect(() => {
+    const recorderAvailable =
+      typeof navigator.mediaDevices?.getUserMedia === 'function' && typeof MediaRecorder !== 'undefined'
     setSpeechSupported(getSpeechRecognitionCtor() !== null)
-    setRecorderSupported(
-      typeof navigator.mediaDevices?.getUserMedia === 'function' && typeof MediaRecorder !== 'undefined',
-    )
+    setRecorderSupported(recorderAvailable)
+    setPreferRecordedInput(recorderAvailable && shouldPreferRecordedVoiceInput())
     return () => {
       if (stopTimerRef.current) clearTimeout(stopTimerRef.current)
       try {
@@ -326,7 +339,7 @@ export function VoiceAssistField({
   }, [appendTranscript, recorderSupported, startRecording, stopListening])
 
   const canUseVoice = speechSupported || recorderSupported
-  const useRecorder = speechFallbackMode || !speechSupported
+  const useRecorder = recorderSupported && (preferRecordedInput || speechFallbackMode || !speechSupported)
   const isBusy = isListening || isRecording || isTranscribing
   const buttonLabel = isTranscribing
     ? 'Writing'
