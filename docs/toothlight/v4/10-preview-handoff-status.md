@@ -87,6 +87,7 @@ Generated flow routes:
 - Protected preview route checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, and `/toothlight/t/demo-toothlight/family`.
 - Protected demo Toothlight API check returned `imageSrc` and `renderedImageSrc` as `/toothlight/style-objects/product-renders/v4/moon-window-product.jpg`.
 - A mobile-sized protected preview screenshot of `/toothlight/t/demo-toothlight/family` confirmed the family page shows the Moon Window Toothlight image instead of a placeholder.
+- Protected preview family action probe confirmed the Moon Window image and card were visible, `/api/toothlight/demo-toothlight/family-contribution` returned `200`, and the family completion link appeared.
 
 ## Preview gap
 

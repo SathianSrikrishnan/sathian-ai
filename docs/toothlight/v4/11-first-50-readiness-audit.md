@@ -48,6 +48,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Protected preview route checks returned `200 OK` for make, saved Toothlight, note handoff, and family invite demo routes.
 - Protected demo Toothlight API check returned the Moon Window product image in both `imageSrc` and `renderedImageSrc`.
 - A mobile-sized protected preview screenshot showed `/toothlight/t/demo-toothlight/family` rendering the Moon Window Toothlight card instead of the old placeholder.
+- Protected preview family action probe confirmed the Moon Window image and card were visible, `/api/toothlight/demo-toothlight/family-contribution` returned `200`, and the family completion link appeared.
 
 ## What is blocked
 
