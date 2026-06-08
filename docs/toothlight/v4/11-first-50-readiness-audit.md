@@ -21,11 +21,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally and preview-demo verified | Mobile proof covered family route and family contribution; protected preview demo family route now renders the Moon Window Toothlight image instead of a placeholder. |
 | Future reveal audit | Ready locally | `/toothlight/t/[id]/reveal?preview=1` shows the same Toothlight, memory, parent note preview, and family note preview while the public saved page/API remain status-only. |
-| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof plus voice-assist suite rerun on 2026-06-07. |
+| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof, development-only local phone save fallback, and mobile record-first voice suite rerun on 2026-06-08. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_XMjGkH348MtpFZss8M55CWXBjCZT` is `READY`, built from clean commit `8c334acab0f09a1a8204b724f043bee862bb0b57`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_djSqxwotyhttyxq6yekc1zPs59Me` is `READY`, built from clean commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
@@ -85,6 +85,13 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - The protected preview share link returned `200 OK` for make and reveal preview through ordinary HTTP.
 - Deployed mobile screenshot was captured at `C:\tmp\toothlight-reveal-preview-deployed-mobile.png`; it shows the open reveal title, parent note, family note, same Toothlight image, `Sealed for later`, and `Opened preview`.
 - Latest unauthenticated save-boundary check posted `{}` to `/api/toothlight/save` and returned `401`.
+- Mobile voice record-first checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`.
+- Touch devices now start Voice Assist in `Record` mode while desktop browser speech remains covered.
+- Focused mobile voice/save rerun passed with `12 passed` across `Mobile Safari` and `Mobile Chrome`, including `tests/toothlight-v4-local-mobile-save.spec.ts` and `tests/toothlight-v4-voice-assist.spec.ts`.
+- `npm run build` passed after the mobile voice record-first checkpoint.
+- Clean mobile voice preview deployment `dpl_djSqxwotyhttyxq6yekc1zPs59Me` was deployed from commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`; `toothlight-preview.sathian.ai` now points to `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`.
+- The protected preview share link returned `200 OK` for make and reveal preview on the mobile voice deployment.
+- `/api/toothlight/voice-transcribe` returned `400 {"error":"No audio provided."}` for an empty protected-preview POST, confirming the route is reachable and not disabled.
 
 ## What is blocked
 

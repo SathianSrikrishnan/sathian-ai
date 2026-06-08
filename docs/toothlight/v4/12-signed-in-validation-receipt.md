@@ -9,9 +9,9 @@ This receipt is the final proof artifact for the first-50 gate. Fill it after on
 
 - Preview alias: `https://toothlight-preview.sathian.ai`
 - Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`
-- Current clean preview deployment: `https://sathian-r1uhhe14o-sathiansrikrishnans-projects.vercel.app`
-- Current deployment id: `dpl_9a4rUcceh3V61uHf6PK1VdHxBeHJ`
-- Current checkpoint commit: `ab9c69a415687b914311eaa704a88b144602cdf9`
+- Current clean preview deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`
+- Current deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`
+- Current checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
 - PR: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
 
 ## Required Pass Path
@@ -77,6 +77,7 @@ Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-
 
 - Fixed local phone blocker on 2026-06-08: mobile/local save can now complete as a development-only `local-*` Toothlight when the phone cannot use the desktop parent-auth callback.
 - Fixed voice fallback blocker on 2026-06-08: if mobile speech recognition opens the mic but returns no text, Voice Assist now switches to Record mode instead of leaving the user stuck.
+- Fixed mobile first-tap voice blocker on 2026-06-08: touch devices now start Voice Assist in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition.
 - Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
 
 ## Decision

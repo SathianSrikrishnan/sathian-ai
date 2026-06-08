@@ -42,6 +42,11 @@ for (const text of [
   'Current clean preview deployment id',
   'Current preview checkpoint commit',
   'same family contribution step',
+  'touch devices',
+  'Record',
+  'local-*',
+  'toothlight-v4-local-mobile-save.spec.ts',
+  'toothlight-v4-voice-assist.spec.ts',
 ]) {
   assert(plan.includes(text), `first-50 plan must include ${text}`)
 }
@@ -51,8 +56,8 @@ assert(/http:\/\/<LAN-IP>:3000\/toothlight/.test(plan), 'plan must include a LAN
 assert(/http:\/\/192\.168\.1\.104:3000\/toothlight\/make/.test(plan), 'plan must include the latest concrete same-Wi-Fi phone make link')
 assert(/https:\/\/toothlight-preview\.sathian\.ai\/toothlight\/make/.test(plan), 'plan must include the protected preview make route')
 assert(/shareable protected-preview link from the chat/.test(plan), 'plan must tell testers to use the chat share link without committing the token')
-assert(/dpl_XMjGkH348MtpFZss8M55CWXBjCZT/.test(plan), 'plan must include the current clean preview deployment id')
-assert(/8c334acab0f09a1a8204b724f043bee862bb0b57/.test(plan), 'plan must include the current preview checkpoint commit')
+assert(/dpl_djSqxwotyhttyxq6yekc1zPs59Me/.test(plan), 'plan must include the current clean preview deployment id')
+assert(/0238aa12e86a8fa1ac638a577b8bf2e0b9a17183/.test(plan), 'plan must include the current preview checkpoint commit')
 assert(/OPENAI_API_KEY/.test(plan), 'plan must call out voice transcription key requirement')
 assert(/TOOTHLIGHT_NOTE_ENCRYPTION_KEY/.test(plan), 'plan must call out note encryption key requirement')
 assert(/TFN_ADMIN_SECRET/.test(plan), 'plan must call out the admin secret required for preview health checks')

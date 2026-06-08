@@ -1,7 +1,7 @@
 # Toothlight V4 First 50 Visitor Test Plan
 
-Date: 2026-06-07
-Status: local-ready, protected-preview ready through auth handoff, authenticated pass pending
+Date: 2026-06-08
+Status: local-ready, mobile voice/save patched, protected-preview ready through auth handoff, authenticated pass pending
 
 ## Purpose
 
@@ -52,8 +52,9 @@ Protected preview:
 - Alias: `https://toothlight-preview.sathian.ai`
 - Make route: `https://toothlight-preview.sathian.ai/toothlight/make`
 - Use the shareable protected-preview link from the chat when testing outside the local machine. The Vercel share token is intentionally not written into this repository.
-- Current clean preview deployment id: `dpl_XMjGkH348MtpFZss8M55CWXBjCZT`.
-- Current preview checkpoint commit: `8c334acab0f09a1a8204b724f043bee862bb0b57`.
+- Current clean preview deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`.
+- Current clean preview deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`.
+- Current preview checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`.
 
 ## Mobile checklist
 
@@ -72,9 +73,11 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 - `Make it a Toothlight` creates or displays a usable AI Toothlight final; this is the AI preview action.
 - Saved AI options remain visible after multiple previews.
 - Child story fields are visible and the Mic control is usable when supported.
+- On touch devices, the Mic control starts in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition.
 - Save this Toothlight creates a saved Toothlight and hands off to the note route.
+- Same-Wi-Fi local phone testing can complete with a development-only `local-*` Toothlight if the phone cannot use the desktop parent-auth session.
 - Seal the note accepts one private parent note.
-- Mic on the note page either transcribes, records for transcription, or gives clear permission recovery copy.
+- Mic on the note page either records for transcription, transcribes, or gives clear permission recovery copy.
 - Saved Toothlight page opens by direct link.
 - Invite family opens the family route.
 - Family note + gift shows the saved Toothlight image, not a placeholder.
@@ -124,7 +127,9 @@ A test pass is valid when:
 - The six Light Style object images are source-controlled generated v4 product renders in `public/toothlight/style-objects/product-renders/v4/`. They are ready for first-50 testing, but not final brand/commerce artwork.
 - Style tiles are deliberately image-led for this test. Replace the generated keeper/style images later only after the core loop is stable.
 - Voice Assist is assistive input, not a live Tanda voice agent.
-- Browser speech recognition depends on the browser. Recording fallback uses `/api/toothlight/voice-transcribe`.
+- Touch devices default to recorded transcription first; desktop browsers can still use browser speech recognition and then fall back to Record.
+- Recording uses `/api/toothlight/voice-transcribe`.
+- Same-Wi-Fi `local-*` Toothlight save and note fallback is development-only. The protected preview still requires parent account save.
 - Production voice transcription requires `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.
 - `/api/toothlight/health` reports whether production voice transcription is enabled, disabled, or missing its OpenAI key.
 - Parent note sealing requires `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` as a 32-byte base64 server value.
@@ -183,12 +188,11 @@ Invoke-WebRequest -UseBasicParsing "https://<preview-domain>/api/toothlight/heal
   -Headers @{ "x-tfn-admin-secret" = "<admin secret>" }
 ```
 
-Run the mobile proof path:
+Run the mobile proof, local-phone save, and voice paths:
 
 ```powershell
-$env:PLAYWRIGHT_PORT = '3100'
-npx playwright test tests/toothlight-v4-proof.spec.ts --project="Mobile Chrome"
-npx playwright test tests/toothlight-v4-proof.spec.ts --project="Mobile Safari"
+$env:PLAYWRIGHT_PORT = '3108'
+npx playwright test tests/toothlight-v4-proof.spec.ts tests/toothlight-v4-local-mobile-save.spec.ts tests/toothlight-v4-voice-assist.spec.ts
 Remove-Item Env:\PLAYWRIGHT_PORT
 ```
 

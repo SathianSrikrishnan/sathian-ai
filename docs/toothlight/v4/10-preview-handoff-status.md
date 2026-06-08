@@ -20,6 +20,7 @@ Status: local-ready, build-verified, preview-deployed, preview environment healt
 - Family demo image fallback commit: `13af986979d2e781ca2d798210e1e42d8f72daff`
 - Windows verifier hardening commit: `8ad68ecdf25e0ce92632526b1121d215cb21dedf`
 - Clean source proof commit: `ddbe5bc4e1203401ee42341a029d72a373b917b6`
+- Mobile voice record-first checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
 
 ## Local test links
 
@@ -37,10 +38,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-2ljmdvi2v-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_XMjGkH348MtpFZss8M55CWXBjCZT`
+- Clean preview deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `8c334acab0f09a1a8204b724f043bee862bb0b57`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -125,6 +126,12 @@ Generated flow routes:
 - The protected preview share link returned `200 OK` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` through ordinary HTTP.
 - Deployed mobile screenshot was captured at `C:\tmp\toothlight-reveal-preview-deployed-mobile.png`; it shows the open reveal title, parent note, family note, same Toothlight image, `Sealed for later`, and `Opened preview`.
 - Latest unauthenticated `/api/toothlight/save` POST check returned `401`, confirming the reveal deployment still stops at the expected parent-auth boundary before persistence.
+- Mobile voice record-first checkpoint on 2026-06-08 changed touch devices to start Voice Assist in `Record` mode while retaining desktop browser speech and fallback coverage.
+- Focused mobile voice/save rerun passed with `12 passed` across `Mobile Safari` and `Mobile Chrome`, covering `tests/toothlight-v4-local-mobile-save.spec.ts` and `tests/toothlight-v4-voice-assist.spec.ts`.
+- `npm run build` passed after the mobile voice record-first checkpoint with the same known unrelated bigint, article cache URL, and dynamic Tooth Fairy API route warnings.
+- Clean mobile voice preview deployment `dpl_djSqxwotyhttyxq6yekc1zPs59Me` was deployed from commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`.
+- The protected preview share link returned `200 OK` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` on the mobile voice deployment.
+- `/api/toothlight/voice-transcribe` returned `400 {"error":"No audio provided."}` for an empty protected-preview POST, confirming the route is reachable and not disabled.
 
 ## Preview gap
 

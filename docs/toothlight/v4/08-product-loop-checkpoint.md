@@ -151,7 +151,7 @@ Voice should enter as assistive input, not a full real-time Tanda agent. The fir
 
 The first fast path uses browser speech recognition where available, with the normal text field always visible as the fallback. If browser speech fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
 
-Mobile speech recognition can open the microphone and still end with no transcript. The field now treats that as a failed fast path, shows `No speech heard. Try Record instead.`, and exposes the recorded fallback without requiring a page reload.
+Mobile speech recognition can open the microphone and still end with no transcript. The field now treats that as a failed fast path, shows `No speech heard. Try Record instead.`, and exposes the recorded fallback without requiring a page reload. Touch devices now start in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition.
 
 Production voice transcription is intentionally opt-in. It requires `OPENAI_API_KEY` plus `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`; Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
 
