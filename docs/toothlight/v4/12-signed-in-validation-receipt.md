@@ -4,6 +4,7 @@ Date: pending
 Status: pending signed-in browser/mobile pass
 
 This receipt is the final proof artifact for the first-50 gate. Fill it after one real signed-in parent completes the protected preview on a normal browser and one real phone pass confirms the same flow is usable.
+Use `13-signed-in-browser-mobile-runbook.md` for the exact browser and phone pass sequence.
 
 ## Preview Under Test
 

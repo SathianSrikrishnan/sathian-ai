@@ -89,6 +89,7 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 
 Run this once in a normal signed-in browser and once on a real phone before inviting the full first-50 group.
 Record the pass in `12-signed-in-validation-receipt.md` so the final go/no-go decision has one evidence artifact.
+Use `13-signed-in-browser-mobile-runbook.md` as the single step-by-step run sheet while testing.
 
 - Open the protected-preview make link from the chat.
 - Confirm `/toothlight/make` loads without a runtime overlay.
