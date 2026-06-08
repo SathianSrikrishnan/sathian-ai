@@ -26,7 +26,7 @@ for (const text of [
   'protected-preview share link from the chat',
   'dpl_djSqxwotyhttyxq6yekc1zPs59Me',
   '0238aa12e86a8fa1ac638a577b8bf2e0b9a17183',
-  'c7e5087e0cbdc80b5f93f02ba42b02cba9d268b2',
+  '9dde812b88c477b4979b25782a25a5933f2513cb',
   'Pass 1: Local Phone Sanity',
   'Pass 2: Signed-In Browser Preview',
   'Pass 3: Real Phone Protected Preview',

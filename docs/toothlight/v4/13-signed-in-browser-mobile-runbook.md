@@ -26,7 +26,7 @@ Current deployed preview under test:
 - Deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`
 - Deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`
 - Deployed code checkpoint: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
-- Documentation checkpoint: `c7e5087e0cbdc80b5f93f02ba42b02cba9d268b2`
+- Documentation checkpoint: `9dde812b88c477b4979b25782a25a5933f2513cb`
 
 ## Pass 1: Local Phone Sanity
 
