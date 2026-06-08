@@ -134,6 +134,8 @@ Generated flow routes:
 - `/api/toothlight/voice-transcribe` returned `400 {"error":"No audio provided."}` for an empty protected-preview POST, confirming the route is reachable and not disabled.
 - Mobile proof extension on 2026-06-08 now clicks from family contribution into `Preview reveal` and verifies the reveal screen shows the same Toothlight memory, sealed parent note preview, family note preview, and Toothlight card title on both `Mobile Safari` and `Mobile Chrome`.
 - Mobile reliability patch on 2026-06-08 added mobile `audio/mp4` to `m4a` voice upload handling, an HTTPS-required message for phone mic testing on local IP, and a compact save payload path that trims redundant layer images when phone-photo requests are too large.
+- Fresh mobile reliability preview deployment `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq` was deployed from commit `86073de885999212bb873a7872e45dc096bf0e98`; `toothlight-preview.sathian.ai` now points to `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`.
+- Protected `vercel curl` checks on that deployment returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1`. Empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error.
 
 ## Preview gap
 
