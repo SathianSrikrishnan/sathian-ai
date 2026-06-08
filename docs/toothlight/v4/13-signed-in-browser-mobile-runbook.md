@@ -26,7 +26,7 @@ Current deployed preview under test:
 - Deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`
 - Deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`
 - Deployed code checkpoint: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
-- Documentation checkpoint: `9dde812b88c477b4979b25782a25a5933f2513cb`
+- Documentation checkpoint: latest pushed branch head. This runbook is guarded by `tests/toothlight-v4-signed-in-runbook.test.mjs` so the validation links and stop rules stay pinned without making the file stale after each documentation commit.
 
 ## Pass 1: Local Phone Sanity
 
