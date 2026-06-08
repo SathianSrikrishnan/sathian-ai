@@ -1,11 +1,11 @@
 # Toothlight V4 First 50 Readiness Audit
 
-Date: 2026-06-07
-Status: local-ready and build-verified; preview deployed with protected make-page browser proof, family-demo image proof, save-auth boundary proof, and authenticated end-to-end pass pending
+Date: 2026-06-08
+Status: local-ready and build-verified; preview deployed with environment health proof, protected make-page browser proof, family-demo image proof, save-auth boundary proof, and authenticated end-to-end pass pending
 
 ## Decision
 
-The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the preview alias has a shareable-link bypass, and the protected make page works through the parent-auth save boundary in a mobile-sized browser. It is not ready to send to the full first-50 visitor group until one authenticated normal browser/mobile pass confirms the share link end to end.
+The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the Preview environment is health-checked, the preview alias has a shareable-link bypass, and the protected make page works through the parent-auth save boundary. It is not ready to send to the full first-50 visitor group until one authenticated normal browser/mobile pass confirms the share link end to end.
 
 ## What is ready
 
@@ -23,7 +23,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC` is `READY`, built from clean commit `ddbe5bc4e1203401ee42341a029d72a373b917b6`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk` is `READY`, built from clean commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
@@ -54,6 +55,11 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Latest clean PR checkpoint `ddbe5bc4e1203401ee42341a029d72a373b917b6` deployed as `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`; the preview alias now points to `https://sathian-lelc70gmv-sathiansrikrishnans-projects.vercel.app`.
 - Latest protected preview route checks returned `200 OK` for make, saved Toothlight, note handoff, and family invite demo routes.
 - Latest protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in.
+- Preview environment readiness on 2026-06-08 added `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`, and `TFN_ADMIN_SECRET` to the Vercel Preview environment.
+- Fresh environment-enabled preview deployment `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk` was deployed from commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`; the preview alias now points to `https://sathian-ght6ohr72-sathiansrikrishnans-projects.vercel.app`.
+- Protected Vercel curl checks returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes.
+- `/api/toothlight/health` returned healthy with `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE`, `OPENAI_API_KEY`, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`.
+- Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming parent auth is still required before persistence.
 
 ## What is blocked
 
@@ -68,8 +74,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - AI object quality is good enough for first feedback, not final brand art.
 - Voice is an assistive input path, not a live Tanda guide.
 - Smile Fund funding, MoonPay, Coinbase, wallet handoff, and contract/mainnet work stay outside this first-50 product loop.
-- Parent note sealing still depends on `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` being configured in the target environment.
-- Voice transcription still depends on `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true` in the target environment.
+- Parent note sealing is configured in Preview; production promotion must recheck `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`.
+- Voice transcription is configured in Preview; production promotion must recheck `OPENAI_API_KEY` and `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`.
 
 ## Next action
 

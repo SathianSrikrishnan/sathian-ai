@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
-Date: 2026-06-07
-Status: local-ready, build-verified, preview-deployed, protected make-page browser verified, family-demo image verified, and save-auth boundary verified; authenticated end-to-end pass pending
+Date: 2026-06-08
+Status: local-ready, build-verified, preview-deployed, preview environment health verified, protected make-page browser verified, family-demo image verified, and save-auth boundary verified; authenticated end-to-end pass pending
 
 ## Current checkpoint
 
@@ -36,10 +36,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-lelc70gmv-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_A8YB51btAAbcj97dh8fAHuCv4ugC`
+- Clean preview deployment: `https://sathian-ght6ohr72-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `ddbe5bc4e1203401ee42341a029d72a373b917b6`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -96,6 +96,11 @@ Generated flow routes:
 - Protected preview route checks on the latest alias returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, and `/toothlight/t/demo-toothlight/family`.
 - Latest protected demo Toothlight API check returned `imageSrc` and `renderedImageSrc` as `/toothlight/style-objects/product-renders/v4/moon-window-product.jpg`.
 - Latest protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in.
+- Preview environment readiness on 2026-06-08 added `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`, and `TFN_ADMIN_SECRET` to the Vercel Preview environment.
+- Fresh environment-enabled preview deployment `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk` was deployed from clean checkpoint commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-ght6ohr72-sathiansrikrishnans-projects.vercel.app`.
+- Protected Vercel curl route checks on the environment-enabled deployment returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`.
+- `/api/toothlight/health` returned healthy with `ok` checks for `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `TOOTHLIGHT_NOTE_ENCRYPTION_KEY`, `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE`, `OPENAI_API_KEY`, `tfn_toothlights`, `tfn_future_notes`, `tfn_family_contributions`, `tfn_product_events`, and `toothlight-images`.
+- Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming the live app still reaches the expected parent-account boundary.
 
 ## Preview gap
 
@@ -107,11 +112,12 @@ The known preview domain is now updated and the protected make page works throug
 
 ## Environment gates
 
-Before external preview testing:
+Preview is now configured for the first signed-in test pass:
 
-- Set a non-empty `TFN_ADMIN_SECRET`, `TOOTHFAIRY_ADMIN_SECRET`, or `CRON_SECRET` so `/api/toothlight/health` can be checked.
-- Keep `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` configured as a 32-byte base64 server value before note sealing is treated as production-ready.
-- Enable `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true` only when `OPENAI_API_KEY` is present and recording transcription should be active.
+- `TFN_ADMIN_SECRET` is present in Preview so `/api/toothlight/health` can be checked.
+- `TOOTHLIGHT_NOTE_ENCRYPTION_KEY` is present in Preview as a 32-byte base64 server value.
+- `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true` is present in Preview and `OPENAI_API_KEY` is available.
+- Recheck these same gates before any production promotion or domain switch.
 - Keep MoonPay, Coinbase, Smile Fund funding, and smart-contract mainnet work out of the first-50 visitor flow.
 
 ## Next handoff action
