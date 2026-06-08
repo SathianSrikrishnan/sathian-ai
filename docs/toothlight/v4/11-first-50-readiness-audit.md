@@ -23,7 +23,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk` is `READY`, built from clean commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_254uYk49yxhAF6sBWMw414Kgufgb` is `READY`, built from clean commit `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c`, and is aliased to `https://toothlight-preview.sathian.ai`. |
 | Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
@@ -62,6 +62,9 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming parent auth is still required before persistence.
 - Local retest after the checkpoint fast-forward confirmed `http://localhost:3000/toothlight/make` and `http://192.168.1.104:3000/toothlight/make` both return `200 OK`, with the dev server listening on `0.0.0.0:3000` for same-Wi-Fi phone testing.
 - Desktop and mobile screenshots confirmed the current make page is visual-first: photo/draw first, six product object Light Style images with keeper portrait chips, and the mobile style carousel visible before the saved preview.
+- Latest clean PR checkpoint `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c` deployed as `dpl_254uYk49yxhAF6sBWMw414Kgufgb`; the preview alias now points to `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`.
+- Latest protected Vercel curl checks returned `200 OK` for make, saved Toothlight, note handoff, family invite demo, and demo Toothlight API routes; unauthenticated save still returns `401`.
+- Latest `/api/toothlight/health` check returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, product events, and image bucket all `ok`.
 
 ## What is blocked
 

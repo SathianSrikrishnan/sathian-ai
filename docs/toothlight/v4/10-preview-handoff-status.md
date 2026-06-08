@@ -36,10 +36,10 @@ Generated flow routes:
 
 ## Current Vercel preview
 
-- Clean preview deployment: `https://sathian-ght6ohr72-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_B149cSDk8vDGzUaJapLrhSv5ekAk`
+- Clean preview deployment: `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_254uYk49yxhAF6sBWMw414Kgufgb`
 - Preview alias: `https://toothlight-preview.sathian.ai`
-- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `e506e7c3dca708c52ebaf7008e99838d60f2bbde`.
+- Alias update: `toothlight-preview.sathian.ai` now points to the clean preview deployment from commit `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c`.
 - A Vercel shareable-link protection bypass exists for the preview alias. The bypass token is intentionally not committed to the repository.
 
 ## Verification evidence
@@ -103,6 +103,9 @@ Generated flow routes:
 - Minimal protected-deployment save boundary check posted `{}` to `/api/toothlight/save` and returned `401`, confirming the live app still reaches the expected parent-account boundary.
 - Local retest after the checkpoint fast-forward on 2026-06-08 confirmed `http://localhost:3000/toothlight/make` returns `200 OK`, `http://192.168.1.104:3000/toothlight/make` returns `200 OK`, and the dev server is listening on `0.0.0.0:3000` for same-Wi-Fi phone testing.
 - Desktop and mobile screenshots of the current local make page confirmed the first screen is photo/draw first, the Light Style picker uses the six product object images with keeper portrait chips, and the mobile layout exposes the style carousel before the saved preview.
+- Latest clean PR checkpoint `3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c` deployed as `dpl_254uYk49yxhAF6sBWMw414Kgufgb`; `toothlight-preview.sathian.ai` was reassigned to `https://sathian-5hjfgksag-sathiansrikrishnans-projects.vercel.app`.
+- Latest protected Vercel curl checks returned `200 OK` for `/toothlight/make`, `/toothlight/t/demo-toothlight`, `/toothlight/t/demo-toothlight/note?handoff=1`, `/toothlight/t/demo-toothlight/family`, and `/api/toothlight/demo-toothlight`; `/api/toothlight/save` still returned `401` for an unauthenticated POST.
+- Latest `/api/toothlight/health` check returned healthy with `ok` checks for note encryption, voice transcription, OpenAI, Supabase tables, product events, and the Toothlight image bucket.
 
 ## Preview gap
 
