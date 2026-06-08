@@ -42,6 +42,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Protected preview browser interaction reached the expected parent-auth boundary on 2026-06-07: save returned `401`, then redirected to Google sign-in.
 - After the make-flow polish commit, focused make-flow checks passed, TypeScript passed, `npm run build` passed, fresh desktop/mobile screenshots were captured, and the combined Playwright mobile proof plus voice-assist suite passed again with `8 passed`.
 - After the fresh alias update, authenticated Vercel curl returned `200 OK` for `/toothlight/make`, the protected preview share link returned `200 OK` by ordinary HTTP, and a mobile-sized protected preview screenshot showed the polished make page.
+- A fresh protected-preview save-boundary probe uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in with state `/toothlight/make?save=1`.
 
 ## What is blocked
 

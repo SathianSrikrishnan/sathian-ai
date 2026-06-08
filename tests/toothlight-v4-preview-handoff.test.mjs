@@ -56,6 +56,8 @@ for (const text of [
   'Tell it.',
   'redundant visible save heading',
   'mobile-sized Playwright screenshot confirmed the deployed protected make page shows the polished UI',
+  'Fresh protected-preview save-boundary probe',
+  'state `/toothlight/make?save=1`',
   'vercel curl /toothlight/make',
   'EPERM',
   'elevated build completed successfully',

@@ -81,6 +81,7 @@ Generated flow routes:
 - Fresh Vercel preview deployment `dpl_EsSBZZdoyyC5mtVTSMk2adz5rqZT` was created from clean checkpoint commit `5ce0ed0033c5df06fdf7a5f0eacef2c67106dc56`; `toothlight-preview.sathian.ai` was reassigned to it.
 - Authenticated Vercel curl returned `200 OK` for `/toothlight/make` on the updated alias.
 - The protected preview share link returned `200 OK` by ordinary HTTP after the alias update, and a mobile-sized Playwright screenshot confirmed the deployed protected make page shows the polished UI.
+- Fresh protected-preview save-boundary probe on 2026-06-07 uploaded a test image, selected `Moon Window`, filled the story fields, clicked `Save this Toothlight`, saw `/api/toothlight/save` return `401`, and landed on Google sign-in with state `/toothlight/make?save=1`.
 
 ## Preview gap
 

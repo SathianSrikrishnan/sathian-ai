@@ -48,6 +48,8 @@ for (const text of [
   'Google sign-in',
   '8 passed',
   'mobile-sized protected preview screenshot',
+  'fresh protected-preview save-boundary probe',
+  'state `/toothlight/make?save=1`',
   'Authenticated end-to-end browser proof',
   'token_expired',
   'MoonPay',
