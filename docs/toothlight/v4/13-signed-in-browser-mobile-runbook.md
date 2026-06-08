@@ -39,11 +39,12 @@ Purpose: confirm the phone can use the visual flow even if it cannot reuse the d
 5. Tap `Make it a Toothlight` or use the instant preview if AI is skipped.
 6. In the story area, confirm the mic button starts as `Record` on the phone.
 7. Tap `Record`, speak one short memory line, tap `Stop`, and wait for text.
-8. If transcription does not return text, type the memory line and log the issue.
-9. Tap `Save this Toothlight`.
-10. Expected local result: either a normal saved Toothlight or a development-only `local-*` Toothlight that moves to `/note?handoff=1`.
-11. Seal one parent note.
-12. Open the saved Toothlight, invite family, add one family note, and open `Preview reveal`.
+8. If the local IP page says `Recording needs HTTPS on a phone`, type the line for this local sanity pass and test voice on the HTTPS protected preview.
+9. If HTTPS transcription does not return text, type the memory line and log the issue.
+10. Tap `Save this Toothlight`.
+11. Expected local result: either a normal saved Toothlight or a development-only `local-*` Toothlight that moves to `/note?handoff=1`.
+12. Seal one parent note.
+13. Open the saved Toothlight, invite family, add one family note, and open `Preview reveal`.
 
 This pass proves same-Wi-Fi phone ergonomics. It does not replace the protected signed-in preview pass.
 

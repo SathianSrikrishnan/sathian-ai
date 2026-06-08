@@ -4,6 +4,16 @@ import OpenAI from 'openai'
 export const dynamic = 'force-dynamic'
 
 const MAX_AUDIO_BYTES = 6 * 1024 * 1024
+const AUDIO_EXTENSION_BY_MIME_TYPE = new Map([
+  ['audio/webm', 'webm'],
+  ['audio/mp4', 'm4a'],
+  ['audio/x-m4a', 'm4a'],
+  ['audio/mpeg', 'mp3'],
+  ['audio/mp3', 'mp3'],
+  ['audio/wav', 'wav'],
+  ['audio/x-wav', 'wav'],
+  ['audio/ogg', 'ogg'],
+])
 
 function isVoiceTranscribeEnabled() {
   return process.env.NODE_ENV !== 'production' || process.env.TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE === 'true'
@@ -38,8 +48,8 @@ export async function POST(request: NextRequest) {
 
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     const arrayBuffer = await audioFile.arrayBuffer()
-    const file = new File([Buffer.from(arrayBuffer)], 'toothlight-note.webm', {
-      type: audioFile.type || 'audio/webm',
+    const file = new File([Buffer.from(arrayBuffer)], getTranscriptionAudioFileName(audioFile), {
+      type: getTranscriptionAudioType(audioFile),
     })
 
     const transcription = await openai.audio.transcriptions.create({
@@ -62,3 +72,20 @@ export async function POST(request: NextRequest) {
   }
 }
 
+function getTranscriptionAudioFileName(audioFile: File) {
+  const uploadedName = audioFile.name?.toLowerCase() ?? ''
+  if (/\.(webm|mp4|m4a|mp3|mpeg|mpga|wav|ogg)$/.test(uploadedName)) {
+    return uploadedName.replace(/[^a-z0-9._-]/g, '') || 'toothlight-note.webm'
+  }
+
+  const extension = AUDIO_EXTENSION_BY_MIME_TYPE.get(getBaseMimeType(audioFile.type)) ?? 'webm'
+  return `toothlight-note.${extension}`
+}
+
+function getTranscriptionAudioType(audioFile: File) {
+  return getBaseMimeType(audioFile.type) || 'audio/webm'
+}
+
+function getBaseMimeType(mimeType: string) {
+  return mimeType.split(';')[0]?.trim().toLowerCase() ?? ''
+}

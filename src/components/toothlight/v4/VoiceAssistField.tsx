@@ -42,6 +42,16 @@ type MicrophonePermissionState = PermissionState | null
 
 const MICROPHONE_PERMISSION_HELP =
   'Microphone is blocked. If no prompt appeared, click the site icon in the address bar, set Microphone to Allow, then reload. You can also type the note.'
+const RECORDER_MIME_TYPE_CANDIDATES = [
+  'audio/webm;codecs=opus',
+  'audio/webm',
+  'audio/mp4;codecs=mp4a.40.2',
+  'audio/mp4',
+  'audio/mpeg',
+  'audio/wav',
+  'audio/ogg;codecs=opus',
+  'audio/ogg',
+]
 
 function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
   if (typeof window === 'undefined') return null
@@ -95,9 +105,31 @@ function isMicrophonePermissionError(error: unknown) {
 
 function getRecorderMimeType() {
   if (typeof MediaRecorder === 'undefined') return ''
-  if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) return 'audio/webm;codecs=opus'
-  if (MediaRecorder.isTypeSupported('audio/webm')) return 'audio/webm'
+  for (const mimeType of RECORDER_MIME_TYPE_CANDIDATES) {
+    if (MediaRecorder.isTypeSupported(mimeType)) return mimeType
+  }
   return ''
+}
+
+function getAudioFileName(mimeType: string) {
+  const normalizedMimeType = mimeType.toLowerCase()
+  if (normalizedMimeType.includes('mp4') || normalizedMimeType.includes('m4a')) {
+    return 'toothlight-note.m4a'
+  }
+  if (normalizedMimeType.includes('mpeg')) return 'toothlight-note.mp3'
+  if (normalizedMimeType.includes('wav')) return 'toothlight-note.wav'
+  if (normalizedMimeType.includes('ogg')) return 'toothlight-note.ogg'
+  return 'toothlight-note.webm'
+}
+
+function getRecordingUnavailableMessage() {
+  if (typeof window === 'undefined') return 'Recording is unavailable here. Type instead.'
+  const hostname = window.location.hostname
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+  if (!window.isSecureContext && !isLocalhost) {
+    return 'Recording needs HTTPS on a phone. Open the preview link or type instead.'
+  }
+  return 'Recording is unavailable here. Type instead.'
 }
 
 function shouldPreferRecordedVoiceInput() {
@@ -193,7 +225,7 @@ export function VoiceAssistField({
       setVoiceStatus(transcribingMessage)
       try {
         const formData = new FormData()
-        formData.append('audio', audioBlob, 'toothlight-note.webm')
+        formData.append('audio', audioBlob, getAudioFileName(audioBlob.type))
         const response = await fetch('/api/toothlight/voice-transcribe', {
           method: 'POST',
           body: formData,
@@ -229,7 +261,7 @@ export function VoiceAssistField({
   const startRecording = useCallback(async () => {
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
       setRecorderSupported(false)
-      setVoiceStatus('Recording is unavailable here. Type instead.')
+      setVoiceStatus(getRecordingUnavailableMessage())
       return
     }
 

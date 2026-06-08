@@ -140,11 +140,15 @@ assert(!/context\.globalAlpha\s*=\s*0\.86[\s\S]*context\.drawImage\(drawingLayer
 assert(/render=1/.test(client), 'AI render auth return path must preserve the intent to render after Google sign-in')
 assert(/LIGHT_STYLE_TREATMENTS|getRecommendedLightStyle/.test(carousel), 'LightStyleCarousel must use deterministic Light Style catalog')
 
-const saveFetchBody = client.match(/fetch\('\/api\/toothlight\/save'[\s\S]*?body: JSON\.stringify\(\{([\s\S]*?)\}\),\r?\n\s*\}\)/)?.[1] ?? ''
+const saveFetchBody = client.match(/function buildSaveRequestPayload[\s\S]*?return candidate/)?.[0] ?? ''
+assert(/buildSaveRequestPayload\(saveDraft\)/.test(client), 'save flow must build a compact mobile-safe payload before POST')
+assert(/MAX_SAVE_REQUEST_BYTES/.test(client), 'save flow must enforce a client-side save payload budget')
+assert(/measureSavePayloadBytes/.test(client), 'save flow must measure payload size before posting large phone photos')
 assert(saveFetchBody.includes('sourceImageSrc'), 'save request must include the compressed source image')
 assert(saveFetchBody.includes('renderedImageSrc'), 'save request must include the compressed rendered image')
 assert(saveFetchBody.includes('aiRenderedImageSrc'), 'save request must include the optional AI-rendered image field')
 assert(saveFetchBody.includes('drawingLayerImageSrc'), 'save request must include the transparent drawing layer field')
+assert(/artworkImageSrc:\s*null/.test(client) && /drawingLayerImageSrc:\s*null/.test(client), 'save flow must trim redundant layer images when the request is too large')
 assert(!/\bimageSrc:/.test(saveFetchBody), 'save request must not duplicate the rendered image as imageSrc')
 
 if (failures.length > 0) {

@@ -185,6 +185,65 @@ test('Voice Assist starts in recorded mode on touch devices', async ({ page }) =
   await expect(page.locator('button[aria-label="Start recorded voice input"]').filter({ hasText: 'Record' })).toBeVisible()
 })
 
+test('Voice Assist uploads mobile mp4 recordings with an m4a filename', async ({ page }) => {
+  let uploadedBody = ''
+
+  await page.route('**/api/toothlight/voice-transcribe', async (route) => {
+    uploadedBody = route.request().postDataBuffer()?.toString('latin1') ?? ''
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, text: 'Recorded mobile note.' }),
+    })
+  })
+
+  await page.addInitScript(() => {
+    class FakeMediaRecorder {
+      mimeType = 'audio/mp4'
+      ondataavailable: null | ((event: { data: Blob }) => void) = null
+      onstop: null | (() => void) = null
+
+      static isTypeSupported(mimeType: string) {
+        return mimeType.startsWith('audio/mp4')
+      }
+
+      constructor(_stream: MediaStream, options?: { mimeType?: string }) {
+        this.mimeType = options?.mimeType ?? 'audio/mp4'
+      }
+
+      start() {}
+
+      stop() {
+        this.ondataavailable?.({
+          data: new Blob(['mobile recording sample '.repeat(40)], { type: this.mimeType }),
+        })
+        this.onstop?.()
+      }
+    }
+
+    Object.assign(window, {
+      MediaRecorder: FakeMediaRecorder,
+    })
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => ({
+          getTracks: () => [{ stop: () => undefined }],
+        }),
+      },
+    })
+  })
+
+  await page.goto('/toothlight/t/demo-toothlight/note?handoff=1', { waitUntil: 'load' })
+
+  const noteField = page.getByPlaceholder(/receive later/i)
+  await page.getByRole('button', { name: /start recorded voice input/i }).click()
+  await page.getByRole('button', { name: /stop voice input/i }).click()
+  await expect(noteField).toHaveValue(/Recorded mobile note\./)
+  expect(uploadedBody).toContain('filename="toothlight-note.m4a"')
+  expect(uploadedBody).toContain('Content-Type: audio/mp4')
+})
+
 test('Voice Assist explains how to recover when the microphone is already blocked', async ({ page }) => {
   await page.addInitScript(() => {
     Object.assign(window, {

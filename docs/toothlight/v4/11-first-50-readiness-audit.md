@@ -93,6 +93,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - The protected preview share link returned `200 OK` for make and reveal preview on the mobile voice deployment.
 - `/api/toothlight/voice-transcribe` returned `400 {"error":"No audio provided."}` for an empty protected-preview POST, confirming the route is reachable and not disabled.
 - Mobile proof extension on 2026-06-08 now reaches `Preview reveal` after family contribution and verifies the reveal screen shows the same Toothlight memory, sealed parent note preview, family note preview, and Toothlight card title on both `Mobile Safari` and `Mobile Chrome`.
+- Mobile reliability patch on 2026-06-08 added mobile `audio/mp4` to `m4a` voice upload handling, an HTTPS-required message for phone mic testing on local IP, and a compact save payload path that trims redundant layer images when phone-photo requests are too large.
 
 ## What is blocked
 

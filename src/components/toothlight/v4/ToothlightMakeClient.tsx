@@ -70,6 +70,20 @@ type StoredToothlightDraft = Partial<ToothlightDraft> & {
   glowId?: string
 }
 
+type ToothlightSaveRequestPayload = {
+  childName: string
+  toothName: string
+  caption: string
+  sourceImageSrc: string | null
+  artworkImageSrc: string | null
+  drawingLayerImageSrc: string | null
+  renderedImageSrc: string | null
+  aiRenderedImageSrc: string | null
+  glowId: string
+  treatmentId: string
+  treatmentVersion: string
+}
+
 type AiRenderReferences = {
   drawingDataUrl: string
   sourceImageDataUrl: string | null
@@ -84,6 +98,7 @@ const AI_REFERENCE_IMAGE_SIZE = 1024
 const PREVIEW_IMAGE_WIDTH = 900
 const PREVIEW_IMAGE_HEIGHT = 1125
 const IMAGE_EXPORT_QUALITY = 0.82
+const MAX_SAVE_REQUEST_BYTES = 3_200_000
 const TOOTHLIGHT_PENDING_AI_RENDER_STORAGE_KEY = 'toothlight:v4:pending-ai-render'
 const MAX_AI_RENDER_OPTIONS = 6
 const GOOGLE_ACCOUNT_STORAGE_COPY = 'Google keeps it in your parent account.'
@@ -451,24 +466,13 @@ export function ToothlightMakeClient() {
     setDraft(saveDraft)
     setIsSaving(true)
     setSaveMessage('')
+    const saveRequestPayload = buildSaveRequestPayload(saveDraft)
 
     try {
       const response = await fetch('/api/toothlight/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          childName: saveDraft.childName,
-          toothName: saveDraft.toothName,
-          caption: saveDraft.caption,
-          sourceImageSrc: saveDraft.sourceImageSrc,
-          artworkImageSrc: saveDraft.artworkImageSrc,
-          drawingLayerImageSrc: saveDraft.drawingLayerImageSrc,
-          renderedImageSrc: saveDraft.renderedImageSrc,
-          aiRenderedImageSrc: saveDraft.aiRenderedImageSrc,
-          glowId: saveDraft.treatmentId,
-          treatmentId: saveDraft.treatmentId,
-          treatmentVersion: saveDraft.treatmentVersion,
-        }),
+        body: JSON.stringify(saveRequestPayload),
       })
       const result = await readSaveResponse(response)
 
@@ -1583,6 +1587,51 @@ async function normalizeTransparentImageDataUrl(dataUrl: string) {
   context.clearRect(0, 0, width, height)
   context.drawImage(image, 0, 0, width, height)
   return canvas.toDataURL('image/png')
+}
+
+function buildSaveRequestPayload(saveDraft: ToothlightDraft): ToothlightSaveRequestPayload {
+  const candidate: ToothlightSaveRequestPayload = {
+    childName: saveDraft.childName,
+    toothName: saveDraft.toothName,
+    caption: saveDraft.caption,
+    sourceImageSrc: saveDraft.sourceImageSrc,
+    artworkImageSrc: saveDraft.artworkImageSrc,
+    drawingLayerImageSrc: saveDraft.drawingLayerImageSrc,
+    renderedImageSrc: saveDraft.renderedImageSrc,
+    aiRenderedImageSrc:
+      saveDraft.aiRenderedImageSrc === saveDraft.renderedImageSrc ? null : saveDraft.aiRenderedImageSrc,
+    glowId: saveDraft.treatmentId,
+    treatmentId: saveDraft.treatmentId,
+    treatmentVersion: saveDraft.treatmentVersion,
+  }
+
+  if (measureSavePayloadBytes(candidate) <= MAX_SAVE_REQUEST_BYTES) return candidate
+
+  const withoutIntermediateLayers = {
+    ...candidate,
+    artworkImageSrc: null,
+    drawingLayerImageSrc: null,
+  }
+  if (measureSavePayloadBytes(withoutIntermediateLayers) <= MAX_SAVE_REQUEST_BYTES) {
+    return withoutIntermediateLayers
+  }
+
+  const withoutRawSource = {
+    ...withoutIntermediateLayers,
+    sourceImageSrc: withoutIntermediateLayers.renderedImageSrc ? null : withoutIntermediateLayers.sourceImageSrc,
+  }
+  if (measureSavePayloadBytes(withoutRawSource) <= MAX_SAVE_REQUEST_BYTES) {
+    return withoutRawSource
+  }
+
+  return {
+    ...withoutRawSource,
+    aiRenderedImageSrc: null,
+  }
+}
+
+function measureSavePayloadBytes(payload: ToothlightSaveRequestPayload) {
+  return new Blob([JSON.stringify(payload)]).size
 }
 
 async function readSaveResponse(response: Response): Promise<{

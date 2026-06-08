@@ -31,6 +31,10 @@ assert(/unsupported|speechSupported/i.test(component), 'voice assist must handle
 assert(/appendTranscript|joinTranscript|currentText/i.test(component), 'voice assist must append transcript to the approved text field')
 assert(/MediaRecorder|getUserMedia/.test(component), 'voice assist must fall back to recording when browser speech fails')
 assert(/\/api\/toothlight\/voice-transcribe/.test(component), 'voice assist fallback must call the Toothlight transcription route')
+assert(/RECORDER_MIME_TYPE_CANDIDATES/.test(component), 'recording fallback must choose from explicit mobile-safe MIME candidates')
+assert(/audio\/mp4/.test(component) && /toothlight-note\.m4a/.test(component), 'recording fallback must support iPhone-style mp4/m4a audio uploads')
+assert(/getAudioFileName\(audioBlob\.type/.test(component), 'recording fallback must name the uploaded file from the actual recorded MIME type')
+assert(/Recording needs HTTPS on a phone/.test(component), 'voice assist must explain the local Wi-Fi HTTP microphone limitation')
 assert(/not-allowed|audio-capture|network|no-speech/.test(component), 'voice assist must show specific speech failure reasons')
 assert(/permissions\.query/.test(component), 'voice assist must check whether microphone permission was already denied')
 assert(/address bar/.test(component) && /Microphone to Allow/.test(component), 'voice assist must explain how to recover if no permission prompt appears')
@@ -46,7 +50,11 @@ assert(/OPENAI_API_KEY/.test(transcribeRoute), 'transcription route must use the
 assert(/NODE_ENV/.test(transcribeRoute) && /TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE/.test(transcribeRoute), 'transcription route must be local by default and opt-in for production')
 assert(/audioFile\.size/.test(transcribeRoute), 'transcription route must cap audio size')
 assert(/whisper-1/.test(transcribeRoute), 'transcription route must transcribe short audio with OpenAI Whisper')
+assert(/getTranscriptionAudioFileName/.test(transcribeRoute), 'transcription route must preserve or repair the uploaded audio extension')
+assert(/audio\/mp4/.test(transcribeRoute) && /m4a/.test(transcribeRoute), 'transcription route must support mobile mp4/m4a recordings')
 assert(/Voice Assist layer/.test(docs), 'checkpoint docs must record the voice assist scope')
+assert(/audio\/mp4/.test(docs) && /m4a/.test(docs), 'checkpoint docs must record mobile recording format handling')
+assert(/Recording needs HTTPS on a phone/.test(docs), 'checkpoint docs must record the local phone microphone limitation')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-voice-assist: ${failures.length} issue(s)`)
