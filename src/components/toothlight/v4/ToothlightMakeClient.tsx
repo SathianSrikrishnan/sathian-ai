@@ -9,6 +9,7 @@ import {
   buildToothlightParentAuthUrl,
   clearToothlightSavePending,
   hasToothlightSavePending,
+  isLocalToothlightPreviewHost,
   isParentAuthRequired,
   redirectToToothlightParentAuth,
   shouldResumeToothlightSave,
@@ -375,6 +376,50 @@ export function ToothlightMakeClient() {
     })
   }
 
+  function completeSave({
+    toothlightId,
+    shareUrl: savedShareUrl,
+    saveDraft,
+    localOnly = false,
+  }: {
+    toothlightId: string
+    shareUrl: string
+    saveDraft: ToothlightDraft
+    localOnly?: boolean
+  }) {
+    setSaved(true)
+    setShareUrl(savedShareUrl)
+    saveLocalToothlight({
+      toothlightId,
+      childName: saveDraft.childName.trim() || 'Your child',
+      toothName: saveDraft.toothName.trim() || 'Toothlight',
+      caption: saveDraft.caption.trim() || 'A small tooth became a bright memory.',
+      imageSrc: saveDraft.renderedImageSrc ?? creationImageSrc,
+      sourceImageSrc: saveDraft.sourceImageSrc,
+      artworkImageSrc: saveDraft.artworkImageSrc,
+      drawingLayerImageSrc: saveDraft.drawingLayerImageSrc,
+      renderedImageSrc: saveDraft.renderedImageSrc ?? creationImageSrc,
+      aiRenderedImageSrc: saveDraft.aiRenderedImageSrc,
+      glowId: saveDraft.treatmentId,
+      treatmentId: saveDraft.treatmentId,
+      treatmentVersion: saveDraft.treatmentVersion,
+      shareUrl: savedShareUrl,
+      savedAt: new Date().toISOString(),
+    })
+    logToothlightClientEvent('save_succeeded', {
+      toothlightId,
+      treatmentId: saveDraft.treatmentId,
+      mode: localOnly ? 'local-preview' : 'account',
+    })
+    logToothlightClientEvent('save_completed', {
+      toothlightId,
+      treatmentId: saveDraft.treatmentId,
+      hasAiRenderedImage: Boolean(saveDraft.aiRenderedImageSrc),
+      mode: localOnly ? 'local-preview' : 'account',
+    })
+    setSaveMessage(localOnly ? 'Saved on this device. Seal the parent note next.' : 'Saved. Seal the parent note next.')
+  }
+
   async function handleSave() {
     logToothlightClientEvent('save_attempted', {
       treatmentId: draft.treatmentId,
@@ -429,6 +474,16 @@ export function ToothlightMakeClient() {
 
       if (!response.ok) {
         if (isParentAuthRequired(response.status)) {
+          if (isLocalToothlightPreviewHost()) {
+            const toothlightId = createLocalToothlightId()
+            completeSave({
+              toothlightId,
+              shareUrl: `/toothlight/t/${toothlightId}`,
+              saveDraft,
+              localOnly: true,
+            })
+            return
+          }
           logToothlightClientEvent('auth_started', { reason: 'save' })
           setSaveMessage('Saving this Toothlight to your parent account.')
           redirectToToothlightParentAuth('/toothlight/make?save=1')
@@ -441,35 +496,11 @@ export function ToothlightMakeClient() {
         throw new Error('Save completed without a Toothlight id.')
       }
 
-      setSaved(true)
-      setShareUrl(result.shareUrl ?? null)
-      saveLocalToothlight({
+      completeSave({
         toothlightId: result.toothlightId,
-        childName: saveDraft.childName.trim() || 'Your child',
-        toothName: saveDraft.toothName.trim() || 'Toothlight',
-        caption: saveDraft.caption.trim() || 'A small tooth became a bright memory.',
-        imageSrc: saveDraft.renderedImageSrc ?? creationImageSrc,
-        sourceImageSrc: saveDraft.sourceImageSrc,
-        artworkImageSrc: saveDraft.artworkImageSrc,
-        drawingLayerImageSrc: saveDraft.drawingLayerImageSrc,
-        renderedImageSrc: saveDraft.renderedImageSrc ?? creationImageSrc,
-        aiRenderedImageSrc: saveDraft.aiRenderedImageSrc,
-        glowId: saveDraft.treatmentId,
-        treatmentId: saveDraft.treatmentId,
-        treatmentVersion: saveDraft.treatmentVersion,
         shareUrl: result.shareUrl ?? `/toothlight/t/${result.toothlightId}`,
-        savedAt: new Date().toISOString(),
+        saveDraft,
       })
-      logToothlightClientEvent('save_succeeded', {
-        toothlightId: result.toothlightId,
-        treatmentId: saveDraft.treatmentId,
-      })
-      logToothlightClientEvent('save_completed', {
-        toothlightId: result.toothlightId,
-        treatmentId: saveDraft.treatmentId,
-        hasAiRenderedImage: Boolean(saveDraft.aiRenderedImageSrc),
-      })
-      setSaveMessage('Saved. Seal the parent note next.')
     } catch (error) {
       setSaved(false)
       setSaveMessage(error instanceof Error ? error.message : 'Save is not ready yet.')
@@ -766,6 +797,13 @@ function createAiRenderOptionId() {
     return crypto.randomUUID()
   }
   return `ai-final-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+function createLocalToothlightId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return `local-${crypto.randomUUID()}`
+  }
+  return `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 }
 
 function getCreationImageSrc(draft: Pick<ToothlightDraft, 'artworkImageSrc' | 'photoImageSrc' | 'sourceImageSrc'>) {

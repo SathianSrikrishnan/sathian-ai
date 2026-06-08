@@ -88,6 +88,53 @@ test('Voice Assist falls back to recording when browser speech fails', async ({ 
   await expect(page.getByRole('button', { name: /start recorded voice input/i })).toBeVisible()
 })
 
+test('Voice Assist offers recording when mobile speech ends without text', async ({ page }) => {
+  await page.addInitScript(() => {
+    class FakeSpeechRecognition {
+      continuous = false
+      interimResults = false
+      lang = 'en-US'
+      onresult: null | ((event: { resultIndex: number; results: Array<Array<{ transcript: string }>> }) => void) = null
+      onend: null | (() => void) = null
+      onerror: null | ((event: { error?: string }) => void) = null
+
+      start() {
+        setTimeout(() => {
+          this.onend?.()
+        }, 30)
+      }
+
+      stop() {
+        this.onend?.()
+      }
+    }
+
+    class FakeMediaRecorder {
+      static isTypeSupported() {
+        return true
+      }
+    }
+
+    Object.assign(window, {
+      SpeechRecognition: FakeSpeechRecognition,
+      webkitSpeechRecognition: FakeSpeechRecognition,
+      MediaRecorder: FakeMediaRecorder,
+    })
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => new MediaStream(),
+      },
+    })
+  })
+
+  await page.goto('/toothlight/t/demo-toothlight/note?handoff=1', { waitUntil: 'load' })
+
+  await page.getByRole('button', { name: /start voice input/i }).click()
+  await expect(page.getByText(/No speech heard\. Try Record instead\./)).toBeVisible()
+  await expect(page.getByRole('button', { name: /start recorded voice input/i })).toBeVisible()
+})
+
 test('Voice Assist explains how to recover when the microphone is already blocked', async ({ page }) => {
   await page.addInitScript(() => {
     Object.assign(window, {

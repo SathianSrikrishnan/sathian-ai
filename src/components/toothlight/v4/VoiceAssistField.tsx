@@ -123,6 +123,7 @@ export function VoiceAssistField({
   const streamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<BlobPart[]>([])
   const valueRef = useRef(value)
+  const speechOutcomeHandledRef = useRef(false)
   const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -278,12 +279,16 @@ export function VoiceAssistField({
     recognition.continuous = false
     recognition.interimResults = false
     recognition.lang = (typeof navigator !== 'undefined' && navigator.language) || 'en-US'
+    speechOutcomeHandledRef.current = false
     recognition.onresult = (event) => {
       let transcript = ''
       for (let index = event.resultIndex; index < event.results.length; index += 1) {
         transcript += event.results[index][0].transcript
       }
-      appendTranscript(transcript)
+      if (transcript.trim()) {
+        speechOutcomeHandledRef.current = true
+        appendTranscript(transcript)
+      }
       stopListening()
     }
     recognition.onend = () => {
@@ -292,9 +297,14 @@ export function VoiceAssistField({
         clearTimeout(stopTimerRef.current)
         stopTimerRef.current = null
       }
+      if (!speechOutcomeHandledRef.current) {
+        setSpeechFallbackMode(true)
+        setVoiceStatus(recorderSupported ? 'No speech heard. Try Record instead.' : 'No speech heard. Type or try again.')
+      }
     }
     recognition.onerror = (event) => {
       const errorName = event.error ?? 'unknown'
+      speechOutcomeHandledRef.current = true
       setIsListening(false)
       setSpeechFallbackMode(true)
       setVoiceStatus(getSpeechErrorMessage(errorName))
@@ -310,7 +320,8 @@ export function VoiceAssistField({
       }, 7000)
     } catch {
       setIsListening(false)
-      setVoiceStatus('Voice missed that. Type or try again.')
+      setSpeechFallbackMode(true)
+      setVoiceStatus(recorderSupported ? 'Voice missed that. Try Record instead.' : 'Voice missed that. Type or try again.')
     }
   }, [appendTranscript, recorderSupported, startRecording, stopListening])
 

@@ -74,7 +74,9 @@ The signed-in pass is not complete unless every step below is observed in a norm
 
 Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-visitor-test-plan.md`.
 
-- None recorded yet.
+- Fixed local phone blocker on 2026-06-08: mobile/local save can now complete as a development-only `local-*` Toothlight when the phone cannot use the desktop parent-auth callback.
+- Fixed voice fallback blocker on 2026-06-08: if mobile speech recognition opens the mic but returns no text, Voice Assist now switches to Record mode instead of leaving the user stuck.
+- Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
 
 ## Decision
 

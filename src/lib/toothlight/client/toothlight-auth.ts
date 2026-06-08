@@ -33,3 +33,21 @@ export function shouldResumeToothlightSave(search: string) {
   const params = new URLSearchParams(search)
   return params.get('save') === '1' && params.get('returning') === 'auth'
 }
+
+export function isLocalToothlightPreviewHost(hostname?: string) {
+  if (process.env.NODE_ENV === 'production') return false
+  const host = hostname ?? (typeof window !== 'undefined' ? window.location.hostname : '')
+  return (
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host === '::1' ||
+    host.endsWith('.local') ||
+    /^192\.168\./.test(host) ||
+    /^10\./.test(host) ||
+    /^172\.(1[6-9]|2\d|3[0-1])\./.test(host)
+  )
+}
+
+export function isLocalToothlightId(toothlightId: string) {
+  return toothlightId.startsWith('local-')
+}

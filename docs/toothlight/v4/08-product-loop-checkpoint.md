@@ -151,9 +151,17 @@ Voice should enter as assistive input, not a full real-time Tanda agent. The fir
 
 The first fast path uses browser speech recognition where available, with the normal text field always visible as the fallback. If browser speech fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
 
+Mobile speech recognition can open the microphone and still end with no transcript. The field now treats that as a failed fast path, shows `No speech heard. Try Record instead.`, and exposes the recorded fallback without requiring a page reload.
+
 Production voice transcription is intentionally opt-in. It requires `OPENAI_API_KEY` plus `TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true`; Tanda read-aloud, original audio storage, and open-ended character conversation remain later phases.
 
 The make flow story step now treats the story as a thumb-first capture card: two short fields for child and Toothlight name, one voice-assisted memory field, and a stripped save panel beside it. The story card now includes a small keeper-to-Toothlight visual cue so the child story feels connected to the selected object style without adding explanatory copy. The mic action remains visible even when a browser does not expose speech or recorder support; unsupported environments fall back to a typed-note message instead of hiding the control. The family invite uses the same assistive pattern with `Tap mic. Talk. Add note.` while keeping gifts optional.
+
+## Local phone testing
+
+When testing from a real phone on the local Wi-Fi address, Google auth callbacks can fail because the phone is not using the desktop `localhost` session. In development only, a 401 save response on `localhost`, `127.0.0.1`, or private LAN hostnames now creates a `local-*` Toothlight in browser storage and continues to the parent note handoff. The deployed preview and production bundle still require the normal parent account save path.
+
+The matching local note fallback is also development-only and only applies to `local-*` Toothlight ids. This lets a phone test complete make -> note -> saved page without changing the server-backed first-50 visitor path.
 
 ## First-testing acceptance bar
 
@@ -186,6 +194,12 @@ npm run build
 ```powershell
 $env:PLAYWRIGHT_PORT = '3100'
 npx playwright test tests/toothlight-v4-proof.spec.ts --project="Mobile Chrome"
+Remove-Item Env:\PLAYWRIGHT_PORT
+```
+
+```powershell
+$env:PLAYWRIGHT_PORT = '3106'
+npx playwright test tests/toothlight-v4-proof.spec.ts tests/toothlight-v4-local-mobile-save.spec.ts tests/toothlight-v4-voice-assist.spec.ts
 Remove-Item Env:\PLAYWRIGHT_PORT
 ```
 

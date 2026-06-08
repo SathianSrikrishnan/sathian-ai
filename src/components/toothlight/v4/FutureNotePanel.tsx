@@ -3,6 +3,10 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import {
+  isLocalToothlightId,
+  isLocalToothlightPreviewHost,
+} from '@/lib/toothlight/client/toothlight-auth'
 import { readLocalFutureNote, saveLocalFutureNote } from '@/lib/toothlight/client/toothlight-local-state'
 import { logToothlightClientEvent } from '@/lib/toothlight/client/product-events'
 import { VoiceAssistField } from './VoiceAssistField'
@@ -69,6 +73,24 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
     }
   }, [initialStatus, toothlightId])
 
+  function completeLocalNoteSave(savedUnlockAge: number) {
+    setStatus('sealed')
+    saveLocalFutureNote({
+      toothlightId,
+      status: 'sealed',
+      unlockAge: savedUnlockAge,
+      updatedAt: new Date().toISOString(),
+      sealedPreviewText: sealedText.trim(),
+    })
+    logToothlightClientEvent('note_completed', {
+      toothlightId,
+      status: 'sealed',
+      unlockAge: savedUnlockAge,
+      mode: 'local-preview',
+    })
+    setMessage('Sealed. The note stays private.')
+  }
+
   async function saveNote() {
     if (!canSealNote) {
       setMessage('Add the private note before sealing it for later.')
@@ -83,7 +105,13 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         body: JSON.stringify({ sealedText, unlockAge }),
       })
       const result = await readJsonResponse(response)
-      if (!response.ok) throw new Error(result.error || 'Note save is not ready yet.')
+      if (!response.ok) {
+        if (response.status === 401 && isLocalToothlightPreviewHost() && isLocalToothlightId(toothlightId)) {
+          completeLocalNoteSave(unlockAge)
+          return
+        }
+        throw new Error(result.error || 'Note save is not ready yet.')
+      }
       setStatus(result.status === 'sealed' ? 'sealed' : 'seed')
       saveLocalFutureNote({
         toothlightId,
