@@ -18,9 +18,9 @@ for (const text of [
   'Status: pending signed-in browser/mobile pass',
   'Preview alias: `https://toothlight-preview.sathian.ai`',
   'Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`',
-  'Current clean preview deployment: `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`',
-  'Current deployment id: `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`',
-  'Current checkpoint commit: `86073de885999212bb873a7872e45dc096bf0e98`',
+  'Current clean preview deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`',
+  'Current deployment id: `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`',
+  'Current checkpoint commit: `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`',
   'https://github.com/SathianSrikrishnan/sathian-ai/pull/7',
   'Required Pass Path',
   'Browser Pass',
@@ -33,6 +33,8 @@ for (const text of [
   'm4a',
   'phone-photo save reliability',
   'missing multipart form-data error',
+  'full mobile proof',
+  'not_found',
 ]) {
   assert(receipt.includes(text), `receipt must include ${text}`)
 }

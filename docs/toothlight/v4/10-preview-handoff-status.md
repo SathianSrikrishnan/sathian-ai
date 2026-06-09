@@ -139,6 +139,9 @@ Generated flow routes:
 - Phone bug follow-up on 2026-06-09 changed Voice Assist to use native browser speech first when a phone exposes it, keep recorded transcription as the fallback, flush recorder data before stopping, and return a readable voice error when a protected-preview/API response is not JSON.
 - The same 2026-06-09 patch lets same-Wi-Fi local phone saves continue as development-only `local-*` Toothlights if the save POST fails before returning a clean auth response.
 - Focused mobile voice/save proof passed with `20 passed` across `Mobile Safari` and `Mobile Chrome`, covering local auth fallback, local failed-POST save fallback, native speech-first, speech-to-record fallback, recorder flush, mobile `audio/mp4` to `m4a`, and blocked-mic recovery.
+- Clean phone reliability preview deployment `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px` was deployed from commit `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`; `toothlight-preview.sathian.ai` now points to `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`.
+- Full mobile proof passed with `22 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, local save fallback, note, saved Toothlight, family invite, reveal preview, and voice recovery paths.
+- Latest protected `vercel curl` checks on the phone reliability deployment returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1`. Empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error. Public no-secret `/api/toothlight/health` returned protected `not_found`, which confirms the health endpoint is not exposed without the admin secret.
 
 ## Preview gap
 

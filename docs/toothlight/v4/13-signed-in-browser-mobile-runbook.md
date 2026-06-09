@@ -23,9 +23,9 @@ Protected preview:
 
 Current deployed preview under test:
 
-- Deployment: `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`
-- Deployment id: `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`
-- Deployed code checkpoint: `86073de885999212bb873a7872e45dc096bf0e98`
+- Deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`
+- Deployment id: `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`
+- Deployed code checkpoint: `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`
 - Documentation checkpoint: latest pushed branch head. This runbook is guarded by `tests/toothlight-v4-signed-in-runbook.test.mjs` so the validation links and stop rules stay pinned without making the file stale after each documentation commit.
 
 ## Pass 1: Local Phone Sanity
@@ -37,8 +37,8 @@ Purpose: confirm the phone can use the visual flow even if it cannot reuse the d
 3. Draw one visible mark.
 4. Pick one Light Style.
 5. Tap `Make it a Toothlight` or use the instant preview if AI is skipped.
-6. In the story area, confirm the mic button starts as `Record` on the phone.
-7. Tap `Record`, speak one short memory line, tap `Stop`, and wait for text.
+6. In the story area, confirm the mic button uses fast speech-to-text when the phone supports it, or switches to `Record` when speech is unavailable.
+7. Tap the mic action, speak one short memory line, stop if needed, and wait for text.
 8. If the local IP page says `Recording needs HTTPS on a phone`, type the line for this local sanity pass and test voice on the HTTPS protected preview.
 9. If HTTPS transcription does not return text, type the memory line and log the issue.
 10. Tap `Save this Toothlight`.
@@ -81,8 +81,8 @@ Purpose: confirm the same protected-preview flow is usable on the device a paren
 
 1. Open the protected-preview share link from the chat on the phone.
 2. Repeat the same flow as Pass 2.
-3. Confirm the mic button starts as `Record`.
-4. Test one recorded note on either the child story, parent note, or family note.
+3. Confirm the mic button uses fast speech-to-text when available and still has a `Record` fallback if speech misses.
+4. Test one spoken or recorded note on either the child story, parent note, or family note.
 5. Confirm the saved Toothlight and reveal preview show the same image.
 
 If the phone cannot complete the protected signed-in save because of account/session constraints, record the exact failure and keep the first-50 invite on hold.

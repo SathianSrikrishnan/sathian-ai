@@ -52,9 +52,9 @@ Protected preview:
 - Alias: `https://toothlight-preview.sathian.ai`
 - Make route: `https://toothlight-preview.sathian.ai/toothlight/make`
 - Use the shareable protected-preview link from the chat when testing outside the local machine. The Vercel share token is intentionally not written into this repository.
-- Current clean preview deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`.
-- Current clean preview deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`.
-- Current preview checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`.
+- Current clean preview deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`.
+- Current clean preview deployment id: `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`.
+- Current preview checkpoint commit: `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`.
 
 ## Mobile checklist
 

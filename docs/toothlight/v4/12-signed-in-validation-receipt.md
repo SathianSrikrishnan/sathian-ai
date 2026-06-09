@@ -10,9 +10,9 @@ Use `13-signed-in-browser-mobile-runbook.md` for the exact browser and phone pas
 
 - Preview alias: `https://toothlight-preview.sathian.ai`
 - Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`
-- Current clean preview deployment: `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`
-- Current deployment id: `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`
-- Current checkpoint commit: `86073de885999212bb873a7872e45dc096bf0e98`
+- Current clean preview deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`
+- Current deployment id: `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`
+- Current checkpoint commit: `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`
 - PR: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
 
 ## Required Pass Path
@@ -84,8 +84,9 @@ Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-
 - Fixed phone voice speed/reliability follow-up on 2026-06-09: phones now use native browser speech first when available, fall back to recorded transcription when speech is unavailable or fails, and flush recorder data before stopping.
 - Fixed local phone save follow-up on 2026-06-09: same-Wi-Fi development saves now complete as `local-*` Toothlights if the save POST fails before returning a clean auth response.
 - Latest focused mobile voice/save check: `20 passed` across `Mobile Safari` and `Mobile Chrome`, covering native speech-first, recorder fallback, recorder flush, mobile `audio/mp4`/`m4a`, blocked-mic recovery, local auth fallback, and local failed-POST save fallback.
+- Latest full mobile proof: `22 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, local save fallback, note, saved Toothlight, family invite, reveal preview, and voice recovery paths.
 - Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npx tsc --noEmit --pretty false --incremental false` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
-- Latest protected route checks: `vercel curl` returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` on deployment `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`; empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error.
+- Latest protected route checks: `vercel curl` returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` on deployment `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`; empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error. A public no-secret request to `/api/toothlight/health` returned the expected protected `not_found` response.
 
 ## Decision
 
