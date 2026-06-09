@@ -160,8 +160,69 @@ test('Voice Assist offers recording when mobile speech ends without text', async
   await expect(page.getByRole('button', { name: /start recorded voice input/i })).toBeVisible()
 })
 
-test('Voice Assist starts in recorded mode on touch devices', async ({ page }) => {
+test('Voice Assist uses browser speech first on touch devices when available', async ({ page }) => {
   await page.addInitScript(() => {
+    class FakeSpeechRecognition {
+      continuous = false
+      interimResults = false
+      lang = 'en-US'
+      onresult: null | ((event: { resultIndex: number; results: Array<Array<{ transcript: string }>> }) => void) = null
+      onend: null | (() => void) = null
+      onerror: null | ((event: { error?: string }) => void) = null
+
+      start() {
+        setTimeout(() => {
+          this.onresult?.({
+            resultIndex: 0,
+            results: [[{ transcript: 'Fast phone speech note.' }]],
+          })
+          this.onend?.()
+        }, 30)
+      }
+
+      stop() {
+        this.onend?.()
+      }
+    }
+
+    class FakeMediaRecorder {
+      static isTypeSupported() {
+        return true
+      }
+    }
+
+    Object.assign(window, {
+      SpeechRecognition: FakeSpeechRecognition,
+      webkitSpeechRecognition: FakeSpeechRecognition,
+      MediaRecorder: FakeMediaRecorder,
+    })
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => new MediaStream(),
+      },
+    })
+  })
+
+  await page.goto('/toothlight/t/demo-toothlight/note?handoff=1', { waitUntil: 'load' })
+
+  const noteField = page.getByPlaceholder(/receive later/i)
+  await expect(page.locator('button[aria-label="Start voice input"]').filter({ hasText: 'Talk' })).toBeVisible()
+  await page.getByRole('button', { name: /start voice input/i }).click()
+  await expect(noteField).toHaveValue(/Fast phone speech note\./)
+})
+
+test('Voice Assist starts in recorded mode on touch devices when speech is unavailable', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'SpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(window, 'webkitSpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+
     class FakeMediaRecorder {
       static isTypeSupported() {
         return true
@@ -185,6 +246,80 @@ test('Voice Assist starts in recorded mode on touch devices', async ({ page }) =
   await expect(page.locator('button[aria-label="Start recorded voice input"]').filter({ hasText: 'Record' })).toBeVisible()
 })
 
+test('Voice Assist flushes recorder data before stopping on mobile', async ({ page }) => {
+  let uploadedBody = ''
+
+  await page.route('**/api/toothlight/voice-transcribe', async (route) => {
+    uploadedBody = route.request().postDataBuffer()?.toString('latin1') ?? ''
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, text: 'Flushed recording note.' }),
+    })
+  })
+
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'SpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(window, 'webkitSpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+
+    class FakeMediaRecorder {
+      mimeType = 'audio/webm'
+      ondataavailable: null | ((event: { data: Blob }) => void) = null
+      onstop: null | (() => void) = null
+      startedWithTimeslice = false
+
+      static isTypeSupported(mimeType: string) {
+        return mimeType.startsWith('audio/webm')
+      }
+
+      constructor(_stream: MediaStream, options?: { mimeType?: string }) {
+        this.mimeType = options?.mimeType ?? 'audio/webm'
+      }
+
+      start(timeslice?: number) {
+        this.startedWithTimeslice = typeof timeslice === 'number' && timeslice > 0
+      }
+
+      requestData() {
+        if (!this.startedWithTimeslice) return
+        this.ondataavailable?.({
+          data: new Blob(['flushed recording sample '.repeat(40)], { type: this.mimeType }),
+        })
+      }
+
+      stop() {
+        this.onstop?.()
+      }
+    }
+
+    Object.assign(window, {
+      MediaRecorder: FakeMediaRecorder,
+    })
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => ({
+          getTracks: () => [{ stop: () => undefined }],
+        }),
+      },
+    })
+  })
+
+  await page.goto('/toothlight/t/demo-toothlight/note?handoff=1', { waitUntil: 'load' })
+
+  const noteField = page.getByPlaceholder(/receive later/i)
+  await page.getByRole('button', { name: /start recorded voice input/i }).click()
+  await page.getByRole('button', { name: /stop voice input/i }).click()
+  await expect(noteField).toHaveValue(/Flushed recording note\./)
+  expect(uploadedBody).toContain('filename="toothlight-note.webm"')
+})
+
 test('Voice Assist uploads mobile mp4 recordings with an m4a filename', async ({ page }) => {
   let uploadedBody = ''
 
@@ -198,6 +333,15 @@ test('Voice Assist uploads mobile mp4 recordings with an m4a filename', async ({
   })
 
   await page.addInitScript(() => {
+    Object.defineProperty(window, 'SpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(window, 'webkitSpeechRecognition', {
+      configurable: true,
+      value: undefined,
+    })
+
     class FakeMediaRecorder {
       mimeType = 'audio/mp4'
       ondataavailable: null | ((event: { data: Blob }) => void) = null

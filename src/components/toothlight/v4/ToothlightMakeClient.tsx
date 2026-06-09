@@ -506,6 +506,16 @@ export function ToothlightMakeClient() {
         saveDraft,
       })
     } catch (error) {
+      if (isLocalToothlightPreviewHost()) {
+        const toothlightId = createLocalToothlightId()
+        completeSave({
+          toothlightId,
+          shareUrl: `/toothlight/t/${toothlightId}`,
+          saveDraft,
+          localOnly: true,
+        })
+        return
+      }
       setSaved(false)
       setSaveMessage(error instanceof Error ? error.message : 'Save is not ready yet.')
     } finally {

@@ -149,9 +149,9 @@ Current behavior:
 
 Voice should enter as assistive input, not a full real-time Tanda agent. The first implementation targets are the child's public memory line in `/toothlight/make`, the parent future note, and the family note: the user can tap a mic button, speak, review the transcript in the same text field, edit it, then save or seal it. Approved text remains the saved source of truth.
 
-The first fast path uses browser speech recognition where available, with the normal text field always visible as the fallback. If browser speech fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
+The first fast path uses browser speech recognition where available, including on phones that expose native speech-to-text, with the normal text field always visible as the fallback. If browser speech is unavailable or fails in local preview, the mic control switches to a short Record mode and transcribes through `/api/toothlight/voice-transcribe`.
 
-Mobile speech recognition can open the microphone and still end with no transcript. The field now treats that as a failed fast path, shows `No speech heard. Try Record instead.`, and exposes the recorded fallback without requiring a page reload. Touch devices now start in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition. The recorded fallback now preserves mobile `audio/mp4` as an `m4a` upload before transcription, which covers the iPhone-style recording format instead of forcing every recording through a `.webm` filename.
+Mobile speech recognition can open the microphone and still end with no transcript. The field now treats that as a failed fast path, shows `No speech heard. Try Record instead.`, and exposes the recorded fallback without requiring a page reload. The recorded fallback starts in timed chunks, flushes recorder data before stopping, and preserves mobile `audio/mp4` as an `m4a` upload before transcription, which covers the iPhone-style recording format instead of forcing every recording through a `.webm` filename.
 
 Real phone microphone testing should happen on the HTTPS protected preview. Same-Wi-Fi local IP testing can still prove the visual flow and local save fallback, but phone browsers may refuse microphone capture on plain HTTP; in that case the app now says `Recording needs HTTPS on a phone. Open the preview link or type instead.`
 
@@ -161,7 +161,7 @@ The make flow story step now treats the story as a thumb-first capture card: two
 
 ## Local phone testing
 
-When testing from a real phone on the local Wi-Fi address, Google auth callbacks can fail because the phone is not using the desktop `localhost` session. In development only, a 401 save response on `localhost`, `127.0.0.1`, or private LAN hostnames now creates a `local-*` Toothlight in browser storage and continues to the parent note handoff. The deployed preview and production bundle still require the normal parent account save path.
+When testing from a real phone on the local Wi-Fi address, Google auth callbacks can fail because the phone is not using the desktop `localhost` session. In development only, a 401 save response or failed save POST on `localhost`, `127.0.0.1`, or private LAN hostnames now creates a `local-*` Toothlight in browser storage and continues to the parent note handoff. The deployed preview and production bundle still require the normal parent account save path.
 
 The save request now has a mobile payload budget. If a phone photo plus drawing creates a large request, the client keeps the final rendered Toothlight image and trims redundant intermediate layer images before posting, so the save is less likely to fail on request-size limits.
 

@@ -10,9 +10,9 @@ Use `13-signed-in-browser-mobile-runbook.md` for the exact browser and phone pas
 
 - Preview alias: `https://toothlight-preview.sathian.ai`
 - Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`
-- Current clean preview deployment: `https://sathian-5op825thb-sathiansrikrishnans-projects.vercel.app`
-- Current deployment id: `dpl_djSqxwotyhttyxq6yekc1zPs59Me`
-- Current checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
+- Current clean preview deployment: `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`
+- Current deployment id: `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`
+- Current checkpoint commit: `86073de885999212bb873a7872e45dc096bf0e98`
 - PR: `https://github.com/SathianSrikrishnan/sathian-ai/pull/7`
 
 ## Required Pass Path
@@ -79,7 +79,13 @@ Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-
 - Fixed local phone blocker on 2026-06-08: mobile/local save can now complete as a development-only `local-*` Toothlight when the phone cannot use the desktop parent-auth callback.
 - Fixed voice fallback blocker on 2026-06-08: if mobile speech recognition opens the mic but returns no text, Voice Assist now switches to Record mode instead of leaving the user stuck.
 - Fixed mobile first-tap voice blocker on 2026-06-08: touch devices now start Voice Assist in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition.
-- Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
+- Fixed mobile recording format blocker on 2026-06-08: recorded phone audio now preserves `audio/mp4` as an `m4a` upload before transcription.
+- Fixed phone-photo save reliability on 2026-06-08: save now keeps the rendered Toothlight image and trims redundant intermediate layer payloads when a mobile request is too large.
+- Fixed phone voice speed/reliability follow-up on 2026-06-09: phones now use native browser speech first when available, fall back to recorded transcription when speech is unavailable or fails, and flush recorder data before stopping.
+- Fixed local phone save follow-up on 2026-06-09: same-Wi-Fi development saves now complete as `local-*` Toothlights if the save POST fails before returning a clean auth response.
+- Latest focused mobile voice/save check: `20 passed` across `Mobile Safari` and `Mobile Chrome`, covering native speech-first, recorder fallback, recorder flush, mobile `audio/mp4`/`m4a`, blocked-mic recovery, local auth fallback, and local failed-POST save fallback.
+- Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npx tsc --noEmit --pretty false --incremental false` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
+- Latest protected route checks: `vercel curl` returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` on deployment `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq`; empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error.
 
 ## Decision
 

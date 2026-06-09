@@ -134,6 +134,7 @@ function getRecordingUnavailableMessage() {
 
 function shouldPreferRecordedVoiceInput() {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
+  if (getSpeechRecognitionCtor()) return false
 
   const coarsePointer =
     typeof window.matchMedia === 'function' &&
@@ -230,7 +231,7 @@ export function VoiceAssistField({
           method: 'POST',
           body: formData,
         })
-        const result = (await response.json()) as { text?: string; error?: string }
+        const result = await readTranscriptionResponse(response)
         if (!response.ok) throw new Error(result.error || 'Voice transcription failed.')
         if (!result.text?.trim()) {
           setVoiceStatus('No speech heard. Type or try again.')
@@ -252,6 +253,7 @@ export function VoiceAssistField({
       stopTimerRef.current = null
     }
     try {
+      recorderRef.current?.requestData?.()
       recorderRef.current?.stop()
     } catch {
       setIsRecording(false)
@@ -295,7 +297,7 @@ export function VoiceAssistField({
         void transcribeRecording(audioBlob)
       }
 
-      recorder.start()
+      recorder.start(750)
       setIsRecording(true)
       setVoiceStatus('Recording... tap Stop when done.')
       stopTimerRef.current = setTimeout(() => {
@@ -447,4 +449,20 @@ export function VoiceAssistField({
       {voiceStatus && <p className={styles.voiceStatus}>{voiceStatus}</p>}
     </div>
   )
+}
+
+async function readTranscriptionResponse(response: Response): Promise<{ text?: string; error?: string }> {
+  const contentType = response.headers.get('content-type') ?? ''
+  if (contentType.includes('application/json')) {
+    return response.json()
+  }
+
+  const bodyText = await response.text().catch(() => '')
+  if (response.status === 401 || response.status === 403) {
+    return { error: 'Voice needs preview access. Type instead, or reopen the signed-in preview link.' }
+  }
+  if (bodyText.toLowerCase().includes('request entity too large')) {
+    return { error: 'That recording was too long. Try a shorter note.' }
+  }
+  return { error: 'Voice transcription did not return a transcript. Type instead or try again.' }
 }

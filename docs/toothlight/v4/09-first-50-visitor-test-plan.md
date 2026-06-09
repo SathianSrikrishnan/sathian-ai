@@ -73,9 +73,10 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 - `Make it a Toothlight` creates or displays a usable AI Toothlight final; this is the AI preview action.
 - Saved AI options remain visible after multiple previews.
 - Child story fields are visible and the Mic control is usable when supported.
-- On touch devices, the Mic control starts in `Record` mode so the first tap uses recorded transcription instead of brittle browser speech recognition.
+- On phones and touch devices that expose native browser speech, the Mic control starts with fast speech-to-text; if speech is unavailable or fails, it switches to `Record` mode.
+- Recorded voice starts in timed chunks, flushes audio before stopping, and sends mobile `audio/mp4` as an `m4a` upload.
 - Save this Toothlight creates a saved Toothlight and hands off to the note route.
-- Same-Wi-Fi local phone testing can complete with a development-only `local-*` Toothlight if the phone cannot use the desktop parent-auth session.
+- Same-Wi-Fi local phone testing can complete with a development-only `local-*` Toothlight if the phone cannot use the desktop parent-auth session or the local save POST fails before returning a clean auth response.
 - Seal the note accepts one private parent note.
 - Mic on the note page either records for transcription, transcribes, or gives clear permission recovery copy.
 - Saved Toothlight page opens by direct link.

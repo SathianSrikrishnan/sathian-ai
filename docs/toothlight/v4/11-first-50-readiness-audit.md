@@ -21,7 +21,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Parent note handoff | Ready locally | Mobile proof covered parent note route and saved status. |
 | Family invite handoff | Ready locally and preview-demo verified | Mobile proof covered family route and family contribution; protected preview demo family route now renders the Moon Window Toothlight image instead of a placeholder. |
 | Future reveal audit | Ready locally | `/toothlight/t/[id]/reveal?preview=1` shows the same Toothlight, memory, parent note preview, and family note preview while the public saved page/API remain status-only. |
-| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof, development-only local phone save fallback, and mobile record-first voice suite rerun on 2026-06-08. |
+| Mobile proof | Ready locally | Playwright passed on `Mobile Chrome` and `Mobile Safari`, including the combined make-to-family proof, development-only local phone save fallback, local failed-POST save fallback, native speech-first voice, recorded voice fallback, recorder flush, and mobile `m4a` upload handling. |
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
@@ -96,6 +96,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Mobile reliability patch on 2026-06-08 added mobile `audio/mp4` to `m4a` voice upload handling, an HTTPS-required message for phone mic testing on local IP, and a compact save payload path that trims redundant layer images when phone-photo requests are too large.
 - Fresh mobile reliability preview deployment `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq` was deployed from commit `86073de885999212bb873a7872e45dc096bf0e98`; `toothlight-preview.sathian.ai` now points to `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`.
 - Protected `vercel curl` checks on that deployment returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1`. Empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error.
+- Phone bug follow-up on 2026-06-09 changed phone voice to native speech first when available, retained recorded transcription as fallback, flushed recorder data before stop, added readable non-JSON voice errors, and allowed same-Wi-Fi local saves to complete as `local-*` Toothlights if the save POST fails.
+- Focused mobile voice/save proof passed with `20 passed` across `Mobile Safari` and `Mobile Chrome`.
 
 ## What is blocked
 

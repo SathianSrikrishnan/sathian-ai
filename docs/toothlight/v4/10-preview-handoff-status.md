@@ -136,6 +136,9 @@ Generated flow routes:
 - Mobile reliability patch on 2026-06-08 added mobile `audio/mp4` to `m4a` voice upload handling, an HTTPS-required message for phone mic testing on local IP, and a compact save payload path that trims redundant layer images when phone-photo requests are too large.
 - Fresh mobile reliability preview deployment `dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq` was deployed from commit `86073de885999212bb873a7872e45dc096bf0e98`; `toothlight-preview.sathian.ai` now points to `https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app`.
 - Protected `vercel curl` checks on that deployment returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1`. Empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error.
+- Phone bug follow-up on 2026-06-09 changed Voice Assist to use native browser speech first when a phone exposes it, keep recorded transcription as the fallback, flush recorder data before stopping, and return a readable voice error when a protected-preview/API response is not JSON.
+- The same 2026-06-09 patch lets same-Wi-Fi local phone saves continue as development-only `local-*` Toothlights if the save POST fails before returning a clean auth response.
+- Focused mobile voice/save proof passed with `20 passed` across `Mobile Safari` and `Mobile Chrome`, covering local auth fallback, local failed-POST save fallback, native speech-first, speech-to-record fallback, recorder flush, mobile `audio/mp4` to `m4a`, and blocked-mic recovery.
 
 ## Preview gap
 
