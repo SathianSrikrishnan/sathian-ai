@@ -15,7 +15,7 @@ const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
 
 for (const text of [
   'Preview Handoff Status',
-  'preview-deployed, preview environment health verified, protected make-page browser verified, family-demo image verified, and save-auth boundary verified; authenticated end-to-end pass pending',
+  'preview-deployed, preview environment health verified, protected make-page browser verified, family-demo image verified, save-auth boundary verified, and first-50 trusted preview gate ready',
   'codex/toothlight-v4-creation-ux',
   'https://github.com/SathianSrikrishnan/sathian-ai/pull/7',
   'ca18b61bd1b56ef57500e6b29650c72f8b488d17',
@@ -98,6 +98,7 @@ for (const text of [
   'Latest style/story preview deployment',
   'Latest unauthenticated `/api/toothlight/save` POST check returned `401`',
   'Mobile voice record-first checkpoint',
+  'First-50 signed-in validation closure',
   'touch devices to start Voice Assist in `Record` mode',
   'toothlight-v4-local-mobile-save.spec.ts',
   'toothlight-v4-voice-assist.spec.ts',
@@ -122,17 +123,23 @@ for (const text of [
   'Protected `vercel curl` checks',
   'missing multipart form-data error',
   '/api/toothlight/voice-transcribe',
+  'first-50 trusted preview gate is ready',
+  'server-backed Toothlight with persisted image/content',
+  'sealed future-note status',
+  'family contribution status',
+  'user-reported phone mic pass',
   'vercel curl /toothlight/make',
   'EPERM',
   'elevated build completed successfully',
   'merge state is `CLEAN`',
   'token_expired',
   'elevated Playwright screenshot',
-  'authenticated browser/mobile pass',
+  'Verify the full shareable preview flow in an authenticated normal browser before broad sharing',
   'TFN_ADMIN_SECRET',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
   'OPENAI_API_KEY',
-  'Do not invite the full first-50 group',
+  'Use the protected-preview share link now for the first trusted tester group',
+  'Do not add wallet/on-ramp',
 ]) {
   assert(doc.includes(text), `preview handoff doc must include ${text}`)
 }

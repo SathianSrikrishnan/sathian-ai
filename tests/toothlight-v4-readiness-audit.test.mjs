@@ -15,8 +15,8 @@ const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
 
 for (const text of [
   'First 50 Readiness Audit',
-  'local-ready and build-verified; preview deployed with environment health proof, protected make-page browser proof, family-demo image proof, save-auth boundary proof, and authenticated end-to-end pass pending',
-  'not ready to send to the full first-50 visitor group',
+  'ready for first-50 trusted preview test; production/on-ramp still deferred',
+  'ready for Sathian to put in front of a small trusted first-50 preview group',
   'http://localhost:3000/toothlight',
   'http://localhost:3000/toothlight/make',
   'http://192.168.1.104:3000/toothlight/make',
@@ -49,6 +49,10 @@ for (const text of [
   'shareable-link protection bypass',
   'Protected make-page browser proof',
   'Protected save-auth boundary proof',
+  'Server-backed validation Toothlight',
+  '22724752-7918-4d97-a9b0-df863a7960d9',
+  'sealed future note',
+  'family contribution nodes',
   'ordinary HTTP',
   'headless mobile-sized Playwright browser',
   'Google sign-in',
@@ -109,14 +113,16 @@ for (const text of [
   'Protected `vercel curl` checks',
   'missing multipart form-data error',
   '/api/toothlight/voice-transcribe',
-  'Authenticated end-to-end browser proof',
+  'User phone mic check on 2026-06-09',
+  'Signed-in validation receipt closed on 2026-06-09',
+  'Production/on-ramp launch',
   'token_expired',
   'MoonPay',
   'Coinbase',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
   'OPENAI_API_KEY',
   'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true',
-  'normal browser/mobile preview pass',
+  'Invite a very small trusted group',
 ]) {
   assert(doc.includes(text), `readiness audit must include ${text}`)
 }

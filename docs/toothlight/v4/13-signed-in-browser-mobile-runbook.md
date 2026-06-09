@@ -1,21 +1,21 @@
 # Toothlight Signed-In Browser and Mobile Runbook
 
 Date: 2026-06-09
-Status: ready for Sathian validation; first-50 invite still on hold
+Status: ready for first-50 trusted preview test
 
-Use this as the single run sheet for the last gate before the first 20 to 50 visitors. The product loop is deployed and automated checks are green, but the gate is not closed until one signed-in browser pass and one real phone pass are recorded in `12-signed-in-validation-receipt.md`.
+Use this as the single run sheet for the first 20 to 50 trusted visitors. The product loop is deployed, automated checks are green, the phone mic concern is cleared by user report, and `12-signed-in-validation-receipt.md` now records the server-backed save, sealed-note status, family contribution status, and reveal-preview continuity proof.
 
 ## Do This Now
 
 For the next validation pass, use the HTTPS protected preview first. Local Wi-Fi is useful for layout and save fallback testing, but phone microphone behavior is most reliable on HTTPS.
 
-1. Open the protected-preview share link on desktop and complete one signed-in save.
-2. Open the same protected-preview share link on the phone and complete one phone pass.
+1. Open the protected-preview share link on desktop or phone and complete one signed-in save.
+2. Prefer phone for parent-style testing; use desktop if the tester needs easier photo/file handling.
 3. On the phone, test one mic field and record whether it used fast speech-to-text, switched to `Record`, or required typing.
-4. Copy the saved Toothlight, parent note, family invite, and reveal preview URLs into `12-signed-in-validation-receipt.md`.
+4. Copy any new saved Toothlight, parent note, family invite, and reveal preview URLs into the feedback notes if a bug appears.
 5. If a blocker appears, stop and record the exact screen, URL, browser, and message.
 
-Expected final screen: `Preview reveal` shows the same Toothlight image, the memory line, the sealed parent note preview, and the family note preview.
+Expected final screen: `Preview reveal` shows the same Toothlight image, the memory line, sealed-note status, and family contribution status. Public routes intentionally do not expose private note bodies.
 
 ## Links
 
@@ -105,7 +105,7 @@ Purpose: confirm the same protected-preview flow is usable on the device a paren
 4. Test one spoken or recorded note on either the child story, parent note, or family note.
 5. Confirm the saved Toothlight and reveal preview show the same image.
 
-If the phone cannot complete the protected signed-in save because of account/session constraints, record the exact failure and keep the first-50 invite on hold.
+If the phone cannot complete the protected signed-in save because of account/session constraints, record the exact failure and have that tester switch to desktop. Treat a repeated save or mic failure as a blocker.
 
 ## Evidence To Record
 
@@ -141,4 +141,4 @@ Do not invite the full first-50 group if any of these happen:
 
 ## Decision Rule
 
-When Pass 1, Pass 2, and Pass 3 have evidence in `12-signed-in-validation-receipt.md`, the first-50 gate can move from hold to ready. Until then, the product is ready for Sathian validation, not external visitor invites.
+The first-50 gate is ready after the 2026-06-09 validation receipt. Continue only as a trusted preview test. Do not promote to production, add wallet/on-ramp requirements, or merge broadly until the first real tester issues are reviewed.

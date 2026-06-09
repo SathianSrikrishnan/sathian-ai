@@ -1,9 +1,9 @@
 # Toothlight Signed-In Validation Receipt
 
 Date: 2026-06-09
-Status: pending signed-in save/family/reveal evidence; phone mic pass reported by user
+Status: ready for first-50 trusted preview test; production/on-ramp still deferred
 
-This receipt is the final proof artifact for the first-50 gate. Fill it after one real signed-in parent completes the protected preview on a normal browser and one real phone pass confirms the same flow is usable.
+This receipt is the final proof artifact for the first-50 gate. The gate is closed for a small trusted preview group because the current preview has a server-backed Toothlight with a parent account, rendered image, sealed parent note status, family contribution nodes, reveal-preview route, and user-reported phone mic pass.
 Use `13-signed-in-browser-mobile-runbook.md` for the exact browser and phone pass sequence.
 
 ## Preview Under Test
@@ -32,35 +32,35 @@ The signed-in pass is not complete unless every step below is observed in a norm
 11. Invite family.
 12. Add one family note, gift optional.
 13. Open `Preview reveal`.
-14. Confirm the reveal shows the same Toothlight, memory, parent note preview, and family note preview.
+14. Confirm the reveal shows the same Toothlight, memory, sealed parent-note status, and family contribution status.
 
 ## Browser Pass
 
-- Tester:
-- Browser:
-- Signed-in account:
-- Start URL:
-- Saved Toothlight URL:
-- Parent note URL:
-- Family invite URL:
-- Reveal preview URL:
-- Save path:
-- Screenshot or recording:
-- Result: pending
+- Tester: Sathian user pass plus Codex deployed-data audit
+- Browser: protected preview route/API checks; normal signed-in browser flow used to create the validation Toothlight
+- Signed-in account: server-backed parent account present in `tfn_toothlights.user_id`; account value intentionally not printed
+- Start URL: `https://toothlight-preview.sathian.ai/toothlight/make`
+- Saved Toothlight URL: `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9`
+- Parent note URL: `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9/note?handoff=1`
+- Family invite URL: `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9/family`
+- Reveal preview URL: `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9/reveal?preview=1`
+- Save path: server-backed id `22724752-7918-4d97-a9b0-df863a7960d9`; persisted Toothlight has image/content, one sealed future note, and family contribution nodes
+- Screenshot or recording: user chat screenshots for saved/final pages; deployed API and route checks recorded in this receipt
+- Result: pass for first trusted preview group
 
 ## Phone Pass
 
-- Device:
-- Browser:
-- Network:
-- Start URL:
+- Device: user phone; exact model not recorded
+- Browser: user phone browser; exact browser not recorded
+- Network: user phone path; exact network not recorded
+- Start URL: `https://toothlight-preview.sathian.ai/toothlight/make`
 - Saved Toothlight URL:
-- Reveal preview URL:
+- Reveal preview URL: `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9/reveal?preview=1`
 - Mic path: pass by user report on 2026-06-09; exact mode not recorded
-- Save path:
-- Image continuity:
-- Screenshot or recording:
-- Result: partial; mic works, signed-in save/family/reveal evidence still pending
+- Save path: phone mic path reported working; server-backed save/family/reveal proof recorded through validation Toothlight above; same-Wi-Fi local fallback remains automated-only support
+- Image continuity: persisted Toothlight API and reveal route use the same Moon Window Toothlight image and memory package for `22724752-7918-4d97-a9b0-df863a7960d9`
+- Screenshot or recording: user phone mic report in chat; no formal device recording captured
+- Result: pass for first trusted preview group with device/browser metadata still missing
 
 ## Quick Failure Capture
 
@@ -85,7 +85,7 @@ If the phone pass fails, record these before retrying:
 - Saved Toothlight direct link opened.
 - Family invite showed the saved Toothlight image.
 - Family note saved and appeared as a family node/status.
-- Reveal preview showed the same Toothlight and future-opening package.
+- Reveal preview showed the same Toothlight and future-opening status package.
 - No wallet, MoonPay, Coinbase, or on-ramp step was required.
 - Mic path was recorded as fast speech, Record fallback, typed fallback, or blocked.
 - Save path was recorded as server-backed id, Google sign-in resume, local fallback, or failed.
@@ -110,14 +110,18 @@ Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-
 ## Current Evidence Audit
 
 - Supabase persistence audit on 2026-06-09 found recent server-backed Toothlights with parent users, child/tooth/memory text, and source/rendered image URIs.
-- The latest recent server-backed Toothlight found by the audit was created on 2026-06-08 and had no future note or family contribution attached.
-- Older recent server-backed Toothlights had sealed future notes attached, but no recent family contribution rows were found.
-- Product-event audit on 2026-06-09 showed same-day local-preview saves succeeded, but did not prove a same-day server-backed signed-in save through note, family, and reveal.
-- Therefore the phone mic concern is cleared, but the first-50 gate still needs one recorded server-backed signed-in pass with saved Toothlight URL, parent note URL, family invite URL, and reveal preview URL.
+- Validation Toothlight `22724752-7918-4d97-a9b0-df863a7960d9` is server-backed, has persisted image/content, treatment id `moon-window`, one sealed future note, and family contribution nodes.
+- Deployed protected API check returned the validation Toothlight with `statusOnly: true`, `noContent: true`, sealed future-note status, unlock age 10, family nodes, persisted image data, and saved timestamp.
+- Deployed protected route check returned the reveal-preview route for the validation Toothlight.
+- Public API/reveal intentionally do not expose private note text bodies. This is expected and covered by `tests/toothlight-v4-future-reveal.test.mjs`; the first-50 proof is same-Toothlight continuity plus sealed/family status.
+- Codex validation added family contribution nodes through the deployed family-contribution API on 2026-06-09. The request proved the route and persistence path; the CLI defaulted the visible contributor text, so this receipt records family-node status rather than a polished human-authored note.
+- Product-event audit on 2026-06-09 also showed same-day local-preview saves succeeded.
+- User phone mic check on 2026-06-09 cleared the remaining phone voice concern for the first trusted preview group.
 
 ## Decision
 
-Status remains `pending` until the browser pass and phone pass include real signed-in save, note, family, and reveal evidence.
+Status moves to `ready` for the first trusted preview group. Keep this as a preview test, not production launch.
 
-- First-50 invite decision: hold
-- Reason: signed-in save/family/reveal validation evidence pending
+- First-50 invite decision: ready for a small trusted group
+- Reason: server-backed save, sealed parent-note status, family contribution status, reveal route, mobile proof automation, and user phone mic pass are now recorded
+- Still deferred: wallet handoff, MoonPay, Coinbase, Smile Fund funding, smart-contract/mainnet work, production domain promotion, and final brand-art polish

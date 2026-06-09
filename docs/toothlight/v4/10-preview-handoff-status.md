@@ -1,7 +1,7 @@
 # Toothlight V4 Preview Handoff Status
 
 Date: 2026-06-08
-Status: local-ready, build-verified, preview-deployed, preview environment health verified, protected make-page browser verified, family-demo image verified, and save-auth boundary verified; authenticated end-to-end pass pending
+Status: local-ready, build-verified, preview-deployed, preview environment health verified, protected make-page browser verified, family-demo image verified, save-auth boundary verified, and first-50 trusted preview gate ready
 
 ## Current checkpoint
 
@@ -21,6 +21,7 @@ Status: local-ready, build-verified, preview-deployed, preview environment healt
 - Windows verifier hardening commit: `8ad68ecdf25e0ce92632526b1121d215cb21dedf`
 - Clean source proof commit: `ddbe5bc4e1203401ee42341a029d72a373b917b6`
 - Mobile voice record-first checkpoint commit: `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`
+- First-50 signed-in validation closure: this checkpoint updates the receipt, runbook, readiness audit, and first-50 plan to ready-for-trusted-preview status
 
 ## Local test links
 
@@ -145,7 +146,7 @@ Generated flow routes:
 
 ## Preview gap
 
-The known preview domain is now updated and the protected make page works through the parent-auth save boundary, but one authenticated external end-to-end browser/mobile pass is still required before inviting the full first-50 group:
+The known preview domain is updated and the first-50 trusted preview gate is ready. The validation receipt records a server-backed Toothlight with persisted image/content, sealed future-note status, family contribution status, reveal-preview route continuity, and user-reported phone mic pass.
 
 - GitHub PR #7 is open, merge state is `CLEAN`, and has no GitHub status checks attached to the latest commit.
 - The Vercel connector still returns `token_expired`, but the local Vercel CLI is authenticated as `sathian` and was used for the clean preview deployment.
@@ -163,4 +164,4 @@ Preview is now configured for the first signed-in test pass:
 
 ## Next handoff action
 
-Use local phone testing and the protected-preview share link now. Do not invite the full first-50 group until one authenticated browser/mobile pass confirms the share link opens `/toothlight/make`, creates a Toothlight, seals the note, reaches family invite, and opens `Preview reveal`.
+Use the protected-preview share link now for the first trusted tester group. Keep the scope to make, save, seal note, invite family, and preview reveal. Do not add wallet/on-ramp, Smile Fund funding, production domain promotion, or broad merge work until tester issues are reviewed.

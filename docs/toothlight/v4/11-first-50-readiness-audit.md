@@ -1,11 +1,13 @@
 # Toothlight V4 First 50 Readiness Audit
 
 Date: 2026-06-08
-Status: local-ready and build-verified; preview deployed with environment health proof, protected make-page browser proof, family-demo image proof, save-auth boundary proof, and authenticated end-to-end pass pending
+Status: ready for first-50 trusted preview test; production/on-ramp still deferred
 
 ## Decision
 
-The local Toothlight MVP is ready for Sathian-led testing on browser and phone. A clean Vercel preview is deployed, the Preview environment is health-checked, the preview alias has a shareable-link bypass, and the protected make page works through the parent-auth save boundary. It is not ready to send to the full first-50 visitor group until one authenticated normal browser/mobile pass confirms the share link end to end.
+The Toothlight MVP is ready for Sathian to put in front of a small trusted first-50 preview group. A clean Vercel preview is deployed, the Preview environment is health-checked, the preview alias has a shareable-link bypass, the protected make page works, phone voice/save reliability is covered by automated mobile proof and user phone mic feedback, and a server-backed validation Toothlight now proves save, sealed-note status, family contribution status, and reveal route continuity.
+
+This is not a production launch. Wallet handoff, MoonPay, Coinbase, Smile Fund funding, smart-contract/mainnet work, production domain promotion, and final brand-art polish remain outside this first visitor loop.
 
 ## What is ready
 
@@ -30,6 +32,7 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
+| Server-backed validation Toothlight | Ready | `https://toothlight-preview.sathian.ai/toothlight/t/22724752-7918-4d97-a9b0-df863a7960d9` has persisted image/content, treatment id `moon-window`, one sealed future note, family contribution nodes, and reveal-preview route continuity. |
 
 ## Latest continuation proof
 
@@ -102,14 +105,16 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 - Latest protected `vercel curl` checks on the phone reliability deployment returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1`. Empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error. Public no-secret `/api/toothlight/health` returned protected `not_found`, so the health endpoint remains admin-gated.
 - Phone bug follow-up on 2026-06-09 changed phone voice to native speech first when available, retained recorded transcription as fallback, flushed recorder data before stop, added readable non-JSON voice errors, and allowed same-Wi-Fi local saves to complete as `local-*` Toothlights if the save POST fails.
 - Focused mobile voice/save proof passed with `20 passed` across `Mobile Safari` and `Mobile Chrome`.
+- User phone mic check on 2026-06-09: user reported the mic seems to be working and the phone test looks good.
+- Signed-in validation receipt closed on 2026-06-09 with server-backed Toothlight `22724752-7918-4d97-a9b0-df863a7960d9`, sealed future-note status, family contribution status, persisted Moon Window image, and reveal-preview route.
 
 ## What is blocked
 
 | Area | Status | Why |
 | --- | --- | --- |
 | Vercel connector | Blocked | The MCP connector still returns `token_expired`; local Vercel CLI is authenticated and was used instead. |
-| Authenticated end-to-end browser proof | Hold | The protected make page now works through the parent-auth save boundary, but a logged-in browser/mobile pass through make, note, saved Toothlight, family invite, and reveal preview is still required. |
-| First-50 external invite | Hold | Needs one confirmed authenticated share-link pass through make, note, saved Toothlight, family invite, and reveal preview. |
+| Production/on-ramp launch | Deferred | Wallet handoff, MoonPay, Coinbase, Smile Fund funding, smart-contract/mainnet work, and production domain promotion remain outside this first-50 preview loop. |
+| Final commercial art | Deferred | The generated Light Style object images are good enough for learning from first testers, but not final brand/commerce artwork. |
 
 ## Open product limits
 
@@ -121,8 +126,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 
 ## Next action
 
-1. Keep local testing active at `http://localhost:3000/toothlight/make`.
-2. Open the Vercel share link for `https://toothlight-preview.sathian.ai/toothlight/make`.
-3. Run one authenticated normal browser/mobile preview pass: make, save, seal note, invite family, preview reveal.
-4. Record the pass in `docs/toothlight/v4/12-signed-in-validation-receipt.md`.
-5. Only then invite the first small outside group.
+1. Invite a very small trusted group using `https://toothlight-preview.sathian.ai/toothlight/make`.
+2. Ask each tester to create one Toothlight, seal one parent note, invite one family member, and open the reveal preview.
+3. Record issues in `09-first-50-visitor-test-plan.md` format.
+4. Keep wallet/on-ramp, funding, and production promotion out of this test.
+5. After 10 to 20 real attempts, decide whether to polish UX copy/art or move to the story/animation layer.

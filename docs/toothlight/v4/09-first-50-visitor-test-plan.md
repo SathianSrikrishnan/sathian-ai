@@ -1,7 +1,7 @@
 # Toothlight V4 First 50 Visitor Test Plan
 
 Date: 2026-06-08
-Status: local-ready, mobile voice/save patched, protected-preview ready through auth handoff, authenticated pass pending
+Status: ready for first-50 trusted preview test; production/on-ramp still deferred
 
 ## Purpose
 
@@ -14,7 +14,7 @@ This pass is for the first 20 to 50 trusted visitors. The goal is to learn wheth
 5. Invite family to add a note and optional gift.
 6. Preview the future reveal.
 
-Not production. Do not merge or launch broadly until the mobile checklist below passes on real phones and one signed-in parent completes the protected preview from make through reveal preview.
+Not production. Use this only for a small trusted preview group. Do not merge broadly, switch production domains, or add wallet/on-ramp requirements until the first real tester issues are reviewed.
 
 ## Test routes
 
@@ -88,8 +88,7 @@ Run this on at least one iPhone Safari session and one Chrome Android or Chrome 
 
 ## Authenticated preview checklist
 
-Run this once in a normal signed-in browser and once on a real phone before inviting the full first-50 group.
-Record the pass in `12-signed-in-validation-receipt.md` so the final go/no-go decision has one evidence artifact.
+This checklist is now the expected tester path for the first trusted group. The 2026-06-09 validation receipt already records the first server-backed save, sealed-note status, family contribution status, reveal route, and user phone mic pass.
 Use `13-signed-in-browser-mobile-runbook.md` as the single step-by-step run sheet while testing.
 
 - Open the protected-preview make link from the chat.
@@ -106,7 +105,7 @@ Use `13-signed-in-browser-mobile-runbook.md` as the single step-by-step run shee
 - Tap `Invite family`.
 - Add one family note. Treat the optional gift/Smile Fund as part of this same family contribution step, not a separate first-50 requirement.
 - Confirm the family page shows the saved Toothlight image, not a placeholder or unrelated object.
-- Open `Preview reveal` and confirm the future-opening page shows the same Toothlight, the child memory, the sealed parent note preview, and any family note preview.
+- Open `Preview reveal` and confirm the future-opening page shows the same Toothlight, the child memory, sealed parent-note status, and family contribution status. Public routes intentionally do not expose private note bodies.
 
 ## Pass criteria
 
@@ -208,10 +207,9 @@ Expected authenticated result: note handoff, then saved Toothlight, then family 
 
 ## Release rule
 
-Do not merge, deploy broadly, or invite the full first-50 group until:
+Do not merge broadly, switch production domains, or add wallet/on-ramp requirements until:
 
-- the local mobile checklist passes;
-- the preview deployment is ready;
-- one clean signed-in parent flow is completed on the protected preview;
-- one clean phone flow is completed on the protected preview or same-Wi-Fi local link;
-- open blocker issues are fixed or explicitly deferred.
+- the first trusted preview group has produced real issue notes;
+- any blocker issue is fixed or explicitly deferred;
+- production note encryption, voice transcription, and auth settings are rechecked;
+- the wallet, MoonPay, Coinbase, Smile Fund funding, and smart-contract path has a separate decision.

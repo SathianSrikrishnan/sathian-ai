@@ -15,6 +15,7 @@ const plan = existsSync(planPath) ? readFileSync(planPath, 'utf8') : ''
 
 for (const text of [
   'First 50 Visitor Test Plan',
+  'ready for first-50 trusted preview test; production/on-ramp still deferred',
   'Not production',
   'Test routes',
   '/toothlight',
@@ -69,7 +70,8 @@ assert(/toothlight-v4-\*\.test\.mjs/.test(plan), 'plan must include the Toothlig
 assert(/npx playwright test tests\/toothlight-v4-proof\.spec\.ts/.test(plan), 'plan must include the proof Playwright test command')
 assert(/Expected unauthenticated result: Google sign-in/.test(plan), 'plan must document the protected preview unauthenticated save boundary')
 assert(/Expected authenticated result: note handoff, then saved Toothlight, then family invite, then reveal preview/.test(plan), 'plan must document the protected preview authenticated result')
-assert(/one clean signed-in parent flow is completed on the protected preview/.test(plan), 'plan must require the signed-in protected preview pass')
+assert(/2026-06-09 validation receipt already records the first server-backed save/.test(plan), 'plan must point to the closed validation receipt')
+assert(/Do not merge broadly, switch production domains, or add wallet\/on-ramp requirements/.test(plan), 'plan must keep broad launch and on-ramp work outside the first tester pass')
 assert(/Do not merge/i.test(plan), 'plan must warn not to merge before mobile testing passes')
 
 if (failures.length > 0) {

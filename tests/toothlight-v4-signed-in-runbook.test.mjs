@@ -19,10 +19,11 @@ const receipt = existsSync(receiptPath) ? readFileSync(receiptPath, 'utf8') : ''
 
 for (const text of [
   'Toothlight Signed-In Browser and Mobile Runbook',
-  'ready for Sathian validation; first-50 invite still on hold',
+  'ready for first-50 trusted preview test',
   'Do This Now',
   'use the HTTPS protected preview first',
   'Expected final screen',
+  'Public routes intentionally do not expose private note bodies',
   'If Vercel protection appears',
   'http://localhost:3000/toothlight/make',
   'http://192.168.1.104:3000/toothlight/make',
@@ -56,7 +57,7 @@ for (const text of [
 
 assert(/13-signed-in-browser-mobile-runbook\.md/.test(plan), 'first-50 plan must link the runbook')
 assert(/13-signed-in-browser-mobile-runbook\.md/.test(receipt), 'signed-in receipt must link the runbook')
-assert(/first-50 gate can move from hold to ready/.test(runbook), 'runbook must state the go/no-go decision rule')
+assert(/first-50 gate is ready after the 2026-06-09 validation receipt/.test(runbook), 'runbook must state the current go/no-go decision rule')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-signed-in-runbook: ${failures.length} issue(s)`)

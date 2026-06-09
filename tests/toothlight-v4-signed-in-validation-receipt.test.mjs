@@ -15,7 +15,7 @@ const receipt = existsSync(receiptPath) ? readFileSync(receiptPath, 'utf8') : ''
 
 for (const text of [
   'Toothlight Signed-In Validation Receipt',
-  'Status: pending signed-in save/family/reveal evidence; phone mic pass reported by user',
+  'Status: ready for first-50 trusted preview test; production/on-ramp still deferred',
   'Preview alias: `https://toothlight-preview.sathian.ai`',
   'Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`',
   'Current clean preview deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`',
@@ -30,7 +30,13 @@ for (const text of [
   'Issues Found',
   'Current Evidence Audit',
   'Decision',
-  'First-50 invite decision: hold',
+  'First-50 invite decision: ready for a small trusted group',
+  '22724752-7918-4d97-a9b0-df863a7960d9',
+  'statusOnly: true',
+  'noContent: true',
+  'family contribution nodes',
+  'Public API/reveal intentionally do not expose private note text bodies',
+  'Codex validation added family contribution nodes through the deployed family-contribution API',
   'audio/mp4',
   'm4a',
   'phone-photo save reliability',
@@ -45,7 +51,7 @@ for (const text of [
   'Whether typing still works:',
   'pass by user report on 2026-06-09',
   'same-day local-preview saves succeeded',
-  'saved Toothlight URL, parent note URL, family invite URL, and reveal preview URL',
+  'server-backed save, sealed parent-note status, family contribution status, reveal route',
 ]) {
   assert(receipt.includes(text), `receipt must include ${text}`)
 }
@@ -64,6 +70,8 @@ for (const step of [
   'Add one family note, gift optional',
   'Open `Preview reveal`',
   'Confirm the reveal shows the same Toothlight',
+  'sealed parent-note status',
+  'family contribution status',
 ]) {
   assert(receipt.includes(step), `receipt must include pass step: ${step}`)
 }
@@ -74,13 +82,14 @@ for (const evidenceField of [
   'Family invite URL:',
   'Reveal preview URL:',
   'Screenshot or recording:',
-  'Result: pending',
+  'Result: pass for first trusted preview group',
 ]) {
   assert(receipt.includes(evidenceField), `receipt must include evidence field: ${evidenceField}`)
 }
 
 assert(/No wallet, MoonPay, Coinbase, or on-ramp step was required/.test(receipt), 'receipt must keep provider/on-ramp work outside the first-50 gate')
-assert(/pending[\s\S]*signed-in save\/family\/reveal validation evidence pending/.test(receipt), 'receipt must remain pending until real signed-in save/family/reveal evidence is recorded')
+assert(/Status moves to `ready` for the first trusted preview group/.test(receipt), 'receipt must move the first-50 gate to ready')
+assert(/Still deferred: wallet handoff, MoonPay, Coinbase, Smile Fund funding, smart-contract\/mainnet work, production domain promotion, and final brand-art polish/.test(receipt), 'receipt must keep production and funding work deferred')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-signed-in-validation-receipt: ${failures.length} issue(s)`)
