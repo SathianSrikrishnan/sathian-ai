@@ -1,0 +1,336 @@
+.stylePicker {
+  display: grid;
+  min-width: 0;
+}
+
+.carousel {
+  display: grid;
+  grid-auto-columns: minmax(9.25rem, 48%);
+  grid-auto-flow: column;
+  gap: 0.62rem;
+  overflow-x: auto;
+  padding: 0.12rem 0.06rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.option {
+  position: relative;
+  display: grid;
+  min-height: 10.85rem;
+  border: 1px solid rgba(23, 38, 42, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #182a2e;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: 0;
+  overflow: hidden;
+  padding: 0;
+  scroll-snap-align: start;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.option::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(128deg, rgba(255, 255, 255, 0.58), transparent 28%),
+    radial-gradient(circle at 18% 16%, color-mix(in srgb, var(--style-accent), transparent 72%), transparent 28%);
+  content: '';
+  opacity: 0.48;
+  pointer-events: none;
+}
+
+.selected {
+  border-color: color-mix(in srgb, var(--style-accent), #17262a 16%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65),
+    0 0 0 2px color-mix(in srgb, var(--style-accent), transparent 68%),
+    0 0 1.8rem color-mix(in srgb, var(--style-accent), transparent 42%),
+    0 14px 28px color-mix(in srgb, var(--style-accent), transparent 74%);
+}
+
+.option:active {
+  transform: scale(0.985);
+}
+
+.option[data-recommended='true']::after {
+  position: absolute;
+  top: 0.58rem;
+  right: 0.58rem;
+  width: 0.46rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+  background: #f6c95f;
+  box-shadow: 0 0 0.9rem rgba(246, 201, 95, 0.72);
+  content: '';
+}
+
+.swatch {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 10.85rem;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 30% 22%, color-mix(in srgb, var(--style-accent), transparent 8%), transparent 20%),
+    radial-gradient(circle at 74% 62%, color-mix(in srgb, var(--style-secondary), transparent 16%), transparent 30%),
+    linear-gradient(135deg, #fffdf4, #eaf5f2);
+}
+
+.objectImage {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--object-focus, 50% 52%);
+  filter:
+    saturate(1.08)
+    contrast(1.04);
+  transform: scale(1.04);
+}
+
+.swatchGlow {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border-radius: 7px;
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.38), transparent 32%),
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.34), transparent 22%),
+    radial-gradient(circle at 82% 76%, color-mix(in srgb, var(--style-secondary), transparent 76%), transparent 34%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38),
+    inset 0 0 1rem color-mix(in srgb, var(--style-accent), transparent 78%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.selectedRing {
+  position: absolute;
+  z-index: 6;
+  inset: 0.48rem;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+.selected .selectedRing {
+  border-color: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 20%),
+    0 0 1.2rem color-mix(in srgb, var(--style-accent), transparent 30%);
+}
+
+.keeperPortrait {
+  position: absolute;
+  z-index: 7;
+  left: 0.5rem;
+  top: 0.5rem;
+  display: grid;
+  width: 3rem;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--style-accent), white 44%), transparent 72%),
+    rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--style-accent), transparent 68%),
+    0 0.5rem 1.2rem rgba(23, 38, 42, 0.18),
+    0 0 1.45rem color-mix(in srgb, var(--style-accent), transparent 38%);
+}
+
+.keeperPortrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--keeper-focus, 50% 40%);
+}
+
+.caption {
+  position: absolute;
+  z-index: 8;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  min-height: 2.3rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.48rem;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.72));
+  padding: 0.38rem 0.46rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.6rem 1.4rem rgba(23, 38, 42, 0.1);
+}
+
+.styleName,
+.keeperName {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.styleName {
+  color: #17262a;
+  font-size: 0.78rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.keeperName {
+  color: color-mix(in srgb, var(--style-accent), #17262a 34%);
+  flex: 0 1 auto;
+  max-width: 46%;
+  border: 1px solid color-mix(in srgb, var(--style-accent), transparent 62%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  font-size: 0.56rem;
+  font-weight: 950;
+  line-height: 1;
+  padding: 0.2rem 0.32rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.swatchMoon {
+  background:
+    radial-gradient(circle at 68% 20%, #f8fcff 0 5%, transparent 7%),
+    radial-gradient(circle at 30% 26%, rgba(136, 200, 255, 0.95), transparent 26%),
+    linear-gradient(140deg, #162b37, #d8f3ff);
+}
+
+.swatchMoon .swatchGlow {
+  border-radius: 999px 999px 0.45rem 0.45rem;
+  background:
+    linear-gradient(90deg, rgba(231, 247, 255, 0.7) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(94, 169, 232, 0.28) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.08);
+  background-size: 0.72rem 0.72rem;
+  opacity: 0.38;
+}
+
+.swatchVelvet {
+  background:
+    linear-gradient(90deg, rgba(38, 61, 65, 0.16) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(193, 108, 141, 0.13) 1px, transparent 1px),
+    #fff2dc;
+  background-size: 0.8rem 0.8rem;
+}
+
+.swatchVelvet .swatchGlow {
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(28deg, rgba(38, 61, 65, 0.24) 0 1px, transparent 1px 8px),
+    linear-gradient(135deg, rgba(255, 248, 222, 0.74), rgba(193, 108, 141, 0.32));
+  opacity: 0.32;
+}
+
+.swatchLantern {
+  background:
+    radial-gradient(circle at 34% 34%, #e98a4b 0 17%, transparent 18%),
+    radial-gradient(circle at 72% 66%, rgba(103, 201, 159, 0.85), transparent 28%),
+    linear-gradient(135deg, #fff4de, #e3f4e9);
+}
+
+.swatchLantern .swatchGlow {
+  border-radius: 1.2rem 1.2rem 0.5rem 0.5rem;
+  background:
+    linear-gradient(90deg, rgba(41, 75, 55, 0.16) 1px, transparent 1px),
+    radial-gradient(circle at 26% 28%, rgba(233, 138, 75, 0.88), transparent 38%),
+    rgba(255, 246, 224, 0.74);
+  background-size: 0.65rem 100%, auto, auto;
+  opacity: 0.32;
+}
+
+.swatchRainbow {
+  background:
+    radial-gradient(circle at 20% 24%, #ff7862 0 5%, transparent 6%),
+    radial-gradient(circle at 78% 30%, #62b8ff 0 5%, transparent 6%),
+    radial-gradient(circle at 60% 74%, #f2be4a 0 6%, transparent 7%),
+    linear-gradient(135deg, #fffaf3, #eaf5f2);
+}
+
+.swatchRainbow .swatchGlow {
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255, 120, 98, 0.82) 0 0.25rem, transparent 0.27rem),
+    radial-gradient(circle at 76% 28%, rgba(98, 184, 255, 0.84) 0 0.22rem, transparent 0.24rem),
+    repeating-linear-gradient(90deg, rgba(39, 73, 90, 0.18) 0 1px, transparent 1px 10px),
+    linear-gradient(120deg, rgba(255, 120, 98, 0.3), rgba(98, 184, 255, 0.34));
+  opacity: 0.3;
+}
+
+.swatchSpark {
+  background:
+    radial-gradient(circle at 20% 24%, #f7d873 0 4%, transparent 5%),
+    radial-gradient(circle at 76% 34%, #b08af3 0 5%, transparent 6%),
+    repeating-linear-gradient(45deg, rgba(59, 43, 102, 0.12) 0 1px, transparent 1px 9px),
+    linear-gradient(135deg, #fff9e2, #f0ebff);
+}
+
+.swatchSpark .swatchGlow {
+  border-radius: 5px;
+  background:
+    repeating-linear-gradient(45deg, rgba(59, 43, 102, 0.2) 0 1px, transparent 1px 9px),
+    radial-gradient(circle at 24% 28%, rgba(247, 216, 115, 0.9) 0 0.24rem, transparent 0.26rem),
+    linear-gradient(135deg, rgba(255, 249, 226, 0.8), rgba(176, 138, 243, 0.24));
+  opacity: 0.34;
+}
+
+.swatchLocket {
+  background:
+    linear-gradient(120deg, rgba(242, 190, 74, 0.92), transparent 34%),
+    linear-gradient(300deg, rgba(128, 214, 196, 0.82), transparent 40%),
+    #fff8e2;
+}
+
+.swatchLocket .swatchGlow {
+  border-radius: 8px;
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.78), transparent 32%),
+    repeating-linear-gradient(100deg, rgba(94, 58, 20, 0.12) 0 1px, transparent 1px 12px),
+    linear-gradient(135deg, rgba(242, 190, 74, 0.5), rgba(128, 214, 196, 0.28));
+  opacity: 0.28;
+}
+
+@media (min-width: 760px) {
+  .carousel {
+    grid-auto-flow: initial;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.72rem;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+}

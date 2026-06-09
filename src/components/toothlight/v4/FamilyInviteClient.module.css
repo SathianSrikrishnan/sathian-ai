@@ -1,0 +1,74 @@
+.shell {
+  display: grid;
+  width: min(100% - 1.5rem, 1120px);
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+  margin: 0 auto;
+  padding: 1.25rem 0 3rem;
+}
+
+.memory {
+  display: grid;
+  gap: 0.82rem;
+}
+
+.backLink {
+  width: fit-content;
+  color: #5f7175;
+  font-size: 0.88rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #9d6b17;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.memory h1 {
+  margin: 0;
+  color: #17262a;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 10vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.memory p {
+  max-width: 34rem;
+  margin: 0;
+  color: #52666a;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.loadingCard {
+  display: grid;
+  width: min(100%, 28rem);
+  min-height: 24rem;
+  place-items: center;
+  border: 1px solid rgba(23, 38, 42, 0.1);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 26% 22%, rgba(246, 201, 95, 0.2), transparent 38%),
+    radial-gradient(circle at 78% 72%, rgba(143, 230, 198, 0.16), transparent 36%),
+    rgba(255, 255, 255, 0.72);
+  color: #5f7175;
+  font-size: 0.84rem;
+  font-weight: 900;
+  box-shadow: 0 18px 44px rgba(25, 42, 46, 0.08);
+}
+
+@media (min-width: 880px) {
+  .shell {
+    grid-template-columns: minmax(0, 0.92fr) minmax(20rem, 0.7fr);
+    gap: 2.2rem;
+    align-items: center;
+  }
+}

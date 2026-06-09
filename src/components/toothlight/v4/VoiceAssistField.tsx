@@ -1,0 +1,468 @@
+'use client'
+
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import styles from './VoiceAssistField.module.css'
+
+type VoiceAssistFieldProps = {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  placeholder: string
+  rows?: number
+  voicePrompt?: string
+  successMessage?: string
+  transcribingMessage?: string
+  hideLabel?: boolean
+}
+
+type MinimalSpeechRecognition = {
+  continuous: boolean
+  interimResults: boolean
+  lang: string
+  onresult:
+    | ((event: {
+        results: ArrayLike<ArrayLike<{ transcript: string }>>
+        resultIndex: number
+      }) => void)
+    | null
+  onend: (() => void) | null
+  onerror:
+    | ((event: {
+        error?: string
+        message?: string
+      }) => void)
+    | null
+  start: () => void
+  stop: () => void
+}
+
+type SpeechRecognitionCtor = new () => MinimalSpeechRecognition
+type MicrophonePermissionState = PermissionState | null
+
+const MICROPHONE_PERMISSION_HELP =
+  'Microphone is blocked. If no prompt appeared, click the site icon in the address bar, set Microphone to Allow, then reload. You can also type the note.'
+const RECORDER_MIME_TYPE_CANDIDATES = [
+  'audio/webm;codecs=opus',
+  'audio/webm',
+  'audio/mp4;codecs=mp4a.40.2',
+  'audio/mp4',
+  'audio/mpeg',
+  'audio/wav',
+  'audio/ogg;codecs=opus',
+  'audio/ogg',
+]
+
+function getSpeechRecognitionCtor(): SpeechRecognitionCtor | null {
+  if (typeof window === 'undefined') return null
+  const speechWindow = window as typeof window & {
+    SpeechRecognition?: SpeechRecognitionCtor
+    webkitSpeechRecognition?: SpeechRecognitionCtor
+  }
+  return speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition ?? null
+}
+
+function joinTranscript(currentText: string, transcript: string) {
+  const cleaned = transcript.trim()
+  if (!cleaned) return currentText
+  if (!currentText.trim()) return cleaned
+  return `${currentText.trimEnd()} ${cleaned}`
+}
+
+function getSpeechErrorMessage(errorName: string) {
+  if (errorName === 'not-allowed' || errorName === 'service-not-allowed') {
+    return MICROPHONE_PERMISSION_HELP
+  }
+  if (errorName === 'audio-capture') {
+    return 'No microphone was found. Type instead.'
+  }
+  if (errorName === 'network') {
+    return 'Browser voice failed. Try Record instead.'
+  }
+  if (errorName === 'no-speech') {
+    return 'No speech heard. Try again or use Record.'
+  }
+  return 'Voice missed that. Try Record or type instead.'
+}
+
+async function getMicrophonePermissionState(): Promise<MicrophonePermissionState> {
+  if (typeof navigator === 'undefined' || typeof navigator.permissions?.query !== 'function') return null
+
+  try {
+    const permission = await navigator.permissions.query({ name: 'microphone' as PermissionName })
+    return permission.state
+  } catch {
+    return null
+  }
+}
+
+function isMicrophonePermissionError(error: unknown) {
+  return (
+    error instanceof DOMException &&
+    (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
+  )
+}
+
+function getRecorderMimeType() {
+  if (typeof MediaRecorder === 'undefined') return ''
+  for (const mimeType of RECORDER_MIME_TYPE_CANDIDATES) {
+    if (MediaRecorder.isTypeSupported(mimeType)) return mimeType
+  }
+  return ''
+}
+
+function getAudioFileName(mimeType: string) {
+  const normalizedMimeType = mimeType.toLowerCase()
+  if (normalizedMimeType.includes('mp4') || normalizedMimeType.includes('m4a')) {
+    return 'toothlight-note.m4a'
+  }
+  if (normalizedMimeType.includes('mpeg')) return 'toothlight-note.mp3'
+  if (normalizedMimeType.includes('wav')) return 'toothlight-note.wav'
+  if (normalizedMimeType.includes('ogg')) return 'toothlight-note.ogg'
+  return 'toothlight-note.webm'
+}
+
+function getRecordingUnavailableMessage() {
+  if (typeof window === 'undefined') return 'Recording is unavailable here. Type instead.'
+  const hostname = window.location.hostname
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
+  if (!window.isSecureContext && !isLocalhost) {
+    return 'Recording needs HTTPS on a phone. Open the preview link or type instead.'
+  }
+  return 'Recording is unavailable here. Type instead.'
+}
+
+function shouldPreferRecordedVoiceInput() {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
+  if (getSpeechRecognitionCtor()) return false
+
+  const coarsePointer =
+    typeof window.matchMedia === 'function' &&
+    (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches)
+  const touchPoints = navigator.maxTouchPoints ?? 0
+
+  return coarsePointer || touchPoints > 0
+}
+
+export function VoiceAssistField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  rows = 5,
+  voicePrompt = 'Say it instead.',
+  successMessage = 'Added. You can edit it before sealing.',
+  transcribingMessage = 'Writing your note...',
+  hideLabel = false,
+}: VoiceAssistFieldProps) {
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const [recorderSupported, setRecorderSupported] = useState(false)
+  const [preferRecordedInput, setPreferRecordedInput] = useState(false)
+  const [speechFallbackMode, setSpeechFallbackMode] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isTranscribing, setIsTranscribing] = useState(false)
+  const [voiceStatus, setVoiceStatus] = useState('')
+  const recognitionRef = useRef<MinimalSpeechRecognition | null>(null)
+  const recorderRef = useRef<MediaRecorder | null>(null)
+  const streamRef = useRef<MediaStream | null>(null)
+  const chunksRef = useRef<BlobPart[]>([])
+  const valueRef = useRef(value)
+  const speechOutcomeHandledRef = useRef(false)
+  const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    valueRef.current = value
+  }, [value])
+
+  useEffect(() => {
+    const recorderAvailable =
+      typeof navigator.mediaDevices?.getUserMedia === 'function' && typeof MediaRecorder !== 'undefined'
+    setSpeechSupported(getSpeechRecognitionCtor() !== null)
+    setRecorderSupported(recorderAvailable)
+    setPreferRecordedInput(recorderAvailable && shouldPreferRecordedVoiceInput())
+    return () => {
+      if (stopTimerRef.current) clearTimeout(stopTimerRef.current)
+      try {
+        recognitionRef.current?.stop()
+      } catch {
+        // Speech recognition can throw if it is already stopped.
+      }
+      try {
+        recorderRef.current?.stop()
+      } catch {
+        // Recorder can throw if it is already stopped.
+      }
+      streamRef.current?.getTracks().forEach((track) => track.stop())
+    }
+  }, [])
+
+  const stopListening = useCallback(() => {
+    if (stopTimerRef.current) {
+      clearTimeout(stopTimerRef.current)
+      stopTimerRef.current = null
+    }
+    try {
+      recognitionRef.current?.stop()
+    } catch {
+      // Speech recognition can throw if it is already stopped.
+    }
+    setIsListening(false)
+  }, [])
+
+  const appendTranscript = useCallback(
+    (transcript: string) => {
+      const nextText = joinTranscript(valueRef.current, transcript)
+      valueRef.current = nextText
+      onChange(nextText)
+      setVoiceStatus(successMessage)
+    },
+    [onChange, successMessage],
+  )
+
+  const transcribeRecording = useCallback(
+    async (audioBlob: Blob) => {
+      setIsTranscribing(true)
+      setVoiceStatus(transcribingMessage)
+      try {
+        const formData = new FormData()
+        formData.append('audio', audioBlob, getAudioFileName(audioBlob.type))
+        const response = await fetch('/api/toothlight/voice-transcribe', {
+          method: 'POST',
+          body: formData,
+        })
+        const result = await readTranscriptionResponse(response)
+        if (!response.ok) throw new Error(result.error || 'Voice transcription failed.')
+        if (!result.text?.trim()) {
+          setVoiceStatus('No speech heard. Type or try again.')
+          return
+        }
+        appendTranscript(result.text)
+      } catch (error) {
+        setVoiceStatus(error instanceof Error ? error.message : 'Voice transcription failed. Type instead.')
+      } finally {
+        setIsTranscribing(false)
+      }
+    },
+    [appendTranscript],
+  )
+
+  const stopRecording = useCallback(() => {
+    if (stopTimerRef.current) {
+      clearTimeout(stopTimerRef.current)
+      stopTimerRef.current = null
+    }
+    try {
+      recorderRef.current?.requestData?.()
+      recorderRef.current?.stop()
+    } catch {
+      setIsRecording(false)
+    }
+  }, [])
+
+  const startRecording = useCallback(async () => {
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      setRecorderSupported(false)
+      setVoiceStatus(getRecordingUnavailableMessage())
+      return
+    }
+
+    try {
+      const permissionState = await getMicrophonePermissionState()
+      if (permissionState === 'denied') {
+        setVoiceStatus(MICROPHONE_PERMISSION_HELP)
+        return
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const mimeType = getRecorderMimeType()
+      const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream)
+
+      chunksRef.current = []
+      streamRef.current = stream
+      recorderRef.current = recorder
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunksRef.current.push(event.data)
+      }
+      recorder.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop())
+        setIsRecording(false)
+        const audioBlob = new Blob(chunksRef.current, { type: recorder.mimeType || 'audio/webm' })
+        chunksRef.current = []
+        if (audioBlob.size < 500) {
+          setVoiceStatus('No speech heard. Type or try again.')
+          return
+        }
+        void transcribeRecording(audioBlob)
+      }
+
+      recorder.start(750)
+      setIsRecording(true)
+      setVoiceStatus('Recording... tap Stop when done.')
+      stopTimerRef.current = setTimeout(() => {
+        stopRecording()
+      }, 12000)
+    } catch (error) {
+      setIsRecording(false)
+      setVoiceStatus(isMicrophonePermissionError(error) ? MICROPHONE_PERMISSION_HELP : 'Microphone failed. Type instead.')
+    }
+  }, [stopRecording, transcribeRecording])
+
+  const startListening = useCallback(() => {
+    const Ctor = getSpeechRecognitionCtor()
+    if (!Ctor) {
+      setSpeechSupported(false)
+      if (recorderSupported) {
+        setSpeechFallbackMode(true)
+        void startRecording()
+      } else {
+        setVoiceStatus('Voice is unavailable here. Type instead.')
+      }
+      return
+    }
+
+    const recognition = new Ctor()
+    recognition.continuous = false
+    recognition.interimResults = false
+    recognition.lang = (typeof navigator !== 'undefined' && navigator.language) || 'en-US'
+    speechOutcomeHandledRef.current = false
+    recognition.onresult = (event) => {
+      let transcript = ''
+      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+        transcript += event.results[index][0].transcript
+      }
+      if (transcript.trim()) {
+        speechOutcomeHandledRef.current = true
+        appendTranscript(transcript)
+      }
+      stopListening()
+    }
+    recognition.onend = () => {
+      setIsListening(false)
+      if (stopTimerRef.current) {
+        clearTimeout(stopTimerRef.current)
+        stopTimerRef.current = null
+      }
+      if (!speechOutcomeHandledRef.current) {
+        setSpeechFallbackMode(true)
+        setVoiceStatus(recorderSupported ? 'No speech heard. Try Record instead.' : 'No speech heard. Type or try again.')
+      }
+    }
+    recognition.onerror = (event) => {
+      const errorName = event.error ?? 'unknown'
+      speechOutcomeHandledRef.current = true
+      setIsListening(false)
+      setSpeechFallbackMode(true)
+      setVoiceStatus(getSpeechErrorMessage(errorName))
+    }
+
+    recognitionRef.current = recognition
+    setVoiceStatus('Listening...')
+    try {
+      recognition.start()
+      setIsListening(true)
+      stopTimerRef.current = setTimeout(() => {
+        stopListening()
+      }, 7000)
+    } catch {
+      setIsListening(false)
+      setSpeechFallbackMode(true)
+      setVoiceStatus(recorderSupported ? 'Voice missed that. Try Record instead.' : 'Voice missed that. Type or try again.')
+    }
+  }, [appendTranscript, recorderSupported, startRecording, stopListening])
+
+  const canUseVoice = speechSupported || recorderSupported
+  const useRecorder = recorderSupported && (preferRecordedInput || speechFallbackMode || !speechSupported)
+  const isBusy = isListening || isRecording || isTranscribing
+  const buttonLabel = isTranscribing
+    ? 'Writing'
+    : isListening || isRecording
+      ? 'Stop'
+      : useRecorder
+        ? 'Record'
+        : 'Talk'
+  const buttonAriaLabel =
+    isListening || isRecording
+      ? 'Stop voice input'
+      : useRecorder
+        ? 'Start recorded voice input'
+        : 'Start voice input'
+
+  const handleVoiceButton = useCallback(() => {
+    if (isListening) {
+      stopListening()
+      return
+    }
+    if (isRecording) {
+      stopRecording()
+      return
+    }
+    if (isTranscribing) return
+    if (!canUseVoice) {
+      setVoiceStatus('Voice is unavailable here. Type instead.')
+      return
+    }
+    if (useRecorder) {
+      void startRecording()
+    } else {
+      startListening()
+    }
+  }, [
+    canUseVoice,
+    isListening,
+    isRecording,
+    isTranscribing,
+    startListening,
+    startRecording,
+    stopListening,
+    stopRecording,
+    useRecorder,
+  ])
+
+  return (
+    <div className={styles.field}>
+      <div className={styles.labelRow}>
+        <label>
+          <span className={hideLabel ? styles.srOnly : undefined}>{label}</span>
+          <textarea
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            placeholder={placeholder}
+            rows={rows}
+          />
+        </label>
+        <button
+          type="button"
+          className={styles.micButton}
+          onClick={handleVoiceButton}
+          disabled={isTranscribing}
+          aria-label={buttonAriaLabel}
+          data-listening={isBusy ? 'true' : 'false'}
+          data-available={canUseVoice ? 'true' : 'false'}
+        >
+          <span aria-hidden="true" className={styles.micIcon} />
+          {buttonLabel}
+        </button>
+      </div>
+      <p className={styles.voicePrompt}>{voicePrompt}</p>
+      {voiceStatus && <p className={styles.voiceStatus}>{voiceStatus}</p>}
+    </div>
+  )
+}
+
+async function readTranscriptionResponse(response: Response): Promise<{ text?: string; error?: string }> {
+  const contentType = response.headers.get('content-type') ?? ''
+  if (contentType.includes('application/json')) {
+    return response.json()
+  }
+
+  const bodyText = await response.text().catch(() => '')
+  if (response.status === 401 || response.status === 403) {
+    return { error: 'Voice needs preview access. Type instead, or reopen the signed-in preview link.' }
+  }
+  if (bodyText.toLowerCase().includes('request entity too large')) {
+    return { error: 'That recording was too long. Try a shorter note.' }
+  }
+  return { error: 'Voice transcription did not return a transcript. Type instead or try again.' }
+}

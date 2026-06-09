@@ -18,7 +18,10 @@ type RouteContext = {
 }
 
 export async function GET(_request: NextRequest, { params }: RouteContext) {
-  const persisted = process.env.NEXT_PUBLIC_TEST_MODE === 'true' ? null : await getPersistedToothlight(params.id)
+  const persisted =
+    process.env.NEXT_PUBLIC_TEST_MODE === 'true' || isDemoToothlight(params.id)
+      ? null
+      : await getPersistedToothlight(params.id)
   const publicStatus = persisted
     ? {
         toothlightId: params.id,
@@ -37,13 +40,19 @@ export async function GET(_request: NextRequest, { params }: RouteContext) {
 export async function POST(request: NextRequest, { params }: RouteContext) {
   const payload = await readPayload(request, params.id)
 
-  if (process.env.NEXT_PUBLIC_TEST_MODE === 'true') {
+  if (process.env.NEXT_PUBLIC_TEST_MODE === 'true' || isDemoToothlight(params.id)) {
     const saved = validateFutureNote(payload)
     await logToothlightProductEvent({
       userId: 'test-user',
       toothlightId: params.id,
       eventName: 'future_note_saved_demo',
       properties: { status: saved.status, unlockAge: saved.unlockAge },
+    })
+    await logToothlightProductEvent({
+      userId: 'test-user',
+      toothlightId: params.id,
+      eventName: 'note_completed',
+      properties: { status: saved.status, unlockAge: saved.unlockAge, mode: 'test' },
     })
     return NextResponse.json({
       success: true,
@@ -58,7 +67,21 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
   }
 
   const saved = validateFutureNote(payload)
-  const persisted = await savePersistedFutureNote({ ...payload, userId: user.id })
+  let persisted: Awaited<ReturnType<typeof savePersistedFutureNote>> = null
+  try {
+    persisted = await savePersistedFutureNote({ ...payload, userId: user.id })
+  } catch (error) {
+    const message = noteSaveErrorMessage(error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: message,
+        status: saved.status,
+        unlockAge: saved.unlockAge,
+      },
+      { status: 500 },
+    )
+  }
   const responseStatus = persisted ?? {
     success: false,
     status: saved.status,
@@ -75,6 +98,13 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
   if (!persisted) {
     return NextResponse.json({ error: 'Supabase persistence is not configured.', ...responseStatus }, { status: 500 })
   }
+
+  await logToothlightProductEvent({
+    userId: user.id,
+    toothlightId: params.id,
+    eventName: 'note_completed',
+    properties: { status: responseStatus.status, unlockAge: responseStatus.unlockAge },
+  })
 
   return NextResponse.json(responseStatus)
 }
@@ -112,4 +142,23 @@ async function readPayload(request: NextRequest, toothlightId: string) {
   } catch {
     return { toothlightId }
   }
+}
+
+function noteSaveErrorMessage(error: unknown) {
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === 'string'
+        ? error
+        : ''
+
+  if (message.includes('TOOTHLIGHT_NOTE_ENCRYPTION_KEY')) {
+    return 'Private note encryption is not configured for this preview. Add TOOTHLIGHT_NOTE_ENCRYPTION_KEY, then try again.'
+  }
+
+  return 'Note save is not ready yet.'
+}
+
+function isDemoToothlight(toothlightId: string) {
+  return toothlightId === 'demo-toothlight'
 }

@@ -8,15 +8,24 @@ import styles from './page.module.css'
 export const metadata: Metadata = {
   title: 'Toothlight | Tooth Fairy Network',
   description:
-    'Turn a lost tooth into a glowing family time capsule with a photo, drawing, story, note for later, and optional Smile Fund.',
+    'Turn a lost tooth into a glowing family time capsule with a photo, drawing, story, note for later, and optional family gift.',
 }
 
 const howSteps = [
   { label: 'Make', detail: 'Photo, drawing, glow' },
   { label: 'Save', detail: 'Story and parent account' },
   { label: 'Seal', detail: 'Note for later' },
-  { label: 'Share', detail: 'Family gift and note' },
+  { label: 'Share', detail: 'Family note and gift' },
 ]
+
+const FRONT_DOOR_BEATS = [
+  { label: 'Photo + drawing', detail: 'Child-made memory' },
+  { label: 'AI Toothlight', detail: 'Story object' },
+  { label: 'Sealed note', detail: 'Parent message for later' },
+  { label: 'Family note + gift', detail: 'Optional next layer' },
+]
+
+const trustPills = ['Create before sign-in', 'Original stays saved', 'Parent controls the note']
 
 export default function ToothlightV4EntryPage() {
   return (
@@ -42,8 +51,22 @@ export default function ToothlightV4EntryPage() {
           <h1 id="toothlight-title">Toothlight</h1>
           <p className={styles.lede}>
             Turn a lost tooth into a glowing time capsule: photo, drawing,
-            story, note for later, and optional Smile Fund.
+            story, note for later, and an optional family gift.
           </p>
+          <ol className={styles.beatRail} aria-label="10-second Toothlight story">
+            {FRONT_DOOR_BEATS.map((beat, index) => (
+              <li key={beat.label}>
+                <span>{index + 1}</span>
+                <strong>{beat.label}</strong>
+                <small>{beat.detail}</small>
+              </li>
+            ))}
+          </ol>
+          <div className={styles.trustPills} aria-label="Parent trust cues">
+            {trustPills.map((pill) => (
+              <span key={pill}>{pill}</span>
+            ))}
+          </div>
           <div className={styles.actions}>
             <Link href="/toothlight/make" className={styles.primaryAction}>
               Create a Toothlight
@@ -52,6 +75,9 @@ export default function ToothlightV4EntryPage() {
               See the ritual
             </a>
           </div>
+          <p className={styles.heroNote}>
+            Start with the memory. Save and seal only when it feels right.
+          </p>
           <p className={styles.trustLine}>
             Tanda helps make the memory. Parents decide what gets saved.
           </p>
@@ -83,8 +109,8 @@ export default function ToothlightV4EntryPage() {
           <h2>One memory can grow.</h2>
           <p>
             A Toothlight can start as a simple glow. It becomes richer when a
-            parent adds a note for later, links a Smile Fund, or invites family
-            to add their own note.
+            parent seals a note for later or invites family to add a note and
+            optional gift.
           </p>
           <Link href="/toothlight/make" className={styles.textAction}>
             Save this Toothlight

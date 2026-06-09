@@ -28,11 +28,14 @@ export async function GET(request: NextRequest) {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   const noteEncryptionKey = process.env.TOOTHLIGHT_NOTE_ENCRYPTION_KEY
+  const voiceTranscribeEnabled = process.env.TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE
+  const openAiKey = process.env.OPENAI_API_KEY
 
   addEnvCheck(checks, 'NEXT_PUBLIC_SUPABASE_URL', supabaseUrl)
   addEnvCheck(checks, 'NEXT_PUBLIC_SUPABASE_ANON_KEY', anonKey)
   addEnvCheck(checks, 'SUPABASE_SERVICE_ROLE_KEY', serviceKey)
   addNoteEncryptionKeyCheck(checks, noteEncryptionKey)
+  addVoiceTranscriptionCheck(checks, voiceTranscribeEnabled, openAiKey)
 
   if (supabaseUrl && serviceKey) {
     const supabase = createClient(supabaseUrl, serviceKey)
@@ -102,5 +105,34 @@ function addNoteEncryptionKeyCheck(checks: Check[], value: string | undefined) {
     name: 'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
     status: key.byteLength === 32 ? 'ok' : 'fail',
     detail: key.byteLength === 32 ? 'Configured' : 'Must be a base64-encoded 32-byte key',
+  })
+}
+
+function addVoiceTranscriptionCheck(
+  checks: Check[],
+  enabledValue: string | undefined,
+  openAiKey: string | undefined,
+) {
+  if (enabledValue !== 'true') {
+    checks.push({
+      name: 'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE',
+      status: 'warn',
+      detail: 'Voice transcription disabled; text input and browser speech remain available',
+    })
+    return
+  }
+
+  checks.push({
+    name: 'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE',
+    status: 'ok',
+    detail: 'Voice transcription enabled',
+  })
+
+  checks.push({
+    name: 'OPENAI_API_KEY',
+    status: openAiKey ? 'ok' : 'fail',
+    detail: openAiKey
+      ? 'Configured for Toothlight voice transcription'
+      : 'Voice transcription enabled but OPENAI_API_KEY is missing',
   })
 }

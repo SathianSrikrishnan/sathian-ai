@@ -31,10 +31,13 @@ const route = existsSync(routePath) ? readFileSync(routePath, 'utf8') : ''
 assert(/Note Started/.test(savedPage + panel), 'saved/note UI must show Note Started')
 assert(/Sealed for later/.test(savedPage + panel), 'saved/note UI must show Sealed for later')
 assert(/note for later/i.test(notePage + panel), 'UI copy must use note for later')
+assert(!/Small note starter/.test(panel), 'parent note step must only ask for one note')
+assert(!/useState\(''\).*seedNote|seedNote,\s*setSeedNote/s.test(panel), 'parent note UI must not keep a second note starter state')
 assert(!/future letter|write a letter/i.test(notePage + panel), 'UI must not lead with formal letter-first language')
 assert(/statusOnly|publicStatus|without content|noContent/i.test(route), 'note API must expose status without content publicly')
 assert(!/GET[\s\S]{0,700}noteBody|GET[\s\S]{0,700}fullNote/i.test(route), 'public GET must not expose private note body')
 assert(/NEXT_PUBLIC_TEST_MODE/.test(route), 'note API must support test mode')
+assert(/note_completed/.test(panel + route), 'future note flow must log note_completed for funnel reporting')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-note: ${failures.length} issue(s)`)

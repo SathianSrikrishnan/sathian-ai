@@ -19,6 +19,8 @@ for (const token of [
   'NEXT_PUBLIC_SUPABASE_ANON_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
   'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
+  'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE',
+  'OPENAI_API_KEY',
   'tfn_toothlights',
   'tfn_future_notes',
   'tfn_family_contributions',
@@ -32,6 +34,9 @@ for (const token of [
 
 assert(/export const dynamic = ['"]force-dynamic['"]/.test(route), 'health route must be dynamic')
 assert(/status: healthy \? 200 : 503/.test(route), 'health route must fail closed when checks fail')
+assert(/addVoiceTranscriptionCheck/.test(route), 'health route must expose voice transcription readiness')
+assert(/Voice transcription disabled/.test(route), 'health route must make disabled production voice fallback visible as a warning')
+assert(/Voice transcription enabled but OPENAI_API_KEY is missing/.test(route), 'health route must fail if production voice fallback is enabled without OpenAI')
 assert(!/TFN_MINT_SECRET_KEY|NEXT_PUBLIC_SOLANA_RPC|TFN_MERKLE_TREE/.test(route), 'Toothlight V4 health must not depend on mint infrastructure yet')
 
 if (failures.length > 0) {

@@ -10,6 +10,7 @@ export const ALLOWED_ORIGINS = [
   'https://www.sathian.ai',
   'https://btc.sathian.ai',
   'https://toothfairy.sathian.ai',
+  'https://toothlight-preview.sathian.ai',
   'https://toothfairy.network',
   'https://www.toothfairy.network',
   ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'] : []),
@@ -20,14 +21,19 @@ export function isAllowedOrigin(origin: string | null): boolean {
   if (ALLOWED_ORIGINS.includes(origin)) return true
 
   try {
+    const { hostname } = new URL(origin)
     const originHost = new URL(origin).host
     const currentDeploymentHost = process.env.VERCEL_URL
     const currentBranchHost = process.env.VERCEL_BRANCH_URL
+    const isLocalDevelopmentOrigin =
+      process.env.NODE_ENV === 'development' &&
+      (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1')
 
     // Vercel preview URLs are unique per deployment. Allow only this project
     // account's current preview/branch hosts, not every vercel.app origin.
     return Boolean(
-      originHost === currentDeploymentHost ||
+      isLocalDevelopmentOrigin ||
+        originHost === currentDeploymentHost ||
         originHost === currentBranchHost ||
         originHost.endsWith('-sathiansrikrishnans-projects.vercel.app')
     )

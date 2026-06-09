@@ -1,13 +1,19 @@
 import { expect, test } from 'playwright/test'
 
 test('Toothlight V4 first proof mobile path', async ({ page }) => {
+  await page.setExtraHTTPHeaders({
+    'x-forwarded-for': test.info().project.name === 'Mobile Safari' ? '203.0.113.41' : '203.0.113.42',
+  })
+
   await page.goto('/toothlight', { waitUntil: 'load' })
 
   await expect(page.getByLabel(/Product Entry Read/i)).toBeVisible()
   await page.getByRole('link', { name: /Create a Toothlight/i }).first().click()
 
   await expect(page).toHaveURL(/\/toothlight\/make/)
-  await expect(page.getByRole('heading', { name: /Create the glow first/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Add the tooth/i })).toHaveCount(0)
+  await expect(page.getByText(/Start with a photo of your tooth/i)).toBeVisible()
+  await expect(page.locator('article[data-treatment="golden-locket"]')).toBeVisible()
 
   const fileInput = page.locator('input[type="file"]').first()
   await fileInput.setInputFiles({
@@ -19,29 +25,40 @@ test('Toothlight V4 first proof mobile path', async ({ page }) => {
     ),
   })
 
-  await page.getByRole('button', { name: /Moon/i }).click()
-  await page.getByPlaceholder('Kai').fill('Kai')
-  await page.getByPlaceholder('First Tooth').fill('First Tooth')
-  await page.getByPlaceholder(/Lost after breakfast/i).fill('Lost after breakfast and showed everyone.')
+  await page.getByRole('button', { name: /Moon Window/i }).click()
+  await expect(page.locator('article[data-treatment="moon-window"]')).toBeVisible()
+  await page.getByLabel('Child name').fill('Kai')
+  await page.getByLabel('Toothlight name').fill('First Tooth')
+  await page.getByLabel('Memory note').fill('Lost after breakfast and showed everyone.')
 
   await page.getByRole('button', { name: /Save this Toothlight/i }).click()
-  await expect(page.getByText(/Saved\. Now add the parent note for later/i)).toBeVisible()
+  await expect(page.getByText(/Saved\. Seal the parent note next/i)).toBeVisible()
 
-  await page.waitForURL(/\/toothlight\/t\/demo-toothlight/, { timeout: 8_000 })
-  await expect(page.getByText(/Saved for later/i).first()).toBeVisible()
-  await expect(page.getByText(/Kai's First Tooth/i).first()).toBeVisible()
-
-  await page.getByRole('link', { name: /Write a note for later/i }).click()
-  await expect(page).toHaveURL(/\/toothlight\/t\/demo-toothlight\/note/)
-  await page.getByPlaceholder(/proud/i).fill('I was so proud of you today.')
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/note\?handoff=1/, { timeout: 8_000 })
+  await expect(page.getByRole('heading', { name: /Seal the note/i }).first()).toBeVisible()
+  await expect(page.getByText(/Small note starter/i)).toHaveCount(0)
   await page.getByPlaceholder(/receive later/i).fill('One day, I hope this reminds you how loved you were.')
   await page.getByRole('button', { name: /Seal the note/i }).click()
   await expect(page.getByText(/Sealed for later/i).first()).toBeVisible()
+  await page.getByRole('link', { name: /View saved Toothlight/i }).click()
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight$/, { timeout: 8_000 })
+  await expect(page.getByText(/Review note/i).first()).toBeVisible()
 
-  await page.goto('/toothlight/t/demo-toothlight/family', { waitUntil: 'load' })
-  await expect(page.getByRole('heading', { name: /Add a gift and a note for later/i }).first()).toBeVisible()
+  await page.getByRole('link', { name: /Invite family/i }).first().click()
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/family$/, { timeout: 8_000 })
+  await expect(page.getByRole('heading', { name: /Invite family/i }).first()).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Family note \+ gift/i })).toBeVisible()
   await page.getByPlaceholder('Nana').fill('Nana')
   await page.getByPlaceholder(/how loved/i).fill('I am saving this little note for your future smile.')
-  await page.getByRole('button', { name: /Add note only/i }).click()
-  await expect(page.getByText(/Note added for later/i)).toBeVisible()
+  await page.getByRole('button', { name: /Add family note/i }).click()
+  await expect(page.getByText(/Family note added/i)).toBeVisible()
+  await expect(page.getByRole('link', { name: /View saved Toothlight/i })).toBeVisible()
+  await page.getByRole('link', { name: /Preview reveal/i }).click()
+  await page.waitForURL(/\/toothlight\/t\/demo-toothlight\/reveal\?preview=1/, { timeout: 8_000 })
+  await expect(page.getByRole('heading', { name: /Open the Toothlight/i }).first()).toBeVisible()
+  const revealContents = page.getByLabel('Future Toothlight contents')
+  await expect(revealContents.getByText(/Lost after breakfast and showed everyone/i)).toBeVisible()
+  await expect(page.getByText(/One day, I hope this reminds you how loved you were/i)).toBeVisible()
+  await expect(page.getByText(/I am saving this little note for your future smile/i)).toBeVisible()
+  await expect(page.getByText(/Kai's First Tooth/i).first()).toBeVisible()
 })

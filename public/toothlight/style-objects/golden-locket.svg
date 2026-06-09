@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 450" role="img" aria-label="Golden locket Toothlight object">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="18%" r="72%">
+      <stop offset="0" stop-color="#fff7cf"/>
+      <stop offset=".44" stop-color="#f6d06b"/>
+      <stop offset="1" stop-color="#9ee3d7"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff1a8"/>
+      <stop offset=".42" stop-color="#d79525"/>
+      <stop offset=".72" stop-color="#fff0a6"/>
+      <stop offset="1" stop-color="#8c5a1d"/>
+    </linearGradient>
+    <radialGradient id="glass" cx="36%" cy="24%" r="78%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".88"/>
+      <stop offset=".46" stop-color="#d7fff4" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#6e4b22" stop-opacity=".3"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="26" stdDeviation="22" flood-color="#4b351a" flood-opacity=".33"/>
+    </filter>
+  </defs>
+  <rect width="640" height="450" rx="34" fill="url(#bg)"/>
+  <path d="M73 332c78-88 206-130 365-107 50 7 96 0 129-21" fill="none" stroke="#fff5bd" stroke-width="22" stroke-linecap="round" opacity=".42"/>
+  <g filter="url(#shadow)">
+    <ellipse cx="322" cy="365" rx="150" ry="24" fill="#4f3a1b" opacity=".18"/>
+    <path d="M287 105c0-37 67-37 67 0v48h-67z" fill="url(#gold)"/>
+    <path d="M304 110c0-16 33-16 33 0v28h-33z" fill="#65431b" opacity=".42"/>
+    <circle cx="320" cy="245" r="144" fill="url(#gold)"/>
+    <circle cx="320" cy="245" r="118" fill="#5e3a14" opacity=".32"/>
+    <circle cx="320" cy="245" r="108" fill="url(#glass)"/>
+    <ellipse cx="280" cy="204" rx="52" ry="76" fill="#fff" opacity=".28" transform="rotate(29 280 204)"/>
+    <path d="M215 248c47-62 137-79 213-33" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" opacity=".35"/>
+    <path d="M219 290c43 20 89 23 139 7 27-9 48-12 66-9" fill="none" stroke="#72dec9" stroke-width="8" stroke-linecap="round" opacity=".72"/>
+    <path d="M237 169c24-21 52-32 84-32 34 0 66 13 96 38" fill="none" stroke="#f6d06b" stroke-width="11" stroke-linecap="round" opacity=".82"/>
+    <g fill="#fff1a8" stroke="#8c5a1d" stroke-width="2" opacity=".9">
+      <circle cx="320" cy="122" r="5"/>
+      <circle cx="393" cy="152" r="5"/>
+      <circle cx="432" cy="223" r="5"/>
+      <circle cx="412" cy="304" r="5"/>
+      <circle cx="320" cy="368" r="5"/>
+      <circle cx="227" cy="304" r="5"/>
+      <circle cx="207" cy="223" r="5"/>
+      <circle cx="247" cy="151" r="5"/>
+    </g>
+  </g>
+</svg>

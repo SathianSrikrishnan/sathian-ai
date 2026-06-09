@@ -180,10 +180,13 @@ export async function middleware(request: NextRequest) {
     || 'unknown'
 
   const isVoiceRoute = pathname.startsWith('/api/voice/')
-  const limit = isVoiceRoute ? 5 : 10  // 5/min voice, 10/min chat
+  const isToothlightTelemetryRoute = pathname === '/api/toothlight/event'
+  const limit = isToothlightTelemetryRoute ? 60 : isVoiceRoute ? 5 : 10  // telemetry 60/min, voice 5/min, general API 10/min
   const windowMs = 60_000  // 1 minute
 
-  if (isRateLimited(ip, limit, windowMs)) {
+  const rateLimitKey = `${ip}:${isToothlightTelemetryRoute ? 'toothlight-telemetry' : isVoiceRoute ? 'voice' : 'api'}`
+
+  if (isRateLimited(rateLimitKey, limit, windowMs)) {
     return NextResponse.json(
       { error: 'Too many requests. Please slow down.' },
       { status: 429 }

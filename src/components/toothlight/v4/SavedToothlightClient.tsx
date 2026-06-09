@@ -24,8 +24,12 @@ const fallbackToothlight: LocalToothlight = {
   childName: 'Kai',
   toothName: 'Toothlight',
   caption: 'First tooth. Big smile.',
-  imageSrc: null,
-  glowId: 'starlace',
+  imageSrc: '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg',
+  sourceImageSrc: '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg',
+  renderedImageSrc: '/toothlight/style-objects/product-renders/v4/moon-window-product.jpg',
+  glowId: 'moon-window',
+  treatmentId: 'moon-window',
+  treatmentVersion: 'deterministic-css-v2',
   shareUrl: '/toothlight/t/demo-toothlight',
   savedAt: new Date(0).toISOString(),
 }
@@ -61,8 +65,12 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           childName: persisted.childName,
           toothName: persisted.toothName,
           caption: persisted.caption,
-          imageSrc: persisted.imageSrc,
+          imageSrc: persisted.renderedImageSrc ?? persisted.imageSrc,
+          sourceImageSrc: persisted.sourceImageSrc ?? persisted.imageSrc,
+          renderedImageSrc: persisted.renderedImageSrc ?? persisted.imageSrc,
           glowId: persisted.glowId,
+          treatmentId: persisted.treatmentId ?? persisted.glowId,
+          treatmentVersion: persisted.treatmentVersion,
           shareUrl: persisted.shareUrl,
           savedAt: persisted.savedAt,
         },
@@ -86,13 +94,14 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
   const current = toothlight ?? { ...fallbackToothlight, toothlightId }
   const noteStatus = futureNote?.status ?? 'none'
+  const hasFamilyGift = familyNodes.some((node) => node.nodeKind === 'family_gift' || node.nodeKind === 'family_note_gift')
   const state = getToothlightVisualState({
     hasSourcePhoto: Boolean(current.imageSrc),
-    hasGlow: Boolean(current.glowId),
+    hasGlow: Boolean(current.treatmentId ?? current.glowId),
     futureNoteStatus: noteStatus,
     hasFullFutureNote: noteStatus === 'sealed',
     hasShortSeedNote: noteStatus === 'seed' || noteStatus === 'started',
-    smileFundStatus: 'active',
+    smileFundStatus: hasFamilyGift ? 'active' : 'none',
     familyNodes: familyNodes.map((node) => node.nodeKind),
   })
   const title = useMemo(
@@ -102,6 +111,33 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
 
   const statusLabel =
     noteStatus === 'sealed' ? 'Sealed for later' : noteStatus === 'seed' || noteStatus === 'started' ? 'Note Started' : 'No note yet'
+  const noteCtaLabel = noteStatus === 'sealed' ? 'Review note' : 'Seal note'
+  const privateNoteStatus =
+    noteStatus === 'sealed'
+      ? 'Private note sealed'
+      : noteStatus === 'seed' || noteStatus === 'started'
+        ? 'Note started'
+        : 'Ready to seal'
+  const familyStatus = familyNodes.length ? `${familyNodes.length} added` : 'Invite family'
+  const capsuleChecklist = [
+    {
+      label: 'Memory',
+      detail: current.caption || 'The child-facing Toothlight is ready.',
+      state: 'done',
+    },
+    {
+      label: 'Parent note',
+      detail: privateNoteStatus,
+      state: noteStatus === 'sealed' ? 'done' : 'next',
+    },
+    {
+      label: 'Family note + gift',
+      detail: familyStatus,
+      state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
+    },
+  ]
+  const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal note'
+  const nextStepHelper = noteStatus === 'sealed' ? 'Note first. Gift optional.' : 'Private parent note.'
 
   return (
     <div className={styles.shell}>
@@ -110,41 +146,52 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           Toothlight
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
-        <h1>{statusLabel === 'No note yet' ? 'Saved for later.' : `${statusLabel}.`}</h1>
-        <p>
-          The child can revisit the Toothlight now without seeing the private
-          note. Parents control the note for later, Smile Fund, and family
-          invite.
-        </p>
+        <h1>Toothlight time capsule.</h1>
+        <p>{noteStatus === 'sealed' ? 'Saved. Invite family when ready.' : 'Saved. Seal the note next.'}</p>
 
-        <div className={styles.statusGrid}>
-          <div className={styles.status}>
-            <strong>{statusLabel}</strong>
-            <span>Status can show without content.</span>
+        <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
+          {capsuleChecklist.map((item, index) => (
+            <div key={item.label} className={styles.capsuleStep} data-state={item.state}>
+              <span>{index + 1}</span>
+              <strong>{item.label}</strong>
+              <small>{item.detail}</small>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.nextStepPanel} aria-label="Next action">
+          <div>
+            <strong>Next</strong>
+            <span>{nextStepLabel}</span>
+            <small>{nextStepHelper}</small>
           </div>
-          <div className={styles.status}>
-            <strong>Smile Fund</strong>
-            <span>Optional savings layer is ready to connect.</span>
-          </div>
-          <div className={styles.status}>
-            <strong>Family nodes</strong>
-            <span>{familyNodes.length ? `${familyNodes.length} added` : 'Invite family when ready'}</span>
+          <div className={styles.nextActions}>
+            <Link
+              href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/family` : `/toothlight/t/${toothlightId}/note?handoff=1`}
+              className={`${styles.actionLink} ${styles.primary}`}
+            >
+              {noteStatus === 'sealed' ? 'Invite family' : 'Seal note'}
+            </Link>
+            <Link
+              href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/note` : `/toothlight/t/${toothlightId}/family`}
+              className={`${styles.actionLink} ${styles.secondary}`}
+            >
+              {noteStatus === 'sealed' ? noteCtaLabel : 'Family can wait'}
+            </Link>
+            <Link
+              href={`/toothlight/t/${toothlightId}/reveal?preview=1`}
+              className={`${styles.actionLink} ${styles.secondary}`}
+            >
+              Preview reveal
+            </Link>
           </div>
         </div>
 
-        <div className={styles.actions}>
-          <Link href={`/toothlight/t/${toothlightId}/note`} className={`${styles.actionLink} ${styles.primary}`}>
-            Write a note for later
-          </Link>
-          <Link href={`/toothlight/t/${toothlightId}/family`} className={`${styles.actionLink} ${styles.secondary}`}>
-            Invite family
-          </Link>
-        </div>
       </section>
 
       <div className={styles.cardColumn}>
         <ToothlightCard
-          imageSrc={current.imageSrc}
+          imageSrc={current.renderedImageSrc ?? current.imageSrc}
           title={title}
           caption={current.caption}
           createdLabel={statusLabel}

@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -51,15 +52,28 @@ const TOOL_ORDER: BrushTool[] = ['pencil', 'crayon', 'marker'];
 export interface DrawingCanvasV2Ref {
   toDataURL: () => string | null;
   exportDrawing: () => ExportedDrawing | null;
+  exportLayeredDrawing: () => LayeredDrawingExport | null;
   clear: () => void;
   hasStrokes: () => boolean;
 }
 
+export interface LayeredDrawingExport {
+  compositeDataUrl: string;
+  drawingLayerDataUrl: string | null;
+  hasDrawingLayer: boolean;
+  width: number;
+  height: number;
+  sizeBytes: number;
+}
+
 export interface DrawingCanvasV2Props {
-  onDone: (dataUrl: string) => void;
+  onDone: (dataUrl: string, layers?: LayeredDrawingExport) => void;
   onBack?: () => void;
   initialBackground?: string | null;
   topAction?: ReactNode;
+  styleAccent?: string;
+  styleSecondaryAccent?: string;
+  styleName?: string;
 }
 
 interface Sparkle {
@@ -79,8 +93,18 @@ const UNDO_CAP = 30;
 const TOUCH_POINTER_ID = -1;
 
 const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
-  function DrawingCanvasV2({ onDone, onBack, initialBackground, topAction }, ref) {
+  function DrawingCanvasV2({
+    onDone,
+    onBack,
+    initialBackground,
+    topAction,
+    styleAccent,
+    styleSecondaryAccent,
+    styleName,
+  }, ref) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const backgroundCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const layerCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const activePointerRef = useRef<PointerId | null>(null);
     const activeTouchIdRef = useRef<number | null>(null);
@@ -92,13 +116,24 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
     const [sizeIndex, setSizeIndex] = useState<BrushSizeIndex>(
       BRUSH_DEFAULT_SIZE_INDEX.pencil
     );
-    const [color, setColor] = useState<string>(SWATCHES[8].hex);
+    const [color, setColor] = useState<string>(styleAccent ?? SWATCHES[8].hex);
     const [eraser, setEraser] = useState(false);
     const [hasStrokes, setHasStrokes] = useState(false);
     const [sparkles, setSparkles] = useState<Sparkle[]>([]);
     const [doneAnimating, setDoneAnimating] = useState(false);
     const sparkleIdRef = useRef(0);
     const reducedMotionRef = useRef(false);
+    const themeAccent = styleAccent ?? c.gold;
+    const themeSecondary = styleSecondaryAccent ?? c.goldLight;
+    const themeAccentSoft = styleAccent ? `${styleAccent}26` : c.goldSoft;
+    const stylePalette = useMemo(
+      () => [
+        { name: 'style accent', hex: themeAccent },
+        { name: 'style light', hex: themeSecondary },
+        ...SWATCHES,
+      ],
+      [themeAccent, themeSecondary]
+    );
 
     useEffect(() => {
       if (typeof window !== 'undefined' && window.matchMedia) {
@@ -107,6 +142,10 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
         ).matches;
       }
     }, []);
+
+    useEffect(() => {
+      if (!hasStrokes && styleAccent) setColor(styleAccent);
+    }, [hasStrokes, styleAccent]);
 
     const spawnSparkles = useCallback(
       (clientX: number, clientY: number, containerEl: HTMLDivElement) => {
@@ -161,19 +200,74 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       ctx.restore();
     }, []);
 
+    const ensureCanvasDimensions = useCallback((canvas: HTMLCanvasElement) => {
+      if (canvas.width !== CANVAS_RESOLUTION) canvas.width = CANVAS_RESOLUTION;
+      if (canvas.height !== CANVAS_RESOLUTION) canvas.height = CANVAS_RESOLUTION;
+    }, []);
+
+    const getBackgroundCanvas = useCallback(() => {
+      if (!backgroundCanvasRef.current && typeof document !== 'undefined') {
+        backgroundCanvasRef.current = document.createElement('canvas');
+      }
+      if (backgroundCanvasRef.current) {
+        ensureCanvasDimensions(backgroundCanvasRef.current);
+      }
+      return backgroundCanvasRef.current;
+    }, [ensureCanvasDimensions]);
+
+    const getLayerCanvas = useCallback(() => {
+      if (!layerCanvasRef.current && typeof document !== 'undefined') {
+        layerCanvasRef.current = document.createElement('canvas');
+      }
+      if (layerCanvasRef.current) {
+        ensureCanvasDimensions(layerCanvasRef.current);
+      }
+      return layerCanvasRef.current;
+    }, [ensureCanvasDimensions]);
+
+    const clearDrawingLayer = useCallback(() => {
+      const layerCanvas = getLayerCanvas();
+      const layerContext = layerCanvas?.getContext('2d');
+      if (!layerCanvas || !layerContext) return;
+      layerContext.clearRect(0, 0, CANVAS_RESOLUTION, CANVAS_RESOLUTION);
+    }, [getLayerCanvas]);
+
+    const renderComposite = useCallback(() => {
+      const canvas = canvasRef.current;
+      const backgroundCanvas = getBackgroundCanvas();
+      const layerCanvas = getLayerCanvas();
+      if (!canvas || !backgroundCanvas || !layerCanvas) return;
+      ensureCanvasDimensions(canvas);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, CANVAS_RESOLUTION, CANVAS_RESOLUTION);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(backgroundCanvas, 0, 0);
+      ctx.drawImage(layerCanvas, 0, 0);
+    }, [ensureCanvasDimensions, getBackgroundCanvas, getLayerCanvas]);
+
     const initCanvas = useCallback(
       (canvas: HTMLCanvasElement | null) => {
         if (!canvas) return;
-        canvas.width = CANVAS_RESOLUTION;
-        canvas.height = CANVAS_RESOLUTION;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        fillBackground(ctx);
+        ensureCanvasDimensions(canvas);
+        const backgroundCanvas = getBackgroundCanvas();
+        const backgroundContext = backgroundCanvas?.getContext('2d');
+        if (!backgroundCanvas || !backgroundContext) return;
+        fillBackground(backgroundContext);
+        clearDrawingLayer();
+        renderComposite();
         undoStackRef.current = [];
         strokeCountRef.current = 0;
         setHasStrokes(false);
       },
-      [fillBackground]
+      [
+        clearDrawingLayer,
+        ensureCanvasDimensions,
+        fillBackground,
+        getBackgroundCanvas,
+        renderComposite,
+      ]
     );
 
     useEffect(() => {
@@ -182,11 +276,18 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
 
     // Optional initial background image
     useEffect(() => {
-      if (!initialBackground) return;
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+      const backgroundCanvas = getBackgroundCanvas();
+      const ctx = backgroundCanvas?.getContext('2d');
+      if (!backgroundCanvas || !ctx) return;
+      if (!initialBackground) {
+        fillBackground(ctx);
+        clearDrawingLayer();
+        renderComposite();
+        undoStackRef.current = [];
+        strokeCountRef.current = 0;
+        setHasStrokes(false);
+        return;
+      }
       const img = new Image();
       img.crossOrigin = 'anonymous';
       img.onload = () => {
@@ -198,21 +299,44 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
         const w = img.width * scale;
         const h = img.height * scale;
         ctx.drawImage(img, (CANVAS_RESOLUTION - w) / 2, (CANVAS_RESOLUTION - h) / 2, w, h);
+        clearDrawingLayer();
+        renderComposite();
         undoStackRef.current = [];
-        strokeCountRef.current = 1;
-        setHasStrokes(true);
+        strokeCountRef.current = 0;
+        setHasStrokes(false);
       };
       img.src = initialBackground;
-    }, [initialBackground, fillBackground]);
+    }, [clearDrawingLayer, fillBackground, getBackgroundCanvas, initialBackground, renderComposite]);
+
+    const buildLayeredExport = useCallback((): LayeredDrawingExport | null => {
+      const canvas = canvasRef.current;
+      if (!canvas) return null;
+      const exported = exportDrawing(canvas);
+      const hasDrawingLayer = strokeCountRef.current > 0;
+      const drawingLayerDataUrl =
+        hasDrawingLayer && layerCanvasRef.current
+          ? layerCanvasRef.current.toDataURL('image/png')
+          : null;
+
+      return {
+        compositeDataUrl: exported.dataUrl,
+        drawingLayerDataUrl,
+        hasDrawingLayer,
+        width: exported.width,
+        height: exported.height,
+        sizeBytes: exported.sizeBytes + estimateDataUrlBytes(drawingLayerDataUrl),
+      };
+    }, []);
 
     // ── Imperative API ──────────────────────────────────────────
     useImperativeHandle(ref, () => ({
       toDataURL: () => canvasRef.current?.toDataURL('image/png') ?? null,
       exportDrawing: () =>
         canvasRef.current ? exportDrawing(canvasRef.current) : null,
+      exportLayeredDrawing: () => buildLayeredExport(),
       clear: () => initCanvas(canvasRef.current),
       hasStrokes: () => strokeCountRef.current > 0,
-    }));
+    }), [buildLayeredExport, initCanvas]);
 
     // ── Pointer → canvas coord mapping ──────────────────────────
     const getCanvasPos = (clientX: number, clientY: number): Point | null => {
@@ -233,7 +357,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
     };
 
     const pushUndo = () => {
-      const canvas = canvasRef.current;
+      const canvas = getLayerCanvas();
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
@@ -249,20 +373,25 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
     };
 
     const handleUndo = () => {
-      const canvas = canvasRef.current;
+      const canvas = getLayerCanvas();
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       const snapshot = undoStackRef.current.pop();
       if (snapshot) {
         ctx.putImageData(snapshot, 0, 0);
+        renderComposite();
         strokeCountRef.current = Math.max(0, strokeCountRef.current - 1);
         setHasStrokes(strokeCountRef.current > 0);
       }
     };
 
     const handleClear = () => {
-      initCanvas(canvasRef.current);
+      clearDrawingLayer();
+      renderComposite();
+      undoStackRef.current = [];
+      strokeCountRef.current = 0;
+      setHasStrokes(false);
     };
 
     const beginStrokeAt = (clientX: number, clientY: number): boolean => {
@@ -275,21 +404,21 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       lastPosRef.current = pos;
 
       // Draw a tiny dot at the start so a single-tap is visible
-      const ctx = canvas.getContext('2d');
+      const layerCanvas = getLayerCanvas();
+      const ctx = layerCanvas?.getContext('2d');
       if (ctx) {
         if (eraser) {
           eraserStroke(ctx, pos, pos, currentSize);
         } else {
           strokeForTool(tool, ctx, pos, pos, currentSize, color);
         }
+        renderComposite();
       }
       return true;
     };
 
     const continueStrokeAt = (clientX: number, clientY: number): void => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
+      const ctx = getLayerCanvas()?.getContext('2d');
       if (!ctx) return;
 
       const pos = getCanvasPos(clientX, clientY);
@@ -301,6 +430,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       } else {
         strokeForTool(tool, ctx, from, pos, currentSize, color);
       }
+      renderComposite();
       lastPosRef.current = pos;
     };
 
@@ -308,8 +438,10 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       activePointerRef.current = null;
       activeTouchIdRef.current = null;
       lastPosRef.current = null;
-      strokeCountRef.current += 1;
-      setHasStrokes(true);
+      if (!eraser) {
+        strokeCountRef.current += 1;
+      }
+      setHasStrokes(strokeCountRef.current > 0);
 
       // Sparkle feedback at the stroke end point
       if (
@@ -405,15 +537,23 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
       // Brief celebration: gold pulse + subtle scale on the canvas frame,
       // then export + navigate.
       if (reducedMotionRef.current) {
-        const exported = exportDrawing(canvas);
-        onDone(exported.dataUrl);
+        const layeredExport = buildLayeredExport();
+        const exported = layeredExport ?? exportDrawing(canvas);
+        onDone(
+          'compositeDataUrl' in exported ? exported.compositeDataUrl : exported.dataUrl,
+          layeredExport ?? undefined
+        );
         return;
       }
 
       setDoneAnimating(true);
       window.setTimeout(() => {
-        const exported = exportDrawing(canvas);
-        onDone(exported.dataUrl);
+        const layeredExport = buildLayeredExport();
+        const exported = layeredExport ?? exportDrawing(canvas);
+        onDone(
+          'compositeDataUrl' in exported ? exported.compositeDataUrl : exported.dataUrl,
+          layeredExport ?? undefined
+        );
       }, 1200);
     };
 
@@ -475,7 +615,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
               textAlign: 'center',
             }}
           >
-            Start with a photo or draw anything.
+            {styleName ? 'Draw the memory.' : 'Start with a photo or draw anything.'}
           </h1>
           <div
             className="drawing-top-action flex items-center justify-end"
@@ -491,7 +631,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
             style={{
               minWidth: 64,
               height: 42,
-              background: hasStrokes ? c.gold : c.border,
+              background: hasStrokes ? themeAccent : c.border,
               color: c.cream,
               fontFamily: 'var(--font-display)',
               fontSize: 15,
@@ -538,7 +678,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                 transform: doneAnimating ? 'scale(1.015)' : 'scale(1)',
                 transition: 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
                 boxShadow: doneAnimating
-                  ? `0 0 0 4px ${c.gold}, 0 0 48px 8px oklch(72% 0.145 75 / 0.5)`
+                  ? `0 0 0 4px ${themeAccent}, 0 0 48px 8px ${themeAccentSoft}`
                   : `inset 0 0 0 1px ${c.border}, 0 8px 32px ${c.shadow}`,
                 animation: doneAnimating
                   ? 'tfn-done-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
@@ -585,7 +725,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                   top: s.y - 6,
                   width: 12,
                   height: 12,
-                  color: c.gold,
+                  color: themeAccent,
                   animation: 'tfn-sparkle 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
                   filter: 'drop-shadow(0 0 4px oklch(72% 0.145 75 / 0.6))',
                   pointerEvents: 'none',
@@ -886,7 +1026,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
           {/* Row 1: color swatches */}
           <div className="relative color-strip">
             <div className="color-row flex items-center justify-center gap-1.5 mb-3 flex-wrap">
-              {SWATCHES.map((s) => (
+              {stylePalette.map((s) => (
                 <button
                   key={s.name}
                   type="button"
@@ -900,7 +1040,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                     background: s.hex,
                     border:
                       color === s.hex
-                        ? `3px solid ${c.gold}`
+                        ? `3px solid ${themeAccent}`
                         : `2px solid ${c.border}`,
                     padding: 0,
                   }}
@@ -929,8 +1069,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                   style={{
                     width: 52,
                     height: 52,
-                    background: tool === t && !eraser ? c.goldSoft : c.cream,
-                    border: `2px solid ${tool === t && !eraser ? c.gold : c.border}`,
+                    background: tool === t && !eraser ? themeAccentSoft : c.cream,
+                    border: `2px solid ${tool === t && !eraser ? themeAccent : c.border}`,
                     color: c.brown,
                     fontFamily: 'var(--font-body)',
                     fontSize: 11,
@@ -967,7 +1107,7 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                       width: 48,
                       height: 48,
                       background: c.cream,
-                      border: `2px solid ${isActive ? c.gold : c.border}`,
+                      border: `2px solid ${isActive ? themeAccent : c.border}`,
                       padding: 0,
                     }}
                   >
@@ -994,8 +1134,8 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
                 style={{
                   width: 52,
                   height: 52,
-                  background: eraser ? c.goldSoft : c.cream,
-                  border: `2px solid ${eraser ? c.gold : c.border}`,
+                  background: eraser ? themeAccentSoft : c.cream,
+                  border: `2px solid ${eraser ? themeAccent : c.border}`,
                   color: c.brown,
                   fontFamily: 'var(--font-body)',
                   fontSize: 11,
@@ -1054,6 +1194,13 @@ const DrawingCanvasV2 = forwardRef<DrawingCanvasV2Ref, DrawingCanvasV2Props>(
 );
 
 export default DrawingCanvasV2;
+
+function estimateDataUrlBytes(dataUrl: string | null): number {
+  if (!dataUrl) return 0;
+  const comma = dataUrl.indexOf(',');
+  const payload = comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl;
+  return Math.ceil((payload.length * 3) / 4);
+}
 
 function ToolIcon({ tool, active }: { tool: BrushTool; active: boolean }) {
   const stroke = active ? c.gold : c.brown;

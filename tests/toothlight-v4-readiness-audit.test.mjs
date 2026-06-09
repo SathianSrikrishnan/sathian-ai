@@ -1,0 +1,138 @@
+import { existsSync, readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+const root = process.cwd()
+const docPath = resolve(root, 'docs/toothlight/v4/11-first-50-readiness-audit.md')
+const failures = []
+
+function assert(condition, message) {
+  if (!condition) failures.push(message)
+}
+
+assert(existsSync(docPath), 'first-50 readiness audit doc must exist')
+
+const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : ''
+
+for (const text of [
+  'First 50 Readiness Audit',
+  'ready for first-50 trusted preview test; production/on-ramp still deferred',
+  'ready for Sathian to put in front of a small trusted first-50 preview group',
+  'http://localhost:3000/toothlight',
+  'http://localhost:3000/toothlight/make',
+  'http://192.168.1.104:3000/toothlight/make',
+  'public/toothlight/style-objects/product-renders/v4/',
+  'Simplified make UI',
+  'talk/type memory field',
+  'mobile next-action strip',
+  'Tell it.',
+  'primary save button',
+  'Make it a Toothlight',
+  'Mobile Chrome',
+  'Mobile Safari',
+  'npx.cmd tsc --noEmit --pretty false --incremental false',
+  'Production build',
+  'npm.cmd run build',
+  'passed after the generated `.next` cache was rebuilt with write access',
+  'Clean Vercel preview',
+  'dpl_254uYk49yxhAF6sBWMw414Kgufgb',
+  '3fc7daa5a0c715d32bdc876c6522c4b66f5f2c2c',
+  'dpl_FzRxG5oBZN32jdJgv6LndfZiRfVr',
+  '827ed6535fe4f382fdb02ccfc641bc004ac6c2d5',
+  'https://sathian-onqxdqnk1-sathiansrikrishnans-projects.vercel.app',
+  'dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px',
+  'a4a50bd6775ac705b7551cfa6611e56b4fd85c41',
+  'Preview environment health',
+  'https://toothlight-preview.sathian.ai',
+  'caece212b50aa12844245fc35fcc76fa27867a35',
+  '1e4ade85edaf5718327e7bc24d34be7ca97dc576',
+  'Protected preview bypass',
+  'shareable-link protection bypass',
+  'Protected make-page browser proof',
+  'Protected save-auth boundary proof',
+  'Server-backed validation Toothlight',
+  '22724752-7918-4d97-a9b0-df863a7960d9',
+  'sealed future note',
+  'family contribution nodes',
+  'ordinary HTTP',
+  'headless mobile-sized Playwright browser',
+  'Google sign-in',
+  '8 passed',
+  'mobile-sized protected preview screenshot',
+  'fresh protected-preview save-boundary probe',
+  'state `/toothlight/make?save=1`',
+  'family demo image fallback',
+  'Moon Window product image',
+  'Moon Window Toothlight card instead of the old placeholder',
+  'family action probe',
+  '/api/toothlight/demo-toothlight/family-contribution',
+  'family completion link appeared',
+  'Continuation check on 2026-06-08',
+  '8ad68ecdf25e0ce92632526b1121d215cb21dedf',
+  'clean verification worktree',
+  'toothlight-v4-*.test.mjs',
+  'Latest clean PR checkpoint',
+  'Latest protected preview route checks',
+  'Latest protected-preview save-boundary probe',
+  'Preview environment readiness on 2026-06-08',
+  'Fresh environment-enabled preview deployment',
+  'Protected Vercel curl checks',
+  '/api/toothlight/health',
+  'tfn_product_events',
+  'toothlight-images',
+  'Minimal protected-deployment save boundary check',
+  'Local retest after the checkpoint fast-forward',
+  '0.0.0.0:3000',
+  'six product object Light Style images with keeper portrait chips',
+  'mobile style carousel visible before the saved preview',
+  'Latest protected Vercel curl checks',
+  'Latest `/api/toothlight/health` check',
+  'Latest style/story preview deployment',
+  'Latest unauthenticated save-boundary check',
+  'Mobile voice record-first checkpoint',
+  'Touch devices now start Voice Assist in `Record` mode',
+  'toothlight-v4-local-mobile-save.spec.ts',
+  'toothlight-v4-voice-assist.spec.ts',
+  'Mobile proof extension on 2026-06-08',
+  'same Toothlight memory',
+  'sealed parent note preview',
+  'family note preview',
+  'Toothlight card title',
+  'Mobile reliability patch on 2026-06-08',
+  'audio/mp4',
+  'm4a',
+  'HTTPS-required message',
+  'compact save payload path',
+  'dpl_5RLGz6DVuKuYq2WFABUc1UkkuCkq',
+  '86073de885999212bb873a7872e45dc096bf0e98',
+  'https://sathian-58txa3v7e-sathiansrikrishnans-projects.vercel.app',
+  'dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px',
+  'a4a50bd6775ac705b7551cfa6611e56b4fd85c41',
+  'https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app',
+  'full mobile proof passed with `22 passed`',
+  'Public no-secret `/api/toothlight/health` returned protected `not_found`',
+  'Protected `vercel curl` checks',
+  'missing multipart form-data error',
+  '/api/toothlight/voice-transcribe',
+  'User phone mic check on 2026-06-09',
+  'Signed-in validation receipt closed on 2026-06-09',
+  'Production/on-ramp launch',
+  'token_expired',
+  'MoonPay',
+  'Coinbase',
+  'TOOTHLIGHT_NOTE_ENCRYPTION_KEY',
+  'OPENAI_API_KEY',
+  'TOOTHLIGHT_ENABLE_VOICE_TRANSCRIBE=true',
+  'Invite a very small trusted group',
+]) {
+  assert(doc.includes(text), `readiness audit must include ${text}`)
+}
+
+if (failures.length > 0) {
+  console.error(`FAIL toothlight-v4-readiness-audit: ${failures.length} issue(s)`)
+  for (const failure of failures) {
+    console.error(`- ${failure}`)
+  }
+  process.exit(1)
+}
+
+console.log('PASS toothlight-v4-readiness-audit')

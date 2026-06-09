@@ -28,8 +28,15 @@ CREATE TABLE IF NOT EXISTS tfn_toothlights (
   child_name TEXT,
   tooth_name TEXT NOT NULL,
   caption TEXT,
-  glow_id TEXT NOT NULL DEFAULT 'starlace',
+  glow_id TEXT NOT NULL DEFAULT 'golden-locket',
   image_uri TEXT,
+  source_image_uri TEXT,
+  artwork_image_uri TEXT,
+  drawing_layer_image_uri TEXT,
+  rendered_image_uri TEXT,
+  treatment_id TEXT,
+  treatment_version TEXT,
+  layer_manifest JSONB NOT NULL DEFAULT '{}'::jsonb,
   metadata_uri TEXT,
   cnft_asset_id TEXT,
   smile_fund_status TEXT NOT NULL DEFAULT 'none'
@@ -40,6 +47,15 @@ CREATE TABLE IF NOT EXISTS tfn_toothlights (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE tfn_toothlights
+  ADD COLUMN IF NOT EXISTS source_image_uri TEXT,
+  ADD COLUMN IF NOT EXISTS artwork_image_uri TEXT,
+  ADD COLUMN IF NOT EXISTS drawing_layer_image_uri TEXT,
+  ADD COLUMN IF NOT EXISTS rendered_image_uri TEXT,
+  ADD COLUMN IF NOT EXISTS treatment_id TEXT,
+  ADD COLUMN IF NOT EXISTS treatment_version TEXT,
+  ADD COLUMN IF NOT EXISTS layer_manifest JSONB NOT NULL DEFAULT '{}'::jsonb;
 
 CREATE INDEX IF NOT EXISTS idx_tfn_toothlights_user_id
   ON tfn_toothlights(user_id);

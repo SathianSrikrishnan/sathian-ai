@@ -2,6 +2,7 @@ export const STARTER_MAGIC_CREDITS = 3
 export const MAGIC_GENERATION_COST_USD = 0.04
 export const MAGIC_PROVIDER = "fal"
 export const MAGIC_MODEL = "fal-ai/flux-pro/kontext"
+export const MAGIC_LAYERED_MODEL = "fal-ai/flux-pro/kontext/multi"
 
 export const MAGIC_STYLES = [
   {
@@ -10,26 +11,44 @@ export const MAGIC_STYLES = [
     shortLabel: "Glow",
     tone: "warm gold, parchment wings, soft moonlit tooth glow",
     description: "A gentle TFN house style with gold light and storybook warmth.",
+    photoEffect:
+      "warm the whole photo into golden locket glass, lift tooth/smile highlights, add translucent keepsake shine, paper grain, and soft edge depth",
+    drawingEffect:
+      "remake child strokes as raised gold enamel, mint glints, tiny flecks, and soft luminous linework that follows the original drawing placement",
+    transformationBrief:
+      "the result should look like the same memory sealed inside a magical locket, not a photo with a sticker on top",
     prompt:
-      "transform the drawing into a warm Tooth Fairy Network keepsake with luminous gold edges, parchment-wing texture, soft moonlight, and a handmade memory-card finish",
+      "transform the whole image into a warm Tooth Fairy Network keepsake edit with luminous gold edges, parchment-wing texture, soft moonlight, handmade memory-card finish, and restyled child marks that become polished golden hand-drawn accents",
   },
   {
     id: "storybook-ink",
     label: "Storybook Ink",
     shortLabel: "Ink",
     tone: "inked picture-book lines, hand-painted wash, textured paper",
-    description: "A refined picture-book version that still feels drawn by a child.",
+    description: "A refined picture-book texture that keeps the original memory visible.",
+    photoEffect:
+      "translate the photo into ink-wash texture with paper tooth, graphite edge detail, lifted whites, softened color, and a hand-printed storybook surface",
+    drawingEffect:
+      "convert child marks and handwriting into imperfect ink, colored-pencil fill, stamped linework, and page-integrated lettering",
+    transformationBrief:
+      "the result should feel like a picture-book plate made from the real photo, with the person still recognizable",
     prompt:
-      "transform the drawing into a hand-inked children's storybook illustration with visible paper texture, gentle painted washes, and imperfect expressive linework",
+      "transform the whole image into a hand-inked children's storybook plate with visible paper texture, painted washes, expressive ink edges, and child handwriting restyled into charming picture-book lettering",
   },
   {
     id: "watercolor-memory",
     label: "Watercolor Memory",
     shortLabel: "Water",
     tone: "transparent watercolor, soft bloom, warm paper grain",
-    description: "A soft keepsake wash for tender, quiet drawings.",
+    description: "A soft keepsake wash for tender, quiet photos and drawings.",
+    photoEffect:
+      "wash the entire photo into translucent watercolor with pigment blooms, softened edges, gentle paper grain, and warm tooth-focused light",
+    drawingEffect:
+      "turn child strokes into translucent painted marks, soft bleeds, and airy color blooms that still trace the child's idea",
+    transformationBrief:
+      "the result should feel like the same memory painted into a tender watercolor time capsule",
     prompt:
-      "transform the drawing into a luminous watercolor keepsake with soft pigment blooms, warm paper grain, delicate tooth light, and airy negative space",
+      "transform the whole image into a luminous watercolor memory with soft pigment blooms, warm paper grain, delicate tooth light, airy negative space, and child strokes softened into translucent painted marks",
   },
   {
     id: "pencil-charm",
@@ -37,17 +56,29 @@ export const MAGIC_STYLES = [
     shortLabel: "Pencil",
     tone: "colored pencil, graphite, smudged paper, handmade charm",
     description: "A sketchbook style that preserves roughness and small marks.",
+    photoEffect:
+      "reduce the photo into tactile colored-pencil contrast, graphite smudges, stitched paper texture, and visible sketchbook fibers",
+    drawingEffect:
+      "rebuild child marks as layered pencil, stitched thread, star-pinned charm marks, and hand-rubbed color",
+    transformationBrief:
+      "the result should feel handmade and materially different, like a treasured sketchbook charm",
     prompt:
-      "transform the drawing into a colored-pencil and graphite charm with visible sketch strokes, soft smudges, and a treasured notebook feeling",
+      "transform the whole image into a treasured sketchbook page with colored-pencil charm marks, graphite smudges, notebook texture, and child marks restyled as intentional pencil doodles",
   },
   {
     id: "cartoon-3d",
-    label: "3D Cartoon",
+    label: "Soft Studio Depth",
     shortLabel: "3D",
     tone: "3D cartoon, clay-like depth, soft studio light",
-    description: "A bigger wow moment with toy-like depth and rounded light.",
+    description: "A bigger wow moment with depth and rounded light without replacing the memory.",
+    photoEffect:
+      "make the whole photo more graphic and dimensional with poster color, rounded studio light, soft depth, satin highlights, and gentle abstraction",
+    drawingEffect:
+      "turn child marks into glossy gel-marker stickers, color-separated edges, raised line shine, and dimensional doodle accents",
+    transformationBrief:
+      "the result should look like a Galaxy-style creative photo edit: obviously transformed while identity and composition remain intact",
     prompt:
-      "transform the drawing into a 3D cartoon keepsake with soft clay-like depth, rounded forms, cozy studio light, and playful storybook dimension",
+      "transform the whole image with soft studio depth, rounded light, cozy dimensional highlights, playful storybook atmosphere, and child lines converted into raised glossy sticker-like strokes",
   },
   {
     id: "tradition-magic",
@@ -55,8 +86,14 @@ export const MAGIC_STYLES = [
     shortLabel: "Story",
     tone: "the current story's cultural palette and keeper magic",
     description: "Adapts the transformation to the story the child just read.",
+    photoEffect:
+      "wrap the whole photo in story-specific lantern paper, symbolic palette, vellum texture, warm depth, and subtle cultural motif light",
+    drawingEffect:
+      "remake child marks into wax-pencil lantern light, paper-cut edges, note accents, and symbolic handmade details from the story world",
+    transformationBrief:
+      "the result should feel like the memory belongs inside the Tooth Fairy Network story world without replacing the real family moment",
     prompt:
-      "transform the drawing into a keepsake shaped by the selected tooth tradition, using its keeper, landscape, color palette, and ritual details as subtle magical framing",
+      "transform the whole image with the selected tooth tradition's keeper-light, landscape palette, symbolic motifs, ritual details, and child marks restyled into that tradition's handmade visual language",
   },
 ] as const
 
@@ -139,16 +176,30 @@ export function getTraditionMagic(tradition: string | null | undefined): string 
 export function buildMagicPrompt(input: {
   style: MagicStyle
   tradition: string | null | undefined
+  layerMode?: "layered" | "flattened"
 }): string {
   const traditionMagic = getTraditionMagic(input.tradition)
+  const layerInstructions =
+    input.layerMode === "layered"
+      ? [
+          "You are receiving layer-aware references: image 1 is the flattened composition showing the real photo with the child's drawings in exact placement, image 2 is the real source photo for identity and camera reference, and image 3 is a transparent child drawing layer with handwriting or marks.",
+          "Treat image 1 as the primary image to edit. Preserve image 2 as the identity anchor. Use image 3 to understand every child mark, then transform those marks into integrated designed elements, magical lettering, sticker-like shine, light trails, texture, or story symbols.",
+          "Do not leave the transparent child drawing layer pasted unchanged on top. Restyle it so the marks feel AI-enhanced and part of the image, while the child can still recognize what they drew.",
+        ]
+      : [
+          "Read the supplied image as one flattened memory and restyle the whole image, including any visible child marks or handwriting.",
+        ]
 
   return [
-    "Preserve the child's original drawing as the emotional source of the image.",
-    "Keep the same overall composition, silhouette, placement, childlike proportions, imperfect marks, color choices, and any handwriting or note-like details.",
-    "Do not replace the child's idea with a professional illustration, do not erase the handmade feeling, and do not make the image look like generic stock art.",
+    "Make a meaningful global image edit so the whole picture changes, while the original memory remains recognizable.",
+    "Preserve the real source photo as the emotional source of the image: keep face identity, skin tone, body pose, camera angle, tooth moment, room layout, and object placement recognizable.",
+    ...layerInstructions,
+    "Reinterpret child marks, imperfect lines, doodles, color choices, and handwriting as part of the selected style; restyle handwriting and drawn strokes so they feel magical and designed, not pixel-perfect or pasted back unchanged.",
+    `Treatment-specific transformation contract. Photo effect: ${input.style.photoEffect}. Drawing effect: ${input.style.drawingEffect}. Transformation brief: ${input.style.transformationBrief}.`,
+    "Do not replace the memory with a new scene, do not redraw the child as a different person, do not erase the meaning of handmade marks, and do not make the image look like generic stock art.",
     `${input.style.prompt}.`,
     `Use these Tooth Fairy Network story cues subtly: ${traditionMagic}.`,
     `Style tone: ${input.style.tone}.`,
-    "The finished image should feel like the child's drawing transformed into a magical keepsake while the child can still recognize their own work inside it.",
+    "The finished image should feel like a Samsung or Galaxy-style AI photo edit: visibly transformed, tinted, polished, abstract, and atmospheric, while the child and parent can still recognize the original moment.",
   ].join(" ")
 }

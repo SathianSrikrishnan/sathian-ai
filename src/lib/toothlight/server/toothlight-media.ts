@@ -20,10 +20,11 @@ export type ParsedDataUrlImage = {
 export type UploadToothlightImageInput = {
   userId: string
   imageSrc?: string | null
+  pathPrefix?: string
 }
 
 export async function uploadToothlightImage(
-  { userId, imageSrc }: UploadToothlightImageInput,
+  { userId, imageSrc, pathPrefix = 'rendered' }: UploadToothlightImageInput,
   client = createServiceClient(),
 ) {
   if (!imageSrc) return null
@@ -31,7 +32,8 @@ export async function uploadToothlightImage(
   if (!client) return imageSrc
 
   const image = parseDataUrlImage(imageSrc)
-  const path = `${userId}/${crypto.randomUUID()}.${image.extension}`
+  const safePrefix = pathPrefix.replace(/[^a-z0-9_-]/gi, '').toLowerCase() || 'rendered'
+  const path = `${userId}/${safePrefix}/${crypto.randomUUID()}.${image.extension}`
 
   const { error } = await client.storage.from(TOOTHLIGHT_IMAGE_BUCKET).upload(
     path,

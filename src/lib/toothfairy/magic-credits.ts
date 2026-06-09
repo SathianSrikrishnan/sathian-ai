@@ -301,6 +301,8 @@ export async function logMagicGeneration(
     enhancedImageUrl: string
     generationMs: number
     originalBytes: number
+    modelUsed?: string
+    renderMode?: string
   }
 ): Promise<void> {
   const { error } = await supabase.from("tfn_magic_generations").insert({
@@ -308,7 +310,7 @@ export async function logMagicGeneration(
     style_id: input.styleId,
     tradition_slug: input.traditionSlug,
     provider: MAGIC_PROVIDER,
-    model: MAGIC_MODEL,
+    model: input.modelUsed ?? MAGIC_MODEL,
     prompt: input.prompt,
     enhanced_image_url: input.enhancedImageUrl,
     generation_ms: input.generationMs,

@@ -24,12 +24,24 @@ for (const token of ['draft_glow', 'note_started', 'sealed', 'constellated']) {
 
 assert(component.includes('aria-label'), 'card must expose an accessible aria-label')
 assert(
+  !/Family gift linked|Gift linked/.test(component),
+  'card status language must describe family gifts without fund-style linked wording',
+)
+assert(
   !component.includes('toothlight-data'),
   'card must not depend on V3 demo memory arrays from toothlight-data.ts',
 )
 assert(
   /aspect-ratio/.test(css),
   'card CSS must define stable aspect ratio',
+)
+assert(
+  /object-fit:\s*contain/.test(css),
+  'saved Toothlight card must contain saved square artwork instead of cropping it',
+)
+assert(
+  /object-position:\s*center\s+center/.test(css),
+  'saved Toothlight card image must stay visually centered',
 )
 assert(
   /prefers-reduced-motion/.test(css),

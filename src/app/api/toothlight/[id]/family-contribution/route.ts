@@ -19,15 +19,37 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     giftAmountCents: body.giftAmountCents,
     includeGift: body.includeGift,
   }
-  const contribution =
-    process.env.NEXT_PUBLIC_TEST_MODE === 'true'
-      ? demoFamilyContribution(input)
-      : (await savePersistedFamilyContribution(input)) ?? demoFamilyContribution(input)
+  let contribution: NonNullable<Awaited<ReturnType<typeof savePersistedFamilyContribution>>> | ReturnType<typeof demoFamilyContribution>
+  if (process.env.NEXT_PUBLIC_TEST_MODE === 'true' || isDemoToothlight(params.id)) {
+    contribution = demoFamilyContribution(input)
+  } else {
+    try {
+      contribution = (await savePersistedFamilyContribution(input)) ?? demoFamilyContribution(input)
+    } catch (error) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: familyContributionErrorMessage(error),
+        },
+        { status: 500 },
+      )
+    }
+  }
 
   await logToothlightProductEvent({
     userId: null,
     toothlightId: params.id,
     eventName: 'family_contribution_demo',
+    properties: {
+      nodeKind: contribution.nodeKind,
+      noteOnly: contribution.noteOnly,
+      giftAmountCents: contribution.giftAmountCents,
+    },
+  })
+  await logToothlightProductEvent({
+    userId: null,
+    toothlightId: params.id,
+    eventName: 'family_contribution_completed',
     properties: {
       nodeKind: contribution.nodeKind,
       noteOnly: contribution.noteOnly,
@@ -44,4 +66,23 @@ async function readBody(request: NextRequest) {
   } catch {
     return {}
   }
+}
+
+function familyContributionErrorMessage(error: unknown) {
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === 'string'
+        ? error
+        : ''
+
+  if (message.includes('TOOTHLIGHT_NOTE_ENCRYPTION_KEY')) {
+    return 'Private note encryption is not configured for this preview. Add TOOTHLIGHT_NOTE_ENCRYPTION_KEY, then try again.'
+  }
+
+  return 'Contribution is not ready yet.'
+}
+
+function isDemoToothlight(toothlightId: string) {
+  return toothlightId === 'demo-toothlight'
 }

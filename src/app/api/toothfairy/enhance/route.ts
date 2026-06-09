@@ -20,12 +20,19 @@ import {
   isMagicStyleId,
   type MagicStyleId,
 } from "@/lib/toothfairy/magic-studio"
+import {
+  TOOTHLIGHT_PRODUCT_RENDER_MODE_ID,
+  buildToothlightProductPrompt,
+  normalizeToothlightStoryFocus,
+} from "@/lib/toothlight/product-render-mode"
+import { getLightStyle } from "@/lib/toothlight/visual-treatments"
 
 export const maxDuration = 60
 
 const AI_MAX_PER_HOUR = 10
 const windowMs = 60 * 60 * 1000
 const hits = new Map<string, { count: number; resetAt: number }>()
+const PREVIEW_AI_RENDER_BYPASS_USER_ID = "preview-ai-render"
 
 function checkAiRateLimit(ip: string): {
   allowed: boolean
@@ -88,6 +95,30 @@ function estimateDataUrlBytes(dataUrl: string): number {
   return Math.ceil((payload.length * 3) / 4)
 }
 
+function isValidImageDataUrl(value: unknown): value is string {
+  return typeof value === "string" && value.startsWith("data:image/")
+}
+
+function isPreviewAiRenderBypassAllowed(origin: string | null, req: NextRequest): boolean {
+  if (process.env.TOOTHLIGHT_PREVIEW_AI_RENDER_BYPASS !== "true") return false
+
+  const host =
+    origin ||
+    `${req.nextUrl.protocol}//${req.headers.get("host") ?? req.headers.get("x-forwarded-host") ?? ""}`
+
+  try {
+    const { hostname } = new URL(host)
+    return (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "toothlight-preview.sathian.ai" ||
+      hostname.endsWith("-sathiansrikrishnans-projects.vercel.app")
+    )
+  } catch {
+    return false
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     const origin = req.headers.get("origin")
@@ -138,6 +169,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
+    const previewAiRenderBypass = isPreviewAiRenderBypassAllowed(origin, req)
     const { supabase } = createRouteSupabase(req)
     supabaseForRefund = supabase
     const {
@@ -145,7 +177,7 @@ export async function POST(req: NextRequest) {
       error: userError,
     } = await supabase.auth.getUser()
 
-    if (userError || !user) {
+    if (!user && !previewAiRenderBypass) {
       return NextResponse.json(
         {
           error: "auth_required",
@@ -154,7 +186,19 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       )
     }
-    userIdForRefund = user.id
+
+    if (userError && !previewAiRenderBypass) {
+      return NextResponse.json(
+        {
+          error: "auth_required",
+          detail: "Sign in to unlock Magic Studio credits.",
+        },
+        { status: 401 }
+      )
+    }
+
+    const userIdForRender = user?.id ?? PREVIEW_AI_RENDER_BYPASS_USER_ID
+    userIdForRefund = user?.id ?? null
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
@@ -170,7 +214,20 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { drawingDataUrl, tradition, charms, style } = body
+    const {
+      drawingDataUrl,
+      sourceImageDataUrl,
+      drawingLayerDataUrl,
+      compositionImageDataUrl,
+      tradition,
+      charms,
+      style,
+      promptOverride,
+      productRenderModeId,
+      productStyleId,
+      productCreativePass,
+      productStoryFocus,
+    } = body
 
     if (!drawingDataUrl || typeof drawingDataUrl !== "string") {
       return NextResponse.json(
@@ -193,12 +250,56 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    for (const [label, value] of [
+      ["source photo", sourceImageDataUrl],
+      ["drawing layer", drawingLayerDataUrl],
+      ["composition", compositionImageDataUrl],
+    ] as const) {
+      if (value == null || value === "") continue
+      if (!isValidImageDataUrl(value)) {
+        return NextResponse.json(
+          { error: "invalid_input", detail: `${label} data is corrupted. Please try again.` },
+          { status: 400 }
+        )
+      }
+      if (value.length > 4_000_000) {
+        return NextResponse.json(
+          { error: "invalid_input", detail: `${label} image is too large. Try a smaller photo.` },
+          { status: 400 }
+        )
+      }
+    }
+
     const resolvedTradition: EnhanceTradition = VALID_TRADITIONS.has(tradition)
       ? tradition
       : "default"
     const resolvedStyle: MagicStyleId = isMagicStyleId(style)
       ? style
       : getMagicStyle(style).id
+    const productStyle = getLightStyle(
+      typeof productStyleId === "string" ? productStyleId : undefined
+    )
+    const requestLayerMode =
+      sourceImageDataUrl && drawingLayerDataUrl ? "layered" : "flattened"
+    const resolvedProductStoryFocus =
+      normalizeToothlightStoryFocus(productStoryFocus)
+    const productPromptOverride =
+      productRenderModeId === TOOTHLIGHT_PRODUCT_RENDER_MODE_ID
+        ? buildToothlightProductPrompt({
+            styleLabel: productStyle.label,
+            photoEffect: productStyle.photoEffect,
+            drawingEffect: productStyle.drawingEffect,
+            objectForm: productStyle.objectForm,
+            compositionDirective: productStyle.compositionDirective,
+            drawingIntegration: productStyle.drawingIntegration,
+            storyMotifs: productStyle.storyMotifs,
+            fairyCarryCue: productStyle.fairyCarryCue,
+            layerMode: requestLayerMode,
+            storyFocus: resolvedProductStoryFocus,
+            creativePass:
+              typeof productCreativePass === "number" ? productCreativePass : 1,
+          })
+        : undefined
 
     const resolvedCharms: EnhanceCharm[] = Array.isArray(charms)
       ? charms.filter((c: string) => VALID_CHARMS.has(c as EnhanceCharm))
@@ -217,64 +318,85 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const account = await getOrCreateMagicCreditAccount(
-      supabase,
-      user.id,
-      user.email
-    )
-
-    if (account.remainingCredits <= 0) {
-      return NextResponse.json(
-        {
-          error: "no_credits",
-          credits: serializeCredits(account),
-          detail:
-            "This account has used its starter Magic Studio credits.",
-        },
-        { status: 402 }
+    let credits: MagicCreditAccount | null = null
+    if (!previewAiRenderBypass && user) {
+      const account = await getOrCreateMagicCreditAccount(
+        supabase,
+        user.id,
+        user.email
       )
-    }
 
-    const reservedAccount = await reserveMagicCredit(supabase, user.id)
-    if (!reservedAccount) {
-      return NextResponse.json(
-        {
-          error: "no_credits",
-          credits: serializeCredits(account),
-          detail:
-            "This account has used its starter Magic Studio credits.",
-        },
-        { status: 402 }
-      )
+      if (account.remainingCredits <= 0) {
+        return NextResponse.json(
+          {
+            error: "no_credits",
+            credits: serializeCredits(account),
+            detail:
+              "This account has used its starter Magic Studio credits.",
+          },
+          { status: 402 }
+        )
+      }
+
+      const reservedAccount = await reserveMagicCredit(supabase, user.id)
+      if (!reservedAccount) {
+        return NextResponse.json(
+          {
+            error: "no_credits",
+            credits: serializeCredits(account),
+            detail:
+              "This account has used its starter Magic Studio credits.",
+          },
+          { status: 402 }
+        )
+      }
+      creditReserved = true
     }
-    creditReserved = true
 
     const result = await enhanceDrawing({
       imageDataUrl: drawingDataUrl,
+      sourceImageDataUrl,
+      drawingLayerDataUrl,
+      compositionImageDataUrl,
       tradition: resolvedTradition,
       charms: charmsForEnhance,
       style: resolvedStyle,
+      promptOverride:
+        productPromptOverride ??
+        (previewAiRenderBypass && typeof promptOverride === "string"
+          ? promptOverride
+          : undefined),
     })
-    const credits = await completeMagicCredit(supabase, user.id)
-    creditReserved = false
+    if (!previewAiRenderBypass && user) {
+      credits = await completeMagicCredit(supabase, user.id)
+      creditReserved = false
+    }
 
-    await logMagicGeneration(supabase, {
-      userId: user.id,
-      styleId: resolvedStyle,
-      traditionSlug: resolvedTradition,
-      prompt: result.prompt,
-      enhancedImageUrl: result.imageUrl,
-      generationMs: result.generationMs,
-      originalBytes: estimateDataUrlBytes(drawingDataUrl),
-    }).catch((err) => {
-      const message =
-        err instanceof Error ? err.message : "generation log failed"
-      console.error("[enhance] Generation log failed:", message)
-    })
+    if (user) {
+      await logMagicGeneration(supabase, {
+        userId: user.id,
+        styleId: resolvedStyle,
+        traditionSlug: resolvedTradition,
+        prompt: result.prompt,
+        enhancedImageUrl: result.imageUrl,
+        generationMs: result.generationMs,
+        originalBytes: estimateDataUrlBytes(drawingDataUrl),
+        renderMode: result.renderMode,
+        modelUsed: result.modelUsed,
+      }).catch((err) => {
+        const message =
+          err instanceof Error ? err.message : "generation log failed"
+        console.error("[enhance] Generation log failed:", message)
+      })
+    } else {
+      console.log(
+        `[enhance] ${userIdForRender} generation log skipped; preview bypass active`
+      )
+    }
 
     // Log latency + tradition (NOT the drawing data URL)
     console.log(
-      `[enhance] tradition=${resolvedTradition} style=${resolvedStyle} latency=${result.generationMs}ms`
+      `[enhance] tradition=${resolvedTradition} style=${resolvedStyle} mode=${result.renderMode} latency=${result.generationMs}ms`
     )
 
     return NextResponse.json({
@@ -284,7 +406,10 @@ export async function POST(req: NextRequest) {
       styleUsed: resolvedStyle,
       generationMs: result.generationMs,
       remaining: rateLimit.remaining,
-      credits: serializeCredits(credits),
+      credits: credits ? serializeCredits(credits) : undefined,
+      renderMode: result.renderMode,
+      modelUsed: result.modelUsed,
+      previewBypass: previewAiRenderBypass,
     })
   } catch (err: unknown) {
     if (creditReserved && supabaseForRefund && userIdForRefund) {

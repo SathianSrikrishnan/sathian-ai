@@ -1,0 +1,73 @@
+import { existsSync, readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+const root = process.cwd()
+const savedClientPath = resolve(root, 'src/components/toothlight/v4/SavedToothlightClient.tsx')
+const savedCssPath = resolve(root, 'src/components/toothlight/v4/SavedToothlightClient.module.css')
+const notePanelPath = resolve(root, 'src/components/toothlight/v4/FutureNotePanel.tsx')
+const familyPagePath = resolve(root, 'src/app/toothlight/t/[id]/family/page.tsx')
+const familyInviteClientPath = resolve(root, 'src/components/toothlight/v4/FamilyInviteClient.tsx')
+const familyFormPath = resolve(root, 'src/components/toothlight/v4/FamilyContributionForm.tsx')
+const familyCssPath = resolve(root, 'src/components/toothlight/v4/FamilyContributionForm.module.css')
+const failures = []
+
+function assert(condition, message) {
+  if (!condition) failures.push(message)
+}
+
+const savedClient = existsSync(savedClientPath) ? readFileSync(savedClientPath, 'utf8') : ''
+const savedCss = existsSync(savedCssPath) ? readFileSync(savedCssPath, 'utf8') : ''
+const notePanel = existsSync(notePanelPath) ? readFileSync(notePanelPath, 'utf8') : ''
+const familyPage = existsSync(familyPagePath) ? readFileSync(familyPagePath, 'utf8') : ''
+const familyInviteClient = existsSync(familyInviteClientPath) ? readFileSync(familyInviteClientPath, 'utf8') : ''
+const familyForm = existsSync(familyFormPath) ? readFileSync(familyFormPath, 'utf8') : ''
+const familyCss = existsSync(familyCssPath) ? readFileSync(familyCssPath, 'utf8') : ''
+
+assert(/Toothlight time capsule/.test(savedClient), 'saved page must frame the object as a Toothlight time capsule')
+for (const label of ['Memory', 'Parent note', 'Family note + gift']) {
+  assert(savedClient.includes(label), `saved page must show ${label} in the capsule checklist`)
+}
+assert(!savedClient.includes('Smile Fund optional'), 'saved page must not treat Smile Fund as a separate post-save step')
+assert(!/smileFundStatus:\s*'active'/.test(savedClient), 'saved page must not force Smile Fund active before a family gift exists')
+assert(/privateNoteStatus/.test(savedClient), 'saved page must compute private note status separately from public card state')
+assert(/nextStepLabel/.test(savedClient), 'saved page must compute a short next action label')
+assert(/nextStepHelper/.test(savedClient), 'saved page must compute a short next action helper')
+assert(/nextStepPanel/.test(savedClient + savedCss), 'saved page must include a clear next-step panel')
+assert(/capsuleChecklist/.test(savedClient + savedCss), 'saved page must style the capsule checklist')
+assert(/Invite family/.test(savedClient), 'saved page must make family invitation the post-seal next action')
+assert(/Note first\. Gift optional\./.test(savedClient), 'saved page must explain the family invite as one note-first optional gift path')
+assert(!/audit page/i.test(savedClient), 'saved page copy must not describe the customer-facing object as an audit page')
+assert(!/One private note closes the time capsule|Family can add a note and optional gift for later|Saved\. Seal the note, then invite family|Family note or gift|Add a note and optional gift/.test(savedClient), 'saved page must avoid long explanatory next-step copy')
+
+assert(/Seal the note/.test(notePanel), 'future note panel must lead with sealing the parent note')
+assert(/Tap mic\. Talk\. Seal\./.test(notePanel), 'future note voice prompt must be fast enough for the practical parent flow')
+assert(/Next: invite family\./.test(notePanel), 'sealed note confirmation must point to the family invite path')
+assert(/View saved Toothlight/.test(notePanel), 'sealed note confirmation must link back to the saved Toothlight')
+assert(!/Small note starter/.test(notePanel), 'future note handoff must not ask for two parent notes')
+
+assert(/Invite family/.test(familyPage + familyInviteClient + familyForm), 'family flow must read as an optional family invite step')
+assert(/readLocalToothlight/.test(familyInviteClient), 'family invite must carry forward the saved Toothlight visual')
+assert(!/Kai's Toothlight/.test(familyPage + familyInviteClient), 'family invite must not show the demo Toothlight after a real save')
+assert(!/FamilyNodeOrbit/.test(familyForm), 'family form must not show a second unrelated visual')
+assert(/Family note \+ gift/.test(familyInviteClient + familyForm), 'family form must combine note and gift as one family action')
+assert(/Note first\. Gift optional\./.test(familyPage + familyInviteClient + familyForm + savedClient), 'family flow must frame note as the default path')
+assert(/VoiceAssistField/.test(familyForm), 'family invite must use the voice-assisted note field')
+assert(/Tap mic\. Talk\. Add note\./.test(familyForm), 'family invite voice copy must stay short')
+assert(/useState\(false\)/.test(familyForm), 'family gift checkbox must default off')
+assert(/Add optional gift/.test(familyForm), 'family gift control must read as part of the same family action')
+assert(/Add family note/.test(familyForm), 'family primary CTA must add the contribution to the Toothlight')
+assert(/Add note \+ gift/.test(familyForm), 'family primary CTA must switch when a gift is included')
+assert(/View saved Toothlight/.test(familyForm), 'family completion must offer a return to the saved Toothlight')
+assert(/familyNoteDefault/.test(familyCss), 'family form must style the note-first default state')
+assert(!/Gift linked|Family gift linked/.test(familyInviteClient + familyForm + savedClient), 'family copy must not expose fund-style linked language')
+assert(!/connect wallet|wallet-first|crypto-first/i.test(familyPage + familyForm), 'family flow must avoid wallet-first language')
+
+if (failures.length > 0) {
+  console.error(`FAIL toothlight-v4-post-save-loop: ${failures.length} issue(s)`)
+  for (const failure of failures) {
+    console.error(`- ${failure}`)
+  }
+  process.exit(1)
+}
+
+console.log('PASS toothlight-v4-post-save-loop')

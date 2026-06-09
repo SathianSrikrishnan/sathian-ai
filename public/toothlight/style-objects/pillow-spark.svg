@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 450" role="img" aria-label="Pillow spark Toothlight object">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff9df"/>
+      <stop offset=".55" stop-color="#f3e9ff"/>
+      <stop offset="1" stop-color="#eaf7ef"/>
+    </linearGradient>
+    <linearGradient id="fabric" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7cd"/>
+      <stop offset=".48" stop-color="#f7d873"/>
+      <stop offset="1" stop-color="#b08af3"/>
+    </linearGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="170%" height="170%">
+      <feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#3b2b66" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <rect width="640" height="450" rx="34" fill="url(#bg)"/>
+  <g opacity=".24" stroke="#3b2b66" stroke-width="1">
+    <path d="M38 78l560 292M74 36l526 274M12 154l476 248"/>
+  </g>
+  <g filter="url(#softShadow)">
+    <rect x="174" y="100" width="292" height="248" rx="58" fill="url(#fabric)"/>
+    <rect x="196" y="122" width="248" height="204" rx="44" fill="#fff9df" opacity=".36"/>
+    <rect x="204" y="130" width="232" height="188" rx="36" fill="none" stroke="#3b2b66" stroke-width="5" stroke-dasharray="10 12" opacity=".42"/>
+    <path d="M204 162h232M204 204h232M204 246h232M204 288h232" stroke="#3b2b66" stroke-width="2" opacity=".12"/>
+    <path d="M231 245c33-43 71-51 116-24 28 17 51 17 77 0" fill="none" stroke="#b08af3" stroke-width="11" stroke-linecap="round" opacity=".78"/>
+    <path d="M246 285c36 20 71 22 104 6" fill="none" stroke="#f7d873" stroke-width="12" stroke-linecap="round"/>
+    <path d="M319 86c0-25 48-25 48 0v35h-48z" fill="#b08af3" opacity=".72"/>
+  </g>
+  <g fill="#fff6b5" stroke="#3b2b66" stroke-opacity=".28" stroke-width="2">
+    <path d="M122 105l8 19 20 7-19 8-8 20-8-20-19-8 20-7z"/>
+    <path d="M501 280l6 15 16 5-15 7-6 16-7-16-15-7 16-5z"/>
+    <path d="M500 136l5 12 13 4-12 5-5 13-5-13-12-5 13-4z"/>
+  </g>
+</svg>

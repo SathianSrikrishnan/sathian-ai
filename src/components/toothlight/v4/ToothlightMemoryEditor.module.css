@@ -1,0 +1,198 @@
+.editor {
+  display: grid;
+  gap: 0.86rem;
+}
+
+.intro {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #9d6b17;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0;
+  max-width: 11ch;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.18rem, 14vw, 3.35rem);
+  line-height: 0.94;
+  letter-spacing: 0;
+}
+
+.intro p:not(.eyebrow) {
+  margin: 0;
+  color: #35494e;
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  gap: 0.74rem;
+  overflow: hidden;
+  border: 1px solid rgba(23, 38, 42, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--editor-accent), #fff 80%), transparent 42%),
+    linear-gradient(220deg, color-mix(in srgb, var(--editor-secondary), #fff 78%), #fffaf0);
+  padding: 0.72rem;
+}
+
+.media {
+  position: relative;
+  display: grid;
+  min-height: 14rem;
+  overflow: hidden;
+  border: 1px solid rgba(23, 38, 42, 0.1);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.86), transparent 32%),
+    color-mix(in srgb, var(--editor-accent), #fff 88%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.66);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  min-height: 14rem;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: grid;
+  min-height: 14rem;
+  place-items: center;
+  color: rgba(23, 38, 42, 0.58);
+  font-size: 1.02rem;
+  font-weight: 900;
+  line-height: 1.25;
+  padding: 1rem;
+  text-align: center;
+}
+
+.styleAura,
+.symbolCue {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.styleAura {
+  background:
+    linear-gradient(110deg, transparent 0 8%, color-mix(in srgb, var(--editor-accent), transparent 18%) 25%, transparent 50%),
+    radial-gradient(circle at 82% 72%, color-mix(in srgb, var(--editor-secondary), transparent 20%), transparent 34%);
+  mix-blend-mode: screen;
+  opacity: 0.98;
+}
+
+.symbolCue {
+  inset: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 3.4rem color-mix(in srgb, var(--editor-accent), transparent 58%),
+    0 0 0 1px color-mix(in srgb, var(--editor-secondary), transparent 66%);
+}
+
+.controls {
+  display: grid;
+  gap: 0.58rem;
+}
+
+.photoActions,
+.studioActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.photoActions button,
+.studioActions button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(23, 38, 42, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #25373c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.studioActions {
+  grid-template-columns: 1fr;
+}
+
+.studioActions button {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--editor-accent), #fff 18%), var(--editor-accent));
+  color: #1f2b15;
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--editor-accent), transparent 78%);
+}
+
+.brushSet {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  border: 1px solid rgba(23, 38, 42, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.62rem 0.68rem;
+}
+
+.brushSet span {
+  color: #607276;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.swatches {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.32rem;
+}
+
+.swatches i {
+  width: 1.05rem;
+  aspect-ratio: 1;
+  border: 2px solid rgba(255, 255, 255, 0.76);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(23, 38, 42, 0.1);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (min-width: 860px) {
+  .intro h1 {
+    font-size: 3.74rem;
+  }
+}
