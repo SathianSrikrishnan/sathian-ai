@@ -15,7 +15,7 @@ const receipt = existsSync(receiptPath) ? readFileSync(receiptPath, 'utf8') : ''
 
 for (const text of [
   'Toothlight Signed-In Validation Receipt',
-  'Status: pending signed-in browser/mobile pass',
+  'Status: pending signed-in save/family/reveal evidence; phone mic pass reported by user',
   'Preview alias: `https://toothlight-preview.sathian.ai`',
   'Protected make route: `https://toothlight-preview.sathian.ai/toothlight/make`',
   'Current clean preview deployment: `https://sathian-k0ed27oqg-sathiansrikrishnans-projects.vercel.app`',
@@ -28,6 +28,7 @@ for (const text of [
   'Quick Failure Capture',
   'Acceptance Checks',
   'Issues Found',
+  'Current Evidence Audit',
   'Decision',
   'First-50 invite decision: hold',
   'audio/mp4',
@@ -42,6 +43,9 @@ for (const text of [
   'Last button tapped:',
   'Mic permission state:',
   'Whether typing still works:',
+  'pass by user report on 2026-06-09',
+  'same-day local-preview saves succeeded',
+  'saved Toothlight URL, parent note URL, family invite URL, and reveal preview URL',
 ]) {
   assert(receipt.includes(text), `receipt must include ${text}`)
 }
@@ -76,7 +80,7 @@ for (const evidenceField of [
 }
 
 assert(/No wallet, MoonPay, Coinbase, or on-ramp step was required/.test(receipt), 'receipt must keep provider/on-ramp work outside the first-50 gate')
-assert(/pending[\s\S]*signed-in browser\/mobile validation evidence pending/.test(receipt), 'receipt must remain pending until real signed-in evidence is recorded')
+assert(/pending[\s\S]*signed-in save\/family\/reveal validation evidence pending/.test(receipt), 'receipt must remain pending until real signed-in save/family/reveal evidence is recorded')
 
 if (failures.length > 0) {
   console.error(`FAIL toothlight-v4-signed-in-validation-receipt: ${failures.length} issue(s)`)

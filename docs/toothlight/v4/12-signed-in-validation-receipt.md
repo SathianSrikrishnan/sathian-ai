@@ -1,7 +1,7 @@
 # Toothlight Signed-In Validation Receipt
 
-Date: pending
-Status: pending signed-in browser/mobile pass
+Date: 2026-06-09
+Status: pending signed-in save/family/reveal evidence; phone mic pass reported by user
 
 This receipt is the final proof artifact for the first-50 gate. Fill it after one real signed-in parent completes the protected preview on a normal browser and one real phone pass confirms the same flow is usable.
 Use `13-signed-in-browser-mobile-runbook.md` for the exact browser and phone pass sequence.
@@ -56,11 +56,11 @@ The signed-in pass is not complete unless every step below is observed in a norm
 - Start URL:
 - Saved Toothlight URL:
 - Reveal preview URL:
-- Mic path:
+- Mic path: pass by user report on 2026-06-09; exact mode not recorded
 - Save path:
 - Image continuity:
 - Screenshot or recording:
-- Result: pending
+- Result: partial; mic works, signed-in save/family/reveal evidence still pending
 
 ## Quick Failure Capture
 
@@ -105,10 +105,19 @@ Use the blocker/confusing/visual/nice-to-have severity labels from `09-first-50-
 - Latest full mobile proof: `22 passed` across `Mobile Safari` and `Mobile Chrome`, covering make, local save fallback, note, saved Toothlight, family invite, reveal preview, and voice recovery paths.
 - Latest automated checks: all `tests/toothlight-v4-*.test.mjs` passed; `npx tsc --noEmit --pretty false --incremental false` passed; `npm run build` passed; mobile Playwright pass covered `tests/toothlight-v4-proof.spec.ts`, `tests/toothlight-v4-local-mobile-save.spec.ts`, and `tests/toothlight-v4-voice-assist.spec.ts` on Mobile Safari and Mobile Chrome.
 - Latest protected route checks: `vercel curl` returned `200` for `/toothlight/make` and `/toothlight/t/demo-toothlight/reveal?preview=1` on deployment `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px`; empty POST to `/api/toothlight/voice-transcribe` reached the route and returned the expected missing multipart form-data error. A public no-secret request to `/api/toothlight/health` returned the expected protected `not_found` response.
+- User phone mic check on 2026-06-09: user reported the mic seems to be working and the phone test looks good.
+
+## Current Evidence Audit
+
+- Supabase persistence audit on 2026-06-09 found recent server-backed Toothlights with parent users, child/tooth/memory text, and source/rendered image URIs.
+- The latest recent server-backed Toothlight found by the audit was created on 2026-06-08 and had no future note or family contribution attached.
+- Older recent server-backed Toothlights had sealed future notes attached, but no recent family contribution rows were found.
+- Product-event audit on 2026-06-09 showed same-day local-preview saves succeeded, but did not prove a same-day server-backed signed-in save through note, family, and reveal.
+- Therefore the phone mic concern is cleared, but the first-50 gate still needs one recorded server-backed signed-in pass with saved Toothlight URL, parent note URL, family invite URL, and reveal preview URL.
 
 ## Decision
 
-Status remains `pending` until both the browser pass and phone pass are filled in with real signed-in evidence.
+Status remains `pending` until the browser pass and phone pass include real signed-in save, note, family, and reveal evidence.
 
 - First-50 invite decision: hold
-- Reason: signed-in browser/mobile validation evidence pending
+- Reason: signed-in save/family/reveal validation evidence pending
