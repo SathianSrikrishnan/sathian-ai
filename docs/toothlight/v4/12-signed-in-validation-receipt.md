@@ -44,6 +44,7 @@ The signed-in pass is not complete unless every step below is observed in a norm
 - Parent note URL:
 - Family invite URL:
 - Reveal preview URL:
+- Save path:
 - Screenshot or recording:
 - Result: pending
 
@@ -55,8 +56,23 @@ The signed-in pass is not complete unless every step below is observed in a norm
 - Start URL:
 - Saved Toothlight URL:
 - Reveal preview URL:
+- Mic path:
+- Save path:
+- Image continuity:
 - Screenshot or recording:
 - Result: pending
+
+## Quick Failure Capture
+
+If the phone pass fails, record these before retrying:
+
+- Exact URL:
+- Browser and device:
+- Last button tapped:
+- Visible message:
+- Mic permission state:
+- Whether typing still works:
+- Whether save reaches `/note?handoff=1`:
 
 ## Acceptance Checks
 
@@ -71,6 +87,8 @@ The signed-in pass is not complete unless every step below is observed in a norm
 - Family note saved and appeared as a family node/status.
 - Reveal preview showed the same Toothlight and future-opening package.
 - No wallet, MoonPay, Coinbase, or on-ramp step was required.
+- Mic path was recorded as fast speech, Record fallback, typed fallback, or blocked.
+- Save path was recorded as server-backed id, Google sign-in resume, local fallback, or failed.
 
 ## Issues Found
 

@@ -25,6 +25,7 @@ for (const text of [
   'Required Pass Path',
   'Browser Pass',
   'Phone Pass',
+  'Quick Failure Capture',
   'Acceptance Checks',
   'Issues Found',
   'Decision',
@@ -35,6 +36,12 @@ for (const text of [
   'missing multipart form-data error',
   'full mobile proof',
   'not_found',
+  'Mic path:',
+  'Save path:',
+  'Image continuity:',
+  'Last button tapped:',
+  'Mic permission state:',
+  'Whether typing still works:',
 ]) {
   assert(receipt.includes(text), `receipt must include ${text}`)
 }
