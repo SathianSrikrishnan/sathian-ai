@@ -25,8 +25,8 @@ The local Toothlight MVP is ready for Sathian-led testing on browser and phone. 
 | Source checks | Ready locally | Full `tests/toothlight-v4-*.test.mjs` suite passed after checkpoint work. |
 | TypeScript compile | Ready locally | `npx.cmd tsc --noEmit --pretty false --incremental false` passed after the visual simplification pass. |
 | Production build | Ready locally | `npm.cmd run build` passed after the generated `.next` cache was rebuilt with write access, and passed again in the 2026-06-07 continuation check. |
-| Clean Vercel preview | Ready for Sathian pass | `dpl_djSqxwotyhttyxq6yekc1zPs59Me` is `READY`, built from clean commit `0238aa12e86a8fa1ac638a577b8bf2e0b9a17183`, and is aliased to `https://toothlight-preview.sathian.ai`. |
-| Preview environment health | Ready for Sathian pass | `/api/toothlight/health` returned healthy with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`. |
+| Clean Vercel preview | Ready for Sathian pass | `dpl_8m18RYSwVFocWS8mBRXUCm9Ao3px` is `READY`, built from clean commit `a4a50bd6775ac705b7551cfa6611e56b4fd85c41`, and is aliased to `https://toothlight-preview.sathian.ai`. |
+| Preview environment health | Ready for Sathian pass | Preview environment was previously admin-health-checked with note encryption, voice transcription, OpenAI, Supabase tables, `tfn_product_events`, and `toothlight-images` all `ok`; the latest public no-secret request correctly returns protected `not_found`. |
 | Protected preview bypass | Created | A Vercel shareable-link protection bypass exists for `toothlight-preview.sathian.ai`; the bypass token is intentionally not committed. |
 | Protected make-page browser proof | Ready | Ordinary HTTP returned `200 OK` with the Toothlight make-page title, and a headless mobile-sized Playwright browser loaded the protected `/toothlight/make` page on 2026-06-07. |
 | Protected save-auth boundary proof | Ready | Headless mobile-sized Playwright uploaded a test image, selected a style, filled the story fields, clicked save, saw `/api/toothlight/save` return `401`, and landed on Google sign-in. |
