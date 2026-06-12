@@ -180,11 +180,14 @@ export async function middleware(request: NextRequest) {
     || 'unknown'
 
   const isVoiceRoute = pathname.startsWith('/api/voice/')
-  const isToothlightTelemetryRoute = pathname === '/api/toothlight/event'
-  const limit = isToothlightTelemetryRoute ? 60 : isVoiceRoute ? 5 : 10  // telemetry 60/min, voice 5/min, general API 10/min
+  const isToothlightTelemetryRoute =
+    pathname === '/api/toothlight/event' ||
+    pathname === '/api/toothlight/events'
+  const isWhatsAppWebhookRoute = pathname === '/api/whatsapp/webhook'
+  const limit = isWhatsAppWebhookRoute ? 120 : isToothlightTelemetryRoute ? 60 : isVoiceRoute ? 5 : 10
   const windowMs = 60_000  // 1 minute
 
-  const rateLimitKey = `${ip}:${isToothlightTelemetryRoute ? 'toothlight-telemetry' : isVoiceRoute ? 'voice' : 'api'}`
+  const rateLimitKey = `${ip}:${isWhatsAppWebhookRoute ? 'whatsapp-webhook' : isToothlightTelemetryRoute ? 'toothlight-telemetry' : isVoiceRoute ? 'voice' : 'api'}`
 
   if (isRateLimited(rateLimitKey, limit, windowMs)) {
     return NextResponse.json(
@@ -200,7 +203,7 @@ export async function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, x-voice-pin')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, x-voice-pin, x-hub-signature-256')
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')

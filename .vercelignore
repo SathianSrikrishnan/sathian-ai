@@ -1,6 +1,9 @@
 # Draft animation, planning, and render artifacts.
 # These are explored in parallel and should not ship until explicitly merged.
 docs/plans/
+.codex-logs/
+artifacts/
+test-results/
 scripts/render-tanda-layered-video.ps1
 src/app/animation/tanda-hero-ritual/
 src/app/animation/tanda-pose-pack/

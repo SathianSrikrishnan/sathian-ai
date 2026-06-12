@@ -558,6 +558,12 @@ export default function Home() {
                   <Link href="/studio" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Studio</Link>
                 </div>
                 <div className="flex flex-col gap-2.5">
+                  <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Legal</span>
+                  <Link href="/privacy-policy" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Privacy Policy</Link>
+                  <Link href="/terms-of-service" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Terms of Service</Link>
+                  <Link href="/data-deletion" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Data Deletion</Link>
+                </div>
+                <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Projects</span>
                   <a href="https://btc.sathian.ai" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#F7931A', textDecoration: 'none' }}>btc.sathian.ai</a>
                   <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#7C3AED', textDecoration: 'none' }}>toothfairy.sathian.ai</a>
