@@ -8,7 +8,7 @@ const columns = [
   {
     title: "Product",
     links: [
-      { href: "/toothfairy/app/draw?from=footer", label: "Create a Toothlight" },
+      { href: "/toothlight/start?from=footer", label: "Create a Toothlight" },
       { href: "/toothfairy/keepsake/preview", label: "Preview" },
       { href: "/toothfairy/smile-fund", label: "Smile Fund" },
     ],
@@ -19,6 +19,7 @@ const columns = [
       { href: "/toothfairy#how-it-works", label: "How it works" },
       { href: "/toothfairy/faq", label: "Parent FAQ" },
       { href: "/toothfairy/recover", label: "Recover Access" },
+      { href: "/toothfairy/support", label: "Support" },
     ],
   },
   {
@@ -26,7 +27,9 @@ const columns = [
     links: [
       { href: "/toothfairy/about", label: "About" },
       { href: "/toothfairy/stories", label: "Stories" },
-      { href: "/toothfairy/story/tanda", label: "Meet Tanda" },
+      { href: "/toothfairy/architecture", label: "Solana proof" },
+      { href: "/toothfairy/privacy", label: "Privacy" },
+      { href: "/toothfairy/terms", label: "Terms" },
     ],
   },
 ]
@@ -66,7 +69,7 @@ export function TFNFooter() {
           <Link href="/toothfairy" className="footer-brand">
             <TFNGlowingToothLogo className="footer-logo" size={46} />
             <span>
-              toothfairy.<b>network</b>
+              Tooth Fairy <b>Network</b>
             </span>
           </Link>
           <p className="footer-tagline">
@@ -127,7 +130,7 @@ export function TFNFooter() {
       <div className="footer-bottom">
         <div className="footer-bottom-inner">
           <span>Copyright {year} Tooth Fairy Network.</span>
-          <span>Parent-controlled memories. Built on Solana.</span>
+          <span>Parent-controlled Toothlights. Solana-backed ownership when ready.</span>
         </div>
       </div>
 

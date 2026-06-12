@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
-import { contributionDoor, futureKeeperDoors, openKeeperDoors } from "@/data/toothfairy";
+import { contributionDoor, futureKeeperDoors, openKeeperDoors, toothlightGalleryMemories } from "@/data/toothfairy";
 import styles from "./tanda-live-ritual-hero.module.css";
 
 const liveAssetRoot = "/toothfairy/animation/live-hero-v1";
@@ -8,116 +8,60 @@ const liveAssetVersion = "asset-fix-2";
 const keepsakePreview = "/toothfairy/visual-system/toothlight-keepsake-current.jpg";
 const keepsakePreviewFallback = "/toothfairy/visual-system/nft-keepsake-v1.png";
 
-const liveMemories = [
-  {
-    label: "Network memory",
-    title: "Robot-dog wish",
-    story: "I want the Tooth Fairy to get me a robot dog.",
-    image: "https://gateway.irys.xyz/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s",
-    alt: "A real lost tooth resting in a hand with colorful child-drawn marks and a heart",
-    href: "/toothfairy/keepsake/D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa",
-    date: "May 5",
-  },
-  {
-    label: "Network memory",
-    title: "Winged tooth",
-    story: "A tiny tooth turned into a bright memory.",
-    image: "https://gateway.irys.xyz/4dqch-6Vbsir96QiADF8HMX1oAbE5l9carQbsInPRdU",
-    alt: "A glowing lost tooth with golden wings against a dark starry background",
-    href: "/toothfairy/keepsake/3cdg3LwvSnvWdDcpJTMvQuGdeZuhBNwzCvs5kR6wqjUK",
-    date: "May 15",
-  },
-  {
-    label: "Network memory",
-    title: "Wiggly for two weeks",
-    story: "It was wiggling for two weeks.",
-    image: "https://gateway.irys.xyz/_asoyYnN6mYDzOpC_tJ3taAONF_zkM7lFEgQdx7pbnk",
-    alt: "A child holding a baby tooth with blue, green, and orange drawings added over the photo",
-    href: "/toothfairy/keepsake/F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E",
-    date: "May 5",
-  },
-  {
-    label: "Network memory",
-    title: "Dad helped draw it",
-    story: "My tooth fell out today and I made a drawing with my dad to remember it.",
-    image: "https://gateway.irys.xyz/sL-S3rxY5B6a88ACRwGxDxep-Pc-aBsyuYpXifa5HTg",
-    alt: "A child's drawing of a tooth, sun, green hills, and a small house on paper",
-    href: "/toothfairy/keepsake/5DffDLpt4B4Gwm61P6msyHWHgC5RzD8RToYY5nQovVhw",
-    date: "May 11",
-  },
-  {
-    label: "Network memory",
-    title: "Dinner became the story",
-    story: "The spicy dinner became part of the memory.",
-    image: "https://gateway.irys.xyz/JBOR9kEFDukXKcy88c3ABC48__Y0OqBemvExPl0jKuo",
-    alt: "A storybook portrait of a parent and two children with gold wings and a moonlit frame",
-    href: "/toothfairy/keepsake/AjLMXmNP9A6hfzQuTYLG1drU5JppViraCf8NwGmngK1r",
-    date: "May 13",
-  },
-  {
-    label: "Network memory",
-    title: "First handoff",
-    story: "A small tooth, held in the palm, ready to become a keepsake.",
-    image: "https://gateway.irys.xyz/YVyiBp-3gPSG8PeUoCpdyKp1c91Vmqt40-UDBf-x8f0",
-    alt: "A small baby tooth resting in the palm of a hand with a soft illustrated finish",
-    href: "/toothfairy/keepsake/5hsP9CctgecT2bYqdhuLM3Kn2s3JzoVp8iZUWNLFvvfi",
-    date: "May 11",
-  },
-  {
-    label: "Network memory",
-    title: "First drawing",
-    story: "I hope this drawing stays with us.",
-    image: "https://gateway.irys.xyz/U3ZfRDlna4_hx1wWXKcSLTaTNNkr8R4y8PKDJvQpUNU",
-    alt: "A childlike drawing with gold and silver shapes on warm paper",
-    href: "/toothfairy/keepsake/7SuoSiQMBuB8dLC5kswfQoVCcq2ArSdRTMG6ErJDqVzN",
-    date: "May 8",
-  },
-  {
-    label: "Network memory",
-    title: "Tooth and note",
-    story: "The marks stay part of the memory.",
-    image: "https://gateway.irys.xyz/zYkvv_5tbHmSkAByJu0zJYoPP-ZfQW3qhwVyC8uWCSU",
-    alt: "A storybook-style image of a tooth beside childlike handwriting and a gold shape",
-    href: "/toothfairy/keepsake/9MFFKi4jdzZ1wcFGAbifEKx57okbhCJ1pSrQwDjuSGYk",
-    date: "Apr 24",
-  },
-] as const;
-
-const featuredMemory = liveMemories[0];
+const liveMemories = toothlightGalleryMemories;
 
 const steps = [
   {
     eyebrow: "01",
-    title: "Start with the real thing",
-    body: "Photo, drawing, or note.",
+    title: "Capture the moment",
+    body: "Save the tooth photo, drawing, and child's short story while it is fresh.",
     accent: "gold",
-    image: liveMemories[5].image,
-    alt: liveMemories[5].alt,
+    image: liveMemories[3].image,
+    alt: liveMemories[3].alt,
+    badge: "Photo + child story",
     fit: "cover",
     position: "center",
-    variant: "source",
+    variant: "capture",
   },
   {
     eyebrow: "02",
-    title: "Make a Toothlight",
-    body: "Custom AI frames polish their creativity.",
+    title: "Time-lock your note and gift",
+    body: "Write the future message and connect the Smile Fund for their 10th birthday.",
     accent: "coral",
-    image: featuredMemory.image,
-    alt: featuredMemory.alt,
-    fit: "cover",
+    image: "/toothfairy/visual-system/smile-dashboard-v1.png",
+    alt: "Smile Fund dashboard with an age 10 unlock milestone",
+    badge: "Opens at age 10",
+    note: "For your 10th birthday...",
+    gift: "Smile Fund gift",
+    fit: "contain",
     position: "center",
-    variant: "toothlight",
+    variant: "age10",
   },
   {
     eyebrow: "03",
-    title: "Fund the time capsule",
-    body: "Family can add gifts under parent control.",
+    title: "Invite their circle",
+    body: "Let grandparents, family, and trusted people add notes, love, or gifts under parent control.",
     accent: "teal",
-    image: liveMemories[2].image,
-    alt: liveMemories[2].alt,
+    image: "/toothfairy/visual-system/invite-family-v1.png",
+    alt: "Family members adding gifts around a glowing Toothlight keepsake",
+    badge: "Family can add",
+    handoff: "Parent controlled",
     fit: "cover",
     position: "center",
-    variant: "saved",
+    variant: "handoff",
+  },
+  {
+    eyebrow: "04",
+    title: "Help them grow into it",
+    body: "Start a simple learning track so they understand the story, the gift, and the basics before handoff.",
+    accent: "green",
+    image: "/toothfairy/visual-system/watch-grow-v1.png",
+    alt: "A simple growth chart leading to an age 10 milestone",
+    badge: "Learning track",
+    lesson: "Ready when they are",
+    fit: "cover",
+    position: "center",
+    variant: "learn",
   },
 ] as const;
 
@@ -159,6 +103,85 @@ const futureGatewayPositions = [
   { x: 61, y: 30, scale: 0.58 },
 ] as const;
 
+const heroArtifactPositions = [
+  { x: 52, y: 7, scale: 0.58, rotate: 5 },
+  { x: 91, y: 21, scale: 0.56, rotate: 8 },
+  { x: 81, y: 84, scale: 0.64, rotate: -7 },
+  { x: 50, y: 88, scale: 0.52, rotate: 7 },
+  { x: 95, y: 54, scale: 0.5, rotate: -8 },
+] as const;
+
+const heroArtifactMemories = [
+  liveMemories[6],
+  liveMemories[15],
+  liveMemories[20],
+  liveMemories[24],
+  liveMemories[27],
+] as const;
+
+const storyToothlightPositions = [
+  { x: 13, y: 35, scale: 0.58 },
+  { x: 18, y: 51, scale: 0.64 },
+  { x: 22, y: 66, scale: 0.58 },
+  { x: 29, y: 78, scale: 0.66 },
+  { x: 33, y: 30, scale: 0.54 },
+  { x: 39, y: 47, scale: 0.58 },
+  { x: 45, y: 84, scale: 0.62 },
+  { x: 49, y: 34, scale: 0.56 },
+  { x: 54, y: 57, scale: 0.64 },
+  { x: 59, y: 76, scale: 0.54 },
+  { x: 64, y: 29, scale: 0.58 },
+  { x: 68, y: 48, scale: 0.64 },
+  { x: 73, y: 67, scale: 0.56 },
+  { x: 79, y: 38, scale: 0.62 },
+  { x: 83, y: 80, scale: 0.58 },
+  { x: 88, y: 54, scale: 0.54 },
+  { x: 15, y: 78, scale: 0.5 },
+  { x: 91, y: 28, scale: 0.48 },
+] as const;
+
+const storyToothlightMemories = [
+  liveMemories[0],
+  liveMemories[1],
+  liveMemories[3],
+  liveMemories[4],
+  liveMemories[6],
+  liveMemories[7],
+  liveMemories[12],
+  liveMemories[14],
+  liveMemories[15],
+  liveMemories[17],
+  liveMemories[18],
+  liveMemories[19],
+  liveMemories[20],
+  liveMemories[21],
+  liveMemories[22],
+  liveMemories[23],
+  liveMemories[26],
+  liveMemories[27],
+] as const;
+
+const gatewayCameos = [
+  {
+    id: "kkachi",
+    label: "Kkachi listens",
+    image: "/story-assets/korea/v2/kkachi-story-card.png",
+    x: 76,
+    y: 17,
+    scale: 0.9,
+    rotate: 3,
+  },
+  {
+    id: "perez",
+    label: "Perez hurries",
+    image: "/story-assets/ratoncito-perez/v2/rp3-frame-15-race-to-room.png",
+    x: 21,
+    y: 18,
+    scale: 0.82,
+    rotate: -4,
+  },
+] as const;
+
 const contributionDoorPosition = { x: 50, y: 88, scale: 1.02 } as const;
 
 const gatewayDoorThemes = [
@@ -181,6 +204,38 @@ const gatewayDoorStyle = (
   "--door-x": `${position.x}%`,
   "--door-y": `${position.y}%`,
   "--door-scale": String(position.scale),
+}) as CSSProperties;
+
+const gatewayMemoryStyle = (
+  index: number,
+  position: { x: number; y: number; scale: number },
+) => ({
+  "--memory-index": String(index),
+  "--memory-x": `${position.x}%`,
+  "--memory-y": `${position.y}%`,
+  "--memory-scale": String(position.scale),
+}) as CSSProperties;
+
+const heroArtifactStyle = (
+  index: number,
+  position: { x: number; y: number; scale: number; rotate: number },
+) => ({
+  "--artifact-index": String(index),
+  "--artifact-x": `${position.x}%`,
+  "--artifact-y": `${position.y}%`,
+  "--artifact-scale": String(position.scale),
+  "--artifact-rotate": `${position.rotate}deg`,
+}) as CSSProperties;
+
+const gatewayCameoStyle = (
+  index: number,
+  cameo: { x: number; y: number; scale: number; rotate: number },
+) => ({
+  "--cameo-index": String(index),
+  "--cameo-x": `${cameo.x}%`,
+  "--cameo-y": `${cameo.y}%`,
+  "--cameo-scale": String(cameo.scale),
+  "--cameo-rotate": `${cameo.rotate}deg`,
 }) as CSSProperties;
 
 const gatewayDoorClassName = (index: number) => {
@@ -226,13 +281,26 @@ export default function TandaLiveRitualHero() {
         aria-label="Tooth Fairy Network homepage ritual preview"
         data-tanda-live-ritual-hero
       >
+        <div className={styles.heroArtifacts} aria-hidden>
+          {heroArtifactMemories.map((memory, index) => (
+            <span
+              key={memory.id}
+              className={styles.heroArtifact}
+              style={heroArtifactStyle(index, heroArtifactPositions[index])}
+            >
+              <img src={memory.image} alt="" draggable={false} />
+              <small>TL-{String(memory.reportNumber).padStart(3, "0")}</small>
+            </span>
+          ))}
+        </div>
+
         <div className={styles.copy}>
           <h1>
             Turn a lost tooth{" "}
-            <span>into a Toothlight.</span>
+            <span>into a future asset.</span>
           </h1>
           <p>
-            An AI-enhanced tooth story, family time capsule, and parent-controlled Smile Fund.
+            A Toothlight keeps the photo, story, note, and gift together so your child can grow into it by their 10th birthday.
           </p>
         </div>
 
@@ -356,7 +424,7 @@ export default function TandaLiveRitualHero() {
         </div>
 
         <div className={styles.actions}>
-          <a href="/toothfairy/app/draw?from=home" className={styles.primaryAction}>
+          <a href="/toothlight/start?from=home" className={styles.primaryAction}>
             Create a Toothlight
             <span aria-hidden />
           </a>
@@ -370,11 +438,11 @@ export default function TandaLiveRitualHero() {
         <div className={styles.howIntro}>
           <p>How it works</p>
           <h2>
-            One clear loop
-            <span className={styles.howTitleLine}>for every lost tooth.</span>
+            Four small steps{" "}
+            <span className={styles.howTitleLine}>toward their 10th birthday.</span>
           </h2>
           <span>
-            Start with the real moment. AI enhances the story. Family can fund the time capsule.
+            Capture the moment now. Time-lock your note and gift. Let family add to it. Then help your child learn what they are receiving before you hand it over.
           </span>
         </div>
 
@@ -382,22 +450,38 @@ export default function TandaLiveRitualHero() {
           {steps.map((step) => (
             <article key={step.title} className={`${styles.stepCard} ${styles[step.accent]}`}>
               <div className={styles.stepMedia}>
-                {step.variant === "source" ? (
+                {step.variant === "capture" ? (
                   <div className={styles.sourceStep}>
                     <img src={step.image} alt={step.alt} draggable={false} />
-                    <span>Photo or drawing</span>
+                    <span className={styles.stepBadge}>{step.badge}</span>
                   </div>
-                ) : step.variant === "toothlight" ? (
-                  <div className={styles.toothlightStep}>
-                    <img className="real-tooth" src={step.image} alt={step.alt} draggable={false} />
-                    <span>AI-polished Toothlight</span>
+                ) : step.variant === "age10" ? (
+                  <div className={styles.ageTenStep}>
+                    <img src={step.image} alt={step.alt} draggable={false} />
+                    <span className={styles.stepBadge}>{step.badge}</span>
+                    <div className={styles.ageTenNote}>
+                      <span>Future note</span>
+                      <p>{step.note}</p>
+                    </div>
+                    <div className={styles.ageTenGift}>
+                      <span aria-hidden />
+                      <strong>{step.gift}</strong>
+                    </div>
+                  </div>
+                ) : step.variant === "handoff" ? (
+                  <div className={styles.handoffStep}>
+                    <img src={step.image} alt={step.alt} draggable={false} />
+                    <span className={styles.stepBadge}>{step.badge}</span>
+                    <div className={styles.handoffNote}>
+                      <span>{step.handoff}</span>
+                    </div>
                   </div>
                 ) : (
-                  <div className={styles.savedStep}>
+                  <div className={styles.learnStep}>
                     <img src={step.image} alt={step.alt} draggable={false} />
-                    <div className={styles.savedStory}>
-                      <span>In their words</span>
-                      <p>&ldquo;{liveMemories[2].story}&rdquo;</p>
+                    <span className={styles.stepBadge}>{step.badge}</span>
+                    <div className={styles.learnNote}>
+                      <span>{step.lesson}</span>
                     </div>
                   </div>
                 )}
@@ -412,26 +496,25 @@ export default function TandaLiveRitualHero() {
         </div>
       </section>
 
-      <section className={styles.liveProof} aria-label="Recent Toothlight memories">
+      <section id="toothlight-gallery" className={styles.liveProof} aria-label="Toothlight gallery">
         <div className={styles.liveProofIntro}>
           <p>Toothlight time capsules</p>
-          <h2>A few already made.</h2>
-          <span>Public examples from the live product.</span>
+          <h2>Toothlight gallery</h2>
+          <span>Tooth Fairy Moments saved for the Future</span>
         </div>
         <div className={styles.liveRailViewport}>
           <div className={styles.liveRail}>
-            {[...liveMemories, ...liveMemories].map((memory, index) => (
-              <a
-                key={`${memory.href}-${index}`}
-                href={memory.href}
+            {liveMemories.map((memory) => (
+              <article
+                key={memory.id}
                 className={styles.liveMemoryCard}
-                aria-label={`Open ${memory.title} Toothlight memory`}
+                aria-label={`${memory.title} Toothlight memory preview`}
               >
                 <img src={memory.image} alt={memory.alt} draggable={false} />
                 <span>Saved {memory.date}</span>
                 <h3>{memory.title}</h3>
                 <em>&ldquo;{memory.story}&rdquo;</em>
-              </a>
+              </article>
             ))}
           </div>
         </div>
@@ -441,9 +524,9 @@ export default function TandaLiveRitualHero() {
         <div className={styles.networkShell}>
           <div className={styles.networkIntro}>
             <p>Tanda's Network</p>
-            <h2>The story world and product now share one light.</h2>
+            <h2>Every Toothlight has a place in Tanda's world.</h2>
             <span>
-              Each keeper opens a tradition. Each Toothlight keeps the child&apos;s real moment at the center.
+              The story world turns a real tooth photo, drawing, and family note into a path your child can follow as the Tooth Fairy Network grows around them.
             </span>
           </div>
 
@@ -516,6 +599,38 @@ export default function TandaLiveRitualHero() {
                     aria-label={`${door.title} is listening`}
                   >
                     <span>{door.region}</span>
+                  </span>
+                );
+              })}
+            </div>
+
+            <div className={styles.gatewayCameoLayer} aria-label="Story keepers moving through Tanda's world">
+              {gatewayCameos.map((cameo, index) => (
+                <span
+                  key={cameo.id}
+                  className={styles.gatewayCameo}
+                  style={gatewayCameoStyle(index, cameo)}
+                  aria-label={cameo.label}
+                >
+                  <img src={cameo.image} alt="" draggable={false} />
+                  <small>{cameo.label}</small>
+                </span>
+              ))}
+            </div>
+
+            <div className={styles.gatewayToothlightLayer} aria-label="Real Toothlights inside Tanda's Network">
+              {storyToothlightMemories.map((memory, index) => {
+                const position = storyToothlightPositions[index];
+
+                return (
+                  <span
+                    key={memory.id}
+                    className={styles.gatewayToothlightNode}
+                    style={gatewayMemoryStyle(index, position)}
+                    aria-label={`${memory.title} in Tanda's Network`}
+                  >
+                    <img src={memory.image} alt="" draggable={false} />
+                    <small>TL-{String(memory.reportNumber).padStart(3, "0")}</small>
                   </span>
                 );
               })}

@@ -321,7 +321,7 @@ export default function StorySelector({ stories, simple = false }: StorySelector
             Every story ends with a keepsake. You can make one right now.
           </p>
           <Link
-            href="/toothfairy/app/draw?from=story-selector"
+            href="/toothlight/start?from=story-selector"
             className="inline-block px-8 py-3.5 text-base font-semibold rounded-full no-underline active:scale-[0.98]"
             style={{
               background: c.gold,

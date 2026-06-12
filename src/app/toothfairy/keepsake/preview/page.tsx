@@ -7,7 +7,7 @@ const liveMemory = {
   id: "D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa",
   childName: "William Wallace",
   toothType: "A little tooth",
-  storyOrigin: "Live minted memory",
+  storyOrigin: "Live saved memory",
   drawingUrl: "https://gateway.irys.xyz/5MqKjoYrB96GubwaIZ48NqUGvvstgyVGsNHgsnRDe1s",
   mintDate: new Date("2026-05-05T22:30:33.000Z"),
   deposits: [],
@@ -45,11 +45,11 @@ export default function KeepsakePreviewPage() {
           </p>
           <div className="actions">
             <Link href={liveMemoryHref}>Open William's memory</Link>
-            <Link href="/toothfairy/app/draw?from=keepsake-preview">Create one</Link>
+            <Link href="/toothlight/start?from=keepsake-preview">Create one</Link>
           </div>
         </div>
 
-        <div className="card-wrap" aria-label="Real minted Tooth Fairy memory preview">
+        <div className="card-wrap" aria-label="Real Toothlight memory preview">
           <div className="network-halo" aria-hidden>
             <span>saved</span>
             <span>parent key</span>
@@ -106,7 +106,7 @@ export default function KeepsakePreviewPage() {
             light. The page should feel like it belongs to them.
           </p>
         </div>
-        <Link href="/toothfairy/app/draw?from=keepsake-preview">Start the ritual</Link>
+        <Link href="/toothlight/start?from=keepsake-preview">Start the ritual</Link>
       </section>
 
       <style jsx>{`

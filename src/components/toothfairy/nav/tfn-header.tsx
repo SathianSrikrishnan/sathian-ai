@@ -36,7 +36,7 @@ export function TFNHeader() {
           <TFNGlowingToothLogo size={40} />
           <span className="brand-copy">
             <span className="brand-name">
-              toothfairy.<b>network</b>
+              Tooth Fairy <b>Network</b>
             </span>
           </span>
         </Link>
@@ -52,9 +52,9 @@ export function TFNHeader() {
         <div className="nav-actions">
           <span className="solana-pill">
             <span aria-hidden />
-            Built on Solana
+            Solana-backed
           </span>
-          <Link href="/toothfairy/app/draw?from=nav" className="header-cta">
+          <Link href="/toothlight/start?from=nav" className="header-cta">
             Create a Toothlight
             <span aria-hidden className="cta-arrow" />
           </Link>
@@ -89,7 +89,7 @@ export function TFNHeader() {
         .brand {
           display: inline-flex;
           align-items: center;
-          gap: 0.64rem;
+          gap: 0.68rem;
           min-width: 0;
           text-decoration: none;
         }
@@ -105,13 +105,14 @@ export function TFNHeader() {
           display: block;
           color: #fffaf1;
           font-family: var(--font-display), Georgia, serif;
-          font-size: clamp(1.08rem, 1.5vw, 1.38rem);
+          font-size: clamp(1.02rem, 1.46vw, 1.3rem);
           font-weight: 900;
+          letter-spacing: 0;
           white-space: nowrap;
         }
 
         .brand-name b {
-          background: linear-gradient(100deg, #fff7c4, #f0c456 42%, #4fd1c5 100%);
+          background: linear-gradient(100deg, #fff7c4, #f0c456 64%, #ffdca8 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -119,7 +120,7 @@ export function TFNHeader() {
         }
 
         .nav-actions {
-          display: none;
+          display: flex;
           align-items: center;
           gap: 0.75rem;
           margin-left: clamp(0.85rem, 2vw, 2rem);
@@ -169,9 +170,11 @@ export function TFNHeader() {
         .solana-pill span {
           width: 18px;
           height: 18px;
-          border-radius: 5px;
-          background: linear-gradient(135deg, #14f195 0%, #9945ff 54%, #14f195 100%);
-          box-shadow: 0 6px 16px rgba(20, 241, 149, 0.22);
+          border: 1px solid rgba(255, 250, 241, 0.18);
+          border-radius: 999px;
+          background:
+            linear-gradient(135deg, rgba(20, 241, 149, 0.78), rgba(153, 69, 255, 0.72) 56%, rgba(255, 215, 106, 0.7));
+          box-shadow: 0 6px 16px rgba(20, 241, 149, 0.14);
         }
 
         .header-cta {
@@ -201,8 +204,37 @@ export function TFNHeader() {
         }
 
         @media (min-width: 980px) {
+          .solana-pill {
+            display: inline-flex;
+          }
+        }
+
+        @media (max-width: 979px) {
+          .desktop-nav,
+          .solana-pill {
+            display: none;
+          }
+
           .nav-actions {
-            display: flex;
+            margin-left: auto;
+          }
+
+          .header-cta {
+            min-height: 38px;
+            padding: 0 0.88rem;
+            font-size: 0.76rem;
+          }
+        }
+
+        @media (max-width: 680px) {
+          .brand-name b {
+            display: none;
+          }
+
+          .brand-name {
+            max-width: 8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
 

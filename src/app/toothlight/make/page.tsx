@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-
-import { ToothlightMakeClient } from '@/components/toothlight/v4/ToothlightMakeClient'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Create a Toothlight | Tooth Fairy Network',
@@ -9,5 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default function ToothlightMakePage() {
-  return <ToothlightMakeClient />
+  // Legacy ToothlightMakeClient studio now hands off to the Stitch route flow.
+  redirect('/toothlight/start')
 }

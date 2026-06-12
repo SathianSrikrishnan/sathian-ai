@@ -38,8 +38,8 @@
 .copy h1 {
   margin: 0;
   font-family: var(--font-display), Georgia, serif;
-  font-size: 3rem;
-  line-height: 0.96;
+  font-size: 2.35rem;
+  line-height: 1;
   letter-spacing: 0;
 }
 
@@ -218,7 +218,7 @@
   }
 
   .copy h1 {
-    font-size: 4.4rem;
+    font-size: 3.15rem;
   }
 
   .statusGrid {

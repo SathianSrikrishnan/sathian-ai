@@ -6,6 +6,8 @@ const eventRoutePath = resolve(root, 'src/app/api/toothlight/event/route.ts')
 const serverEventsPath = resolve(root, 'src/lib/toothlight/server/product-events.ts')
 const clientEventsPath = resolve(root, 'src/lib/toothlight/client/product-events.ts')
 const makePath = resolve(root, 'src/components/toothlight/v4/ToothlightMakeClient.tsx')
+const creationFlowPath = resolve(root, 'src/components/toothlight/v4/ToothlightCreationFlowClient.tsx')
+const analyticsPath = resolve(root, 'src/components/toothlight/analytics/TFNProductAnalytics.tsx')
 const middlewarePath = resolve(root, 'src/middleware.ts')
 const failures = []
 
@@ -21,6 +23,8 @@ const route = existsSync(eventRoutePath) ? readFileSync(eventRoutePath, 'utf8') 
 const serverEvents = existsSync(serverEventsPath) ? readFileSync(serverEventsPath, 'utf8') : ''
 const clientEvents = existsSync(clientEventsPath) ? readFileSync(clientEventsPath, 'utf8') : ''
 const make = readFileSync(makePath, 'utf8')
+const creationFlow = readFileSync(creationFlowPath, 'utf8')
+const analytics = readFileSync(analyticsPath, 'utf8')
 const middleware = readFileSync(middlewarePath, 'utf8')
 
 assert(route.includes('logToothlightProductEvent'), 'event route must use server event helper')
@@ -53,8 +57,23 @@ for (const eventName of [
   'auth_started',
   'note_completed',
   'family_contribution_completed',
+  'landing_view',
+  'cta_click',
+  'start_flow',
+  'google_parent_auth',
+  'parent_note_saved',
+  'toothlight_sealed',
+  'invite_clicked',
+  'learn_clicked',
 ]) {
-  assert(clientEvents.includes(eventName) || route.includes(eventName) || make.includes(eventName), `event taxonomy must include ${eventName}`)
+  assert(
+    clientEvents.includes(eventName) ||
+      route.includes(eventName) ||
+      make.includes(eventName) ||
+      creationFlow.includes(eventName) ||
+      analytics.includes(eventName),
+    `event taxonomy must include ${eventName}`,
+  )
 }
 
 if (failures.length > 0) {

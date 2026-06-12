@@ -232,7 +232,7 @@ export default function StoryPage() {
 
         {isLastPage ? (
           <Link
-            href="/toothfairy/app/draw?from=promise-story"
+            href="/toothlight/start?from=promise-story"
             className="px-5 py-2.5 rounded-full text-sm font-bold transition-all hover:scale-[1.02]"
             style={{
               background: "linear-gradient(135deg, #F0C456, #E0A830)",

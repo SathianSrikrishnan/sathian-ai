@@ -131,13 +131,18 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
       state: noteStatus === 'sealed' ? 'done' : 'next',
     },
     {
-      label: 'Family note + gift',
+      label: 'Family',
       detail: familyStatus,
       state: familyNodes.length ? 'done' : noteStatus === 'sealed' ? 'next' : 'idle',
     },
+    {
+      label: 'Learn',
+      detail: 'Age-10 handoff track',
+      state: noteStatus === 'sealed' ? 'next' : 'idle',
+    },
   ]
   const nextStepLabel = noteStatus === 'sealed' ? 'Invite family' : 'Seal note'
-  const nextStepHelper = noteStatus === 'sealed' ? 'Note first. Gift optional.' : 'Private parent note.'
+  const nextStepHelper = noteStatus === 'sealed' ? 'Invite family when ready.' : 'Private parent note.'
 
   return (
     <div className={styles.shell}>
@@ -146,8 +151,8 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
           Toothlight
         </Link>
         <p className={styles.eyebrow}>Saved Toothlight</p>
-        <h1>Toothlight time capsule.</h1>
-        <p>{noteStatus === 'sealed' ? 'Saved. Invite family when ready.' : 'Saved. Seal the note next.'}</p>
+        <h1>Saved Toothlight</h1>
+        <p>{noteStatus === 'sealed' ? 'Invite family when ready.' : 'Seal the note next.'}</p>
 
         <div className={styles.capsuleChecklist} aria-label="Toothlight time capsule checklist">
           {capsuleChecklist.map((item, index) => (
@@ -169,14 +174,23 @@ export function SavedToothlightClient({ toothlightId }: SavedToothlightClientPro
             <Link
               href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/family` : `/toothlight/t/${toothlightId}/note?handoff=1`}
               className={`${styles.actionLink} ${styles.primary}`}
+              data-tfn-event={noteStatus === 'sealed' ? 'invite_clicked' : undefined}
             >
               {noteStatus === 'sealed' ? 'Invite family' : 'Seal note'}
             </Link>
             <Link
               href={noteStatus === 'sealed' ? `/toothlight/t/${toothlightId}/note` : `/toothlight/t/${toothlightId}/family`}
               className={`${styles.actionLink} ${styles.secondary}`}
+              data-tfn-event={noteStatus === 'sealed' ? undefined : 'invite_clicked'}
             >
-              {noteStatus === 'sealed' ? noteCtaLabel : 'Family can wait'}
+              {noteStatus === 'sealed' ? noteCtaLabel : 'Invite later'}
+            </Link>
+            <Link
+              href="/toothlight/learn"
+              className={`${styles.actionLink} ${styles.secondary}`}
+              data-tfn-event="learn_clicked"
+            >
+              Learning track
             </Link>
             <Link
               href={`/toothlight/t/${toothlightId}/reveal?preview=1`}

@@ -6,7 +6,7 @@ import { TFNFooter } from '@/components/toothfairy/nav/tfn-footer'
 
 // TFN routes use the local fallback font variables from globals.css.
 const shareTagline =
-  "Turn a child's lost tooth into a Toothlight memory, bedtime story, and family keepsake."
+  "Turn a lost tooth into a future asset your child can grow into."
 
 export const viewport: Viewport = {
   width: 'device-width',

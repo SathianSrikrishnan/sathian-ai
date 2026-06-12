@@ -1,0 +1,312 @@
+export const toothlightGalleryMemories = [
+  {
+    "id": "toothlight-01",
+    "reportNumber": 1,
+    "label": "Live memory",
+    "title": "Robot-dog wish",
+    "story": "I want the Tooth Fairy to get me a robot dog.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-01-robot-dog-wish.jpg",
+    "alt": "Robot-dog wish memory artwork",
+    "href": "/toothfairy/keepsake/D2KhUfrDSs6ejGcfNEXfaYQMxPz4SH5Rd87h9ZUsGMSa",
+    "date": "May 5"
+  },
+  {
+    "id": "toothlight-02",
+    "reportNumber": 2,
+    "label": "Live memory",
+    "title": "Winged tooth",
+    "story": "A tiny tooth turned into a bright memory.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-02-winged-tooth.jpg",
+    "alt": "Winged tooth memory artwork",
+    "href": "/toothfairy/keepsake/3cdg3LwvSnvWdDcpJTMvQuGdeZuhBNwzCvs5kR6wqjUK",
+    "date": "May 15"
+  },
+  {
+    "id": "toothlight-03",
+    "reportNumber": 3,
+    "label": "Live memory",
+    "title": "Wiggly for two weeks",
+    "story": "It was wiggling for two weeks.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-03-wiggly-for-two-weeks.jpg",
+    "alt": "Wiggly for two weeks memory artwork",
+    "href": "/toothfairy/keepsake/F8pf5qkNMkSL5pBdrfk88piukq65MLTjsnYyXYBix62E",
+    "date": "May 5"
+  },
+  {
+    "id": "toothlight-04",
+    "reportNumber": 4,
+    "label": "Live memory",
+    "title": "Dad helped draw it",
+    "story": "My tooth fell out today and I made a drawing with my dad to remember it.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-04-dad-helped-draw-it.jpg",
+    "alt": "Dad helped draw it memory artwork",
+    "href": "/toothfairy/keepsake/5DffDLpt4B4Gwm61P6msyHWHgC5RzD8RToYY5nQovVhw",
+    "date": "May 11"
+  },
+  {
+    "id": "toothlight-05",
+    "reportNumber": 5,
+    "label": "Live memory",
+    "title": "Dinner became the story",
+    "story": "The spicy dinner became part of the memory.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-05-dinner-became-the-story.jpg",
+    "alt": "Dinner became the story memory artwork",
+    "href": "/toothfairy/keepsake/AjLMXmNP9A6hfzQuTYLG1drU5JppViraCf8NwGmngK1r",
+    "date": "May 13"
+  },
+  {
+    "id": "toothlight-06",
+    "reportNumber": 6,
+    "label": "Live memory",
+    "title": "First handoff",
+    "story": "A small tooth, held in the palm, ready to become a keepsake.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-06-first-handoff.jpg",
+    "alt": "First handoff memory artwork",
+    "href": "/toothfairy/keepsake/5hsP9CctgecT2bYqdhuLM3Kn2s3JzoVp8iZUWNLFvvfi",
+    "date": "May 11"
+  },
+  {
+    "id": "toothlight-07",
+    "reportNumber": 7,
+    "label": "Live memory",
+    "title": "First drawing",
+    "story": "I hope this drawing stays with us.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-07-first-drawing.jpg",
+    "alt": "First drawing memory artwork",
+    "href": "/toothfairy/keepsake/7SuoSiQMBuB8dLC5kswfQoVCcq2ArSdRTMG6ErJDqVzN",
+    "date": "May 8"
+  },
+  {
+    "id": "toothlight-08",
+    "reportNumber": 8,
+    "label": "Live memory",
+    "title": "Tooth and note",
+    "story": "The marks stay part of the memory.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-08-tooth-and-note.jpg",
+    "alt": "Tooth and note memory artwork",
+    "href": "/toothfairy/keepsake/9MFFKi4jdzZ1wcFGAbifEKx57okbhCJ1pSrQwDjuSGYk",
+    "date": "Apr 24"
+  },
+  {
+    "id": "toothlight-09",
+    "reportNumber": 9,
+    "label": "Network memory",
+    "title": "Thing's Toothlight",
+    "story": "Thing's upper right central incisor became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-09-playful-toothlight.jpg",
+    "alt": "Thing's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/69LLXupLBiYeMBgxTLxnX5rsq2Eqb5txWxejTusfjtmM",
+    "date": "2026-05-23"
+  },
+  {
+    "id": "toothlight-10",
+    "reportNumber": 10,
+    "label": "Network memory",
+    "title": "M. J.'s Toothlight",
+    "story": "A spring tooth became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-10-mj-toothlight.jpg",
+    "alt": "M. J.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/JE2ko7LkvaPcxGiD8MTFBKgiUSGBKz3Bi4T7LDi9Stn5",
+    "date": "2026-05-19"
+  },
+  {
+    "id": "toothlight-11",
+    "reportNumber": 11,
+    "label": "Network memory",
+    "title": "P. M.'s Toothlight",
+    "story": "A small childhood milestone became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-11-pm-toothlight.jpg",
+    "alt": "P. M.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/Fig7j3jqGYU92PyTx8tChXVPLBqF3eeP58M758DEBMA",
+    "date": "2026-05-19"
+  },
+  {
+    "id": "toothlight-12",
+    "reportNumber": 12,
+    "label": "Network memory",
+    "title": "K. F.'s Toothlight",
+    "story": "A lost tooth became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-12-kf-toothlight.jpg",
+    "alt": "K. F.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/3cdg3LwvSnvWdDcpJTMvQuGdeZuhBNwzCvs5kR6wqjUK",
+    "date": "2026-05-15"
+  },
+  {
+    "id": "toothlight-13",
+    "reportNumber": 13,
+    "label": "Network memory",
+    "title": "Sia S's Toothlight",
+    "story": "Sia S's upper right central incisor became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-13-sia-s-s-tooth-1.jpg",
+    "alt": "Sia S's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/AjLMXmNP9A6hfzQuTYLG1drU5JppViraCf8NwGmngK1r",
+    "date": "2026-05-13"
+  },
+  {
+    "id": "toothlight-14",
+    "reportNumber": 14,
+    "label": "Network memory",
+    "title": "R. A.'s Toothlight",
+    "story": "A family tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-14-ra-toothlight.jpg",
+    "alt": "R. A.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/GBgPs4rNEHwLmtLSfunCYP9HWMRdpm5fhS8U1qme8MRC",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "toothlight-15",
+    "reportNumber": 36,
+    "label": "Network memory",
+    "title": "Max's Toothlight",
+    "story": "Max's upper right central incisor became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-15-max-s-tooth-1.png",
+    "alt": "Max's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/KEfnb7ysJQ9NnmcqK2AKquFvCUz28H7pgCZpAxaD3Ee",
+    "date": "2026-04-10"
+  },
+  {
+    "id": "toothlight-16",
+    "reportNumber": 38,
+    "label": "Network memory",
+    "title": "April Toothlight",
+    "story": "A fresh April tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-16-april-toothlight.png",
+    "alt": "April Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/2kAdws6XvVwjTa3JFmCCHEpp8M2ZKxrWyTHDBwFuWHN7",
+    "date": "2026-04-07"
+  },
+  {
+    "id": "toothlight-17",
+    "reportNumber": 40,
+    "label": "Network memory",
+    "title": "Early April Toothlight",
+    "story": "A child saved the tooth moment as a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-17-early-april-toothlight.png",
+    "alt": "Early April Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/BwxwoUGfVN4ogJGXMfXHquJ81Rv8oyfqsthEh2ccFkpV",
+    "date": "2026-04-06"
+  },
+  {
+    "id": "toothlight-18",
+    "reportNumber": 44,
+    "label": "Network memory",
+    "title": "April 3 Toothlight",
+    "story": "A real tooth memory became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-18-april-3-toothlight.png",
+    "alt": "April 3 Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/7TdhXSLuyDmTq5zbqkWuDGhqm1cqXKGvoWmKzNMF96dT",
+    "date": "2026-04-03"
+  },
+  {
+    "id": "toothlight-19",
+    "reportNumber": 51,
+    "label": "Network memory",
+    "title": "Sia S.'s Toothlight",
+    "story": "Sia S.'s tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-19-sia-s-toothlight-1.png",
+    "alt": "Sia S.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/64msPSkcQdnTYXptptGELTbUaC3huQGbWHeHsgUNafJb",
+    "date": "2026-04-01"
+  },
+  {
+    "id": "toothlight-20",
+    "reportNumber": 68,
+    "label": "Network memory",
+    "title": "Baby S.'s Toothlight",
+    "story": "A little family tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-20-baby-s-toothlight-1.png",
+    "alt": "Baby S.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/3AWNufwMugxsDYk8UfqJ5MtmaEETATh7xpJkihF6ViUi",
+    "date": "2026-03-26"
+  },
+  {
+    "id": "toothlight-21",
+    "reportNumber": 73,
+    "label": "Network memory",
+    "title": "Maggie's Toothlight",
+    "story": "Maggie's tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-21-maggie-toothlight-1.png",
+    "alt": "Maggie's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/Hgx94XHFWfPKvyWShrCdajwMe2LFZLdso8RCMb8wuCSc",
+    "date": "2026-03-25"
+  },
+  {
+    "id": "toothlight-22",
+    "reportNumber": 74,
+    "label": "Network memory",
+    "title": "Rowan S.'s Toothlight",
+    "story": "Rowan S.'s tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-22-rowan-s-toothlight-1.png",
+    "alt": "Rowan S.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/BV3ALxZwwvzFkMwJztpFMXGAmDhK4kx4RAhY5mBsgVtJ",
+    "date": "2026-03-25"
+  },
+  {
+    "id": "toothlight-23",
+    "reportNumber": 77,
+    "label": "Network memory",
+    "title": "Sia S.'s Toothlight",
+    "story": "Sia S.'s tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-23-sia-s-toothlight-2.png",
+    "alt": "Sia S.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/B7Gm2jYjdJ24sUen4igQYRJ14XV8DPgfNAcZiE3WiciD",
+    "date": "2026-03-25"
+  },
+  {
+    "id": "toothlight-24",
+    "reportNumber": 78,
+    "label": "Network memory",
+    "title": "Isa S.'s Toothlight",
+    "story": "Isa S.'s tooth moment became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-24-isa-s-toothlight-1.png",
+    "alt": "Isa S.'s Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/8JefUgVe81qMVwRTmBGaqtTZSFH3TxgkHA49uZkLEky6",
+    "date": "2026-03-25"
+  },
+  {
+    "id": "toothlight-25",
+    "reportNumber": 87,
+    "label": "Network memory",
+    "title": "Sia S's Toothlight",
+    "story": "Sia S's upper right central incisor became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-25-sia-s-s-tooth-1.png",
+    "alt": "Sia S's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/FJDowrWM2CyHxaoULc9SpDF922NhNRKEsVAKxAgtfqHK",
+    "date": "2026-03-22"
+  },
+  {
+    "id": "toothlight-26",
+    "reportNumber": 88,
+    "label": "Network memory",
+    "title": "Isa's Toothlight",
+    "story": "Isa's upper right central incisor became a Toothlight time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-26-isa-s-tooth-1.png",
+    "alt": "Isa's Toothlight memory artwork",
+    "href": "/toothfairy/keepsake/GsJNzYicHANkEcoJ9n8rj5KHXwUJ3aUJ5TUgGJjV8WBJ",
+    "date": "2026-03-22"
+  },
+  {
+    "id": "toothlight-27",
+    "reportNumber": 124,
+    "label": "Network memory",
+    "title": "Sia's Toothlight",
+    "story": "A childhood milestone saved as a Toothlight. A small moment, kept as a family time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-27-sia-s-tooth-1.png",
+    "alt": "Sia's Toothlight memory artwork",
+    "href": "/toothfairy/toothlight-gallery/toothlight-27-sia-s-tooth-1.png",
+    "date": "recently"
+  },
+  {
+    "id": "toothlight-28",
+    "reportNumber": 125,
+    "label": "Network memory",
+    "title": "Sia's Toothlight",
+    "story": "A childhood milestone saved as a Toothlight. A small moment, kept as a family time capsule.",
+    "image": "/toothfairy/toothlight-gallery/toothlight-28-sia-s-tooth-3.png",
+    "alt": "Sia's Toothlight memory artwork",
+    "href": "/toothfairy/toothlight-gallery/toothlight-28-sia-s-tooth-3.png",
+    "date": "recently"
+  }
+] as const;
+
+export type ToothlightGalleryMemory = (typeof toothlightGalleryMemories)[number];

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const highlights = [
   {
     label: "Parent controlled",
-    text: "Google recovery, family links, and wallet access stay with the parent.",
+    text: "Google recovery, family links, wallet access, and timing stay with the parent.",
   },
   {
     label: "Memory first",
@@ -28,11 +28,11 @@ const groups = [
     items: [
       {
         q: "What is Tooth Fairy Network?",
-        a: "It is a family ritual for saving a lost-tooth moment. A parent captures the smile, drawing, and story, then creates a first forever memory with a parent-controlled Smile Fund attached.",
+        a: "It is a family ritual for turning a lost tooth into a future asset. A parent captures the photo or drawing, the child's story, a note for later, and an optional Smile Fund gift under parent control.",
       },
       {
         q: "Is this crypto-first?",
-        a: "No. Parents should feel the memory, the family ritual, and the learning moment first. Solana is quiet infrastructure underneath so the memory and fund can be durable.",
+        a: "No. Parents should feel the memory, the family ritual, and the learning moment first. Solana is the live ownership layer underneath so the Toothlight can become durable without making wallets the first thing families see.",
       },
       {
         q: "Is Tooth Fairy Network a bank?",
@@ -40,7 +40,7 @@ const groups = [
       },
       {
         q: "Why not just keep the photo?",
-        a: "A camera-roll photo can disappear into thousands of other photos. This gives the moment a page, a story, and a place for family to return to over time.",
+        a: "A camera-roll photo can disappear into thousands of other photos. A Toothlight gives the moment a page, a story, a parent note, and a family path back to it over time.",
       },
     ],
   },
@@ -52,8 +52,8 @@ const groups = [
         a: "The Smile Fund is a first practice field for responsibility. Small gifts help a child start learning saving, patience, ownership, and the idea that something can be truly theirs without giving them adult financial control too early.",
       },
       {
-        q: "Why mention investing and self-sovereignty?",
-        a: "Children will inherit a world where digital ownership, investing, and self-sovereignty matter earlier than they did for us. Tooth Fairy Network introduces that model gently: a memory they love, a fund they can understand, and a parent guiding the timing.",
+        q: "Why mention ownership?",
+        a: "Children will inherit a world where digital ownership matters earlier than it did for us. Tooth Fairy Network introduces that model gently: a memory they love, a gift they can understand, and a parent guiding the timing.",
       },
       {
         q: "Is this investment advice?",
@@ -86,7 +86,7 @@ const groups = [
       },
       {
         q: "What emails should I expect?",
-        a: "Parents should receive a welcome email after Google sign-in, a memory-created email after minting, and a gift receipt email after a verified wallet gift. Each email points back to recovery with the same Google account.",
+        a: "Parents should receive a welcome email after Google sign-in, a memory-created email after saving, and a gift receipt email after a verified wallet gift. Each email points back to recovery with the same Google account.",
       },
       {
         q: "What is AI polish?",
@@ -120,7 +120,7 @@ const groups = [
     items: [
       {
         q: "What is ready for controlled testing?",
-        a: "Homepage, Google sign-in, memory creation, AI polish, live minting, memory pages, family sharing, dashboard, recovery, wallet-based gift testing, and the core parent emails.",
+        a: "Homepage, Google sign-in, simplified Toothlight creation, optional AI polish, live Solana ownership in the advanced app path, memory pages, family sharing, dashboard, recovery, wallet-based gift testing, and the core parent emails.",
       },
       {
         q: "What still needs work before 100 users?",
@@ -143,11 +143,12 @@ export default function FAQPage() {
           <h1>Sweet enough for children. Clear enough for parents.</h1>
           <p>
             Tooth Fairy Network should feel safe before it feels technical. These
-            answers explain what is live, what is paused, and how the Smile Fund
-            teaches responsibility without turning a tooth into a transaction.
+            answers explain what is live, what is paused, and how a Toothlight
+            can become a future asset without turning a childhood moment into a
+            transaction.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app/draw?from=faq">Create a memory</Link>
+            <Link href="/toothlight/start?from=faq">Create a Toothlight</Link>
             <Link href="/toothfairy/smile-fund">Smile Fund</Link>
           </div>
         </div>
@@ -189,7 +190,9 @@ export default function FAQPage() {
         <Link href="/toothfairy/recover">Recover access</Link>
       </section>
 
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .faq-page {
           --navy: #11234a;
           --ink: #23365f;
@@ -414,7 +417,9 @@ export default function FAQPage() {
             width: 100%;
           }
         }
-      `}</style>
+      `,
+        }}
+      />
     </main>
   )
 }

@@ -18,7 +18,13 @@ export async function POST(request: NextRequest) {
     userId: null,
     toothlightId: typeof body.toothlightId === 'string' ? body.toothlightId : null,
     eventName,
-    properties: sanitizeProperties(body.properties),
+    properties: {
+      ...sanitizeProperties(body.properties),
+      userAgent: request.headers.get('user-agent'),
+      referrerHeader: request.headers.get('referer'),
+      country: request.headers.get('cf-ipcountry'),
+      receivedAt: new Date().toISOString(),
+    },
   })
 
   return NextResponse.json({ success: true })

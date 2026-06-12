@@ -5,17 +5,17 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "About - Tooth Fairy Network",
   description:
-    "Tooth Fairy Network turns a lost tooth into a first forever memory, a Smile Fund, and a first lesson in ownership.",
+    "Tooth Fairy Network turns a lost tooth into a future asset a child can grow into with parent control, family love, and a Solana ownership layer.",
 }
 
 const pillars = [
   {
     title: "A ritual parents already understand",
-    body: "A child loses a tooth. The family pauses, saves the moment, and turns it into something worth revisiting.",
+    body: "A child loses a tooth. The family pauses, saves the photo or drawing, and turns the moment into something worth revisiting.",
   },
   {
     title: "A simple savings milestone",
-    body: "The Smile Fund keeps the financial layer parent controlled, transparent, and pointed toward the age-10 learning moment.",
+    body: "The Smile Fund keeps the gift layer parent controlled, transparent, and pointed toward the age-10 learning moment.",
   },
   {
     title: "A story world with room to grow",
@@ -36,14 +36,15 @@ export default function AboutPage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Company</p>
-          <h1>We are turning a tiny childhood ritual into a first lesson in ownership.</h1>
+          <h1>We are turning a tiny childhood ritual into a future asset.</h1>
           <p>
             Tooth Fairy Network is a family product for the moment children lose
-            their teeth. It combines a first forever memory, a shareable gift page,
-            and a parent-controlled Smile Fund that can unlock around age 10.
+            their teeth. It combines the photo or drawing, the child&apos;s story,
+            a parent note for later, and a parent-controlled Smile Fund that can
+            become an age-10 learning moment.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app/draw?from=about">Create a memory</Link>
+            <Link href="/toothlight/start?from=about">Create a Toothlight</Link>
             <Link href="/toothfairy/faq">Read the FAQ</Link>
           </div>
         </div>
@@ -64,10 +65,11 @@ export default function AboutPage() {
         <div className="split">
           <h2>A product simple enough for bedtime, with enough depth to become a universe.</h2>
           <p>
-            The core product is intentionally small: save the tooth memory,
-            invite loved ones to contribute, and let the child grow into the
-            account later. The content layer gives families a reason to return:
-            Tanda, cultural tooth traditions, and stories from around the world.
+            The core product is intentionally small: capture the tooth memory,
+            time-lock the parent note and gift, invite loved ones to contribute,
+            and let the child grow into the responsibility lesson later. Solana
+            sits underneath as a real ownership layer, while parents see the
+            ritual first.
           </p>
         </div>
         <div className="pillar-grid">
@@ -114,7 +116,7 @@ export default function AboutPage() {
 
       <section className="cta">
         <h2>Start with one tooth memory.</h2>
-        <Link href="/toothfairy/app/draw?from=about">Create the first memory</Link>
+        <Link href="/toothlight/start?from=about">Create the first Toothlight</Link>
       </section>
 
       <style>{`

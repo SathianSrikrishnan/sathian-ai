@@ -23,8 +23,8 @@ const familyInviteClient = existsSync(familyInviteClientPath) ? readFileSync(fam
 const familyForm = existsSync(familyFormPath) ? readFileSync(familyFormPath, 'utf8') : ''
 const familyCss = existsSync(familyCssPath) ? readFileSync(familyCssPath, 'utf8') : ''
 
-assert(/Toothlight time capsule/.test(savedClient), 'saved page must frame the object as a Toothlight time capsule')
-for (const label of ['Memory', 'Parent note', 'Family note + gift']) {
+assert(/Saved Toothlight/.test(savedClient), 'saved page must use a short saved Toothlight frame')
+for (const label of ['Memory', 'Parent note', 'Family', 'Learn']) {
   assert(savedClient.includes(label), `saved page must show ${label} in the capsule checklist`)
 }
 assert(!savedClient.includes('Smile Fund optional'), 'saved page must not treat Smile Fund as a separate post-save step')
@@ -35,7 +35,9 @@ assert(/nextStepHelper/.test(savedClient), 'saved page must compute a short next
 assert(/nextStepPanel/.test(savedClient + savedCss), 'saved page must include a clear next-step panel')
 assert(/capsuleChecklist/.test(savedClient + savedCss), 'saved page must style the capsule checklist')
 assert(/Invite family/.test(savedClient), 'saved page must make family invitation the post-seal next action')
-assert(/Note first\. Gift optional\./.test(savedClient), 'saved page must explain the family invite as one note-first optional gift path')
+assert(/Invite family when ready\./.test(savedClient), 'saved page must keep the family invite helper short')
+assert(/Learning track/.test(savedClient), 'saved page must expose the learning track as the fourth step')
+assert(/\/toothlight\/learn/.test(savedClient), 'saved page must link to the learning track')
 assert(!/audit page/i.test(savedClient), 'saved page copy must not describe the customer-facing object as an audit page')
 assert(!/One private note closes the time capsule|Family can add a note and optional gift for later|Saved\. Seal the note, then invite family|Family note or gift|Add a note and optional gift/.test(savedClient), 'saved page must avoid long explanatory next-step copy')
 

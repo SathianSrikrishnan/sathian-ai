@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" role="img" aria-label="TL-S049 Dancing Tooth 2">
+  <defs>
+    <radialGradient id="paperGlow" cx="50%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#ffe0f0" stop-opacity="0.62" />
+      <stop offset="48%" stop-color="#efd6e1" stop-opacity="0.36" />
+      <stop offset="100%" stop-color="#fff7ef" stop-opacity="1" />
+    </radialGradient>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0177" numOctaves="4" seed="88856" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+  <rect width="1024" height="1280" fill="url(#paperGlow)" />
+  <rect x="42" y="42" width="940" height="1196" rx="58" fill="none" stroke="#30203f" stroke-opacity="0.14" stroke-width="4" />
+  <circle cx="796.0" cy="190.6" r="42.5" fill="#ffe0f0" opacity="0.36" />
+  <g filter="url(#rough)" opacity="0.92">
+    <path d="M 130.7 374.0 C 108.9 370.0, 103.3 377.0, 60.8 363.1" fill="none" stroke="#6e8ee8" stroke-width="11.934795941226184" stroke-linecap="round" stroke-linejoin="round" opacity="0.38" />
+<path d="M 279.5 343.2 C 277.9 353.3, 285.4 392.7, 268.5 370.9" fill="none" stroke="#cf6ca8" stroke-width="7.609744175337255" stroke-linecap="round" stroke-linejoin="round" opacity="0.47" />
+<path d="M 790.1 413.3 C 798.3 413.5, 827.0 477.0, 822.5 471.4" fill="none" stroke="#6e8ee8" stroke-width="10.198404655791819" stroke-linecap="round" stroke-linejoin="round" opacity="0.37" />
+<circle cx="497.1" cy="913.3" r="7.8" fill="none" stroke="#f0c456" stroke-width="6.4" opacity="0.33" />
+<circle cx="832.3" cy="536.6" r="23.6" fill="none" stroke="#6e8ee8" stroke-width="7.0" opacity="0.40" />
+<path d="M 512.5 892.0 C 486.9 892.5, 461.3 942.3, 443.3 926.0" fill="none" stroke="#f0c456" stroke-width="10.012350001372397" stroke-linecap="round" stroke-linejoin="round" opacity="0.52" />
+<path d="M 494.3 774.0 C 480.1 786.6, 500.6 820.6, 496.6 816.8" fill="none" stroke="#4ea36f" stroke-width="11.297074333764613" stroke-linecap="round" stroke-linejoin="round" opacity="0.49" />
+<path d="M 123.5 590.2 C 101.9 597.0, 89.9 563.0, 65.0 554.7" fill="none" stroke="#cf6ca8" stroke-width="11.283530025742948" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+<circle cx="735.5" cy="522.3" r="10.3" fill="none" stroke="#cf6ca8" stroke-width="7.7" opacity="0.38" />
+<circle cx="890.2" cy="700.6" r="18.9" fill="none" stroke="#6e8ee8" stroke-width="4.8" opacity="0.36" />
+<circle cx="529.0" cy="450.9" r="14.6" fill="none" stroke="#f0c456" stroke-width="7.7" opacity="0.24" />
+<circle cx="813.2" cy="379.3" r="18.7" fill="none" stroke="#4ea36f" stroke-width="4.6" opacity="0.22" />
+<path d="M 414.8 767.4 C 440.1 780.7, 395.0 800.0, 412.0 805.4" fill="none" stroke="#cf6ca8" stroke-width="10.555369613692164" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+<path d="M 878.3 162.5 C 926.8 178.6, 895.5 122.6, 937.4 120.4" fill="none" stroke="#6e8ee8" stroke-width="5.762712584808469" stroke-linecap="round" stroke-linejoin="round" opacity="0.60" />
+<path d="M 358.0 408.1 C 372.0 389.3, 381.6 433.5, 384.7 446.3" fill="none" stroke="#6e8ee8" stroke-width="10.993264961987734" stroke-linecap="round" stroke-linejoin="round" opacity="0.37" />
+<path d="M 475.2 950.7 C 446.8 936.2, 451.4 979.6, 445.3 972.7" fill="none" stroke="#cf6ca8" stroke-width="8.558027129620314" stroke-linecap="round" stroke-linejoin="round" opacity="0.52" />
+<path d="M 676.8 510.0 C 715.3 518.3, 676.1 549.4, 709.2 568.5" fill="none" stroke="#6e8ee8" stroke-width="8.235560836270452" stroke-linecap="round" stroke-linejoin="round" opacity="0.40" />
+<circle cx="678.9" cy="860.7" r="15.6" fill="none" stroke="#cf6ca8" stroke-width="7.8" opacity="0.24" />
+<path d="M 126.1 666.9 C 167.5 661.8, 148.4 696.8, 161.4 703.7" fill="none" stroke="#cf6ca8" stroke-width="5.718799469992518" stroke-linecap="round" stroke-linejoin="round" opacity="0.57" />
+<path d="M 342.8 546.9 C 342.2 556.1, 359.5 590.8, 355.1 590.6" fill="none" stroke="#4ea36f" stroke-width="9.363033367320895" stroke-linecap="round" stroke-linejoin="round" opacity="0.61" />
+<path d="M 540.6 524.2 C 566.1 537.5, 545.4 537.5, 564.6 543.3" fill="none" stroke="#cf6ca8" stroke-width="6.264531541615725" stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
+<circle cx="460.7" cy="626.3" r="7.7" fill="none" stroke="#6e8ee8" stroke-width="7.4" opacity="0.31" />
+<circle cx="693.0" cy="487.2" r="22.5" fill="none" stroke="#6e8ee8" stroke-width="4.4" opacity="0.37" />
+<path d="M 635.8 858.7 C 605.7 877.6, 602.7 845.5, 563.8 854.1" fill="none" stroke="#f0c456" stroke-width="6.619577128440142" stroke-linecap="round" stroke-linejoin="round" opacity="0.51" />
+    <circle cx="354.06546966545284" cy="435.8971323110163" r="76" fill="none" stroke="#f0c456" stroke-width="10" opacity="0.72" />
+<circle cx="328.06546966545284" cy="421.8971323110163" r="9" fill="#6e8ee8" opacity="0.78" /><circle cx="384.06546966545284" cy="421.8971323110163" r="9" fill="#6e8ee8" opacity="0.78" />
+<path d="M 314.06546966545284 455.8971323110163 Q 356.06546966545284 495.8971323110163 402.06546966545284 455.8971323110163" fill="none" stroke="#cf6ca8" stroke-width="9" stroke-linecap="round" opacity="0.68" />
+    <path d="M 482.3 508.7 C 449.8 536.7, 455.5 604.9, 503.6 625.8 C 510.3 659.8, 520.3 694.7, 555.5 649.6 C 566.4 688.1, 592.6 660.4, 611.7 631.8 C 657.0 602.5, 654.2 539.0, 624.8 515.0 C 579.6 490.1, 523.5 494.1, 486.0 510.0 Z" fill="#fffdf0" stroke="#6e8ee8" stroke-width="14" stroke-linejoin="round" opacity="0.92" />
+    <path d="M 509.6 534.1 C 485.6 552.3, 489.1 600.6, 524.9 626.4 C 531.8 642.4, 543.7 666.9, 557.6 638.4 C 571.1 666.9, 596.7 648.5, 608.0 621.9 C 636.8 599.9, 641.5 547.7, 610.9 526.4 C 584.3 505.2, 546.8 507.5, 504.9 531.0 Z" fill="none" stroke="#30203f" stroke-width="4" stroke-linejoin="round" opacity="0.12" />
+    <polyline points="600.0,818.9 592.6,854.2 548.4,855.1 532.8,877.2 507.1,873.0 482.8,864.7 454.6,849.7 436.7,818.3 454.0,786.5 473.0,759.1 504.4,748.0 534.6,757.4 561.2,768.4 569.7,795.9 565.4,819.7 563.9,841.2 558.4,869.4 537.0,902.5 501.7,890.6 467.2,881.8 446.3,852.2 438.0,816.9 476.0,796.4 493.1,783.6 505.0,744.6 539.2,744.1 558.5,773.3 573.3,795.2 578.1,820.9 571.1,845.9 564.4,879.4 528.9,867.4 505.7,871.2 478.6,866.5 456.3,846.3 436.3,815.4 452.5,782.9 482.3,767.5 504.7,736.1 535.0,764.1 554.4,779.5 577.8,794.4 587.8,822.4 589.6,857.2 565.4,882.9 533.0,896.0 504.5,872.1 488.2,854.2 476.3,836.8" fill="none" stroke="#cf6ca8" stroke-width="10.688771682791412" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 213.3 933.7 C 488.3 928.3, 511.7 887.3, 789.5 890.1" fill="none" stroke="#6e8ee8" stroke-width="13.037000286392868" stroke-linecap="round" stroke-linejoin="round" opacity="0.45" />
+<path d="M 210.5 934.6 C 514.7 927.7, 528.8 901.6, 790.9 890.4" fill="none" stroke="#6e8ee8" stroke-width="10.945088460110128" stroke-linecap="round" stroke-linejoin="round" opacity="0.52" />
+<path d="M 215.6 939.4 C 524.6 938.6, 480.1 870.9, 795.1 891.4" fill="none" stroke="#6e8ee8" stroke-width="11.935969731770456" stroke-linecap="round" stroke-linejoin="round" opacity="0.46" />
+    <path d="M 194.9 990.1 C 554.1 974.7, 554.5 1032.8, 863.9 1032.2" fill="none" stroke="#cf6ca8" stroke-width="10.360167345032096" stroke-linecap="round" stroke-linejoin="round" opacity="0.38" />
+<path d="M 195.9 988.8 C 509.7 978.4, 524.3 1051.8, 860.1 1030.0" fill="none" stroke="#cf6ca8" stroke-width="10.51702288724482" stroke-linecap="round" stroke-linejoin="round" opacity="0.34" />
+  </g>
+  <g>
+    <rect x="96" y="88" width="188" height="52" rx="26" fill="#30203f" opacity="0.78" />
+    <text x="124" y="123" fill="#ffe0f0" font-family="Verdana, sans-serif" font-size="24" font-weight="900" letter-spacing="3">TL-S049</text>
+    <text x="96" y="1110" fill="#30203f" font-family="Georgia, serif" font-size="56" font-weight="800">Dancing Tooth 2</text>
+    <text x="98" y="1172" fill="#30203f" opacity="0.78" font-family="Verdana, sans-serif" font-size="30">I drew the night because the tooth was ready.</text>
+    <text x="100" y="1218" fill="#30203f" opacity="0.38" font-family="Verdana, sans-serif" font-size="20" font-weight="800" letter-spacing="3">SAMPLE TOOTHLIGHT - PROCEDURAL</text>
+  </g>
+</svg>

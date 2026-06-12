@@ -30,9 +30,9 @@ export function ProductEntryRead({ className }: ProductEntryReadProps) {
           <ToothGlyph className={styles.tooth} />
           <div className={styles.wandPath} />
           <div className={styles.sharedGlow} />
-          <div className={styles.coin}>SOL</div>
+          <div className={styles.coin}>Gift</div>
           <div className={styles.piggyBank}>
-            <span>Smile Fund</span>
+            <span>Age 10</span>
           </div>
         </div>
 
@@ -50,7 +50,7 @@ export function ProductEntryRead({ className }: ProductEntryReadProps) {
           <ToothlightCard
             title="Kai's Toothlight"
             caption="First tooth. Big smile."
-            createdLabel="Saved for later"
+            createdLabel="Saved for age 10"
             visualState="spark"
             smileFundActive
           />

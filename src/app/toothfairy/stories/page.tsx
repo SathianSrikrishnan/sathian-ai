@@ -4,6 +4,7 @@ import {
   contributionDoor,
   futureKeeperDoors,
   openKeeperDoors,
+  toothlightGalleryMemories,
   type NetworkDoor,
 } from '@/data/toothfairy'
 
@@ -11,6 +12,19 @@ type DoorPoint = {
   x: number
   y: number
   scale: number
+}
+
+type ProofPoint = DoorPoint & {
+  rotate: number
+}
+
+type LoreCameo = ProofPoint & {
+  id: string
+  label: string
+  caption: string
+  image: string
+  href: string
+  motion: 'flight' | 'run'
 }
 
 type KeeperPortrait = {
@@ -42,6 +56,62 @@ const futureDoorPoints: DoorPoint[] = [
   { x: 86, y: 65, scale: 0.6 },
   { x: 38, y: 29, scale: 0.52 },
   { x: 62, y: 29, scale: 0.52 },
+]
+
+const storyProofPoints: ProofPoint[] = [
+  { x: 15, y: 53, scale: 0.82, rotate: -8 },
+  { x: 24, y: 43, scale: 0.72, rotate: 5 },
+  { x: 31, y: 58, scale: 0.88, rotate: -4 },
+  { x: 41, y: 47, scale: 0.72, rotate: 7 },
+  { x: 50, y: 59, scale: 0.86, rotate: -3 },
+  { x: 58, y: 42, scale: 0.72, rotate: 4 },
+  { x: 68, y: 56, scale: 0.88, rotate: 8 },
+  { x: 80, y: 46, scale: 0.72, rotate: -6 },
+  { x: 76, y: 70, scale: 0.76, rotate: 5 },
+  { x: 43, y: 80, scale: 0.66, rotate: -5 },
+  { x: 56, y: 82, scale: 0.7, rotate: 7 },
+  { x: 22, y: 77, scale: 0.66, rotate: 3 },
+]
+
+const storyProofReportNumbers = [1, 4, 7, 36, 44, 74, 77, 78, 87, 88, 124, 125] as const
+
+const storyProofMemories = storyProofReportNumbers.flatMap((reportNumber) => {
+  const memory = toothlightGalleryMemories.find((item) => item.reportNumber === reportNumber)
+
+  return memory ? [memory] : []
+})
+
+const storyProofCards = [1, 4, 7, 36, 74, 78, 87, 125].flatMap((reportNumber) => {
+  const memory = toothlightGalleryMemories.find((item) => item.reportNumber === reportNumber)
+
+  return memory ? [memory] : []
+})
+
+const storyLoreCameos: LoreCameo[] = [
+  {
+    id: 'kkachi',
+    label: 'Kkachi listens',
+    caption: 'Roof song keeper',
+    image: '/story-assets/characters/char-kkachi.png',
+    href: '/toothfairy/story/korea',
+    x: 84,
+    y: 23,
+    scale: 0.92,
+    rotate: -4,
+    motion: 'flight',
+  },
+  {
+    id: 'perez',
+    label: 'Perez hurries',
+    caption: 'Madrid promise',
+    image: '/story-assets/ratoncito-perez/v2/rp3-frame-15-race-to-room.png',
+    href: '/toothfairy/story/ratoncito-perez',
+    x: 83,
+    y: 73,
+    scale: 0.86,
+    rotate: 4,
+    motion: 'run',
+  },
 ]
 
 const keeperPortraits: KeeperPortrait[] = [
@@ -88,7 +158,7 @@ const keeperPortraits: KeeperPortrait[] = [
   {
     name: 'Daga',
     region: 'Philippines',
-    image: '/story-assets/characters/char-daga.png',
+    image: '/story-assets/daga-one-year-wish/site/story-06-daga-site-portrait.png',
     href: '/toothfairy/story/daga-one-year-wish',
     accent: '#7b6cb5',
     focus: '58% 38%',
@@ -120,6 +190,24 @@ const accentStyle = (accent: string, extra?: Record<string, string>) =>
   ({
     '--accent': accent,
     ...extra,
+  }) as CSSProperties
+
+const proofStyle = (point: ProofPoint, index: number) =>
+  ({
+    '--proof-x': `${point.x}%`,
+    '--proof-y': `${point.y}%`,
+    '--proof-scale': point.scale,
+    '--proof-rotate': `${point.rotate}deg`,
+    '--proof-index': index,
+  }) as CSSProperties
+
+const loreCameoStyle = (cameo: LoreCameo, index: number) =>
+  ({
+    '--cameo-x': `${cameo.x}%`,
+    '--cameo-y': `${cameo.y}%`,
+    '--cameo-scale': cameo.scale,
+    '--cameo-rotate': `${cameo.rotate}deg`,
+    '--cameo-index': index,
   }) as CSSProperties
 
 export const metadata = {
@@ -190,6 +278,43 @@ export default function StoriesPage() {
           })}
         </div>
 
+        <div className="toothlight-proof-layer" aria-label="Real Toothlights entering the story world">
+          {storyProofMemories.map((memory, index) => {
+            const point = storyProofPoints[index] ?? storyProofPoints[0]
+
+            return (
+              <span
+                key={memory.id}
+                className="toothlight-proof-node"
+                style={proofStyle(point, index)}
+                aria-label={`TL-${String(memory.reportNumber).padStart(3, '0')}: ${memory.title}`}
+              >
+                <img src={memory.image} alt="" />
+                <small>TL-{String(memory.reportNumber).padStart(3, '0')}</small>
+              </span>
+            )
+          })}
+        </div>
+
+        <div className="lore-flight-layer" aria-label="Story keepers moving through the network">
+          {storyLoreCameos.map((cameo, index) => (
+            <Link
+              key={cameo.id}
+              href={cameo.href}
+              className={`lore-cameo lore-cameo-${cameo.motion}`}
+              style={loreCameoStyle(cameo, index)}
+            >
+              <span className="lore-cameo-image">
+                <img src={cameo.image} alt="" />
+              </span>
+              <span className="lore-cameo-copy">
+                <strong>{cameo.label}</strong>
+                <small>{cameo.caption}</small>
+              </span>
+            </Link>
+          ))}
+        </div>
+
         <Link
           href={contributionDoor.href ?? '/toothfairy/stories'}
           className="contribution-door"
@@ -205,6 +330,31 @@ export default function StoriesPage() {
           <span>
             Every door turns a local tooth tradition into the same Toothlight promise: keep the child&apos;s real memory at the center.
           </span>
+        </div>
+      </section>
+
+      <section className="story-proof-band" aria-label="Real Toothlights in the story world">
+        <div className="section-heading story-proof-heading">
+          <p>Toothlights in the story world</p>
+          <h2>Real childhood moments become the light in each story.</h2>
+          <span>
+            A Toothlight starts with a photo, drawing, or child&apos;s words. The lore gives that memory a place to travel.
+          </span>
+        </div>
+
+        <div className="proof-grid">
+          {storyProofCards.map((memory) => (
+            <article key={memory.id} className="proof-card">
+              <span className="proof-image">
+                <img src={memory.image} alt={memory.alt} />
+              </span>
+              <span className="proof-card-copy">
+                <small>TL-{String(memory.reportNumber).padStart(3, '0')}</small>
+                <strong>{memory.title}</strong>
+                <span>{memory.story}</span>
+              </span>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -426,6 +576,10 @@ export default function StoriesPage() {
           pointer-events: none;
         }
 
+        .open-door-layer {
+          z-index: 6;
+        }
+
         .story-door,
         .future-door,
         .contribution-door {
@@ -433,6 +587,158 @@ export default function StoriesPage() {
           left: var(--door-x);
           top: var(--door-y);
           transform: translate(-50%, -50%) scale(var(--door-scale));
+        }
+
+        .toothlight-proof-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 5;
+          pointer-events: none;
+        }
+
+        .toothlight-proof-node {
+          position: absolute;
+          left: var(--proof-x);
+          top: var(--proof-y);
+          display: block;
+          width: clamp(3rem, 4.8vw, 4.55rem);
+          aspect-ratio: 1;
+          overflow: hidden;
+          border: 1px solid rgba(255, 250, 241, 0.42);
+          border-radius: 50%;
+          background: rgba(4, 9, 20, 0.7);
+          box-shadow:
+            0 0 0 4px rgba(255, 215, 106, 0.11),
+            0 0 22px rgba(255, 215, 106, 0.34),
+            0 14px 30px rgba(0, 0, 0, 0.3);
+          transform: translate(-50%, -50%) rotate(var(--proof-rotate)) scale(var(--proof-scale));
+          animation: proofDrift 9s ease-in-out infinite;
+          animation-delay: calc(var(--proof-index) * -0.54s);
+        }
+
+        .toothlight-proof-node::after {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background:
+            radial-gradient(circle at 50% 20%, rgba(255, 250, 241, 0.26), transparent 32%),
+            linear-gradient(180deg, transparent 42%, rgba(4, 9, 20, 0.58));
+          content: "";
+        }
+
+        .toothlight-proof-node img {
+          object-fit: cover;
+          object-position: center;
+          filter: saturate(1.06) contrast(1.02);
+        }
+
+        .toothlight-proof-node small {
+          position: absolute;
+          left: 50%;
+          bottom: 0.16rem;
+          z-index: 2;
+          border-radius: 999px;
+          background: rgba(4, 9, 20, 0.72);
+          color: #fff7c4;
+          font-size: clamp(0.45rem, 0.75vw, 0.58rem);
+          font-weight: 950;
+          letter-spacing: 0.06em;
+          line-height: 1;
+          padding: 0.18rem 0.28rem;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+
+        .lore-flight-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 8;
+          pointer-events: none;
+        }
+
+        .lore-cameo {
+          position: absolute;
+          left: var(--cameo-x);
+          top: var(--cameo-y);
+          display: grid;
+          width: clamp(9rem, 14vw, 12.4rem);
+          grid-template-columns: 3.3rem minmax(0, 1fr);
+          align-items: center;
+          gap: 0.55rem;
+          border: 1px solid rgba(255, 250, 241, 0.18);
+          border-radius: 8px;
+          background:
+            linear-gradient(135deg, rgba(255, 250, 241, 0.13), rgba(255, 250, 241, 0.035)),
+            rgba(4, 9, 20, 0.72);
+          color: var(--paper);
+          padding: 0.45rem 0.55rem 0.45rem 0.45rem;
+          pointer-events: auto;
+          text-decoration: none;
+          box-shadow:
+            0 0 28px rgba(255, 215, 106, 0.16),
+            0 18px 36px rgba(0, 0, 0, 0.26);
+          transform: translate(-50%, -50%) rotate(var(--cameo-rotate)) scale(var(--cameo-scale));
+          transition: border-color 180ms ease, transform 180ms ease;
+          animation: loreCameoDrift 11s ease-in-out infinite;
+          animation-delay: calc(var(--cameo-index) * -2.4s);
+        }
+
+        .lore-cameo:hover,
+        .lore-cameo:focus-visible {
+          border-color: rgba(255, 215, 106, 0.52);
+          transform: translate(-50%, -56%) rotate(0deg) scale(calc(var(--cameo-scale) * 1.04));
+        }
+
+        .lore-cameo-image {
+          position: relative;
+          display: block;
+          aspect-ratio: 1;
+          overflow: hidden;
+          border: 1px solid rgba(255, 250, 241, 0.2);
+          border-radius: 50%;
+          background: rgba(255, 250, 241, 0.08);
+          box-shadow: inset 0 0 18px rgba(255, 215, 106, 0.16);
+        }
+
+        .lore-cameo-run .lore-cameo-image {
+          border-radius: 6px;
+        }
+
+        .lore-cameo-image::after {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background:
+            radial-gradient(circle at 50% 18%, rgba(255, 250, 241, 0.24), transparent 34%),
+            linear-gradient(180deg, transparent 44%, rgba(4, 9, 20, 0.34));
+          content: "";
+        }
+
+        .lore-cameo-image img {
+          object-position: center;
+          transform: scale(1.06);
+        }
+
+        .lore-cameo-copy {
+          display: grid;
+          gap: 0.15rem;
+          min-width: 0;
+        }
+
+        .lore-cameo-copy strong {
+          color: var(--paper);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+          line-height: 0.98;
+        }
+
+        .lore-cameo-copy small {
+          color: rgba(255, 215, 106, 0.84);
+          font-size: 0.58rem;
+          font-weight: 950;
+          letter-spacing: 0.12em;
+          line-height: 1.1;
+          text-transform: uppercase;
         }
 
         .story-door {
@@ -800,6 +1106,7 @@ export default function StoriesPage() {
         }
 
         .open-stories,
+        .story-proof-band,
         .keeper-band,
         .next-doors {
           width: min(100% - 2.5rem, 1180px);
@@ -820,6 +1127,78 @@ export default function StoriesPage() {
 
         .section-heading h2 {
           font-size: clamp(2rem, 4vw, 3.2rem);
+        }
+
+        .story-proof-heading {
+          max-width: 54rem;
+        }
+
+        .story-proof-heading > span {
+          max-width: 46rem;
+          color: rgba(255, 250, 241, 0.76);
+          font-size: clamp(1rem, 1.6vw, 1.08rem);
+          line-height: 1.55;
+        }
+
+        .proof-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 0.8rem;
+        }
+
+        .proof-card {
+          display: grid;
+          min-height: 20rem;
+          overflow: hidden;
+          border: 1px solid rgba(255, 250, 241, 0.16);
+          border-radius: 8px;
+          background:
+            linear-gradient(180deg, rgba(255, 250, 241, 0.06), rgba(255, 250, 241, 0.025)),
+            rgba(5, 11, 24, 0.72);
+          box-shadow: 0 22px 46px rgba(0, 0, 0, 0.18);
+        }
+
+        .proof-image {
+          position: relative;
+          display: block;
+          min-height: 13rem;
+          overflow: hidden;
+          background: rgba(255, 250, 241, 0.08);
+        }
+
+        .proof-image::after {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(180deg, transparent 42%, rgba(4, 9, 20, 0.68)),
+            radial-gradient(circle at 50% 12%, rgba(255, 215, 106, 0.16), transparent 42%);
+          content: "";
+        }
+
+        .proof-card-copy {
+          display: grid;
+          gap: 0.38rem;
+          padding: 0.9rem 0.9rem 1rem;
+        }
+
+        .proof-card-copy small {
+          color: var(--gold);
+          font-size: 0.64rem;
+          font-weight: 950;
+          letter-spacing: 0.13em;
+        }
+
+        .proof-card-copy strong {
+          color: var(--paper);
+          font-family: var(--font-display), Georgia, serif;
+          font-size: 1.28rem;
+          line-height: 1.02;
+        }
+
+        .proof-card-copy span {
+          color: rgba(255, 250, 241, 0.72);
+          font-size: 0.86rem;
+          line-height: 1.36;
         }
 
         .story-grid {
@@ -1071,6 +1450,26 @@ export default function StoriesPage() {
           50% { opacity: .9; transform: translate(-50%, -52%) scale(calc(var(--door-scale) * 1.08)); }
         }
 
+        @keyframes proofDrift {
+          0%, 100% {
+            opacity: .74;
+            transform: translate(-50%, -50%) rotate(var(--proof-rotate)) scale(var(--proof-scale));
+          }
+          50% {
+            opacity: 1;
+            transform: translate(-50%, -57%) rotate(calc(var(--proof-rotate) * -0.6)) scale(calc(var(--proof-scale) * 1.06));
+          }
+        }
+
+        @keyframes loreCameoDrift {
+          0%, 100% {
+            transform: translate(-50%, -50%) rotate(var(--cameo-rotate)) scale(var(--cameo-scale));
+          }
+          50% {
+            transform: translate(-50%, -59%) rotate(calc(var(--cameo-rotate) * -0.5)) scale(calc(var(--cameo-scale) * 1.04));
+          }
+        }
+
         @media (max-width: 1080px) {
           .story-grid,
           .keeper-strip {
@@ -1088,6 +1487,11 @@ export default function StoriesPage() {
           .next-door-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
+
+          .proof-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
         }
 
         @media (max-width: 760px) {
@@ -1117,6 +1521,14 @@ export default function StoriesPage() {
             height: 73%;
           }
 
+          .toothlight-proof-layer {
+            display: none;
+          }
+
+          .lore-flight-layer {
+            display: none;
+          }
+
           .story-door {
             width: clamp(4rem, 14vw, 5.4rem);
           }
@@ -1135,6 +1547,7 @@ export default function StoriesPage() {
           }
 
           .story-grid,
+          .proof-grid,
           .keeper-strip,
           .next-door-grid {
             grid-template-columns: 1fr;

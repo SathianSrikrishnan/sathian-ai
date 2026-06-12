@@ -43,7 +43,7 @@ const FULL_FRAME_STORY_IDS = new Set([
 function drawHrefForStory(story: StoryConfig, rawHref?: string) {
   const href = rawHref || '/toothfairy/app'
   if (href === '/toothfairy/app') {
-    return `/toothfairy/app/draw?from=story&slug=${encodeURIComponent(story.id)}`
+    return `/toothlight/start?from=story&slug=${encodeURIComponent(story.id)}`
   }
   return href
 }

@@ -14,16 +14,16 @@ const page = existsSync(pagePath) ? readFileSync(pagePath, 'utf8') : ''
 const css = existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : ''
 
 assert(/FRONT_DOOR_BEATS/.test(page), 'entry page must define a compact first-viewport product story')
-for (const beat of ['Photo + drawing', 'AI Toothlight', 'Sealed note', 'Family note + gift']) {
+for (const beat of ['Capture', 'Story', 'Note', 'Learn']) {
   assert(page.includes(beat), `front-door story must include ${beat}`)
 }
 assert(!/Family \+ Smile Fund|optional Smile Fund|links a Smile Fund/i.test(page), 'front door must fold Smile Fund into the family note and optional gift path')
-for (const cue of ['Create before sign-in', 'Original stays saved', 'Parent controls the note']) {
+for (const cue of ['Drawings welcome', 'Original stays saved', 'Parent controls the handoff']) {
   assert(page.includes(cue), `front-door trust cue must include ${cue}`)
 }
 assert(/aria-label="10-second Toothlight story"/.test(page), 'entry page must label the short product story accessibly')
 assert(/aria-label="Parent trust cues"/.test(page), 'entry page must expose parent trust cues')
-assert(/href="\/toothlight\/make"/.test(page), 'front door must drive directly into the Make flow')
+assert(/href="\/toothlight\/start"/.test(page), 'front door must drive directly into the simplified start flow')
 assert(/beatRail/.test(page + css), 'entry page must style the first-viewport beat rail')
 assert(/trustPills/.test(page + css), 'entry page must style the trust cues compactly')
 assert(/heroNote/.test(page + css), 'entry page must include a concise note under the CTAs')

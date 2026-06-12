@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" role="img" aria-label="TL-S011 Kitchen Tooth">
+  <defs>
+    <radialGradient id="paperGlow" cx="50%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#fff0a8" stop-opacity="0.62" />
+      <stop offset="48%" stop-color="#d9e8f4" stop-opacity="0.36" />
+      <stop offset="100%" stop-color="#f7f0dc" stop-opacity="1" />
+    </radialGradient>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0176" numOctaves="4" seed="50970" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+  <rect width="1024" height="1280" fill="url(#paperGlow)" />
+  <rect x="42" y="42" width="940" height="1196" rx="58" fill="none" stroke="#11304b" stroke-opacity="0.14" stroke-width="4" />
+  <circle cx="843.6" cy="220.4" r="50.0" fill="#fff0a8" opacity="0.36" />
+  <g filter="url(#rough)" opacity="0.92">
+    <circle cx="555.1" cy="322.0" r="9.5" fill="none" stroke="#294f9d" stroke-width="7.5" opacity="0.39" />
+<circle cx="887.3" cy="568.9" r="15.5" fill="none" stroke="#65ad73" stroke-width="6.2" opacity="0.30" />
+<path d="M 346.7 962.9 C 329.3 982.9, 289.0 1011.6, 276.2 1016.8" fill="none" stroke="#ff7d5f" stroke-width="11.239743976853788" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" />
+<path d="M 791.0 844.2 C 784.8 848.4, 775.0 834.6, 751.8 839.1" fill="none" stroke="#ff7d5f" stroke-width="10.585951793007553" stroke-linecap="round" stroke-linejoin="round" opacity="0.47" />
+<circle cx="325.1" cy="865.6" r="18.3" fill="none" stroke="#f0c456" stroke-width="5.6" opacity="0.23" />
+<circle cx="569.6" cy="444.8" r="14.6" fill="none" stroke="#f0c456" stroke-width="6.0" opacity="0.33" />
+<path d="M 669.0 174.4 C 670.8 186.7, 645.4 174.2, 668.1 191.9" fill="none" stroke="#294f9d" stroke-width="6.19856967870146" stroke-linecap="round" stroke-linejoin="round" opacity="0.51" />
+<circle cx="924.0" cy="826.3" r="21.2" fill="none" stroke="#294f9d" stroke-width="5.0" opacity="0.31" />
+<circle cx="728.3" cy="362.1" r="24.9" fill="none" stroke="#f0c456" stroke-width="5.8" opacity="0.22" />
+<path d="M 553.7 904.9 C 527.7 916.3, 536.6 943.6, 513.3 946.4" fill="none" stroke="#f0c456" stroke-width="10.90651700925082" stroke-linecap="round" stroke-linejoin="round" opacity="0.60" />
+<circle cx="495.1" cy="900.6" r="8.4" fill="none" stroke="#294f9d" stroke-width="6.7" opacity="0.34" />
+<circle cx="868.5" cy="801.0" r="24.3" fill="none" stroke="#ff7d5f" stroke-width="5.3" opacity="0.22" />
+<path d="M 423.4 679.6 C 403.8 685.9, 388.6 712.7, 395.8 708.2" fill="none" stroke="#294f9d" stroke-width="8.993748557753861" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+<circle cx="533.0" cy="595.6" r="12.8" fill="none" stroke="#ff7d5f" stroke-width="4.4" opacity="0.34" />
+<circle cx="274.2" cy="957.0" r="14.2" fill="none" stroke="#65ad73" stroke-width="7.9" opacity="0.27" />
+<path d="M 148.0 743.2 C 124.0 749.1, 152.2 679.6, 134.4 688.3" fill="none" stroke="#f0c456" stroke-width="7.994662509299815" stroke-linecap="round" stroke-linejoin="round" opacity="0.38" />
+<path d="M 909.7 360.4 C 917.2 356.4, 898.5 351.5, 919.3 347.0" fill="none" stroke="#f0c456" stroke-width="6.86617817170918" stroke-linecap="round" stroke-linejoin="round" opacity="0.39" />
+<path d="M 666.1 265.7 C 708.7 259.3, 711.2 238.6, 711.9 231.2" fill="none" stroke="#65ad73" stroke-width="7.679469406604767" stroke-linecap="round" stroke-linejoin="round" opacity="0.46" />
+<path d="M 860.5 504.7 C 876.6 514.9, 890.3 526.5, 927.0 523.5" fill="none" stroke="#ff7d5f" stroke-width="9.054707428440452" stroke-linecap="round" stroke-linejoin="round" opacity="0.34" />
+<path d="M 814.1 302.7 C 797.1 317.8, 773.3 322.7, 761.9 340.4" fill="none" stroke="#65ad73" stroke-width="10.499720971100032" stroke-linecap="round" stroke-linejoin="round" opacity="0.35" />
+<circle cx="414.3" cy="780.8" r="12.4" fill="none" stroke="#294f9d" stroke-width="6.3" opacity="0.35" />
+<circle cx="455.3" cy="434.5" r="16.9" fill="none" stroke="#f0c456" stroke-width="4.9" opacity="0.35" />
+<circle cx="286.1" cy="709.5" r="17.7" fill="none" stroke="#65ad73" stroke-width="5.9" opacity="0.33" />
+<path d="M 800.1 762.0 C 858.6 781.4, 851.8 705.7, 864.6 719.8" fill="none" stroke="#ff7d5f" stroke-width="8.935247857123613" stroke-linecap="round" stroke-linejoin="round" opacity="0.50" />
+    <path d="M 373.61982153728604 398.48082742700353 L 397.61982153728604 462.48082742700353 L 465.61982153728604 462.48082742700353 L 409.61982153728604 498.48082742700353 L 431.61982153728604 562.4808274270035 L 373.61982153728604 522.4808274270035 L 315.61982153728604 562.4808274270035 L 337.61982153728604 498.48082742700353 L 281.61982153728604 462.48082742700353 L 349.61982153728604 462.48082742700353 Z" fill="none" stroke="#f0c456" stroke-width="10" stroke-linejoin="round" opacity="0.7" />
+    <path d="M 517.3 495.5 C 473.7 528.3, 483.5 590.8, 527.1 603.7 C 550.7 644.7, 546.4 667.6, 570.1 627.0 C 593.7 678.0, 622.4 633.5, 634.1 602.0 C 686.6 589.0, 687.8 519.5, 652.8 496.3 C 610.5 473.8, 550.6 475.8, 511.0 493.1 Z" fill="#f9f2dc" stroke="#f0c456" stroke-width="14" stroke-linejoin="round" opacity="0.92" />
+    <path d="M 540.3 512.5 C 512.3 532.1, 513.4 586.4, 548.6 598.4 C 559.4 618.8, 561.3 649.9, 581.9 614.4 C 596.7 653.5, 624.4 632.0, 632.5 601.8 C 667.5 582.8, 669.9 529.3, 635.0 505.3 C 615.8 485.4, 564.6 486.4, 533.8 512.3 Z" fill="none" stroke="#11304b" stroke-width="4" stroke-linejoin="round" opacity="0.12" />
+    <polyline points="646.2,809.6 618.1,835.1 604.1,858.4 581.0,879.5 547.5,886.0 534.5,847.8 501.4,839.9 484.5,808.9 499.8,777.3 537.2,773.5 550.9,742.6 583.4,735.0 609.4,756.0 612.3,787.9 626.2,810.6 620.3,837.3 609.7,867.5 576.0,861.1 554.6,852.5 525.0,857.9 515.9,832.0 516.8,808.4 498.4,775.2 520.4,749.9 549.5,729.5 583.6,739.6 608.7,758.6 608.8,790.4 618.0,811.4 614.7,835.5 593.2,847.2 577.7,874.8 550.8,863.9 516.7,865.9 522.4,828.2 521.6,807.8 510.9,780.4 522.6,750.8 557.3,764.8 582.4,748.4 607.6,761.6 625.2,784.3 641.4,813.4 604.9,831.2 607.5,868.6 578.0,882.8 542.7,888.6 531.1,848.0 525.6,826.0" fill="none" stroke="#65ad73" stroke-width="9.473733061924577" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 209.1 938.7 C 482.8 953.0, 513.6 906.7, 791.6 890.3" fill="none" stroke="#f0c456" stroke-width="12.75814874842763" stroke-linecap="round" stroke-linejoin="round" opacity="0.61" />
+<path d="M 211.7 940.1 C 487.4 951.4, 524.3 896.1, 792.7 890.0" fill="none" stroke="#f0c456" stroke-width="12.545385881327093" stroke-linecap="round" stroke-linejoin="round" opacity="0.57" />
+<path d="M 210.4 931.1 C 510.5 945.1, 511.1 872.5, 790.2 888.1" fill="none" stroke="#f0c456" stroke-width="13.332934598438442" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 199.3 990.4 C 548.8 997.6, 542.5 1029.0, 860.3 1034.7" fill="none" stroke="#65ad73" stroke-width="7.1536453031003475" stroke-linecap="round" stroke-linejoin="round" opacity="0.49" />
+<path d="M 193.1 985.1 C 512.9 1002.8, 506.4 1027.4, 860.3 1036.8" fill="none" stroke="#65ad73" stroke-width="10.058763831853867" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+  </g>
+  <g>
+    <rect x="96" y="88" width="188" height="52" rx="26" fill="#11304b" opacity="0.78" />
+    <text x="124" y="123" fill="#fff0a8" font-family="Verdana, sans-serif" font-size="24" font-weight="900" letter-spacing="3">TL-S011</text>
+    <text x="96" y="1110" fill="#11304b" font-family="Georgia, serif" font-size="56" font-weight="800">Kitchen Tooth</text>
+    <text x="98" y="1172" fill="#11304b" opacity="0.78" font-family="Verdana, sans-serif" font-size="30">I saved it in a napkin and checked it twice.</text>
+    <text x="100" y="1218" fill="#11304b" opacity="0.38" font-family="Verdana, sans-serif" font-size="20" font-weight="800" letter-spacing="3">SAMPLE TOOTHLIGHT - PROCEDURAL</text>
+  </g>
+</svg>

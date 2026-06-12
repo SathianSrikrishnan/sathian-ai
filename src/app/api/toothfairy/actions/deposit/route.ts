@@ -21,6 +21,7 @@ import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor"
 import idl from "@/lib/toothfairy/escrow-idl.json"
 
 const PROGRAM_ID = new PublicKey("FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC")
+const BLINKS_ENABLED = process.env.NEXT_PUBLIC_TFN_ENABLE_BLINKS === "true"
 const ACTIONS_CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -37,6 +38,13 @@ export async function OPTIONS() {
 
 // GET — Return Action metadata
 export async function GET(request: NextRequest) {
+  if (!BLINKS_ENABLED) {
+    return NextResponse.json(
+      { error: "Solana Actions are paused during controlled launch." },
+      { status: 410, headers: ACTIONS_CORS_HEADERS },
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const childName = searchParams.get("name") || "a child"
   const milestonePda = searchParams.get("milestone")
@@ -86,6 +94,13 @@ export async function GET(request: NextRequest) {
 
 // POST — Build deposit transaction
 export async function POST(request: NextRequest) {
+  if (!BLINKS_ENABLED) {
+    return NextResponse.json(
+      { error: "Solana Actions are paused during controlled launch." },
+      { status: 410, headers: ACTIONS_CORS_HEADERS },
+    )
+  }
+
   try {
     const { searchParams } = new URL(request.url)
     const milestonePda = searchParams.get("milestone")

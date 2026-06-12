@@ -35,7 +35,7 @@ export function shouldResumeToothlightSave(search: string) {
 }
 
 export function isLocalToothlightPreviewHost(hostname?: string) {
-  if (process.env.NODE_ENV === 'production') return false
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_TEST_MODE !== 'true') return false
   const host = hostname ?? (typeof window !== 'undefined' ? window.location.hostname : '')
   return (
     host === 'localhost' ||

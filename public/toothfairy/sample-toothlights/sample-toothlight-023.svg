@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" role="img" aria-label="TL-S023 Purple Tooth">
+  <defs>
+    <radialGradient id="paperGlow" cx="50%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#e9ffe1" stop-opacity="0.62" />
+      <stop offset="48%" stop-color="#cde2d7" stop-opacity="0.36" />
+      <stop offset="100%" stop-color="#f2f6e8" stop-opacity="1" />
+    </radialGradient>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0134" numOctaves="4" seed="62934" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+  <rect width="1024" height="1280" fill="url(#paperGlow)" />
+  <rect x="42" y="42" width="940" height="1196" rx="58" fill="none" stroke="#17383c" stroke-opacity="0.14" stroke-width="4" />
+  <circle cx="823.8" cy="167.2" r="42.6" fill="#e9ffe1" opacity="0.36" />
+  <g filter="url(#rough)" opacity="0.92">
+    <path d="M 122.1 172.4 C 140.2 153.1, 159.6 158.7, 152.7 162.0" fill="none" stroke="#ffd76a" stroke-width="10.895403508096933" stroke-linecap="round" stroke-linejoin="round" opacity="0.60" />
+<path d="M 907.7 190.8 C 863.7 178.6, 858.4 206.7, 852.8 210.9" fill="none" stroke="#ffd76a" stroke-width="12.001363691873848" stroke-linecap="round" stroke-linejoin="round" opacity="0.57" />
+<circle cx="282.8" cy="730.8" r="14.4" fill="none" stroke="#3558a5" stroke-width="7.0" opacity="0.18" />
+<path d="M 725.6 467.8 C 738.1 463.5, 773.3 508.5, 774.7 499.6" fill="none" stroke="#ffd76a" stroke-width="12.244020325131714" stroke-linecap="round" stroke-linejoin="round" opacity="0.54" />
+<path d="M 918.5 621.5 C 903.2 630.6, 909.1 570.3, 910.3 567.7" fill="none" stroke="#d76757" stroke-width="11.007782303728163" stroke-linecap="round" stroke-linejoin="round" opacity="0.46" />
+<circle cx="853.6" cy="275.5" r="22.7" fill="none" stroke="#d76757" stroke-width="4.6" opacity="0.20" />
+<path d="M 232.7 456.7 C 240.0 444.0, 233.4 453.5, 205.9 451.4" fill="none" stroke="#38a39a" stroke-width="11.346257912926376" stroke-linecap="round" stroke-linejoin="round" opacity="0.40" />
+<circle cx="210.5" cy="803.9" r="21.2" fill="none" stroke="#3558a5" stroke-width="7.7" opacity="0.35" />
+<circle cx="307.2" cy="598.6" r="17.1" fill="none" stroke="#38a39a" stroke-width="6.4" opacity="0.20" />
+<path d="M 598.6 912.5 C 616.1 907.4, 620.2 863.8, 650.2 881.1" fill="none" stroke="#ffd76a" stroke-width="9.016279445029795" stroke-linecap="round" stroke-linejoin="round" opacity="0.49" />
+<circle cx="780.2" cy="545.3" r="13.1" fill="none" stroke="#d76757" stroke-width="7.7" opacity="0.31" />
+<path d="M 550.3 938.0 C 565.7 955.2, 532.0 1009.5, 542.6 989.0" fill="none" stroke="#d76757" stroke-width="9.414061197079718" stroke-linecap="round" stroke-linejoin="round" opacity="0.36" />
+<circle cx="615.3" cy="592.5" r="11.5" fill="none" stroke="#d76757" stroke-width="6.4" opacity="0.31" />
+<path d="M 535.5 392.7 C 547.0 393.5, 547.9 366.2, 520.9 377.1" fill="none" stroke="#ffd76a" stroke-width="10.784541698172688" stroke-linecap="round" stroke-linejoin="round" opacity="0.34" />
+<path d="M 620.0 716.8 C 620.1 703.8, 639.9 721.7, 621.7 713.4" fill="none" stroke="#3558a5" stroke-width="10.037963394075632" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" />
+<path d="M 495.6 480.0 C 508.1 479.4, 491.3 492.2, 519.7 500.3" fill="none" stroke="#38a39a" stroke-width="9.20642685238272" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+<circle cx="424.2" cy="663.0" r="10.4" fill="none" stroke="#3558a5" stroke-width="7.7" opacity="0.20" />
+<circle cx="694.0" cy="541.9" r="22.2" fill="none" stroke="#ffd76a" stroke-width="5.5" opacity="0.37" />
+<path d="M 663.6 874.3 C 610.6 863.6, 630.1 918.4, 608.4 910.9" fill="none" stroke="#3558a5" stroke-width="9.912373329512775" stroke-linecap="round" stroke-linejoin="round" opacity="0.52" />
+<circle cx="343.5" cy="583.8" r="14.1" fill="none" stroke="#ffd76a" stroke-width="4.1" opacity="0.40" />
+<circle cx="602.4" cy="748.6" r="13.6" fill="none" stroke="#ffd76a" stroke-width="6.1" opacity="0.23" />
+<path d="M 435.4 264.0 C 454.3 270.3, 465.0 272.7, 504.4 271.5" fill="none" stroke="#3558a5" stroke-width="11.92367357481271" stroke-linecap="round" stroke-linejoin="round" opacity="0.60" />
+<path d="M 707.2 694.8 C 666.7 692.1, 674.0 702.8, 637.5 693.8" fill="none" stroke="#38a39a" stroke-width="6.801853148266673" stroke-linecap="round" stroke-linejoin="round" opacity="0.54" />
+<path d="M 865.5 940.3 C 852.3 918.7, 850.8 882.5, 856.8 878.8" fill="none" stroke="#d76757" stroke-width="8.428123852238059" stroke-linecap="round" stroke-linejoin="round" opacity="0.49" />
+    <path d="M 331.21570633910596 329.0757481539622 L 355.21570633910596 393.0757481539622 L 423.21570633910596 393.0757481539622 L 367.21570633910596 429.0757481539622 L 389.21570633910596 493.0757481539622 L 331.21570633910596 453.0757481539622 L 273.21570633910596 493.0757481539622 L 295.21570633910596 429.0757481539622 L 239.21570633910596 393.0757481539622 L 307.21570633910596 393.0757481539622 Z" fill="none" stroke="#ffd76a" stroke-width="10" stroke-linejoin="round" opacity="0.7" />
+    <path d="M 458.8 544.6 C 420.1 580.5, 436.7 655.1, 482.8 673.4 C 495.0 718.7, 506.3 754.9, 531.9 713.3 C 558.4 752.9, 581.3 708.2, 603.7 672.5 C 652.1 648.3, 651.8 584.0, 605.5 549.2 C 567.3 524.9, 509.7 523.3, 467.7 551.8 Z" fill="#f9f2dc" stroke="#ffd76a" stroke-width="14" stroke-linejoin="round" opacity="0.92" />
+    <path d="M 494.3 565.5 C 454.4 592.5, 464.8 646.4, 496.6 665.0 C 506.7 689.2, 522.2 720.8, 543.2 686.1 C 561.5 725.2, 584.6 695.1, 593.2 671.6 C 629.3 643.8, 633.4 584.4, 600.3 570.5 C 572.8 552.2, 522.6 551.0, 485.0 564.1 Z" fill="none" stroke="#17383c" stroke-width="4" stroke-linejoin="round" opacity="0.12" />
+    <polyline points="610.0,826.3 587.1,855.7 567.0,877.8 541.1,892.8 506.9,908.8 485.0,877.3 454.2,860.3 433.1,825.5 442.1,784.8 474.1,759.6 507.9,741.9 541.6,762.5 584.7,755.0 578.2,802.2 589.5,827.4 581.3,854.1 578.5,894.7 544.7,915.9 510.6,888.3 489.1,870.6 460.9,855.8 461.0,824.6 446.3,785.2 484.5,771.0 513.0,760.2 548.9,738.7 587.1,754.6 607.6,790.3 618.2,829.4 586.6,858.1 556.6,867.4 541.1,905.3 503.4,910.8 494.0,863.4 477.2,847.5 470.0,823.9 477.9,800.4 485.3,770.1 513.7,757.3 541.9,769.5 577.0,768.5 594.6,797.4 587.2,829.4 581.1,856.3 566.8,883.2 540.6,910.4 502.9,907.1 484.3,873.1 481.4,844.7" fill="none" stroke="#ffd76a" stroke-width="8.1240741237998" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 213.6 936.6 C 527.8 924.7, 481.0 890.6, 796.2 885.2" fill="none" stroke="#38a39a" stroke-width="13.929033226333559" stroke-linecap="round" stroke-linejoin="round" opacity="0.37" />
+<path d="M 209.8 937.3 C 482.8 947.2, 478.6 882.1, 797.3 887.9" fill="none" stroke="#38a39a" stroke-width="12.168093224987388" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+<path d="M 214.8 934.2 C 482.4 922.7, 515.7 888.6, 794.5 883.4" fill="none" stroke="#38a39a" stroke-width="13.338551923632622" stroke-linecap="round" stroke-linejoin="round" opacity="0.43" />
+    <path d="M 200.9 987.4 C 529.1 998.8, 516.8 1051.0, 864.9 1032.3" fill="none" stroke="#ffd76a" stroke-width="10.910288088023663" stroke-linecap="round" stroke-linejoin="round" opacity="0.53" />
+<path d="M 195.3 983.1 C 519.3 980.3, 527.1 1029.4, 860.0 1034.3" fill="none" stroke="#ffd76a" stroke-width="8.016355369240046" stroke-linecap="round" stroke-linejoin="round" opacity="0.59" />
+  </g>
+  <g>
+    <rect x="96" y="88" width="188" height="52" rx="26" fill="#17383c" opacity="0.78" />
+    <text x="124" y="123" fill="#e9ffe1" font-family="Verdana, sans-serif" font-size="24" font-weight="900" letter-spacing="3">TL-S023</text>
+    <text x="96" y="1110" fill="#17383c" font-family="Georgia, serif" font-size="56" font-weight="800">Purple Tooth</text>
+    <text x="98" y="1172" fill="#17383c" opacity="0.78" font-family="Verdana, sans-serif" font-size="30">I lost it and then we found it by the sink.</text>
+    <text x="100" y="1218" fill="#17383c" opacity="0.38" font-family="Verdana, sans-serif" font-size="20" font-weight="800" letter-spacing="3">SAMPLE TOOTHLIGHT - PROCEDURAL</text>
+  </g>
+</svg>

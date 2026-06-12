@@ -10,6 +10,8 @@ const DRAFT_MEDIA_STORE = 'media'
 const DRAFT_AI_RENDER_OPTIONS_FIELD = 'aiRenderOptions'
 const DRAFT_AI_RENDER_OPTION_MEDIA_PREFIX = 'aiRenderOption:'
 const DRAFT_MEDIA_FIELDS = [
+  'originalImageUrl',
+  'enhancedImageUrl',
   'sourceImageSrc',
   'photoImageSrc',
   'artworkImageSrc',

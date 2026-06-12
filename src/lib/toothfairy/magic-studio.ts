@@ -192,7 +192,7 @@ export function buildMagicPrompt(input: {
 
   return [
     "Make a meaningful global image edit so the whole picture changes, while the original memory remains recognizable.",
-    "Preserve the real source photo as the emotional source of the image: keep face identity, skin tone, body pose, camera angle, tooth moment, room layout, and object placement recognizable.",
+    "Preserve the real source photo as the emotional source of the image: keep face identity, skin tone, body pose, camera angle, same overall composition, tooth moment, room layout, and object placement recognizable.",
     ...layerInstructions,
     "Reinterpret child marks, imperfect lines, doodles, color choices, and handwriting as part of the selected style; restyle handwriting and drawn strokes so they feel magical and designed, not pixel-perfect or pasted back unchanged.",
     `Treatment-specific transformation contract. Photo effect: ${input.style.photoEffect}. Drawing effect: ${input.style.drawingEffect}. Transformation brief: ${input.style.transformationBrief}.`,

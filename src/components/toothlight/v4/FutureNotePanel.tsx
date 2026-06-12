@@ -88,6 +88,12 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
       unlockAge: savedUnlockAge,
       mode: 'local-preview',
     })
+    logToothlightClientEvent('parent_note_saved', {
+      toothlightId,
+      status: 'sealed',
+      unlockAge: savedUnlockAge,
+      mode: 'local-preview',
+    })
     setMessage('Sealed. The note stays private.')
   }
 
@@ -121,6 +127,11 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
         sealedPreviewText: sealedText.trim(),
       })
       logToothlightClientEvent('note_completed', {
+        toothlightId,
+        status: result.status,
+        unlockAge: result.unlockAge ?? unlockAge,
+      })
+      logToothlightClientEvent('parent_note_saved', {
         toothlightId,
         status: result.status,
         unlockAge: result.unlockAge ?? unlockAge,
@@ -178,7 +189,7 @@ export function FutureNotePanel({ toothlightId, initialStatus = 'none', handoff 
           <div>
             <Link href={`/toothlight/t/${toothlightId}`}>View saved Toothlight</Link>
             <Link href={`/toothlight/t/${toothlightId}/reveal?preview=1`}>Preview reveal</Link>
-            <Link href={`/toothlight/t/${toothlightId}/family`}>Invite family</Link>
+            <Link href={`/toothlight/t/${toothlightId}/family`} data-tfn-event="invite_clicked">Invite family</Link>
           </div>
         </div>
       )}

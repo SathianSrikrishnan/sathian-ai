@@ -10,9 +10,9 @@ function assert(condition, message) {
 }
 
 assert(page.includes('ProductEntryRead'), 'entry page must import and render ProductEntryRead')
-assert(page.includes('href="/toothlight/make"'), 'primary CTA must link to /toothlight/make')
+assert(page.includes('href="/toothlight/start"'), 'primary CTA must link to /toothlight/start')
 assert(!/Continue with Google/i.test(page), 'entry page must not use Continue with Google as primary CTA')
-assert(/How It Works|howSteps|Make.+Save.+Seal.+Share/s.test(page), 'entry page must include a visual How It Works strip')
+assert(/How It Works|howSteps|Capture.+Time-lock.+Invite.+Learn/s.test(page), 'entry page must include the launch How It Works strip')
 assert(/Tanda/i.test(page), 'entry page must include Tanda as product-world guide language')
 assert(/Network/i.test(page), 'entry page must include Network language')
 assert(!/blockchain.{0,120}blockchain/is.test(page), 'entry page must avoid long blockchain explanation')

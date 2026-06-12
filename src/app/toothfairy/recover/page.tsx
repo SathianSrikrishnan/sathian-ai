@@ -15,7 +15,7 @@ const paths = [
     cta: "Continue with Google",
   },
   {
-    title: "I used a wallet",
+    title: "Advanced Solana recovery",
     body: "Connect the same guardian wallet only if you created or claimed the child's Smile Fund with Phantom.",
     href: "/toothfairy/app/recover",
     cta: "Find memories",
@@ -54,8 +54,8 @@ export default function RecoverLandingPage() {
       <section className="note">
         <h2>For controlled testing</h2>
         <p>
-          If Google sign-in does not show a child you minted, keep the family
-          memory link and contact support with the parent email used at mint.
+          If Google sign-in does not show a child you saved, keep the family
+          memory link and contact support with the parent email used to save the Toothlight.
           Do not rely on wallet scanning as the only recovery path.
         </p>
       </section>

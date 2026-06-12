@@ -1,12 +1,3 @@
 {
-  "rules": [
-    {
-      "pathPattern": "/api/toothfairy/actions/**",
-      "apiPath": "/api/toothfairy/actions/**"
-    },
-    {
-      "pathPattern": "/gift/**",
-      "apiPath": "/api/toothfairy/actions/deposit?milestone=*"
-    }
-  ]
+  "rules": []
 }

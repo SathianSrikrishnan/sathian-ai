@@ -5,7 +5,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Smile Fund - Tooth Fairy Network",
   description:
-    "A parent-controlled Smile Fund helps a child grow from a tooth memory into early lessons about saving, responsibility, ownership, and self-sovereignty.",
+    "A parent-controlled Smile Fund helps a child grow from a tooth memory into early lessons about saving, responsibility, and ownership.",
 }
 
 const lessons = [
@@ -24,14 +24,14 @@ const lessons = [
 ]
 
 const timeline = [
-  "The tooth moment is saved as a first forever memory.",
+  "The tooth moment is saved as a Toothlight with the photo, drawing, or story at the center.",
   "Family can celebrate the page without needing a wallet.",
-  "Optional wallet gifts enter the Smile Fund during controlled testing.",
-  "The child grows into saving, investing, and self-sovereignty lessons with a parent guiding the pace.",
+  "Optional wallet gifts can enter the Smile Fund during controlled testing.",
+  "The child grows into saving, ownership, and responsibility lessons with a parent guiding the pace.",
 ]
 
 const status = [
-  ["Live now", "Memory creation, Google sign-in, public family links, and controlled wallet gifts."],
+  ["Live now", "Toothlight creation, Google sign-in, public family links, Solana minting in the advanced path, and controlled wallet gifts."],
   ["Paused", "Card gifts are paused until provider verification, receipts, fee disclosures, and terms are final."],
   ["Boundary", "The Smile Fund is an educational savings experience, not investment advice or an investment product."],
 ]
@@ -63,15 +63,14 @@ export default function SmileFundPage() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">Smile Fund</p>
-          <h1>A practice portfolio for saving, responsibility, and ownership.</h1>
+          <h1>A small fund they can grow into.</h1>
           <p>
-            The Smile Fund gives a child an early model for the world they are
-            growing into: save before spending, understand what is truly theirs,
-            and learn about investing and self-sovereignty with a parent still
-            setting the pace.
+            The Smile Fund is the gift layer of a Toothlight. Parents can keep
+            the memory first, let family add love when ready, and use the fund
+            later as a simple lesson in saving, ownership, and responsibility.
           </p>
           <div className="actions">
-            <Link href="/toothfairy/app/draw?from=smile-fund">Create a memory</Link>
+            <Link href="/toothlight/start?from=smile-fund">Create a Toothlight</Link>
             <Link href="/toothfairy/faq">Read parent FAQ</Link>
           </div>
         </div>
@@ -112,7 +111,7 @@ export default function SmileFundPage() {
       <section className="lesson-band" aria-label="Smile Fund lessons">
         <div className="lesson-heading">
           <p className="eyebrow">What it teaches</p>
-          <h2>The gift is optional. The lesson is the product.</h2>
+          <h2>The gift is optional. The learning path is the point.</h2>
         </div>
         <div className="lesson-grid">
           {lessons.map((lesson) => (
@@ -127,13 +126,13 @@ export default function SmileFundPage() {
       <section className="flow">
         <div>
           <p className="eyebrow">Family flow</p>
-          <h2>Memory first, money second, responsibility over time.</h2>
+          <h2>Memory first, gift second, responsibility over time.</h2>
           <p>
             A lost tooth should not become a transaction. The memory is the
             emotional anchor. The Smile Fund is the learning layer that can
-            slowly introduce saving, patience, investing vocabulary, and the
-            idea of self-sovereignty without handing a child adult financial
-            control too early.
+            slowly introduce saving, patience, ownership, and the idea of caring
+            for something valuable without handing a child adult financial control
+            too early.
           </p>
         </div>
         <ol>
@@ -188,7 +187,7 @@ export default function SmileFundPage() {
           responsible for custody, trading, or financial decisions. That is the
           point.
         </p>
-        <Link href="/toothfairy/app/draw?from=smile-fund">Start with the memory</Link>
+        <Link href="/toothlight/start?from=smile-fund">Start with the memory</Link>
       </section>
 
       <style>{`

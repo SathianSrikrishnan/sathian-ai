@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280" role="img" aria-label="TL-S020 Cookie Tooth">
+  <defs>
+    <radialGradient id="paperGlow" cx="50%" cy="38%" r="70%">
+      <stop offset="0%" stop-color="#dff2ff" stop-opacity="0.62" />
+      <stop offset="48%" stop-color="#c9d7ee" stop-opacity="0.36" />
+      <stop offset="100%" stop-color="#eef5fb" stop-opacity="1" />
+    </radialGradient>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0179" numOctaves="4" seed="59943" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+  <rect width="1024" height="1280" fill="url(#paperGlow)" />
+  <rect x="42" y="42" width="940" height="1196" rx="58" fill="none" stroke="#14213d" stroke-opacity="0.14" stroke-width="4" />
+  <circle cx="848.2" cy="166.8" r="45.2" fill="#dff2ff" opacity="0.36" />
+  <g filter="url(#rough)" opacity="0.92">
+    <circle cx="369.0" cy="771.1" r="9.1" fill="none" stroke="#f0c456" stroke-width="4.4" opacity="0.24" />
+<circle cx="542.4" cy="153.1" r="11.8" fill="none" stroke="#ea6a50" stroke-width="5.0" opacity="0.29" />
+<path d="M 628.7 287.7 C 625.6 269.9, 645.8 283.9, 641.4 294.3" fill="none" stroke="#f0c456" stroke-width="7.824910547584295" stroke-linecap="round" stroke-linejoin="round" opacity="0.50" />
+<path d="M 841.9 674.6 C 835.3 682.1, 818.0 703.9, 832.9 697.2" fill="none" stroke="#f0c456" stroke-width="7.936544272117317" stroke-linecap="round" stroke-linejoin="round" opacity="0.59" />
+<circle cx="209.6" cy="680.1" r="20.1" fill="none" stroke="#2c5bd2" stroke-width="4.2" opacity="0.27" />
+<circle cx="719.7" cy="801.9" r="9.6" fill="none" stroke="#f0c456" stroke-width="5.5" opacity="0.20" />
+<path d="M 492.1 769.1 C 543.4 788.2, 536.3 715.2, 552.9 712.4" fill="none" stroke="#f0c456" stroke-width="5.0523005947470665" stroke-linecap="round" stroke-linejoin="round" opacity="0.57" />
+<circle cx="112.9" cy="232.4" r="7.2" fill="none" stroke="#2c5bd2" stroke-width="5.1" opacity="0.22" />
+<path d="M 669.4 849.0 C 663.7 829.3, 671.2 807.9, 622.9 812.0" fill="none" stroke="#2c5bd2" stroke-width="8.737221074290574" stroke-linecap="round" stroke-linejoin="round" opacity="0.55" />
+<path d="M 149.6 967.6 C 139.1 962.5, 142.5 964.5, 93.6 956.3" fill="none" stroke="#2c5bd2" stroke-width="9.984563627280295" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" />
+<circle cx="127.3" cy="432.7" r="16.9" fill="none" stroke="#66b56f" stroke-width="7.3" opacity="0.33" />
+<path d="M 551.9 679.8 C 581.7 688.1, 604.4 712.8, 613.8 724.8" fill="none" stroke="#2c5bd2" stroke-width="7.741558414883912" stroke-linecap="round" stroke-linejoin="round" opacity="0.62" />
+<path d="M 295.5 400.1 C 276.7 378.8, 280.3 337.2, 241.0 352.1" fill="none" stroke="#ea6a50" stroke-width="10.345920619554818" stroke-linecap="round" stroke-linejoin="round" opacity="0.54" />
+<path d="M 228.8 756.8 C 210.5 749.3, 197.2 755.6, 178.1 753.5" fill="none" stroke="#ea6a50" stroke-width="6.791661064140499" stroke-linecap="round" stroke-linejoin="round" opacity="0.41" />
+<circle cx="101.4" cy="360.3" r="14.1" fill="none" stroke="#f0c456" stroke-width="5.4" opacity="0.24" />
+<path d="M 175.9 927.8 C 163.1 916.0, 186.8 929.8, 184.0 938.5" fill="none" stroke="#f0c456" stroke-width="10.266871429048479" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+<circle cx="652.5" cy="565.0" r="21.8" fill="none" stroke="#ea6a50" stroke-width="7.1" opacity="0.21" />
+<circle cx="404.8" cy="875.0" r="12.8" fill="none" stroke="#f0c456" stroke-width="5.1" opacity="0.28" />
+<path d="M 185.5 226.7 C 160.6 215.7, 191.4 274.4, 159.3 281.8" fill="none" stroke="#ea6a50" stroke-width="10.396646033972502" stroke-linecap="round" stroke-linejoin="round" opacity="0.53" />
+<path d="M 648.3 708.2 C 677.1 692.2, 643.0 758.8, 674.5 749.8" fill="none" stroke="#f0c456" stroke-width="8.461680701933801" stroke-linecap="round" stroke-linejoin="round" opacity="0.44" />
+<path d="M 810.0 394.2 C 803.2 390.1, 794.6 370.7, 772.1 372.9" fill="none" stroke="#f0c456" stroke-width="7.470674838870764" stroke-linecap="round" stroke-linejoin="round" opacity="0.47" />
+<circle cx="734.8" cy="760.2" r="12.9" fill="none" stroke="#2c5bd2" stroke-width="5.6" opacity="0.26" />
+<circle cx="692.5" cy="254.8" r="16.0" fill="none" stroke="#ea6a50" stroke-width="5.8" opacity="0.19" />
+<path d="M 470.4 474.6 C 420.2 494.5, 425.5 488.4, 424.4 494.4" fill="none" stroke="#66b56f" stroke-width="6.960611075162888" stroke-linecap="round" stroke-linejoin="round" opacity="0.46" />
+    <ellipse cx="382.4223619457334" cy="463.65413124859333" rx="92" ry="42" fill="none" stroke="#ea6a50" stroke-width="10" opacity="0.7" />
+<path d="M 312.4223619457334 433.65413124859333 C 348.4223619457334 387.65413124859333, 418.4223619457334 387.65413124859333, 458.4223619457334 433.65413124859333" fill="none" stroke="#66b56f" stroke-width="9" opacity="0.64" />
+<polyline points="404.8,433.7 412.5,448.2 398.8,454.3 388.9,462.6 377.5,454.9 370.5,448.5 355.7,446.3 348.6,433.4 358.1,421.6 363.3,409.1 375.4,401.2 388.9,406.9 397.7,415.0 408.0,421.8 413.4,434.2 408.9,447.0 399.7,456.1 388.9,465.1 375.9,459.5 361.0,459.3 362.2,442.8 357.1,433.0 363.3,423.8 369.3,416.2 377.3,407.7 388.7,409.5 401.1,411.7 404.0,424.1 417.2,434.8 406.1,446.1 403.5,462.2 386.5,455.1 374.6,462.7" fill="none" stroke="#f0c456" stroke-width="7.578043857589364" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 461.4 459.6 C 417.9 484.3, 439.1 567.8, 482.1 587.9 C 505.4 602.3, 507.0 668.0, 540.9 619.0 C 566.8 668.9, 585.4 610.5, 619.1 592.3 C 667.7 551.5, 669.6 474.2, 620.5 460.6 C 577.6 414.7, 505.3 430.0, 461.0 451.1 Z" fill="#f9f2dc" stroke="#2c5bd2" stroke-width="14" stroke-linejoin="round" opacity="0.92" />
+    <path d="M 486.7 469.2 C 460.8 500.5, 465.0 557.9, 497.5 573.9 C 511.8 600.6, 519.9 638.2, 552.3 597.8 C 571.7 641.9, 590.3 612.9, 606.9 584.3 C 643.8 559.4, 648.5 500.1, 616.1 467.8 C 583.8 445.6, 523.6 455.9, 489.2 476.4 Z" fill="none" stroke="#14213d" stroke-width="4" stroke-linejoin="round" opacity="0.12" />
+    <polyline points="568.6,789.3 567.7,814.6 568.7,856.7 534.2,873.7 500.6,852.1 462.5,854.7 435.7,826.9 445.9,788.7 434.8,749.6 475.8,738.7 499.0,713.7 534.8,708.8 570.4,722.1 583.5,757.8 594.5,790.6 569.5,816.6 545.2,828.3 527.2,847.0 500.4,848.5 471.0,842.3 442.9,822.0 447.4,787.6 452.3,756.9 473.5,733.8 505.7,741.1 531.5,727.0 563.3,732.8 583.1,759.3 607.3,792.4 585.3,826.1 563.0,853.8 528.8,860.6 499.0,849.7 475.5,835.3 455.2,815.3 464.9,787.2 443.6,750.9 476.4,735.8 505.9,737.4 529.4,738.6 557.1,741.7 562.3,769.5 563.6,791.7 566.3,817.2 569.0,864.5 524.1,840.9 489.9,877.8 454.2,857.6 468.9,808.4" fill="none" stroke="#ea6a50" stroke-width="7.42610935959965" stroke-linecap="round" stroke-linejoin="round" opacity="0.56" />
+    <path d="M 214.3 939.2 C 491.8 928.9, 509.0 883.4, 796.9 891.1" fill="none" stroke="#ea6a50" stroke-width="11.451890476979315" stroke-linecap="round" stroke-linejoin="round" opacity="0.60" />
+<path d="M 218.6 935.5 C 509.5 952.1, 522.0 903.5, 791.0 885.4" fill="none" stroke="#ea6a50" stroke-width="13.356867229565978" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" />
+<path d="M 218.1 940.4 C 485.1 930.4, 511.0 868.5, 795.5 891.4" fill="none" stroke="#ea6a50" stroke-width="11.431341387331486" stroke-linecap="round" stroke-linejoin="round" opacity="0.61" />
+    <path d="M 195.3 986.3 C 527.9 976.5, 548.5 1028.3, 859.5 1032.0" fill="none" stroke="#ea6a50" stroke-width="7.490108019672334" stroke-linecap="round" stroke-linejoin="round" opacity="0.42" />
+<path d="M 194.4 989.0 C 508.1 969.3, 554.2 1049.3, 863.0 1032.5" fill="none" stroke="#ea6a50" stroke-width="8.65499173104763" stroke-linecap="round" stroke-linejoin="round" opacity="0.48" />
+  </g>
+  <g>
+    <rect x="96" y="88" width="188" height="52" rx="26" fill="#14213d" opacity="0.78" />
+    <text x="124" y="123" fill="#dff2ff" font-family="Verdana, sans-serif" font-size="24" font-weight="900" letter-spacing="3">TL-S020</text>
+    <text x="96" y="1110" fill="#14213d" font-family="Georgia, serif" font-size="56" font-weight="800">Cookie Tooth</text>
+    <text x="98" y="1172" fill="#14213d" opacity="0.78" font-family="Verdana, sans-serif" font-size="30">I made a star for the hole in my smile.</text>
+    <text x="100" y="1218" fill="#14213d" opacity="0.38" font-family="Verdana, sans-serif" font-size="20" font-weight="800" letter-spacing="3">SAMPLE TOOTHLIGHT - PROCEDURAL</text>
+  </g>
+</svg>
