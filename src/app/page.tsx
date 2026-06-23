@@ -97,7 +97,7 @@ function CornerDots({ color }: { color: string }) {
 // ─── Arrow icon ─────────────────────────────────────────────────────────────
 function ArrowRight({ size = 14 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   )
@@ -142,6 +142,9 @@ function NewsletterForm() {
     <form onSubmit={handleSubmit} className="flex flex-wrap gap-3">
       <input
         type="email"
+        name="email"
+        autoComplete="email"
+        aria-label="Email address"
         placeholder="your@email.com"
         className="hub-email-input"
         value={email}
@@ -210,10 +213,28 @@ export default function Home() {
                 My technology node on the internet.
               </h1>
               <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 540, fontSize: 17, lineHeight: 1.7 }}>
-                A home base for my applied AI, Web3, automation, and product experiments.
-                Some pieces start rough by design; the useful ones become systems, tools,
-                and client-facing work.
+                I build AI-native workflows, Web3 experiments, and practical automation systems
+                for my own projects and selected clients. This site is the proof surface:
+                experiments, writing, mini apps, and the pieces that become real products.
               </p>
+              <div className="hub-hero-actions">
+                <a href="#projects" className="hub-btn-primary" style={{ textDecoration: 'none' }}>
+                  See current work <ArrowRight />
+                </a>
+                <button
+                  type="button"
+                  className="hub-btn-secondary"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-chat'))}
+                >
+                  Start a conversation
+                </button>
+              </div>
+              <div className="hub-signal-row" role="list" aria-label="Current focus areas">
+                <span role="listitem">AI automation</span>
+                <span role="listitem">Web3 proofs</span>
+                <span role="listitem">Client systems</span>
+                <span role="listitem">Family and garden labs</span>
+              </div>
               {btcPrice && (
                 <span className="hub-price-badge">
                   <span style={{ fontSize: 11, opacity: 0.7 }}>&#x20BF;</span>
@@ -237,13 +258,78 @@ export default function Home() {
 
           {/* BTC Atlas — Hero card */}
           <a
+            href="https://toothfairy.network"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="span-8 hub-card hub-card-glow-purple block"
+            style={{ textDecoration: 'none', borderLeft: '3px solid #7C3AED' }}
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="hub-eyebrow px-2.5 py-1 rounded"
+                style={{
+                  color: '#A855F7',
+                  background: 'rgba(124,58,237,0.1)',
+                  border: '1px solid rgba(124,58,237,0.15)',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                Live
+              </span>
+              <span className="hub-mono ml-auto" style={{ color: 'var(--hub-text-muted)', fontSize: 12 }}>
+                Family fintech / keepsakes
+              </span>
+            </div>
+            <h3 className="hub-card-title mb-3" style={{ color: 'var(--hub-text-primary)', fontSize: 22 }}>
+              Tooth Fairy Network
+            </h3>
+            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
+              A parent-controlled app concept for turning childhood milestones into digital keepsakes
+              and a child&apos;s first real savings layer.
+            </p>
+            <div className="flex items-center gap-2 hub-mono" style={{ color: '#A855F7' }}>
+              toothfairy.network <ArrowRight />
+            </div>
+          </a>
+
+          {/* Tooth Fairy Network — Observatory style */}
+          <a
+            href="/writings/agent-allowance-lab"
+            className="span-4 hub-card hub-card-glow-cyan block"
+            style={{ textDecoration: 'none', borderLeft: '3px solid #14F195' }}
+          >
+            <div className="mb-5">
+              <span
+                className="hub-eyebrow px-2.5 py-1 rounded"
+                style={{
+                  color: '#14F195',
+                  background: 'rgba(20,241,149,0.1)',
+                  border: '1px solid rgba(20,241,149,0.15)',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                Devnet proof
+              </span>
+            </div>
+            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
+              Agent Allowance Lab
+            </h3>
+            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
+              A Solana mini app and receipt-backed writeup for wallet-safe AI agent budgets.
+            </p>
+            <div className="flex items-center gap-2 hub-mono" style={{ color: '#14F195' }}>
+              Read the proof <ArrowRight />
+            </div>
+          </a>
+
+          <a
             href="https://btc.sathian.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="span-8 hub-card hub-card-glow-orange block"
+            className="span-4 hub-card hub-card-glow-orange block"
             style={{ textDecoration: 'none', borderLeft: '3px solid #F7931A' }}
           >
-            <div className="flex items-center gap-3 mb-5">
+            <div className="mb-5">
               <span
                 className="hub-eyebrow px-2.5 py-1 rounded"
                 style={{
@@ -255,56 +341,78 @@ export default function Home() {
               >
                 Live
               </span>
-              {btcPrice && (
-                <span className="hub-price-badge ml-auto" style={{ fontSize: 12 }}>
-                  <span style={{ fontSize: 9 }}>&#x20BF;</span>
-                  {formatPrice(btcPrice)}
-                </span>
-              )}
             </div>
-            <h3 className="hub-card-title mb-3" style={{ color: 'var(--hub-text-primary)', fontSize: 22 }}>
+            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
               BTC Cultural Atlas
             </h3>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              500+ cultural markers mapped to Bitcoin&apos;s price as it climbs toward $1M.
-              Area codes, drum machines, error pages, history, and sports — every number decoded.
+              Cultural markers mapped to Bitcoin&apos;s live price: area codes, machines, history,
+              sports, and internet numbers.
             </p>
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#F7931A' }}>
               btc.sathian.ai <ArrowRight />
             </div>
           </a>
 
-          {/* Tooth Fairy Network — Observatory style */}
-          <a
-            href="https://toothfairy.network"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="span-4 hub-card hub-card-glow-purple block"
-            style={{ textDecoration: 'none', borderLeft: '3px solid #7C3AED' }}
+          <div
+            className="span-4 hub-card"
+            style={{ borderLeft: '3px solid #22C55E' }}
           >
             <div className="mb-5">
               <span
                 className="hub-eyebrow px-2.5 py-1 rounded"
                 style={{
-                  color: '#7C3AED',
-                  background: 'rgba(124,58,237,0.1)',
-                  border: '1px solid rgba(124,58,237,0.15)',
+                  color: '#22C55E',
+                  background: 'rgba(34,197,94,0.1)',
+                  border: '1px solid rgba(34,197,94,0.15)',
                   letterSpacing: '0.08em',
                 }}
               >
-                Live
+                Lab
               </span>
             </div>
             <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
-              Tooth Fairy Network
+              Rooftop Garden Lab
             </h3>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              Turn lost teeth into digital keepsakes and a child&apos;s first real savings.
+              A family garden and home-lab track for learning sensors, agents, small automations,
+              and practical data loops.
             </p>
-            <div className="flex items-center gap-2 hub-mono" style={{ color: '#7C3AED' }}>
-              toothfairy.network <ArrowRight />
+            <span className="hub-mono" style={{ color: '#22C55E' }}>
+              Private lab reference
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-chat'))}
+            className="span-4 hub-card text-left"
+            style={{ borderLeft: '3px solid #06B6D4', cursor: 'pointer' }}
+          >
+            <div className="mb-5">
+              <span
+                className="hub-eyebrow px-2.5 py-1 rounded"
+                style={{
+                  color: '#06B6D4',
+                  background: 'rgba(6,182,212,0.1)',
+                  border: '1px solid rgba(6,182,212,0.15)',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                Systems
+              </span>
             </div>
-          </a>
+            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
+              AI Automation &amp; Client Work
+            </h3>
+            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
+              Agentic workflows, reporting loops, intake systems, and operator tools for real-world
+              projects. Public proof is being packaged.
+            </p>
+            <span className="hub-mono flex items-center gap-2" style={{ color: '#06B6D4' }}>
+              Ask about this <ArrowRight />
+            </span>
+          </button>
         </div>
       </section>
       </ScrollReveal>
@@ -498,7 +606,7 @@ export default function Home() {
             <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Signal &amp; Noise</h2>
             <p className="hub-body mb-4" style={{ color: 'var(--hub-text-secondary)' }}>
               Small-table discussions at the intersection of AI, crypto, and the changing nature of institutions.
-              6 seats. No agenda. Downtown Toronto.
+              Downtown Toronto, currently unscheduled.
             </p>
             <div
               className="hub-card mb-6"

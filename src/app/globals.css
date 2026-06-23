@@ -450,6 +450,7 @@ h1, h2, h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: 12px 24px;
   border-radius: 8px;
   font-size: 14px;
@@ -463,6 +464,80 @@ h1, h2, h3 {
 
 .hub-btn-primary:hover {
   opacity: 0.9;
+}
+
+.hub-btn-primary:focus-visible,
+.hub-btn-secondary:focus-visible,
+.hub-prompt-chip:focus-visible,
+.hub-card:focus-visible {
+  outline: 2px solid var(--hub-accent);
+  outline-offset: 3px;
+}
+
+.hub-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 8px;
+  border: 1px solid var(--hub-border-subtle);
+  background: var(--hub-bg-elevated);
+  color: var(--hub-text-primary);
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.hub-btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.hub-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.hub-signal-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 620px;
+}
+
+.hub-signal-row span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid var(--hub-border-subtle);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--hub-text-muted);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+@media (max-width: 520px) {
+  .hub-hero-actions {
+    justify-content: center;
+  }
+
+  .hub-hero-actions .hub-btn-primary,
+  .hub-hero-actions .hub-btn-secondary {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .hub-signal-row {
+    justify-content: center;
+  }
 }
 
 /* ─── Observatory Hub: Prompt Chips ──────────────────────────────────────── */

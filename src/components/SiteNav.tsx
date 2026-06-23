@@ -29,6 +29,7 @@ export function SiteNav() {
     { label: 'Projects', href: '/#projects', external: false },
     { label: 'Writing', href: '/writings', external: false },
     { label: 'About', href: '/about', external: false },
+    { label: 'Contact', href: '/#chat', external: false },
   ]
 
   return (
@@ -87,12 +88,16 @@ export function SiteNav() {
 
           {/* Mobile hamburger button */}
           <button
+            type="button"
             className="sm:hidden flex flex-col justify-center items-center gap-[5px] w-8 h-8"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-site-menu"
             style={{ background: 'none', border: 'none', cursor: 'pointer' }}
           >
             <span
+              aria-hidden="true"
               className="block w-5 h-[1.5px] transition-all duration-200"
               style={{
                 background: 'var(--hub-text-primary)',
@@ -100,6 +105,7 @@ export function SiteNav() {
               }}
             />
             <span
+              aria-hidden="true"
               className="block w-5 h-[1.5px] transition-all duration-200"
               style={{
                 background: 'var(--hub-text-primary)',
@@ -107,6 +113,7 @@ export function SiteNav() {
               }}
             />
             <span
+              aria-hidden="true"
               className="block w-5 h-[1.5px] transition-all duration-200"
               style={{
                 background: 'var(--hub-text-primary)',
@@ -120,6 +127,7 @@ export function SiteNav() {
       {/* Mobile overlay */}
       {menuOpen && (
         <div
+          id="mobile-site-menu"
           className="fixed inset-0 z-40 sm:hidden"
           style={{ background: 'var(--hub-bg-primary)', paddingTop: '80px' }}
         >
