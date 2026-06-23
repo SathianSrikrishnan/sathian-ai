@@ -7,7 +7,7 @@ const repoUrl = 'https://github.com/SathianSrikrishnan/solana-agent-allowance-de
 export const metadata: Metadata = {
   title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana - sathian.ai',
   description:
-    'A Superteam Canada technical deep dive on using Solana Native Subscriptions and Allowances as bounded spending authority for AI agents.',
+    'A Superteam Canada technical deep dive from a Canadian student-builder experimenting with Solana allowances, agent budgets, and consumer wallet permissions.',
   authors: [{ name: 'Sathian S.', url: 'https://sathian.ai' }],
   keywords: ['Solana', 'Superteam Canada', 'subscriptions', 'allowances', 'AI agents', 'devnet'],
   openGraph: {
@@ -48,9 +48,10 @@ const tradeoffs = [
 ]
 
 const canadianExamples = [
+  'Parent-controlled savings and education apps could let software act only inside a clear allowance.',
   'Shopify-style commerce workflows could use per-app or per-agent budgets for store operations.',
   'Wealthsimple-style consumer finance products could expose explicit spending envelopes for automation instead of broad account access.',
-  'Canadian AI and data-service builders could attach allowance receipts to paid tool calls, metered APIs, and research workflows.',
+  'Canadian AI and data-service builders could attach allowance receipts to paid tool calls and metered APIs.',
 ]
 
 export default function AgentAllowanceLabPage() {
@@ -90,8 +91,14 @@ export default function AgentAllowanceLabPage() {
           </p>
           <p style={leadStyle}>
             Agent Allowance Lab is a small devnet demo and technical writeup built around Solana Native
-            Subscriptions and Allowances. The demo gives an agent wallet a capped allowance, lets it complete two
-            approved transfers, and then shows a larger over-budget transfer fail closed.
+            Subscriptions and Allowances. I built it as a Canadian builder trying to get more hands-on with wallets,
+            PDAs, devnet receipts, and the permissioning layer that consumer apps will need if they let software move
+            value on a user&apos;s behalf.
+          </p>
+          <p style={leadStyle}>
+            My own side projects have been circling children&apos;s savings, family education, and parent-controlled
+            digital keepsakes. That made this bounty feel less abstract. If an app or agent can spend for someone, the
+            user should be able to say how much, for how long, and see proof afterward.
           </p>
 
           <div style={calloutStyle}>
@@ -121,6 +128,11 @@ export default function AgentAllowanceLabPage() {
             <p style={bodyStyle}>
               A better model is bounded authorization: the user keeps the wallet, the agent receives only a limited
               allowance, every action creates a receipt, and over-budget actions fail by default.
+            </p>
+            <p style={bodyStyle}>
+              This is the part I wanted to understand by building instead of only reading. The demo forced me to work
+              through the actual pieces: a payer, a user wallet, an agent wallet, a mint, a PDA, confirmed devnet
+              transactions, and a denied transfer.
             </p>
           </Section>
 
@@ -190,8 +202,14 @@ Program denies the transfer.`}
 
           <Section title="Canadian Relevance" accent="#EF4444">
             <p style={bodyStyle}>
-              The Superteam Canada context matters because Canadian builders are well-positioned to explore practical,
-              useful automation rather than treating on-chain subscriptions as only a crypto-native billing feature.
+              The Superteam Canada context matters to me because I am trying to learn this as a builder, not only as a
+              reader. I am interested in consumer products where money, identity, and permissioning are part of the
+              experience. Children&apos;s savings and education apps are one example. Small paid research workflows are
+              another.
+            </p>
+            <p style={bodyStyle}>
+              In those products, the useful question is not just "can a wallet pay?" It is "who is allowed to spend,
+              how much, for what purpose, and what proof does the user get afterward?"
             </p>
             <ul style={listStyle}>
               {canadianExamples.map((item) => (

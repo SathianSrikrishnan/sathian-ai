@@ -15,7 +15,19 @@ const AtlasGlobeTeaser = dynamic(
 )
 
 // ─── Articles data (canonical source: src/lib/articles.ts) ──────────────────
-const WRITINGS = [...articles]
+const AGENT_ALLOWANCE_WRITING = {
+  title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana',
+  description:
+    'A Superteam Canada build note on learning Solana allowances through a small devnet demo for bounded agent spending.',
+  href: '/writings/agent-allowance-lab',
+  date: '2026-06-23',
+  readTime: '8 min read',
+  accent: '#14F195',
+}
+
+const WRITINGS = [
+  AGENT_ALLOWANCE_WRITING,
+  ...[...articles]
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .map(a => ({
     title: a.title,
@@ -24,7 +36,8 @@ const WRITINGS = [...articles]
     date: a.date,
     readTime: a.readTime,
     accent: a.theme.accent,
-  }))
+  })),
+]
 
 // ─── Featured markers — one per pillar for interest diversity ────────────────
 const FEATURED_MARKERS = [
@@ -496,13 +509,13 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E' }} />
-                <span className="hub-mono" style={{ color: '#22C55E', fontSize: 12 }}>Next Event</span>
+                <span className="hub-mono" style={{ color: '#22C55E', fontSize: 12 }}>Coming Soon</span>
               </div>
               <p className="hub-mono" style={{ color: 'var(--hub-text-primary)', fontSize: 14, marginBottom: 4 }}>
-                Thursday, March 26 &middot; 6:00 PM
+                No public session scheduled yet
               </p>
               <p className="hub-mono" style={{ color: 'var(--hub-text-muted)', fontSize: 12 }}>
-                Downtown Toronto &middot; 6 seats
+                Toronto &middot; small-table format
               </p>
             </div>
             <a
