@@ -213,9 +213,9 @@ export default function Home() {
                 AI-native systems for real work.
               </h1>
               <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 540, fontSize: 17, lineHeight: 1.7 }}>
-                I build private automations, agentic workflows, reporting loops, and Web3 proofs
-                for clients, friends, and my own projects. Public work lives here; confidential
-                references and recent links are available by email.
+                I build AI automations and agentic workflows for individuals and businesses.
+                Public work lives here; confidential references and recent links are available
+                by email.
               </p>
               <div className="hub-hero-actions">
                 <a href="mailto:hi@sathian.ai?subject=AI%20automation%20conversation" className="hub-btn-primary" style={{ textDecoration: 'none' }}>
@@ -612,7 +612,7 @@ export default function Home() {
           {/* Right: Chat */}
           <div id="chat" className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Chat</div>
-            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Leave a useful note</h2>
+            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Leave me a note</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
               Tell me what you want to automate, what tools are involved, and what output would
               be useful. For direct contact, email{' '}

@@ -83,19 +83,6 @@ export default function AutomationPage() {
 
           <Divider />
 
-          <Section title="What To Send">
-            <p style={bodyStyle}>
-              A useful first note does not need to be polished. Send the problem, the tools involved, how often
-              the work happens, who uses the output, and what a good first version would save or unlock.
-            </p>
-            <ul style={listStyle}>
-              <li>What repetitive workflow do you want to reduce or improve?</li>
-              <li>Where does the source information live today?</li>
-              <li>What output would be useful: report, draft, alert, database row, email, dashboard, or action list?</li>
-              <li>What needs human approval before anything is sent, posted, changed, or spent?</li>
-            </ul>
-          </Section>
-
           <Section title="How I Think About This">
             <p style={bodyStyle}>
               The point is not to wire AI into everything. The point is to find the small operating loop where
@@ -183,9 +170,4 @@ const bodyStyle: React.CSSProperties = {
   lineHeight: 1.72,
   color: 'var(--hub-text-secondary)',
   marginBottom: 18,
-}
-
-const listStyle: React.CSSProperties = {
-  ...bodyStyle,
-  paddingLeft: 22,
 }
