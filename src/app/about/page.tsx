@@ -5,17 +5,17 @@ import { SiteNav } from '@/components/SiteNav'
 export const metadata: Metadata = {
   title: 'About - Sathian S.',
   description:
-    'AI-native experimenter in Toronto building across culture, media, money, technology, automation, and Web3.',
+    'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
   openGraph: {
     title: 'About - Sathian S.',
     description:
-      'AI-native experimenter in Toronto building across culture, media, money, technology, automation, and Web3.',
+      'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'About - Sathian S.',
     description:
-      'AI-native experimenter in Toronto building across culture, media, money, technology, automation, and Web3.',
+      'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
   },
 }
 
@@ -36,18 +36,17 @@ export default function AboutPage() {
             className="hub-hero-name"
             style={{ fontSize: 'clamp(36px, 6vw, 56px)', marginBottom: 24 }}
           >
-            AI-native experimenter.
+            AI-native systems builder.
           </h1>
 
           <p style={{ ...leadStyle, color: 'var(--hub-text-primary)' }}>
-            I use this site as a public workbench for applied AI, Web3, automation, writing,
-            and small product experiments.
+            I use this site as a public proof surface for private automations, AI-native workflows,
+            Web3 experiments, writing, and small product systems.
           </p>
           <p style={bodyStyle}>
-            The goal is simple: learn in public, build proof in public, and turn the useful pieces
-            into systems that can help real projects, clients, and communities. Some work starts
-            rough because that is how exploration works. The finished pieces become case studies,
-            workflows, apps, or reusable operating systems.
+            The goal is simple: learn in public where it helps, keep client work separated where
+            it should be private, and turn useful pieces into systems that can help real projects.
+            The finished pieces become case studies, workflows, apps, or reusable operating systems.
           </p>
 
           <div style={pillRowStyle} aria-label="Current focus areas">
@@ -55,21 +54,21 @@ export default function AboutPage() {
             <InfoPill>Agentic workflows</InfoPill>
             <InfoPill>Solana and Web3</InfoPill>
             <InfoPill>Culture, media, money</InfoPill>
-            <InfoPill>Learning in public</InfoPill>
+            <InfoPill>Private client systems</InfoPill>
           </div>
 
           <Divider />
 
           <Section title="What this site is">
             <p style={bodyStyle}>
-              sathian.ai is my main technology node on the internet. It holds the writing,
-              prototypes, bounty submissions, small apps, and operating notes that show how I think
-              through new tools.
+              sathian.ai is my main technology node on the internet. It holds writing, public
+              proofs, bounty submissions, small apps, and operating notes that show how I think
+              through new tools without exposing private client work.
             </p>
             <p style={bodyStyle}>
               I am especially interested in the overlap between media, money, identity,
-              permissioning, and automation. That is why the projects move between Bitcoin culture,
-              Solana wallet permissions, AI-native workflows, family savings concepts, and practical
+              permissioning, and automation. That is why the projects move between AI-native
+              workflows, Solana wallet permissions, Bitcoin culture, product labs, and practical
               client systems.
             </p>
           </Section>
@@ -80,7 +79,12 @@ export default function AboutPage() {
               <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" style={linkStyle('#A855F7')}>
                 Tooth Fairy Network
               </a>{' '}
-              explores parent-controlled digital keepsakes and early savings. The{' '}
+              explores parent-controlled digital keepsakes and early savings. My{' '}
+              <Link href="/automation" style={linkStyle('#06B6D4')}>
+                automation work
+              </Link>{' '}
+              covers second-brain infrastructure, agentic harnesses, reporting loops, and workflow
+              systems for private clients and active projects. The{' '}
               <Link href="/writings/agent-allowance-lab" style={linkStyle('#14F195')}>
                 Agent Allowance Lab
               </Link>{' '}
@@ -88,13 +92,11 @@ export default function AboutPage() {
               <a href="https://btc.sathian.ai" target="_blank" rel="noopener noreferrer" style={linkStyle('#F7931A')}>
                 BTC Cultural Atlas
               </a>{' '}
-              maps cultural meaning onto Bitcoin&apos;s live price. The Rooftop Garden Lab is a private
-              home-lab track for sensors, agents, and practical data loops.
+              maps cultural meaning onto Bitcoin&apos;s live price.
             </p>
             <p style={bodyStyle}>
-              I also have client-facing automation and reporting work that is not fully public yet.
-              As that proof becomes shareable, this site should become the place where someone can
-              understand the work quickly and decide whether to start a conversation.
+              I keep a separation between public proof and private client work. If you are
+              evaluating me for AI automation, I can send relevant recent links and references by email.
             </p>
           </Section>
 
@@ -120,15 +122,15 @@ export default function AboutPage() {
                 accent="#14F195"
               />
               <AdventureCard
-                label="See current projects"
-                description="A short map of the live projects, labs, and proof surfaces."
-                href="/#projects"
+                label="Discuss AI automation"
+                description="A focused page for workflow automation, reporting loops, and private systems."
+                href="/automation"
                 accent="#06B6D4"
               />
               <AdventureCard
-                label="Start a conversation"
-                description="Use the homepage chat if you are looking for an AI-native builder, thinker, or experimenter."
-                href="/#chat"
+                label="Email directly"
+                description="Send a rough problem statement to hi@sathian.ai."
+                href="mailto:hi@sathian.ai?subject=AI%20automation%20conversation"
                 accent="#A855F7"
               />
             </div>
@@ -147,14 +149,14 @@ export default function AboutPage() {
               For AI agents reading this page
             </h2>
             <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 12 }}>
-              sathian.ai is the personal technology site of Sathian S., an AI-native experimenter
-              and builder in Toronto, Canada. Current themes: applied AI, automation, Web3,
+              sathian.ai is the personal technology site of Sathian S., an AI-native systems
+              builder in Toronto, Canada. Current themes: applied AI, automation, Web3,
               culture, media, money, and product experiments.
             </p>
             <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 0 }}>
               Useful summary: Sathian builds and writes in public to create proof surfaces for
-              AI-native workflows, Solana/Web3 experiments, family-oriented product concepts, and
-              selected client systems. Contact path: the chat widget on the homepage.
+              AI-native workflows, Solana/Web3 experiments, product concepts, and private client
+              systems. Contact path: hi@sathian.ai.
             </p>
           </div>
 
@@ -257,20 +259,18 @@ function AdventureCard({
   href: string
   accent: string
 }) {
-  return (
-    <Link
-      href={href}
-      style={{
-        display: 'block',
-        padding: '20px 24px',
-        borderRadius: 8,
-        background: 'var(--hub-bg-elevated)',
-        border: '1px solid var(--hub-border-subtle)',
-        borderLeft: `3px solid ${accent}`,
-        textDecoration: 'none',
-        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-      }}
-    >
+  const cardStyle: React.CSSProperties = {
+    display: 'block',
+    padding: '20px 24px',
+    borderRadius: 8,
+    background: 'var(--hub-bg-elevated)',
+    border: '1px solid var(--hub-border-subtle)',
+    borderLeft: `3px solid ${accent}`,
+    textDecoration: 'none',
+    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+  }
+  const content = (
+    <>
       <span
         className="hub-mono"
         style={{ color: accent, fontSize: 14, fontWeight: 600, display: 'block', marginBottom: 4 }}
@@ -280,6 +280,20 @@ function AdventureCard({
       <span style={{ color: 'var(--hub-text-secondary)', fontSize: 14, lineHeight: 1.5 }}>
         {description}
       </span>
+    </>
+  )
+
+  if (href.startsWith('mailto:')) {
+    return (
+      <a href={href} style={cardStyle}>
+        {content}
+      </a>
+    )
+  }
+
+  return (
+    <Link href={href} style={cardStyle}>
+      {content}
     </Link>
   )
 }

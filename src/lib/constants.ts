@@ -1,8 +1,8 @@
 export const CHAT_SUGGESTIONS = [
-  "What's the story behind 808?",
-  'Who is Sathian?',
-  'I have feedback or an idea',
-  'What should I explore here?',
+  'I want to automate a workflow',
+  'Can you share recent references?',
+  'I want an intro call',
+  'Tell me about Agent Allowance Lab',
 ]
 
 export const ALLOWED_ORIGINS = [

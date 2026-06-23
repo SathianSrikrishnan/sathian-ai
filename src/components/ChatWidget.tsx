@@ -10,7 +10,7 @@ const SUGGESTIONS = CHAT_SUGGESTIONS
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: "Welcome to sathian.ai. I can answer questions about Sathian's work or pass along your feedback. What's on your mind?" },
+    { role: 'bot', text: "Leave a note about the workflow, report, agent, or AI automation you want to build. Sathian can follow up by email if it is a fit." },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -137,12 +137,14 @@ export function ChatWidget() {
                   }} />
                 </div>
                 <div>
-                  <h4 className="text-[15px] font-semibold text-gray-900">Ask me anything</h4>
-                  <p className="text-xs text-gray-400">Feedback &amp; questions</p>
+                  <h4 className="text-[15px] font-semibold text-gray-900">Start an AI automation conversation</h4>
+                  <a href="mailto:hi@sathian.ai" className="text-xs text-gray-500 hover:text-gray-900 transition-colors">
+                    hi@sathian.ai
+                  </a>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} aria-label="Close chat" className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-all text-gray-400">
-                <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
               </button>
             </div>
           </div>
@@ -187,8 +189,8 @@ export function ChatWidget() {
             {showSuggestions && (
               <div className="flex flex-wrap gap-2 pt-2">
                 {SUGGESTIONS.map((s) => (
-                  <button key={s} onClick={() => handleSend(s)}
-                    className="px-3 py-1.5 rounded-full text-[12px] bg-white border border-gray-200 text-gray-600 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-all shadow-sm">
+                  <button key={s} type="button" onClick={() => handleSend(s)}
+                    className="px-3 py-1.5 rounded-full text-[12px] bg-white border border-gray-200 text-gray-600 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
                     {s}
                   </button>
                 ))}
@@ -200,15 +202,15 @@ export function ChatWidget() {
           <div className="px-5 py-4 border-t border-gray-100 flex gap-2 bg-white">
             <input
               ref={inputRef}
-              type="text" value={input}
+              type="text" name="message" autoComplete="off" value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-              placeholder="Type your message..."
+              placeholder="Describe the workflow…"
               maxLength={2000}
-              className="flex-1 px-4 py-3 rounded-xl text-sm outline-none bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 transition-colors"
+              className="flex-1 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30 transition-colors"
             />
-            <button onClick={() => handleSend()} className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:opacity-80 bg-gray-900 text-white">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
+            <button type="button" onClick={() => handleSend()} aria-label="Send message" className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 bg-gray-900 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
             </button>
           </div>
         </motion.div>
@@ -217,6 +219,7 @@ export function ChatWidget() {
 
       {/* Floating button */}
       <motion.button
+        type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close chat' : 'Open chat'}
         className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer overflow-hidden"
@@ -229,7 +232,7 @@ export function ChatWidget() {
       >
         {open ? (
           <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M18 6L6 18M6 6L18 18" /></svg>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M18 6L6 18M6 6L18 18" /></svg>
           </div>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */

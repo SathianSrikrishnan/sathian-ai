@@ -210,30 +210,30 @@ export default function Home() {
             {/* Welcome copy */}
             <div className="hub-hero-copy">
               <h1 className="hub-hero-name mb-5">
-                My technology node on the internet.
+                AI-native systems for real work.
               </h1>
               <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 540, fontSize: 17, lineHeight: 1.7 }}>
-                I build AI-native workflows, Web3 experiments, and practical automation systems
-                for my own projects and selected clients. This site is the proof surface:
-                experiments, writing, mini apps, and the pieces that become real products.
+                I build private automations, agentic workflows, reporting loops, and Web3 proofs
+                for clients, friends, and my own projects. Public work lives here; confidential
+                references and recent links are available by email.
               </p>
               <div className="hub-hero-actions">
-                <a href="#projects" className="hub-btn-primary" style={{ textDecoration: 'none' }}>
-                  See current work <ArrowRight />
+                <a href="mailto:hi@sathian.ai?subject=AI%20automation%20conversation" className="hub-btn-primary" style={{ textDecoration: 'none' }}>
+                  Email hi@sathian.ai <ArrowRight />
                 </a>
-                <button
-                  type="button"
+                <Link
+                  href="/automation"
                   className="hub-btn-secondary"
-                  onClick={() => window.dispatchEvent(new CustomEvent('open-chat'))}
+                  style={{ textDecoration: 'none' }}
                 >
-                  Start a conversation
-                </button>
+                  AI Automation Work
+                </Link>
               </div>
               <div className="hub-signal-row" role="list" aria-label="Current focus areas">
-                <span role="listitem">AI automation</span>
+                <span role="listitem">Private automations</span>
+                <span role="listitem">Agentic workflows</span>
+                <span role="listitem">Second-brain systems</span>
                 <span role="listitem">Web3 proofs</span>
-                <span role="listitem">Client systems</span>
-                <span role="listitem">Family and garden labs</span>
               </div>
               {btcPrice && (
                 <span className="hub-price-badge">
@@ -257,43 +257,41 @@ export default function Home() {
           </div>
 
           {/* BTC Atlas — Hero card */}
-          <a
-            href="https://toothfairy.network"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="span-8 hub-card hub-card-glow-purple block"
-            style={{ textDecoration: 'none', borderLeft: '3px solid #7C3AED' }}
+          <Link
+            href="/automation"
+            className="span-8 hub-card hub-card-glow-cyan block"
+            style={{ textDecoration: 'none', borderLeft: '3px solid #06B6D4' }}
           >
             <div className="flex items-center gap-3 mb-5">
               <span
                 className="hub-eyebrow px-2.5 py-1 rounded"
                 style={{
-                  color: '#A855F7',
-                  background: 'rgba(124,58,237,0.1)',
-                  border: '1px solid rgba(124,58,237,0.15)',
+                  color: '#06B6D4',
+                  background: 'rgba(6,182,212,0.1)',
+                  border: '1px solid rgba(6,182,212,0.15)',
                   letterSpacing: '0.08em',
                 }}
               >
-                Live
+                Client systems
               </span>
               <span className="hub-mono ml-auto" style={{ color: 'var(--hub-text-muted)', fontSize: 12 }}>
-                Family fintech / keepsakes
+                Confidential work / links on request
               </span>
             </div>
             <h3 className="hub-card-title mb-3" style={{ color: 'var(--hub-text-primary)', fontSize: 22 }}>
-              Tooth Fairy Network
+              AI Automation &amp; Private Systems
             </h3>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              A parent-controlled app concept for turning childhood milestones into digital keepsakes
-              and a child&apos;s first real savings layer.
+              Second-brain infrastructure, agentic harnesses, reporting loops, intake systems,
+              and workflow automations for private clients, friends, and active projects.
             </p>
-            <div className="flex items-center gap-2 hub-mono" style={{ color: '#A855F7' }}>
-              toothfairy.network <ArrowRight />
+            <div className="flex items-center gap-2 hub-mono" style={{ color: '#06B6D4' }}>
+              See the automation surface <ArrowRight />
             </div>
-          </a>
+          </Link>
 
           {/* Tooth Fairy Network — Observatory style */}
-          <a
+          <Link
             href="/writings/agent-allowance-lab"
             className="span-4 hub-card hub-card-glow-cyan block"
             style={{ textDecoration: 'none', borderLeft: '3px solid #14F195' }}
@@ -320,13 +318,45 @@ export default function Home() {
             <div className="flex items-center gap-2 hub-mono" style={{ color: '#14F195' }}>
               Read the proof <ArrowRight />
             </div>
+          </Link>
+
+          <a
+            href="https://toothfairy.network"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="span-6 hub-card hub-card-glow-purple block"
+            style={{ textDecoration: 'none', borderLeft: '3px solid #7C3AED' }}
+          >
+            <div className="mb-5">
+              <span
+                className="hub-eyebrow px-2.5 py-1 rounded"
+                style={{
+                  color: '#A855F7',
+                  background: 'rgba(124,58,237,0.1)',
+                  border: '1px solid rgba(124,58,237,0.15)',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                Product lab
+              </span>
+            </div>
+            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
+              Tooth Fairy Network
+            </h3>
+            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
+              A parent-controlled app concept for digital keepsakes, childhood milestones,
+              and a child&apos;s first savings layer.
+            </p>
+            <div className="flex items-center gap-2 hub-mono" style={{ color: '#A855F7' }}>
+              toothfairy.network <ArrowRight />
+            </div>
           </a>
 
           <a
             href="https://btc.sathian.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="span-4 hub-card hub-card-glow-orange block"
+            className="span-6 hub-card hub-card-glow-orange block"
             style={{ textDecoration: 'none', borderLeft: '3px solid #F7931A' }}
           >
             <div className="mb-5">
@@ -354,65 +384,6 @@ export default function Home() {
             </div>
           </a>
 
-          <div
-            className="span-4 hub-card"
-            style={{ borderLeft: '3px solid #22C55E' }}
-          >
-            <div className="mb-5">
-              <span
-                className="hub-eyebrow px-2.5 py-1 rounded"
-                style={{
-                  color: '#22C55E',
-                  background: 'rgba(34,197,94,0.1)',
-                  border: '1px solid rgba(34,197,94,0.15)',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                Lab
-              </span>
-            </div>
-            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
-              Rooftop Garden Lab
-            </h3>
-            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              A family garden and home-lab track for learning sensors, agents, small automations,
-              and practical data loops.
-            </p>
-            <span className="hub-mono" style={{ color: '#22C55E' }}>
-              Private lab reference
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('open-chat'))}
-            className="span-4 hub-card text-left"
-            style={{ borderLeft: '3px solid #06B6D4', cursor: 'pointer' }}
-          >
-            <div className="mb-5">
-              <span
-                className="hub-eyebrow px-2.5 py-1 rounded"
-                style={{
-                  color: '#06B6D4',
-                  background: 'rgba(6,182,212,0.1)',
-                  border: '1px solid rgba(6,182,212,0.15)',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                Systems
-              </span>
-            </div>
-            <h3 className="hub-card-title mb-2" style={{ color: 'var(--hub-text-primary)' }}>
-              AI Automation &amp; Client Work
-            </h3>
-            <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
-              Agentic workflows, reporting loops, intake systems, and operator tools for real-world
-              projects. Public proof is being packaged.
-            </p>
-            <span className="hub-mono flex items-center gap-2" style={{ color: '#06B6D4' }}>
-              Ask about this <ArrowRight />
-            </span>
-          </button>
         </div>
       </section>
       </ScrollReveal>
@@ -570,11 +541,11 @@ export default function Home() {
           {/* Left: About */}
           <div className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>About</div>
-            <h2 className="hub-section-heading mb-6" style={{ fontSize: 22 }}>A base for applied technology</h2>
+            <h2 className="hub-section-heading mb-6" style={{ fontSize: 22 }}>A base for AI-native systems</h2>
             <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)' }}>
-              I use this site to connect experiments across AI-native workflows,
-              Solana and Web3, family and garden labs, and practical systems that
-              can turn into real products or client work.
+              I use this site to connect public proofs with private automation work:
+              agentic workflows, second-brain infrastructure, Solana and Web3 experiments,
+              and practical systems for real projects.
             </p>
             <Link href="/about" className="hub-mono flex items-center gap-2" style={{ color: 'var(--hub-accent)' }}>
               More about me <ArrowRight />
@@ -641,13 +612,17 @@ export default function Home() {
           {/* Right: Chat */}
           <div id="chat" className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>Chat</div>
-            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Ask me anything</h2>
+            <h2 className="hub-section-heading mb-3" style={{ fontSize: 22 }}>Leave a useful note</h2>
             <p className="hub-body mb-6" style={{ color: 'var(--hub-text-secondary)' }}>
-              The projects, the writing, whatever. Try one of these or type your own.
+              Tell me what you want to automate, what tools are involved, and what output would
+              be useful. For direct contact, email{' '}
+              <a href="mailto:hi@sathian.ai" style={{ color: 'var(--hub-accent)', textDecoration: 'none' }}>
+                hi@sathian.ai
+              </a>.
             </p>
             <div className="flex flex-wrap gap-3">
               {CHAT_PROMPTS.map((prompt) => (
-                <button key={prompt} onClick={() => handlePromptClick(prompt)} className="hub-prompt-chip">
+                <button key={prompt} type="button" onClick={() => handlePromptClick(prompt)} className="hub-prompt-chip">
                   &ldquo;{prompt}&rdquo;
                 </button>
               ))}
@@ -673,16 +648,16 @@ export default function Home() {
               <div className="flex flex-wrap gap-x-12 gap-y-6">
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Site</span>
-                  <Link href="/writings" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Writing</Link>
                   <a href="#projects" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Projects</a>
+                  <Link href="/automation" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Automation</Link>
+                  <Link href="/writings" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Writing</Link>
                   <Link href="/about" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>About</Link>
-                  <Link href="/voice" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Voice</Link>
-                  <Link href="/studio" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Studio</Link>
+                  <a href="mailto:hi@sathian.ai" className="text-sm" style={{ color: 'var(--hub-text-secondary)', textDecoration: 'none' }}>Email</a>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Projects</span>
                   <a href="https://btc.sathian.ai" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#F7931A', textDecoration: 'none' }}>btc.sathian.ai</a>
-                  <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#7C3AED', textDecoration: 'none' }}>toothfairy.sathian.ai</a>
+                  <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" className="text-sm" style={{ color: '#7C3AED', textDecoration: 'none' }}>toothfairy.network</a>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="hub-eyebrow mb-1" style={{ color: 'var(--hub-text-muted)', fontSize: 10 }}>Social</span>
