@@ -22,6 +22,17 @@ function formatDate(dateStr: string) {
   })
 }
 
+const agentAllowanceArticle = {
+  title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana',
+  description:
+    'A Superteam Canada technical deep dive on using Solana Native Subscriptions and Allowances as bounded spending authority for AI agents.',
+  date: '2026-06-23',
+  readTime: '8 min read',
+  domains: 'SOLANA / SUPERTEAM CANADA / AI AGENTS',
+  href: '/writings/agent-allowance-lab',
+  accent: '#14F195',
+}
+
 export default async function WritingsIndex() {
   const articles = await getPublishedArticles()
 
@@ -60,6 +71,71 @@ export default async function WritingsIndex() {
       <section style={{ paddingBottom: 80 }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Link
+              href={agentAllowanceArticle.href}
+              className="writing-card-link"
+              style={{
+                display: 'block',
+                textDecoration: 'none',
+                padding: '32px 0',
+                borderTop: `1px solid ${agentAllowanceArticle.accent}33`,
+                borderBottom: '1px solid var(--hub-border-subtle)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: 12,
+                    color: 'var(--hub-text-muted)',
+                  }}
+                >
+                  {formatDate(agentAllowanceArticle.date)}
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: 12,
+                    color: 'var(--hub-text-muted)',
+                  }}
+                >
+                  {agentAllowanceArticle.readTime}
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: 11,
+                    color: agentAllowanceArticle.accent,
+                    opacity: 0.85,
+                  }}
+                >
+                  {agentAllowanceArticle.domains}
+                </span>
+              </div>
+              <h2
+                style={{
+                  fontFamily: 'var(--font-display), sans-serif',
+                  fontSize: 24,
+                  fontWeight: 600,
+                  lineHeight: 1.3,
+                  color: 'var(--hub-text-primary)',
+                  marginBottom: 8,
+                }}
+              >
+                {agentAllowanceArticle.title}
+              </h2>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans), sans-serif',
+                  fontSize: 15,
+                  color: 'var(--hub-text-secondary)',
+                  lineHeight: 1.6,
+                  maxWidth: 720,
+                }}
+              >
+                {agentAllowanceArticle.description}
+              </p>
+            </Link>
             {articles.map((article) => (
               <Link
                 key={article.slug}
