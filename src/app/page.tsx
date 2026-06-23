@@ -207,11 +207,12 @@ export default function Home() {
             {/* Welcome copy */}
             <div className="hub-hero-copy">
               <h1 className="hub-hero-name mb-5">
-                Welcome to my workshop.
+                My technology node on the internet.
               </h1>
               <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)', maxWidth: 540, fontSize: 17, lineHeight: 1.7 }}>
-                Experimental builds, hackathon projects, and things I&apos;m learning — always
-                evolving. There&apos;s an AI chat at the bottom wired to what I know. Say hi.
+                A home base for my applied AI, Web3, automation, and product experiments.
+                Some pieces start rough by design; the useful ones become systems, tools,
+                and client-facing work.
               </p>
               {btcPrice && (
                 <span className="hub-price-badge">
@@ -461,11 +462,11 @@ export default function Home() {
           {/* Left: About */}
           <div className="span-6 hub-card" style={{ borderLeft: '3px solid var(--hub-accent)' }}>
             <div className="hub-eyebrow mb-3" style={{ color: 'var(--hub-text-muted)' }}>About</div>
-            <h2 className="hub-section-heading mb-6" style={{ fontSize: 22 }}>A lab for relearning</h2>
+            <h2 className="hub-section-heading mb-6" style={{ fontSize: 22 }}>A base for applied technology</h2>
             <p className="hub-body mb-8" style={{ color: 'var(--hub-text-secondary)' }}>
-              Re-examining things I thought I understood &mdash; money, culture,
-              sovereignty &mdash; through writing and code. Not expert commentary.
-              A student&apos;s notes.
+              I use this site to connect experiments across AI-native workflows,
+              Solana and Web3, family and garden labs, and practical systems that
+              can turn into real products or client work.
             </p>
             <Link href="/about" className="hub-mono flex items-center gap-2" style={{ color: 'var(--hub-accent)' }}>
               More about me <ArrowRight />

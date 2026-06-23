@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
   alternates: { canonical: './' },
   title: 'sathian.ai',
-  description: 'Personal site of Sathian. Experiments, projects, and writings.',
+  description: 'Sathian S. on applied AI, Web3 experiments, automation systems, and technology projects.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'sathian.ai',
-    description: 'Personal site of Sathian. Experiments, projects, and writings.',
+    description: 'Applied AI, Web3 experiments, automation systems, and technology projects by Sathian S.',
     siteName: 'sathian.ai',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'sathian.ai',
-    description: 'Personal site of Sathian. Experiments, projects, and writings.',
+    description: 'Applied AI, Web3 experiments, automation systems, and technology projects by Sathian S.',
   },
 }
 
