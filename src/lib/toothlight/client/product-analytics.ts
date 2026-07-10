@@ -128,6 +128,14 @@ function shouldTrackCurrentPage() {
   const { hostname, pathname } = window.location
   return (
     hostname.includes('toothfairy') ||
+    pathname === '/' ||
+    pathname === '/certificate' ||
+    pathname === '/create' ||
+    pathname === '/pricing' ||
+    pathname === '/privacy' ||
+    pathname === '/terms' ||
+    pathname.startsWith('/capsule') ||
+    pathname.startsWith('/family-note') ||
     pathname.startsWith('/toothlight') ||
     pathname.startsWith('/toothfairy')
   )

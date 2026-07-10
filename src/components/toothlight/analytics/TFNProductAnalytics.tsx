@@ -7,8 +7,13 @@ import { trackToothlightEvent } from '@/lib/toothlight/client/product-analytics'
 
 const LAUNCH_CLICK_EVENTS = new Set([
   'cta_click',
+  'landing_cta_click',
+  'certificate_generated',
+  'family_note_started',
   'invite_clicked',
   'learn_clicked',
+  'share_clicked',
+  'upgrade_viewed',
 ])
 
 export function TFNProductAnalytics() {
@@ -53,7 +58,9 @@ export function TFNProductAnalytics() {
 }
 
 function isLaunchLandingPath(pathname: string | null) {
+  if (pathname === '/') return true
   if (pathname === '/toothlight' || pathname === '/toothfairy') return true
+  if (pathname === '/certificate' || pathname === '/create') return true
   if (typeof window === 'undefined') return false
   return pathname === '/' && window.location.hostname.includes('toothfairy')
 }
@@ -66,9 +73,11 @@ function inferLaunchClickEvents(clickable: Element, href: string | null) {
   }
 
   const pathname = href ? safePathname(href) : null
+  if (pathname === '/certificate' || pathname === '/create') events.add('landing_cta_click')
   if (pathname?.startsWith('/toothlight/start')) events.add('cta_click')
   if (pathname === '/toothlight/learn') events.add('learn_clicked')
   if (pathname && /^\/toothlight\/t\/[^/]+\/family/.test(pathname)) events.add('invite_clicked')
+  if (pathname?.startsWith('/family-note')) events.add('family_note_started')
 
   return Array.from(events)
 }

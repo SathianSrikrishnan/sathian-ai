@@ -41,6 +41,7 @@ export default function RootLayout({
     host === 'toothfairy.network' ||
     host === 'www.toothfairy.network' ||
     host === 'toothfairy.sathian.ai'
+  const showLegacySiteChat = false
 
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
@@ -55,7 +56,7 @@ export default function RootLayout({
             data-cf-beacon={JSON.stringify({ token: cloudflareWebAnalyticsToken })}
           />
         )}
-        {!isTfnDomain && <ChatWidget />}
+        {showLegacySiteChat && !isTfnDomain && <ChatWidget />}
       </body>
     </html>
   )

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
+import { appendLocalProductEvent } from '@/lib/tfn-capsule/local-event-store'
 import { logToothlightProductEvent } from '@/lib/toothlight/server/product-events'
 
 export const dynamic = 'force-dynamic'
@@ -28,21 +29,34 @@ export async function POST(request: NextRequest) {
   const referrer = cleanText(request.headers.get('referer'), 500)
   const country = cleanToken(request.headers.get('cf-ipcountry'), 8)
   const properties = sanitizeProperties(payload.properties)
+  const enrichedProperties = {
+    ...properties,
+    visitorId: properties.visitorId ?? visitorId,
+    sessionId: properties.sessionId ?? sessionId,
+    botCategory: properties.botCategory ?? botCategory,
+    userAgent: properties.userAgent ?? userAgent,
+    referrer: properties.referrer ?? referrer,
+    country,
+    receivedAt: new Date().toISOString(),
+  }
+
+  try {
+    await appendLocalProductEvent({
+      eventName,
+      visitorId,
+      sessionId,
+      botCategory,
+      properties: enrichedProperties,
+    })
+  } catch {
+    // Local MVP telemetry should never block the user flow.
+  }
 
   await logToothlightProductEvent({
     userId: null,
     toothlightId: cleanToken(payload.toothlightId, 120),
     eventName,
-    properties: {
-      ...properties,
-      visitorId: properties.visitorId ?? visitorId,
-      sessionId: properties.sessionId ?? sessionId,
-      botCategory: properties.botCategory ?? botCategory,
-      userAgent: properties.userAgent ?? userAgent,
-      referrer: properties.referrer ?? referrer,
-      country,
-      receivedAt: new Date().toISOString(),
-    },
+    properties: enrichedProperties,
   })
 
   return NextResponse.json({ ok: true })

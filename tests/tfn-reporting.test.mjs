@@ -9,6 +9,9 @@ const files = {
   eventsRoute: resolve(root, 'src/app/api/toothlight/events/route.ts'),
   legacyEventRoute: resolve(root, 'src/app/api/toothlight/event/route.ts'),
   reportRoute: resolve(root, 'src/app/api/toothlight/reporting/route.ts'),
+  localEventStore: resolve(root, 'src/lib/tfn-capsule/local-event-store.ts'),
+  localDashboard: resolve(root, 'src/app/tfn-dashboard/page.tsx'),
+  localDashboardStyles: resolve(root, 'src/app/tfn-dashboard/page.module.css'),
   flow: resolve(root, 'src/components/toothlight/v4/ToothlightCreationFlowClient.tsx'),
   saved: resolve(root, 'src/components/toothlight/v4/SavedToothlightClient.tsx'),
   notePanel: resolve(root, 'src/components/toothlight/v4/FutureNotePanel.tsx'),
@@ -37,6 +40,8 @@ const component = read(files.component)
 const eventsRoute = read(files.eventsRoute)
 const legacyEventRoute = read(files.legacyEventRoute)
 const reportRoute = read(files.reportRoute)
+const localEventStore = read(files.localEventStore)
+const localDashboard = read(files.localDashboard)
 const flow = read(files.flow)
 const saved = read(files.saved)
 const notePanel = read(files.notePanel)
@@ -46,6 +51,12 @@ const middleware = read(files.middleware)
 
 const launchFunnelEvents = [
   'landing_view',
+  'capsule_started',
+  'certificate_generated',
+  'capsule_created',
+  'save_clicked',
+  'share_clicked',
+  'family_note_started',
   'cta_click',
   'start_flow',
   'source_added',
@@ -108,6 +119,7 @@ for (const eventName of launchFunnelEvents) {
 
 for (const token of [
   'logToothlightProductEvent',
+  'appendLocalProductEvent',
   'visitorId',
   'sessionId',
   'botCategory',
@@ -120,6 +132,32 @@ for (const token of [
 
 assert(!/cf-connecting-ip|x-forwarded-for|x-real-ip/.test(eventsRoute), 'event route must not persist raw visitor IP addresses')
 assert(legacyEventRoute.includes('cf-ipcountry'), 'legacy event route must preserve Cloudflare country metadata')
+
+for (const token of [
+  'appendLocalProductEvent',
+  'readLocalProductEvents',
+  'summarizeLocalProductEvents',
+  '.data',
+  'events.jsonl',
+  'LAUNCH_FUNNEL_EVENTS',
+  'certificate_downloaded',
+  'capsule_saved',
+]) {
+  assert(localEventStore.includes(token), `local event store must include ${token}`)
+}
+
+for (const token of [
+  'readLocalProductEvents',
+  'summarizeLocalProductEvents',
+  'TFN product loop',
+  'Launch funnel',
+  'Latest local events',
+  '/launch-loop',
+  '/certificate',
+  '/create',
+]) {
+  assert(localDashboard.includes(token), `local dashboard must include ${token}`)
+}
 
 for (const token of [
   'requireToothFairyAdminRequest',

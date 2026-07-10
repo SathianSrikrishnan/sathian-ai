@@ -14,7 +14,19 @@ type ProductEventRow = {
   created_at: string
 }
 
+type FunnelEventDefinition = readonly [label: string, eventName: string]
+
 const LAUNCH_FUNNEL_EVENTS = [
+  ['Landing viewed', 'landing_view'],
+  ['Create started', 'capsule_started'],
+  ['Certificate generated', 'certificate_generated'],
+  ['Capsule created', 'capsule_created'],
+  ['Save clicked', 'save_clicked'],
+  ['Share clicked', 'share_clicked'],
+  ['Family note started', 'family_note_started'],
+] as const satisfies readonly FunnelEventDefinition[]
+
+const LEGACY_TOOTHLIGHT_FUNNEL_EVENTS = [
   ['Landing view', 'landing_view'],
   ['CTA click', 'cta_click'],
   ['Start flow', 'start_flow'],
@@ -25,7 +37,7 @@ const LAUNCH_FUNNEL_EVENTS = [
   ['Toothlight sealed', 'toothlight_sealed'],
   ['Invite clicked', 'invite_clicked'],
   ['Learn clicked', 'learn_clicked'],
-] as const
+] as const satisfies readonly FunnelEventDefinition[]
 
 export async function GET(request: NextRequest) {
   const unauthorized = requireToothFairyAdminRequest(request)
@@ -80,6 +92,7 @@ export async function GET(request: NextRequest) {
     topPages: summary.topPages,
     topClicks: summary.topClicks,
     funnel: summary.funnel,
+    legacyToothlightFunnel: summary.legacyToothlightFunnel,
     recentEvents: rows.slice(0, 25).map((event) => ({
       eventName: event.event_name,
       createdAt: event.created_at,
@@ -144,11 +157,15 @@ function summarizeEvents(events: ProductEventRow[]) {
     topPages: topEntries(pages, 20),
     topClicks: topEntries(clicks, 20),
     funnel: summarizeLaunchFunnel(events),
+    legacyToothlightFunnel: summarizeLaunchFunnel(events, LEGACY_TOOTHLIGHT_FUNNEL_EVENTS),
   }
 }
 
-function summarizeLaunchFunnel(events: ProductEventRow[]) {
-  const rows = LAUNCH_FUNNEL_EVENTS.map(([label, eventName], index) => ({
+function summarizeLaunchFunnel(
+  events: ProductEventRow[],
+  funnelEvents: readonly FunnelEventDefinition[] = LAUNCH_FUNNEL_EVENTS,
+) {
+  const rows = funnelEvents.map(([label, eventName], index) => ({
     step: index + 1,
     label,
     eventName,
@@ -282,6 +299,7 @@ function renderHtmlReport(report: any) {
       ${metricCard('NFTs minted', `${totals.mintedNfts.range} / ${totals.mintedNfts.allTime} all-time`)}
     </div>
     ${tableSection('Launch Funnel', report.funnel, ['step', 'label', 'events', 'uniqueVisitors', 'conversionFromPrevious'])}
+    ${tableSection('Legacy Toothlight Funnel', report.legacyToothlightFunnel, ['step', 'label', 'events', 'uniqueVisitors', 'conversionFromPrevious'])}
     ${tableSection('Bot Breakdown', report.botBreakdown, ['label', 'count'])}
     ${tableSection('Top Pages', report.topPages, ['label', 'count'])}
     ${tableSection('Top Clicks', report.topClicks, ['label', 'count'])}
