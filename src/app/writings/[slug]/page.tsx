@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { getArticleBySlug, getPublishedArticles } from '@/lib/articles-db'
+import { getArticleBySlug } from '@/lib/articles-db'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
 
 type Props = { params: { slug: string } }
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticleBySlug(params.slug)
@@ -29,11 +29,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: article.description,
     },
   }
-}
-
-export async function generateStaticParams() {
-  const articles = await getPublishedArticles()
-  return articles.map((a) => ({ slug: a.slug }))
 }
 
 export default async function ArticlePage({ params }: Props) {
