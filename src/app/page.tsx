@@ -384,6 +384,55 @@ export default function Home() {
             </div>
           </a>
 
+          <article className="span-full hub-card hub-lex-project">
+            <div className="hub-lex-project__media">
+              <Image
+                src="/projects/lex-rooftop-aerial.jpg"
+                alt="2025 City of Toronto aerial view of the Lex rooftop garden"
+                fill
+                sizes="(max-width: 768px) 100vw, 42vw"
+                className="hub-lex-project__image"
+              />
+              <span className="hub-lex-project__status">Live build</span>
+            </div>
+
+            <div className="hub-lex-project__copy">
+              <p className="hub-eyebrow" style={{ color: '#8BC34A' }}>
+                Resident technology lab
+              </p>
+              <h3 className="hub-card-title" style={{ color: 'var(--hub-text-primary)', fontSize: 24 }}>
+                Lex Rooftop Garden
+              </h3>
+              <p className="hub-body" style={{ color: 'var(--hub-text-secondary)', fontSize: 14 }}>
+                A resident-led garden companion with etiquette, a public rooftop map,
+                PlantTalk, and an interactive 3D view of 45 Carlton.
+              </p>
+              <div className="hub-lex-project__signals" role="list" aria-label="Lex Rooftop Garden features">
+                <span role="listitem">Real rooftop</span>
+                <span role="listitem">PlantTalk</span>
+                <span role="listitem">Live 3D</span>
+              </div>
+              <div className="hub-lex-project__actions">
+                <a
+                  href="https://garden.sathian.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hub-mono flex items-center gap-2"
+                >
+                  Open Lex Rooftop Garden <ArrowRight />
+                </a>
+                <a
+                  href="https://open.toronto.ca/open-data-licence/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hub-lex-project__credit"
+                >
+                  City of Toronto orthophoto, 2025
+                </a>
+              </div>
+            </div>
+          </article>
+
         </div>
       </section>
       </ScrollReveal>
