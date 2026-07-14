@@ -143,4 +143,73 @@ describe('public agent message route', () => {
       else process.env.AGENT_VISITOR_HASH_KEY = previousKey
     }
   })
+
+  it('preserves a valid intake receipt when the answer model fails', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const answerQuestion = vi.fn(async () => {
+      throw new Error('provider detail')
+    })
+    const handler = createAgentMessageHandler({ persistIntake, answerQuestion })
+
+    const response = await handler(request({
+      message: 'What inspired Tooth Fairy Network? Please also tell Sathian I enjoyed the essay.',
+      page: '/writings/the-gap-between-weeks',
+      consent: true,
+    }))
+    const body = await response.json()
+
+    expect(response.status).toBe(202)
+    expect(body.route).toBe('answer_and_intake')
+    expect(body.receipt.code).toMatch(/^SA-/)
+    expect(body.receipt.deliveryStatus).toBe('queued')
+    expect(body.answer).toContain('could not answer that safely right now')
+    expect(body.capabilities.intakeStored).toBe(true)
+  })
+
+  it('does not let model output alter deterministic routing or delivery state', async () => {
+    const handler = createAgentMessageHandler({
+      persistIntake: vi.fn(async () => persisted),
+      answerQuestion: vi.fn(async () => ({
+        answer: 'The project began with a missed childhood ritual.',
+        sources: ['https://sathian.ai/writings/the-gap-between-weeks'],
+        unknown: false,
+        modelUsed: true,
+        route: 'block',
+        receipt: { code: 'FAKE', deliveryStatus: 'delivered' },
+      })),
+    })
+
+    const response = await handler(request({
+      message: 'What inspired Tooth Fairy Network? Please also tell Sathian I enjoyed the essay.',
+      page: '/writings/the-gap-between-weeks',
+      consent: true,
+    }))
+    const body = await response.json()
+
+    expect(body.route).toBe('answer_and_intake')
+    expect(body.receipt.code).not.toBe('FAKE')
+    expect(body.receipt.deliveryStatus).toBe('queued')
+    expect(body.capabilities.deliveryConfirmed).toBe(false)
+  })
+
+  it('rate-limits before invoking persistence or the answer model', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const answerQuestion = vi.fn(async () => ({
+      answer: 'answer',
+      sources: [],
+      unknown: false,
+      modelUsed: true,
+    }))
+    const handler = createAgentMessageHandler({
+      persistIntake,
+      answerQuestion,
+      isRateLimited: () => true,
+    })
+
+    const response = await handler(request({ message: 'What is Tooth Fairy Network?', page: '/' }))
+
+    expect(response.status).toBe(429)
+    expect(persistIntake).not.toHaveBeenCalled()
+    expect(answerQuestion).not.toHaveBeenCalled()
+  })
 })

@@ -31,9 +31,7 @@ export function ChatWidget() {
     if (!msg || isLoading) return
     setShowSuggestions(false)
 
-    // Update the visible conversation while sending only prior messages as history.
-    const updatedMessages = [...messages, { role: 'user' as const, text: msg }]
-    setMessages(updatedMessages)
+    setMessages((previous) => [...previous, { role: 'user' as const, text: msg }])
     setInput('')
     setIsLoading(true)
 
@@ -42,28 +40,42 @@ export function ChatWidget() {
     const controller = new AbortController()
     abortRef.current = controller
     const timeout = setTimeout(() => controller.abort(), 15000)
+    const idempotencyKey = crypto.randomUUID()
 
     try {
-      const history = messages
-        .slice(1) // skip initial greeting
-        .map((m) => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }))
-
-      const res = await fetch('/api/chat', {
+      const res = await fetch('/api/agent/message', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, page: pathname, history }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKey,
+        },
+        body: JSON.stringify({ message: msg, page: pathname, consent: true }),
         signal: controller.signal,
       })
       clearTimeout(timeout)
 
       if (res.ok) {
         const data = await res.json()
-        setMessages((prev) => [...prev, { role: 'bot' as const, text: data.message }])
+        const responses: { role: 'bot'; text: string }[] = []
+        if (typeof data.answer === 'string' && data.answer.trim()) {
+          responses.push({ role: 'bot', text: data.answer })
+        }
+        if (data.receipt?.code && data.receipt?.message) {
+          responses.push({
+            role: 'bot',
+            text: `Receipt ${data.receipt.code} · ${data.receipt.message}`,
+          })
+        }
+        if (responses.length === 0) {
+          responses.push({ role: 'bot', text: data.message || 'I could not answer that safely right now.' })
+        }
+        setMessages((prev) => [...prev, ...responses])
       } else if (res.status === 429) {
         const data = await res.json().catch(() => null)
         setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.error || "You've been chatting a lot! Give me a moment to catch up." }])
       } else {
-        setMessages((prev) => [...prev, { role: 'bot' as const, text: 'Sorry, I couldn\'t process that right now. Try again in a moment.' }])
+        const data = await res.json().catch(() => null)
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.message || data?.error || 'Sorry, I couldn\'t process that right now. Try again in a moment.' }])
       }
     } catch (e) {
       clearTimeout(timeout)
@@ -75,7 +87,7 @@ export function ChatWidget() {
     } finally {
       setIsLoading(false)
     }
-  }, [input, isLoading, messages, pathname])
+  }, [input, isLoading, pathname])
 
   sendRef.current = (text: string) => handleSend(text)
 
@@ -216,7 +228,7 @@ export function ChatWidget() {
               </button>
             </div>
             <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-400">
-              Messages may be stored and forwarded to Sathian. Please do not send secrets.
+              By sending, you agree this message may be stored and forwarded to Sathian. Please do not send secrets.
             </p>
           </div>
         </motion.div>

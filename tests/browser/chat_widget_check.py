@@ -22,11 +22,17 @@ def exercise(page, screenshot_name: str):
         "requestfailed",
         lambda request: record_failed_request(failed_requests, request),
     )
-    page.route("**/api/chat", lambda route: route.fulfill(
-        status=200,
-        content_type="application/json",
-        body='{"message":"Mock reply for browser verification."}',
-    ))
+    def fulfill_agent(route):
+        payload = route.request.post_data_json
+        assert payload["consent"] is True
+        assert route.request.headers.get("idempotency-key")
+        route.fulfill(
+            status=202,
+            content_type="application/json",
+            body='{"route":"intake","answer":null,"sources":[],"receipt":{"code":"SA-TEST123456","deliveryStatus":"queued","message":"Your note is stored and queued for delivery."},"capabilities":{"answered":false,"intakeStored":true,"deliveryConfirmed":false}}',
+        )
+
+    page.route("**/api/agent/message", fulfill_agent)
     page.route("https://btc.sathian.ai/api/btc-price", lambda route: route.fulfill(
         status=200,
         content_type="application/json",
@@ -40,7 +46,7 @@ def exercise(page, screenshot_name: str):
     page.get_by_placeholder("Ask a question or leave a note…").fill("Browser verification message")
     page.get_by_role("button", name="Send message").click()
     page.get_by_text("Browser verification message").wait_for()
-    page.get_by_text("Mock reply for browser verification.").wait_for()
+    page.get_by_text("Receipt SA-TEST123456", exact=False).wait_for()
     page.screenshot(path=str(OUTPUT / screenshot_name), full_page=True)
 
     box = panel.bounding_box()

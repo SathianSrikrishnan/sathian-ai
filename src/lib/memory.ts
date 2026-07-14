@@ -40,15 +40,19 @@ export function buildMemoryContext(cards: PublicMemoryCard[]): MemoryContext {
   }
 }
 
-export async function getMemoryContext(_message: string): Promise<MemoryContext> {
+export async function getPublicMemoryCards(): Promise<PublicMemoryCard[]> {
   const client = getPublicMemoryClient()
-  if (!client) return buildMemoryContext([])
+  if (!client) return []
 
   try {
     const repository = createPublicMemoryRepository(client)
-    return buildMemoryContext(await repository.findApproved())
+    return await repository.findApproved()
   } catch (error) {
     console.error('Public memory retrieval failed', error)
-    return buildMemoryContext([])
+    return []
   }
+}
+
+export async function getMemoryContext(_message: string): Promise<MemoryContext> {
+  return buildMemoryContext(await getPublicMemoryCards())
 }

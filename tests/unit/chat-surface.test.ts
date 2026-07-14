@@ -15,16 +15,14 @@ describe('public chat surface', () => {
   it('discloses forwarding and warns visitors not to send secrets', () => {
     const widget = readSource('src/components/ChatWidget.tsx')
 
-    expect(widget).toContain('Messages may be stored and forwarded to Sathian.')
+    expect(widget).toContain('By sending, you agree this message may be stored and forwarded to Sathian.')
     expect(widget).toContain('Please do not send secrets.')
   })
 
   it('sends prior history separately from the current message', () => {
     const route = readSource('src/app/api/chat/route.ts')
-    const widget = readSource('src/components/ChatWidget.tsx')
 
     expect(route).toContain('buildModelMessages(history, message)')
-    expect(widget).toMatch(/const history = messages\s*\.slice\(1\)/)
   })
 
   it('presents a general site agent rather than an automation-only Kai surface', () => {
@@ -47,5 +45,15 @@ describe('public chat surface', () => {
     expect(prompt).not.toContain('Sathian reads every piece of feedback')
     expect(prompt).not.toContain("I've flagged that for Sathian")
     expect(memory).not.toContain('every message gets forwarded directly to him')
+  })
+
+  it('uses the bounded agent endpoint with consent, idempotency, and public receipts', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain("fetch('/api/agent/message'")
+    expect(widget).toContain("'Idempotency-Key': idempotencyKey")
+    expect(widget).toContain('consent: true')
+    expect(widget).toContain('data.receipt')
+    expect(widget).toContain('By sending, you agree this message may be stored and forwarded to Sathian.')
   })
 })
