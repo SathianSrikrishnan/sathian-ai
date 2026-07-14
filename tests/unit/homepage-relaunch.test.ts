@@ -57,4 +57,12 @@ describe('sathian.ai relaunch surface', () => {
     expect(writingIndex).toContain('.sort((a, b) =>')
     expect(writingIndex).toContain('entries.map((article) =>')
   })
+
+  it('uses project-owned artwork behind Tooth Fairy Network and BTC Cultural Atlas', () => {
+    expect(homeClient).toContain("image: '/toothfairy/animation/tfn-tanda-hero-poster.webp'")
+    expect(homeClient).toContain("image: '/projects/btc-cultural-atlas-hero.png'")
+    expect(
+      existsSync(new URL('../../public/projects/btc-cultural-atlas-hero.png', import.meta.url)),
+    ).toBe(true)
+  })
 })

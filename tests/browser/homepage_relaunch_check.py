@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -5,6 +6,7 @@ from playwright.sync_api import sync_playwright
 
 OUTPUT = Path(r"C:\Users\sathi\Projects\_ops\reskin-previews\2026-07-14")
 OUTPUT.mkdir(parents=True, exist_ok=True)
+BASE_URL = os.environ.get('PORTAL_BASE_URL', 'http://127.0.0.1:3120').rstrip('/')
 
 
 def record_failed_request(failed_requests, request):
@@ -36,7 +38,7 @@ def visit_home(page, screenshot_name: str):
     page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
     page.on("requestfailed", lambda request: record_failed_request(failed_requests, request))
 
-    page.goto("http://127.0.0.1:3120", wait_until="networkidle")
+    page.goto(BASE_URL, wait_until="networkidle")
     page.get_by_role("heading", name="Proof of work, in public.").wait_for()
     page.get_by_role("heading", name="Ask my agent").wait_for()
     page.get_by_text("Building in public", exact=True).wait_for()
@@ -62,7 +64,7 @@ def visit_article(page):
     page.on("requestfailed", lambda request: record_failed_request(failed_requests, request))
 
     response = page.goto(
-        "http://127.0.0.1:3120/writings/the-gap-between-weeks",
+        f"{BASE_URL}/writings/the-gap-between-weeks",
         wait_until="networkidle",
     )
     assert response is not None and response.status == 200

@@ -67,7 +67,7 @@ const PROJECTS = [
     href: 'https://toothfairy.network',
     accent: '#B794F6',
     external: true,
-    image: null,
+    image: '/toothfairy/animation/tfn-tanda-hero-poster.webp',
     credit: null,
   },
   {
@@ -91,7 +91,7 @@ const PROJECTS = [
     href: 'https://btc.sathian.ai',
     accent: '#F7931A',
     external: true,
-    image: null,
+    image: '/projects/btc-cultural-atlas-hero.png',
     credit: null,
   },
 ]
@@ -294,7 +294,7 @@ export function HomeClient({ writings }: HomeClientProps) {
                       rel="noopener noreferrer"
                       className={className}
                       style={project.image ? {
-                        backgroundImage: `linear-gradient(180deg, rgba(10,12,18,0.18), rgba(10,12,18,0.96)), url(${project.image})`,
+                        backgroundImage: `linear-gradient(180deg, rgba(7,8,14,0.48), rgba(7,8,14,0.97)), url(${project.image})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                       } : undefined}

@@ -11,7 +11,7 @@ process.argv = [
   require.resolve('next/dist/bin/next'),
   'start',
   '--port',
-  '3120',
+  process.env.PORT || '3120',
 ]
 
 require('next/dist/bin/next')
