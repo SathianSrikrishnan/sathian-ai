@@ -21,6 +21,13 @@ export function StudioNavigation() {
         <span aria-hidden="true">/</span>
         <Link href="/studio" className={styles.studioLink}>Studio</Link>
       </div>
+      <div className={styles.resourceLinks}>
+        <Link href="/studio">Writing</Link>
+        <Link href="/studio/build-notes">Build notes</Link>
+        <Link href="/studio/homepage">Homepage</Link>
+        <Link href="/studio/memory">Memory</Link>
+        <Link href="/studio/inbox">Inbox</Link>
+      </div>
       <div className={styles.actions}>
         <span className={styles.securityState}>AAL2 session</span>
         <Link href="/studio/new" className={styles.newArticle}>+ New Article</Link>

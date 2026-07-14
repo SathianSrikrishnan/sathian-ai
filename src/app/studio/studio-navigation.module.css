@@ -13,12 +13,27 @@
 }
 
 .identity,
-.actions {
+.actions,
+.resourceLinks {
   display: flex;
   align-items: center;
   gap: 12px;
   font-family: var(--font-mono), monospace;
   font-size: 12px;
+}
+
+.resourceLinks {
+  gap: 18px;
+}
+
+.resourceLinks a {
+  color: #6b7280;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.resourceLinks a:hover {
+  color: #f9fafb;
 }
 
 .identity > span {
@@ -75,6 +90,7 @@
 
 .siteLink:focus-visible,
 .studioLink:focus-visible,
+.resourceLinks a:focus-visible,
 .newArticle:focus-visible {
   outline: 2px solid #5eead4;
   outline-offset: 3px;
@@ -86,6 +102,12 @@
   }
 
   .securityState {
+    display: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .resourceLinks {
     display: none;
   }
 }

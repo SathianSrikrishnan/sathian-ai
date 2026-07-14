@@ -39,8 +39,8 @@ describe('Studio passwordless entrance', () => {
     const navigation = source('../../src/app/studio/StudioNavigation.tsx')
     const chatWidget = source('../../src/components/ChatWidget.tsx')
 
-    expect(navigation).toMatch(/pathname.*studio\/login/s)
-    expect(navigation).toMatch(/pathname.*studio\/mfa/s)
+    expect(navigation).toMatch(/pathname[\s\S]*studio\/login/)
+    expect(navigation).toMatch(/pathname[\s\S]*studio\/mfa/)
     expect(chatWidget).toMatch(/pathname\?\.startsWith\(['"]\/studio['"]\)/)
   })
 })
