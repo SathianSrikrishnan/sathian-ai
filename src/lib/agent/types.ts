@@ -55,3 +55,28 @@ export interface PublicMemoryQuery extends PromiseLike<PublicMemoryQueryResult> 
 export interface PublicMemoryClient {
   from(table: 'public_memory_cards'): PublicMemoryQuery
 }
+
+export type AgentRoute = 'answer' | 'intake' | 'answer_and_intake' | 'block'
+export type ClassifierRoute = Exclude<AgentRoute, 'block'>
+
+export interface AgentPolicyInput {
+  message: string
+  untrustedContent?: string[]
+}
+
+export interface AgentPolicyDecision {
+  route: AgentRoute
+  allowed: boolean
+  policyVersion: string
+  reasonCodes: string[]
+  normalizedMessage: string
+}
+
+export interface ClassifierDecision {
+  route: ClassifierRoute
+  reasonCodes: string[]
+}
+
+export interface AgentRoutingDecision extends AgentPolicyDecision {
+  classifierUsed: boolean
+}
