@@ -61,3 +61,4 @@ tfn-*.png
 
 # Local test runtimes
 .codex-python/
+.planning/supabase-release-validation/

@@ -1,7 +1,7 @@
 # Public Agent Data Map
 
 Last reviewed: 2026-07-14
-Schema: `supabase/migrations/20260714_public_agent_portal.sql` plus `supabase/migrations/20260714_agent_file_intake.sql`
+Schema: `supabase/migrations/20260714090000_public_agent_portal.sql` plus `supabase/migrations/20260714114500_agent_file_intake.sql`
 
 ## Boundary
 
@@ -25,6 +25,7 @@ Local Markdown remains the canonical second brain. Supabase receives a deliberat
 | `routing_decisions` | route, policy version, reason codes, optional classifier output | None | Create | None | Read and manage at AAL2 |
 | `delivery_outbox` | destination alias, minimal payload, idempotency key, lease, retry and provider receipt state | None | Create atomically with intake | Claim and update through service-only RPCs | Read and manage at AAL2 |
 | `audit_events` | actor type, event, policy version, redacted details | None | Append | Append | Read only at AAL2 |
+| `agent_message_rate_limits` | keyed visitor hash, window, count | None | Consume through a service-only RPC | None | None |
 | `agent-quarantine` | untrusted uploaded object bytes | Signed write to one generated key; no read or list policy | Reserve and verify through service role | None | Server-issued 60-second signed read after AAL2; no bucket listing policy |
 
 The Supabase service role is server-only and bypasses RLS. It must never be exposed through a `NEXT_PUBLIC_` variable or sent to the browser.
@@ -71,7 +72,7 @@ An empty public-memory result stays empty. The answer layer must not fall back t
 
 The allowlist is PDF, plain text, Markdown, JPEG, PNG, and WebP. The completion route downloads the object with the service role, compares the declared and actual size, detects type from bytes, rejects active or mismatched content, hashes the object, and moves a passing object from `pending` to `quarantined`. It does not render, summarize, embed, or forward file bytes. Telegram may receive the safe filename, detected type, size, and Studio link only after the object leaves `pending`. File contents remain unavailable to the answer model until a future scanner and explicit approval state exist.
 
-Turnstile activation needs `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in the site build, a server-only `TURNSTILE_VERIFY_URL` for the managed verification Worker, and `TURNSTILE_ALLOWED_HOSTNAMES`. The reserve route validates the Spin action marker `turnstile-spin-v1` and fails closed when verification or upload secrets are unavailable.
+Turnstile activation needs `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in the site build, a server-only `TURNSTILE_VERIFY_URL` for the managed verification Worker, and `TURNSTILE_ALLOWED_HOSTNAMES`. The reserve route validates the Spin action marker `turnstile-spin-v1` and fails closed when verification or upload secrets are unavailable. File intake additionally requires `AGENT_FILE_INTAKE_ENABLED=true` on the server and `NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED=true` in the built client. Both default off.
 
 ## Operational checks before remote apply
 
@@ -80,4 +81,5 @@ Turnstile activation needs `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in the site build, a
 - Inspect RLS as anonymous, ordinary authenticated, AAL1 Studio, AAL2 Studio, and service-role clients.
 - Verify the quarantine bucket reports `public = false` and has no anonymous storage policy.
 - Verify an ordinary browser cannot list or read the bucket, a signed upload cannot overwrite another key, and an AAL2 download redirects through a 60-second URL.
+- Verify the service-only message limiter persists across requests and rejects attempt 31 in the one-hour window.
 - Apply remotely only from a reviewed migration commit with a backup and rollback plan.

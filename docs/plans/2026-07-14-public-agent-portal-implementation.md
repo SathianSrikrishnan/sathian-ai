@@ -85,7 +85,7 @@
 
 **Files:**
 
-- Create: `supabase/migrations/20260714_public_agent_portal.sql`
+- Create: `supabase/migrations/20260714090000_public_agent_portal.sql`
 - Create: `tests/unit/agent-schema.test.ts`
 - Create: `docs/security/public-agent-data-map.md`
 

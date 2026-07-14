@@ -19,10 +19,12 @@ describe('public chat surface', () => {
     expect(widget).toContain('Please do not send secrets.')
   })
 
-  it('sends prior history separately from the current message', () => {
+  it('retires the legacy direct-model endpoint in favor of the bounded agent route', () => {
     const route = readSource('src/app/api/chat/route.ts')
 
-    expect(route).toContain('buildModelMessages(history, message)')
+    expect(route).toMatch(/status:\s*410/)
+    expect(route).toContain('/api/agent/message')
+    expect(route).not.toMatch(/Anthropic|notifyVisitorMessage|anthropic\.messages\.create/)
   })
 
   it('presents a general site agent rather than an automation-only Kai surface', () => {

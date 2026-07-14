@@ -24,6 +24,9 @@ export default defineConfig({
     env: {
       NODE_ENV: 'production',
       PORT: '3121',
+      PUBLIC_AGENT_ENABLED: 'true',
+      AGENT_FILE_INTAKE_ENABLED: 'true',
+      NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED: 'true',
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA',
     },
     timeout: 180_000,

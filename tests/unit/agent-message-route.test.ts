@@ -8,6 +8,18 @@ const routeSource = readFileSync(
   new URL('../../src/app/api/agent/message/route.ts', import.meta.url),
   'utf8',
 )
+const uploadRouteSources = [
+  '../../src/app/api/agent/upload/reserve/route.ts',
+  '../../src/app/api/agent/upload/complete/route.ts',
+].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'))
+const voiceRouteSource = readFileSync(
+  new URL('../../src/app/api/voice/conversation/route.ts', import.meta.url),
+  'utf8',
+)
+const fileVerificationSource = readFileSync(
+  new URL('../../src/components/AgentFileVerification.tsx', import.meta.url),
+  'utf8',
+)
 
 const persisted = {
   ok: true as const,
@@ -29,6 +41,28 @@ function request(body: unknown, idempotencyKey = 'idem_1234567890abcdef') {
 }
 
 describe('public agent message route', () => {
+  it('fails closed behind one explicit server flag on every public entry point', () => {
+    for (const source of [routeSource, ...uploadRouteSources]) {
+      expect(source).toMatch(/process\.env\.PUBLIC_AGENT_ENABLED\s*!==\s*'true'/)
+    }
+  })
+
+  it('can disable file intake independently while leaving text intake available', () => {
+    for (const source of uploadRouteSources) {
+      expect(source).toMatch(/process\.env\.AGENT_FILE_INTAKE_ENABLED\s*!==\s*'true'/)
+    }
+    expect(fileVerificationSource).toMatch(
+      /process\.env\.NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED\s*===\s*'true'/,
+    )
+  })
+
+  it('uses the active Anthropic replacement rather than the retired launch model', () => {
+    expect(routeSource).toContain("model: 'claude-sonnet-4-6'")
+    expect(routeSource).not.toContain('claude-sonnet-4-20250514')
+    expect(voiceRouteSource).toContain("model: 'claude-sonnet-4-6'")
+    expect(voiceRouteSource).not.toContain('claude-sonnet-4-20250514')
+  })
+
   it('keeps test helpers and policy constants out of the Next.js route export surface', () => {
     expect(routeSource).not.toMatch(/export\s+function\s+createAgentMessageHandler/)
     expect(routeSource).not.toMatch(/export\s+const\s+CONSENT_NOTICE_VERSION/)
@@ -268,5 +302,29 @@ describe('public agent message route', () => {
     expect(response.status).toBe(429)
     expect(persistIntake).not.toHaveBeenCalled()
     expect(answerQuestion).not.toHaveBeenCalled()
+  })
+
+  it('awaits a durable rate-limit decision before answering', async () => {
+    const answerQuestion = vi.fn(async () => ({
+      answer: 'A bounded answer.',
+      sources: [],
+      unknown: false,
+      modelUsed: true,
+    }))
+    const handler = createAgentMessageHandler({
+      persistIntake: vi.fn(async () => persisted),
+      answerQuestion,
+      isRateLimited: vi.fn(async () => false),
+    })
+
+    const response = await handler(request({ message: 'What is Tooth Fairy Network?', page: '/' }))
+
+    expect(response.status).toBe(200)
+    expect(answerQuestion).toHaveBeenCalledOnce()
+  })
+
+  it('uses the service-only durable message-rate RPC in the deployed route', () => {
+    expect(routeSource).toContain("rpc('agent_consume_message_rate_limit'")
+    expect(routeSource).not.toMatch(/const requestTimes = new Map/)
   })
 })

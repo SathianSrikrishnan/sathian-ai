@@ -7,6 +7,18 @@ import { createAgentUploadRepository } from '@/lib/agent/upload-repository'
 export const runtime = 'nodejs'
 
 export async function POST(request: Request): Promise<Response> {
+  if (process.env.PUBLIC_AGENT_ENABLED !== 'true') {
+    return Response.json(
+      { error: 'Private file intake is not active yet.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
+  if (process.env.AGENT_FILE_INTAKE_ENABLED !== 'true') {
+    return Response.json(
+      { error: 'Private file intake is not active yet.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!url || !serviceRoleKey) {

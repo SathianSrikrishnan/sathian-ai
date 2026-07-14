@@ -1,4 +1,4 @@
--- Public site agent, reviewed public memory, durable intake, and delivery queue.
+-- Migration 20260714090000: public site agent, reviewed public memory, durable intake, and delivery queue.
 --
 -- Trust zones:
 --   1. Visitors may read only approved, currently valid public-memory cards.

@@ -1,4 +1,4 @@
--- Typed content records for the private Studio control room.
+-- Migration 20260714103000: typed content records for the private Studio control room.
 
 CREATE TABLE homepage_sections (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -9,11 +9,15 @@ The current release candidate is local only. The retention schedule is disabled 
 ## Operating boundaries
 
 - The public agent answers only from reviewed public-memory cards.
+- `PUBLIC_AGENT_ENABLED` defaults off and gates every public-agent entry point.
+- File intake also requires both the server-side `AGENT_FILE_INTAKE_ENABLED` flag and the built-client `NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED` flag, so uploads can stop without disabling text intake.
 - Deterministic policy runs before model, intake, or tool access.
 - Visitor messages and files are private operational records. They never become public-memory context automatically.
 - File contents are not summarized, embedded, sent to a model, or forwarded to Telegram.
 - Studio pages and Studio APIs require an allowlisted account at AAL2.
 - The Telegram worker receives a short preview and cleared metadata only. It never receives raw attachment bytes.
+- Text requests use the service-only `agent_consume_message_rate_limit` RPC. The limiter is durable across serverless instances and fails closed if the visitor hash or database decision is unavailable.
+- The retired `/api/chat` path returns HTTP 410 and cannot call a model or Telegram.
 
 ## Studio signals
 
@@ -78,7 +82,7 @@ The current Studio retention route has no execution method. The destructive repo
 1. Confirm the count and its 24-hour window in Studio.
 2. Check only the structured `agent_answer_model_failed` events and their fixed error codes.
 3. Confirm visitors still receive the safe fallback and valid intake receipts remain independent.
-4. Disable the answer-model adapter if private-boundary behavior is uncertain. Keep intake off as well if its persistence boundary is uncertain.
+4. Set `PUBLIC_AGENT_ENABLED=false` in the next build if the private or persistence boundary is uncertain.
 
 ### Delivery backlog grows
 
@@ -94,6 +98,8 @@ The current Studio retention route has no execution method. The destructive repo
 3. Confirm pending objects are never summarized, embedded, rendered, or forwarded.
 4. If byte checks are uncertain, disable file intake and preserve text intake only.
 
+To stop files independently, set `AGENT_FILE_INTAKE_ENABLED=false` and `NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED=false`, then rebuild. Do not rely only on hiding the browser control.
+
 ## Verification
 
 ```powershell
@@ -104,6 +110,7 @@ cd "C:\Users\sathi\Projects\sathian-ai\worktrees\public-agent-portal"
 
 # Commands:
 npm run test:unit -- tests/unit/retention.test.ts tests/unit/agent-observability.test.ts tests/unit/agent-policy.test.ts tests/unit/agent-message-route.test.ts
+npm run test:unit -- tests/unit/migration-manifest.test.ts tests/unit/agent-schema.test.ts tests/unit/file-intake-schema.test.ts
 npx playwright test tests/public-agent-red-team.spec.ts --config=playwright.agent.config.ts
 npx playwright test tests/studio-control-room.spec.ts --config=playwright.studio.config.ts
 ```
@@ -118,7 +125,7 @@ For a later approved activation:
 
 1. Disable the cleanup schedule first.
 2. Leave the dry-run route available for diagnosis.
-3. Stop file intake if quarantine integrity is uncertain.
+3. Set both file-intake flags false if quarantine integrity is uncertain.
 4. Keep the safe model fallback active only if its deterministic boundary remains verified.
 5. Revert the activating release through the normal deployment rollback path.
 6. Preserve content-minimized audit events. Do not export visitor records into incident chat or logs.

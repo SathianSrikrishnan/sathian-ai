@@ -26,6 +26,7 @@ declare global {
 }
 
 export const AGENT_FILE_INTAKE_CONFIGURED = Boolean(
+  process.env.NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED === 'true' &&
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
 )
 
@@ -38,7 +39,9 @@ export function AgentFileVerification({
   const widgetRef = useRef<string | null>(null)
   const [scriptReady, setScriptReady] = useState(false)
   const [verified, setVerified] = useState(false)
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  const siteKey = AGENT_FILE_INTAKE_CONFIGURED
+    ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    : undefined
 
   const renderWidget = useCallback(() => {
     if (!siteKey || !containerRef.current || !window.turnstile || widgetRef.current) return

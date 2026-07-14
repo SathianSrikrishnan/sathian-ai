@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto'
-
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
 
@@ -11,7 +9,10 @@ import {
   persistAgentIntake,
   type AgentIntakeRpcClient,
 } from '@/lib/agent/intake'
-import { createAgentMessageHandler } from '@/lib/agent/message-handler'
+import {
+  agentVisitorHash,
+  createAgentMessageHandler,
+} from '@/lib/agent/message-handler'
 import {
   createOperationalAuditRow,
   createOperationalLog,
@@ -19,24 +20,6 @@ import {
 import { getPublicMemoryCards } from '@/lib/memory'
 
 export const runtime = 'nodejs'
-
-const RATE_LIMIT = 30
-const RATE_WINDOW_MS = 60 * 60 * 1000
-const requestTimes = new Map<string, number[]>()
-
-function defaultRateLimit(request: Request): boolean {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-  const key = createHash('sha256').update(ip).digest('hex')
-  const now = Date.now()
-  const recent = (requestTimes.get(key) ?? []).filter((timestamp) => now - timestamp < RATE_WINDOW_MS)
-  if (recent.length >= RATE_LIMIT) {
-    requestTimes.set(key, recent)
-    return true
-  }
-  recent.push(now)
-  requestTimes.set(key, recent)
-  return false
-}
 
 function json(body: unknown, status = 200): Response {
   return Response.json(body, {
@@ -55,6 +38,17 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
   })
   const client = serviceClient as unknown as AgentIntakeRpcClient
 
+  const consumeMessageRateLimit = async (request: Request): Promise<boolean> => {
+    const visitorHash = agentVisitorHash(request)
+    if (!visitorHash) return true
+    const { data, error } = await serviceClient.rpc('agent_consume_message_rate_limit', {
+      p_visitor_hash: visitorHash,
+      p_limit: 30,
+      p_window_seconds: 3600,
+    })
+    return error || typeof data !== 'boolean' ? true : data
+  }
+
   const anthropic = process.env.ANTHROPIC_API_KEY
     ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
     : null
@@ -62,7 +56,7 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
     async generate(input) {
       if (!anthropic) throw new Error('answer_model_unavailable')
       const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: input.maxTokens,
         system: input.system,
         messages: [{ role: 'user', content: input.user }],
@@ -78,7 +72,7 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
       ...input,
       cards: await getPublicMemoryCards(),
     }, { model }),
-    isRateLimited: defaultRateLimit,
+    isRateLimited: consumeMessageRateLimit,
     recordOperationalEvent: async ({ event, errorCode, policyVersion }) => {
       const operationalEvent = { event, errorCode }
       console.error(JSON.stringify(createOperationalLog(operationalEvent)))
@@ -91,6 +85,9 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
 }
 
 export async function POST(request: Request): Promise<Response> {
+  if (process.env.PUBLIC_AGENT_ENABLED !== 'true') {
+    return json({ error: 'The site agent is not active yet.' }, 503)
+  }
   const handler = createDefaultHandler()
   if (!handler) return json({ error: 'The site agent is temporarily unavailable.' }, 503)
   return handler(request)

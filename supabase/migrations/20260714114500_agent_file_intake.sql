@@ -1,4 +1,4 @@
--- Constrained public-agent file intake.
+-- Migration 20260714114500: constrained public-agent file intake.
 --
 -- The browser receives a signed token for one generated object key. It never
 -- receives bucket listing or read permission. The service role alone reserves,

@@ -25,7 +25,7 @@ type AnswerQuestion = (input: {
 interface HandlerDependencies {
   persistIntake: PersistIntake
   answerQuestion?: AnswerQuestion
-  isRateLimited?: (request: Request) => boolean
+  isRateLimited?: (request: Request) => boolean | Promise<boolean>
   recordOperationalEvent?: (event: AgentOperationalRecord) => Promise<void>
 }
 
@@ -83,7 +83,7 @@ export function createAgentMessageHandler({
   recordOperationalEvent,
 }: HandlerDependencies) {
   return async function handleAgentMessage(request: Request): Promise<Response> {
-    if (isRateLimited(request)) {
+    if (await isRateLimited(request)) {
       return json({ error: 'Too many messages. Please wait and try again.' }, 429)
     }
 

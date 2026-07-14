@@ -126,7 +126,7 @@ describe('Studio display receipts', () => {
 
 describe('control-room schema', () => {
   const migration = readFileSync(
-    new URL('../../supabase/migrations/20260714_studio_control_room.sql', import.meta.url),
+    new URL('../../supabase/migrations/20260714103000_studio_control_room.sql', import.meta.url),
     'utf8',
   )
 
