@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getArticleByIdAdmin, updateArticle, deleteArticle } from '@/lib/articles-db'
+import { requireStudioAal2 } from '@/lib/studio-server-auth'
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const denial = await requireStudioAal2(request)
+  if (denial) return denial
+
   try {
     const article = await getArticleByIdAdmin(params.id)
     if (!article) {
@@ -20,6 +24,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const denial = await requireStudioAal2(request)
+  if (denial) return denial
+
   try {
     const data = await request.json()
     const article = await updateArticle(params.id, data)
@@ -30,9 +37,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const denial = await requireStudioAal2(request)
+  if (denial) return denial
+
   try {
     await deleteArticle(params.id)
     return NextResponse.json({ ok: true })

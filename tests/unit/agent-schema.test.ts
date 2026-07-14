@@ -66,4 +66,10 @@ describe('public agent portal schema', () => {
     expect(migration).toMatch(/revoke\s+all\s+on\s+function\s+agent_claim_delivery_batch[\s\S]{0,180}from\s+public/i)
     expect(migration).toMatch(/grant\s+execute\s+on\s+function\s+agent_claim_delivery_batch[\s\S]{0,220}to\s+service_role/i)
   })
+
+  it('requires both the Studio admin role and AAL2 for operator policies', () => {
+    expect(migration).toMatch(/auth\.jwt\(\)\s*->\s*'app_metadata'\s*->>\s*'role'[\s\S]{0,80}=\s*'studio_admin'/i)
+    expect(migration).toMatch(/auth\.jwt\(\)\s*->>\s*'aal'[\s\S]{0,80}=\s*'aal2'/i)
+    expect(migration).toMatch(/using\s*\(is_studio_operator\(\)\)/i)
+  })
 })

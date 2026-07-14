@@ -1,33 +1,66 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { signStudioToken } from '@/lib/studio-token'
+
+import {
+  parseStudioAllowedEmails,
+  requestStudioMagicLink,
+  resolveStudioPublicOrigin,
+} from '@/lib/studio-authorization'
+import {
+  copySupabaseCookies,
+  createRouteSupabase,
+  isSupabaseConfigured,
+} from '@/lib/supabase-auth'
+
+const ACCEPTED_MESSAGE = 'If this address is approved, a secure sign-in link is on its way.'
+
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
-  const { password } = await request.json()
-  const expected = process.env.STUDIO_PASSWORD
-
-  if (!expected) {
-    return NextResponse.json({ error: 'Studio not configured' }, { status: 500 })
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ error: 'Studio entrance is not configured.' }, { status: 503 })
   }
 
-  if (password !== expected) {
-    return NextResponse.json({ error: 'Wrong password' }, { status: 401 })
-  }
-
-  const token = await signStudioToken(expected)
-  const response = NextResponse.json({ ok: true })
-  response.cookies.set('studio_auth', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-    path: '/',
+  const publicOrigin = resolveStudioPublicOrigin({
+    configuredOrigin: process.env.STUDIO_PUBLIC_ORIGIN,
   })
+  if (!publicOrigin) {
+    return NextResponse.json({ error: 'Studio entrance origin is not approved.' }, { status: 503 })
+  }
 
-  return response
+  let body: unknown
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 })
+  }
+
+  const email =
+    body && typeof body === 'object' && typeof (body as { email?: unknown }).email === 'string'
+      ? (body as { email: string }).email
+      : ''
+  const { supabase } = createRouteSupabase(request)
+  const result = await requestStudioMagicLink(
+    { email },
+    {
+      allowedEmails: parseStudioAllowedEmails(process.env.STUDIO_ALLOWED_EMAILS),
+      publicOrigin,
+      signInWithOtp: (input) => supabase.auth.signInWithOtp(input),
+    },
+  )
+
+  if (result.kind === 'invalid_email') {
+    return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 })
+  }
+
+  return NextResponse.json({ ok: true, message: ACCEPTED_MESSAGE }, { status: 202 })
 }
 
-export async function DELETE() {
-  const response = NextResponse.json({ ok: true })
-  response.cookies.delete('studio_auth')
-  return response
+export async function DELETE(request: NextRequest) {
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ ok: true })
+  }
+
+  const { supabase, response: authResponse } = createRouteSupabase(request)
+  await supabase.auth.signOut({ scope: 'local' })
+  return copySupabaseCookies(authResponse, NextResponse.json({ ok: true }))
 }

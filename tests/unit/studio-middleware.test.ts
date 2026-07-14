@@ -1,41 +1,28 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { NextRequest } from 'next/server'
+import { readFileSync } from 'node:fs'
 
-import { middleware } from '@/middleware'
-import { signStudioToken } from '@/lib/studio-token'
+import { describe, expect, it } from 'vitest'
 
-const SECRET = 'middleware-test-secret'
+const middlewareSource = readFileSync(
+  new URL('../../src/middleware.ts', import.meta.url),
+  'utf8',
+)
 
-function studioRequest(token: string) {
-  return new NextRequest('https://sathian.ai/studio', {
-    headers: { cookie: `studio_auth=${token}` },
-  })
-}
+const studioRouteSources = [
+  '../../src/app/api/studio/articles/route.ts',
+  '../../src/app/api/studio/articles/[id]/route.ts',
+  '../../src/app/api/studio/articles/[id]/publish/route.ts',
+].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'))
 
-describe('Studio middleware authentication', () => {
-  beforeEach(() => {
-    process.env.STUDIO_PASSWORD = SECRET
-  })
-
-  afterEach(() => {
-    delete process.env.STUDIO_PASSWORD
-  })
-
-  it('rejects a recent token with a forged HMAC', async () => {
-    const forged = `${Date.now()}.${'a'.repeat(64)}`
-
-    const response = await middleware(studioRequest(forged))
-
-    expect(response.status).toBe(307)
-    expect(response.headers.get('location')).toBe('https://sathian.ai/studio/login')
+describe('Studio authorization enforcement', () => {
+  it('uses Supabase AAL authorization instead of the legacy password cookie', () => {
+    expect(middlewareSource).toMatch(/decideStudioAccess/)
+    expect(middlewareSource).toMatch(/getAuthenticatorAssuranceLevel/)
+    expect(middlewareSource).not.toMatch(/studio_auth|STUDIO_PASSWORD|verifyStudioToken/)
   })
 
-  it('allows a correctly signed token', async () => {
-    const token = await signStudioToken(SECRET)
-
-    const response = await middleware(studioRequest(token))
-
-    expect(response.status).toBe(200)
-    expect(response.headers.get('x-middleware-next')).toBe('1')
+  it('requires handler-level AAL2 authorization on every Studio article API', () => {
+    for (const source of studioRouteSources) {
+      expect(source).toMatch(/requireStudioAal2/)
+    }
   })
 })
