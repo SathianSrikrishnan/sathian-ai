@@ -1,13 +1,32 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
+import { JetBrains_Mono, Outfit, Plus_Jakarta_Sans } from 'next/font/google'
 import { ChatWidget } from '@/components/ChatWidget'
 import './globals.css'
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
   alternates: { canonical: './' },
   title: 'sathian.ai',
-  description: 'Sathian S. builds AI-native automations, agentic workflows, Web3 proofs, and private systems.',
+  description: 'Products, essays, and public build notes from Sathian S. in Toronto.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -17,14 +36,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'sathian.ai',
-    description: 'AI-native automations, agentic workflows, Web3 proofs, and private systems by Sathian S.',
+    description: 'Products, essays, and public build notes from Sathian S. in Toronto.',
     siteName: 'sathian.ai',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'sathian.ai',
-    description: 'AI-native automations, agentic workflows, Web3 proofs, and private systems by Sathian S.',
+    description: 'Products, essays, and public build notes from Sathian S. in Toronto.',
   },
 }
 
@@ -40,7 +59,11 @@ export default function RootLayout({
     host === 'toothfairy.sathian.ai'
 
   return (
-    <html lang="en" data-theme="dark">
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${outfit.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable}`}
+    >
       <body className="font-sans antialiased">
         {children}
         {!isTfnDomain && <ChatWidget />}
