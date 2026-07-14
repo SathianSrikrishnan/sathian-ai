@@ -17,7 +17,7 @@ interface Fact {
 const KNOWLEDGE_BASE: Fact[] = [
   // === BIO (open) ===
   { fact: 'Based in Toronto, Canada.', category: 'bio', level: 'open' },
-  { fact: 'Father of twins — his kids are a big part of what drives everything he builds.', category: 'bio', level: 'open' },
+  { fact: 'Father of two. His children are a big part of what drives the things he builds.', category: 'bio', level: 'open' },
   { fact: '20+ years building things — from startups to personal tools to creative projects. Self-taught, non-traditional path into tech.', category: 'bio', level: 'open' },
   { fact: 'Has conducted 100+ dinners with strangers in Toronto, ages 20-80.', category: 'bio', level: 'open' },
 
@@ -26,12 +26,13 @@ const KNOWLEDGE_BASE: Fact[] = [
 
   // === PROJECTS (open) ===
   { fact: 'BTC Cultural Atlas (btc.sathian.ai) — 500+ cultural markers mapped to Bitcoin\'s price. Area codes, drum machines, error pages, history, sports — every number decoded. Visitors can claim numbers or suggest ones with good stories.', category: 'project', level: 'open' },
-  { fact: 'Tooth Fairy Network (toothfairy.sathian.ai) — Digital childhood keepsakes. Every lost tooth becomes a permanent milestone. Built for his own children first. Parents can express interest in early access.', category: 'project', level: 'open' },
-  { fact: 'Kai — His personal AI infrastructure. Model-agnostic. The public-facing version is what visitors are talking to right now.', category: 'project', level: 'open' },
+  { fact: 'Tooth Fairy Network (toothfairy.network) is a family memory ritual built from drawings, stories, and the moments around a lost tooth. It was built for his own children first.', category: 'project', level: 'open' },
+  { fact: 'Sathian\'s site agent is the bounded public guide visitors are talking to now. It knows approved public projects and writing only.', category: 'project', level: 'open' },
   { fact: 'More projects are in the works — Sathian builds in public and shares progress on sathian.ai.', category: 'project', level: 'open' },
 
   // === WRITING (open) ===
-  { fact: '4 published essays at sathian.ai/writings.', category: 'writing', level: 'open' },
+  { fact: 'Sathian publishes essays and build notes at sathian.ai/writings.', category: 'writing', level: 'open' },
+  { fact: 'The Gap Between Weeks is the Tooth Fairy Network origin essay. It connects a missed childhood ritual to the failed product versions that clarified what the project was for. (sathian.ai/writings/the-gap-between-weeks)', category: 'writing', level: 'on-ask' },
   { fact: 'Yakko\'s World Was Already Wrong — 1993 as a hinge year: the cypherpunk manifesto, the web going free, borders dissolving, and the next hinge happening now. (sathian.ai/writings/yakkos-world)', category: 'writing', level: 'on-ask' },
   { fact: 'C.R.E.A.M. 2.0 — Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption. (sathian.ai/writings/cream-2-point-0)', category: 'writing', level: 'on-ask' },
   { fact: 'The Yellow Box — An Uber driver, No Name spaghetti, glasnost, and why institutions can\'t survive their citizens doing the math. (sathian.ai/writings/the-yellow-box)', category: 'writing', level: 'on-ask' },
@@ -45,7 +46,7 @@ const KNOWLEDGE_BASE: Fact[] = [
   // === COLLABORATION (on-ask) ===
   { fact: 'Interested in connecting with people working on: open source AI, privacy tech, Bitcoin education, tools for human capability.', category: 'collaboration', level: 'on-ask' },
   { fact: 'Inspired by: Satoshi Nakamoto, Balaji Srinivasan, Daniel Miessler.', category: 'collaboration', level: 'on-ask' },
-  { fact: 'The best way to reach Sathian is to leave a message right here with Kai — every message gets forwarded directly to him. Visitors can also subscribe for updates.', category: 'collaboration', level: 'open' },
+  { fact: 'Visitors can leave Sathian a note through the site agent or email hi@sathian.ai. The current chat does not provide a delivery receipt, so email is better for time-sensitive messages.', category: 'collaboration', level: 'open' },
 ]
 
 // Build a compact knowledge context for the system prompt

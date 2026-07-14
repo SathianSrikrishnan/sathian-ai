@@ -10,7 +10,7 @@ const SUGGESTIONS = CHAT_SUGGESTIONS
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: "Leave a note about the workflow, report, agent, or AI automation you want to build. Sathian can follow up by email if it is a fit." },
+    { role: 'bot', text: 'I can answer from Sathian’s public projects and writing, or pass a note to him.' },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -131,14 +131,14 @@ export function ChatWidget() {
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full relative overflow-hidden flex-shrink-0 shadow-sm">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sathian-profile.png" alt="Kai" className="w-full h-full object-cover" />
+                  <img src="/sathian-profile.png" alt="Sathian" className="w-full h-full object-cover" />
                   <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full" style={{
                     background: '#22c55e', border: '2px solid #ffffff',
                     boxShadow: '0 0 4px rgba(34,197,94,0.4)',
                   }} />
                 </div>
                 <div>
-                  <h4 className="text-[15px] font-semibold text-gray-900">Start an AI automation conversation</h4>
+                  <h4 className="text-[15px] font-semibold text-gray-900">Sathian’s site agent</h4>
                   <a href="mailto:hi@sathian.ai" className="text-xs text-gray-500 hover:text-gray-900 transition-colors">
                     hi@sathian.ai
                   </a>
@@ -207,7 +207,7 @@ export function ChatWidget() {
                 type="text" name="message" autoComplete="off" value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-                placeholder="Describe the workflow…"
+                placeholder="Ask a question or leave a note…"
                 maxLength={2000}
                 className="flex-1 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30 transition-colors"
               />
@@ -242,7 +242,7 @@ export function ChatWidget() {
           </div>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src="/sathian-profile.png" alt="Chat with Kai" className="w-full h-full object-cover" />
+          <img src="/sathian-profile.png" alt="Open Sathian’s site agent" className="w-full h-full object-cover" />
         )}
       </motion.button>
     </>

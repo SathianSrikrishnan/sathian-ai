@@ -35,14 +35,14 @@ def exercise(page, screenshot_name: str):
 
     page.goto("http://127.0.0.1:3120", wait_until="networkidle")
     page.get_by_role("button", name="Open chat").click()
-    page.get_by_text("Messages may be stored and forwarded to Sathian.").wait_for()
-    page.get_by_placeholder("Describe the workflow…").fill("Browser verification message")
+    panel = page.locator("[data-chat-panel]")
+    panel.get_by_text("Messages may be stored and forwarded to Sathian.").wait_for()
+    page.get_by_placeholder("Ask a question or leave a note…").fill("Browser verification message")
     page.get_by_role("button", name="Send message").click()
     page.get_by_text("Browser verification message").wait_for()
     page.get_by_text("Mock reply for browser verification.").wait_for()
     page.screenshot(path=str(OUTPUT / screenshot_name), full_page=True)
 
-    panel = page.locator("[data-chat-panel]")
     box = panel.bounding_box()
     assert box is not None
     assert box["x"] >= 0 and box["x"] + box["width"] <= page.viewport_size["width"]
