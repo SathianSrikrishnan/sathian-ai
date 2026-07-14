@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { updateSupabaseSession } from '@/lib/supabase-auth'
+import { verifyStudioToken } from '@/lib/studio-token'
 
 // Simple in-memory rate limiter (resets on deploy/restart — fine for Vercel serverless)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -129,10 +130,13 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')) {
     if (pathname !== '/studio/login' && pathname !== '/api/studio/auth') {
       const studioAuth = request.cookies.get('studio_auth')?.value
-      // Verify signed token format: timestamp.hmac (not just 'true')
-      const isValidFormat = studioAuth && /^\d+\.[a-f0-9]{64}$/.test(studioAuth)
-      const isNotExpired = isValidFormat && (Date.now() - parseInt(studioAuth!.split('.')[0], 10)) < 30 * 24 * 60 * 60 * 1000
-      if (!isNotExpired) {
+      const studioSecret = process.env.STUDIO_PASSWORD
+      const isAuthorized = Boolean(
+        studioAuth &&
+          studioSecret &&
+          await verifyStudioToken(studioAuth, studioSecret)
+      )
+      if (!isAuthorized) {
         if (pathname.startsWith('/api/studio/')) {
           return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }

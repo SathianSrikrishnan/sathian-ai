@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
-import { signToken, verifyToken } from '@/lib/studio-auth'
+import { signStudioToken, verifyStudioToken } from '@/lib/studio-token'
 
 describe('unit test lane', () => {
-  it('resolves TypeScript path aliases and executes pure helpers', () => {
-    const token = signToken('test-secret')
+  it('resolves TypeScript path aliases and executes pure helpers', async () => {
+    const token = await signStudioToken('test-secret')
 
-    expect(verifyToken(token, 'test-secret')).toBe(true)
+    await expect(verifyStudioToken(token, 'test-secret')).resolves.toBe(true)
   })
 })
