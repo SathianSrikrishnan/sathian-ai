@@ -300,3 +300,224 @@ CREATE POLICY "Studio removes agent quarantine objects"
   FOR DELETE
   TO authenticated
   USING (bucket_id = 'agent-quarantine' AND is_studio_operator());
+
+-- Creates the visitor session, message, policy decision, intake, delivery
+-- event, and audit receipt in one transaction. The unique dedupe key makes
+-- retries return the original receipt without creating another outbox event.
+CREATE OR REPLACE FUNCTION agent_create_intake(
+  p_idempotency_key TEXT,
+  p_message TEXT,
+  p_route agent_route,
+  p_reason_codes TEXT[],
+  p_policy_version TEXT,
+  p_consent_notice_version TEXT,
+  p_page_context TEXT DEFAULT '/',
+  p_visitor_hash TEXT DEFAULT NULL,
+  p_display_name TEXT DEFAULT NULL,
+  p_reply_email TEXT DEFAULT NULL
+)
+RETURNS TABLE (
+  receipt_token UUID,
+  delivery_status TEXT,
+  created BOOLEAN,
+  retention_until TIMESTAMPTZ
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_existing agent_intakes%ROWTYPE;
+  v_session_id UUID;
+  v_message_id UUID;
+  v_intake_id UUID;
+  v_receipt_token UUID := gen_random_uuid();
+  v_intake_retention TIMESTAMPTZ := NOW() + INTERVAL '180 days';
+BEGIN
+  IF char_length(p_idempotency_key) < 32 OR char_length(p_idempotency_key) > 128 THEN
+    RAISE EXCEPTION 'Invalid idempotency key';
+  END IF;
+  IF char_length(p_message) < 1 OR char_length(p_message) > 2000 THEN
+    RAISE EXCEPTION 'Invalid message length';
+  END IF;
+  IF p_route NOT IN ('intake', 'answer_and_intake') THEN
+    RAISE EXCEPTION 'Invalid intake route';
+  END IF;
+  IF char_length(p_page_context) > 256 THEN
+    RAISE EXCEPTION 'Invalid page context';
+  END IF;
+
+  SELECT *
+  INTO v_existing
+  FROM agent_intakes
+  WHERE dedupe_key = p_idempotency_key;
+
+  IF FOUND THEN
+    RETURN QUERY SELECT
+      v_existing.receipt_token,
+      CASE
+        WHEN v_existing.status = 'delivered' THEN 'delivered'
+        WHEN v_existing.status = 'failed' THEN 'failed'
+        ELSE 'queued'
+      END,
+      FALSE,
+      v_existing.retention_until;
+    RETURN;
+  END IF;
+
+  INSERT INTO agent_sessions (
+    visitor_hash,
+    policy_version,
+    consent_notice_version,
+    metadata,
+    retention_until
+  )
+  VALUES (
+    p_visitor_hash,
+    p_policy_version,
+    p_consent_notice_version,
+    jsonb_build_object('entry_page', p_page_context),
+    NOW() + INTERVAL '90 days'
+  )
+  RETURNING id INTO v_session_id;
+
+  INSERT INTO agent_messages (
+    session_id,
+    sequence_no,
+    role,
+    content,
+    intent,
+    reason_codes,
+    retention_until
+  )
+  VALUES (
+    v_session_id,
+    0,
+    'visitor',
+    p_message,
+    p_route,
+    p_reason_codes,
+    NOW() + INTERVAL '90 days'
+  )
+  RETURNING id INTO v_message_id;
+
+  INSERT INTO routing_decisions (
+    session_id,
+    message_id,
+    route,
+    policy_version,
+    reason_codes,
+    classifier_enabled,
+    blocked
+  )
+  VALUES (
+    v_session_id,
+    v_message_id,
+    p_route,
+    p_policy_version,
+    p_reason_codes,
+    FALSE,
+    FALSE
+  );
+
+  INSERT INTO agent_intakes (
+    session_id,
+    source_message_id,
+    kind,
+    display_name,
+    reply_email,
+    message,
+    status,
+    dedupe_key,
+    receipt_token,
+    consented_at,
+    metadata,
+    retention_until
+  )
+  VALUES (
+    v_session_id,
+    v_message_id,
+    'note',
+    p_display_name,
+    p_reply_email,
+    p_message,
+    'queued',
+    p_idempotency_key,
+    v_receipt_token,
+    NOW(),
+    jsonb_build_object(
+      'page_context', p_page_context,
+      'consent_notice_version', p_consent_notice_version
+    ),
+    v_intake_retention
+  )
+  RETURNING id INTO v_intake_id;
+
+  INSERT INTO delivery_outbox (
+    intake_id,
+    channel,
+    destination_key,
+    payload,
+    status,
+    idempotency_key
+  )
+  VALUES (
+    v_intake_id,
+    'telegram',
+    'primary_private_topic',
+    jsonb_build_object(
+      'intake_id', v_intake_id,
+      'receipt_token', v_receipt_token,
+      'page_context', p_page_context
+    ),
+    'pending',
+    'telegram:' || p_idempotency_key
+  );
+
+  INSERT INTO audit_events (
+    session_id,
+    intake_id,
+    actor_type,
+    event_type,
+    policy_version,
+    details
+  )
+  VALUES (
+    v_session_id,
+    v_intake_id,
+    'service',
+    'agent_intake_created',
+    p_policy_version,
+    jsonb_build_object('route', p_route, 'reason_codes', p_reason_codes)
+  );
+
+  RETURN QUERY SELECT v_receipt_token, 'queued'::TEXT, TRUE, v_intake_retention;
+EXCEPTION
+  WHEN unique_violation THEN
+    SELECT *
+    INTO v_existing
+    FROM agent_intakes
+    WHERE dedupe_key = p_idempotency_key;
+
+    IF FOUND THEN
+      RETURN QUERY SELECT
+        v_existing.receipt_token,
+        CASE
+          WHEN v_existing.status = 'delivered' THEN 'delivered'
+          WHEN v_existing.status = 'failed' THEN 'failed'
+          ELSE 'queued'
+        END,
+        FALSE,
+        v_existing.retention_until;
+      RETURN;
+    END IF;
+    RAISE;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION agent_create_intake(
+  TEXT, TEXT, agent_route, TEXT[], TEXT, TEXT, TEXT, TEXT, TEXT, TEXT
+) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION agent_create_intake(
+  TEXT, TEXT, agent_route, TEXT[], TEXT, TEXT, TEXT, TEXT, TEXT, TEXT
+) TO service_role;

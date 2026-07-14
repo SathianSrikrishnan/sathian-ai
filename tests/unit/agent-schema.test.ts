@@ -47,4 +47,13 @@ describe('public agent portal schema', () => {
       /create\s+policy[\s\S]{0,220}on\s+storage\.objects[\s\S]{0,220}to\s+(public|anon)/i,
     )
   })
+
+  it('persists intake and its outbox event through a service-only idempotent RPC', () => {
+    expect(migration).toMatch(/create\s+or\s+replace\s+function\s+agent_create_intake/i)
+    expect(migration).toMatch(/insert\s+into\s+agent_intakes/i)
+    expect(migration).toMatch(/insert\s+into\s+delivery_outbox/i)
+    expect(migration).toMatch(/where\s+dedupe_key\s*=\s*p_idempotency_key/i)
+    expect(migration).toMatch(/revoke\s+all\s+on\s+function\s+agent_create_intake[\s\S]{0,120}from\s+public/i)
+    expect(migration).toMatch(/grant\s+execute\s+on\s+function\s+agent_create_intake[\s\S]{0,180}to\s+service_role/i)
+  })
 })
