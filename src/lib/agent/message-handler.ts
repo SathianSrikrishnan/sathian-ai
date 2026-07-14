@@ -8,6 +8,7 @@ import type {
   PersistAgentIntakeInput,
   PersistAgentIntakeResult,
 } from '@/lib/agent/intake'
+import type { AgentOperationalRecord } from '@/lib/agent/observability'
 import { evaluateAgentPolicy } from '@/lib/agent/policy'
 import { createPublicReceipt } from '@/lib/agent/receipts'
 import type { AgentPolicyDecision } from '@/lib/agent/types'
@@ -25,6 +26,7 @@ interface HandlerDependencies {
   persistIntake: PersistIntake
   answerQuestion?: AnswerQuestion
   isRateLimited?: (request: Request) => boolean
+  recordOperationalEvent?: (event: AgentOperationalRecord) => Promise<void>
 }
 
 interface AgentMessageBody {
@@ -78,6 +80,7 @@ export function createAgentMessageHandler({
   persistIntake,
   answerQuestion,
   isRateLimited = () => false,
+  recordOperationalEvent,
 }: HandlerDependencies) {
   return async function handleAgentMessage(request: Request): Promise<Response> {
     if (isRateLimited(request)) {
@@ -146,9 +149,33 @@ export function createAgentMessageHandler({
       try {
         answerResult = answerQuestion
           ? await answerQuestion({ message: policy.normalizedMessage, page: currentPage, policy })
-          : { answer: SAFE_MODEL_FAILURE, sources: [], unknown: true, modelUsed: false }
+          : {
+              answer: SAFE_MODEL_FAILURE,
+              sources: [],
+              unknown: true,
+              modelUsed: false,
+              operationalErrorCode: 'model_error',
+            }
       } catch {
-        answerResult = { answer: SAFE_MODEL_FAILURE, sources: [], unknown: true, modelUsed: false }
+        answerResult = {
+          answer: SAFE_MODEL_FAILURE,
+          sources: [],
+          unknown: true,
+          modelUsed: false,
+          operationalErrorCode: 'model_error',
+        }
+      }
+
+      if (answerResult.operationalErrorCode && recordOperationalEvent) {
+        try {
+          await recordOperationalEvent({
+            event: 'agent_answer_model_failed',
+            errorCode: answerResult.operationalErrorCode,
+            policyVersion: policy.policyVersion,
+          })
+        } catch {
+          // Observability must never expose or invalidate a visitor's safe response.
+        }
       }
     }
 

@@ -66,6 +66,54 @@
   border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.operations {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(130px, 0.7fr));
+  margin-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0.035), transparent 36%);
+}
+
+.operationsIntro,
+.operationMetric {
+  min-height: 128px;
+  padding: 20px 22px;
+}
+
+.operationsIntro h2 {
+  margin-top: 8px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.operationsIntro > p:last-child {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.operationMetric {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.operationMetric dt {
+  color: #6b7280;
+  font: 9px var(--font-mono), monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.operationMetric dd {
+  color: #5eead4;
+  font: 500 32px/1 var(--font-display), sans-serif;
+}
+
 .resourceLink {
   min-height: 220px;
   display: flex;
@@ -413,6 +461,15 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .operations {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .operationsIntro {
+    grid-column: 1 / -1;
+    min-height: auto;
+  }
+
   .splitLayout {
     grid-template-columns: 1fr;
   }
@@ -438,6 +495,20 @@
   .factGrid,
   .noteStructure {
     grid-template-columns: 1fr;
+  }
+
+  .operations {
+    grid-template-columns: 1fr;
+  }
+
+  .operationsIntro {
+    grid-column: auto;
+  }
+
+  .operationMetric {
+    min-height: 92px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 0;
   }
 
   .resourceLink {

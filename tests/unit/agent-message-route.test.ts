@@ -34,6 +34,13 @@ describe('public agent message route', () => {
     expect(routeSource).not.toMatch(/export\s+const\s+CONSENT_NOTICE_VERSION/)
   })
 
+  it('persists and logs model failures through the content-minimized event contract', () => {
+    expect(routeSource).toMatch(/createOperationalAuditRow/)
+    expect(routeSource).toMatch(/createOperationalLog/)
+    expect(routeSource).toMatch(/audit_events/)
+    expect(routeSource).not.toMatch(/console\.(?:log|error)\([^\n]*(?:input\.message|normalizedMessage)/)
+  })
+
   it('returns an honest queued receipt for a persisted visitor note', async () => {
     const persistIntake = vi.fn(async () => persisted)
     const handler = createAgentMessageHandler({ persistIntake })
@@ -158,10 +165,15 @@ describe('public agent message route', () => {
 
   it('preserves a valid intake receipt when the answer model fails', async () => {
     const persistIntake = vi.fn(async () => persisted)
+    const recordOperationalEvent = vi.fn(async () => undefined)
     const answerQuestion = vi.fn(async () => {
       throw new Error('provider detail')
     })
-    const handler = createAgentMessageHandler({ persistIntake, answerQuestion })
+    const handler = createAgentMessageHandler({
+      persistIntake,
+      answerQuestion,
+      recordOperationalEvent,
+    })
 
     const response = await handler(request({
       message: 'What inspired Tooth Fairy Network? Please also tell Sathian I enjoyed the essay.',
@@ -176,6 +188,13 @@ describe('public agent message route', () => {
     expect(body.receipt.deliveryStatus).toBe('queued')
     expect(body.answer).toContain('could not answer that safely right now')
     expect(body.capabilities.intakeStored).toBe(true)
+    expect(recordOperationalEvent).toHaveBeenCalledWith({
+      event: 'agent_answer_model_failed',
+      errorCode: 'model_error',
+      policyVersion: expect.any(String),
+    })
+    expect(JSON.stringify(recordOperationalEvent.mock.calls)).not.toContain('provider detail')
+    expect(JSON.stringify(recordOperationalEvent.mock.calls)).not.toContain('What inspired Tooth Fairy Network?')
   })
 
   it('creates an intake receipt when an otherwise answer-only message carries an attachment intent', async () => {

@@ -12,6 +12,10 @@ import {
   type AgentIntakeRpcClient,
 } from '@/lib/agent/intake'
 import { createAgentMessageHandler } from '@/lib/agent/message-handler'
+import {
+  createOperationalAuditRow,
+  createOperationalLog,
+} from '@/lib/agent/observability'
 import { getPublicMemoryCards } from '@/lib/memory'
 
 export const runtime = 'nodejs'
@@ -46,9 +50,10 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!url || !serviceRoleKey) return null
 
-  const client = createClient(url, serviceRoleKey, {
+  const serviceClient = createClient(url, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
-  }) as unknown as AgentIntakeRpcClient
+  })
+  const client = serviceClient as unknown as AgentIntakeRpcClient
 
   const anthropic = process.env.ANTHROPIC_API_KEY
     ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -74,6 +79,14 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
       cards: await getPublicMemoryCards(),
     }, { model }),
     isRateLimited: defaultRateLimit,
+    recordOperationalEvent: async ({ event, errorCode, policyVersion }) => {
+      const operationalEvent = { event, errorCode }
+      console.error(JSON.stringify(createOperationalLog(operationalEvent)))
+      const { error } = await serviceClient
+        .from('audit_events')
+        .insert(createOperationalAuditRow(operationalEvent, policyVersion))
+      if (error) throw error
+    },
   })
 }
 

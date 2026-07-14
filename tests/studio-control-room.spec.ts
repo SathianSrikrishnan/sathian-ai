@@ -109,7 +109,19 @@ async function mockControlRoomApi(page: Page, homepageMutations: unknown[] = [])
     }
 
     const fixtures: Record<string, unknown> = {
-      '/api/studio/overview': { writing: 4, buildNotes: 2, homepageSections: 7, publicMemory: 3, inbox: 1 },
+      '/api/studio/overview': {
+        writing: 4,
+        buildNotes: 2,
+        homepageSections: 7,
+        publicMemory: 3,
+        inbox: 1,
+        operations: {
+          modelErrors24h: 2,
+          deliveryBacklog: 4,
+          blockedUploads: 3,
+          windowStartsAt: '2026-07-13T12:00:00.000Z',
+        },
+      },
       '/api/studio/articles': [
         { id: FIRST_ID, title: 'The Gap Between Weeks', slug: 'the-gap-between-weeks', date: '2026-07-14', status: 'published', readTime: '8 min' },
       ],
@@ -185,6 +197,13 @@ test.describe('Studio typed control room', () => {
       await expect(page.getByRole('heading', { name })).toBeVisible()
     }
     await expect(page.getByRole('heading', { name: 'Recent articles' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Agent operations' })).toBeVisible()
+    await expect(page.getByText('Model errors (24h)')).toBeVisible()
+    await expect(page.getByText('Delivery backlog')).toBeVisible()
+    await expect(page.getByText('Blocked uploads')).toBeVisible()
+    await expect(page.getByTestId('model-errors-24h')).toHaveText('2')
+    await expect(page.getByTestId('delivery-backlog')).toHaveText('4')
+    await expect(page.getByTestId('blocked-uploads')).toHaveText('3')
     expect(consoleErrors).toEqual([])
     if (process.env.STUDIO_SCREENSHOT_PATH) {
       await page.screenshot({ path: process.env.STUDIO_SCREENSHOT_PATH, fullPage: true })

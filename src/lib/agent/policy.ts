@@ -15,8 +15,11 @@ const PRIVATE_FAMILY_REQUEST =
 const CLIENT_DATA_REQUEST =
   /(?:clients?|customers?)[\s\S]{0,100}(?:list|data|records?|contracts?|files?|emails?|details|secrets?|private projects?)/i
 
+const PRIVATE_MEMORY_REQUEST =
+  /(?:reveal|show|print|give|tell|expose|read|dump|quote|extract|list)[\s\S]{0,100}(?:private|internal|non-public|persistent|second[\s-]+brain)[\s\S]{0,50}(?:memory|notes?|facts?|context)/i
+
 const SHELL_ACCESS_REQUEST =
-  /(?:open|use|run|execute|launch|access)[\s\S]{0,60}(?:powershell|command prompt|terminal|shell|bash|cmd\.exe|system command|server command)/i
+  /(?:open|use|run|execute|launch|access)[\s\S]{0,60}(?:powershell|command prompt|terminal|shell|bash|cmd\.exe|system command|server command)|(?:activate|enable|enter)[\s\S]{0,40}(?:administrator|admin|developer)[\s\S]{0,40}(?:mode|access)|(?:browse|inspect|read|modify)[\s\S]{0,60}(?:file[\s-]*system|server files?|local files?)/i
 
 const ARBITRARY_TOOL_REQUEST =
   /(?:use|call|run|invoke)[\s\S]{0,40}(?:your|available|hidden|admin)[\s\S]{0,30}tools?|(?:send|post|publish|deploy|purchase|buy)[\s\S]{0,80}(?:telegram|email|message|social|code|site|production|for me)/i
@@ -40,6 +43,7 @@ function hardDenyReason(message: string): string | null {
   if (SECRET_REQUEST.test(message)) return 'SECRET_REQUEST'
   if (PRIVATE_FAMILY_REQUEST.test(message)) return 'PRIVATE_FAMILY_REQUEST'
   if (CLIENT_DATA_REQUEST.test(message)) return 'CLIENT_DATA_REQUEST'
+  if (PRIVATE_MEMORY_REQUEST.test(message)) return 'PRIVATE_MEMORY_REQUEST'
   if (SHELL_ACCESS_REQUEST.test(message)) return 'SHELL_ACCESS_REQUEST'
   if (ARBITRARY_TOOL_REQUEST.test(message)) return 'ARBITRARY_TOOL_REQUEST'
   return null

@@ -1,4 +1,14 @@
 import { supabaseAdmin } from '@/lib/supabase'
+import {
+  getAgentOperationalMetrics,
+  type AgentOperationalMetrics,
+  type OperationalMetricRepository,
+} from '@/lib/agent/observability'
+import {
+  runRetentionCleanup,
+  type RetentionCandidate,
+  type RetentionCleanupReport,
+} from '@/lib/agent/retention'
 import type { BuildNoteInput, HomepageSectionFields } from '@/lib/studio/records'
 import { formatStudioReceipt } from '@/lib/studio/records'
 
@@ -8,6 +18,7 @@ export interface StudioOverview {
   homepageSections: number
   publicMemory: number
   inbox: number
+  operations: AgentOperationalMetrics
 }
 
 export interface StudioMemoryCard {
@@ -83,15 +94,111 @@ async function count(table: string) {
   return value ?? 0
 }
 
+const operationalMetricRepository: OperationalMetricRepository = {
+  async countModelErrors(since) {
+    const { count: value, error } = await admin()
+      .from('audit_events')
+      .select('*', { count: 'exact', head: true })
+      .eq('event_type', 'agent_answer_model_failed')
+      .gte('created_at', since.toISOString())
+    if (error) throw error
+    return value ?? 0
+  },
+  async countDeliveryBacklog() {
+    const { count: value, error } = await admin()
+      .from('delivery_outbox')
+      .select('*', { count: 'exact', head: true })
+      .in('status', ['pending', 'processing', 'failed'])
+    if (error) throw error
+    return value ?? 0
+  },
+  async countBlockedUploads() {
+    const { count: value, error } = await admin()
+      .from('agent_attachments')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'rejected')
+    if (error) throw error
+    return value ?? 0
+  },
+}
+
 export async function getStudioOverview(): Promise<StudioOverview> {
-  const [writing, buildNotes, homepageSections, publicMemory, inbox] = await Promise.all([
+  const [writing, buildNotes, homepageSections, publicMemory, inbox, operations] = await Promise.all([
     count('articles'),
     count('build_notes'),
     count('homepage_sections'),
     count('public_memory_cards'),
     count('agent_intakes'),
+    getAgentOperationalMetrics(operationalMetricRepository),
   ])
-  return { writing, buildNotes, homepageSections, publicMemory, inbox }
+  return { writing, buildNotes, homepageSections, publicMemory, inbox, operations }
+}
+
+export async function getStudioRetentionDryRun(
+  now = new Date(),
+): Promise<RetentionCleanupReport> {
+  const cutoff = now.toISOString()
+  const [sessionsResult, attachmentsResult] = await Promise.all([
+    admin()
+      .from('agent_sessions')
+      .select('id, retention_until, agent_intakes(agent_attachments(status))')
+      .is('visitor_hash', null)
+      .lte('retention_until', cutoff)
+      .limit(200),
+    admin()
+      .from('agent_attachments')
+      .select('id, object_path, status, retention_until, agent_intakes!inner(session_id)')
+      .eq('status', 'quarantined')
+      .lte('retention_until', cutoff)
+      .limit(200),
+  ])
+  if (sessionsResult.error) throw sessionsResult.error
+  if (attachmentsResult.error) throw attachmentsResult.error
+
+  const candidates: RetentionCandidate[] = [
+    ...(sessionsResult.data ?? []).map((row: any) => ({
+      kind: 'session' as const,
+      id: row.id,
+      anonymous: true,
+      objectCleanupComplete: (Array.isArray(row.agent_intakes)
+        ? row.agent_intakes
+        : row.agent_intakes ? [row.agent_intakes] : [])
+        .every((intake: any) => (Array.isArray(intake.agent_attachments)
+          ? intake.agent_attachments
+          : intake.agent_attachments ? [intake.agent_attachments] : [])
+          .every((attachment: any) => attachment.status === 'deleted')),
+      retentionUntil: row.retention_until,
+    })),
+    ...(attachmentsResult.data ?? []).flatMap((row: any) => {
+      const intake = Array.isArray(row.agent_intakes)
+        ? row.agent_intakes[0]
+        : row.agent_intakes
+      if (!intake?.session_id) return []
+      return [{
+        kind: 'object' as const,
+        id: row.id,
+        sessionId: intake.session_id,
+        objectPath: row.object_path,
+        status: 'quarantined' as const,
+        retentionUntil: row.retention_until,
+      }]
+    }),
+  ]
+
+  return runRetentionCleanup({
+    async listCandidates() {
+      return candidates
+    },
+    async deleteQuarantinedObject() {
+      throw new Error('retention_execution_disabled')
+    },
+    async deleteAnonymousSession() {
+      throw new Error('retention_execution_disabled')
+    },
+    async writeAuditEvent() {
+      throw new Error('retention_execution_disabled')
+    },
+  }, { now, dryRun: true })
 }
 
 export async function getStudioMemoryCards(): Promise<StudioMemoryCard[]> {

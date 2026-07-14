@@ -57,6 +57,26 @@ export default function StudioDashboard() {
         description="Writing, build notes, homepage structure, reviewed public memory, and visitor intake all use named records with an audit trail."
       />
 
+      <section className={styles.operations} aria-labelledby="agent-operations-heading">
+        <div className={styles.operationsIntro}>
+          <p className={styles.sectionLabel}>Quiet signals</p>
+          <h2 id="agent-operations-heading">Agent operations</h2>
+          <p>Counts only. No visitor text is included.</p>
+        </div>
+        <dl className={styles.operationMetric}>
+          <dt>Model errors (24h)</dt>
+          <dd data-testid="model-errors-24h">{overview?.operations.modelErrors24h ?? '—'}</dd>
+        </dl>
+        <dl className={styles.operationMetric}>
+          <dt>Delivery backlog</dt>
+          <dd data-testid="delivery-backlog">{overview?.operations.deliveryBacklog ?? '—'}</dd>
+        </dl>
+        <dl className={styles.operationMetric}>
+          <dt>Blocked uploads</dt>
+          <dd data-testid="blocked-uploads">{overview?.operations.blockedUploads ?? '—'}</dd>
+        </dl>
+      </section>
+
       <div className={styles.resourceGrid} aria-label="Studio work areas">
         {WORK_AREAS.map((area) => (
           <Link key={area.title} href={area.href} className={styles.resourceLink}>

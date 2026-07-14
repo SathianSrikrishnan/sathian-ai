@@ -92,5 +92,23 @@ describe('bounded public answer service', () => {
 
     expect(result.modelUsed).toBe(false)
     expect(result.answer).toContain('could not answer that safely right now')
+    expect(result.operationalErrorCode).toBe('model_timeout')
+  })
+
+  it('reports a content-safe error code when the provider fails', async () => {
+    const model = {
+      generate: vi.fn(async () => { throw new Error('provider secret detail') }),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.operationalErrorCode).toBe('model_error')
+    expect(JSON.stringify(result)).not.toContain('provider secret detail')
   })
 })

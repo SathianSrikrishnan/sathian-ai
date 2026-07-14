@@ -28,6 +28,7 @@ export interface AgentAnswerResult {
   sources: string[]
   unknown: boolean
   modelUsed: boolean
+  operationalErrorCode?: 'model_timeout' | 'model_error'
 }
 
 function meaningfulTokens(message: string): string[] {
@@ -102,6 +103,7 @@ export async function answerAgentQuestion(
       sources: [],
       unknown: true,
       modelUsed: false,
+      operationalErrorCode: controller.signal.aborted ? 'model_timeout' : 'model_error',
     }
   } finally {
     clearTimeout(timer)
