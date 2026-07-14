@@ -146,6 +146,7 @@ CREATE TABLE delivery_outbox (
   locked_at TIMESTAMPTZ,
   locked_by TEXT,
   last_error TEXT,
+  provider_message_id TEXT,
   delivered_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -521,3 +522,199 @@ REVOKE ALL ON FUNCTION agent_create_intake(
 GRANT EXECUTE ON FUNCTION agent_create_intake(
   TEXT, TEXT, agent_route, TEXT[], TEXT, TEXT, TEXT, TEXT, TEXT, TEXT
 ) TO service_role;
+
+-- Claims a small ready batch in one transaction. Processing rows with stale
+-- leases may be reclaimed after five minutes so a crashed worker cannot strand
+-- an intake forever. Delivered and dead-letter rows are never reclaimed.
+CREATE OR REPLACE FUNCTION agent_claim_delivery_batch(
+  p_worker_id TEXT,
+  p_limit INTEGER DEFAULT 10
+)
+RETURNS TABLE (
+  outbox_id UUID,
+  idempotency_key TEXT,
+  receipt_token UUID,
+  message TEXT,
+  page_context TEXT,
+  attachment_count BIGINT,
+  attempts INTEGER,
+  max_attempts INTEGER
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF char_length(p_worker_id) < 8 OR char_length(p_worker_id) > 128 THEN
+    RAISE EXCEPTION 'Invalid worker identifier';
+  END IF;
+  IF p_limit < 1 OR p_limit > 25 THEN
+    RAISE EXCEPTION 'Invalid delivery batch size';
+  END IF;
+
+  RETURN QUERY
+  WITH candidates AS (
+    SELECT delivery_outbox.id
+    FROM delivery_outbox
+    WHERE delivery_outbox.channel = 'telegram'
+      AND delivery_outbox.attempts < delivery_outbox.max_attempts
+      AND (
+        (
+          delivery_outbox.status IN ('pending', 'failed')
+          AND delivery_outbox.next_attempt_at <= NOW()
+        )
+        OR (
+          delivery_outbox.status = 'processing'
+          AND delivery_outbox.locked_at < NOW() - INTERVAL '5 minutes'
+        )
+      )
+    ORDER BY delivery_outbox.next_attempt_at, delivery_outbox.created_at
+    FOR UPDATE SKIP LOCKED
+    LIMIT p_limit
+  ), claimed AS (
+    UPDATE delivery_outbox AS delivery
+    SET
+      status = 'processing',
+      attempts = delivery.attempts + 1,
+      locked_at = NOW(),
+      locked_by = p_worker_id,
+      updated_at = NOW()
+    FROM candidates
+    WHERE delivery.id = candidates.id
+    RETURNING delivery.*
+  )
+  SELECT
+    claimed.id,
+    claimed.idempotency_key,
+    intake.receipt_token,
+    intake.message,
+    COALESCE(intake.metadata ->> 'page_context', '/'),
+    (
+      SELECT COUNT(*)
+      FROM agent_attachments AS attachment
+      WHERE attachment.intake_id = intake.id
+        AND attachment.status IN ('pending', 'quarantined', 'approved')
+    ),
+    claimed.attempts,
+    claimed.max_attempts
+  FROM claimed
+  JOIN agent_intakes AS intake ON intake.id = claimed.intake_id;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION agent_mark_delivery_succeeded(
+  p_outbox_id UUID,
+  p_worker_id TEXT,
+  p_provider_message_id TEXT
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_intake_id UUID;
+BEGIN
+  UPDATE delivery_outbox
+  SET
+    status = 'delivered',
+    provider_message_id = p_provider_message_id,
+    delivered_at = NOW(),
+    locked_at = NULL,
+    locked_by = NULL,
+    last_error = NULL,
+    updated_at = NOW()
+  WHERE id = p_outbox_id
+    AND status = 'processing'
+    AND locked_by = p_worker_id
+  RETURNING intake_id INTO v_intake_id;
+
+  IF v_intake_id IS NULL THEN
+    RETURN FALSE;
+  END IF;
+
+  UPDATE agent_intakes
+  SET status = 'delivered', delivered_at = NOW(), updated_at = NOW()
+  WHERE id = v_intake_id;
+
+  INSERT INTO audit_events (intake_id, actor_type, actor_id, event_type, details)
+  VALUES (
+    v_intake_id,
+    'service',
+    p_worker_id,
+    'telegram_delivery_succeeded',
+    jsonb_build_object('outbox_id', p_outbox_id)
+  );
+
+  RETURN TRUE;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION agent_mark_delivery_failed(
+  p_outbox_id UUID,
+  p_worker_id TEXT,
+  p_error_code TEXT,
+  p_permanent BOOLEAN,
+  p_next_attempt_at TIMESTAMPTZ DEFAULT NULL
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_intake_id UUID;
+  v_dead_letter BOOLEAN;
+BEGIN
+  IF p_error_code !~ '^[a-z0-9_]{3,80}$' THEN
+    RAISE EXCEPTION 'Invalid delivery error code';
+  END IF;
+
+  UPDATE delivery_outbox
+  SET
+    status = CASE
+      WHEN p_permanent OR attempts >= max_attempts THEN 'dead_letter'::delivery_status
+      ELSE 'failed'::delivery_status
+    END,
+    next_attempt_at = CASE
+      WHEN p_permanent OR attempts >= max_attempts THEN next_attempt_at
+      ELSE COALESCE(p_next_attempt_at, NOW() + INTERVAL '5 minutes')
+    END,
+    locked_at = NULL,
+    locked_by = NULL,
+    last_error = p_error_code,
+    updated_at = NOW()
+  WHERE id = p_outbox_id
+    AND status = 'processing'
+    AND locked_by = p_worker_id
+  RETURNING intake_id, status = 'dead_letter'
+  INTO v_intake_id, v_dead_letter;
+
+  IF v_intake_id IS NULL THEN
+    RETURN FALSE;
+  END IF;
+
+  UPDATE agent_intakes
+  SET status = CASE WHEN v_dead_letter THEN 'failed'::agent_intake_status ELSE 'queued'::agent_intake_status END,
+      updated_at = NOW()
+  WHERE id = v_intake_id;
+
+  INSERT INTO audit_events (intake_id, actor_type, actor_id, event_type, details)
+  VALUES (
+    v_intake_id,
+    'service',
+    p_worker_id,
+    CASE WHEN v_dead_letter THEN 'telegram_delivery_dead_lettered' ELSE 'telegram_delivery_retry_scheduled' END,
+    jsonb_build_object('outbox_id', p_outbox_id, 'error_code', p_error_code)
+  );
+
+  RETURN TRUE;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION agent_claim_delivery_batch(TEXT, INTEGER) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION agent_mark_delivery_succeeded(UUID, TEXT, TEXT) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION agent_mark_delivery_failed(UUID, TEXT, TEXT, BOOLEAN, TIMESTAMPTZ) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION agent_claim_delivery_batch(TEXT, INTEGER) TO service_role;
+GRANT EXECUTE ON FUNCTION agent_mark_delivery_succeeded(UUID, TEXT, TEXT) TO service_role;
+GRANT EXECUTE ON FUNCTION agent_mark_delivery_failed(UUID, TEXT, TEXT, BOOLEAN, TIMESTAMPTZ) TO service_role;

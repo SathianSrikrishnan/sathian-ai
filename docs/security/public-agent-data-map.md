@@ -20,22 +20,26 @@ Local Markdown remains the canonical second brain. Supabase receives a deliberat
 | `public_memory_cards` | body, tags, source reference, approval and validity | Read approved and in-date cards only | Read approved and in-date cards | None | Read and manage all cards at AAL2 |
 | `agent_sessions` | pseudonymous visitor hash, policy and notice versions, expiry | None | Create and update | Read by referenced intake only | Read and manage at AAL2 |
 | `agent_messages` | visitor and agent text, intent, model metadata | None | Create and read within the active server session | None | Read and manage at AAL2 |
-| `agent_intakes` | note, optional name/email, consent, receipt, delivery state | None | Create and return opaque receipt | Read queued items and update delivery state | Read and manage at AAL2 |
+| `agent_intakes` | note, optional name/email, consent, receipt, delivery state | None | Create and return opaque receipt | Read only through a claimed outbox item; update delivery state through service-only RPCs | Read and manage at AAL2 |
 | `agent_attachments` | private object path, safe filename, MIME type, hash, scan state | None | Create metadata after server-side checks | Include approved metadata only | Inspect and manage at AAL2 |
 | `routing_decisions` | route, policy version, reason codes, optional classifier output | None | Create | None | Read and manage at AAL2 |
-| `delivery_outbox` | destination key, payload, idempotency key, retry state | None | Create atomically with intake | Claim and update | Read and manage at AAL2 |
+| `delivery_outbox` | destination alias, minimal payload, idempotency key, lease, retry and provider receipt state | None | Create atomically with intake | Claim and update through service-only RPCs | Read and manage at AAL2 |
 | `audit_events` | actor type, event, policy version, redacted details | None | Append | Append | Read only at AAL2 |
 | `agent-quarantine` | untrusted uploaded object bytes | None | Write through service role | None | Read or remove at AAL2 |
 
 The Supabase service role is server-only and bypasses RLS. It must never be exposed through a `NEXT_PUBLIC_` variable or sent to the browser.
+
+The Telegram delivery service is a cron-only Cloudflare Worker with no public route. `agent_claim_delivery_batch` atomically leases ready rows with `FOR UPDATE SKIP LOCKED`; `agent_mark_delivery_succeeded` and `agent_mark_delivery_failed` accept transitions only from the active lease owner. Delivered and dead-letter rows are not reclaimed. Stale processing leases become eligible after five minutes so a crashed invocation cannot strand an intake.
 
 ## Sensitive fields
 
 - `visitor_hash` is a keyed, rotating pseudonymous value. Do not store a raw IP address.
 - `reply_email`, `display_name`, message content, object paths, filenames, and hashes are private intake data.
 - `destination_key` is an internal routing alias, not a Telegram token or chat identifier.
+- Telegram bot credentials, the Supabase service-role key, and private chat/topic identifiers exist only as Worker secrets.
 - `payload`, `metadata`, classifier output, scan results, and audit details must not contain credentials or raw environment values.
 - Uploaded or retrieved instructions are untrusted content. They are never promoted to system instructions.
+- Delivery logs contain event identifiers and state counts only. They do not contain visitor message previews, email addresses, filenames, tokens, or provider response bodies.
 
 ## Retention defaults
 

@@ -1,5 +1,6 @@
 # Dependencies
 /node_modules
+**/node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -27,6 +28,9 @@ yarn-error.log*
 .vercel-cli-appdata/
 .vercel-cli-localappdata/
 .vercel-login-run/
+.wrangler/
+**/.wrangler/
+**/.wrangler-dry-run/
 .codex-screens/
 *.log
 tmp-*.log

@@ -56,4 +56,14 @@ describe('public agent portal schema', () => {
     expect(migration).toMatch(/revoke\s+all\s+on\s+function\s+agent_create_intake[\s\S]{0,120}from\s+public/i)
     expect(migration).toMatch(/grant\s+execute\s+on\s+function\s+agent_create_intake[\s\S]{0,180}to\s+service_role/i)
   })
+
+  it('claims ready delivery rows atomically and exposes delivery transitions only to services', () => {
+    expect(migration).toMatch(/create\s+or\s+replace\s+function\s+agent_claim_delivery_batch/i)
+    expect(migration).toMatch(/for\s+update\s+skip\s+locked/i)
+    expect(migration).toMatch(/status\s+in\s*\(\s*'pending'\s*,\s*'failed'\s*\)/i)
+    expect(migration).toMatch(/create\s+or\s+replace\s+function\s+agent_mark_delivery_succeeded/i)
+    expect(migration).toMatch(/create\s+or\s+replace\s+function\s+agent_mark_delivery_failed/i)
+    expect(migration).toMatch(/revoke\s+all\s+on\s+function\s+agent_claim_delivery_batch[\s\S]{0,180}from\s+public/i)
+    expect(migration).toMatch(/grant\s+execute\s+on\s+function\s+agent_claim_delivery_batch[\s\S]{0,220}to\s+service_role/i)
+  })
 })
