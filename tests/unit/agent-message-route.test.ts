@@ -178,6 +178,32 @@ describe('public agent message route', () => {
     expect(body.capabilities.intakeStored).toBe(true)
   })
 
+  it('creates an intake receipt when an otherwise answer-only message carries an attachment intent', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const handler = createAgentMessageHandler({
+      persistIntake,
+      answerQuestion: vi.fn(async () => ({
+        answer: 'Tooth Fairy Network is a family memory ritual.',
+        sources: [],
+        unknown: false,
+        modelUsed: true,
+      })),
+    })
+
+    const response = await handler(request({
+      message: 'What is Tooth Fairy Network?',
+      page: '/',
+      consent: true,
+      attachmentIntent: true,
+    }))
+    const body = await response.json()
+
+    expect(response.status).toBe(202)
+    expect(body.route).toBe('answer_and_intake')
+    expect(body.receipt.code).toMatch(/^SA-/)
+    expect(persistIntake).toHaveBeenCalledOnce()
+  })
+
   it('does not let model output alter deterministic routing or delivery state', async () => {
     const handler = createAgentMessageHandler({
       persistIntake: vi.fn(async () => persisted),

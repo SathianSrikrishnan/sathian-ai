@@ -5,7 +5,7 @@ This Cloudflare Worker delivers the site agent's durable Supabase outbox to one 
 ## Security boundary
 
 - `TELEGRAM_BOT_TOKEN` and `SUPABASE_SERVICE_ROLE_KEY` are Cloudflare Worker secrets. They never enter Vercel client variables, browser code, Supabase rows, or logs.
-- The Worker sends message text, page context, a public receipt, and a quarantined-file count. It never sends attachment bytes or private object paths.
+- The Worker sends message text, page context, a public receipt, and byte-cleared attachment metadata (safe filename, detected type, and size). It never sends attachment bytes or private object paths.
 - Supabase functions are `SECURITY DEFINER`, revoked from public, anonymous, and authenticated roles, and granted only to `service_role`.
 - Logs contain batch status counts only, not visitor content or credentials.
 

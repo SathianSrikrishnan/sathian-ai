@@ -36,4 +36,21 @@ describe('Telegram intake payload', () => {
     expect(serialized).not.toContain('botToken')
     expect(serialized).toContain('2 quarantined attachments')
   })
+
+  it('surfaces cleared attachment metadata without object paths or file bytes', () => {
+    const message = buildTelegramIntakeMessage({
+      receiptCode: 'SA-ABC123',
+      message: 'Please review the attached brief.',
+      pageContext: '/',
+      attachmentCount: 1,
+      attachments: [{ filename: 'brief.pdf', contentType: 'application/pdf', byteSize: 2048 }],
+      studioBaseUrl: 'https://sathian.ai',
+    })
+
+    expect(message.text).toContain('brief.pdf')
+    expect(message.text).toContain('PDF')
+    expect(message.text).toContain('2 KB')
+    expect(message.text).not.toContain('intakes/')
+    expect(message.text).not.toContain('agent-quarantine')
+  })
 })

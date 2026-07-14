@@ -84,6 +84,16 @@ export default function StudioInboxPage() {
                   <span>{attachment.filename}</span>
                   <span>{attachment.contentType} · {formatBytes(attachment.byteSize)}</span>
                   <StatusPill value={attachment.status} />
+                  {(attachment.status === 'quarantined' || attachment.status === 'approved') && (
+                    <a
+                      className={styles.smallButton}
+                      href={`/api/studio/attachments/${attachment.id}/download`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Open for 60 sec
+                    </a>
+                  )}
                 </div>
               ))}
             </div>

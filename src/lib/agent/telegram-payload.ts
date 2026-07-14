@@ -3,6 +3,11 @@ export interface TelegramIntakeMessageInput {
   message: string
   pageContext: string
   attachmentCount: number
+  attachments?: Array<{
+    filename: string
+    contentType: string
+    byteSize: number
+  }>
   studioBaseUrl: string
 }
 
@@ -13,6 +18,24 @@ export interface TelegramIntakeMessage {
 }
 
 const PREVIEW_LIMIT = 360
+
+function displayContentType(contentType: string): string {
+  const labels: Record<string, string> = {
+    'application/pdf': 'PDF',
+    'text/plain': 'Text',
+    'text/markdown': 'Markdown',
+    'image/jpeg': 'JPEG',
+    'image/png': 'PNG',
+    'image/webp': 'WebP',
+  }
+  return labels[contentType] ?? 'File'
+}
+
+function displayByteSize(byteSize: number): string {
+  if (byteSize < 1024) return `${byteSize} B`
+  if (byteSize < 1024 * 1024) return `${Math.round(byteSize / 1024)} KB`
+  return `${(byteSize / (1024 * 1024)).toFixed(1)} MB`
+}
 
 function escapeHtml(value: string): string {
   return value
@@ -39,9 +62,14 @@ function makeStudioLink(baseUrl: string, receiptCode: string): string {
 export function buildTelegramIntakeMessage(
   input: TelegramIntakeMessageInput,
 ): TelegramIntakeMessage {
-  const attachmentLine = input.attachmentCount > 0
-    ? `\n<b>Files:</b> ${input.attachmentCount} quarantined attachment${input.attachmentCount === 1 ? '' : 's'}`
-    : ''
+  const clearedAttachments = (input.attachments ?? []).slice(0, 1)
+  const attachmentLine = clearedAttachments.length > 0
+    ? `\n<b>File held in Studio:</b> ${clearedAttachments.map((attachment) => (
+        `${escapeHtml(attachment.filename)} / ${displayContentType(attachment.contentType)} / ${displayByteSize(attachment.byteSize)}`
+      )).join(', ')}`
+    : input.attachmentCount > 0
+      ? `\n<b>Files:</b> ${input.attachmentCount} quarantined attachment${input.attachmentCount === 1 ? '' : 's'}`
+      : ''
   const studioLink = makeStudioLink(input.studioBaseUrl, input.receiptCode)
 
   return {

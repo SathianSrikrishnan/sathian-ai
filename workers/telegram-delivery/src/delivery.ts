@@ -10,6 +10,11 @@ export interface ClaimedDelivery {
   message: string
   pageContext: string
   attachmentCount: number
+  attachments: Array<{
+    filename: string
+    contentType: string
+    byteSize: number
+  }>
   attempts: number
   maxAttempts: number
 }
@@ -76,6 +81,7 @@ export async function processClaimedDelivery(
     message: delivery.message,
     pageContext: delivery.pageContext,
     attachmentCount: delivery.attachmentCount,
+    attachments: delivery.attachments,
     studioBaseUrl: dependencies.studioBaseUrl,
   })
 

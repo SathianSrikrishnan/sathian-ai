@@ -14,6 +14,7 @@ interface ClaimRow {
   message: string
   page_context: string
   attachment_count: number
+  attachment_metadata: unknown
   attempts: number
   max_attempts: number
 }
@@ -21,6 +22,32 @@ interface ClaimRow {
 interface TelegramResponse {
   ok: true
   result: { message_id: number }
+}
+
+interface ClearedAttachment {
+  filename: string
+  contentType: string
+  byteSize: number
+}
+
+function clearedAttachments(value: unknown): ClearedAttachment[] | null {
+  if (!Array.isArray(value)) return null
+  const attachments: ClearedAttachment[] = []
+  for (const item of value) {
+    if (!item || typeof item !== 'object') return null
+    const row = item as Record<string, unknown>
+    if (
+      typeof row.filename !== 'string' ||
+      typeof row.content_type !== 'string' ||
+      typeof row.byte_size !== 'number'
+    ) return null
+    attachments.push({
+      filename: row.filename,
+      contentType: row.content_type,
+      byteSize: row.byte_size,
+    })
+  }
+  return attachments
 }
 
 class ProviderError extends Error {
@@ -40,6 +67,7 @@ function isClaimRow(value: unknown): value is ClaimRow {
     && typeof row.message === 'string'
     && typeof row.page_context === 'string'
     && typeof row.attachment_count === 'number'
+    && clearedAttachments(row.attachment_metadata) !== null
     && typeof row.attempts === 'number'
     && typeof row.max_attempts === 'number'
   )
@@ -109,6 +137,7 @@ class SupabaseDeliveryRepository implements DeliveryRepository {
       message: row.message,
       pageContext: row.page_context,
       attachmentCount: row.attachment_count,
+      attachments: clearedAttachments(row.attachment_metadata) ?? [],
       attempts: row.attempts,
       maxAttempts: row.max_attempts,
     })))

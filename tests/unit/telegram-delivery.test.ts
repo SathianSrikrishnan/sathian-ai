@@ -13,6 +13,7 @@ const delivery: ClaimedDelivery = {
   message: 'Please pass this along to Sathian.',
   pageContext: '/',
   attachmentCount: 0,
+  attachments: [],
   attempts: 1,
   maxAttempts: 8,
 }

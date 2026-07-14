@@ -209,6 +209,31 @@ export async function getStudioInbox(): Promise<StudioInboxItem[]> {
   })
 }
 
+export async function getStudioAttachmentAccess(
+  attachmentId: string,
+): Promise<{ objectPath: string; filename: string } | null> {
+  const { data, error } = await admin()
+    .from('agent_attachments')
+    .select('object_path, sanitized_filename, status')
+    .eq('id', attachmentId)
+    .in('status', ['quarantined', 'approved'])
+    .maybeSingle()
+  if (error) throw error
+  return data
+    ? { objectPath: data.object_path, filename: data.sanitized_filename }
+    : null
+}
+
+export async function recordStudioAttachmentAccess(
+  attachmentId: string,
+  actorId: string,
+) {
+  await writeStudioAudit(actorId, 'agent_attachment_signed_url_created', {
+    attachment_id: attachmentId,
+    expires_in_seconds: 60,
+  })
+}
+
 export async function getStudioHomepageSections(): Promise<StudioHomepageSection[]> {
   const { data, error } = await admin()
     .from('homepage_sections')

@@ -4,8 +4,102 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
 import { CHAT_SUGGESTIONS } from '@/lib/constants'
+import {
+  MAX_AGENT_FILE_BYTES,
+  validateAgentFileDeclaration,
+} from '@/lib/agent/file-policy'
+import {
+  AGENT_FILE_INTAKE_CONFIGURED,
+  AgentFileVerification,
+} from '@/components/AgentFileVerification'
 
 const SUGGESTIONS = CHAT_SUGGESTIONS
+
+function fileContentType(file: File): string {
+  if (file.type) return file.type
+  const extension = file.name.split('.').pop()?.toLowerCase()
+  const fallback: Record<string, string> = {
+    pdf: 'application/pdf',
+    txt: 'text/plain',
+    md: 'text/markdown',
+    markdown: 'text/markdown',
+    jpg: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    png: 'image/png',
+    webp: 'image/webp',
+  }
+  return extension ? fallback[extension] ?? '' : ''
+}
+
+function displayFileSize(byteSize: number): string {
+  if (byteSize < 1024) return `${byteSize} B`
+  if (byteSize < 1024 * 1024) return `${Math.ceil(byteSize / 1024)} KB`
+  return `${(byteSize / (1024 * 1024)).toFixed(1)} MB`
+}
+
+async function responseError(response: Response, fallback: string): Promise<string> {
+  const body = await response.json().catch(() => null)
+  return typeof body?.error === 'string' ? body.error : fallback
+}
+
+async function uploadAgentFile(input: {
+  file: File
+  contentType: string
+  idempotencyKey: string
+  turnstileToken: string
+  signal: AbortSignal
+}) {
+  const reservationResponse = await fetch('/api/agent/upload/reserve', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Idempotency-Key': input.idempotencyKey,
+    },
+    body: JSON.stringify({
+      filename: input.file.name,
+      contentType: input.contentType,
+      byteSize: input.file.size,
+      consent: true,
+      turnstileToken: input.turnstileToken,
+    }),
+    signal: input.signal,
+  })
+  if (!reservationResponse.ok) {
+    throw new Error(await responseError(reservationResponse, 'The secure file slot could not be reserved.'))
+  }
+
+  const reservation = await reservationResponse.json()
+  if (
+    typeof reservation?.upload?.url !== 'string' ||
+    typeof reservation?.upload?.attachmentId !== 'string' ||
+    typeof reservation?.upload?.completionToken !== 'string'
+  ) throw new Error('The secure file slot returned an invalid receipt.')
+
+  const uploadResponse = await fetch(reservation.upload.url, {
+    method: 'PUT',
+    headers: {
+      'cache-control': 'max-age=0',
+      'content-type': input.contentType,
+      'x-upsert': 'false',
+    },
+    body: input.file,
+    signal: input.signal,
+  })
+  if (!uploadResponse.ok) throw new Error('The file did not reach private quarantine.')
+
+  const completionResponse = await fetch('/api/agent/upload/complete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attachmentId: reservation.upload.attachmentId,
+      completionToken: reservation.upload.completionToken,
+    }),
+    signal: input.signal,
+  })
+  if (!completionResponse.ok) {
+    throw new Error(await responseError(completionResponse, 'The file did not pass the private intake checks.'))
+  }
+}
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
@@ -15,11 +109,49 @@ export function ChatWidget() {
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const sendRef = useRef<(text: string) => void>(() => {})
   const abortRef = useRef<AbortController | null>(null)
   const pathname = usePathname()
+  const [file, setFile] = useState<File | null>(null)
+  const [fileError, setFileError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [verificationKey, setVerificationKey] = useState(0)
+
+  const clearFile = useCallback(() => {
+    setFile(null)
+    setFileError(null)
+    setTurnstileToken(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }, [])
+
+  const chooseFile = useCallback((selected: File | null) => {
+    setFileError(null)
+    setTurnstileToken(null)
+    if (!selected) {
+      clearFile()
+      return
+    }
+    if (selected.size > MAX_AGENT_FILE_BYTES) {
+      clearFile()
+      setFileError('Files must be 5 MB or smaller.')
+      return
+    }
+    const contentType = fileContentType(selected)
+    const declaration = validateAgentFileDeclaration({
+      filename: selected.name,
+      contentType,
+      byteSize: selected.size,
+    })
+    if (!declaration.ok) {
+      clearFile()
+      setFileError('Choose one PDF, text, Markdown, JPEG, PNG, or WebP file.')
+      return
+    }
+    setFile(selected)
+  }, [clearFile])
 
   // Cleanup abort controller on unmount
   useEffect(() => {
@@ -29,6 +161,10 @@ export function ChatWidget() {
   const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim()
     if (!msg || isLoading) return
+    if (file && !turnstileToken) {
+      setFileError('Complete the human check before sending the file.')
+      return
+    }
     setShowSuggestions(false)
 
     setMessages((previous) => [...previous, { role: 'user' as const, text: msg }])
@@ -39,8 +175,11 @@ export function ChatWidget() {
     abortRef.current?.abort()
     const controller = new AbortController()
     abortRef.current = controller
-    const timeout = setTimeout(() => controller.abort(), 15000)
+    const timeout = setTimeout(() => controller.abort(), file ? 45_000 : 15_000)
     const idempotencyKey = crypto.randomUUID()
+    const pendingFile = file
+    const pendingFileContentType = pendingFile ? fileContentType(pendingFile) : ''
+    const pendingTurnstileToken = turnstileToken
 
     try {
       const res = await fetch('/api/agent/message', {
@@ -49,10 +188,14 @@ export function ChatWidget() {
           'Content-Type': 'application/json',
           'Idempotency-Key': idempotencyKey,
         },
-        body: JSON.stringify({ message: msg, page: pathname, consent: true }),
+        body: JSON.stringify({
+          message: msg,
+          page: pathname,
+          consent: true,
+          attachmentIntent: Boolean(pendingFile),
+        }),
         signal: controller.signal,
       })
-      clearTimeout(timeout)
 
       if (res.ok) {
         const data = await res.json()
@@ -65,6 +208,29 @@ export function ChatWidget() {
             role: 'bot',
             text: `Receipt ${data.receipt.code} · ${data.receipt.message}`,
           })
+        }
+        if (pendingFile && pendingTurnstileToken) {
+          try {
+            await uploadAgentFile({
+              file: pendingFile,
+              contentType: pendingFileContentType,
+              idempotencyKey,
+              turnstileToken: pendingTurnstileToken,
+              signal: controller.signal,
+            })
+            responses.push({
+              role: 'bot',
+              text: `${pendingFile.name} is held privately for Sathian in Studio. Its contents are not analyzed or forwarded.`,
+            })
+            clearFile()
+          } catch (error) {
+            setTurnstileToken(null)
+            setVerificationKey((value) => value + 1)
+            responses.push({
+              role: 'bot',
+              text: `Your note was stored, but the file was not attached. ${error instanceof Error ? error.message : 'Please try the file again.'}`,
+            })
+          }
         }
         if (responses.length === 0) {
           responses.push({ role: 'bot', text: data.message || 'I could not answer that safely right now.' })
@@ -85,9 +251,10 @@ export function ChatWidget() {
         setMessages((prev) => [...prev, { role: 'bot' as const, text: 'Connection issue. Please try again.' }])
       }
     } finally {
+      clearTimeout(timeout)
       setIsLoading(false)
     }
-  }, [input, isLoading, pathname])
+  }, [clearFile, file, input, isLoading, pathname, turnstileToken])
 
   sendRef.current = (text: string) => handleSend(text)
 
@@ -132,7 +299,7 @@ export function ChatWidget() {
         <motion.div
           key="chat-panel"
           data-chat-panel
-          className="fixed bottom-20 right-4 z-50 w-full sm:w-[440px] max-w-[calc(100vw-32px)] rounded-2xl overflow-hidden"
+          className="fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl sm:w-[440px]"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -168,7 +335,7 @@ export function ChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="px-6 py-5 space-y-3 max-h-[440px] min-h-[240px] overflow-y-auto bg-gray-50/50">
+          <div className="min-h-[180px] flex-1 space-y-3 overflow-y-auto bg-gray-50/50 px-6 py-5 sm:min-h-[240px] sm:max-h-[440px]">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'bot' ? 'justify-start' : 'justify-end'} gap-2.5`}>
                 {msg.role === 'bot' && (
@@ -218,7 +385,50 @@ export function ChatWidget() {
 
           {/* Input */}
           <div className="px-5 py-4 border-t border-gray-100 bg-white">
+            {file && (
+              <div data-file-intake className="mb-3 border-l-2 border-amber-500 bg-amber-50/70 px-3 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-800">Secure intake hatch</p>
+                    <p className="mt-1 truncate text-xs font-medium text-gray-900">{file.name}</p>
+                    <p className="text-[11px] text-gray-500">{displayFileSize(file.size)} / one private file</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={clearFile}
+                    className="text-[11px] font-medium text-gray-500 underline decoration-gray-300 underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600/40"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <AgentFileVerification key={verificationKey} onToken={setTurnstileToken} />
+              </div>
+            )}
+            {fileError && <p className="mb-2 text-[11px] leading-relaxed text-red-700" role="alert">{fileError}</p>}
             <div className="flex gap-2">
+              <label
+                title={AGENT_FILE_INTAKE_CONFIGURED ? 'Attach one private file' : 'Secure file verification is not active yet'}
+                aria-disabled={!AGENT_FILE_INTAKE_CONFIGURED}
+                className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border transition-colors focus-within:ring-2 focus-within:ring-gray-900/30 ${
+                  AGENT_FILE_INTAKE_CONFIGURED
+                    ? 'cursor-pointer border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300 hover:bg-gray-100'
+                    : 'cursor-not-allowed border-gray-100 bg-gray-50 text-gray-300'
+                }`}
+              >
+                <span className="sr-only">Attach one private file</span>
+                <input
+                  ref={fileInputRef}
+                  data-agent-file-input
+                  type="file"
+                  accept=".pdf,.txt,.md,.markdown,.jpg,.jpeg,.png,.webp,application/pdf,text/plain,text/markdown,image/jpeg,image/png,image/webp"
+                  disabled={!AGENT_FILE_INTAKE_CONFIGURED || isLoading}
+                  onChange={(event) => chooseFile(event.target.files?.[0] ?? null)}
+                  className="sr-only"
+                />
+                <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <path d="M21.4 11.6 12 21a6 6 0 0 1-8.5-8.5l10-10a4 4 0 0 1 5.7 5.7l-10 10a2 2 0 0 1-2.9-2.8l9.3-9.3" />
+                </svg>
+              </label>
               <input
                 ref={inputRef}
                 type="text" name="message" autoComplete="off" value={input}
@@ -233,7 +443,7 @@ export function ChatWidget() {
               </button>
             </div>
             <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-400">
-              By sending, you agree this message may be stored and forwarded to Sathian. Please do not send secrets.
+              By sending, you agree this message may be stored and forwarded to Sathian. One permitted file can be held privately for 30 days. Please do not send secrets.
             </p>
           </div>
         </motion.div>

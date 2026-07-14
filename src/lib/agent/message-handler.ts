@@ -33,6 +33,7 @@ interface AgentMessageBody {
   consent?: unknown
   displayName?: unknown
   replyEmail?: unknown
+  attachmentIntent?: unknown
 }
 
 function json(body: unknown, status = 200): Response {
@@ -55,8 +56,10 @@ function optionalString(value: unknown, maxLength: number): string | null {
   return normalized
 }
 
-function visitorHash(request: Request): string | null {
-  const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+export function agentVisitorHash(request: Request): string | null {
+  const forwarded = request.headers.get('cf-connecting-ip')
+    ?? request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? request.headers.get('x-real-ip')
   if (!forwarded) return null
 
   const key = process.env.AGENT_VISITOR_HASH_KEY
@@ -64,7 +67,7 @@ function visitorHash(request: Request): string | null {
   return createHmac('sha256', key).update(forwarded).digest('hex')
 }
 
-function dedupeKey(publicKey: string, visitor: string | null): string {
+export function agentDedupeKey(publicKey: string, visitor: string | null): string {
   const value = `${visitor ?? 'anonymous'}:${publicKey}`
   const secret = process.env.AGENT_IDEMPOTENCY_SECRET
   if (!secret) return createHash('sha256').update(value).digest('hex')
@@ -92,13 +95,20 @@ export function createAgentMessageHandler({
       return json({ error: 'Message must be between 1 and 2000 characters.' }, 400)
     }
 
-    const policy = evaluateAgentPolicy({ message: body.message })
+    let policy = evaluateAgentPolicy({ message: body.message })
     if (policy.route === 'block') {
       return json({
         route: 'block',
         reasonCodes: policy.reasonCodes,
         message: 'I cannot help with private data, credentials, system access, or external actions.',
       }, 403)
+    }
+    if (body.attachmentIntent === true && policy.route === 'answer') {
+      policy = {
+        ...policy,
+        route: 'answer_and_intake',
+        reasonCodes: [...policy.reasonCodes, 'ATTACHMENT_INTAKE_REQUEST'],
+      }
     }
 
     const currentPage = pageContext(body.page)
@@ -112,9 +122,9 @@ export function createAgentMessageHandler({
         return json({ error: 'Consent is required before a note can be stored.' }, 400)
       }
 
-      const visitor = visitorHash(request)
+      const visitor = agentVisitorHash(request)
       persisted = await persistIntake({
-        idempotencyKey: dedupeKey(publicIdempotencyKey, visitor),
+        idempotencyKey: agentDedupeKey(publicIdempotencyKey, visitor),
         message: policy.normalizedMessage,
         route: policy.route,
         reasonCodes: policy.reasonCodes,

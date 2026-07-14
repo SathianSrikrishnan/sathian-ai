@@ -1,7 +1,7 @@
 # Public Agent Data Map
 
 Last reviewed: 2026-07-14
-Schema: `supabase/migrations/20260714_public_agent_portal.sql`
+Schema: `supabase/migrations/20260714_public_agent_portal.sql` plus `supabase/migrations/20260714_agent_file_intake.sql`
 
 ## Boundary
 
@@ -21,11 +21,11 @@ Local Markdown remains the canonical second brain. Supabase receives a deliberat
 | `agent_sessions` | pseudonymous visitor hash, policy and notice versions, expiry | None | Create and update | Read by referenced intake only | Read and manage at AAL2 |
 | `agent_messages` | visitor and agent text, intent, model metadata | None | Create and read within the active server session | None | Read and manage at AAL2 |
 | `agent_intakes` | note, optional name/email, consent, receipt, delivery state | None | Create and return opaque receipt | Read only through a claimed outbox item; update delivery state through service-only RPCs | Read and manage at AAL2 |
-| `agent_attachments` | private object path, safe filename, MIME type, hash, scan state | None | Create metadata after server-side checks | Include approved metadata only | Inspect and manage at AAL2 |
+| `agent_attachments` | private object path, safe filename, declared and detected MIME type, hash, scan state | One signed upload URL for the generated object only; no read or list | Reserve, byte-check, hash, and transition state | Include byte-cleared metadata only; never read bytes | Inspect at AAL2 through a 60-second one-object URL |
 | `routing_decisions` | route, policy version, reason codes, optional classifier output | None | Create | None | Read and manage at AAL2 |
 | `delivery_outbox` | destination alias, minimal payload, idempotency key, lease, retry and provider receipt state | None | Create atomically with intake | Claim and update through service-only RPCs | Read and manage at AAL2 |
 | `audit_events` | actor type, event, policy version, redacted details | None | Append | Append | Read only at AAL2 |
-| `agent-quarantine` | untrusted uploaded object bytes | None | Write through service role | None | Read or remove at AAL2 |
+| `agent-quarantine` | untrusted uploaded object bytes | Signed write to one generated key; no read or list policy | Reserve and verify through service role | None | Server-issued 60-second signed read after AAL2; no bucket listing policy |
 
 The Supabase service role is server-only and bypasses RLS. It must never be exposed through a `NEXT_PUBLIC_` variable or sent to the browser.
 
@@ -37,6 +37,7 @@ The Telegram delivery service is a cron-only Cloudflare Worker with no public ro
 - `reply_email`, `display_name`, message content, object paths, filenames, and hashes are private intake data.
 - `destination_key` is an internal routing alias, not a Telegram token or chat identifier.
 - Telegram bot credentials, the Supabase service-role key, and private chat/topic identifiers exist only as Worker secrets.
+- `AGENT_UPLOAD_COMPLETION_SECRET`, `AGENT_VISITOR_HASH_KEY`, and `TURNSTILE_VERIFY_URL` are server-only. The completion token is returned only to the reserving browser and stored as a hash.
 - `payload`, `metadata`, classifier output, scan results, and audit details must not contain credentials or raw environment values.
 - Uploaded or retrieved instructions are untrusted content. They are never promoted to system instructions.
 - Delivery logs contain event identifiers and state counts only. They do not contain visitor message previews, email addresses, filenames, tokens, or provider response bodies.
@@ -66,7 +67,11 @@ An empty public-memory result stays empty. The answer layer must not fall back t
 
 ## Upload quarantine rule
 
-`agent-quarantine` is a private bucket. The browser has no direct object policy. The API may accept only the migration allowlist and 10 MB maximum, create a randomized object path, preserve only a sanitized display filename, hash the bytes, and mark the attachment `pending` or `quarantined`. No answer model or delivery worker should read the object until a later scanner marks it approved.
+`agent-quarantine` is a private bucket. The browser has no storage policy and cannot list or read it. After Turnstile and a durable three-per-hour visitor limit pass, the API may issue Supabase's two-hour signed upload URL for one generated key. The application launch limit is 5 MB; the bucket's 10 MB ceiling remains a second guardrail.
+
+The allowlist is PDF, plain text, Markdown, JPEG, PNG, and WebP. The completion route downloads the object with the service role, compares the declared and actual size, detects type from bytes, rejects active or mismatched content, hashes the object, and moves a passing object from `pending` to `quarantined`. It does not render, summarize, embed, or forward file bytes. Telegram may receive the safe filename, detected type, size, and Studio link only after the object leaves `pending`. File contents remain unavailable to the answer model until a future scanner and explicit approval state exist.
+
+Turnstile activation needs `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in the site build, a server-only `TURNSTILE_VERIFY_URL` for the managed verification Worker, and `TURNSTILE_ALLOWED_HOSTNAMES`. The reserve route validates the Spin action marker `turnstile-spin-v1` and fails closed when verification or upload secrets are unavailable.
 
 ## Operational checks before remote apply
 
@@ -74,4 +79,5 @@ An empty public-memory result stays empty. The answer layer must not fall back t
 - Start the local Supabase stack and reset the local database when Docker is available.
 - Inspect RLS as anonymous, ordinary authenticated, AAL1 Studio, AAL2 Studio, and service-role clients.
 - Verify the quarantine bucket reports `public = false` and has no anonymous storage policy.
+- Verify an ordinary browser cannot list or read the bucket, a signed upload cannot overwrite another key, and an AAL2 download redirects through a 60-second URL.
 - Apply remotely only from a reviewed migration commit with a backup and rollback plan.
