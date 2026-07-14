@@ -1,6 +1,13 @@
+import { readFileSync } from 'node:fs'
+
 import { describe, expect, it, vi } from 'vitest'
 
-import { createAgentMessageHandler } from '@/app/api/agent/message/route'
+import { createAgentMessageHandler } from '@/lib/agent/message-handler'
+
+const routeSource = readFileSync(
+  new URL('../../src/app/api/agent/message/route.ts', import.meta.url),
+  'utf8',
+)
 
 const persisted = {
   ok: true as const,
@@ -22,6 +29,11 @@ function request(body: unknown, idempotencyKey = 'idem_1234567890abcdef') {
 }
 
 describe('public agent message route', () => {
+  it('keeps test helpers and policy constants out of the Next.js route export surface', () => {
+    expect(routeSource).not.toMatch(/export\s+function\s+createAgentMessageHandler/)
+    expect(routeSource).not.toMatch(/export\s+const\s+CONSENT_NOTICE_VERSION/)
+  })
+
   it('returns an honest queued receipt for a persisted visitor note', async () => {
     const persistIntake = vi.fn(async () => persisted)
     const handler = createAgentMessageHandler({ persistIntake })
