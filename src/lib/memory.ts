@@ -1,79 +1,54 @@
-interface MemoryContext {
-  content: string
-  sources: string[]
-}
+import { createClient } from '@supabase/supabase-js'
 
-// Visibility levels:
-// 'open'   — Claude can share freely, weave into any response
-// 'on-ask' — Only surface when directly relevant to the question
-type Visibility = 'open' | 'on-ask'
+import { createPublicMemoryRepository } from '@/lib/agent/public-memory'
+import type {
+  MemoryContext,
+  PublicMemoryCard,
+  PublicMemoryClient,
+} from '@/lib/agent/types'
 
-interface Fact {
-  fact: string
-  category: 'bio' | 'project' | 'writing' | 'philosophy' | 'collaboration'
-  level: Visibility
-}
+let publicMemoryClient: PublicMemoryClient | null | undefined
 
-const KNOWLEDGE_BASE: Fact[] = [
-  // === BIO (open) ===
-  { fact: 'Based in Toronto, Canada.', category: 'bio', level: 'open' },
-  { fact: 'Father of two. His children are a big part of what drives the things he builds.', category: 'bio', level: 'open' },
-  { fact: '20+ years building things — from startups to personal tools to creative projects. Self-taught, non-traditional path into tech.', category: 'bio', level: 'open' },
-  { fact: 'Has conducted 100+ dinners with strangers in Toronto, ages 20-80.', category: 'bio', level: 'open' },
+function getPublicMemoryClient(): PublicMemoryClient | null {
+  if (publicMemoryClient !== undefined) return publicMemoryClient
 
-  // === BIO (on-ask) ===
-  { fact: 'He builds creative storytelling tools for his children — that content is private out of respect for his family.', category: 'bio', level: 'on-ask' },
-
-  // === PROJECTS (open) ===
-  { fact: 'BTC Cultural Atlas (btc.sathian.ai) — 500+ cultural markers mapped to Bitcoin\'s price. Area codes, drum machines, error pages, history, sports — every number decoded. Visitors can claim numbers or suggest ones with good stories.', category: 'project', level: 'open' },
-  { fact: 'Tooth Fairy Network (toothfairy.network) is a family memory ritual built from drawings, stories, and the moments around a lost tooth. It was built for his own children first.', category: 'project', level: 'open' },
-  { fact: 'Sathian\'s site agent is the bounded public guide visitors are talking to now. It knows approved public projects and writing only.', category: 'project', level: 'open' },
-  { fact: 'More projects are in the works — Sathian builds in public and shares progress on sathian.ai.', category: 'project', level: 'open' },
-
-  // === WRITING (open) ===
-  { fact: 'Sathian publishes essays and build notes at sathian.ai/writings.', category: 'writing', level: 'open' },
-  { fact: 'The Gap Between Weeks is the Tooth Fairy Network origin essay. It connects a missed childhood ritual to the failed product versions that clarified what the project was for. (sathian.ai/writings/the-gap-between-weeks)', category: 'writing', level: 'on-ask' },
-  { fact: 'Yakko\'s World Was Already Wrong — 1993 as a hinge year: the cypherpunk manifesto, the web going free, borders dissolving, and the next hinge happening now. (sathian.ai/writings/yakkos-world)', category: 'writing', level: 'on-ask' },
-  { fact: 'C.R.E.A.M. 2.0 — Wu-Tang Clan\'s journey from Staten Island to a corporate arena mirrors Bitcoin\'s path from cypherpunk whitepaper to institutional adoption. (sathian.ai/writings/cream-2-point-0)', category: 'writing', level: 'on-ask' },
-  { fact: 'The Yellow Box — An Uber driver, No Name spaghetti, glasnost, and why institutions can\'t survive their citizens doing the math. (sathian.ai/writings/the-yellow-box)', category: 'writing', level: 'on-ask' },
-  { fact: 'Nine Pages — Finally reading the Bitcoin whitepaper after years of borrowed conviction. (sathian.ai/writings/nine-pages)', category: 'writing', level: 'on-ask' },
-
-  // === PHILOSOPHY (on-ask) ===
-  { fact: 'Philosophy: personal sovereignty — individuals should control their own data, wealth, and digital identity.', category: 'philosophy', level: 'on-ask' },
-  { fact: '"Digital tools should help us connect in person, safely."', category: 'philosophy', level: 'on-ask' },
-  { fact: 'Principles: privacy first, local-first AI, model-agnostic, financial autonomy through Bitcoin.', category: 'philosophy', level: 'on-ask' },
-
-  // === COLLABORATION (on-ask) ===
-  { fact: 'Interested in connecting with people working on: open source AI, privacy tech, Bitcoin education, tools for human capability.', category: 'collaboration', level: 'on-ask' },
-  { fact: 'Inspired by: Satoshi Nakamoto, Balaji Srinivasan, Daniel Miessler.', category: 'collaboration', level: 'on-ask' },
-  { fact: 'Visitors can leave Sathian a note through the site agent or email hi@sathian.ai. The current chat does not provide a delivery receipt, so email is better for time-sensitive messages.', category: 'collaboration', level: 'open' },
-]
-
-// Build a compact knowledge context for the system prompt
-// Instead of dumping raw content, we give Claude a structured facts list
-function buildKnowledgeContext(): string {
-  const open = KNOWLEDGE_BASE.filter(f => f.level === 'open')
-  const onAsk = KNOWLEDGE_BASE.filter(f => f.level === 'on-ask')
-
-  let context = '## Facts You Can Share Freely\n'
-  for (const f of open) {
-    context += `- ${f.fact}\n`
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !anonKey) {
+    publicMemoryClient = null
+    return publicMemoryClient
   }
 
-  context += '\n## Facts to Share Only When Directly Relevant\n'
-  for (const f of onAsk) {
-    context += `- ${f.fact}\n`
-  }
+  publicMemoryClient = createClient(url, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  }) as unknown as PublicMemoryClient
 
-  return context
+  return publicMemoryClient
 }
 
-// Pre-build once — this doesn't change per request
-const KNOWLEDGE_CONTEXT = buildKnowledgeContext()
+export function buildMemoryContext(cards: PublicMemoryCard[]): MemoryContext {
+  if (cards.length === 0) {
+    return { content: '', sources: [] }
+  }
 
-export async function getMemoryContext(message: string): Promise<MemoryContext> {
+  const sources = Array.from(new Set(cards.map((card) => card.source.ref)))
+  const facts = cards.map((card) => `- ${card.title}: ${card.body}`).join('\n')
+
   return {
-    content: KNOWLEDGE_CONTEXT,
-    sources: ['curated-knowledge-base'],
+    content: `## Reviewed Public Memory\n${facts}`,
+    sources,
+  }
+}
+
+export async function getMemoryContext(_message: string): Promise<MemoryContext> {
+  const client = getPublicMemoryClient()
+  if (!client) return buildMemoryContext([])
+
+  try {
+    const repository = createPublicMemoryRepository(client)
+    return buildMemoryContext(await repository.findApproved())
+  } catch (error) {
+    console.error('Public memory retrieval failed', error)
+    return buildMemoryContext([])
   }
 }
