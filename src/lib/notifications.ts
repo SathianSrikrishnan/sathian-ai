@@ -1,9 +1,7 @@
-// Notification system - sends visitor messages to Telegram, Notion, and Email
+// Notification system - sends actionable visitor messages to Telegram.
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
-const NOTION_API_KEY = process.env.NOTION_API_KEY
-const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID
 
 interface VisitorMessage {
   type: 'connect' | 'feedback' | 'number_suggestion' | 'resource' | 'subscribe' | 'general'
@@ -54,50 +52,9 @@ _via sathian.ai_`
   }
 }
 
-// Log to Notion (same conversations database, with special tag)
-async function logToNotion(msg: VisitorMessage): Promise<boolean> {
-  if (!NOTION_API_KEY || !NOTION_DATABASE_ID) return false
-
-  try {
-    await fetch('https://api.notion.com/v1/pages', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${NOTION_API_KEY}`,
-        'Notion-Version': '2022-06-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        parent: { database_id: NOTION_DATABASE_ID },
-        properties: {
-          Title: {
-            title: [{ text: { content: `[${msg.type.toUpperCase()}] ${msg.message.slice(0, 50)}` } }]
-          },
-          'First Message': {
-            rich_text: [{ text: { content: msg.message.slice(0, 2000) } }]
-          },
-          Mode: {
-            select: { name: msg.page || '/' }
-          },
-          Messages: {
-            number: 0  // 0 indicates this is a direct request, not a conversation
-          }
-        }
-      })
-    })
-    return true
-  } catch (e) {
-    console.error('Notion logging failed:', e)
-    return false
-  }
-}
-
 // Main notification function
 export async function notifyVisitorMessage(msg: VisitorMessage): Promise<void> {
-  // Fire all notifications in parallel, don't wait
-  Promise.all([
-    sendTelegram(msg),
-    logToNotion(msg),
-  ]).catch(e => console.error('Notification error:', e))
+  void sendTelegram(msg)
 }
 
 // Detect if a message indicates the visitor wants to connect/request something

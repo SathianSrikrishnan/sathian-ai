@@ -52,3 +52,6 @@ public/media/
 # Test screenshots
 test-*.png
 tfn-*.png
+
+# Local test runtimes
+.codex-python/

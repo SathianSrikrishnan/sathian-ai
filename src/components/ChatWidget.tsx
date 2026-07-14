@@ -31,7 +31,7 @@ export function ChatWidget() {
     if (!msg || isLoading) return
     setShowSuggestions(false)
 
-    // Build history from current messages + new user message
+    // Update the visible conversation while sending only prior messages as history.
     const updatedMessages = [...messages, { role: 'user' as const, text: msg }]
     setMessages(updatedMessages)
     setInput('')
@@ -44,7 +44,7 @@ export function ChatWidget() {
     const timeout = setTimeout(() => controller.abort(), 15000)
 
     try {
-      const history = updatedMessages
+      const history = messages
         .slice(1) // skip initial greeting
         .map((m) => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }))
 
@@ -114,6 +114,7 @@ export function ChatWidget() {
       {open && (
         <motion.div
           key="chat-panel"
+          data-chat-panel
           className="fixed bottom-20 right-4 z-50 w-full sm:w-[440px] max-w-[calc(100vw-32px)] rounded-2xl overflow-hidden"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -199,19 +200,24 @@ export function ChatWidget() {
           </div>
 
           {/* Input */}
-          <div className="px-5 py-4 border-t border-gray-100 flex gap-2 bg-white">
-            <input
-              ref={inputRef}
-              type="text" name="message" autoComplete="off" value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-              placeholder="Describe the workflow…"
-              maxLength={2000}
-              className="flex-1 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30 transition-colors"
-            />
-            <button type="button" onClick={() => handleSend()} aria-label="Send message" className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 bg-gray-900 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
-              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
-            </button>
+          <div className="px-5 py-4 border-t border-gray-100 bg-white">
+            <div className="flex gap-2">
+              <input
+                ref={inputRef}
+                type="text" name="message" autoComplete="off" value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
+                placeholder="Describe the workflow…"
+                maxLength={2000}
+                className="flex-1 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30 transition-colors"
+              />
+              <button type="button" onClick={() => handleSend()} aria-label="Send message" className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 bg-gray-900 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
+              </button>
+            </div>
+            <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-400">
+              Messages may be stored and forwarded to Sathian. Please do not send secrets.
+            </p>
           </div>
         </motion.div>
       )}

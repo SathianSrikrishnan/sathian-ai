@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { getMemoryContext } from '@/lib/memory'
 import { buildSystemPrompt } from '@/lib/prompts'
 import { detectConnectionIntent, notifyVisitorMessage } from '@/lib/notifications'
+import { buildModelMessages } from '@/lib/chat-history'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -38,45 +39,6 @@ function isRateLimited(ip: string): boolean {
   recent.push(now)
   ipRequests.set(ip, recent)
   return false
-}
-
-// Log conversation to Notion (fire and forget)
-async function logToNotion(firstMessage: string, page: string, messageCount: number) {
-  const notionKey = process.env.NOTION_API_KEY
-  const databaseId = process.env.NOTION_DATABASE_ID
-
-  if (!notionKey || !databaseId) return
-
-  try {
-    await fetch('https://api.notion.com/v1/pages', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${notionKey}`,
-        'Notion-Version': '2022-06-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        parent: { database_id: databaseId },
-        properties: {
-          Title: {
-            title: [{ text: { content: new Date().toISOString().split('T')[0] + ' - ' + firstMessage.slice(0, 50) } }]
-          },
-          'First Message': {
-            rich_text: [{ text: { content: firstMessage.slice(0, 2000) } }]
-          },
-          Mode: {
-            select: { name: page || '/' }
-          },
-          Messages: {
-            number: messageCount
-          }
-        }
-      })
-    })
-  } catch (e) {
-    // Silently fail - don't break chat for logging issues
-    console.error('Notion logging failed:', e)
-  }
 }
 
 import { ALLOWED_ORIGINS } from '@/lib/constants'
@@ -126,23 +88,7 @@ export async function POST(request: NextRequest) {
     // Build system prompt with page context
     const systemPrompt = buildSystemPrompt(page || '/', memoryContext)
 
-    // Validate and sanitize conversation history
-    const rawHistory = Array.isArray(history) ? history.slice(-20) : []
-    const validatedHistory = rawHistory
-      .filter((msg: { role: string; content: string }) =>
-        msg &&
-        typeof msg.content === 'string' &&
-        (msg.role === 'user' || msg.role === 'assistant')
-      )
-      .map((msg: { role: string; content: string }) => ({
-        role: msg.role as 'user' | 'assistant',
-        content: msg.content.slice(0, 2000),
-      }))
-
-    const messages = [
-      ...validatedHistory,
-      { role: 'user' as const, content: message },
-    ]
+    const messages = buildModelMessages(history, message)
 
     // Call Claude API
     const response = await anthropic.messages.create({
@@ -155,11 +101,6 @@ export async function POST(request: NextRequest) {
     // Extract text response
     const textContent = response.content.find((c) => c.type === 'text')
     const responseText = textContent ? textContent.text : 'I apologize, but I could not generate a response.'
-
-    // Log first message of new conversations to Notion (fire and forget)
-    if (!history || history.length === 0) {
-      logToNotion(message, page || '/', 1)
-    }
 
     // Check if visitor wants to connect/request something - notify Sathian
     const connectionIntent = detectConnectionIntent(message, page || '/')
