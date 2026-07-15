@@ -1855,6 +1855,168 @@ h1, h2, h3 {
   line-height: 1.55;
 }
 
+.relaunch-campaign {
+  padding: 22px 0 0;
+  background: #0a0c12;
+}
+
+.relaunch-campaign-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(247, 147, 26, 0.26);
+  border-radius: 24px;
+  background:
+    linear-gradient(112deg, rgba(247, 147, 26, 0.12), transparent 38%),
+    radial-gradient(circle at 88% 26%, rgba(94, 234, 212, 0.1), transparent 28%),
+    #0d1018;
+}
+
+.relaunch-campaign-frame::after {
+  content: '';
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -170px;
+  bottom: -220px;
+  border: 1px solid rgba(94, 234, 212, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.relaunch-campaign-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 24px;
+  border-bottom: 1px solid var(--relaunch-line);
+  color: var(--relaunch-faint);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.relaunch-campaign-meta span {
+  color: var(--relaunch-orange);
+}
+
+.relaunch-campaign-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: clamp(36px, 7vw, 92px);
+  align-items: end;
+  padding: clamp(32px, 5vw, 58px);
+}
+
+.relaunch-campaign-copy .hub-eyebrow {
+  color: var(--relaunch-cyan);
+  font-size: 9px;
+}
+
+.relaunch-campaign-copy h2 {
+  max-width: 650px;
+  margin: 11px 0 16px;
+  font-family: var(--font-display), 'Outfit', sans-serif;
+  font-size: clamp(2.7rem, 5.6vw, 5.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.relaunch-campaign-copy > p:last-child {
+  max-width: 690px;
+  color: var(--relaunch-muted);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.relaunch-campaign-actions {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+}
+
+.relaunch-campaign-actions > button,
+.relaunch-campaign-actions > a:not(.relaunch-campaign-source) {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+}
+
+.relaunch-campaign-actions > button {
+  background: var(--relaunch-cyan);
+  color: #06110f;
+  cursor: pointer;
+}
+
+.relaunch-campaign-actions > a:not(.relaunch-campaign-source) {
+  border-color: rgba(247, 147, 26, 0.42);
+  background: rgba(247, 147, 26, 0.08);
+  color: #ffd9a6;
+}
+
+.relaunch-campaign-pending {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px dashed var(--relaunch-line);
+  border-radius: 10px;
+  color: var(--relaunch-faint);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.relaunch-campaign-source {
+  width: fit-content;
+  color: var(--relaunch-faint);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  text-underline-offset: 4px;
+}
+
+.relaunch-campaign-prompts {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--relaunch-line);
+}
+
+.relaunch-campaign-prompts button {
+  min-height: 72px;
+  padding: 16px 22px;
+  border: 0;
+  border-right: 1px solid var(--relaunch-line);
+  background: transparent;
+  color: var(--relaunch-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+}
+
+.relaunch-campaign-prompts button:last-child {
+  border-right: 0;
+}
+
+.relaunch-campaign-prompts button:hover {
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--relaunch-ink);
+}
+
 .relaunch-section {
   position: relative;
   padding: 112px 0;
@@ -2401,6 +2563,10 @@ h1, h2, h3 {
   .relaunch-practice-grid {
     gap: 44px;
   }
+
+  .relaunch-campaign-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2435,6 +2601,29 @@ h1, h2, h3 {
 
   .relaunch-agent-prompts button {
     text-align: left;
+  }
+
+  .relaunch-campaign-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .relaunch-campaign-grid {
+    padding: 30px 22px;
+  }
+
+  .relaunch-campaign-prompts {
+    grid-template-columns: 1fr;
+  }
+
+  .relaunch-campaign-prompts button {
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--relaunch-line);
+  }
+
+  .relaunch-campaign-prompts button:last-child {
+    border-bottom: 0;
   }
 
   .relaunch-section {

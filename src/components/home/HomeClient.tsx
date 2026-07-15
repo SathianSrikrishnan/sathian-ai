@@ -7,6 +7,7 @@ import { motion } from 'motion/react'
 import { SiteNav } from '@/components/SiteNav'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
 import { CHAT_SUGGESTIONS } from '@/lib/constants'
+import type { TxOddsCampaign } from '@/lib/campaigns/txodds'
 
 export interface HomeWriting {
   title: string
@@ -19,6 +20,7 @@ export interface HomeWriting {
 
 interface HomeClientProps {
   writings: HomeWriting[]
+  campaign: TxOddsCampaign | null
 }
 
 const BUILD_NOTES = [
@@ -192,7 +194,7 @@ function SectionIntro({ index, label, title, note }: { index: string; label: str
   )
 }
 
-export function HomeClient({ writings }: HomeClientProps) {
+export function HomeClient({ writings, campaign }: HomeClientProps) {
   const featured = writings[0]
   const openAgent = (message?: string) => {
     window.dispatchEvent(new CustomEvent('open-chat', { detail: message ? { message } : undefined }))
@@ -257,6 +259,46 @@ export function HomeClient({ writings }: HomeClientProps) {
             </motion.div>
           </motion.div>
         </section>
+
+        {campaign && (
+          <ScrollReveal>
+            <section id="txodds" className="relaunch-campaign" aria-labelledby="txodds-campaign-title">
+              <div className="relaunch-content relaunch-campaign-frame">
+                <div className="relaunch-campaign-meta">
+                  <span>{campaign.eyebrow}</span>
+                  <time dateTime={campaign.deadline}>{campaign.deadlineLabel}</time>
+                </div>
+                <div className="relaunch-campaign-grid">
+                  <div className="relaunch-campaign-copy">
+                    <p className="hub-eyebrow">TXODDS WORLD CUP</p>
+                    <h2 id="txodds-campaign-title">Find your World Cup build</h2>
+                    <p>{campaign.description}</p>
+                  </div>
+                  <div className="relaunch-campaign-actions">
+                    <button type="button" onClick={() => openAgent(campaign.prompts[0])}>
+                      Ask the agent to find my track <Arrow />
+                    </button>
+                    {campaign.referralUrl ? (
+                      <a href={campaign.referralUrl} target="_blank" rel="noopener noreferrer">
+                        Register with Sathian’s referral <Arrow />
+                      </a>
+                    ) : (
+                      <p className="relaunch-campaign-pending">Unique referral link pending</p>
+                    )}
+                    <a className="relaunch-campaign-source" href={campaign.listingUrl} target="_blank" rel="noopener noreferrer">
+                      Official Superteam Canada challenge
+                    </a>
+                  </div>
+                </div>
+                <div className="relaunch-campaign-prompts" aria-label="TxODDS agent questions">
+                  {campaign.prompts.slice(1, 4).map((prompt) => (
+                    <button type="button" key={prompt} onClick={() => openAgent(prompt)}>{prompt}</button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
 
         <ScrollReveal>
           <section id="now" className="relaunch-section relaunch-now">

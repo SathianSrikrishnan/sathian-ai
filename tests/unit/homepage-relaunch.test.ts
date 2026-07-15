@@ -21,6 +21,14 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('Ask my agent')
   })
 
+  it('gives the short-lived TxODDS sprint an agent-first campaign surface', () => {
+    expect(page).toContain('getTxOddsCampaign')
+    expect(homeClient).toContain('Find your World Cup build')
+    expect(homeClient).toContain('Ask the agent to find my track')
+    expect(homeClient).toContain('campaign.referralUrl')
+    expect(homeClient).not.toContain('href="https://superteam.fun/earn/listing/bring-the-most-canadian-signups-to-the-txodds-hackathon"')
+  })
+
   it('replaces stale events with a dated Building in Public stream', () => {
     expect(homepage).toContain('Building in public')
     expect(homepage).toContain('What changed')

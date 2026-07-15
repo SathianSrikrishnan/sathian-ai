@@ -6,6 +6,7 @@ import type {
   PublicMemoryCard,
   PublicMemoryClient,
 } from '@/lib/agent/types'
+import { getTxOddsCampaignMemoryCards } from '@/lib/campaigns/txodds'
 
 let publicMemoryClient: PublicMemoryClient | null | undefined
 
@@ -41,15 +42,20 @@ export function buildMemoryContext(cards: PublicMemoryCard[]): MemoryContext {
 }
 
 export async function getPublicMemoryCards(): Promise<PublicMemoryCard[]> {
+  const campaignCards = getTxOddsCampaignMemoryCards()
   const client = getPublicMemoryClient()
-  if (!client) return []
+  if (!client) return campaignCards
 
   try {
     const repository = createPublicMemoryRepository(client)
-    return await repository.findApproved()
+    const reviewedCards = await repository.findApproved()
+    const cardsBySlug = new Map(
+      [...reviewedCards, ...campaignCards].map((card) => [card.slug, card]),
+    )
+    return Array.from(cardsBySlug.values())
   } catch (error) {
     console.error('Public memory retrieval failed', error)
-    return []
+    return campaignCards
   }
 }
 
