@@ -299,6 +299,9 @@ export function ChatWidget() {
         <motion.div
           key="chat-panel"
           data-chat-panel
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="site-agent-title"
           className="fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl sm:w-[440px]"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -322,7 +325,7 @@ export function ChatWidget() {
                   }} />
                 </div>
                 <div>
-                  <h4 className="text-[15px] font-semibold text-gray-900">Sathian’s site agent</h4>
+                  <h2 id="site-agent-title" className="text-[15px] font-semibold text-gray-900">Sathian’s site agent</h2>
                   <a href="mailto:hi@sathian.ai" className="text-xs text-gray-500 hover:text-gray-900 transition-colors">
                     hi@sathian.ai
                   </a>
@@ -442,7 +445,7 @@ export function ChatWidget() {
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
               </button>
             </div>
-            <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-400">
+            <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-500">
               By sending, you agree this message may be stored and forwarded to Sathian. One permitted file can be held privately for 30 days. Please do not send secrets.
             </p>
           </div>

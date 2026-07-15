@@ -437,14 +437,14 @@ test("claiming a profile keeps the original child profile PDA", () => {
   assert.doesNotMatch(claimProfile, /newChildWallet/)
 })
 
-test("public sitemap and robots use the Tooth Fairy Network domain", () => {
+test("public sitemap and robots select the correct public domain per host", () => {
   const sitemap = read("src/app/sitemap.ts")
   const robots = read("src/app/robots.ts")
 
-  assert.match(sitemap, /https:\/\/toothfairy\.network/)
-  assert.match(robots, /https:\/\/toothfairy\.network\/sitemap\.xml/)
-  assert.doesNotMatch(sitemap, /https:\/\/sathian\.ai/)
-  assert.doesNotMatch(robots, /https:\/\/sathian\.ai/)
+  assert.match(sitemap, /buildSitemapForHost/)
+  assert.match(robots, /buildRobotsForHost/)
+  assert.match(sitemap, /headers\(\)\.get\('host'\)/)
+  assert.match(robots, /headers\(\)\.get\('host'\)/)
 })
 
 test("draft animation work is excluded without removing live hero assets", () => {
