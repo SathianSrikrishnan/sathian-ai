@@ -1,9 +1,9 @@
 # sathian.ai Public Agent Portal — Release Candidate
 
-Last updated: 2026-07-14
+Last updated: 2026-07-15
 Branch: `feat/public-agent-portal`
 Production: unchanged
-Decision state: **local candidate verified and ready for activation review; live activation still requires Sathian's approval**
+Decision state: **protected preview and database foundation exist; OpenAI provider repair passes local proof; preview redeploy and production activation still require separate approval gates**
 
 ## Read this first
 
@@ -13,10 +13,11 @@ Turn `sathian.ai` into a public field notebook with Tooth Fairy Network as the f
 
 ### Where we are
 
-1. **The new site and agent are built locally.** The homepage, TFN origin essay, build notes, reviewed public memory, receipt-backed intake, private Studio, one-file quarantine, and Telegram delivery worker are in the candidate branch.
-2. **The safety and release defects found during assembly are repaired locally.** Database migrations have unique ordered IDs, the old direct-model chat endpoint is retired, the replacement defaults off, file intake has its own kill switch, text rate limiting is durable, and the retired Claude model has been replaced.
-3. **Production has not changed.** Vercel still serves its July 12 deployment. No production migration, user-role change, Turnstile widget, Telegram bot/topic change, Worker deploy, secret change, Vercel deploy, Substack publication, or public post has occurred.
-4. **The next approval is an activation gate, not another design gate.** Before that approval, all remaining work is documentation, local verification, and read-only inspection.
+1. **The new site and agent are built on the candidate branch.** The homepage, TFN origin essay, build notes, reviewed public memory, receipt-backed intake, private Studio, one-file quarantine, and Telegram delivery worker are present.
+2. **The additive database foundation is live.** The reviewed migrations were applied to the mapped production Supabase project, eight public-memory cards were seeded, and the existing `sathians@gmail.com` Auth user received the `studio_admin` application role.
+3. **A protected Vercel preview exists.** `https://sathian-ai-agent-review-20260714.vercel.app` is access-protected and currently reflects commit `e51a66c` until the OpenAI provider repair is verified and redeployed.
+4. **The current Anthropic credential is invalid.** The candidate branch is switching the public answer adapter to the already-approved `OPENAI_API_KEY`; OpenRouter remains outside this launch.
+5. **Production web traffic has not changed.** Vercel still serves the July 12 deployment. Turnstile, Telegram delivery, file activation, TOTP enrollment, production Vercel deployment, Substack publication, and public posting remain incomplete or approval-gated.
 
 ### What this goal does not include
 
@@ -31,12 +32,12 @@ Those remain separate, deliberate workstreams.
 
 | Area | Current state | What remains live |
 | --- | --- | --- |
-| Homepage and project imagery | Ready locally | Deploy the reviewed candidate |
-| TFN origin essay | Ready in site code | Editorial sign-off and separate Substack publication decision |
-| Public answer agent | Ready locally and default-off | Configure services, prove a protected preview, then enable |
-| Notes and receipts | Ready locally | Apply database migrations and verify one real receipt |
+| Homepage and project imagery | Present in protected candidate | Final review, then approved production deploy |
+| TFN origin essay | Ready in site code | Final copy review and separate Substack publication decision |
+| Public answer agent | OpenAI provider repair passes local proof | Redeploy protected preview, then run answer/privacy matrix |
+| Notes and receipts | Database foundation live | Verify one synthetic protected-preview receipt |
 | Telegram delivery | Worker code ready; Worker does not exist in Cloudflare | Approve bot/topic setup, secrets, deploy, and one private-topic proof |
-| Private Studio | Ready locally with allowlist + TOTP/AAL2 | Confirm an existing Auth user, set the role, allowlist the email, and enroll TOTP |
+| Private Studio | Existing user and role configured | Sathian enrolls TOTP and proves AAL2 |
 | File intake | Ready locally and independently default-off | Create Turnstile, configure both flags, and prove one benign file plus one blocked file |
 | Retention | Read-only dry run ready | Review a real report later; destructive cleanup and scheduling stay disabled |
 | Production | July 12 Vercel deployment remains live | Explicit activation approval |
@@ -47,11 +48,12 @@ Verified on 2026-07-14:
 
 - `https://sathian.ai` currently leads with **“AI-native systems for real work.”** It is not the new “Proof of work, in public” candidate.
 - Vercel production deployment `dpl_9fz7eufZGkZPmF3559gtN1z9N3VR` is **Ready**, created July 12, 2026, and owns `sathian.ai`, `www.sathian.ai`, and the existing aliases.
-- Local `main` is `005f408`; the candidate is on the isolated `feat/public-agent-portal` worktree.
-- none of the new portal variables were found in the Vercel project;
+- The candidate is on the isolated `feat/public-agent-portal` worktree; the protected preview currently points to commit `e51a66c`.
+- the reviewed Supabase migrations, eight public-memory cards, and the existing Studio user's application role are live;
+- the existing Vercel `OPENAI_API_KEY` is available in Production, Preview, and Development scopes, without exposing its value;
 - Cloudflare authentication works, but `sathian-ai-telegram-delivery` does not exist and therefore has no deployed version or secrets;
-- the repository is not linked to a production Supabase project in this workspace, so remote migration history and the existing Studio Auth user have not been inspected;
-- the local candidate uses Anthropic's active `claude-sonnet-4-6`; `claude-sonnet-4-20250514` was retired on June 15, 2026. Source: [Anthropic model deprecations](https://platform.claude.com/docs/en/docs/about-claude/model-deprecations).
+- the Anthropic credential returns 401 and is no longer the chosen public-agent path;
+- the candidate branch uses OpenAI GPT-5.4 mini for the public answer adapter. OpenAI documents GPT-5.4 mini as a fast model for high-volume workloads with Chat Completions support: [OpenAI model page](https://developers.openai.com/api/docs/models/gpt-5.4-mini).
 
 ## Local database proof
 
@@ -91,7 +93,7 @@ No secret values belong in this document or chat.
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Required |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser Auth/public-memory client | Required |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only intake and Studio operations | Required; never public |
-| `ANTHROPIC_API_KEY` | Bounded public answer model | Required for answers; intake fallback remains safe |
+| `OPENAI_API_KEY` | Bounded public answer model | Existing scoped variable; intake fallback remains safe |
 | `STUDIO_ALLOWED_EMAILS` | Existing approved operator accounts | Required |
 | `STUDIO_PUBLIC_ORIGIN` | Fixed magic-link callback origin | `https://sathian.ai` in production |
 | `AGENT_VISITOR_HASH_KEY` | Pseudonymous durable rate-limit key | Required; independent server secret |
@@ -257,7 +259,7 @@ None of these is implied by the website activation approval.
 ## Known launch limitations
 
 - File checks are strict byte/type quarantine, not a full malware scanner. File contents are not opened, rendered, summarized, embedded, modeled, or forwarded.
-- The answer model is provider-specific at launch, though the adapter is replaceable.
+- The answer model is provider-specific at launch, though the adapter remains replaceable and OpenRouter evaluation is deferred.
 - Public memory is a reviewed projection, not the live second brain.
 - The retention execution adapter and schedule are intentionally absent.
 - The protected preview will need approved access to the real Supabase project unless a separate staging project is created.
@@ -274,7 +276,7 @@ None of these is implied by the website activation approval.
 
 ## Fresh final verification
 
-Completed on 2026-07-14 against the final local candidate:
+Completed on 2026-07-14 against candidate commit `fc07969`, before the later rate-limit and OpenAI provider changes:
 
 - 189 unit tests passed across 26 files;
 - 27 legacy launch/readiness checks passed;
@@ -295,3 +297,13 @@ Expected non-blocking local warnings:
 - stale Browserslist data;
 - pure-JavaScript bigint bindings;
 - the existing post-build `revalidateTag` IPC URL noise after the successful build exit.
+
+Fresh 2026-07-15 local proof for the OpenAI provider change:
+
+- the focused provider-selection test was observed failing against the Anthropic implementation, then passing after the OpenAI change;
+- all 190 unit tests passed across 26 files;
+- application TypeScript passed;
+- the production build compiled, typechecked, and generated all 143 static pages;
+- `git diff --check` passed, with line-ending notices only.
+
+Protected-preview answer/privacy verification is still required before production activation.

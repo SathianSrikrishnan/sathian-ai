@@ -1,5 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
+import OpenAI from 'openai'
 
 import {
   answerAgentQuestion,
@@ -49,20 +49,21 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
     return error || typeof data !== 'boolean' ? true : !data
   }
 
-  const anthropic = process.env.ANTHROPIC_API_KEY
-    ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  const openai = process.env.OPENAI_API_KEY
+    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     : null
   const model: AnswerModelAdapter = {
     async generate(input) {
-      if (!anthropic) throw new Error('answer_model_unavailable')
-      const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: input.maxTokens,
-        system: input.system,
-        messages: [{ role: 'user', content: input.user }],
+      if (!openai) throw new Error('answer_model_unavailable')
+      const response = await openai.chat.completions.create({
+        model: 'gpt-5.4-mini',
+        max_completion_tokens: input.maxTokens,
+        messages: [
+          { role: 'system', content: input.system },
+          { role: 'user', content: input.user },
+        ],
       }, { signal: input.signal })
-      const text = response.content.find((part) => part.type === 'text')
-      return text?.type === 'text' ? text.text : ''
+      return response.choices[0]?.message.content ?? ''
     },
   }
 

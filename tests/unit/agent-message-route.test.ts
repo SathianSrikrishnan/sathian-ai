@@ -56,9 +56,14 @@ describe('public agent message route', () => {
     )
   })
 
-  it('uses the active Anthropic replacement rather than the retired launch model', () => {
-    expect(routeSource).toContain("model: 'claude-sonnet-4-6'")
-    expect(routeSource).not.toContain('claude-sonnet-4-20250514')
+  it('uses the approved OpenAI runtime for the public site agent', () => {
+    expect(routeSource).toContain("import OpenAI from 'openai'")
+    expect(routeSource).toContain('process.env.OPENAI_API_KEY')
+    expect(routeSource).toContain("model: 'gpt-5.4-mini'")
+    expect(routeSource).toContain('max_completion_tokens: input.maxTokens')
+    expect(routeSource).not.toMatch(/Anthropic|ANTHROPIC_API_KEY|claude-sonnet/)
+
+    // The separate voice route is outside this provider change.
     expect(voiceRouteSource).toContain("model: 'claude-sonnet-4-6'")
     expect(voiceRouteSource).not.toContain('claude-sonnet-4-20250514')
   })
