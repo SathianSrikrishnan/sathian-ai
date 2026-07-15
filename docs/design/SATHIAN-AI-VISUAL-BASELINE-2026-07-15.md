@@ -6,7 +6,7 @@ Status: Approved design baseline; protected preview verified; production cutover
 ## Frozen reference
 
 - Branch: `feat/public-agent-portal`
-- Commit: `1743aa2e47f669cdedc49373b35a0b3df6fd31c`
+- Commit: `1743aa2e47f669cdedc49373b35a0b3df6fd3c6c`
 - Tag: `sathian-ai-visual-baseline-2026-07-15`
 - Protected review alias: `https://sathian-ai-agent-review-20260714.vercel.app`
 - Deployment: `dpl_7mwDN5mGtmN8e3TuMnGxf24SeFZM`
@@ -60,4 +60,3 @@ Future agents should describe a website change in five lines:
 3. Files or Studio records affected.
 4. What remains untouched.
 5. Proof required before review.
-

@@ -4,7 +4,7 @@ These rules apply to the entire repository. They supplement the global Codex rul
 
 ## Approved baseline
 
-- The approved personal-site visual baseline is commit `1743aa2e47f669cdedc49373b35a0b3df6fd31c` on `feat/public-agent-portal`.
+- The approved personal-site visual baseline is commit `1743aa2e47f669cdedc49373b35a0b3df6fd3c6c` on `feat/public-agent-portal`.
 - The durable tag for that design is `sathian-ai-visual-baseline-2026-07-15`.
 - The baseline record and golden screenshots are listed in `docs/design/SATHIAN-AI-VISUAL-BASELINE-2026-07-15.md`.
 - Preserve the dark editorial system, homepage section order, large typographic hero, inline site-agent doorway, project-card composition, building-log format, and shared About/Automation shell unless Sathian explicitly asks for a redesign.
@@ -40,4 +40,3 @@ For any user-facing UI change:
 - Drafting and local verification are allowed. Public posts, submissions, profile saves, and production deployment remain separate explicit approval gates.
 - Never expose environment values while diagnosing or moving configuration.
 - A failed release must preserve its evidence, use the documented rollback, and leave the last verified production deployment intact.
-
