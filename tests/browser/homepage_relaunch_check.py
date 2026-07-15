@@ -1,10 +1,11 @@
 import os
+import re
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
 
-OUTPUT = Path(r"C:\Users\sathi\Projects\_ops\reskin-previews\2026-07-14")
+OUTPUT = Path(r"C:\Users\sathi\Projects\_ops\reskin-previews\2026-07-15")
 OUTPUT.mkdir(parents=True, exist_ok=True)
 BASE_URL = os.environ.get('PORTAL_BASE_URL', 'http://127.0.0.1:3120').rstrip('/')
 
@@ -40,18 +41,39 @@ def visit_home(page, screenshot_name: str):
 
     page.goto(BASE_URL, wait_until="networkidle")
     page.get_by_role("heading", name="Proof of work, in public.").wait_for()
-    page.get_by_role("heading", name="Ask my agent").wait_for()
+    page.get_by_role("heading", name=re.compile("site agent", re.I)).first.wait_for()
     page.get_by_text("Building in public", exact=True).wait_for()
-    page.get_by_role("heading", name="The Gap Between Weeks").wait_for()
+    page.get_by_role("heading", name="Projects with a pulse.").wait_for()
+    page.get_by_role("heading", name="Active building logs.").wait_for()
+    page.get_by_role(
+        "heading",
+        name="Making a childhood memory ownable without making it public",
+    ).wait_for()
+    page.get_by_role("heading", name="Essays from the workbench.").wait_for()
     page.get_by_text("I build small AI systems around real work.").wait_for()
 
-    page.get_by_role(
-        "button",
-        name="Ask what I’m building, learning, or available to help with.",
-    ).click()
-    page.get_by_text("Messages may be stored and forwarded to Sathian.").last.wait_for()
+    agent = page.locator("[data-chat-panel]")
+    agent.wait_for()
+    assert agent.count() == 1, "Homepage must show one real site-agent surface"
+    page.get_by_text("By sending, you agree this message may be stored", exact=False).wait_for()
     page.get_by_role("button", name="Close chat").first.click()
+    page.get_by_role("button", name="Open the site agent").click()
+    agent.wait_for()
 
+    reveal_full_page(page)
+    page.screenshot(path=str(OUTPUT / screenshot_name), full_page=True)
+    assert_clean_page(page, console_errors, failed_requests)
+
+
+def visit_inner_page(page, path: str, heading: str, screenshot_name: str):
+    console_errors = []
+    failed_requests = []
+    page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
+    page.on("requestfailed", lambda request: record_failed_request(failed_requests, request))
+
+    response = page.goto(f"{BASE_URL}{path}", wait_until="networkidle")
+    assert response is not None and response.status == 200
+    page.get_by_role("heading", name=heading).wait_for()
     reveal_full_page(page)
     page.screenshot(path=str(OUTPUT / screenshot_name), full_page=True)
     assert_clean_page(page, console_errors, failed_requests)
@@ -73,7 +95,7 @@ def visit_article(page):
         "Dark cosmic Tooth Fairy Network homepage with a glowing network globe and live fairy node statistics"
     ).wait_for()
     reveal_full_page(page)
-    page.screenshot(path=str(OUTPUT / "batch2-article-desktop.png"), full_page=True)
+    page.screenshot(path=str(OUTPUT / "site-agent-article-desktop.png"), full_page=True)
     assert_clean_page(page, console_errors, failed_requests)
 
 
@@ -81,14 +103,20 @@ with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True)
 
     desktop = browser.new_page(viewport={"width": 1440, "height": 1000})
-    visit_home(desktop, "batch2-home-desktop.png")
+    visit_home(desktop, "site-agent-home-desktop.png")
 
     mobile = browser.new_page(viewport={"width": 390, "height": 844})
-    visit_home(mobile, "batch2-home-mobile.png")
+    visit_home(mobile, "site-agent-home-mobile.png")
+
+    about = browser.new_page(viewport={"width": 1440, "height": 1000})
+    visit_inner_page(about, "/about", "Student again, in public.", "site-agent-about-desktop.png")
+
+    automation = browser.new_page(viewport={"width": 1440, "height": 1000})
+    visit_inner_page(automation, "/automation", "Small systems for messy work.", "site-agent-automation-desktop.png")
 
     article = browser.new_page(viewport={"width": 1440, "height": 1000})
     visit_article(article)
 
     browser.close()
 
-print("homepage relaunch browser verification passed: desktop, mobile, article")
+print("site-agent relaunch browser verification passed: Home desktop/mobile, About, Automation, and article")

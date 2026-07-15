@@ -17,14 +17,14 @@ describe('sathian.ai relaunch surface', () => {
 
   it('leads with proof of work and a useful agent doorway', () => {
     expect(homepage).toContain('Proof of work,')
-    expect(homepage).toContain('Ask what I’m building, learning, or available to help with.')
-    expect(homepage).toContain('Ask my agent')
+    expect(homepage).toContain('The site agent is the quickest way')
+    expect(homepage).toContain('Ask the site agent')
   })
 
   it('gives the short-lived TxODDS sprint an agent-first campaign surface', () => {
     expect(page).toContain('getTxOddsCampaign')
-    expect(homeClient).toContain('Find your World Cup build')
-    expect(homeClient).toContain('Ask the agent to find my track')
+    expect(homeClient).toContain('Start with what you already know.')
+    expect(homeClient).toContain('Ask what I could build')
     expect(homeClient).toContain('campaign.referralUrl')
     expect(homeClient).not.toContain('href="https://superteam.fun/earn/listing/bring-the-most-canadian-signups-to-the-txodds-hackathon"')
   })
@@ -41,6 +41,16 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('I build small AI systems around real work.')
     expect(homepage).toContain('tell me what keeps getting done by hand')
     expect(homepage).not.toContain('AI-native systems for real work')
+  })
+
+  it('records the Toothlight ownership proof as a bounded devnet milestone', () => {
+    expect(homeClient).toContain('Making a childhood memory ownable without making it public')
+    expect(homeClient).toContain('synthetic private-provenance Toothlight on Solana devnet')
+    expect(homeClient).toContain('guardian-owned digital keepsake')
+    expect(homeClient).toContain('Bubblegum V1')
+    expect(homeClient).toContain('recommended V2 path')
+    expect(homeClient).toContain('2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke')
+    expect(homeClient).not.toMatch(/mainnet launch|guaranteed (?:growth|returns|appreciation)/i)
   })
 
   it('registers the approved Tooth Fairy Network origin essay and historical image', () => {
@@ -68,9 +78,9 @@ describe('sathian.ai relaunch surface', () => {
 
   it('uses project-owned artwork behind Tooth Fairy Network and BTC Cultural Atlas', () => {
     expect(homeClient).toContain("image: '/toothfairy/animation/tfn-tanda-hero-poster.webp'")
-    expect(homeClient).toContain("image: '/projects/btc-cultural-atlas-hero.png'")
+    expect(homeClient).toContain("image: '/media/bitcoin-coin.jpg'")
     expect(
-      existsSync(new URL('../../public/projects/btc-cultural-atlas-hero.png', import.meta.url)),
+      existsSync(new URL('../../public/media/bitcoin-coin.jpg', import.meta.url)),
     ).toBe(true)
   })
 })

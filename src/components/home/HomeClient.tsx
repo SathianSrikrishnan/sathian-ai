@@ -6,7 +6,6 @@ import { motion } from 'motion/react'
 
 import { SiteNav } from '@/components/SiteNav'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
-import { CHAT_SUGGESTIONS } from '@/lib/constants'
 import type { TxOddsCampaign } from '@/lib/campaigns/txodds'
 
 export interface HomeWriting {
@@ -23,7 +22,36 @@ interface HomeClientProps {
   campaign: TxOddsCampaign | null
 }
 
-const BUILD_NOTES = [
+interface BuildNote {
+  date: string
+  status: string
+  project: string
+  title: string
+  changed: string
+  learned: string
+  next: string
+  href: string
+  accent: string
+  external?: boolean
+  proofHref?: string
+  proofLabel?: string
+}
+
+const BUILD_NOTES: BuildNote[] = [
+  {
+    date: '2026-07-15',
+    status: 'PROVEN',
+    project: 'TOOTH FAIRY NETWORK',
+    title: 'Making a childhood memory ownable without making it public',
+    changed: 'Minted one synthetic private-provenance Toothlight on Solana devnet to a disposable guardian wallet. Metaplex DAS independently verified the asset, owner, tree, and metadata. No production or mainnet configuration changed.',
+    learned: 'A guardian-owned digital keepsake can provide verifiable ownership and provenance while the child\'s artwork and the parent\'s future letter remain private.',
+    next: 'Build the parent-facing wallet experience and compare the current Bubblegum V1 proof with the recommended V2 path before choosing a production standard.',
+    href: 'https://toothfairy.network',
+    accent: '#B794F6',
+    external: true,
+    proofHref: 'https://explorer.solana.com/tx/2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke?cluster=devnet',
+    proofLabel: 'Inspect the devnet transaction',
+  },
   {
     date: '2026-07-14',
     status: 'BUILDING',
@@ -93,7 +121,7 @@ const PROJECTS = [
     href: 'https://btc.sathian.ai',
     accent: '#F7931A',
     external: true,
-    image: '/projects/btc-cultural-atlas-hero.png',
+    image: '/media/bitcoin-coin.jpg',
     credit: null,
   },
 ]
@@ -226,36 +254,23 @@ export function HomeClient({ writings, campaign }: HomeClientProps) {
                 <span>in public.</span>
               </motion.h1>
               <motion.p variants={HERO_ITEM} className="relaunch-hero-summary">
-                I build products, small AI systems, and essays around the things I am trying to understand.
-                Tooth Fairy Network is the flagship. This site is the field notebook.
+                I build products and small AI systems. I write about what I am learning, from childhood
+                rituals to Solana and personal AI. The site agent is the quickest way to ask what I am
+                working on or leave me a note.
               </motion.p>
               <motion.div variants={HERO_ITEM} className="relaunch-hero-links">
-                <a href="#now">See what is moving <Arrow /></a>
+                <button type="button" onClick={() => openAgent()}>Ask the site agent <Arrow /></button>
                 <Link href="/writings">Read the field notes</Link>
               </motion.div>
             </div>
 
-            <motion.div variants={HERO_ITEM} id="agent" className="relaunch-agent-panel">
-              <div className="relaunch-agent-status">
-                <span className="relaunch-live-dot" />
-                <span>SITE AGENT</span>
-                <span>PUBLIC KNOWLEDGE ONLY</span>
-              </div>
-              <div className="relaunch-agent-copy">
-                <p className="hub-eyebrow">A DIRECT DOORWAY</p>
-                <h2>Ask my agent</h2>
-                <p>It knows my public projects and writing. It can answer a question or pass a note to me.</p>
-              </div>
-              <button type="button" className="relaunch-agent-input" onClick={() => openAgent()}>
-                <span>Ask what I’m building, learning, or available to help with.</span>
-                <span className="relaunch-agent-submit"><Arrow /></span>
-              </button>
-              <div className="relaunch-agent-prompts" aria-label="Suggested questions">
-                {CHAT_SUGGESTIONS.slice(0, 3).map((prompt) => (
-                  <button type="button" key={prompt} onClick={() => openAgent(prompt)}>{prompt}</button>
-                ))}
-              </div>
-              <p className="relaunch-agent-disclosure">Messages may be stored and forwarded to Sathian. Please do not send secrets.</p>
+            <motion.div
+              variants={HERO_ITEM}
+              id="agent"
+              className="relaunch-agent-host"
+              aria-label="Sathian's site agent"
+            >
+              <div id="home-agent-slot" />
             </motion.div>
           </motion.div>
         </section>
@@ -271,12 +286,15 @@ export function HomeClient({ writings, campaign }: HomeClientProps) {
                 <div className="relaunch-campaign-grid">
                   <div className="relaunch-campaign-copy">
                     <p className="hub-eyebrow">TXODDS WORLD CUP</p>
-                    <h2 id="txodds-campaign-title">Find your World Cup build</h2>
-                    <p>{campaign.description}</p>
+                    <h2 id="txodds-campaign-title">Start with what you already know.</h2>
+                    <p>
+                      Tell the site agent your background, interests, and available time. It can suggest a
+                      realistic track, three ideas, or a useful way to join a team.
+                    </p>
                   </div>
                   <div className="relaunch-campaign-actions">
                     <button type="button" onClick={() => openAgent(campaign.prompts[0])}>
-                      Ask the agent to find my track <Arrow />
+                      Ask what I could build <Arrow />
                     </button>
                     {campaign.referralUrl ? (
                       <a href={campaign.referralUrl} target="_blank" rel="noopener noreferrer">
@@ -306,8 +324,7 @@ export function HomeClient({ writings, campaign }: HomeClientProps) {
               <SectionIntro
                 index="01"
                 label="NOW"
-                title="Three things with a pulse."
-                note="The site stays small on purpose. These are the projects receiving real attention now."
+                title="Projects with a pulse."
               />
               <div className="relaunch-projects">
                 {PROJECTS.map((project, index) => {
@@ -361,8 +378,7 @@ export function HomeClient({ writings, campaign }: HomeClientProps) {
               <SectionIntro
                 index="02"
                 label="Building in public"
-                title="A dated record, including the misses."
-                note="Short build notes replace the old events module. Each one records what changed, what I learned, and what comes next."
+                title="Active building logs."
               />
               <div className="relaunch-timeline">
                 {BUILD_NOTES.map((note) => (
@@ -376,12 +392,28 @@ export function HomeClient({ writings, campaign }: HomeClientProps) {
                         <span style={{ color: note.accent }}>{note.status}</span>
                         <span>{note.project}</span>
                       </div>
-                      <h3><Link href={note.href}>{note.title}</Link></h3>
+                      <h3>
+                        {note.external ? (
+                          <a href={note.href} target="_blank" rel="noopener noreferrer">{note.title}</a>
+                        ) : (
+                          <Link href={note.href}>{note.title}</Link>
+                        )}
+                      </h3>
                       <dl>
                         <div><dt>What changed</dt><dd>{note.changed}</dd></div>
                         <div><dt>What I learned</dt><dd>{note.learned}</dd></div>
                         <div><dt>Next</dt><dd>{note.next}</dd></div>
                       </dl>
+                      {note.proofHref && note.proofLabel && (
+                        <a
+                          className="relaunch-note-proof"
+                          href={note.proofHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {note.proofLabel} <Arrow />
+                        </a>
+                      )}
                     </div>
                   </article>
                 ))}

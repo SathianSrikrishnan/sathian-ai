@@ -30,7 +30,7 @@ export const articles: Article[] = [
     title: 'The Gap Between Weeks',
     titleHighlight: 'Gap',
     slug: 'the-gap-between-weeks',
-    date: '2026-07-14',
+    date: '2026-07-04',
     author: 'Sathian',
     domains: ['fatherhood', 'product building', 'Solana'],
     description: 'A loose tooth, a missed ritual, and the failed versions that taught me what Tooth Fairy Network was actually for.',

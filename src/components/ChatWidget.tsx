@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
 import { CHAT_SUGGESTIONS } from '@/lib/constants'
@@ -104,7 +105,7 @@ async function uploadAgentFile(input: {
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: 'I can answer from Sathian’s public projects and writing, or pass a note to him.' },
+    { role: 'bot', text: 'Ask about Sathian’s reviewed public projects, writing, or current work. You can also leave him a note.' },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -115,6 +116,8 @@ export function ChatWidget() {
   const sendRef = useRef<(text: string) => void>(() => {})
   const abortRef = useRef<AbortController | null>(null)
   const pathname = usePathname()
+  const isHomepage = pathname === '/'
+  const [homeTarget, setHomeTarget] = useState<HTMLElement | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [fileError, setFileError] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
@@ -262,6 +265,17 @@ export function ChatWidget() {
     if (open && inputRef.current) inputRef.current.focus()
   }, [open])
 
+  useEffect(() => {
+    if (!isHomepage) {
+      setHomeTarget(null)
+      return
+    }
+
+    const target = document.getElementById('home-agent-slot')
+    setHomeTarget(target)
+    setOpen(true)
+  }, [isHomepage])
+
   // Listen for custom events from other components (e.g. homepage chat prompts)
   useEffect(() => {
     const handler = (e: Event) => {
@@ -271,6 +285,7 @@ export function ChatWidget() {
         setTimeout(() => sendRef.current(detail.message), 300)
       } else {
         setOpen(true)
+        setTimeout(() => inputRef.current?.focus(), 50)
       }
     }
     window.addEventListener('open-chat', handler)
@@ -291,10 +306,8 @@ export function ChatWidget() {
     isTfnDomain
   ) return null
 
-  return (
-    <>
-      {/* Chat panel */}
-      <AnimatePresence>
+  const chatSurface = (
+    <AnimatePresence>
       {open && (
         <motion.div
           key="chat-panel"
@@ -302,18 +315,15 @@ export function ChatWidget() {
           role="dialog"
           aria-modal="false"
           aria-labelledby="site-agent-title"
-          className="fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl sm:w-[440px]"
+          className={isHomepage
+            ? 'site-agent-panel site-agent-panel--inline'
+            : 'site-agent-panel site-agent-panel--floating fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden sm:w-[440px]'}
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          style={{
-            background: '#ffffff',
-            boxShadow: '0 25px 80px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.08)',
-            border: '1px solid rgba(0,0,0,0.06)',
-          }}
         >
           {/* Header */}
-          <div className="px-6 pt-5 pb-4 border-b border-gray-100">
+          <div className="site-agent-header px-6 pt-5 pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full relative overflow-hidden flex-shrink-0 shadow-sm">
@@ -325,20 +335,18 @@ export function ChatWidget() {
                   }} />
                 </div>
                 <div>
-                  <h2 id="site-agent-title" className="text-[15px] font-semibold text-gray-900">Sathian’s site agent</h2>
-                  <a href="mailto:hi@sathian.ai" className="text-xs text-gray-500 hover:text-gray-900 transition-colors">
-                    hi@sathian.ai
-                  </a>
+                  <p className="site-agent-eyebrow">PUBLIC CONTEXT / PRIVATE INTAKE</p>
+                  <h2 id="site-agent-title" className="text-[17px] font-semibold">Sathian’s site agent</h2>
                 </div>
               </div>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="site-agent-close w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none">
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
               </button>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="min-h-[180px] flex-1 space-y-3 overflow-y-auto bg-gray-50/50 px-6 py-5 sm:min-h-[240px] sm:max-h-[440px]">
+          <div className="site-agent-messages min-h-[180px] flex-1 space-y-3 overflow-y-auto px-6 py-5 sm:min-h-[240px] sm:max-h-[440px]">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'bot' ? 'justify-start' : 'justify-end'} gap-2.5`}>
                 {msg.role === 'bot' && (
@@ -347,11 +355,7 @@ export function ChatWidget() {
                     <img src="/sathian-profile.png" alt="" className="w-full h-full object-cover" />
                   </div>
                 )}
-                <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed ${
-                  msg.role === 'bot'
-                    ? 'bg-white text-gray-700 border border-gray-100 shadow-sm'
-                    : 'bg-gray-900 text-white'
-                }`} style={{
+                <div className={`site-agent-message site-agent-message--${msg.role} max-w-[82%] px-4 py-3 text-[14px] leading-relaxed`} style={{
                   borderTopLeftRadius: msg.role === 'bot' ? '4px' : undefined,
                   borderTopRightRadius: msg.role === 'user' ? '4px' : undefined,
                 }}>{msg.text}</div>
@@ -363,7 +367,7 @@ export function ChatWidget() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/sathian-profile.png" alt="" className="w-full h-full object-cover" />
                 </div>
-                <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm" style={{ borderTopLeftRadius: '4px' }}>
+                <div className="site-agent-message site-agent-message--bot px-4 py-3" style={{ borderTopLeftRadius: '4px' }}>
                   <div className="flex gap-1">
                     <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '0ms' }} />
                     <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -378,7 +382,7 @@ export function ChatWidget() {
               <div className="flex flex-wrap gap-2 pt-2">
                 {SUGGESTIONS.map((s) => (
                   <button key={s} type="button" onClick={() => handleSend(s)}
-                    className="px-3 py-1.5 rounded-full text-[12px] bg-white border border-gray-200 text-gray-600 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+                    className="site-agent-suggestion px-3 py-1.5 text-[12px] cursor-pointer transition-colors focus-visible:outline-none">
                     {s}
                   </button>
                 ))}
@@ -387,7 +391,7 @@ export function ChatWidget() {
           </div>
 
           {/* Input */}
-          <div className="px-5 py-4 border-t border-gray-100 bg-white">
+          <div className="site-agent-composer px-5 py-4">
             {file && (
               <div data-file-intake className="mb-3 border-l-2 border-amber-500 bg-amber-50/70 px-3 py-3">
                 <div className="flex items-start justify-between gap-3">
@@ -412,7 +416,7 @@ export function ChatWidget() {
               <label
                 title={AGENT_FILE_INTAKE_CONFIGURED ? 'Attach one private file' : 'Secure file verification is not active yet'}
                 aria-disabled={!AGENT_FILE_INTAKE_CONFIGURED}
-                className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border transition-colors focus-within:ring-2 focus-within:ring-gray-900/30 ${
+                className={`site-agent-attach flex h-11 w-11 flex-shrink-0 items-center justify-center border transition-colors ${
                   AGENT_FILE_INTAKE_CONFIGURED
                     ? 'cursor-pointer border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300 hover:bg-gray-100'
                     : 'cursor-not-allowed border-gray-100 bg-gray-50 text-gray-300'
@@ -439,21 +443,35 @@ export function ChatWidget() {
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
                 placeholder="Ask a question or leave a note…"
                 maxLength={2000}
-                className="flex-1 px-4 py-3 rounded-xl text-sm bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30 transition-colors"
+                className="site-agent-input flex-1 px-4 py-3 text-sm focus-visible:outline-none transition-colors"
               />
-              <button type="button" onClick={() => handleSend()} aria-label="Send message" className="w-11 h-11 rounded-xl flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 bg-gray-900 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/30">
+              <button type="button" onClick={() => handleSend()} aria-label="Send message" className="site-agent-send w-11 h-11 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
               </button>
             </div>
-            <p className="mt-2 px-1 text-[10px] leading-relaxed text-gray-500">
+            <p className="site-agent-disclosure mt-2 px-1 text-[10px] leading-relaxed">
               By sending, you agree this message may be stored and forwarded to Sathian. One permitted file can be held privately for 30 days. Please do not send secrets.
             </p>
           </div>
         </motion.div>
       )}
-      </AnimatePresence>
+    </AnimatePresence>
+  )
+
+  const inlineSurface = open ? chatSurface : (
+    <button type="button" className="site-agent-reopen" onClick={() => setOpen(true)}>
+      <span className="site-agent-reopen__status"><span /> SITE AGENT</span>
+      <strong>Open the site agent</strong>
+      <span>Ask about the work or leave Sathian a note.</span>
+    </button>
+  )
+
+  return (
+    <>
+      {isHomepage ? (homeTarget ? createPortal(inlineSurface, homeTarget) : null) : chatSurface}
 
       {/* Floating button */}
+      {!isHomepage && (
       <motion.button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -475,6 +493,7 @@ export function ChatWidget() {
           <img src="/sathian-profile.png" alt="Open Sathian’s site agent" className="w-full h-full object-cover" />
         )}
       </motion.button>
+      )}
     </>
   )
 }
