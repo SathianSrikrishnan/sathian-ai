@@ -18,11 +18,16 @@ function migrationContaining(pattern: RegExp) {
 }
 
 describe('Supabase migration manifest', () => {
-  it('uses one unique numeric version for every migration', () => {
+  it('uses one unique numeric version for every migration, including the shared legacy baseline', () => {
     const versions = migrationFiles.map(migrationVersion)
 
-    expect(versions).toEqual(versions.map((version) => expect.stringMatching(/^\d{8,14}$/)))
+    expect(versions).toEqual(versions.map((version) => expect.stringMatching(/^\d{4,14}$/)))
     expect(new Set(versions).size).toBe(versions.length)
+    expect(migrationFiles.slice(0, 3)).toEqual([
+      '0001_initial_schema.sql',
+      '0002_family_workspace.sql',
+      '0003_family_garden_savings.sql',
+    ])
   })
 
   it('creates the public-agent schema before dependent migrations alter it', () => {
