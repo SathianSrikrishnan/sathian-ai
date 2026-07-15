@@ -330,6 +330,9 @@ describe('public agent message route', () => {
 
   it('uses the service-only durable message-rate RPC in the deployed route', () => {
     expect(routeSource).toContain("rpc('agent_consume_message_rate_limit'")
+    expect(routeSource).toContain('PUBLIC_AGENT_REQUESTS_PER_HOUR')
+    expect(routeSource).toContain('PUBLIC_AGENT_MODEL_CALLS_PER_DAY')
+    expect(routeSource).toContain('consumeGlobalModelQuota')
     expect(routeSource).toMatch(/typeof data !== 'boolean'\s*\?\s*true\s*:\s*!data/)
     expect(routeSource).not.toMatch(/const requestTimes = new Map/)
   })

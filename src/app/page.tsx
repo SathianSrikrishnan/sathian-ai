@@ -1,6 +1,5 @@
 import { HomeClient, type HomeWriting } from '@/components/home/HomeClient'
 import { getPublishedArticles } from '@/lib/articles-db'
-import { getTxOddsCampaign } from '@/lib/campaigns/txodds'
 
 export const revalidate = 60
 
@@ -14,7 +13,5 @@ export default async function Home() {
     readTime: article.readTime,
     accent: article.theme.accent,
   }))
-  const campaign = getTxOddsCampaign()
-
-  return <HomeClient writings={writings} campaign={campaign} />
+  return <HomeClient writings={writings} />
 }

@@ -42,8 +42,12 @@ def exercise(page, screenshot_name: str):
     ))
 
     page.goto(BASE_URL, wait_until="networkidle")
-    page.get_by_role("button", name="Open chat").click()
     panel = page.locator("[data-chat-panel]")
+    if not panel.is_visible():
+        open_button = page.get_by_role("button", name="Open the site agent")
+        if not open_button.is_visible():
+            open_button = page.get_by_role("button", name="Open chat")
+        open_button.click()
     panel.get_by_text("By sending, you agree this message may be stored and forwarded to Sathian.").wait_for()
     page.get_by_placeholder("Ask a question or leave a note…").fill("Browser verification message")
     page.get_by_role("button", name="Send message").click()

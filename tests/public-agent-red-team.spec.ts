@@ -59,9 +59,9 @@ test.describe('public agent privacy red team', () => {
       })
     })
 
-    await page.goto('/')
-    await page.getByRole('button', { name: 'Open chat' }).click()
+    await page.goto('/', { waitUntil: 'networkidle' })
     const panel = page.locator('[data-chat-panel]')
+    await expect(panel).toBeVisible()
     const input = panel.locator('input[name="message"]')
 
     for (const fixture of blockedFixtures) {

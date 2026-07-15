@@ -38,6 +38,49 @@ describe('bounded public answer service', () => {
     expect(prompt).not.toContain('local second brain')
   })
 
+  it('bounds the complete public-memory prompt even when reviewed cards are oversized', () => {
+    const oversizedCards = Array.from({ length: 30 }, (_, index): PublicMemoryCard => ({
+      ...tfnCard,
+      id: `card-${index}`,
+      slug: `card-${index}`,
+      title: `Tooth Fairy Network ${index}`,
+      body: `Tooth Fairy Network ${'x'.repeat(4000)}`,
+      source: { ...tfnCard.source, ref: `${tfnCard.source.ref}?card=${index}` },
+    }))
+
+    const prompt = buildAgentPrompt({ cards: oversizedCards, page: '/', policy })
+
+    expect(prompt.length).toBeLessThanOrEqual(12_000)
+    expect(prompt).toContain('Tooth Fairy Network 0')
+  })
+
+  it('sends only cards relevant to the visitor question to the model', async () => {
+    const unrelatedCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'card-garden',
+      slug: 'lex-rooftop-garden',
+      title: 'Lex Rooftop Garden',
+      body: 'A resident-led garden companion for 45 Carlton.',
+      tags: ['garden', 'community'],
+      source: { ref: 'https://garden.sathian.ai', kind: 'published_page' },
+    }
+    const model = {
+      generate: vi.fn(async (_input: { system: string }) => 'A family-memory ritual.'),
+    }
+
+    await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [unrelatedCard, tfnCard],
+    }, { model })
+
+    expect(model.generate).toHaveBeenCalledWith(expect.objectContaining({
+      system: expect.stringContaining(tfnCard.body),
+    }))
+    expect(model.generate.mock.calls[0]?.[0]?.system).not.toContain(unrelatedCard.body)
+  })
+
   it("identifies itself as Sathian's site agent rather than Sathian", () => {
     const prompt = buildAgentPrompt({ cards: [tfnCard], page: '/', policy })
 

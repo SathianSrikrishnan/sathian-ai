@@ -39,15 +39,20 @@ function meaningfulTokens(message: string): string[] {
     .filter((token) => token.length >= 3 && !STOP_WORDS.has(token))
 }
 
-function hasRelevantCard(message: string, cards: PublicMemoryCard[]): boolean {
-  if (/\b(who are you|what are you|are you sathian)\b/i.test(message)) return true
+function relevantCards(message: string, cards: PublicMemoryCard[]): PublicMemoryCard[] {
+  if (/\b(who are you|what are you|are you sathian)\b/i.test(message)) {
+    const identityCards = cards.filter((card) =>
+      card.tags.some((tag) => ['bio', 'site-agent', 'public-context'].includes(tag)),
+    )
+    return (identityCards.length > 0 ? identityCards : cards).slice(0, 12)
+  }
   const tokens = meaningfulTokens(message)
-  if (tokens.length === 0) return false
+  if (tokens.length === 0) return []
 
-  return cards.some((card) => {
+  return cards.filter((card) => {
     const haystack = `${card.title} ${card.body} ${card.tags.join(' ')}`.toLowerCase()
     return tokens.some((token) => haystack.includes(token))
-  })
+  }).slice(0, 12)
 }
 
 function uniqueSources(cards: PublicMemoryCard[]): string[] {
@@ -77,7 +82,8 @@ export async function answerAgentQuestion(
     timeoutMs?: number
   },
 ): Promise<AgentAnswerResult> {
-  if (!hasRelevantCard(input.message, input.cards)) {
+  const cards = relevantCards(input.message, input.cards)
+  if (cards.length === 0) {
     return { answer: SAFE_UNKNOWN, sources: [], unknown: true, modelUsed: false }
   }
 
@@ -88,7 +94,7 @@ export async function answerAgentQuestion(
   try {
     const answer = await Promise.race([
       options.model.generate({
-        system: buildAgentPrompt({ cards: input.cards, page: input.page, policy: input.policy }),
+        system: buildAgentPrompt({ cards, page: input.page, policy: input.policy }),
         user: input.message,
         maxTokens: Math.min(Math.max(options.maxTokens ?? ABSOLUTE_MAX_TOKENS, 1), ABSOLUTE_MAX_TOKENS),
         signal: controller.signal,
@@ -103,7 +109,7 @@ export async function answerAgentQuestion(
 
     return {
       answer: normalized,
-      sources: uniqueSources(input.cards),
+      sources: uniqueSources(cards),
       unknown: false,
       modelUsed: true,
     }

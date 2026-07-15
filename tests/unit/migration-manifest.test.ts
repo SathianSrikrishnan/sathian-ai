@@ -60,4 +60,14 @@ describe('Supabase migration manifest', () => {
 
     expect(storageLimitMigration).toBeDefined()
   })
+
+  it('retires the two TxODDS campaign cards without deleting public-memory history', () => {
+    const retirementMigration = migrationContaining(/txodds-canada-referral-sprint/i)
+
+    expect(retirementMigration).toBeDefined()
+    const source = readFileSync(new URL(retirementMigration!, migrationsUrl), 'utf8')
+    expect(source).toMatch(/update\s+public_memory_cards[\s\S]*status\s*=\s*'retired'/i)
+    expect(source).toContain('txodds-world-cup-hackathon')
+    expect(source).not.toMatch(/delete\s+from\s+public_memory_cards/i)
+  })
 })

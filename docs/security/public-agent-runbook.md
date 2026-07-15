@@ -4,7 +4,7 @@
 
 This runbook covers the public site agent, visitor intake, quarantined attachments, Telegram delivery, retention review, and the private Studio control room.
 
-The current release candidate is local only. The retention schedule is disabled and remains behind explicit approval. No migration, secret, external destination, or production deployment is activated by this work.
+The approved visual baseline remains frozen. The 2026-07-15 launch-safety cutover may activate text-only public answers and note intake. The retention schedule, Telegram destination, and file intake remain disabled and behind separate approval and proof.
 
 ## Operating boundaries
 
@@ -17,6 +17,9 @@ The current release candidate is local only. The retention schedule is disabled 
 - Studio pages and Studio APIs require an allowlisted account at AAL2.
 - The Telegram worker receives a short preview and cleared metadata only. It never receives raw attachment bytes.
 - Text requests use the service-only `agent_consume_message_rate_limit` RPC. The limiter is durable across serverless instances and fails closed if the visitor hash or database decision is unavailable.
+- A visitor may make at most 10 requests per rolling hour.
+- Only relevant reviewed cards enter a model prompt, the full prompt is capped at 12,000 characters, and answers remain capped at 400 completion tokens.
+- A separate non-visitor quota row permits at most 100 actual model calls per rolling 24 hours. A denied or unavailable quota decision stops the model call.
 - The retired `/api/chat` path returns HTTP 410 and cannot call a model or Telegram.
 
 ## Studio signals

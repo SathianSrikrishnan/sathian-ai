@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-15
 Branch: `feat/public-agent-portal`
-Production: unchanged
-Decision state: **OpenAI protected-preview agent proof passed; TxODDS campaign completion, final review, and production activation remain separate gates**
+Production: unchanged until the approved 2026-07-15 cutover completes
+Decision state: **Launch-safety gate approved; TxODDS retired; production verification and cutover in progress**
 
 ## Read this first
 
@@ -14,10 +14,10 @@ Turn `sathian.ai` into a public field notebook with Tooth Fairy Network as the f
 ### Where we are
 
 1. **The new site and agent are built on the candidate branch.** The homepage, TFN origin essay, build notes, reviewed public memory, receipt-backed intake, private Studio, one-file quarantine, and Telegram delivery worker are present.
-2. **The additive database foundation is live.** The reviewed migrations were applied to the mapped production Supabase project, eight public-memory cards were seeded, and the existing `sathians@gmail.com` Auth user received the `studio_admin` application role.
-3. **The OpenAI candidate is live on a protected Vercel preview.** `https://sathian-ai-agent-review-20260714.vercel.app` is access-protected and points to deployment `dpl_E2cpoLsX3fz7tnkRZKx3BSbcgmJY` from commit `e3e9853`.
+2. **The additive database foundation is live.** The reviewed migrations were applied to the mapped production Supabase project, eight public-memory records were seeded, and the existing `sathians@gmail.com` Auth user received the `studio_admin` application role. The two expired TxODDS records are being retired rather than deleted.
+3. **The approved visual baseline is live on a protected Vercel preview.** `https://sathian-ai-agent-review-20260714.vercel.app` is access-protected and points to deployment `dpl_7mwDN5mGtmN8e3TuMnGxf24SeFZM` from commit `1743aa2`.
 4. **The public answer path now uses the approved `OPENAI_API_KEY`.** The invalid Anthropic credential is no longer on the public-agent route. OpenRouter remains outside this launch.
-5. **Production web traffic has not changed.** Vercel still serves the July 12 deployment. Turnstile, Telegram delivery, file activation, TOTP enrollment, production Vercel deployment, Substack publication, and public posting remain incomplete or approval-gated.
+5. **Production web traffic has not changed yet.** Vercel still serves the July 12 deployment while the approved safety cutover is verified. Telegram delivery, file activation, TOTP enrollment, Substack publication, and public posting remain separate later gates.
 
 ### What this goal does not include
 
@@ -34,13 +34,13 @@ Those remain separate, deliberate workstreams.
 | --- | --- | --- |
 | Homepage and project imagery | Present in protected candidate | Final review, then approved production deploy |
 | TFN origin essay | Ready in site code | Final copy review and separate Substack publication decision |
-| Public answer agent | OpenAI protected-preview proof passed | Add the reviewed TxODDS campaign card after the referral URL arrives |
+| Public answer agent | OpenAI protected-preview proof passed; 10 requests/IP/hour; 100 model calls/24 hours; bounded prompt | Production smoke test and first-hour monitoring |
 | Notes and receipts | Protected-preview receipt and idempotency proof passed | Telegram delivery remains a later reliability layer |
 | Telegram delivery | Worker code ready; Worker does not exist in Cloudflare | Approve bot/topic setup, secrets, deploy, and one private-topic proof |
 | Private Studio | Existing user and role configured | Sathian enrolls TOTP and proves AAL2 |
 | File intake | Ready locally and independently default-off | Create Turnstile, configure both flags, and prove one benign file plus one blocked file |
 | Retention | Read-only dry run ready | Review a real report later; destructive cleanup and scheduling stay disabled |
-| Production | July 12 Vercel deployment remains live | Explicit activation approval |
+| Production | July 12 Vercel deployment remains live during verification | One approved cutover after all checks pass |
 
 ## Current production and external-state audit
 
@@ -48,7 +48,7 @@ Verified on 2026-07-14:
 
 - `https://sathian.ai` currently leads with **“AI-native systems for real work.”** It is not the new “Proof of work, in public” candidate.
 - Vercel production deployment `dpl_9fz7eufZGkZPmF3559gtN1z9N3VR` is **Ready**, created July 12, 2026, and owns `sathian.ai`, `www.sathian.ai`, and the existing aliases.
-- The candidate is on the isolated `feat/public-agent-portal` worktree; the protected review alias points to deployment `dpl_E2cpoLsX3fz7tnkRZKx3BSbcgmJY` from commit `e3e9853`.
+- The candidate is on the isolated `feat/public-agent-portal` worktree; the protected review alias points to deployment `dpl_7mwDN5mGtmN8e3TuMnGxf24SeFZM` from commit `1743aa2`.
 - the reviewed Supabase migrations, eight public-memory cards, and the existing Studio user's application role are live;
 - the existing Vercel `OPENAI_API_KEY` is available in Production, Preview, and Development scopes, without exposing its value;
 - Cloudflare authentication works, but `sathian-ai-telegram-delivery` does not exist and therefore has no deployed version or secrets;
@@ -74,7 +74,9 @@ The replay confirmed:
 
 - 12 expected new or extended public tables are present;
 - `agent-quarantine` reports `public = false`;
-- the durable message limiter allows attempts 1 through 30 in the one-hour window and rejects attempt 31;
+- the durable visitor limiter is configured for 10 requests in a one-hour window;
+- the same service-only durable limiter enforces a separate global ceiling of 100 actual model calls in a rolling 24-hour window;
+- reviewed memory passed to the model is relevance-filtered and the complete prompt is capped at 12,000 characters;
 - migration IDs are unique and the base agent schema precedes every dependent migration.
 
 Remote preflight must still run `supabase migration list` and `supabase db push --dry-run`. If remote history differs, stop. Do not use `migration repair` or apply SQL manually without a reviewed reconciliation.
@@ -87,7 +89,7 @@ No secret values belong in this document or chat.
 
 | Variable | Purpose | Initial state |
 | --- | --- | --- |
-| `PUBLIC_AGENT_ENABLED` | Master server-side agent gate | `false` until protected-preview proof |
+| `PUBLIC_AGENT_ENABLED` | Master server-side agent gate | `true` only in the approved Production deployment |
 | `AGENT_FILE_INTAKE_ENABLED` | Server-side file-only kill switch | `false` until file proof |
 | `NEXT_PUBLIC_AGENT_FILE_INTAKE_ENABLED` | Shows file controls in the built client | `false` until file proof |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Required |
@@ -315,4 +317,4 @@ Fresh 2026-07-15 protected-preview proof on deployment `dpl_E2cpoLsX3fz7tnkRZKx3
 - one synthetic launch-verification note returned receipt `SA-2UR99ATWFD` with `deliveryStatus: queued`;
 - repeating that note with the same idempotency key returned the same receipt rather than creating a second public receipt.
 
-The TxODDS referral card cannot be completed until Sathian supplies the unique referral URL. Final visual review, TOTP enrollment, and explicit production approval also remain.
+The TxODDS campaign was retired on 2026-07-15 after Sathian chose not to rush a late hackathon entry. The approved baseline, TFN milestone, public agent, writing, and building logs remain unchanged. TOTP enrollment, Telegram delivery, file activation, Substack, and public posting remain separate gates.

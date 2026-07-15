@@ -30,10 +30,11 @@ describe('site-agent-first editorial pass', () => {
     expect(home).not.toContain('A dated record, including the misses.')
   })
 
-  it('frames the TxODDS prompt around the visitor\'s existing experience', () => {
-    expect(home).toContain('Start with what you already know.')
-    expect(home).toContain('Ask what I could build')
-    expect(home).not.toContain('Find your World Cup build')
+  it('retires the short-lived TxODDS campaign without changing the editorial baseline', () => {
+    expect(home).not.toMatch(/TxODDS|txodds|World Cup build/)
+    expect(memory).not.toContain('getTxOddsCampaignMemoryCards')
+    expect(home).toContain('Projects with a pulse.')
+    expect(home).toContain('Active building logs.')
   })
 
   it('uses one shared editorial shell for About and Automation', () => {

@@ -17,6 +17,12 @@ import {
   createOperationalAuditRow,
   createOperationalLog,
 } from '@/lib/agent/observability'
+import {
+  PUBLIC_AGENT_MODEL_CALLS_PER_DAY,
+  PUBLIC_AGENT_REQUESTS_PER_HOUR,
+  consumeGlobalModelQuota,
+  type AgentRateLimitRpcClient,
+} from '@/lib/agent/rate-limits'
 import { getPublicMemoryCards } from '@/lib/memory'
 
 export const runtime = 'nodejs'
@@ -43,7 +49,7 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
     if (!visitorHash) return true
     const { data, error } = await serviceClient.rpc('agent_consume_message_rate_limit', {
       p_visitor_hash: visitorHash,
-      p_limit: 30,
+      p_limit: PUBLIC_AGENT_REQUESTS_PER_HOUR,
       p_window_seconds: 3600,
     })
     return error || typeof data !== 'boolean' ? true : !data
@@ -55,6 +61,11 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
   const model: AnswerModelAdapter = {
     async generate(input) {
       if (!openai) throw new Error('answer_model_unavailable')
+      const quotaAvailable = await consumeGlobalModelQuota(
+        serviceClient as unknown as AgentRateLimitRpcClient,
+        PUBLIC_AGENT_MODEL_CALLS_PER_DAY,
+      )
+      if (!quotaAvailable) throw new Error('answer_model_daily_quota')
       const response = await openai.chat.completions.create({
         model: 'gpt-5.4-mini',
         max_completion_tokens: input.maxTokens,

@@ -1,13 +1,37 @@
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
 
+const MAX_PROMPT_CHARS = 12_000
+const MAX_MEMORY_CHARS = 10_000
+const MAX_CARD_BODY_CHARS = 1_500
+
+function bounded(value: string, limit: number): string {
+  return value.trim().slice(0, limit)
+}
+
 function cardBlock(card: PublicMemoryCard): string {
   return [
     '<public-memory-card>',
-    `Title: ${card.title}`,
-    `Fact: ${card.body}`,
-    `Source: ${card.source.ref}`,
+    `Title: ${bounded(card.title, 240)}`,
+    `Fact: ${bounded(card.body, MAX_CARD_BODY_CHARS)}`,
+    `Source: ${bounded(card.source.ref, 600)}`,
     '</public-memory-card>',
   ].join('\n')
+}
+
+function memoryBlock(cards: PublicMemoryCard[]): string {
+  if (cards.length === 0) return '(No approved public cards were returned.)'
+
+  const blocks: string[] = []
+  let length = 0
+  for (const card of cards) {
+    const block = cardBlock(card)
+    const nextLength = length + block.length + (blocks.length === 0 ? 0 : 2)
+    if (nextLength > MAX_MEMORY_CHARS) break
+    blocks.push(block)
+    length = nextLength
+  }
+
+  return blocks.join('\n\n') || '(No approved public cards fit within the prompt budget.)'
 }
 
 export function buildAgentPrompt(input: {
@@ -15,7 +39,7 @@ export function buildAgentPrompt(input: {
   page: string
   policy: AgentPolicyDecision
 }): string {
-  const cards = input.cards.map(cardBlock).join('\n\n') || '(No approved public cards were returned.)'
+  const cards = memoryBlock(input.cards)
 
   return `You are Sathian's site agent. You are not Sathian.
 
@@ -37,5 +61,5 @@ Request context:
 - Deterministic route: ${input.policy.route}
 
 Approved public-memory cards:
-${cards}`
+${cards}`.slice(0, MAX_PROMPT_CHARS)
 }
