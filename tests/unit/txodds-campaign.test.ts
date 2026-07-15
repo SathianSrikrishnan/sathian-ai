@@ -18,6 +18,8 @@ describe('TxODDS launch campaign', () => {
     expect(campaign?.referralUrl).toBeNull()
     expect(campaign?.prompts).toContain('Which TxODDS track fits my background?')
     expect(cards.length).toBeGreaterThanOrEqual(2)
+    expect(cards.map((card) => card.body).join(' ')).toContain('non-technical contributors')
+    expect(cards.map((card) => card.body).join(' ')).toContain('priced probabilities')
     expect(cards.every((card) => card.validUntil === TXODDS_CAMPAIGN_DEADLINE)).toBe(true)
     expect(cards.every((card) => card.source.ref.startsWith('https://superteam.fun/'))).toBe(true)
   })

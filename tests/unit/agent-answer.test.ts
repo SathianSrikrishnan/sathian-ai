@@ -78,6 +78,23 @@ describe('bounded public answer service', () => {
     expect(result.answer).toContain('family-memory ritual')
   })
 
+  it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {
+    const model = {
+      generate: vi.fn(async () => 'Yes — **you can participate**. Ask about a track.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model })
+
+    expect(result.answer).toBe('Yes. You can participate. Ask about a track.')
+    expect(result.answer).not.toContain('—')
+    expect(result.answer).not.toContain('**')
+  })
+
   it('fails closed when the model exceeds its timeout', async () => {
     const model = {
       generate: vi.fn(async () => new Promise<string>(() => undefined)),

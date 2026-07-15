@@ -54,6 +54,16 @@ function uniqueSources(cards: PublicMemoryCard[]): string[] {
   return Array.from(new Set(cards.map((card) => card.source.ref)))
 }
 
+function normalizeAnswerText(value: string): string {
+  return value
+    .trim()
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\s*—\s*([a-z])/g, (_match, next: string) => `. ${next.toUpperCase()}`)
+    .replace(/\s*—\s*/g, '. ')
+    .slice(0, MAX_ANSWER_CHARS)
+}
+
 export async function answerAgentQuestion(
   input: {
     message: string
@@ -88,7 +98,7 @@ export async function answerAgentQuestion(
       }),
     ])
 
-    const normalized = answer.trim().slice(0, MAX_ANSWER_CHARS)
+    const normalized = normalizeAnswerText(answer)
     if (!normalized) throw new Error('empty_answer')
 
     return {
