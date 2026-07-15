@@ -46,7 +46,7 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
       p_limit: 30,
       p_window_seconds: 3600,
     })
-    return error || typeof data !== 'boolean' ? true : data
+    return error || typeof data !== 'boolean' ? true : !data
   }
 
   const anthropic = process.env.ANTHROPIC_API_KEY
