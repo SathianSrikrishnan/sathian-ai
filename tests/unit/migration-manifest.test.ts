@@ -52,4 +52,12 @@ describe('Supabase migration manifest', () => {
     expect(source).toMatch(/grant\s+execute[\s\S]{0,180}agent_consume_message_rate_limit[\s\S]{0,180}service_role/i)
     expect(source).not.toMatch(/grant[\s\S]{0,100}agent_message_rate_limits[\s\S]{0,80}(?:anon|authenticated)/i)
   })
+
+  it('keeps the private quarantine bucket at the five-megabyte launch ceiling', () => {
+    const storageLimitMigration = migrationContaining(
+      /update\s+storage\.buckets[\s\S]{0,220}file_size_limit\s*=\s*5242880/i,
+    )
+
+    expect(storageLimitMigration).toBeDefined()
+  })
 })
