@@ -78,8 +78,8 @@ const cards = [
   {
     slug: 'site-agent-contact',
     title: 'Contact through the site agent',
-    body: 'Visitors may ask the site agent about Sathian’s approved public projects and writing or leave a note. The current chat does not provide a delivery receipt, so email is better for anything time-sensitive.',
-    summary: 'How to use the public site agent honestly.',
+    body: 'Visitors may ask the site agent about Sathian’s approved public projects and writing or leave a note. Accepted notes receive an opaque receipt and are routed to Sathian, but the agent is not an emergency or guaranteed real-time channel.',
+    summary: 'Ask about public work or leave a receipt-backed note for Sathian.',
     tags: ['contact', 'site-agent'],
     source_ref: 'https://sathian.ai/',
     source_kind: 'published_page',
