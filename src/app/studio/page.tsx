@@ -64,6 +64,14 @@ export default function StudioDashboard() {
           <p>Counts only. No visitor text is included.</p>
         </div>
         <dl className={styles.operationMetric}>
+          <dt>Agent turns (24h)</dt>
+          <dd data-testid="agent-turns-24h">{overview?.operations.completedTurns24h ?? '—'}</dd>
+        </dl>
+        <dl className={styles.operationMetric}>
+          <dt>Notes received (24h)</dt>
+          <dd data-testid="intakes-24h">{overview?.operations.intakes24h ?? '—'}</dd>
+        </dl>
+        <dl className={styles.operationMetric}>
           <dt>Model errors (24h)</dt>
           <dd data-testid="model-errors-24h">{overview?.operations.modelErrors24h ?? '—'}</dd>
         </dl>

@@ -27,7 +27,14 @@ describe('typed Studio control room', () => {
     const dashboard = source('../../src/app/studio/page.tsx')
     const data = source('../../src/lib/studio/data.ts')
 
-    for (const label of ['Agent operations', 'Model errors', 'Delivery backlog', 'Blocked uploads']) {
+    for (const label of [
+      'Agent operations',
+      'Agent turns (24h)',
+      'Notes received (24h)',
+      'Model errors',
+      'Delivery backlog',
+      'Blocked uploads',
+    ]) {
       expect(dashboard).toContain(label)
     }
     expect(data).toMatch(/agent_answer_model_failed/)

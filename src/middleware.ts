@@ -50,8 +50,11 @@ export async function middleware(request: NextRequest) {
   const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
   const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
   const isStudioPath = pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')
+  const studioE2eBypass = isStudioPath
+    && process.env.NODE_ENV !== 'production'
+    && process.env.STUDIO_E2E_BYPASS === 'true'
   const publicStudioDecision = isStudioPath ? decideStudioAccess({ pathname }) : null
-  const needsStudioSession = isStudioPath && publicStudioDecision?.kind !== 'allow'
+  const needsStudioSession = isStudioPath && !studioE2eBypass && publicStudioDecision?.kind !== 'allow'
   const hasSupabaseConfig = isSupabaseConfigured()
   let supabaseResponse: NextResponse | null = null
   let studioSession: Awaited<ReturnType<typeof refreshSupabaseSession>> | null = null
@@ -137,7 +140,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // --- Studio authentication ---
-  if (isStudioPath) {
+  if (isStudioPath && !studioE2eBypass) {
     let aal: 'aal1' | 'aal2' | null = null
     if (studioSession?.user) {
       const { data, error } = await studioSession.supabase.auth.mfa.getAuthenticatorAssuranceLevel()

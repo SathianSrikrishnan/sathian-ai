@@ -6,21 +6,57 @@ import { isToothFairyHost } from '@/lib/site-host'
 
 export const dynamic = 'force-dynamic'
 
-export function buildSitemapForHost(host: string, updated = new Date()): MetadataRoute.Sitemap {
+const SITE_RELEASED_AT = new Date('2026-07-15T00:00:00.000Z')
+
+interface PublishedWriting {
+  slug: string
+  date: string
+  updatedAt?: string
+}
+
+function safeDate(value: string | undefined, fallback: Date): Date {
+  if (!value) return fallback
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? fallback : date
+}
+
+export function buildSitemapForHost(
+  host: string,
+  updated = SITE_RELEASED_AT,
+  publishedWritings: PublishedWriting[] = articles,
+): MetadataRoute.Sitemap {
   if (!isToothFairyHost(host)) {
     const base = 'https://sathian.ai'
     const coreRoutes = ['', '/about', '/automation', '/writings', '/links', '/btc-atlas']
-    const writingRoutes = [
-      '/writings/agent-allowance-lab',
-      ...articles.map((article) => `/writings/${article.slug}`),
-    ]
-
-    return [...coreRoutes, ...writingRoutes].map((path, index) => ({
+    const writingDates = publishedWritings.map((article) =>
+      safeDate(article.updatedAt ?? article.date, updated),
+    )
+    const writingIndexUpdated = writingDates.reduce(
+      (latest, date) => date > latest ? date : latest,
+      updated,
+    )
+    const coreEntries = coreRoutes.map((path, index) => ({
       url: `${base}${path}`,
-      lastModified: updated,
+      lastModified: path === '/writings' ? writingIndexUpdated : updated,
       changeFrequency: path === '' || path === '/writings' ? 'weekly' : 'monthly',
       priority: index === 0 ? 1 : path === '/writings' ? 0.9 : 0.7,
-    }))
+    })) as MetadataRoute.Sitemap
+    const writingEntries: MetadataRoute.Sitemap = [
+      {
+        url: `${base}/writings/agent-allowance-lab`,
+        lastModified: updated,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      },
+      ...publishedWritings.map((article) => ({
+        url: `${base}/writings/${article.slug}`,
+        lastModified: safeDate(article.updatedAt ?? article.date, updated),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      })),
+    ]
+
+    return [...coreEntries, ...writingEntries]
   }
 
   const base = 'https://toothfairy.network'
@@ -39,6 +75,15 @@ export function buildSitemapForHost(host: string, updated = new Date()): Metadat
   ]
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return buildSitemapForHost(headers().get('host') ?? '')
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const host = headers().get('host') ?? ''
+  if (isToothFairyHost(host)) return buildSitemapForHost(host)
+
+  const { getPublishedArticles } = await import('@/lib/articles-db')
+  const published = await getPublishedArticles()
+  return buildSitemapForHost(host, SITE_RELEASED_AT, published.map((article) => ({
+    slug: article.slug,
+    date: article.date,
+    updatedAt: article.updatedAt,
+  })))
 }

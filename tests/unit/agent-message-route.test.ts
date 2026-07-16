@@ -328,6 +328,33 @@ describe('public agent message route', () => {
     expect(answerQuestion).toHaveBeenCalledOnce()
   })
 
+  it('records a content-free completed-turn event after a successful answer', async () => {
+    const recordOperationalEvent = vi.fn(async () => undefined)
+    const handler = createAgentMessageHandler({
+      persistIntake: vi.fn(async () => persisted),
+      answerQuestion: vi.fn(async () => ({
+        answer: 'A bounded public answer.',
+        sources: [],
+        unknown: false,
+        modelUsed: true,
+      })),
+      recordOperationalEvent,
+    })
+
+    const response = await handler(request({
+      message: 'What is Tooth Fairy Network?',
+      page: '/',
+    }))
+
+    expect(response.status).toBe(200)
+    expect(recordOperationalEvent).toHaveBeenCalledWith({
+      event: 'agent_turn_completed',
+      route: 'answer',
+      policyVersion: expect.any(String),
+    })
+    expect(JSON.stringify(recordOperationalEvent.mock.calls)).not.toContain('What is Tooth Fairy Network?')
+  })
+
   it('uses the service-only durable message-rate RPC in the deployed route', () => {
     expect(routeSource).toContain("rpc('agent_consume_message_rate_limit'")
     expect(routeSource).toContain('PUBLIC_AGENT_REQUESTS_PER_HOUR')

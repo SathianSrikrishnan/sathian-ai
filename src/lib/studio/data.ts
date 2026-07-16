@@ -95,6 +95,23 @@ async function count(table: string) {
 }
 
 const operationalMetricRepository: OperationalMetricRepository = {
+  async countCompletedTurns(since) {
+    const { count: value, error } = await admin()
+      .from('audit_events')
+      .select('*', { count: 'exact', head: true })
+      .eq('event_type', 'agent_turn_completed')
+      .gte('created_at', since.toISOString())
+    if (error) throw error
+    return value ?? 0
+  },
+  async countIntakes(since) {
+    const { count: value, error } = await admin()
+      .from('agent_intakes')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', since.toISOString())
+    if (error) throw error
+    return value ?? 0
+  },
   async countModelErrors(since) {
     const { count: value, error } = await admin()
       .from('audit_events')

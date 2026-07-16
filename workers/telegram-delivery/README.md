@@ -34,11 +34,11 @@ Unit tests run from the site repository root and use injected fake Supabase and 
 
 ## Approval-gated activation
 
-Do not run these steps until Sathian approves the bot, private test topic, secrets, migration, and Worker deployment:
+Do not run these steps until Sathian approves the bot, private test topic, secrets, and Worker deployment. The reviewed outbox migration is already live as of July 15, 2026.
 
 1. Create a dedicated Telegram bot with no group-admin rights.
 2. Add it only to a private test topic and record the chat/topic identifiers.
-3. Apply the reviewed Supabase migration.
+3. Decide explicitly whether the queued synthetic launch receipt `SA-FNVEQGT1R7` will be the first private delivery proof or will be retired before activation.
 4. Put `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, and `TELEGRAM_TOPIC_ID` into the Worker secret store.
-5. Run one idempotency test in the private topic before connecting the intended intake group.
-6. Deploy the Worker and confirm its content-minimized delivery logs.
+5. Deploy the Worker only after the first-delivery decision, then confirm the content-minimized delivery logs and receipt in the private topic.
+6. Run one fresh idempotency test in the private topic before treating Telegram delivery as live.

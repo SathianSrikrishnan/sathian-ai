@@ -116,6 +116,8 @@ async function mockControlRoomApi(page: Page, homepageMutations: unknown[] = [])
         publicMemory: 3,
         inbox: 1,
         operations: {
+          completedTurns24h: 11,
+          intakes24h: 3,
           modelErrors24h: 2,
           deliveryBacklog: 4,
           blockedUploads: 3,
@@ -198,9 +200,13 @@ test.describe('Studio typed control room', () => {
     }
     await expect(page.getByRole('heading', { name: 'Recent articles' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Agent operations' })).toBeVisible()
+    await expect(page.getByText('Agent turns (24h)')).toBeVisible()
+    await expect(page.getByText('Notes received (24h)')).toBeVisible()
     await expect(page.getByText('Model errors (24h)')).toBeVisible()
     await expect(page.getByText('Delivery backlog')).toBeVisible()
     await expect(page.getByText('Blocked uploads')).toBeVisible()
+    await expect(page.getByTestId('agent-turns-24h')).toHaveText('11')
+    await expect(page.getByTestId('intakes-24h')).toHaveText('3')
     await expect(page.getByTestId('model-errors-24h')).toHaveText('2')
     await expect(page.getByTestId('delivery-backlog')).toHaveText('4')
     await expect(page.getByTestId('blocked-uploads')).toHaveText('3')
@@ -210,13 +216,17 @@ test.describe('Studio typed control room', () => {
     }
   })
 
-  test('shows memory provenance and inbox quarantine state', async ({ page }) => {
+  test('shows public-memory provenance and review state', async ({ page }) => {
     await mockControlRoomApi(page)
 
     await page.goto('/studio/memory')
     await expect(page.getByText('Projects/_knowledge/tooth-fairy-network.md')).toBeVisible()
     await expect(page.getByText('approved', { exact: true }).first()).toBeVisible()
     await expect(page.getByText('Expiry', { exact: true })).toBeVisible()
+  })
+
+  test('shows inbox delivery and attachment quarantine state', async ({ page }) => {
+    await mockControlRoomApi(page)
 
     await page.goto('/studio/inbox')
     await expect(page.getByText('Receipt A4E76C62')).toBeVisible()
@@ -225,7 +235,7 @@ test.describe('Studio typed control room', () => {
     await expect(page.getByText('quarantined', { exact: true })).toBeVisible()
   })
 
-  test('reorders known homepage sections through buttons and keeps build notes structured', async ({ page }) => {
+  test('reorders known homepage sections through buttons', async ({ page }) => {
     const mutations: unknown[] = []
     await mockControlRoomApi(page, mutations)
 
@@ -233,6 +243,10 @@ test.describe('Studio typed control room', () => {
     await page.getByRole('button', { name: 'Move Proof of work, in public. down' }).click()
     await expect.poll(() => mutations.length).toBe(1)
     expect(mutations[0]).toEqual({ kind: 'order', ids: [SECOND_ID, FIRST_ID] })
+  })
+
+  test('keeps build notes in the three-part editorial structure', async ({ page }) => {
+    await mockControlRoomApi(page)
 
     await page.goto('/studio/build-notes')
     const publishedNote = page.getByRole('article').filter({ hasText: 'The chatbot becomes a doorway' })

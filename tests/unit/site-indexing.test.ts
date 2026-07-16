@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 import { describe, expect, it } from 'vitest'
 
 import * as robotsModule from '@/app/robots'
@@ -8,7 +10,7 @@ type RobotsBuilder = (host: string) => {
   sitemap?: string | string[]
 }
 
-type SitemapBuilder = (host: string, updated?: Date) => Array<{ url: string }>
+type SitemapBuilder = (host: string, updated?: Date) => Array<{ url: string; lastModified?: Date | string }>
 
 describe('public-site indexing', () => {
   it('serves a sathian.ai crawler map on the personal domain and previews', () => {
@@ -28,6 +30,22 @@ describe('public-site indexing', () => {
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/writings/the-gap-between-weeks')
     expect(urls.every((url) => url.startsWith('https://sathian.ai'))).toBe(true)
+  })
+
+  it('uses stable modification dates and loads future published Studio articles', () => {
+    const buildSitemap = (sitemapModule as { buildSitemapForHost?: SitemapBuilder }).buildSitemapForHost
+    expect(buildSitemap).toBeTypeOf('function')
+    if (!buildSitemap) return
+
+    const first = buildSitemap('sathian.ai')
+    const second = buildSitemap('sathian.ai')
+    expect(first.map((entry) => String(entry.lastModified))).toEqual(
+      second.map((entry) => String(entry.lastModified)),
+    )
+
+    const source = readFileSync(new URL('../../src/app/sitemap.ts', import.meta.url), 'utf8')
+    expect(source).toMatch(/getPublishedArticles/)
+    expect(source).toMatch(/export default async function sitemap/)
   })
 
   it('preserves the Tooth Fairy crawler map on Tooth Fairy hosts', () => {

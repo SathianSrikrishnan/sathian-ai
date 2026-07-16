@@ -16,6 +16,7 @@ import {
 import {
   createOperationalAuditRow,
   createOperationalLog,
+  type AgentOperationalEvent,
 } from '@/lib/agent/observability'
 import {
   PUBLIC_AGENT_MODEL_CALLS_PER_DAY,
@@ -85,12 +86,16 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
       cards: await getPublicMemoryCards(),
     }, { model }),
     isRateLimited: consumeMessageRateLimit,
-    recordOperationalEvent: async ({ event, errorCode, policyVersion }) => {
-      const operationalEvent = { event, errorCode }
-      console.error(JSON.stringify(createOperationalLog(operationalEvent)))
+    recordOperationalEvent: async (record) => {
+      const operationalEvent: AgentOperationalEvent = record.event === 'agent_answer_model_failed'
+        ? { event: record.event, errorCode: record.errorCode }
+        : { event: record.event, route: record.route }
+      const log = JSON.stringify(createOperationalLog(operationalEvent))
+      if (operationalEvent.event === 'agent_answer_model_failed') console.error(log)
+      else console.info(log)
       const { error } = await serviceClient
         .from('audit_events')
-        .insert(createOperationalAuditRow(operationalEvent, policyVersion))
+        .insert(createOperationalAuditRow(operationalEvent, record.policyVersion))
       if (error) throw error
     },
   })

@@ -6,6 +6,10 @@ const middlewareSource = readFileSync(
   new URL('../../src/middleware.ts', import.meta.url),
   'utf8',
 )
+const playwrightSource = readFileSync(
+  new URL('../../playwright.config.ts', import.meta.url),
+  'utf8',
+)
 
 const studioRouteSources = [
   '../../src/app/api/studio/articles/route.ts',
@@ -14,6 +18,12 @@ const studioRouteSources = [
 ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'))
 
 describe('Studio authorization enforcement', () => {
+  it('allows browser-test bypass only outside production', () => {
+    expect(middlewareSource).toMatch(/NODE_ENV\s*!==\s*'production'/)
+    expect(middlewareSource).toMatch(/STUDIO_E2E_BYPASS\s*===\s*'true'/)
+    expect(playwrightSource).toMatch(/STUDIO_E2E_BYPASS:\s*'true'/)
+  })
+
   it('uses Supabase AAL authorization instead of the legacy password cookie', () => {
     expect(middlewareSource).toMatch(/decideStudioAccess/)
     expect(middlewareSource).toMatch(/getAuthenticatorAssuranceLevel/)

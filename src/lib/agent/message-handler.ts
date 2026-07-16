@@ -179,6 +179,18 @@ export function createAgentMessageHandler({
       }
     }
 
+    if (recordOperationalEvent && policy.route !== 'block') {
+      try {
+        await recordOperationalEvent({
+          event: 'agent_turn_completed',
+          route: policy.route,
+          policyVersion: policy.policyVersion,
+        })
+      } catch {
+        // Activity counts must never expose or invalidate a visitor response.
+      }
+    }
+
     const receipt = persisted?.ok ? createPublicReceipt(persisted) : null
 
     return json({
