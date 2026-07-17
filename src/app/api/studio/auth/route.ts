@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     body && typeof body === 'object' && typeof (body as { email?: unknown }).email === 'string'
       ? (body as { email: string }).email
       : ''
-  const { supabase } = createRouteSupabase(request)
+  const { supabase, response: authResponse } = createRouteSupabase(request)
   const result = await requestStudioMagicLink(
     { email },
     {
@@ -52,7 +52,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 })
   }
 
-  return NextResponse.json({ ok: true, message: ACCEPTED_MESSAGE }, { status: 202 })
+  const acceptedResponse = NextResponse.json(
+    { ok: true, message: ACCEPTED_MESSAGE },
+    { status: 202 },
+  )
+  return copySupabaseCookies(authResponse, acceptedResponse)
 }
 
 export async function DELETE(request: NextRequest) {

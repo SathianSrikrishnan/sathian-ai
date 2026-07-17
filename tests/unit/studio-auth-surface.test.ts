@@ -25,6 +25,13 @@ describe('Studio passwordless entrance', () => {
     expect(authorization).not.toMatch(/headers\.get\(['"]host|x-forwarded-host/i)
   })
 
+  it('returns the PKCE verifier cookie with the accepted magic-link response', () => {
+    const route = source('../../src/app/api/studio/auth/route.ts')
+
+    expect(route).toMatch(/response:\s*authResponse/)
+    expect(route).toMatch(/copySupabaseCookies\(authResponse,\s*acceptedResponse\)/)
+  })
+
   it('exchanges only supported confirmation credentials and removes them from the next URL', () => {
     const confirm = source('../../src/app/studio/auth/confirm/route.ts')
 
