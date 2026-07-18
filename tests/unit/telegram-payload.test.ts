@@ -6,6 +6,9 @@ describe('Telegram intake payload', () => {
   it('contains a short escaped preview and a Studio link', () => {
     const payload = buildTelegramIntakeMessage({
       receiptCode: 'SA-4F9Q2M7K8D',
+      kind: 'contact',
+      displayName: 'Ada <Lovelace>',
+      replyEmail: 'ada@example.com',
       message: `<script>alert('secret')</script>${' longer context'.repeat(50)}`,
       pageContext: '/writing/tooth-fairy-network',
       attachmentCount: 1,
@@ -14,6 +17,9 @@ describe('Telegram intake payload', () => {
 
     expect(payload.parseMode).toBe('HTML')
     expect(payload.text).toContain('SA-4F9Q2M7K8D')
+    expect(payload.text).toContain('Contact request')
+    expect(payload.text).toContain('Ada &lt;Lovelace&gt;')
+    expect(payload.text).toContain('ada@example.com')
     expect(payload.text).toContain('&lt;script&gt;')
     expect(payload.text).not.toContain('<script>')
     expect(payload.text).toContain('https://sathian.ai/studio/inbox?receipt=SA-4F9Q2M7K8D')
@@ -24,6 +30,9 @@ describe('Telegram intake payload', () => {
   it('does not include attachment bytes, object paths, or credentials', () => {
     const payload = buildTelegramIntakeMessage({
       receiptCode: 'SA-4F9Q2M7K8D',
+      kind: 'note',
+      displayName: null,
+      replyEmail: null,
       message: 'Here is the project note.',
       pageContext: '/',
       attachmentCount: 2,
@@ -40,6 +49,9 @@ describe('Telegram intake payload', () => {
   it('surfaces cleared attachment metadata without object paths or file bytes', () => {
     const message = buildTelegramIntakeMessage({
       receiptCode: 'SA-ABC123',
+      kind: 'mixed',
+      displayName: null,
+      replyEmail: null,
       message: 'Please review the attached brief.',
       pageContext: '/',
       attachmentCount: 1,

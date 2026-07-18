@@ -91,6 +91,34 @@ describe('public agent observability', () => {
     expect(JSON.stringify(createOperationalAuditRow(event))).not.toContain('private visitor question')
   })
 
+  it('creates content-free funnel rows without accepting visitor content', () => {
+    const event = {
+      event: 'site_session_started',
+      sessionId: '58d6cd80-547b-4ac2-962c-1ce2518e15fc',
+      page: '/writing',
+      source: 'site',
+      message: 'do not persist this',
+    } as AgentOperationalEvent & Record<string, unknown>
+
+    expect(createOperationalLog(event)).toEqual({
+      event: 'site_session_started',
+      session_id: '58d6cd80-547b-4ac2-962c-1ce2518e15fc',
+      page: '/writing',
+      source: 'site',
+    })
+    expect(createOperationalAuditRow(event)).toEqual({
+      actor_type: 'visitor',
+      event_type: 'site_session_started',
+      policy_version: null,
+      details: {
+        session_id: '58d6cd80-547b-4ac2-962c-1ce2518e15fc',
+        page: '/writing',
+        source: 'site',
+      },
+    })
+    expect(JSON.stringify(createOperationalAuditRow(event))).not.toContain('do not persist this')
+  })
+
   it('loads content-free activity and health metrics over a bounded 24-hour window', async () => {
     const repository = new MemoryMetricRepository()
     const now = new Date('2026-07-14T16:00:00.000Z')

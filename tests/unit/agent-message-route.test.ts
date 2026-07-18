@@ -109,6 +109,44 @@ describe('public agent message route', () => {
     }))
   })
 
+  it('normalizes optional contact information for a consented intake', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const recordOperationalEvent = vi.fn(async () => undefined)
+    const handler = createAgentMessageHandler({ persistIntake, recordOperationalEvent })
+
+    const response = await handler(request({
+      message: 'Please ask Sathian to reply about a collaboration.',
+      page: '/',
+      consent: true,
+      displayName: '  Ada Lovelace  ',
+      replyEmail: '  ADA@Example.COM  ',
+    }))
+
+    expect(response.status).toBe(202)
+    expect(persistIntake).toHaveBeenCalledWith(expect.objectContaining({
+      displayName: 'Ada Lovelace',
+      replyEmail: 'ada@example.com',
+    }))
+    expect(recordOperationalEvent).toHaveBeenCalledWith({
+      event: 'agent_contact_supplied',
+      policyVersion: expect.any(String),
+    })
+  })
+
+  it('rejects a malformed supplied reply email instead of silently dropping it', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const handler = createAgentMessageHandler({ persistIntake })
+    const response = await handler(request({
+      message: 'Please ask Sathian to reply.',
+      page: '/',
+      consent: true,
+      replyEmail: 'not-an-email',
+    }))
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ error: 'Enter a valid reply email or leave it blank.' })
+    expect(persistIntake).not.toHaveBeenCalled()
+  })
+
   it('does not manufacture a receipt when persistence fails', async () => {
     const handler = createAgentMessageHandler({
       persistIntake: vi.fn(async () => ({ ok: false as const, code: 'persistence_failed' as const })),

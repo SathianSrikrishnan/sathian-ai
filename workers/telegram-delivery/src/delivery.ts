@@ -7,6 +7,9 @@ export interface ClaimedDelivery {
   outboxId: string
   idempotencyKey: string
   receiptCode: string
+  kind: 'note' | 'contact' | 'file' | 'mixed'
+  displayName: string | null
+  replyEmail: string | null
   message: string
   pageContext: string
   attachmentCount: number
@@ -78,6 +81,9 @@ export async function processClaimedDelivery(
 ): Promise<DeliveryResult> {
   const message = buildTelegramIntakeMessage({
     receiptCode: delivery.receiptCode,
+    kind: delivery.kind,
+    displayName: delivery.displayName,
+    replyEmail: delivery.replyEmail,
     message: delivery.message,
     pageContext: delivery.pageContext,
     attachmentCount: delivery.attachmentCount,

@@ -87,15 +87,14 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
     }, { model }),
     isRateLimited: consumeMessageRateLimit,
     recordOperationalEvent: async (record) => {
-      const operationalEvent: AgentOperationalEvent = record.event === 'agent_answer_model_failed'
-        ? { event: record.event, errorCode: record.errorCode }
-        : { event: record.event, route: record.route }
+      const { policyVersion, ...event } = record
+      const operationalEvent = event as AgentOperationalEvent
       const log = JSON.stringify(createOperationalLog(operationalEvent))
       if (operationalEvent.event === 'agent_answer_model_failed') console.error(log)
       else console.info(log)
       const { error } = await serviceClient
         .from('audit_events')
-        .insert(createOperationalAuditRow(operationalEvent, record.policyVersion))
+        .insert(createOperationalAuditRow(operationalEvent, policyVersion))
       if (error) throw error
     },
   })

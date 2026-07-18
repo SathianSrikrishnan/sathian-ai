@@ -6,11 +6,18 @@ import {
   type DeliveryFailure,
   type DeliveryRepository,
 } from './delivery'
+import {
+  processDailyReport,
+  type DailyReportMetrics,
+} from './daily-report'
 
 interface ClaimRow {
   outbox_id: string
   idempotency_key: string
   receipt_token: string
+  kind: 'note' | 'contact' | 'file' | 'mixed'
+  display_name: string | null
+  reply_email: string | null
   message: string
   page_context: string
   attachment_count: number
@@ -22,6 +29,18 @@ interface ClaimRow {
 interface TelegramResponse {
   ok: true
   result: { message_id: number }
+}
+
+interface DailyReportRow {
+  site_sessions: number
+  widget_views: number
+  completed_turns: number
+  intakes: number
+  reply_enabled_intakes: number
+  telegram_delivered: number
+  telegram_dead_letters: number
+  delivery_backlog: number
+  model_errors: number
 }
 
 interface ClearedAttachment {
@@ -64,6 +83,9 @@ function isClaimRow(value: unknown): value is ClaimRow {
     typeof row.outbox_id === 'string'
     && typeof row.idempotency_key === 'string'
     && typeof row.receipt_token === 'string'
+    && ['note', 'contact', 'file', 'mixed'].includes(String(row.kind))
+    && (row.display_name === null || typeof row.display_name === 'string')
+    && (row.reply_email === null || typeof row.reply_email === 'string')
     && typeof row.message === 'string'
     && typeof row.page_context === 'string'
     && typeof row.attachment_count === 'number'
@@ -78,6 +100,22 @@ function isTelegramResponse(value: unknown): value is TelegramResponse {
   const response = value as Record<string, unknown>
   if (response.ok !== true || !response.result || typeof response.result !== 'object') return false
   return typeof (response.result as Record<string, unknown>).message_id === 'number'
+}
+
+function isDailyReportRow(value: unknown): value is DailyReportRow {
+  if (!value || typeof value !== 'object') return false
+  const row = value as Record<string, unknown>
+  return [
+    'site_sessions',
+    'widget_views',
+    'completed_turns',
+    'intakes',
+    'reply_enabled_intakes',
+    'telegram_delivered',
+    'telegram_dead_letters',
+    'delivery_backlog',
+    'model_errors',
+  ].every((key) => typeof row[key] === 'number' && Number.isFinite(row[key]))
 }
 
 async function makeReceiptCode(receiptToken: string): Promise<string> {
@@ -134,6 +172,9 @@ class SupabaseDeliveryRepository implements DeliveryRepository {
       outboxId: row.outbox_id,
       idempotencyKey: row.idempotency_key,
       receiptCode: await makeReceiptCode(row.receipt_token),
+      kind: row.kind,
+      displayName: row.display_name,
+      replyEmail: row.reply_email,
       message: row.message,
       pageContext: row.page_context,
       attachmentCount: row.attachment_count,
@@ -161,6 +202,30 @@ class SupabaseDeliveryRepository implements DeliveryRepository {
       p_next_attempt_at: failure.nextAttemptAt,
     })
     if (result !== true) throw new Error('Delivery failure transition was rejected')
+  }
+}
+
+async function getDailyReportMetrics(
+  env: Env,
+  since: Date,
+  until: Date,
+): Promise<DailyReportMetrics> {
+  const result = await callSupabaseRpc(env, 'agent_get_daily_report', {
+    p_since: since.toISOString(),
+    p_until: until.toISOString(),
+  })
+  const row = Array.isArray(result) ? result[0] : result
+  if (!isDailyReportRow(row)) throw new Error('Daily report returned an invalid contract')
+  return {
+    siteSessions: row.site_sessions,
+    widgetViews: row.widget_views,
+    completedTurns: row.completed_turns,
+    intakes: row.intakes,
+    replyEnabledIntakes: row.reply_enabled_intakes,
+    telegramDelivered: row.telegram_delivered,
+    telegramDeadLetters: row.telegram_dead_letters,
+    deliveryBacklog: row.delivery_backlog,
+    modelErrors: row.model_errors,
   }
 }
 
@@ -192,14 +257,25 @@ function telegramSender(env: Env) {
 
 export default {
   async scheduled(
-    _controller: ScheduledController,
+    controller: ScheduledController,
     env: Env,
     _context: ExecutionContext,
   ): Promise<void> {
+    const sendMessage = telegramSender(env)
+    if (controller.cron === '0 12 * * *' || controller.cron === '0 13 * * *') {
+      const report = await processDailyReport({
+        scheduledAt: new Date(controller.scheduledTime),
+        getMetrics: (since, until) => getDailyReportMetrics(env, since, until),
+        sendMessage,
+      })
+      console.log(JSON.stringify({ event: 'telegram_daily_report', status: report.status }))
+      return
+    }
+
     const workerId = `telegram:${crypto.randomUUID()}`
     const results = await processDeliveryBatch({
       repository: new SupabaseDeliveryRepository(env, workerId),
-      sendMessage: telegramSender(env),
+      sendMessage,
       studioBaseUrl: env.STUDIO_BASE_URL,
     })
     const counts = results.reduce<Record<string, number>>((summary, result) => {

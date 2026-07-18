@@ -58,6 +58,16 @@ function optionalString(value: unknown, maxLength: number): string | null {
   return normalized
 }
 
+function optionalReplyEmail(value: unknown): { value: string | null; valid: boolean } {
+  if (value === undefined || value === null || value === '') return { value: null, valid: true }
+  if (typeof value !== 'string') return { value: null, valid: false }
+  const normalized = value.trim().toLowerCase()
+  if (!normalized) return { value: null, valid: true }
+  const valid = normalized.length <= 320
+    && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)
+  return { value: valid ? normalized : null, valid }
+}
+
 export function agentVisitorHash(request: Request): string | null {
   const forwarded = request.headers.get('cf-connecting-ip')
     ?? request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -115,6 +125,11 @@ export function createAgentMessageHandler({
     }
 
     const currentPage = pageContext(body.page)
+    const displayName = optionalString(body.displayName, 120)
+    const replyEmail = optionalReplyEmail(body.replyEmail)
+    if (!replyEmail.valid) {
+      return json({ error: 'Enter a valid reply email or leave it blank.' }, 400)
+    }
     let persisted: PersistAgentIntakeResult | null = null
     if (policy.route === 'intake' || policy.route === 'answer_and_intake') {
       const publicIdempotencyKey = request.headers.get('idempotency-key') ?? ''
@@ -135,12 +150,23 @@ export function createAgentMessageHandler({
         consentNoticeVersion: CONSENT_NOTICE_VERSION,
         pageContext: currentPage,
         visitorHash: visitor,
-        displayName: optionalString(body.displayName, 120),
-        replyEmail: optionalString(body.replyEmail, 320),
+        displayName,
+        replyEmail: replyEmail.value,
       })
 
       if (!persisted.ok) {
         return json({ error: 'Your note could not be stored. Please try again.' }, 503)
+      }
+
+      if ((displayName || replyEmail.value) && recordOperationalEvent) {
+        try {
+          await recordOperationalEvent({
+            event: 'agent_contact_supplied',
+            policyVersion: policy.policyVersion,
+          })
+        } catch {
+          // Contact counts must never expose or invalidate a visitor response.
+        }
       }
     }
 

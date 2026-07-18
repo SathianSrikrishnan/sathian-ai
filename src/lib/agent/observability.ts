@@ -10,6 +10,15 @@ export type AgentOperationalEvent =
       event: 'agent_turn_completed'
       route: AgentTurnRoute
     }
+  | {
+      event: 'agent_contact_supplied'
+    }
+  | {
+      event: 'site_session_started' | 'agent_widget_viewed'
+      sessionId: string
+      page: string
+      source: 'site' | 'inline' | 'floating'
+    }
 
 export type AgentOperationalRecord = AgentOperationalEvent & { policyVersion?: string }
 
@@ -33,22 +42,37 @@ export interface OperationalMetricRepository {
 export function createOperationalLog(
   event: AgentOperationalEvent,
 ) {
-  return event.event === 'agent_answer_model_failed'
-    ? { event: event.event, error_code: event.errorCode }
-    : { event: event.event, route: event.route }
+  switch (event.event) {
+    case 'agent_answer_model_failed':
+      return { event: event.event, error_code: event.errorCode }
+    case 'agent_turn_completed':
+      return { event: event.event, route: event.route }
+    case 'site_session_started':
+    case 'agent_widget_viewed':
+      return {
+        event: event.event,
+        session_id: event.sessionId,
+        page: event.page,
+        source: event.source,
+      }
+    case 'agent_contact_supplied':
+      return { event: event.event }
+  }
 }
 
 export function createOperationalAuditRow(
   event: AgentOperationalEvent,
   policyVersion?: string,
 ) {
+  const log = createOperationalLog(event)
+  const { event: _event, ...details } = log
   return {
-    actor_type: 'service' as const,
+    actor_type: event.event === 'site_session_started' || event.event === 'agent_widget_viewed'
+      ? 'visitor' as const
+      : 'service' as const,
     event_type: event.event,
     policy_version: policyVersion ?? null,
-    details: event.event === 'agent_answer_model_failed'
-      ? { error_code: event.errorCode }
-      : { route: event.route },
+    details,
   }
 }
 

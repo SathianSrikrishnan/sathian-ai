@@ -1,5 +1,8 @@
 export interface TelegramIntakeMessageInput {
   receiptCode: string
+  kind: 'note' | 'contact' | 'file' | 'mixed'
+  displayName: string | null
+  replyEmail: string | null
   message: string
   pageContext: string
   attachmentCount: number
@@ -18,6 +21,16 @@ export interface TelegramIntakeMessage {
 }
 
 const PREVIEW_LIMIT = 360
+
+function intakeLabel(kind: TelegramIntakeMessageInput['kind']): string {
+  const labels: Record<TelegramIntakeMessageInput['kind'], string> = {
+    note: 'Note',
+    contact: 'Contact request',
+    file: 'File intake',
+    mixed: 'Note + file',
+  }
+  return labels[kind]
+}
 
 function displayContentType(contentType: string): string {
   const labels: Record<string, string> = {
@@ -71,12 +84,18 @@ export function buildTelegramIntakeMessage(
       ? `\n<b>Files:</b> ${input.attachmentCount} quarantined attachment${input.attachmentCount === 1 ? '' : 's'}`
       : ''
   const studioLink = makeStudioLink(input.studioBaseUrl, input.receiptCode)
+  const contactLines = [
+    input.displayName ? `<b>From:</b> ${escapeHtml(input.displayName)}` : null,
+    input.replyEmail ? `<b>Reply:</b> ${escapeHtml(input.replyEmail)}` : null,
+  ].filter((line): line is string => Boolean(line))
 
   return {
     text: [
       '<b>New site-agent intake</b>',
+      `<b>Type:</b> ${intakeLabel(input.kind)}`,
       `<b>Receipt:</b> ${escapeHtml(input.receiptCode)}`,
       `<b>Page:</b> ${escapeHtml(input.pageContext.slice(0, 256))}${attachmentLine}`,
+      ...contactLines,
       '',
       escapeHtml(makePreview(input.message)),
       '',
