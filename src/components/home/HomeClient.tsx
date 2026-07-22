@@ -37,6 +37,17 @@ interface BuildNote {
 
 const BUILD_NOTES: BuildNote[] = [
   {
+    date: '2026-07-22',
+    status: 'EXPERIMENTING',
+    project: 'AI-NATIVE INFRASTRUCTURE',
+    title: 'Giving agents context without giving them the keys',
+    changed: 'I am assembling the working layer behind my own projects: agent-driven workflows, persistent memory, retrieval and data architecture, and small harnesses for bounded actions.',
+    learned: 'The useful part is not a more autonomous agent. It is a better-defined system around it: what the agent can remember, retrieve, do, and prove afterward.',
+    next: 'Keep testing the pattern in my own work, with friends, and in a small number of client settings before describing it as a repeatable practice.',
+    href: '#building',
+    accent: '#C86024',
+  },
+  {
     date: '2026-07-15',
     status: 'PROVEN',
     project: 'TOOTH FAIRY NETWORK',
@@ -227,7 +238,7 @@ export function HomeClient({ writings }: HomeClientProps) {
   }
 
   return (
-    <div className="relaunch-shell" data-theme="dark">
+    <div className="relaunch-shell" data-theme="workshop">
       <SiteNav />
       <main>
         <section className="relaunch-hero" aria-labelledby="relaunch-title">
@@ -248,13 +259,12 @@ export function HomeClient({ writings }: HomeClientProps) {
                 SATHIAN S. / TORONTO / CURRENTLY BUILDING
               </motion.p>
               <motion.h1 variants={HERO_ITEM} id="relaunch-title">
-                Proof of work,
-                <span>in public.</span>
+                A personal workshop,
+                <span>kept in public.</span>
               </motion.h1>
               <motion.p variants={HERO_ITEM} className="relaunch-hero-summary">
-                I build products and small AI systems. I write about what I am learning, from childhood
-                rituals to Solana and personal AI. The site agent is the quickest way to ask what I am
-                working on or leave me a note.
+                Projects, essays, and experiments across AI, culture, memory, and the internet. The site
+                agent can help you find your way around or leave me a note.
               </motion.p>
               <motion.div variants={HERO_ITEM} className="relaunch-hero-links">
                 <button type="button" onClick={() => openAgent()}>Ask the site agent <Arrow /></button>
@@ -333,8 +343,23 @@ export function HomeClient({ writings }: HomeClientProps) {
               <SectionIntro
                 index="02"
                 label="Building in public"
-                title="Active building logs."
+                title="The systems underneath the work."
+                note="A running record of the infrastructure I am building around agents: persistent memory, retrieval and data architecture, workflow orchestration, and the limits that keep them useful."
               />
+              <div className="relaunch-build-ledger" aria-label="Current AI infrastructure experiments">
+                <p className="hub-eyebrow">CURRENT LINE OF INQUIRY</p>
+                <div>
+                  <span>Agentic workflows</span>
+                  <span>Persistent memory</span>
+                  <span>RAG systems</span>
+                  <span>Data architecture</span>
+                  <span>Bounded harnesses</span>
+                </div>
+                <p>
+                  I am testing these systems close to real work—first in my own projects, then with
+                  friends and a small number of clients. This log is the public record of what holds up.
+                </p>
+              </div>
               <div className="relaunch-timeline">
                 {BUILD_NOTES.map((note) => (
                   <article key={`${note.date}-${note.title}`} className="relaunch-note">
@@ -408,30 +433,10 @@ export function HomeClient({ writings }: HomeClientProps) {
         )}
 
         <ScrollReveal>
-          <section id="practice" className="relaunch-section relaunch-practice">
-            <div className="relaunch-content relaunch-practice-grid">
-              <div>
-                <p className="hub-eyebrow relaunch-kicker">04 / AI PRACTICE</p>
-                <h2>Useful systems, kept close to the work.</h2>
-              </div>
-              <div>
-                <p>
-                  I build small AI systems around real work. My own setup runs on persistent context,
-                  tools, and review loops. I also help a few people turn repetitive, messy workflows into something useful.
-                </p>
-                <button type="button" onClick={() => openAgent('I have a workflow problem. Here is what keeps getting done by hand:')}>
-                  Leave me a note and tell me what keeps getting done by hand <Arrow />
-                </button>
-              </div>
-            </div>
-          </section>
-        </ScrollReveal>
-
-        <ScrollReveal>
           <section id="about" className="relaunch-section relaunch-close">
             <div className="relaunch-content relaunch-close-grid">
               <div className="relaunch-about">
-                <p className="hub-eyebrow relaunch-kicker">05 / ABOUT</p>
+                <p className="hub-eyebrow relaunch-kicker">04 / ABOUT</p>
                 <h2>Builder. Student. Father.</h2>
                 <p>I use writing and code to examine money, culture, memory, and how people adapt to new systems. Toronto is home.</p>
                 <Link href="/about">A little more context <Arrow /></Link>

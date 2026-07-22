@@ -40,17 +40,17 @@ def visit_home(page, screenshot_name: str):
     page.on("requestfailed", lambda request: record_failed_request(failed_requests, request))
 
     page.goto(BASE_URL, wait_until="networkidle")
-    page.get_by_role("heading", name="Proof of work, in public.").wait_for()
+    page.get_by_role("heading", name="A personal workshop, kept in public.").wait_for()
     page.get_by_role("heading", name=re.compile("site agent", re.I)).first.wait_for()
     page.get_by_text("Building in public", exact=True).wait_for()
     page.get_by_role("heading", name="Projects with a pulse.").wait_for()
-    page.get_by_role("heading", name="Active building logs.").wait_for()
+    page.get_by_role("heading", name="The systems underneath the work.").wait_for()
     page.get_by_role(
         "heading",
         name="Making a childhood memory ownable without making it public",
     ).wait_for()
     page.get_by_role("heading", name="Essays from the workbench.").wait_for()
-    page.get_by_text("I build small AI systems around real work.").wait_for()
+    page.get_by_text("AI-NATIVE INFRASTRUCTURE", exact=True).first.wait_for()
 
     agent = page.locator("[data-chat-panel]")
     agent.wait_for()

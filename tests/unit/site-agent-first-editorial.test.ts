@@ -22,10 +22,10 @@ describe('site-agent-first editorial pass', () => {
   })
 
   it('uses Sathian\'s annotated homepage language', () => {
-    expect(home).toContain('I build products and small AI systems.')
-    expect(home).toContain('I write about what I am learning')
+    expect(home).toContain('A personal workshop,')
+    expect(home).toContain('Projects, essays, and experiments across AI, culture, memory, and the internet.')
     expect(home).toContain('Projects with a pulse.')
-    expect(home).toContain('Active building logs.')
+    expect(home).toContain('The systems underneath the work.')
     expect(home).not.toContain('Three things with a pulse.')
     expect(home).not.toContain('A dated record, including the misses.')
   })
@@ -34,7 +34,7 @@ describe('site-agent-first editorial pass', () => {
     expect(home).not.toMatch(/TxODDS|txodds|World Cup build/)
     expect(memory).not.toContain('getTxOddsCampaignMemoryCards')
     expect(home).toContain('Projects with a pulse.')
-    expect(home).toContain('Active building logs.')
+    expect(home).toContain('The systems underneath the work.')
   })
 
   it('uses one shared editorial shell for About and Automation', () => {

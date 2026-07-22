@@ -15,9 +15,9 @@ describe('sathian.ai relaunch surface', () => {
   const writingIndex = readOptional('src/app/writings/page.tsx')
   const homepage = `${page}\n${homeClient}`
 
-  it('leads with proof of work and a useful agent doorway', () => {
-    expect(homepage).toContain('Proof of work,')
-    expect(homepage).toContain('The site agent is the quickest way')
+  it('leads with a personal workshop and a useful agent doorway', () => {
+    expect(homepage).toContain('A personal workshop,')
+    expect(homepage).toContain('agent can help you')
     expect(homepage).toContain('Ask the site agent')
   })
 
@@ -37,10 +37,12 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).not.toMatch(/Signal\s*&\s*Noise/i)
   })
 
-  it('keeps the AI practice explanation concise and specific', () => {
-    expect(homepage).toContain('I build small AI systems around real work.')
-    expect(homepage).toContain('tell me what keeps getting done by hand')
-    expect(homepage).not.toContain('AI-native systems for real work')
+  it('frames AI-native infrastructure as a bounded public experiment, not a sales pitch', () => {
+    expect(homepage).toContain('AI-NATIVE INFRASTRUCTURE')
+    expect(homepage).toContain('persistent memory')
+    expect(homepage).toContain('RAG systems')
+    expect(homepage).toContain('a small number of clients')
+    expect(homepage).not.toContain('tell me what keeps getting done by hand')
   })
 
   it('records the Toothlight ownership proof as a bounded devnet milestone', () => {
