@@ -91,7 +91,7 @@ flowchart LR
 ### P0 — resolved in this release
 
 1. **Anonymous database writes — resolved.** Migration `20260723170000_public_grant_hardening.sql` removed anonymous article writes/deletes and unrestricted access on old family/tooth tables. Published article reads, owner-scoped TFN child access, and intentional keepsake reads remain.
-2. **False-success newsletter — resolved.** The dedicated subscriber tables and server-only signup function are live. Production still has zero recorded subscribers because the previous form did not retain them.
+2. **False-success newsletter — resolved in the current release candidate.** The dedicated subscriber tables and server-only signup function are live. The first recorded subscriber is `kai.sathians@gmail.com`; its private Telegram receipt delivered in one attempt. Resend rejected the email because `sathian.ai` is not yet a verified sending domain, and the prior route incorrectly marked that returned error as sent. Migration `20260723213000_newsletter_governance.sql` clears unverified timestamps and adds provider delivery IDs/errors; the application now marks an email sent only when Resend returns an ID.
 
 ### P1 — schedule immediately after the release
 
@@ -105,7 +105,7 @@ flowchart LR
 1. Enable Supabase leaked-password protection.
 2. Correct mutable `search_path` on legacy search/update functions.
 3. Move the `vector` extension out of `public` during a controlled migration.
-4. Add self-serve unsubscribe and double opt-in before broad newsletter distribution, plus a retention/purge job for signup event rows.
+4. Self-serve, scanner-safe unsubscribe is included in the current release candidate. Add double opt-in before broad newsletter distribution, plus a retention/purge job for signup event rows.
 5. Remove unused Vercel secrets and legacy Notion/Telegram/waitlist routes after confirming no callers remain.
 6. Replace the generic in-memory middleware rate limiter with only route-specific durable quotas. Serverless instances do not share its state.
 7. Add COOP/CORP where wallet and embedded-media compatibility permits.

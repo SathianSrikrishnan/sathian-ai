@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('resend', () => ({
   Resend: class {
-    emails = { send: vi.fn().mockResolvedValue({ id: 'email-1' }) }
+    emails = { send: vi.fn().mockResolvedValue({ data: { id: 'email-1' }, error: null }) }
   },
 }))
 
@@ -67,6 +67,8 @@ describe('newsletter subscribe route', () => {
       created: true,
       status: 'subscribed',
       receipt_token: '22f20452-8e0f-4ed7-985f-cc3f3ba1f565',
+      unsubscribe_token: '6aad17c7-06a4-4560-93aa-97fe20e7ba5a',
+      confirmation_sent_at: null,
     }]))
 
     const response = await POST(request({ email: 'Reader@Example.com', source: 'sathian-home' }))
@@ -76,6 +78,32 @@ describe('newsletter subscribe route', () => {
       ok: true,
       created: true,
       confirmationSent: false,
+    })
+  })
+
+  it('records a confirmation only when Resend returns an email id', async () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co'
+    process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key'
+    process.env.RESEND_API_KEY = 'test-resend-key'
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(Response.json([{
+        subscriber_id: '8c4bb12e-f829-4a45-9bbd-066497e12058',
+        created: true,
+        status: 'subscribed',
+        receipt_token: '22f20452-8e0f-4ed7-985f-cc3f3ba1f565',
+        unsubscribe_token: '6aad17c7-06a4-4560-93aa-97fe20e7ba5a',
+        confirmation_sent_at: null,
+      }]))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }))
+
+    const response = await POST(request({ email: 'reader@example.com', source: 'sathian-home' }))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({ confirmationSent: true })
+    const deliveryUpdate = JSON.parse(String(fetchMock.mock.calls[1][1]?.body))
+    expect(deliveryUpdate).toMatchObject({
+      confirmation_email_id: 'email-1',
+      confirmation_error_code: null,
     })
   })
 })

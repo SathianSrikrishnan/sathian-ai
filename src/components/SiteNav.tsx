@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { SocialLink } from '@/components/SocialLink'
 import { personalSocialLinks } from '@/lib/social-links'
 
 export function SiteNav() {
@@ -86,20 +87,6 @@ export function SiteNav() {
                 </Link>
               )
             )}
-            <div className="site-nav-socials" aria-label="Social profiles">
-              {personalSocialLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  title={link.label}
-                >
-                  {link.shortLabel}
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Mobile hamburger button */}
@@ -185,15 +172,11 @@ export function SiteNav() {
             )}
             <div className="site-nav-mobile-socials" aria-label="Social profiles">
               {personalSocialLinks.map((link) => (
-                <a
+                <SocialLink
                   key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...link}
                   onClick={() => setMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
+                />
               ))}
             </div>
           </div>

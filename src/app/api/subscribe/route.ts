@@ -11,6 +11,8 @@ interface SubscribeResult {
   created: boolean
   status: string
   receipt_token: string | null
+  unsubscribe_token: string
+  confirmation_sent_at: string | null
 }
 
 function json(body: unknown, status = 200) {
@@ -81,13 +83,32 @@ export async function POST(request: Request) {
   }
 
   let confirmationSent = false
-  if (result.created && process.env.RESEND_API_KEY) {
+  if (result.status === 'subscribed' && !result.confirmation_sent_at && process.env.RESEND_API_KEY) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
-      const confirmation = newsletterConfirmation(source as 'sathian-home' | 'tfn-footer')
-      await resend.emails.send({ ...confirmation, to: email })
-      confirmationSent = true
-      await fetch(`${supabaseUrl}/rest/v1/newsletter_subscribers?id=eq.${encodeURIComponent(result.subscriber_id)}`, {
+      const origin = new URL(request.url).origin
+      const unsubscribeUrl = `${origin}/unsubscribe?token=${encodeURIComponent(result.unsubscribe_token)}`
+      const confirmation = newsletterConfirmation(
+        source as 'sathian-home' | 'tfn-footer',
+        unsubscribeUrl,
+      )
+      const sendResult = await resend.emails.send({ ...confirmation, to: email })
+      const now = new Date().toISOString()
+      const emailId = sendResult.data?.id ?? null
+      const errorCode = sendResult.error?.name ?? null
+      confirmationSent = Boolean(emailId) && !sendResult.error
+      const deliveryUpdate = confirmationSent
+        ? {
+            confirmation_sent_at: now,
+            confirmation_attempted_at: now,
+            confirmation_email_id: emailId,
+            confirmation_error_code: null,
+          }
+        : {
+            confirmation_attempted_at: now,
+            confirmation_error_code: errorCode || 'unknown_delivery_error',
+          }
+      const deliveryResponse = await fetch(`${supabaseUrl}/rest/v1/newsletter_subscribers?id=eq.${encodeURIComponent(result.subscriber_id)}`, {
         method: 'PATCH',
         headers: {
           apikey: serviceRoleKey,
@@ -95,8 +116,10 @@ export async function POST(request: Request) {
           'content-type': 'application/json',
           Prefer: 'return=minimal',
         },
-        body: JSON.stringify({ confirmation_sent_at: new Date().toISOString() }),
+        body: JSON.stringify(deliveryUpdate),
       })
+      if (!deliveryResponse.ok) console.error('[subscribe] delivery state update failed')
+      if (sendResult.error) console.error('[subscribe] confirmation email rejected', { code: errorCode })
     } catch {
       console.error('[subscribe] confirmation email failed')
     }

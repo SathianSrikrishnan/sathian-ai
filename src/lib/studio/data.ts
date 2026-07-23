@@ -83,6 +83,22 @@ export interface StudioBuildNote extends BuildNoteInput {
   updatedAt: string
 }
 
+export interface StudioSubscriber {
+  id: string
+  email: string
+  status: 'subscribed' | 'unsubscribed' | 'bounced'
+  firstSource: string
+  lastSource: string
+  consentNoticeVersion: string
+  consentedAt: string
+  lastSeenAt: string
+  confirmationSentAt: string | null
+  confirmationAttemptedAt: string | null
+  confirmationErrorCode: string | null
+  createdAt: string
+  unsubscribedAt: string | null
+}
+
 function admin() {
   if (!supabaseAdmin) throw new Error('Studio data client is unavailable')
   return supabaseAdmin
@@ -330,6 +346,56 @@ export async function getStudioInbox(): Promise<StudioInboxItem[]> {
         retentionUntil: attachment.retention_until,
       })),
     }
+  })
+}
+
+export async function getStudioSubscribers(): Promise<StudioSubscriber[]> {
+  const { data, error } = await admin()
+    .from('newsletter_subscribers')
+    .select('id, email, status, first_source, last_source, consent_notice_version, consented_at, last_seen_at, confirmation_sent_at, confirmation_attempted_at, confirmation_error_code, created_at, unsubscribed_at')
+    .order('created_at', { ascending: false })
+    .limit(500)
+  if (error) throw error
+
+  return (data ?? []).map((row: any) => ({
+    id: row.id,
+    email: row.email,
+    status: row.status,
+    firstSource: row.first_source,
+    lastSource: row.last_source,
+    consentNoticeVersion: row.consent_notice_version,
+    consentedAt: row.consented_at,
+    lastSeenAt: row.last_seen_at,
+    confirmationSentAt: row.confirmation_sent_at,
+    confirmationAttemptedAt: row.confirmation_attempted_at,
+    confirmationErrorCode: row.confirmation_error_code,
+    createdAt: row.created_at,
+    unsubscribedAt: row.unsubscribed_at,
+  }))
+}
+
+export async function updateStudioSubscriberStatus(
+  id: string,
+  status: StudioSubscriber['status'],
+  actorId: string,
+) {
+  const now = new Date().toISOString()
+  const update = {
+    status,
+    unsubscribed_at: status === 'unsubscribed' ? now : null,
+    updated_at: now,
+  }
+  const { data, error } = await admin()
+    .from('newsletter_subscribers')
+    .update(update)
+    .eq('id', id)
+    .select('id')
+    .single()
+  if (error) throw error
+
+  await writeStudioAudit(actorId, 'newsletter_subscriber_status_changed', {
+    subscriber_id: data.id,
+    status,
   })
 }
 

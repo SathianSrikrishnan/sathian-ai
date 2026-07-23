@@ -17,7 +17,7 @@ export function WorkshopFooter() {
           <Link href="/about">About</Link>
           {personalSocialLinks.map((link) => (
             <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
-              {link.shortLabel}
+              {link.label}
             </a>
           ))}
         </nav>

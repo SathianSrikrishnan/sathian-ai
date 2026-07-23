@@ -5,9 +5,10 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 
 import { SiteNav } from '@/components/SiteNav'
+import { SocialLink } from '@/components/SocialLink'
 import { WorkshopMachine } from '@/components/home/WorkshopMachine'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
-import { toothFairySocialLinks } from '@/lib/social-links'
+import { personalSocialLinks, toothFairySocialLinks } from '@/lib/social-links'
 
 export interface HomeWriting {
   title: string
@@ -276,6 +277,9 @@ export function HomeClient({ writings }: HomeClientProps) {
                 <button type="button" onClick={() => openAgent()}>Ask the site agent <Arrow /></button>
                 <Link href="/writings">Read the field notes</Link>
               </motion.div>
+              <motion.div variants={HERO_ITEM} className="relaunch-social-dock relaunch-social-dock--personal" aria-label="Find Sathian online">
+                {personalSocialLinks.map((link) => <SocialLink key={link.label} {...link} />)}
+              </motion.div>
             </div>
 
             <motion.div
@@ -353,12 +357,13 @@ export function HomeClient({ writings }: HomeClientProps) {
                 })}
               </div>
               <div className="relaunch-project-socials" aria-label="Tooth Fairy Network social profiles">
-                <span>Tooth Fairy Network</span>
-                {toothFairySocialLinks.map((link) => (
-                  <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                  </a>
-                ))}
+                <div>
+                  <span className="relaunch-project-socials__eyebrow">Tooth Fairy Network</span>
+                  <strong>Follow the build</strong>
+                </div>
+                <div className="relaunch-social-dock relaunch-social-dock--tfn">
+                  {toothFairySocialLinks.map((link) => <SocialLink key={link.label} {...link} />)}
+                </div>
               </div>
               <p className="relaunch-project-credit">
                 Lex Rooftop Garden image: <a href="https://open.toronto.ca/open-data-licence/" target="_blank" rel="noopener noreferrer">City of Toronto orthophoto, 2025</a>
