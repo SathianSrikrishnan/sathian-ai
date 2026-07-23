@@ -49,7 +49,7 @@ export default async function WritingsIndex() {
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
-    <div data-theme="dark" className="min-h-screen bg-[var(--hub-bg-primary)] text-[var(--hub-text-primary)]">
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell workshop-writing-index min-h-screen bg-[var(--hub-bg-primary)] text-[var(--hub-text-primary)]">
       <SiteNav />
       <main>
         <header className="mx-auto max-w-[1120px] px-6 pb-14 pt-36">

@@ -49,7 +49,7 @@ const systems = [
 
 export default function AutomationPage() {
   return (
-    <div data-theme="dark" className="relaunch-shell relaunch-inner-shell">
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell">
       <SiteNav />
 
       <main className="relaunch-page">

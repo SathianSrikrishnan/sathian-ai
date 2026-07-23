@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 
 import { SiteNav } from '@/components/SiteNav'
+import { WorkshopMachine } from '@/components/home/WorkshopMachine'
 import { ScrollReveal } from '@/components/ui/scroll-reveal'
+import { toothFairySocialLinks } from '@/lib/social-links'
 
 export interface HomeWriting {
   title: string
@@ -175,13 +177,14 @@ function NewsletterForm() {
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (status === 'loading') return
+    const company = String(new FormData(event.currentTarget).get('company') ?? '')
 
     setStatus('loading')
     try {
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, source: 'sathian-home', company }),
       })
 
       if (!response.ok) throw new Error('Subscribe request failed')
@@ -199,6 +202,10 @@ function NewsletterForm() {
   return (
     <form onSubmit={submit} className="relaunch-newsletter-form">
       <label className="sr-only" htmlFor="relaunch-email">Email address</label>
+      <label className="newsletter-honeypot" aria-hidden="true" hidden>
+        Company
+        <input name="company" tabIndex={-1} autoComplete="off" />
+      </label>
       <input
         id="relaunch-email"
         type="email"
@@ -282,6 +289,22 @@ export function HomeClient({ writings }: HomeClientProps) {
           </motion.div>
         </section>
 
+        <section className="relaunch-machine-band" aria-label="How ideas move through the workshop">
+          <div className="relaunch-content relaunch-machine-band__grid">
+            <div>
+              <p className="hub-eyebrow relaunch-kicker">THE WORKSHOP LOOP</p>
+              <h2>From a loose idea to something inspectable.</h2>
+              <p>
+                Notes, conversations, and rough questions pass through small systems, tests, and public
+                receipts. The useful parts become projects; the rest stays a working experiment.
+              </p>
+            </div>
+            <div className="relaunch-machine-stage">
+              <WorkshopMachine />
+            </div>
+          </div>
+        </section>
+
         <ScrollReveal>
           <section id="now" className="relaunch-section relaunch-now">
             <div className="relaunch-content">
@@ -328,6 +351,14 @@ export function HomeClient({ writings }: HomeClientProps) {
                     <a key={project.name} href={project.href} className={className}>{content}</a>
                   )
                 })}
+              </div>
+              <div className="relaunch-project-socials" aria-label="Tooth Fairy Network social profiles">
+                <span>Tooth Fairy Network</span>
+                {toothFairySocialLinks.map((link) => (
+                  <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                ))}
               </div>
               <p className="relaunch-project-credit">
                 Lex Rooftop Garden image: <a href="https://open.toronto.ca/open-data-licence/" target="_blank" rel="noopener noreferrer">City of Toronto orthophoto, 2025</a>

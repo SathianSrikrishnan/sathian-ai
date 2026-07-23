@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { personalSocialLinks } from '@/lib/social-links'
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -46,7 +47,7 @@ export function SiteNav() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-8">
+          <div className="hidden sm:flex items-center gap-6">
             {navLinks.map((link) =>
               link.external ? (
                 <a
@@ -85,6 +86,20 @@ export function SiteNav() {
                 </Link>
               )
             )}
+            <div className="site-nav-socials" aria-label="Social profiles">
+              {personalSocialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  title={link.label}
+                >
+                  {link.shortLabel}
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Mobile hamburger button */}
@@ -168,6 +183,19 @@ export function SiteNav() {
                 </Link>
               )
             )}
+            <div className="site-nav-mobile-socials" aria-label="Social profiles">
+              {personalSocialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       )}

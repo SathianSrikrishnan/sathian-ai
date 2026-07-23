@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
 import { TFNGlowingToothLogo } from "@/components/toothfairy/brand/tfn-glowing-tooth-logo"
+import { toothFairySocialLinks } from "@/lib/social-links"
 
 const columns = [
   {
@@ -39,6 +40,7 @@ export function TFNFooter() {
   async function handleSubscribe(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!email.trim()) return
+    const company = String(new FormData(event.currentTarget).get("company") ?? "")
 
     setSignupState("loading")
     try {
@@ -48,6 +50,7 @@ export function TFNFooter() {
         body: JSON.stringify({
           email: email.trim(),
           source: "tfn-footer",
+          company,
         }),
       })
 
@@ -72,6 +75,13 @@ export function TFNFooter() {
           <p className="footer-tagline">
             A tiny ritual. A memory parents control.
           </p>
+          <div className="footer-socials" aria-label="Tooth Fairy Network social profiles">
+            {toothFairySocialLinks.map((link) => (
+              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
 
         <div className="footer-columns">
@@ -98,6 +108,10 @@ export function TFNFooter() {
           </p>
           <label className="sr-only" htmlFor="tfn-footer-email">
             Email address
+          </label>
+          <label className="newsletter-honeypot" aria-hidden="true" hidden>
+            Company
+            <input name="company" tabIndex={-1} autoComplete="off" />
           </label>
           <div className="email-row">
             <input
@@ -204,6 +218,20 @@ export function TFNFooter() {
           color: #23365f;
           font-size: 0.9rem;
           line-height: 1.55;
+        }
+
+        .footer-socials {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.85rem;
+          margin-top: 1rem;
+        }
+
+        .footer-socials a {
+          color: #0c7d78;
+          font-size: 0.78rem;
+          font-weight: 800;
+          text-decoration: none;
         }
 
         .footer-columns {

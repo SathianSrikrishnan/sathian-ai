@@ -45,7 +45,7 @@ const currentWork = [
 
 export default function AboutPage() {
   return (
-    <div data-theme="dark" className="relaunch-shell relaunch-inner-shell">
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell">
       <SiteNav />
 
       <main className="relaunch-page">
