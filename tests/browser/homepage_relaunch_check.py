@@ -40,7 +40,7 @@ def visit_home(page, screenshot_name: str):
     page.on("requestfailed", lambda request: record_failed_request(failed_requests, request))
 
     page.goto(BASE_URL, wait_until="networkidle")
-    page.get_by_role("heading", name="A personal workshop, kept in public.").wait_for()
+    page.get_by_role("heading", name="A personal workshop.").wait_for()
     page.get_by_role("heading", name=re.compile("site agent", re.I)).first.wait_for()
     page.get_by_text("Building in public", exact=True).wait_for()
     page.get_by_role("heading", name="Projects with a pulse.").wait_for()

@@ -22,7 +22,7 @@ describe('site-agent-first editorial pass', () => {
   })
 
   it('uses Sathian\'s annotated homepage language', () => {
-    expect(home).toContain('A personal workshop,')
+    expect(home).toContain('A personal workshop.')
     expect(home).toContain('Projects, essays, and experiments across AI, culture, memory, and the internet.')
     expect(home).toContain('Projects with a pulse.')
     expect(home).toContain('The systems underneath the work.')

@@ -16,7 +16,7 @@ describe('sathian.ai relaunch surface', () => {
   const homepage = `${page}\n${homeClient}`
 
   it('leads with a personal workshop and a useful agent doorway', () => {
-    expect(homepage).toContain('A personal workshop,')
+    expect(homepage).toContain('A personal workshop.')
     expect(homepage).toContain('agent can help you')
     expect(homepage).toContain('Ask the site agent')
   })

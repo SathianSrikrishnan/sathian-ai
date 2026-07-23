@@ -259,8 +259,7 @@ export function HomeClient({ writings }: HomeClientProps) {
                 SATHIAN S. / TORONTO / CURRENTLY BUILDING
               </motion.p>
               <motion.h1 variants={HERO_ITEM} id="relaunch-title">
-                A personal workshop,
-                <span>kept in public.</span>
+                A personal workshop.
               </motion.h1>
               <motion.p variants={HERO_ITEM} className="relaunch-hero-summary">
                 Projects, essays, and experiments across AI, culture, memory, and the internet. The site
