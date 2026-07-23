@@ -8,6 +8,7 @@ export const CHAT_SUGGESTIONS = [
 export const ALLOWED_ORIGINS = [
   'https://sathian.ai',
   'https://www.sathian.ai',
+  'https://studio.sathian.ai',
   'https://btc.sathian.ai',
   'https://toothfairy.sathian.ai',
   'https://toothfairy.network',
