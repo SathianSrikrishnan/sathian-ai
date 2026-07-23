@@ -7,12 +7,12 @@ Scope: `sathian.ai`, the embedded Tooth Fairy Network routes, Studio, the public
 
 The site has several strong boundaries already: HTTPS, server-only service credentials, RLS on every public-schema table, MFA-gated Studio administration, a private quarantine bucket, reviewed public memory for the site agent, hashed visitor identifiers, and a durable Telegram outbox.
 
-Two concrete release blockers were found in the current production database:
+Two concrete release blockers were found in the production database:
 
-1. Legacy RLS policies and grants permit anonymous mutation of `articles`, `family_members`, `tooth_states`, and some TFN tables.
-2. The current email form writes to a schema that does not match its payload and reports success after failure. No subscriber was recorded, no confirmation email was sent, and no Telegram notification was created.
+1. Legacy RLS policies and grants permitted anonymous mutation of `articles`, `family_members`, `tooth_states`, and some TFN tables.
+2. The previous email form wrote to a schema that did not match its payload and reported success after failure. No subscriber was recorded, no confirmation email was sent, and no Telegram notification was created.
 
-This release candidate contains migrations that remove the accidental public write paths and creates a dedicated private subscriber system. Both migrations were syntax- and contract-validated inside a production transaction that was rolled back. They are not applied to production yet.
+Both blockers were corrected in production on 2026-07-23. The two migrations removed the accidental public write paths and created a dedicated private subscriber system. Post-migration checks confirmed that anonymous mutation is denied while intended public article and keepsake reads remain available.
 
 ## Trust zones and data flow
 
@@ -88,10 +88,10 @@ flowchart LR
 
 ## Findings by priority
 
-### P0 — fix before this release goes live
+### P0 — resolved in this release
 
-1. **Anonymous database writes.** Live grants plus permissive RLS currently allow anonymous article writes/deletes and unrestricted access on old family/tooth tables. Migration `20260723170000_public_grant_hardening.sql` removes those paths while preserving published article reads, owner-scoped TFN child access, and intentional keepsake reads.
-2. **False-success newsletter.** Current production has zero recorded newsletter subscribers. The new migration and API replace the broken `thoughts` insert.
+1. **Anonymous database writes — resolved.** Migration `20260723170000_public_grant_hardening.sql` removed anonymous article writes/deletes and unrestricted access on old family/tooth tables. Published article reads, owner-scoped TFN child access, and intentional keepsake reads remain.
+2. **False-success newsletter — resolved.** The dedicated subscriber tables and server-only signup function are live. Production still has zero recorded subscribers because the previous form did not retain them.
 
 ### P1 — schedule immediately after the release
 
@@ -122,10 +122,13 @@ flowchart LR
 | `tfn-photos` | Public | 34 JPEGs; privacy decision required |
 | `tfn-capsules` | Public | 273 objects; encrypted notes plus media |
 
-## Release verification required
+## Release verification
 
-- Apply both migrations in order.
-- Re-run Supabase security advisors and verify the permissive mutation warnings are gone.
+- [x] Apply both migrations in order.
+- [x] Re-run Supabase security advisors and verify the permissive mutation warnings are gone.
+- [x] Verify the production deployment and public page set.
+- [x] Verify invalid-email and honeypot API paths.
+- [x] Run a transaction-safe subscriber function proof and roll it back without creating a fake subscriber.
 - Submit one controlled `sathian-home` test address:
   - one `newsletter_subscribers` row,
   - one `newsletter_signup_events` row,
@@ -138,6 +141,20 @@ flowchart LR
 - Verify Studio still requires allowlist, role, and AAL2.
 - Verify article create/edit/publish through Studio after the articles-policy hardening.
 
+## Change dependencies in plain language
+
+| Change | What could break | Safe rollout |
+|---|---|---|
+| Make child photos private | Existing public keepsake/photo URLs may stop loading | Inventory every consumer, create approved public derivatives, then migrate originals |
+| Upgrade Next.js and dependencies | Wallet connection, Solana minting, Crossmint, Remotion, and build behavior | Isolated branch, route-by-route tests, preview deployment, then promotion |
+| Add Content Security Policy | Wallet popups, analytics, remote images/media, Supabase calls, and embedded content | Report-only first, observe violations, add required origins, then enforce |
+| Split Supabase projects | Auth identities, storage URLs, service keys, functions, and cross-product queries | Treat as a planned migration project, not an in-place cleanup |
+| Fix legacy function search paths | Search or update helpers that rely on an implicit schema | Schema-qualify dependencies and test each function before migration |
+| Move `vector` out of `public` | Vector columns, indexes, and search functions that refer to `public.vector` | Inventory references and rehearse the migration on a branch |
+| Add unsubscribe/double opt-in | Signup states, email templates, sending queries, and event webhooks | Build the lifecycle first; do not start broad distribution before it is complete |
+| Remove old secrets/routes | Any unobserved legacy automation still calling those routes | Add usage logging, wait through an observation window, then remove one group at a time |
+| Add COOP/CORP headers | Wallets, popups, iframes, and embedded media | Test in report/limited scope before site-wide enforcement |
+
 ## Evidence
 
 - Supabase project: `tvujxgdwgvrunjvhseey`
@@ -146,7 +163,8 @@ flowchart LR
 - Storage inventory review: 2026-07-23.
 - Dependency audit: 2026-07-23.
 - Live headers review: 2026-07-23.
-- Migration validation: production transaction completed and rolled back on 2026-07-23.
+- Migrations applied to production: 2026-07-23.
+- Production deployment: `dpl_XtphYjAiTdE39W79dcp5dUQfLXY2`.
 
 References:
 

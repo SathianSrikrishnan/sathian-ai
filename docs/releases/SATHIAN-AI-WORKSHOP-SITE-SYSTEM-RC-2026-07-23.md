@@ -1,4 +1,4 @@
-# Workshop Site System Release Candidate
+# Workshop Site System Production Release
 
 Date: 2026-07-23  
 Branch: `feat/workshop-site-system`  
@@ -31,11 +31,19 @@ Base: `eae33c1`
 
 ## Production cutover
 
-Production is intentionally unchanged. Cutover requires:
+Completed on 2026-07-23:
 
-1. Commit and push this branch.
-2. Apply the two Supabase migrations.
-3. Deploy the exact commit to Vercel.
-4. Run one controlled subscriber test through both sources.
-5. Verify Telegram, Resend, Studio receipt, social links, articles, chatbot, and mobile.
-6. Re-run Supabase security advisors.
+1. Commit `470fe45` pushed from `feat/workshop-site-system`.
+2. Supabase migrations `newsletter_subscribers` and `public_grant_hardening` applied.
+3. Commit deployed to Vercel as `dpl_XtphYjAiTdE39W79dcp5dUQfLXY2`.
+4. Production aliased to `https://sathian.ai`.
+5. Home, About, Automation, Writings, and Links verified in production.
+6. Animated workshop visual and all personal/TFN social links verified.
+7. Invalid-email, honeypot, and rollback-safe subscriber tests passed.
+8. Supabase security advisors rerun; the accidental anonymous mutation paths are gone.
+
+Still requiring Sathian's real test address:
+
+1. Submit one controlled signup from the home page.
+2. Verify its subscriber and event rows, confirmation email, Studio receipt, and Telegram delivery.
+3. Repeat from TFN and verify source attribution and duplicate behavior.
