@@ -18,6 +18,11 @@ const studioRouteSources = [
 ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'))
 
 describe('Studio authorization enforcement', () => {
+  it('routes the Studio subdomain root into the existing Studio', () => {
+    expect(middlewareSource).toMatch(/hostname\s*===\s*'studio\.sathian\.ai'/)
+    expect(middlewareSource).toMatch(/pathname\s*===\s*'\/'[\s\S]*new URL\('\/studio'/)
+  })
+
   it('allows browser-test bypass only outside production', () => {
     expect(middlewareSource).toMatch(/NODE_ENV\s*!==\s*'production'/)
     expect(middlewareSource).toMatch(/STUDIO_E2E_BYPASS\s*===\s*'true'/)

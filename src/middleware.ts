@@ -45,6 +45,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.headers.get('host') || ''
 
+  if (hostname === 'studio.sathian.ai' && pathname === '/') {
+    return NextResponse.redirect(new URL('/studio', request.url), 307)
+  }
+
   // ── Supabase session refresh for TFN app + API routes ──
   // Captures the response so auth cookies propagate through domain rewrites.
   const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
