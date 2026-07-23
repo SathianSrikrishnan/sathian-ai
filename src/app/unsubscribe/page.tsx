@@ -21,7 +21,7 @@ export default function UnsubscribePage() {
     <main className="newsletter-governance-page">
       <section>
         <p className="hub-eyebrow">SATHIAN.AI / EMAIL</p>
-        <h1>{state === 'done' ? 'You are off the list.' : 'Leave the field-notes list?'}</h1>
+        <h1>{state === 'done' ? 'You are off the list.' : 'Leave the writing list?'}</h1>
         {state === 'done' ? (
           <p>No more newsletter emails will be sent to this address. You can subscribe again from the website whenever you like.</p>
         ) : (

@@ -31,12 +31,12 @@ export function newsletterConfirmation(
 
   return {
     from: workshopFrom,
-    subject: 'You’re on the sathian.ai field-notes list',
+    subject: 'You’re on the sathian.ai writing list',
     html: `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:36px;color:#2b1c13;background:#f6ead3">
-        <p style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a84c19">Sathian’s workshop</p>
+        <p style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a84c19">Sathian.ai</p>
         <h1 style="font-family:Georgia,serif;font-size:32px">Thanks for joining.</h1>
-        <p style="font-size:16px;line-height:1.7">I’ll send a quiet note when a new essay or build note is worth sharing.</p>
+        <p style="font-size:16px;line-height:1.7">I’ll send a note when I publish new writing or have something worth sharing.</p>
         <p style="font-size:13px;line-height:1.6;color:#6c5843">Reply any time if you want to say hello.</p>
         ${unsubscribeFooter(unsubscribeUrl)}
       </div>`,

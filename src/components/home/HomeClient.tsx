@@ -477,9 +477,9 @@ export function HomeClient({ writings }: HomeClientProps) {
                 <Link href="/about">A little more context <Arrow /></Link>
               </div>
               <div className="relaunch-newsletter">
-                <p className="hub-eyebrow relaunch-kicker">FIELD NOTES BY EMAIL</p>
-                <h2>New essays and build notes.</h2>
-                <p>A quiet note when something worth sharing ships.</p>
+                <p className="hub-eyebrow relaunch-kicker">WRITING, BY EMAIL</p>
+                <h2>New writing and occasional updates.</h2>
+                <p>A short note when I publish something worth sharing.</p>
                 <NewsletterForm />
               </div>
             </div>
