@@ -40,6 +40,20 @@ interface BuildNote {
 
 const BUILD_NOTES: BuildNote[] = [
   {
+    date: '2026-07-24',
+    status: 'PROVEN',
+    project: 'TOOTH FAIRY NETWORK',
+    title: 'Six wallets, one evidence ledger',
+    changed: 'Tested Phantom, Solflare, Backpack, Jupiter Wallet, Trust Wallet, and MetaMask with synthetic Solana devnet assets. Five completed owner-signed outbound cNFT transfers; Solflare, Backpack, and Jupiter Wallet completed the full escrow lifecycle.',
+    learned: '“Supports Solana” is not one capability. Connection, signing, asset receipt, transfer, display, escrow, cancellation, and mobile behavior each need their own receipt.',
+    next: 'Trust and MetaMask still have documented escrow limitations. Resolve those paths, then run the mobile and native-display matrix before publishing any support logos.',
+    href: 'https://toothfairy.network/wallets',
+    accent: '#B794F6',
+    external: true,
+    proofHref: 'https://toothfairy.network/wallets',
+    proofLabel: 'Open the wallet verification ledger',
+  },
+  {
     date: '2026-07-22',
     status: 'EXPERIMENTING',
     project: 'AI-NATIVE INFRASTRUCTURE',

@@ -55,6 +55,15 @@ describe('sathian.ai relaunch surface', () => {
     expect(homeClient).not.toMatch(/mainnet launch|guaranteed (?:growth|returns|appreciation)/i)
   })
 
+  it('publishes the receipt-backed TFN wallet compatibility milestone', () => {
+    expect(homeClient).toContain('Six wallets, one evidence ledger')
+    expect(homeClient).toContain('Phantom, Solflare, Backpack, Jupiter Wallet, Trust Wallet, and MetaMask')
+    expect(homeClient).toContain('Solflare, Backpack, and Jupiter Wallet completed the full escrow lifecycle')
+    expect(homeClient).toContain('Trust and MetaMask still have documented escrow limitations')
+    expect(homeClient).toContain('https://toothfairy.network/wallets')
+    expect(homeClient).not.toMatch(/all wallets are supported|fully supports/i)
+  })
+
   it('registers the approved Tooth Fairy Network origin essay and historical image', () => {
     const article = articles.find((entry) => entry.slug === 'the-gap-between-weeks')
 
