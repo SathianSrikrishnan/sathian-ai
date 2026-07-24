@@ -32,6 +32,15 @@ describe('Studio passwordless entrance', () => {
     expect(route).toMatch(/copySupabaseCookies\(authResponse,\s*acceptedResponse\)/)
   })
 
+  it('does not claim a secure link was sent when the provider rejects delivery', () => {
+    const route = source('../../src/app/api/studio/auth/route.ts')
+    const login = source('../../src/app/studio/login/page.tsx')
+
+    expect(route).toMatch(/delivery_failed/)
+    expect(route).toMatch(/status:\s*503/)
+    expect(login).toMatch(/temporarily unavailable/i)
+  })
+
   it('exchanges only supported confirmation credentials and removes them from the next URL', () => {
     const confirm = source('../../src/app/studio/auth/confirm/route.ts')
 

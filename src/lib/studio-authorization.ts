@@ -110,7 +110,7 @@ export function resolveStudioPublicOrigin({
 export async function requestStudioMagicLink(
   request: MagicLinkRequest,
   dependencies: MagicLinkDependencies,
-): Promise<{ kind: 'accepted' } | { kind: 'invalid_email' }> {
+): Promise<{ kind: 'accepted' } | { kind: 'invalid_email' } | { kind: 'delivery_failed' }> {
   const email = normalizeEmail(request.email)
   if (!isValidEmail(email)) return { kind: 'invalid_email' }
 
@@ -120,13 +120,15 @@ export async function requestStudioMagicLink(
     return { kind: 'accepted' }
   }
 
-  await dependencies.signInWithOtp({
+  const { error } = await dependencies.signInWithOtp({
     email,
     options: {
       shouldCreateUser: false,
       emailRedirectTo: `${dependencies.publicOrigin}/studio/auth/confirm`,
     },
   })
+
+  if (error) return { kind: 'delivery_failed' }
 
   return { kind: 'accepted' }
 }

@@ -52,6 +52,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 })
   }
 
+  if (result.kind === 'delivery_failed') {
+    return NextResponse.json(
+      { error: 'Secure-link delivery is temporarily unavailable. Try again shortly.' },
+      { status: 503 },
+    )
+  }
+
   const acceptedResponse = NextResponse.json(
     { ok: true, message: ACCEPTED_MESSAGE },
     { status: 202 },

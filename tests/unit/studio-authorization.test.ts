@@ -61,7 +61,7 @@ describe('Studio magic-link requests', () => {
     })
   })
 
-  it('returns the same public result when the provider declines an approved request', async () => {
+  it('reports delivery failure when the provider declines an approved request', async () => {
     const signInWithOtp = vi.fn().mockResolvedValue({ error: new Error('provider unavailable') })
 
     const result = await requestStudioMagicLink(
@@ -73,7 +73,7 @@ describe('Studio magic-link requests', () => {
       },
     )
 
-    expect(result).toEqual({ kind: 'accepted' })
+    expect(result).toEqual({ kind: 'delivery_failed' })
   })
 
   it('rejects malformed email before checking the provider', async () => {
