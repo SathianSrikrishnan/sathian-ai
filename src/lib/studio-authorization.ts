@@ -31,7 +31,7 @@ type MagicLinkDependencies = {
   }) => Promise<{ error: unknown }>
 }
 
-const PRODUCTION_ORIGIN = 'https://sathian.ai'
+const PRODUCTION_ORIGIN = 'https://studio.sathian.ai'
 const LOCAL_STUDIO_ORIGINS = new Set([
   'http://localhost:3000',
   'http://127.0.0.1:3000',

@@ -39,14 +39,14 @@ describe('Studio magic-link requests', () => {
     expect(signInWithOtp).not.toHaveBeenCalled()
   })
 
-  it('prevents account creation and uses a fixed approved callback origin', async () => {
+  it('prevents account creation and keeps the PKCE callback on the Studio origin', async () => {
     const signInWithOtp = vi.fn().mockResolvedValue({ error: null })
 
     const result = await requestStudioMagicLink(
       { email: 'Sathian@example.com' },
       {
         allowedEmails: parseStudioAllowedEmails('sathian@example.com'),
-        publicOrigin: 'https://sathian.ai',
+        publicOrigin: 'https://studio.sathian.ai',
         signInWithOtp,
       },
     )
@@ -56,7 +56,7 @@ describe('Studio magic-link requests', () => {
       email: 'sathian@example.com',
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: 'https://sathian.ai/studio/auth/confirm',
+        emailRedirectTo: 'https://studio.sathian.ai/studio/auth/confirm',
       },
     })
   })
@@ -94,8 +94,8 @@ describe('Studio magic-link requests', () => {
 })
 
 describe('Studio redirect origin', () => {
-  it('uses only the canonical production origin in production', () => {
-    expect(resolveStudioPublicOrigin({ nodeEnv: 'production' })).toBe('https://sathian.ai')
+  it('uses only the canonical Studio origin in production', () => {
+    expect(resolveStudioPublicOrigin({ nodeEnv: 'production' })).toBe('https://studio.sathian.ai')
     expect(
       resolveStudioPublicOrigin({
         nodeEnv: 'production',
