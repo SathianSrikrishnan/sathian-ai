@@ -29,6 +29,7 @@ export function SiteNav() {
 
   const navLinks = [
     { label: 'Projects', href: '/#now', external: false },
+    { label: 'Hackathons', href: '/hackathons', external: false },
     { label: 'Automation', href: '/automation', external: false },
     { label: 'Writing', href: '/writings', external: false },
     { label: 'About', href: '/about', external: false },
