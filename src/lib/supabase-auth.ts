@@ -10,6 +10,10 @@ import { type NextRequest, NextResponse } from "next/server"
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+export function isSupabaseConfigured() {
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
+}
+
 // ── Browser Client (use in React components) ──
 
 export function createBrowserSupabase() {
@@ -38,9 +42,14 @@ export function createRouteSupabase(request: NextRequest) {
   return { supabase, response }
 }
 
+export function copySupabaseCookies(source: NextResponse, target: NextResponse) {
+  source.cookies.getAll().forEach((cookie) => target.cookies.set(cookie))
+  return target
+}
+
 // ── Middleware Session Refresh ──
 
-export async function updateSupabaseSession(request: NextRequest) {
+export async function refreshSupabaseSession(request: NextRequest) {
   let response = NextResponse.next({ request })
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -59,7 +68,12 @@ export async function updateSupabaseSession(request: NextRequest) {
   })
 
   // This refreshes the session if expired — MUST be called
-  await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser()
 
+  return { supabase, response, user: data.user, error }
+}
+
+export async function updateSupabaseSession(request: NextRequest) {
+  const { response } = await refreshSupabaseSession(request)
   return response
 }

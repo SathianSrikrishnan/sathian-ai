@@ -27,6 +27,98 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    title: 'The Gap Between Weeks',
+    titleHighlight: 'Gap',
+    slug: 'the-gap-between-weeks',
+    date: '2026-07-04',
+    author: 'Sathian',
+    domains: ['fatherhood', 'product building', 'Solana'],
+    description: 'A loose tooth, a missed ritual, and the failed versions that taught me what Tooth Fairy Network was actually for.',
+    readTime: '6 min',
+    pullQuotes: [
+      'I had built a lot of machinery around a very small human moment.',
+      'Children already have imagination. The useful thing is a simple activity we can do together and a way to keep the words that would otherwise disappear.',
+      'Both should remain beneath the family experience.',
+      'I started building because I missed the middle of a small moment.',
+    ],
+    theme: {
+      accent: '#F6C857',
+      accentGlow: 'rgba(246, 200, 87, 0.14)',
+      background: 'aurora',
+      mood: 'contemplative',
+    },
+    media: [
+      {
+        src: '/media/the-gap-between-weeks-v1-homepage.png',
+        alt: 'Dark cosmic Tooth Fairy Network homepage with a glowing network globe and live fairy node statistics',
+        caption: 'The February 5, 2026 V1 homepage. At that point I was trying to make the network itself the product.',
+        placement: 'full-bleed',
+        afterSection: 1,
+      },
+    ],
+    sectionHeadings: ['The gap', 'Version 1.0', 'Learning the rails', 'Crayons at dinner', 'The first hundred'],
+    sectionTints: ['#F6C857', '#7C3AED', '#14F195', '#F9A8D4', '#F6C857'],
+    textHighlights: [
+      { text: 'Tooth Fairy Network', color: '#B794F6' },
+      { text: 'Toothlight', color: '#F6C857' },
+      { text: 'first hundred', color: '#5EEAD4' },
+    ],
+    hiddenSignal: 'Twenty primary teeth became the first data model. The missing middle became the product.',
+    body: `One week, one of my children had a loose tooth. The next time I saw them, there was a gap.
+
+I had missed the tooth falling out. The Tooth Fairy had already come. A small childhood ritual was over, and I had missed the middle.
+
+Once I stopped seeing every moment in real time, I began experiencing parts of fatherhood in intervals. Small changes became louder. A new phrase. A new interest. A tooth that was there one week and gone the next.
+
+I started wondering how many other parents were living this way. They were close to their children, but they were not always in the room when the moment happened.
+
+That was the beginning of Tooth Fairy Network. It began as a way to stay part of a memory.
+
+---
+
+There are twenty primary teeth. I know because I spent about a month trying to turn a child's mouth into a data model.
+
+I mapped the teeth, assigned positions, and imagined each lost tooth becoming its own digital object. The system was elaborate. It was technically interesting. It was focused on the wrong thing.
+
+Nobody cared which record represented a lower canine. The tooth mattered because of the story around it.
+
+Around the same time, my children and I were drawing stories and experimenting with AI image tools on my phone. They liked watching a sketch become a character or a little world. I thought that transformation might be the product, so I tried to make Tooth Fairy Network AI-first too.
+
+That version looked more impressive, but the idea became harder to explain. A parent had to understand the tooth record, the image transformation, the wallet, and the digital asset before they understood why any of it mattered. I had built a lot of machinery around a very small human moment.
+
+---
+
+I explored the idea on Ethereum and Base, then worked through the Solana developer courses. The speed and tooling made it easier to imagine the technical layer fading into the background.
+
+In the spring of 2026, I prepared Tooth Fairy Network for Colosseum's Frontier Hackathon. A deadline made me build faster. It did not make the product simpler.
+
+I spent too much time on AI enhancement, wallets, on-ramps, and compressed assets before I had earned the right to ask a family to care. The underlying technology still has a place. It can give a family a durable record and make optional gifts transparent and parent-controlled. It should feel like infrastructure, not homework.
+
+---
+
+The version I am building now came from watching my children at restaurants.
+
+Give them paper and a few crayons while we wait for the food and they will make something I could never have prompted out of them. A strange animal. A machine. A character with a name and a backstory delivered with total confidence.
+
+The best part is the explanation that comes with the picture.
+
+That observation brought me back to the product. Children already have imagination. The useful thing is a simple activity we can do together and a way to keep the words that would otherwise disappear.
+
+A Toothlight now begins with the real material: a photo, a drawing, a date, and the child's version of what happened. AI can help a parent shape the story. Solana can preserve the record and support a parent-controlled gift. Both should remain beneath the family experience.
+
+This sounds obvious now. It took several failed versions to see it.
+
+---
+
+Tooth Fairy Network has become my flagship project because it joins fatherhood to the way I learn by building.
+
+I plan to document that process here. I want to show the versions that failed, the things parents tell me, the decisions I change, and the questions I still cannot answer.
+
+The next goal is deliberately small: find the first hundred families who understand the idea and are willing to tell me what feels meaningful, what feels confusing, and what should disappear.
+
+I started building because I missed the middle of a small moment. If Tooth Fairy Network works, more of those middles will have somewhere to live.`,
+  },
+  {
     title: 'C.R.E.A.M. 2.0',
     titleHighlight: 'C.R.E.A.M.',
     slug: 'cream-2-point-0',

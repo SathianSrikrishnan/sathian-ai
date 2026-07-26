@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { SocialLink } from '@/components/SocialLink'
+import { personalSocialLinks } from '@/lib/social-links'
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -26,7 +28,7 @@ export function SiteNav() {
   }, [menuOpen])
 
   const navLinks = [
-    { label: 'Projects', href: '/#projects', external: false },
+    { label: 'Projects', href: '/#now', external: false },
     { label: 'Hackathons', href: '/hackathons', external: false },
     { label: 'Automation', href: '/automation', external: false },
     { label: 'Writing', href: '/writings', external: false },
@@ -47,7 +49,7 @@ export function SiteNav() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-8">
+          <div className="hidden sm:flex items-center gap-6">
             {navLinks.map((link) =>
               link.external ? (
                 <a
@@ -169,6 +171,15 @@ export function SiteNav() {
                 </Link>
               )
             )}
+            <div className="site-nav-mobile-socials" aria-label="Social profiles">
+              {personalSocialLinks.map((link) => (
+                <SocialLink
+                  key={link.label}
+                  {...link}
+                  onClick={() => setMenuOpen(false)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}

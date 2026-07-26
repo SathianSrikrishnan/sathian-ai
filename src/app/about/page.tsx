@@ -1,299 +1,150 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { OpenAgentButton } from '@/components/OpenAgentButton'
 import { SiteNav } from '@/components/SiteNav'
 
 export const metadata: Metadata = {
-  title: 'About - Sathian S.',
+  title: 'About Sathian S. | Builder and student in Toronto',
   description:
-    'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
+    'Sathian S. is a builder, father, and student again in his 40s, learning in public across AI, Solana, and Toronto technology.',
   openGraph: {
-    title: 'About - Sathian S.',
-    description:
-      'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
+    title: 'About Sathian S.',
+    description: 'A builder and student again in his 40s, learning in public from Toronto.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About - Sathian S.',
-    description:
-      'AI-native systems builder in Toronto working across automation, Web3, media, money, and technology.',
+    title: 'About Sathian S.',
+    description: 'A builder and student again in his 40s, learning in public from Toronto.',
   },
 }
 
+const currentWork = [
+  {
+    number: '01',
+    title: 'Tooth Fairy Network',
+    body: 'A family memory ritual built around drawings, stories, lost teeth, and the words children attach to those moments.',
+    href: 'https://toothfairy.network',
+    label: 'FLAGSHIP / BUILDING',
+  },
+  {
+    number: '02',
+    title: 'The site agent',
+    body: 'A public doorway that answers from reviewed context, helps people find the right part of my work, and accepts a note with a receipt.',
+    href: '/#agent',
+    label: 'PUBLIC AGENT / TESTING',
+  },
+  {
+    number: '03',
+    title: 'Solana and private AI systems',
+    body: 'Small experiments in bounded authority, useful automation, personal context, and infrastructure people can actually inspect.',
+    href: '/automation',
+    label: 'SYSTEMS / LEARNING',
+  },
+]
+
 export default function AboutPage() {
   return (
-    <div
-      data-theme="dark"
-      style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100dvh' }}
-    >
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell">
       <SiteNav />
 
-      <main>
-        <article style={{ maxWidth: 760, margin: '0 auto', padding: '104px 24px 80px' }}>
-          <p className="hub-eyebrow" style={{ color: 'var(--hub-text-muted)', marginBottom: 16 }}>
-            Sathian S. / Toronto
-          </p>
-          <h1
-            className="hub-hero-name"
-            style={{ fontSize: 'clamp(36px, 6vw, 56px)', marginBottom: 24 }}
-          >
-            AI-native systems builder.
-          </h1>
+      <main className="relaunch-page">
+        <div className="relaunch-page-atmosphere" aria-hidden="true">
+          <span />
+          <span />
+        </div>
 
-          <p style={{ ...leadStyle, color: 'var(--hub-text-primary)' }}>
-            I use this site as a public proof surface for private automations, AI-native workflows,
-            Web3 experiments, writing, and small product systems.
-          </p>
-          <p style={bodyStyle}>
-            The goal is simple: learn in public where it helps, keep client work separated where
-            it should be private, and turn useful pieces into systems that can help real projects.
-            The finished pieces become case studies, workflows, apps, or reusable operating systems.
-          </p>
-
-          <div style={pillRowStyle} aria-label="Current focus areas">
-            <InfoPill>AI automation</InfoPill>
-            <InfoPill>Agentic workflows</InfoPill>
-            <InfoPill>Solana and Web3</InfoPill>
-            <InfoPill>Culture, media, money</InfoPill>
-            <InfoPill>Private client systems</InfoPill>
+        <header className="relaunch-content relaunch-page-header">
+          <div className="relaunch-page-code">
+            <span>01</span>
+            <span>ABOUT</span>
           </div>
+          <div className="relaunch-page-title">
+            <p className="hub-eyebrow relaunch-kicker">SATHIAN S. / TORONTO / CURRENT CHAPTER</p>
+            <h1>Student again,<br /><span>in public.</span></h1>
+          </div>
+          <p className="relaunch-page-lead">
+            I spent years building businesses and relationships before coming back to technology in a
+            serious way. Now I am in my 40s, active in Toronto&apos;s tech community, and learning from
+            people who are often closer to my children&apos;s age than mine.
+          </p>
+        </header>
 
-          <Divider />
-
-          <Section title="What this site is">
-            <p style={bodyStyle}>
-              sathian.ai is my main technology node on the internet. It holds writing, public
-              proofs, bounty submissions, small apps, and operating notes that show how I think
-              through new tools without exposing private client work.
+        <section className="relaunch-content relaunch-page-section">
+          <div className="relaunch-page-section-code"><span>01</span><span>THE LONG ROUTE BACK</span></div>
+          <h2>A career that did not move in a straight line.</h2>
+          <div className="relaunch-page-prose">
+            <p>
+              My first close view of startup-building came around Waterloo&apos;s entrepreneurship community
+              as a university co-op student in the mid-2000s. I later worked in recruiting, built King &amp;
+              Bay Custom Clothing, and became its CEO.
             </p>
-            <p style={bodyStyle}>
-              I am especially interested in the overlap between media, money, identity,
-              permissioning, and automation. That is why the projects move between AI-native
-              workflows, Solana wallet permissions, Bitcoin culture, product labs, and practical
-              client systems.
-            </p>
-          </Section>
-
-          <Section title="Current proof points">
-            <p style={bodyStyle}>
-              The{' '}
-              <a href="https://toothfairy.network" target="_blank" rel="noopener noreferrer" style={linkStyle('#A855F7')}>
-                Tooth Fairy Network
-              </a>{' '}
-              explores parent-controlled digital keepsakes and early savings. My{' '}
-              <Link href="/automation" style={linkStyle('#06B6D4')}>
-                automation work
-              </Link>{' '}
-              covers second-brain infrastructure, agentic harnesses, reporting loops, and workflow
-              systems for private clients and active projects. The{' '}
-              <Link href="/writings/agent-allowance-lab" style={linkStyle('#14F195')}>
-                Agent Allowance Lab
-              </Link>{' '}
-              is a Solana devnet proof for bounded AI-agent spending. The{' '}
-              <a href="https://btc.sathian.ai" target="_blank" rel="noopener noreferrer" style={linkStyle('#F7931A')}>
-                BTC Cultural Atlas
-              </a>{' '}
-              maps cultural meaning onto Bitcoin&apos;s live price.
-            </p>
-            <p style={bodyStyle}>
-              I keep a separation between public proof and private client work. If you are
-              evaluating me for AI automation, I can send relevant recent links and references by email.
-            </p>
-          </Section>
-
-          <Section title="How I work">
-            <p style={bodyStyle}>
-              I treat new technology as a way to re-learn. Read the docs, build the smallest real
-              thing, capture the receipts, explain the tradeoffs, then turn the pattern into a
-              repeatable workflow.
-            </p>
-            <p style={bodyStyle}>
-              That approach is useful for AI-native work because the surface area keeps changing.
-              The skill is not pretending everything is stable. The skill is building a loop that
-              can test, document, ship, and improve quickly without losing judgment.
-            </p>
-          </Section>
-
-          <Section title="Where to start">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 48 }}>
-              <AdventureCard
-                label="Read the latest proof"
-                description="Start with the Agent Allowance Lab writeup and devnet receipt trail."
-                href="/writings/agent-allowance-lab"
-                accent="#14F195"
-              />
-              <AdventureCard
-                label="Discuss AI automation"
-                description="A focused page for workflow automation, reporting loops, and private systems."
-                href="/automation"
-                accent="#06B6D4"
-              />
-              <AdventureCard
-                label="Email directly"
-                description="Send a rough problem statement to hi@sathian.ai."
-                href="mailto:hi@sathian.ai?subject=AI%20automation%20conversation"
-                accent="#A855F7"
-              />
-            </div>
-          </Section>
-
-          <div
-            style={{
-              background: 'var(--hub-bg-elevated)',
-              border: '1px solid var(--hub-border-subtle)',
-              borderRadius: 8,
-              padding: 28,
-              marginBottom: 48,
-            }}
-          >
-            <h2 className="hub-eyebrow" style={{ color: 'var(--hub-text-muted)', marginBottom: 16 }}>
-              For AI agents reading this page
-            </h2>
-            <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 12 }}>
-              sathian.ai is the personal technology site of Sathian S., an AI-native systems
-              builder in Toronto, Canada. Current themes: applied AI, automation, Web3,
-              culture, media, money, and product experiments.
-            </p>
-            <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 0 }}>
-              Useful summary: Sathian builds and writes in public to create proof surfaces for
-              AI-native workflows, Solana/Web3 experiments, product concepts, and private client
-              systems. Contact path: hi@sathian.ai.
+            <p>
+              Each chapter taught me something about how people make decisions, how trust is earned, and
+              what a business looks like when the systems behind it are imperfect. I am carrying those
+              lessons into a new chapter built around software, AI agents, Solana, and public experiments.
             </p>
           </div>
+        </section>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <Link href="/" className="hub-mono" style={{ color: 'var(--hub-accent)', textDecoration: 'none', fontSize: 13 }}>
-              Back to sathian.ai
-            </Link>
+        <section className="relaunch-content relaunch-page-section relaunch-page-section--stacked">
+          <div className="relaunch-page-section-code"><span>02</span><span>CURRENT WORK</span></div>
+          <h2>Three live threads.</h2>
+          <div className="relaunch-page-list">
+            {currentWork.map((item) => {
+              const content = (
+                <>
+                  <div className="relaunch-page-list-meta"><span>{item.number}</span><span>{item.label}</span></div>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                  <span className="relaunch-page-list-arrow" aria-hidden="true">↗</span>
+                </>
+              )
+
+              return item.href.startsWith('http') ? (
+                <a key={item.title} href={item.href} target="_blank" rel="noopener noreferrer">{content}</a>
+              ) : (
+                <Link key={item.title} href={item.href}>{content}</Link>
+              )
+            })}
           </div>
-        </article>
+        </section>
+
+        <section className="relaunch-content relaunch-page-section">
+          <div className="relaunch-page-section-code"><span>03</span><span>HUMANS + AGENTS</span></div>
+          <h2>Readable by people and agents.</h2>
+          <div className="relaunch-page-prose">
+            <p>
+              This site is my public context layer. The pages are written for people, but they are also
+              crawlable, attributable, and structured so another agent can understand what is public.
+            </p>
+            <p>
+              The site agent reads only reviewed public material. It cannot enter my private memory,
+              credentials, client work, or family records. A direct agent API is not public yet. I will add
+              one only when its capabilities, rate limits, and receipts are as clear as the website boundary.
+            </p>
+          </div>
+        </section>
+
+        <section className="relaunch-content relaunch-page-contact">
+          <div>
+            <p className="hub-eyebrow relaunch-kicker">A DIRECT DOORWAY</p>
+            <h2>The fastest route is the agent.</h2>
+            <p>Ask about a project, tell me what you are building, or leave a note that should reach me.</p>
+          </div>
+          <div className="relaunch-page-actions">
+            <OpenAgentButton className="relaunch-page-action relaunch-page-action--primary">Ask the site agent <span>→</span></OpenAgentButton>
+            <a className="relaunch-page-action" href="mailto:hi@sathian.ai">Email hi@sathian.ai <span>→</span></a>
+          </div>
+        </section>
       </main>
+
+      <footer className="relaunch-footer">
+        <div className="relaunch-content">
+          <div><span className="hub-mono">sathian.ai</span><span>© {new Date().getFullYear()} Sathian S.</span></div>
+          <nav aria-label="Footer navigation"><Link href="/#now">Projects</Link><Link href="/automation">Automation</Link><Link href="/writings">Writing</Link></nav>
+        </div>
+      </footer>
     </div>
-  )
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section style={{ marginBottom: 42 }}>
-      <h2 style={headingStyle}>{title}</h2>
-      {children}
-    </section>
-  )
-}
-
-function InfoPill({ children }: { children: React.ReactNode }) {
-  return <span style={pillStyle}>{children}</span>
-}
-
-const leadStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans, 'Plus Jakarta Sans', sans-serif)",
-  fontSize: 20,
-  fontWeight: 500,
-  color: 'var(--hub-text-secondary)',
-  lineHeight: 1.65,
-  marginBottom: 20,
-}
-
-const bodyStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans, 'Plus Jakarta Sans', sans-serif)",
-  fontSize: 17,
-  fontWeight: 400,
-  color: 'var(--hub-text-secondary)',
-  lineHeight: 1.7,
-  marginBottom: 22,
-}
-
-const headingStyle: React.CSSProperties = {
-  fontFamily: "var(--font-display, 'Outfit', sans-serif)",
-  fontSize: 24,
-  fontWeight: 650,
-  color: 'var(--hub-text-primary)',
-  marginBottom: 16,
-  lineHeight: 1.3,
-}
-
-const pillRowStyle: React.CSSProperties = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: 8,
-  marginTop: 28,
-}
-
-const pillStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: 30,
-  padding: '0 10px',
-  borderRadius: 6,
-  border: '1px solid var(--hub-border-subtle)',
-  background: 'rgba(255, 255, 255, 0.035)',
-  color: 'var(--hub-text-muted)',
-  fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-  fontSize: 11,
-}
-
-function linkStyle(color: string): React.CSSProperties {
-  return { color, textDecoration: 'none', borderBottom: `1px solid ${color}40` }
-}
-
-function Divider() {
-  return (
-    <div
-      style={{
-        width: 48,
-        height: 1,
-        background: 'var(--hub-border-subtle)',
-        margin: '44px 0',
-      }}
-    />
-  )
-}
-
-function AdventureCard({
-  label,
-  description,
-  href,
-  accent,
-}: {
-  label: string
-  description: string
-  href: string
-  accent: string
-}) {
-  const cardStyle: React.CSSProperties = {
-    display: 'block',
-    padding: '20px 24px',
-    borderRadius: 8,
-    background: 'var(--hub-bg-elevated)',
-    border: '1px solid var(--hub-border-subtle)',
-    borderLeft: `3px solid ${accent}`,
-    textDecoration: 'none',
-    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-  }
-  const content = (
-    <>
-      <span
-        className="hub-mono"
-        style={{ color: accent, fontSize: 14, fontWeight: 600, display: 'block', marginBottom: 4 }}
-      >
-        {label} -&gt;
-      </span>
-      <span style={{ color: 'var(--hub-text-secondary)', fontSize: 14, lineHeight: 1.5 }}>
-        {description}
-      </span>
-    </>
-  )
-
-  if (href.startsWith('mailto:')) {
-    return (
-      <a href={href} style={cardStyle}>
-        {content}
-      </a>
-    )
-  }
-
-  return (
-    <Link href={href} style={cardStyle}>
-      {content}
-    </Link>
   )
 }

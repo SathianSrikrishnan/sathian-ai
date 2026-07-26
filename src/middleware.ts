@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { updateSupabaseSession } from '@/lib/supabase-auth'
+import {
+  copySupabaseCookies,
+  isSupabaseConfigured,
+  refreshSupabaseSession,
+} from '@/lib/supabase-auth'
+import {
+  decideStudioAccess,
+  hasStudioAdminRole,
+  isStudioEmailAllowed,
+  parseStudioAllowedEmails,
+} from '@/lib/studio-authorization'
 
 // Simple in-memory rate limiter (resets on deploy/restart — fine for Vercel serverless)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -35,26 +45,34 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.headers.get('host') || ''
 
+  if (hostname === 'studio.sathian.ai' && pathname === '/') {
+    return NextResponse.redirect(new URL('/studio', request.url), 307)
+  }
+
   // ── Supabase session refresh for TFN app + API routes ──
   // Captures the response so auth cookies propagate through domain rewrites.
   const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
   const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
-  const hasSupabaseConfig = Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  )
+  const isStudioPath = pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')
+  const studioE2eBypass = isStudioPath
+    && process.env.NODE_ENV !== 'production'
+    && process.env.STUDIO_E2E_BYPASS === 'true'
+  const publicStudioDecision = isStudioPath ? decideStudioAccess({ pathname }) : null
+  const needsStudioSession = isStudioPath && !studioE2eBypass && publicStudioDecision?.kind !== 'allow'
+  const hasSupabaseConfig = isSupabaseConfigured()
   let supabaseResponse: NextResponse | null = null
-  if ((isTfnApp || isTfnApi) && hasSupabaseConfig) {
-    supabaseResponse = await updateSupabaseSession(request)
+  let studioSession: Awaited<ReturnType<typeof refreshSupabaseSession>> | null = null
+  if ((isTfnApp || isTfnApi || needsStudioSession) && hasSupabaseConfig) {
+    const refreshed = await refreshSupabaseSession(request)
+    supabaseResponse = refreshed.response
+    if (needsStudioSession) studioSession = refreshed
   }
 
   // Helper: create a rewrite that preserves auth cookies from session refresh
   const rewriteWithCookies = (dest: URL) => {
     const res = NextResponse.rewrite(dest)
     if (supabaseResponse) {
-      supabaseResponse.cookies.getAll().forEach(cookie => {
-        res.cookies.set(cookie.name, cookie.value)
-      })
+      copySupabaseCookies(supabaseResponse, res)
     }
     return res
   }
@@ -126,24 +144,37 @@ export async function middleware(request: NextRequest) {
   }
 
   // --- Studio authentication ---
-  if (pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')) {
-    if (pathname !== '/studio/login' && pathname !== '/api/studio/auth') {
-      const studioAuth = request.cookies.get('studio_auth')?.value
-      // Verify signed token format: timestamp.hmac (not just 'true')
-      const isValidFormat = studioAuth && /^\d+\.[a-f0-9]{64}$/.test(studioAuth)
-      const isNotExpired = isValidFormat && (Date.now() - parseInt(studioAuth!.split('.')[0], 10)) < 30 * 24 * 60 * 60 * 1000
-      if (!isNotExpired) {
-        if (pathname.startsWith('/api/studio/')) {
-          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-        return NextResponse.redirect(new URL('/studio/login', request.url))
-      }
+  if (isStudioPath && !studioE2eBypass) {
+    let aal: 'aal1' | 'aal2' | null = null
+    if (studioSession?.user) {
+      const { data, error } = await studioSession.supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+      if (!error) aal = data.currentLevel
+    }
+
+    const decision = decideStudioAccess({
+      pathname,
+      hasUser: Boolean(studioSession?.user),
+      emailAllowed: isStudioEmailAllowed(
+        studioSession?.user?.email,
+        parseStudioAllowedEmails(process.env.STUDIO_ALLOWED_EMAILS),
+      ),
+      hasStudioRole: hasStudioAdminRole(studioSession?.user?.app_metadata),
+      aal,
+    })
+
+    if (decision.kind === 'redirect') {
+      const response = NextResponse.redirect(new URL(decision.location, request.url))
+      return supabaseResponse ? copySupabaseCookies(supabaseResponse, response) : response
+    }
+    if (decision.kind === 'deny') {
+      const response = NextResponse.json({ error: decision.code }, { status: decision.status })
+      return supabaseResponse ? copySupabaseCookies(supabaseResponse, response) : response
     }
   }
 
   // Only apply rate limiting / CORS to API routes
   if (!pathname.startsWith('/api/')) {
-    return NextResponse.next()
+    return supabaseResponse ?? NextResponse.next()
   }
 
   // --- CORS check ---
@@ -174,11 +205,13 @@ export async function middleware(request: NextRequest) {
   // --- Add CORS + security headers to response ---
   const response = NextResponse.next()
 
+  if (supabaseResponse) copySupabaseCookies(supabaseResponse, response)
+
   if (origin && isAllowedOrigin(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
   }
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, x-voice-pin')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Idempotency-Key, x-voice-pin')
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')

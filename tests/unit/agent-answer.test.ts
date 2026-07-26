@@ -1,0 +1,174 @@
+import { describe, expect, it, vi } from 'vitest'
+
+import { answerAgentQuestion } from '@/lib/agent/answer'
+import { POLICY_VERSION } from '@/lib/agent/policy'
+import { buildAgentPrompt } from '@/lib/agent/prompt'
+import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
+
+const tfnCard: PublicMemoryCard = {
+  id: 'card-tfn',
+  slug: 'tooth-fairy-network',
+  title: 'Tooth Fairy Network',
+  body: 'Tooth Fairy Network is a family-memory ritual built around the moments of a lost tooth.',
+  summary: null,
+  tags: ['project', 'family-memory'],
+  source: {
+    ref: 'https://sathian.ai/writings/the-gap-between-weeks',
+    kind: 'published_page',
+  },
+  validFrom: null,
+  validUntil: null,
+}
+
+const policy: AgentPolicyDecision = {
+  route: 'answer',
+  allowed: true,
+  policyVersion: POLICY_VERSION,
+  reasonCodes: ['ANSWER_REQUEST'],
+  normalizedMessage: 'What is Tooth Fairy Network?',
+}
+
+describe('bounded public answer service', () => {
+  it('builds its prompt from only the public cards returned for this request', () => {
+    const prompt = buildAgentPrompt({ cards: [tfnCard], page: '/', policy })
+
+    expect(prompt).toContain(tfnCard.body)
+    expect(prompt).toContain(tfnCard.source.ref)
+    expect(prompt).not.toContain('private client roadmap')
+    expect(prompt).not.toContain('local second brain')
+  })
+
+  it('bounds the complete public-memory prompt even when reviewed cards are oversized', () => {
+    const oversizedCards = Array.from({ length: 30 }, (_, index): PublicMemoryCard => ({
+      ...tfnCard,
+      id: `card-${index}`,
+      slug: `card-${index}`,
+      title: `Tooth Fairy Network ${index}`,
+      body: `Tooth Fairy Network ${'x'.repeat(4000)}`,
+      source: { ...tfnCard.source, ref: `${tfnCard.source.ref}?card=${index}` },
+    }))
+
+    const prompt = buildAgentPrompt({ cards: oversizedCards, page: '/', policy })
+
+    expect(prompt.length).toBeLessThanOrEqual(12_000)
+    expect(prompt).toContain('Tooth Fairy Network 0')
+  })
+
+  it('sends only cards relevant to the visitor question to the model', async () => {
+    const unrelatedCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'card-garden',
+      slug: 'lex-rooftop-garden',
+      title: 'Lex Rooftop Garden',
+      body: 'A resident-led garden companion for 45 Carlton.',
+      tags: ['garden', 'community'],
+      source: { ref: 'https://garden.sathian.ai', kind: 'published_page' },
+    }
+    const model = {
+      generate: vi.fn(async (_input: { system: string }) => 'A family-memory ritual.'),
+    }
+
+    await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [unrelatedCard, tfnCard],
+    }, { model })
+
+    expect(model.generate).toHaveBeenCalledWith(expect.objectContaining({
+      system: expect.stringContaining(tfnCard.body),
+    }))
+    expect(model.generate.mock.calls[0]?.[0]?.system).not.toContain(unrelatedCard.body)
+  })
+
+  it("identifies itself as Sathian's site agent rather than Sathian", () => {
+    const prompt = buildAgentPrompt({ cards: [tfnCard], page: '/', policy })
+
+    expect(prompt).toContain("You are Sathian's site agent")
+    expect(prompt).toContain('You are not Sathian')
+  })
+
+  it('answers unknown personal questions honestly and offers intake without calling the model', async () => {
+    const model = { generate: vi.fn(async () => 'A made-up restaurant.') }
+
+    const result = await answerAgentQuestion({
+      message: "What is Sathian's favorite restaurant?",
+      page: '/',
+      policy: { ...policy, normalizedMessage: "What is Sathian's favorite restaurant?" },
+      cards: [tfnCard],
+    }, { model })
+
+    expect(result.answer).toContain("I don't have approved public information about that")
+    expect(result.answer).toContain('leave Sathian a note')
+    expect(result.unknown).toBe(true)
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('passes a hard token limit and only returns sources from supplied cards', async () => {
+    const model = {
+      generate: vi.fn(async () => 'It is a family-memory ritual built around a lost tooth.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model, maxTokens: 900 })
+
+    expect(model.generate).toHaveBeenCalledWith(expect.objectContaining({ maxTokens: 400 }))
+    expect(result.sources).toEqual([tfnCard.source.ref])
+    expect(result.answer).toContain('family-memory ritual')
+  })
+
+  it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {
+    const model = {
+      generate: vi.fn(async () => 'Yes — **you can participate**. Ask about a track.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model })
+
+    expect(result.answer).toBe('Yes. You can participate. Ask about a track.')
+    expect(result.answer).not.toContain('—')
+    expect(result.answer).not.toContain('**')
+  })
+
+  it('fails closed when the model exceeds its timeout', async () => {
+    const model = {
+      generate: vi.fn(async () => new Promise<string>(() => undefined)),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model, timeoutMs: 5 })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('could not answer that safely right now')
+    expect(result.operationalErrorCode).toBe('model_timeout')
+  })
+
+  it('reports a content-safe error code when the provider fails', async () => {
+    const model = {
+      generate: vi.fn(async () => { throw new Error('provider secret detail') }),
+    }
+
+    const result = await answerAgentQuestion({
+      message: policy.normalizedMessage,
+      page: '/',
+      policy,
+      cards: [tfnCard],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.operationalErrorCode).toBe('model_error')
+    expect(JSON.stringify(result)).not.toContain('provider secret detail')
+  })
+})

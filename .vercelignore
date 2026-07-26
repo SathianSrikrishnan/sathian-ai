@@ -1,3 +1,6 @@
 .codex-*.png
 .codex-*.log
 .codex-*.err.log
+src/app/animation/tanda-hero-ritual/
+src/app/animation/tanda-pose-pack/
+tools/

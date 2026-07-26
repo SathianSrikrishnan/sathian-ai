@@ -1,0 +1,301 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  place-items: center;
+  gap: 32px;
+  padding: 32px 20px;
+  color: #f9fafb;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.034) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.034) 1px, transparent 1px),
+    #0a0a0f;
+  background-size: 48px 48px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.wordmark,
+.footnote,
+.eyebrow,
+.accessRail,
+.readoutLabel,
+.instrumentReadout {
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.wordmark {
+  justify-self: start;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.panel {
+  width: min(100%, 620px);
+  padding: clamp(28px, 6vw, 56px);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(17, 17, 24, 0.94);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
+}
+
+.eyebrow {
+  color: #5eead4;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.title {
+  max-width: 520px;
+  margin-top: 12px;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(32px, 7vw, 54px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.lede {
+  max-width: 510px;
+  margin-top: 20px;
+  color: #9ca3af;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.accessRail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 32px 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.accessRail li {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding-top: 14px;
+  color: #4b5563;
+  font-size: 9px;
+}
+
+.accessRail li::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 34px;
+  height: 3px;
+  background: #30303b;
+}
+
+.accessRail strong {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.accessRail .railActive {
+  color: #f9fafb;
+}
+
+.accessRail .railActive::before {
+  background: #f7931a;
+}
+
+.accessRail .railComplete {
+  color: #5eead4;
+}
+
+.accessRail .railComplete::before {
+  background: #5eead4;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.form label {
+  color: #d1d5db;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  outline: none;
+  color: #f9fafb;
+  background: #0a0a0f;
+  font: inherit;
+}
+
+.form input:focus-visible {
+  border-color: #5eead4;
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.15);
+}
+
+.form button,
+.enrollPrompt button {
+  min-height: 50px;
+  padding: 0 18px;
+  border: 1px solid #f7931a;
+  border-radius: 0;
+  color: #0a0a0f;
+  background: #f7931a;
+  font: 700 13px var(--font-mono), monospace;
+  cursor: pointer;
+}
+
+.form button:hover:not(:disabled),
+.enrollPrompt button:hover:not(:disabled) {
+  background: #ffac45;
+}
+
+.form button:focus-visible,
+.enrollPrompt button:focus-visible,
+.textButton:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 3px;
+}
+
+.form button:disabled,
+.enrollPrompt button:disabled {
+  border-color: #30303b;
+  color: #6b7280;
+  background: #18182a;
+  cursor: wait;
+}
+
+.status {
+  min-height: 42px;
+  padding-top: 14px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.success {
+  color: #5eead4;
+}
+
+.error {
+  color: #fca5a5;
+}
+
+.footnote {
+  justify-self: end;
+  color: #4b5563;
+  font-size: 9px;
+}
+
+.instrumentReadout,
+.enrollPrompt {
+  padding: 24px;
+  border-left: 2px solid #f7931a;
+  color: #9ca3af;
+  background: #0a0a0f;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.enrollPrompt {
+  display: grid;
+  gap: 18px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+}
+
+.qrInstrument {
+  display: grid;
+  grid-template-columns: 176px 1fr;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding: 20px;
+  border: 1px solid rgba(94, 234, 212, 0.24);
+  background: #0a0a0f;
+}
+
+.scanFrame {
+  padding: 10px;
+  border: 1px solid #5eead4;
+  background: #fff;
+}
+
+.scanFrame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.readoutLabel {
+  display: block;
+  margin-bottom: 10px;
+  color: #5eead4;
+  font-size: 8px;
+}
+
+.secret {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #f9fafb;
+  font: 12px/1.5 var(--font-mono), monospace;
+}
+
+.qrInstrument p {
+  margin-top: 12px;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.form .codeInput {
+  font: 500 28px var(--font-mono), monospace;
+  letter-spacing: 0.34em;
+  text-align: center;
+}
+
+.textButton {
+  padding: 4px 0;
+  border: 0;
+  color: #6b7280;
+  background: transparent;
+  font: 11px var(--font-mono), monospace;
+  cursor: pointer;
+}
+
+.textButton:hover {
+  color: #f9fafb;
+}
+
+@media (max-width: 600px) {
+  .shell {
+    padding: 24px 16px;
+  }
+
+  .panel {
+    padding: 28px 22px;
+  }
+
+  .qrInstrument {
+    grid-template-columns: 1fr;
+  }
+
+  .scanFrame {
+    width: min(100%, 200px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form button,
+  .enrollPrompt button,
+  .textButton {
+    transition: none;
+  }
+}

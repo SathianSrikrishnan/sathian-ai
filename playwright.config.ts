@@ -10,6 +10,7 @@ import { defineConfig, devices } from 'playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  testMatch: '**/*.spec.ts',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
@@ -44,6 +45,8 @@ export default defineConfig({
     url: 'http://localhost:3000',
     env: {
       NEXT_PUBLIC_TEST_MODE: 'true',
+      STUDIO_E2E_BYPASS: 'true',
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA',
       // Next inlines NEXT_PUBLIC_* at compile time — make absolutely sure it's
       // present in the child process env when bundling happens.
       NODE_ENV: process.env.NODE_ENV ?? 'development',

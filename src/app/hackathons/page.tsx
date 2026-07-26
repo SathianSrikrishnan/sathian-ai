@@ -109,8 +109,9 @@ export default function HackathonsPage() {
               >
                 A payment firewall for autonomous AI agents. A human sets the
                 total allowance, maximum purchase, approved agent, and expiry.
-                Three x402 API purchases proceed; an over-limit fourth purchase
-                is blocked before payment.
+                Four API requests launch together: three approved x402
+                purchases proceed, while one over-limit purchase is blocked
+                before payment.
               </p>
             </div>
 
