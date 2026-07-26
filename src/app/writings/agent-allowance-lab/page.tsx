@@ -70,7 +70,8 @@ export default function AgentAllowanceLabPage() {
 
   return (
     <div
-      data-theme="dark"
+      data-theme="workshop"
+      className="relaunch-shell relaunch-inner-shell workshop-allowance-article"
       style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100dvh' }}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

@@ -1,173 +1,145 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { OpenAgentButton } from '@/components/OpenAgentButton'
 import { SiteNav } from '@/components/SiteNav'
 
-const emailHref = 'mailto:hi@sathian.ai?subject=AI%20automation%20conversation'
-
 export const metadata: Metadata = {
-  title: 'AI Automation & Private Systems - sathian.ai',
+  title: 'Small AI systems for messy work | sathian.ai',
   description:
-    'AI-native workflow automation, agentic reporting loops, second-brain infrastructure, and private systems by Sathian S.',
+    'Small assistants, routing layers, private context systems, and review loops built around real work by Sathian S.',
   openGraph: {
-    title: 'AI Automation & Private Systems',
-    description:
-      'Private automation work, agentic workflows, reporting loops, and AI-native systems by Sathian S.',
+    title: 'Small AI systems for messy work',
+    description: 'Assistants, routing layers, private context systems, and review loops built around real work.',
     url: 'https://sathian.ai/automation',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Automation & Private Systems',
-    description:
-      'AI-native workflow automation, reporting loops, second-brain infrastructure, and private systems.',
+    title: 'Small AI systems for messy work',
+    description: 'Assistants, routing layers, private context systems, and review loops built around real work.',
   },
 }
 
+const systems = [
+  {
+    number: '01',
+    title: 'Intake and routing',
+    body: 'Turn a note, message, document, or voice dump into the right task, owner, context, and receipt.',
+    status: 'CAPTURE / ROUTE',
+  },
+  {
+    number: '02',
+    title: 'Private context',
+    body: 'Give an assistant the smallest useful slice of memory without handing it an unrestricted personal archive.',
+    status: 'MEMORY / BOUNDARIES',
+  },
+  {
+    number: '03',
+    title: 'Review loops',
+    body: 'Make decisions, failures, approvals, and handoffs visible so an automation can improve without becoming mysterious.',
+    status: 'PROOF / REVIEW',
+  },
+  {
+    number: '04',
+    title: 'Public agents',
+    body: 'Create a useful front door that can answer from approved facts, accept a note, and stop before it reaches private systems.',
+    status: 'PUBLIC / GATED',
+  },
+]
+
 export default function AutomationPage() {
   return (
-    <div
-      data-theme="dark"
-      style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100dvh' }}
-    >
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell">
       <SiteNav />
 
-      <main>
-        <article style={{ maxWidth: 980, margin: '0 auto', padding: '112px 24px 88px' }}>
-          <p className="hub-eyebrow" style={{ color: '#06B6D4', marginBottom: 16 }}>
-            AI Automation / Private Systems
-          </p>
-          <h1 className="hub-hero-name" style={{ fontSize: 'clamp(38px, 6vw, 64px)', marginBottom: 24, maxWidth: 760 }}>
-            Build the workflow you keep doing by hand.
-          </h1>
-          <p style={{ ...leadStyle, color: 'var(--hub-text-primary)', maxWidth: 720 }}>
-            I help shape small, useful AI-native systems: reporting agents, second-brain infrastructure,
-            intake flows, research loops, agentic harnesses, and automations around messy real work.
-          </p>
+      <main className="relaunch-page">
+        <div className="relaunch-page-atmosphere relaunch-page-atmosphere--cyan" aria-hidden="true">
+          <span />
+          <span />
+        </div>
 
-          <div className="hub-hero-actions" style={{ marginTop: 26, marginBottom: 28 }}>
-            <a href={emailHref} className="hub-btn-primary" style={{ textDecoration: 'none' }}>
-              Email hi@sathian.ai
-            </a>
-            <Link href="/writings/agent-allowance-lab" className="hub-btn-secondary" style={{ textDecoration: 'none' }}>
-              Read a Technical Proof
-            </Link>
+        <header className="relaunch-content relaunch-page-header">
+          <div className="relaunch-page-code"><span>02</span><span>SYSTEMS</span></div>
+          <div className="relaunch-page-title">
+            <p className="hub-eyebrow relaunch-kicker">AI PRACTICE / PRIVATE BY DEFAULT</p>
+            <h1>Small systems<br /><span>for messy work.</span></h1>
           </div>
-
-          <p style={{ ...bodyStyle, maxWidth: 720 }}>
-            Some recent work is private at the request of clients and collaborators. I keep that separation
-            deliberately. If you are serious about an AI automation problem, I can send relevant references,
-            links, or examples by email.
+          <p className="relaunch-page-lead">
+            I build assistants, routing layers, and review loops around real work. The useful part is rarely
+            a bigger model. It is getting the right context to the right place with a boundary someone can inspect.
           </p>
+        </header>
 
-          <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 18, margin: '44px 0' }}>
-            <WorkCard
-              label="Reporting Loops"
-              body="Daily or weekly summaries that pull context from notes, calls, inboxes, tools, and project state."
-              accent="#06B6D4"
-            />
-            <WorkCard
-              label="Agentic Harnesses"
-              body="Small agent workflows with boundaries, receipts, review steps, and clear handoffs."
-              accent="#14F195"
-            />
-            <WorkCard
-              label="Second-Brain Infrastructure"
-              body="Markdown, task, memory, and project-control systems that make AI context reusable."
-              accent="#A855F7"
-            />
-            <WorkCard
-              label="Workflow Automation"
-              body="Intake, triage, follow-up, document, spreadsheet, and web operations that should not stay manual."
-              accent="#F7931A"
-            />
-          </section>
-
-          <Divider />
-
-          <Section title="How I Think About This">
-            <p style={bodyStyle}>
-              The point is not to wire AI into everything. The point is to find the small operating loop where
-              context, judgment, and repeated work meet. Then build a narrow system that can be tested, audited,
-              and improved.
+        <section className="relaunch-content relaunch-page-section">
+          <div className="relaunch-page-section-code"><span>01</span><span>THE PROBLEM</span></div>
+          <h2>Good work disappears between tools.</h2>
+          <div className="relaunch-page-prose">
+            <p>
+              A call ends, a note lands in the wrong inbox, a useful decision lives in somebody&apos;s head, and
+              the same question gets answered again next week. Most automation problems begin there.
             </p>
-            <p style={bodyStyle}>
-              That is also why the public Solana work belongs here. Agent allowances are one version of the same
-              problem: software can do more on our behalf, but it needs limits, receipts, and clear permissioning.
+            <p>
+              I look for the smallest operating loop that can preserve the context, route the next action,
+              and leave evidence that a person can review. Sometimes that becomes an agent. Sometimes it is
+              a better form, a scheduled report, or a simpler handoff.
             </p>
-          </Section>
-
-          <div
-            style={{
-              background: 'var(--hub-bg-elevated)',
-              border: '1px solid var(--hub-border-subtle)',
-              borderLeft: '3px solid #06B6D4',
-              borderRadius: 8,
-              padding: 28,
-              marginTop: 44,
-            }}
-          >
-            <h2 className="hub-section-heading" style={{ fontSize: 24, marginBottom: 12 }}>
-              Want to discuss a workflow?
-            </h2>
-            <p style={{ ...bodyStyle, marginBottom: 20 }}>
-              Email the rough version. I can help clarify whether it should be a simple automation, an agentic
-              workflow, a reporting loop, a dashboard, or nothing at all.
-            </p>
-            <a href={emailHref} className="hub-btn-primary" style={{ textDecoration: 'none' }}>
-              Email hi@sathian.ai
-            </a>
           </div>
-        </article>
+        </section>
+
+        <section className="relaunch-content relaunch-page-section relaunch-page-section--stacked">
+          <div className="relaunch-page-section-code"><span>02</span><span>THE WORK</span></div>
+          <h2>Four systems I keep returning to.</h2>
+          <div className="relaunch-systems-list">
+            {systems.map((system) => (
+              <article key={system.title}>
+                <div className="relaunch-page-list-meta"><span>{system.number}</span><span>{system.status}</span></div>
+                <h3>{system.title}</h3>
+                <p>{system.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="relaunch-content relaunch-page-section">
+          <div className="relaunch-page-section-code"><span>03</span><span>THE RULE</span></div>
+          <h2>Boundaries before capabilities.</h2>
+          <div className="relaunch-page-prose">
+            <p>
+              My Solana allowance work and this public site agent are versions of the same question: what can
+              software do on someone&apos;s behalf, and how can that authority stay visible and limited?
+            </p>
+            <p>
+              A useful system should make three things clear. What may it read? What may it do? When must it
+              ask a person? If those answers are fuzzy, more tools only make the risk harder to see.
+            </p>
+            <Link href="/writings/agent-allowance-lab" className="relaunch-text-link">Read the Agent Allowance Lab proof <span>→</span></Link>
+          </div>
+        </section>
+
+        <section className="relaunch-content relaunch-page-contact">
+          <div>
+            <p className="hub-eyebrow relaunch-kicker">BRING THE ROUGH VERSION</p>
+            <h2>Show me where the work gets lost.</h2>
+            <p>A messy description is enough. The first job is deciding whether this needs an agent at all.</p>
+          </div>
+          <div className="relaunch-page-actions">
+            <OpenAgentButton
+              className="relaunch-page-action relaunch-page-action--primary"
+              prompt="I have a workflow problem. Here is where the work keeps getting lost:"
+            >
+              Tell the site agent <span>→</span>
+            </OpenAgentButton>
+            <a className="relaunch-page-action" href="mailto:hi@sathian.ai?subject=AI%20systems%20conversation">Email the rough version <span>→</span></a>
+          </div>
+        </section>
       </main>
+
+      <footer className="relaunch-footer">
+        <div className="relaunch-content">
+          <div><span className="hub-mono">sathian.ai</span><span>© {new Date().getFullYear()} Sathian S.</span></div>
+          <nav aria-label="Footer navigation"><Link href="/#now">Projects</Link><Link href="/writings">Writing</Link><Link href="/about">About</Link></nav>
+        </div>
+      </footer>
     </div>
   )
-}
-
-function WorkCard({ label, body, accent }: { label: string; body: string; accent: string }) {
-  return (
-    <div
-      style={{
-        background: 'var(--hub-bg-elevated)',
-        border: '1px solid var(--hub-border-subtle)',
-        borderTop: `3px solid ${accent}`,
-        borderRadius: 8,
-        padding: 22,
-      }}
-    >
-      <h2 className="hub-card-title" style={{ color: 'var(--hub-text-primary)', marginBottom: 10, fontSize: 18 }}>
-        {label}
-      </h2>
-      <p style={{ ...bodyStyle, fontSize: 14, marginBottom: 0 }}>{body}</p>
-    </div>
-  )
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section style={{ marginBottom: 38 }}>
-      <h2 className="hub-section-heading" style={{ fontSize: 26, marginBottom: 16 }}>
-        {title}
-      </h2>
-      {children}
-    </section>
-  )
-}
-
-function Divider() {
-  return <div style={{ width: 56, height: 1, background: 'var(--hub-border-subtle)', margin: '48px 0' }} />
-}
-
-const leadStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans, 'Plus Jakarta Sans', sans-serif)",
-  fontSize: 20,
-  lineHeight: 1.65,
-  color: 'var(--hub-text-secondary)',
-  marginBottom: 20,
-}
-
-const bodyStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans, 'Plus Jakarta Sans', sans-serif)",
-  fontSize: 17,
-  lineHeight: 1.72,
-  color: 'var(--hub-text-secondary)',
-  marginBottom: 18,
 }

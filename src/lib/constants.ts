@@ -1,13 +1,14 @@
 export const CHAT_SUGGESTIONS = [
-  'I want to automate a workflow',
-  'Can you share recent references?',
-  'I want an intro call',
-  'Tell me about Agent Allowance Lab',
+  'What is Sathian building now?',
+  'Tell me about Tooth Fairy Network',
+  'Which essay should I read?',
+  'I want to leave Sathian a note',
 ]
 
 export const ALLOWED_ORIGINS = [
   'https://sathian.ai',
   'https://www.sathian.ai',
+  'https://studio.sathian.ai',
   'https://btc.sathian.ai',
   'https://toothfairy.sathian.ai',
   'https://toothfairy.network',

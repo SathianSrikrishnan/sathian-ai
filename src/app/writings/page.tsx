@@ -1,21 +1,22 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getPublishedArticles } from '@/lib/articles-db'
+
 import { SiteNav } from '@/components/SiteNav'
+import { getPublishedArticles } from '@/lib/articles-db'
 
 export const metadata: Metadata = {
-  title: 'Writing — sathian.ai',
-  description: 'Essays on culture, money, and technology by Sathian S.',
+  title: 'Writing | sathian.ai',
+  description: 'Essays on culture, money, technology, and the things Sathian is building.',
   openGraph: {
-    title: 'Writing — sathian.ai',
-    description: 'Essays on culture, money, and technology by Sathian S.',
+    title: 'Writing | sathian.ai',
+    description: 'Essays on culture, money, technology, and the things Sathian is building.',
   },
 }
 
 export const revalidate = 60
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', {
+function formatDate(date: string) {
+  return new Date(`${date}T12:00:00`).toLocaleDateString('en-CA', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -24,223 +25,76 @@ function formatDate(dateStr: string) {
 
 const agentAllowanceArticle = {
   title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana',
-  description:
-    'A Superteam Canada technical deep dive on using Solana Native Subscriptions and Allowances as bounded spending authority for AI agents.',
+  description: 'A technical build note on using Solana Native Subscriptions and Allowances as bounded spending authority for AI agents.',
   date: '2026-06-23',
-  readTime: '8 min read',
-  domains: 'SOLANA / SUPERTEAM CANADA / AI AGENTS',
+  readTime: '8 min',
+  domains: 'SOLANA / AI AGENTS / BUILD NOTE',
   href: '/writings/agent-allowance-lab',
   accent: '#14F195',
 }
 
 export default async function WritingsIndex() {
   const articles = await getPublishedArticles()
+  const entries = [
+    ...articles.map((article) => ({
+      title: article.title,
+      description: article.description,
+      date: article.date,
+      readTime: article.readTime,
+      domains: article.domains.join(' / ').toUpperCase(),
+      href: `/writings/${article.slug}`,
+      accent: article.theme.accent,
+    })),
+    agentAllowanceArticle,
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
-    <div data-theme="dark" style={{ background: 'var(--hub-bg-primary)', color: 'var(--hub-text-primary)', minHeight: '100vh' }}>
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell workshop-writing-index min-h-screen bg-[var(--hub-bg-primary)] text-[var(--hub-text-primary)]">
       <SiteNav />
       <main>
-      {/* Header */}
-      <header style={{ padding: '120px 0 48px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display), sans-serif',
-              fontSize: 40,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              marginBottom: 12,
-            }}
-          >
-            Writing
+        <header className="mx-auto max-w-[1120px] px-6 pb-14 pt-36">
+          <p className="hub-eyebrow mb-5 text-[#5EEAD4]">FIELD NOTES / {entries.length} PUBLISHED</p>
+          <h1 className="max-w-[760px] font-display text-5xl font-semibold leading-[0.98] tracking-[-0.045em] md:text-7xl">
+            Essays from the workbench.
           </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans), sans-serif',
-              fontSize: 16,
-              color: 'var(--hub-text-secondary)',
-              lineHeight: 1.6,
-            }}
-          >
-            Essays on culture, money, and technology. Not expert commentary — a student&apos;s notes.
+          <p className="mt-7 max-w-[620px] font-sans text-base leading-7 text-[var(--hub-text-secondary)]">
+            Notes on culture, money, technology, and the products I am learning to build.
           </p>
-        </div>
-      </header>
+        </header>
 
-      {/* Articles list */}
-      <section style={{ paddingBottom: 80 }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Link
-              href={agentAllowanceArticle.href}
-              className="writing-card-link"
-              style={{
-                display: 'block',
-                textDecoration: 'none',
-                padding: '32px 0',
-                borderTop: `1px solid ${agentAllowanceArticle.accent}33`,
-                borderBottom: '1px solid var(--hub-border-subtle)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono), monospace',
-                    fontSize: 12,
-                    color: 'var(--hub-text-muted)',
-                  }}
-                >
-                  {formatDate(agentAllowanceArticle.date)}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono), monospace',
-                    fontSize: 12,
-                    color: 'var(--hub-text-muted)',
-                  }}
-                >
-                  {agentAllowanceArticle.readTime}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono), monospace',
-                    fontSize: 11,
-                    color: agentAllowanceArticle.accent,
-                    opacity: 0.85,
-                  }}
-                >
-                  {agentAllowanceArticle.domains}
-                </span>
-              </div>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display), sans-serif',
-                  fontSize: 24,
-                  fontWeight: 600,
-                  lineHeight: 1.3,
-                  color: 'var(--hub-text-primary)',
-                  marginBottom: 8,
-                }}
-              >
-                {agentAllowanceArticle.title}
-              </h2>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans), sans-serif',
-                  fontSize: 15,
-                  color: 'var(--hub-text-secondary)',
-                  lineHeight: 1.6,
-                  maxWidth: 720,
-                }}
-              >
-                {agentAllowanceArticle.description}
-              </p>
-            </Link>
-            {articles.map((article) => (
+        <section className="mx-auto max-w-[1120px] px-6 pb-28">
+          <div className="border-t border-white/10">
+            {entries.map((article) => (
               <Link
-                key={article.slug}
-                href={`/writings/${article.slug}`}
-                className="writing-card-link"
-                style={{
-                  display: 'block',
-                  textDecoration: 'none',
-                  padding: '32px 0',
-                  borderBottom: '1px solid var(--hub-border-subtle)',
-                }}
+                key={article.href}
+                href={article.href}
+                className="group grid gap-4 border-b border-white/10 py-9 no-underline md:grid-cols-[170px_minmax(0,1fr)_auto] md:items-start md:gap-8"
               >
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono), monospace',
-                      fontSize: 12,
-                      color: 'var(--hub-text-muted)',
-                    }}
-                  >
-                    {formatDate(article.date)}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono), monospace',
-                      fontSize: 12,
-                      color: 'var(--hub-text-muted)',
-                    }}
-                  >
-                    {article.readTime}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono), monospace',
-                      fontSize: 11,
-                      color: article.theme.accent,
-                      opacity: 0.8,
-                    }}
-                  >
-                    {article.domains.join(' · ')}
-                  </span>
+                <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--hub-text-muted)]">
+                  <time dateTime={article.date}>{formatDate(article.date)}</time>
+                  <span className="mt-2 block" style={{ color: article.accent }}>{article.domains}</span>
                 </div>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display), sans-serif',
-                    fontSize: 24,
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    color: 'var(--hub-text-primary)',
-                    marginBottom: 8,
-                  }}
-                >
-                  {article.title}
-                </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans), sans-serif',
-                    fontSize: 15,
-                    color: 'var(--hub-text-secondary)',
-                    lineHeight: 1.6,
-                    maxWidth: 640,
-                  }}
-                >
-                  {article.description}
-                </p>
+                <div>
+                  <h2 className="font-display text-2xl font-medium leading-tight tracking-[-0.025em] text-[var(--hub-text-primary)] transition-colors group-hover:text-white md:text-3xl">
+                    {article.title}
+                  </h2>
+                  <p className="mt-3 max-w-[680px] font-sans text-sm leading-6 text-[var(--hub-text-secondary)]">
+                    {article.description}
+                  </p>
+                </div>
+                <span className="font-mono text-[10px] text-[var(--hub-text-muted)] md:pt-2">{article.readTime}</span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Footer */}
-      <footer
-        style={{
-          padding: '32px 0',
-          borderTop: '1px solid var(--hub-border-subtle)',
-          background: 'var(--hub-bg-dark)',
-        }}
-      >
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Link
-              href="/"
-              style={{
-                fontFamily: 'var(--font-mono), monospace',
-                fontSize: 13,
-                color: 'var(--hub-text-muted)',
-                textDecoration: 'none',
-              }}
-            >
-              sathian.ai
-            </Link>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono), monospace',
-                fontSize: 12,
-                color: 'var(--hub-text-muted)',
-              }}
-            >
-              &copy; {new Date().getFullYear()}
-            </span>
-          </div>
+      <footer className="border-t border-white/10 bg-[var(--hub-bg-dark)] py-8">
+        <div className="mx-auto flex max-w-[1120px] items-center justify-between px-6 font-mono text-[10px] text-[var(--hub-text-muted)]">
+          <Link href="/" className="text-inherit no-underline">sathian.ai</Link>
+          <span>© {new Date().getFullYear()}</span>
         </div>
       </footer>
-      </main>
     </div>
   )
 }

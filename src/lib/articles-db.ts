@@ -1,4 +1,5 @@
 import { supabase, supabaseAdmin } from './supabase'
+import { articles as staticArticles } from './articles'
 import type { Article, ArticleTheme } from './articles'
 
 interface ArticleRow {
@@ -61,6 +62,36 @@ function toArticle(row: ArticleRow): ArticleWithMeta {
   }
 }
 
+function toStaticArticle(article: Article, index: number): ArticleWithMeta {
+  return {
+    ...article,
+    id: `static:${article.slug}`,
+    status: 'published',
+    sortOrder: index,
+    createdAt: `${article.date}T00:00:00.000Z`,
+    updatedAt: `${article.date}T00:00:00.000Z`,
+  }
+}
+
+function mergePublishedArticles(databaseArticles: ArticleWithMeta[]): ArticleWithMeta[] {
+  const merged = new Map(
+    staticArticles.map((article, index) => [article.slug, toStaticArticle(article, index)]),
+  )
+
+  for (const article of databaseArticles) {
+    merged.set(article.slug, article)
+  }
+
+  return Array.from(merged.values()).sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  )
+}
+
+function findStaticArticle(slug: string): ArticleWithMeta | null {
+  const index = staticArticles.findIndex((article) => article.slug === slug)
+  return index === -1 ? null : toStaticArticle(staticArticles[index], index)
+}
+
 function toRow(article: Partial<ArticleWithMeta>): Record<string, unknown> {
   const row: Record<string, unknown> = {}
   if (article.title !== undefined) row.title = article.title
@@ -96,9 +127,9 @@ export async function getPublishedArticles(): Promise<ArticleWithMeta[]> {
 
   if (error) {
     console.error('Error fetching articles:', error)
-    return []
+    return mergePublishedArticles([])
   }
-  return (data as ArticleRow[]).map(toArticle)
+  return mergePublishedArticles((data as ArticleRow[]).map(toArticle))
 }
 
 export async function getArticleBySlug(slug: string): Promise<ArticleWithMeta | null> {
@@ -109,7 +140,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleWithMeta | 
     .eq('status', 'published')
     .single()
 
-  if (error) return null
+  if (error) return findStaticArticle(slug)
   return toArticle(data as ArticleRow)
 }
 

@@ -27,6 +27,191 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    title: 'A Corporate Card for Code',
+    titleHighlight: 'Corporate Card',
+    slug: 'a-corporate-card-for-code',
+    date: '2026-07-25',
+    author: 'Sathian',
+    domains: ['AI agents', 'payments', 'Monad'],
+    description: 'A one-day hackathon build about giving autonomous software spending power without giving it an unlimited wallet.',
+    readTime: '4 min',
+    pullQuotes: [
+      'If an AI agent can buy things, how much authority should it have?',
+      'Companies already give employees cards without giving them the company bank account.',
+      'The current contract is a public rulebook and receipt book.',
+      'Speed is useful. Boundaries are what let us trust it.',
+    ],
+    theme: {
+      accent: '#C9FF3D',
+      accentGlow: 'rgba(201, 255, 61, 0.14)',
+      background: 'grid',
+      mood: 'energetic',
+    },
+    media: [
+      {
+        src: '/media/a-corporate-card-for-code-agenttab.jpg',
+        alt: 'AgentTab presentation page showing the bounded x402 payment demo on Monad',
+        caption: 'The finished one-day demo: three approved purchases, one policy block, and a public receipt.',
+        placement: 'hero',
+      },
+      {
+        src: '/sathian-profile.png',
+        alt: 'Sathian S.',
+        caption: 'A solo build, with a lot of help from the people and tools in the room.',
+        placement: 'inline-left',
+        afterSection: 0,
+      },
+    ],
+    sectionHeadings: ['The machine I brought home', 'A corporate card for code', 'Why Monad', 'The honest limit'],
+    sectionTints: ['#D79845', '#C9FF3D', '#7C6EFF', '#D79845'],
+    textHighlights: [
+      { text: 'AgentTab', color: '#C9FF3D', link: 'https://agenttab.sathian.ai' },
+      { text: 'x402', color: '#5EEAD4' },
+      { text: 'Monad', color: '#7C6EFF', link: 'https://docs.monad.xyz/' },
+      {
+        text: 'public rulebook and receipt book',
+        color: '#D79845',
+        link: 'https://github.com/SathianSrikrishnan/monad-blitz-toronto',
+      },
+    ],
+    hiddenSignal: 'The day began with two laptops and ended with four purchase requests.',
+    body: `At 7:45 that morning, I was still deciding which laptop to bring.
+
+My Windows machine had the files. My MacBook was easier to carry. I spent half an hour thinking about remote access, wallets, folders, and whether I could build something credible in one day without pretending I already understood every layer.
+
+I went to the opening session, recorded the briefing, came home, and built from the machine where the rest of my work already lived.
+
+By then, the laptop was no longer the interesting question.
+
+The real question was: if an AI agent can buy things, how much authority should it have?
+
+---
+
+At Monad Blitz Toronto, I built AgentTab, a corporate card for autonomous agents.
+
+The human sets the total allowance, the maximum size of one purchase, the approved agent, and an expiry. The agent can move quickly inside those rules. Anything outside them stops before payment.
+
+The demo is deliberately small. Four purchase requests appear at once. Three cost 0.001 USDC and run concurrently through x402 on Monad Testnet. A fourth costs 0.003 USDC, above the 0.002 limit, and gets blocked. A Solidity contract publishes the policy and records a cryptographic receipt for the completed batch.
+
+That sounds technical. The idea is not.
+
+Companies already give employees cards without giving them the company bank account. Limits, approved uses, and expiry dates are ordinary controls. Autonomous software will need the same thing.
+
+---
+
+Monad matters because this kind of control becomes more useful when the number of small transactions stops looking human.
+
+The demo sends three independent payments at the same time. Monad is designed to execute independent transactions in parallel at scale. Its EVM compatibility also let me use familiar Ethereum-style wallets, Solidity, and development tools.
+
+The hackathon version does not prove what happens at internet scale. It shows the small primitive that scale would need: explicit authority, fast settlement, and an inspectable receipt.
+
+The speed is the opportunity. The boundary is the product.
+
+---
+
+The current contract is a public rulebook and receipt book. It records the owner, approved agent, budget, purchase limit, expiry, and completed batch. That makes the policy visible and the receipt tamper-resistant.
+
+It does not custody the money yet. The agent wallet still signs the payments, which means a badly designed application could route around the policy.
+
+The next version would move the funds into a smart-account vault where the contract itself controls what can leave. Then the limit would not just be a promise in the application. It would be enforced by the wallet.
+
+I started the morning worried about which computer to carry. I ended it thinking about what software should be allowed to carry on our behalf.
+
+Speed is useful. Boundaries are what let us trust it.`,
+  },
+  {
+    title: 'The Gap Between Weeks',
+    titleHighlight: 'Gap',
+    slug: 'the-gap-between-weeks',
+    date: '2026-07-04',
+    author: 'Sathian',
+    domains: ['fatherhood', 'product building', 'Solana'],
+    description: 'A loose tooth, a missed ritual, and the failed versions that taught me what Tooth Fairy Network was actually for.',
+    readTime: '6 min',
+    pullQuotes: [
+      'I had built a lot of machinery around a very small human moment.',
+      'Children already have imagination. The useful thing is a simple activity we can do together and a way to keep the words that would otherwise disappear.',
+      'Both should remain beneath the family experience.',
+      'I started building because I missed the middle of a small moment.',
+    ],
+    theme: {
+      accent: '#F6C857',
+      accentGlow: 'rgba(246, 200, 87, 0.14)',
+      background: 'aurora',
+      mood: 'contemplative',
+    },
+    media: [
+      {
+        src: '/media/the-gap-between-weeks-v1-homepage.png',
+        alt: 'Dark cosmic Tooth Fairy Network homepage with a glowing network globe and live fairy node statistics',
+        caption: 'The February 5, 2026 V1 homepage. At that point I was trying to make the network itself the product.',
+        placement: 'full-bleed',
+        afterSection: 1,
+      },
+    ],
+    sectionHeadings: ['The gap', 'Version 1.0', 'Learning the rails', 'Crayons at dinner', 'The first hundred'],
+    sectionTints: ['#F6C857', '#7C3AED', '#14F195', '#F9A8D4', '#F6C857'],
+    textHighlights: [
+      { text: 'Tooth Fairy Network', color: '#B794F6' },
+      { text: 'Toothlight', color: '#F6C857' },
+      { text: 'first hundred', color: '#5EEAD4' },
+    ],
+    hiddenSignal: 'Twenty primary teeth became the first data model. The missing middle became the product.',
+    body: `One week, one of my children had a loose tooth. The next time I saw them, there was a gap.
+
+I had missed the tooth falling out. The Tooth Fairy had already come. A small childhood ritual was over, and I had missed the middle.
+
+Once I stopped seeing every moment in real time, I began experiencing parts of fatherhood in intervals. Small changes became louder. A new phrase. A new interest. A tooth that was there one week and gone the next.
+
+I started wondering how many other parents were living this way. They were close to their children, but they were not always in the room when the moment happened.
+
+That was the beginning of Tooth Fairy Network. It began as a way to stay part of a memory.
+
+---
+
+There are twenty primary teeth. I know because I spent about a month trying to turn a child's mouth into a data model.
+
+I mapped the teeth, assigned positions, and imagined each lost tooth becoming its own digital object. The system was elaborate. It was technically interesting. It was focused on the wrong thing.
+
+Nobody cared which record represented a lower canine. The tooth mattered because of the story around it.
+
+Around the same time, my children and I were drawing stories and experimenting with AI image tools on my phone. They liked watching a sketch become a character or a little world. I thought that transformation might be the product, so I tried to make Tooth Fairy Network AI-first too.
+
+That version looked more impressive, but the idea became harder to explain. A parent had to understand the tooth record, the image transformation, the wallet, and the digital asset before they understood why any of it mattered. I had built a lot of machinery around a very small human moment.
+
+---
+
+I explored the idea on Ethereum and Base, then worked through the Solana developer courses. The speed and tooling made it easier to imagine the technical layer fading into the background.
+
+In the spring of 2026, I prepared Tooth Fairy Network for Colosseum's Frontier Hackathon. A deadline made me build faster. It did not make the product simpler.
+
+I spent too much time on AI enhancement, wallets, on-ramps, and compressed assets before I had earned the right to ask a family to care. The underlying technology still has a place. It can give a family a durable record and make optional gifts transparent and parent-controlled. It should feel like infrastructure, not homework.
+
+---
+
+The version I am building now came from watching my children at restaurants.
+
+Give them paper and a few crayons while we wait for the food and they will make something I could never have prompted out of them. A strange animal. A machine. A character with a name and a backstory delivered with total confidence.
+
+The best part is the explanation that comes with the picture.
+
+That observation brought me back to the product. Children already have imagination. The useful thing is a simple activity we can do together and a way to keep the words that would otherwise disappear.
+
+A Toothlight now begins with the real material: a photo, a drawing, a date, and the child's version of what happened. AI can help a parent shape the story. Solana can preserve the record and support a parent-controlled gift. Both should remain beneath the family experience.
+
+This sounds obvious now. It took several failed versions to see it.
+
+---
+
+Tooth Fairy Network has become my flagship project because it joins fatherhood to the way I learn by building.
+
+I plan to document that process here. I want to show the versions that failed, the things parents tell me, the decisions I change, and the questions I still cannot answer.
+
+The next goal is deliberately small: find the first hundred families who understand the idea and are willing to tell me what feels meaningful, what feels confusing, and what should disappear.
+
+I started building because I missed the middle of a small moment. If Tooth Fairy Network works, more of those middles will have somewhere to live.`,
+  },
+  {
     title: 'C.R.E.A.M. 2.0',
     titleHighlight: 'C.R.E.A.M.',
     slug: 'cream-2-point-0',

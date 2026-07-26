@@ -350,7 +350,8 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
 
   return (
     <main
-      className="min-h-screen bg-[#0A0A12] text-[#C9D1D9] article-accent-selection"
+      data-theme="workshop"
+      className="workshop-article min-h-screen bg-[#0A0A12] text-[#C9D1D9] article-accent-selection"
       style={{
         ['--article-accent-selection' as string]: `${article.theme.accent}44`,
       }}

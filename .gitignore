@@ -1,11 +1,14 @@
 # Dependencies
 /node_modules
+**/node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
 # Testing
 /coverage
+/test-results
+/playwright-report
 
 # Next.js
 /.next/
@@ -27,6 +30,9 @@ yarn-error.log*
 .vercel-cli-appdata/
 .vercel-cli-localappdata/
 .vercel-login-run/
+.wrangler/
+**/.wrangler/
+**/.wrangler-dry-run/
 .codex-screens/
 *.log
 tmp-*.log
@@ -52,3 +58,8 @@ public/media/
 # Test screenshots
 test-*.png
 tfn-*.png
+
+# Local test runtimes
+.codex-python/
+.planning/supabase-release-validation/
+.planning/supabase-shared-history-validation/
