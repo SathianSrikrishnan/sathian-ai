@@ -3575,6 +3575,58 @@ h1, h2, h3 {
   background-size: 100% 42px;
 }
 
+.site-agent-panel--workshop {
+  --agent-bg: #17100c;
+  --agent-surface: #241810;
+  --agent-surface-strong: #2c1d14;
+  --agent-ink: #f7ead2;
+  --agent-muted: #c8b396;
+  --agent-faint: #9c8569;
+  --agent-line: rgba(236, 204, 157, 0.16);
+  --agent-cyan: #d79845;
+  border-color: rgba(226, 184, 116, 0.3);
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at 90% 8%, rgba(200, 96, 36, 0.13), transparent 28%),
+    var(--agent-bg);
+  box-shadow: none;
+}
+
+.site-agent-panel--workshop.site-agent-panel--floating {
+  border-radius: 3px;
+  transform: none;
+}
+
+.site-agent-panel--workshop .site-agent-header,
+.site-agent-panel--workshop .site-agent-composer {
+  background: rgba(23, 16, 12, 0.96);
+}
+
+.site-agent-panel--workshop .site-agent-header h2 {
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+}
+
+.site-agent-panel--workshop .site-agent-message,
+.site-agent-panel--workshop .site-agent-suggestion,
+.site-agent-panel--workshop .site-agent-input,
+.site-agent-panel--workshop .site-agent-attach,
+.site-agent-panel--workshop .site-agent-send {
+  border-radius: 3px;
+}
+
+.site-agent-panel--workshop .site-agent-message--user,
+.site-agent-panel--workshop .site-agent-send {
+  background: #c86024;
+  color: #fff6e6;
+}
+
+.site-agent-panel--workshop .site-agent-messages {
+  background:
+    linear-gradient(rgba(238, 205, 158, 0.04) 1px, transparent 1px),
+    var(--agent-bg);
+  background-size: 100% 42px;
+}
+
 .relaunch-shell[data-theme="workshop"] .relaunch-now {
   background:
     radial-gradient(circle at 82% 12%, rgba(200, 96, 36, 0.1), transparent 28rem),

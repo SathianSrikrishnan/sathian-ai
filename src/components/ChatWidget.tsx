@@ -366,8 +366,8 @@ export function ChatWidget() {
           aria-modal="false"
           aria-labelledby="site-agent-title"
           className={isHomepage
-            ? 'site-agent-panel site-agent-panel--inline'
-            : 'site-agent-panel site-agent-panel--floating fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden sm:w-[440px]'}
+            ? 'site-agent-panel site-agent-panel--workshop site-agent-panel--inline'
+            : 'site-agent-panel site-agent-panel--workshop site-agent-panel--floating fixed bottom-20 right-4 z-50 flex max-h-[calc(100vh-104px)] w-full max-w-[calc(100vw-32px)] flex-col overflow-hidden sm:w-[440px]'}
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
