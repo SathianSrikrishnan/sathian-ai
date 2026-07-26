@@ -8,9 +8,11 @@ describe('site-agent-first editorial pass', () => {
   const widget = readSource('src/components/ChatWidget.tsx')
   const about = readSource('src/app/about/page.tsx')
   const automation = readSource('src/app/automation/page.tsx')
+  const agentIndex = readSource('src/app/agents/page.tsx')
   const articles = readSource('src/lib/articles.ts')
   const nav = readSource('src/components/SiteNav.tsx')
   const memory = readSource('src/lib/memory.ts')
+  const buildNotes = readSource('src/lib/public-build-notes.ts')
 
   it('puts the real working agent in the homepage hero instead of a duplicate mock panel', () => {
     expect(home).toContain('id="home-agent-slot"')
@@ -23,9 +25,10 @@ describe('site-agent-first editorial pass', () => {
 
   it('uses Sathian\'s annotated homepage language', () => {
     expect(home).toContain('A personal workshop.')
-    expect(home).toContain('Projects, essays, and experiments across AI, culture, memory, and the internet.')
+    expect(home).toContain('Projects, writing, and agentic experiments')
     expect(home).toContain('Projects with a pulse.')
-    expect(home).toContain('The systems underneath the work.')
+    expect(home).not.toContain('The systems underneath the work.')
+    expect(home).not.toContain('BUILD_NOTES')
     expect(home).not.toContain('Three things with a pulse.')
     expect(home).not.toContain('A dated record, including the misses.')
   })
@@ -34,16 +37,29 @@ describe('site-agent-first editorial pass', () => {
     expect(home).not.toMatch(/TxODDS|txodds|World Cup build/)
     expect(memory).not.toContain('getTxOddsCampaignMemoryCards')
     expect(home).toContain('Projects with a pulse.')
-    expect(home).toContain('The systems underneath the work.')
+    expect(agentIndex).toContain('Public build record')
   })
 
-  it('uses one shared editorial shell for About and Automation', () => {
+  it('consolidates About and Automation into one concise public page', () => {
     expect(about).toContain('relaunch-inner-shell')
     expect(about).toContain('relaunch-page-header')
-    expect(about).toContain('Readable by people and agents.')
-    expect(automation).toContain('relaunch-inner-shell')
-    expect(automation).toContain('relaunch-page-header')
-    expect(automation).toMatch(/Small systems[\s\S]*?for messy work\./)
+    expect(about).toContain('Small systems for messy work.')
+    expect(about).toContain('Public context. Private boundaries.')
+    expect(about).not.toContain('Four systems I keep returning to.')
+    expect(automation).toContain("redirect('/about#automation')")
+  })
+
+  it('keeps the human navigation short and gives agents a quieter index', () => {
+    expect(nav).toContain("{ label: 'Projects', href: '/#now'")
+    expect(nav).toContain("{ label: 'Hackathons', href: '/hackathons'")
+    expect(nav).toContain("{ label: 'Writing', href: '/writings'")
+    expect(nav).toContain("{ label: 'About', href: '/about'")
+    expect(nav).not.toContain("{ label: 'Automation'")
+    expect(nav).not.toContain("{ label: 'Email'")
+    expect(agentIndex).toContain('FOR AGENTS / PUBLIC CONTEXT')
+    expect(agentIndex).toContain('Public build record')
+    expect(agentIndex).toContain('Tooth Fairy Network')
+    expect(agentIndex).toContain('/hackathons')
   })
 
   it('dates The Gap Between Weeks to July 4, 2026', () => {
@@ -66,11 +82,11 @@ describe('site-agent-first editorial pass', () => {
 
   it('links the verified TFN devnet proof without presenting it as a production release', () => {
     const profile = readSource('src/lib/public-profile.ts')
-    expect(home).toContain('Making a childhood memory ownable without making it public')
-    expect(home).toContain('Inspect the devnet transaction')
-    expect(home).toContain('proofHref')
-    expect(home).toContain('No production or mainnet configuration changed')
-    expect(home).not.toMatch(/decentralized Tooth Fairy Network|mainnet launch/i)
+    expect(buildNotes).toContain('Making a childhood memory ownable without making it public')
+    expect(buildNotes).toContain('Inspect the devnet transaction')
+    expect(buildNotes).toContain('proofHref')
+    expect(buildNotes).toContain('No production or mainnet configuration changed')
+    expect(buildNotes).not.toMatch(/decentralized Tooth Fairy Network|mainnet launch/i)
     expect(profile).toContain('guardian-owned digital keepsake')
     expect(profile).toContain('optional future fund')
     expect(profile).toContain('4QnZV6aJ4jZLujSZZ3hUWJoQ9acSetyifcKVufYK4E9U')
