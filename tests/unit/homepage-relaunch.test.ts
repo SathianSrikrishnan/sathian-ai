@@ -13,7 +13,10 @@ describe('sathian.ai relaunch surface', () => {
   const homeClient = readOptional('src/components/home/HomeClient.tsx')
   const articleDatabase = readOptional('src/lib/articles-db.ts')
   const writingIndex = readOptional('src/app/writings/page.tsx')
+  const agentIndex = readOptional('src/app/agents/page.tsx')
+  const publicBuildNotes = readOptional('src/lib/public-build-notes.ts')
   const homepage = `${page}\n${homeClient}`
+  const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
   it('leads with a personal workshop and a useful agent doorway', () => {
     expect(homepage).toContain('A personal workshop.')
@@ -29,39 +32,41 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).not.toMatch(/TxODDS|txodds/)
   })
 
-  it('replaces stale events with a dated Building in Public stream', () => {
-    expect(homepage).toContain('Building in public')
-    expect(homepage).toContain('What changed')
-    expect(homepage).toContain('What I learned')
-    expect(homepage).toContain('Next')
+  it('moves the dated build stream off the human homepage and into the agent index', () => {
+    expect(homepage).not.toContain('Building in public')
+    expect(homepage).not.toContain('What changed')
+    expect(publicBuildRecord).toContain('Public build record')
+    expect(publicBuildRecord).toContain('What changed')
+    expect(publicBuildRecord).toContain('What I learned')
+    expect(publicBuildRecord).toContain('Next')
     expect(homepage).not.toMatch(/Signal\s*&\s*Noise/i)
   })
 
   it('frames AI-native infrastructure as a bounded public experiment, not a sales pitch', () => {
-    expect(homepage).toContain('AI-NATIVE INFRASTRUCTURE')
-    expect(homepage).toContain('persistent memory')
-    expect(homepage).toContain('RAG systems')
-    expect(homepage).toContain('a small number of clients')
+    expect(publicBuildRecord).toContain('AI-NATIVE INFRASTRUCTURE')
+    expect(publicBuildRecord).toContain('persistent memory')
+    expect(publicBuildRecord).toContain('a small number of client settings')
+    expect(publicBuildRecord).toContain('bounded actions')
     expect(homepage).not.toContain('tell me what keeps getting done by hand')
   })
 
   it('records the Toothlight ownership proof as a bounded devnet milestone', () => {
-    expect(homeClient).toContain('Making a childhood memory ownable without making it public')
-    expect(homeClient).toContain('synthetic private-provenance Toothlight on Solana devnet')
-    expect(homeClient).toContain('guardian-owned digital keepsake')
-    expect(homeClient).toContain('Bubblegum V1')
-    expect(homeClient).toContain('recommended V2 path')
-    expect(homeClient).toContain('2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke')
-    expect(homeClient).not.toMatch(/mainnet launch|guaranteed (?:growth|returns|appreciation)/i)
+    expect(publicBuildRecord).toContain('Making a childhood memory ownable without making it public')
+    expect(publicBuildRecord).toContain('synthetic private-provenance Toothlight on Solana devnet')
+    expect(publicBuildRecord).toContain('guardian-owned digital keepsake')
+    expect(publicBuildRecord).toContain('Bubblegum V1')
+    expect(publicBuildRecord).toContain('recommended V2 path')
+    expect(publicBuildRecord).toContain('2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke')
+    expect(publicBuildRecord).not.toMatch(/mainnet launch|guaranteed (?:growth|returns|appreciation)/i)
   })
 
   it('publishes the receipt-backed TFN wallet compatibility milestone', () => {
-    expect(homeClient).toContain('Six wallets, one evidence ledger')
-    expect(homeClient).toContain('Phantom, Solflare, Backpack, Jupiter Wallet, Trust Wallet, and MetaMask')
-    expect(homeClient).toContain('Solflare, Backpack, and Jupiter Wallet completed the full escrow lifecycle')
-    expect(homeClient).toContain('Trust and MetaMask still have documented escrow limitations')
-    expect(homeClient).toContain('https://toothfairy.network/wallets')
-    expect(homeClient).not.toMatch(/all wallets are supported|fully supports/i)
+    expect(publicBuildRecord).toContain('Six wallets, one evidence ledger')
+    expect(publicBuildRecord).toContain('Phantom, Solflare, Backpack, Jupiter Wallet, Trust Wallet, and MetaMask')
+    expect(publicBuildRecord).toContain('Solflare, Backpack, and Jupiter Wallet completed the full escrow lifecycle')
+    expect(publicBuildRecord).toContain('Trust and MetaMask still have documented escrow limitations')
+    expect(publicBuildRecord).toContain('https://toothfairy.network/wallets')
+    expect(publicBuildRecord).not.toMatch(/all wallets are supported|fully supports/i)
   })
 
   it('registers the approved Tooth Fairy Network origin essay and historical image', () => {

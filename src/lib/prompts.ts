@@ -4,8 +4,10 @@ interface MemoryContext {
 }
 
 const PAGE_CONTEXT: Record<string, string> = {
-  '/': 'The visitor is on the homepage, where they can see current projects, build notes, writing, and the site agent.',
-  '/about': 'The visitor is on the About page and may want public background on Sathian.',
+  '/': 'The visitor is on the homepage, where they can see current projects, writing, and the site agent.',
+  '/about': 'The visitor is on the About page and may want public background on Sathian or his approach to small automation systems.',
+  '/agents': 'The visitor is on the public agent index, with canonical entry points, reading boundaries, and dated build notes.',
+  '/hackathons': 'The visitor is browsing Sathian’s public hackathon record.',
   '/writings': 'The visitor is browsing the writing index and may want an article recommendation.',
   '/writings/the-gap-between-weeks': 'The visitor is reading The Gap Between Weeks, the origin essay for Tooth Fairy Network.',
   '/writings/cream-2-point-0': 'The visitor is reading C.R.E.A.M. 2.0, the Wu-Tang and Bitcoin parallel essay.',

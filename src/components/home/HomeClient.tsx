@@ -23,96 +23,6 @@ interface HomeClientProps {
   writings: HomeWriting[]
 }
 
-interface BuildNote {
-  date: string
-  status: string
-  project: string
-  title: string
-  changed: string
-  learned: string
-  next: string
-  href: string
-  accent: string
-  external?: boolean
-  proofHref?: string
-  proofLabel?: string
-}
-
-const BUILD_NOTES: BuildNote[] = [
-  {
-    date: '2026-07-24',
-    status: 'PROVEN',
-    project: 'TOOTH FAIRY NETWORK',
-    title: 'Six wallets, one evidence ledger',
-    changed: 'Tested Phantom, Solflare, Backpack, Jupiter Wallet, Trust Wallet, and MetaMask with synthetic Solana devnet assets. Five completed owner-signed outbound cNFT transfers; Solflare, Backpack, and Jupiter Wallet completed the full escrow lifecycle.',
-    learned: '“Supports Solana” is not one capability. Connection, signing, asset receipt, transfer, display, escrow, cancellation, and mobile behavior each need their own receipt.',
-    next: 'Trust and MetaMask still have documented escrow limitations. Resolve those paths, then run the mobile and native-display matrix before publishing any support logos.',
-    href: 'https://toothfairy.network/wallets',
-    accent: '#B794F6',
-    external: true,
-    proofHref: 'https://toothfairy.network/wallets',
-    proofLabel: 'Open the wallet verification ledger',
-  },
-  {
-    date: '2026-07-22',
-    status: 'EXPERIMENTING',
-    project: 'AI-NATIVE INFRASTRUCTURE',
-    title: 'Giving agents context without giving them the keys',
-    changed: 'I am assembling the working layer behind my own projects: agent-driven workflows, persistent memory, retrieval and data architecture, and small harnesses for bounded actions.',
-    learned: 'The useful part is not a more autonomous agent. It is a better-defined system around it: what the agent can remember, retrieve, do, and prove afterward.',
-    next: 'Keep testing the pattern in my own work, with friends, and in a small number of client settings before describing it as a repeatable practice.',
-    href: '#building',
-    accent: '#C86024',
-  },
-  {
-    date: '2026-07-15',
-    status: 'PROVEN',
-    project: 'TOOTH FAIRY NETWORK',
-    title: 'Making a childhood memory ownable without making it public',
-    changed: 'Minted one synthetic private-provenance Toothlight on Solana devnet to a disposable guardian wallet. Metaplex DAS independently verified the asset, owner, tree, and metadata. No production or mainnet configuration changed.',
-    learned: 'A guardian-owned digital keepsake can provide verifiable ownership and provenance while the child\'s artwork and the parent\'s future letter remain private.',
-    next: 'Build the parent-facing wallet experience and compare the current Bubblegum V1 proof with the recommended V2 path before choosing a production standard.',
-    href: 'https://toothfairy.network',
-    accent: '#B794F6',
-    external: true,
-    proofHref: 'https://explorer.solana.com/tx/2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke?cluster=devnet',
-    proofLabel: 'Inspect the devnet transaction',
-  },
-  {
-    date: '2026-07-14',
-    status: 'BUILDING',
-    project: 'SITE AGENT',
-    title: 'The chatbot becomes a doorway',
-    changed: 'Closed the Studio cookie gap, removed duplicate prompts, retired Notion logging, and made message forwarding visible.',
-    learned: 'A useful agent needs clearer boundaries before it needs more tools.',
-    next: 'Reviewed public memory, durable receipts, and one-way Telegram delivery.',
-    href: '#agent',
-    accent: '#5EEAD4',
-  },
-  {
-    date: '2026-07-11',
-    status: 'ITERATING',
-    project: 'TOOTH FAIRY NETWORK',
-    title: 'Back to the ritual',
-    changed: 'Moved the product away from technical spectacle and toward drawings, stories, and the words children attach to them.',
-    learned: 'The memory is the product. The technical rails should stay underneath it.',
-    next: 'Find the first hundred families willing to tell me what feels meaningful and what should disappear.',
-    href: '/writings/the-gap-between-weeks',
-    accent: '#B794F6',
-  },
-  {
-    date: '2026-07-02',
-    status: 'SHIPPED',
-    project: 'AGENT ALLOWANCE LAB',
-    title: 'Bounded budgets for agents',
-    changed: 'Shipped a small Solana demo and a receipt-backed technical write-up for agent spending limits.',
-    learned: 'A useful agent wallet starts with explicit authority, not a bigger balance.',
-    next: 'Carry the same bounded-authority idea into the public site agent.',
-    href: '/writings/agent-allowance-lab',
-    accent: '#14F195',
-  },
-]
-
 const PROJECTS = [
   {
     number: '01',
@@ -284,8 +194,8 @@ export function HomeClient({ writings }: HomeClientProps) {
                 A personal workshop.
               </motion.h1>
               <motion.p variants={HERO_ITEM} className="relaunch-hero-summary">
-                Projects, essays, and experiments across AI, culture, memory, and the internet. The site
-                agent can help you find your way around or leave me a note.
+                Projects, writing, and agentic experiments across culture, memory, money, and the internet.
+                The site agent can help you find your way around or leave me a note.
               </motion.p>
               <motion.div variants={HERO_ITEM} className="relaunch-hero-links">
                 <button type="button" onClick={() => openAgent()}>Ask the site agent <Arrow /></button>
@@ -386,76 +296,11 @@ export function HomeClient({ writings }: HomeClientProps) {
           </section>
         </ScrollReveal>
 
-        <ScrollReveal>
-          <section id="building" className="relaunch-section relaunch-build">
-            <div className="relaunch-content">
-              <SectionIntro
-                index="02"
-                label="Building in public"
-                title="The systems underneath the work."
-                note="A running record of the infrastructure I am building around agents: persistent memory, retrieval and data architecture, workflow orchestration, and the limits that keep them useful."
-              />
-              <div className="relaunch-build-ledger" aria-label="Current AI infrastructure experiments">
-                <p className="hub-eyebrow">CURRENT LINE OF INQUIRY</p>
-                <div>
-                  <span>Agentic workflows</span>
-                  <span>Persistent memory</span>
-                  <span>RAG systems</span>
-                  <span>Data architecture</span>
-                  <span>Bounded harnesses</span>
-                </div>
-                <p>
-                  I am testing these systems close to real work—first in my own projects, then with
-                  friends and a small number of clients. This log is the public record of what holds up.
-                </p>
-              </div>
-              <div className="relaunch-timeline">
-                {BUILD_NOTES.map((note) => (
-                  <article key={`${note.date}-${note.title}`} className="relaunch-note">
-                    <div className="relaunch-note-rail">
-                      <span style={{ background: note.accent }} />
-                      <time dateTime={note.date}>{formatDate(note.date)}</time>
-                    </div>
-                    <div className="relaunch-note-body">
-                      <div className="relaunch-note-meta">
-                        <span style={{ color: note.accent }}>{note.status}</span>
-                        <span>{note.project}</span>
-                      </div>
-                      <h3>
-                        {note.external ? (
-                          <a href={note.href} target="_blank" rel="noopener noreferrer">{note.title}</a>
-                        ) : (
-                          <Link href={note.href}>{note.title}</Link>
-                        )}
-                      </h3>
-                      <dl>
-                        <div><dt>What changed</dt><dd>{note.changed}</dd></div>
-                        <div><dt>What I learned</dt><dd>{note.learned}</dd></div>
-                        <div><dt>Next</dt><dd>{note.next}</dd></div>
-                      </dl>
-                      {note.proofHref && note.proofLabel && (
-                        <a
-                          className="relaunch-note-proof"
-                          href={note.proofHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {note.proofLabel} <Arrow />
-                        </a>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-        </ScrollReveal>
-
         {featured && (
           <ScrollReveal>
             <section id="writing" className="relaunch-section relaunch-writing">
               <div className="relaunch-content">
-                <SectionIntro index="03" label="WRITING" title="Essays from the workbench." />
+                <SectionIntro index="02" label="WRITING" title="Essays from the workbench." />
                 <Link href={featured.href} className="relaunch-featured-writing" style={{ '--writing-accent': featured.accent } as React.CSSProperties}>
                   <div className="relaunch-writing-meta">
                     <span>LATEST ESSAY</span>
@@ -485,7 +330,7 @@ export function HomeClient({ writings }: HomeClientProps) {
           <section id="about" className="relaunch-section relaunch-close">
             <div className="relaunch-content relaunch-close-grid">
               <div className="relaunch-about">
-                <p className="hub-eyebrow relaunch-kicker">04 / ABOUT</p>
+                <p className="hub-eyebrow relaunch-kicker">03 / ABOUT</p>
                 <h2>Builder. Student. Father.</h2>
                 <p>I use writing and code to examine money, culture, memory, and how people adapt to new systems. Toronto is home.</p>
                 <Link href="/about">A little more context <Arrow /></Link>
@@ -508,10 +353,10 @@ export function HomeClient({ writings }: HomeClientProps) {
             </div>
             <nav aria-label="Footer navigation">
               <a href="#now">Projects</a>
-              <a href="#building">Building</a>
+              <Link href="/hackathons">Hackathons</Link>
               <Link href="/writings">Writing</Link>
               <Link href="/about">About</Link>
-              <a href="mailto:hi@sathian.ai">Email</a>
+              <Link href="/agents">For agents</Link>
             </nav>
           </div>
         </footer>

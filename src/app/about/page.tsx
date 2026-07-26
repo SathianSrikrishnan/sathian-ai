@@ -5,43 +5,19 @@ import { OpenAgentButton } from '@/components/OpenAgentButton'
 import { SiteNav } from '@/components/SiteNav'
 
 export const metadata: Metadata = {
-  title: 'About Sathian S. | Builder and student in Toronto',
+  title: 'About Sathian S. | Builder, writer, and systems student',
   description:
-    'Sathian S. is a builder, father, and student again in his 40s, learning in public across AI, Solana, and Toronto technology.',
+    'Sathian S. is a Toronto builder and writer learning in public through products, agentic workflows, and small automation systems.',
   openGraph: {
     title: 'About Sathian S.',
-    description: 'A builder and student again in his 40s, learning in public from Toronto.',
+    description: 'A builder and student again, working across products, writing, and bounded automation.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'About Sathian S.',
-    description: 'A builder and student again in his 40s, learning in public from Toronto.',
+    description: 'A builder and student again, working across products, writing, and bounded automation.',
   },
 }
-
-const currentWork = [
-  {
-    number: '01',
-    title: 'Tooth Fairy Network',
-    body: 'A family memory ritual built around drawings, stories, lost teeth, and the words children attach to those moments.',
-    href: 'https://toothfairy.network',
-    label: 'FLAGSHIP / BUILDING',
-  },
-  {
-    number: '02',
-    title: 'The site agent',
-    body: 'A public doorway that answers from reviewed context, helps people find the right part of my work, and accepts a note with a receipt.',
-    href: '/#agent',
-    label: 'PUBLIC AGENT / TESTING',
-  },
-  {
-    number: '03',
-    title: 'Solana and private AI systems',
-    body: 'Small experiments in bounded authority, useful automation, personal context, and infrastructure people can actually inspect.',
-    href: '/automation',
-    label: 'SYSTEMS / LEARNING',
-  },
-]
 
 export default function AboutPage() {
   return (
@@ -64,9 +40,8 @@ export default function AboutPage() {
             <h1>Student again,<br /><span>in public.</span></h1>
           </div>
           <p className="relaunch-page-lead">
-            I spent years building businesses and relationships before coming back to technology in a
-            serious way. Now I am in my 40s, active in Toronto&apos;s tech community, and learning from
-            people who are often closer to my children&apos;s age than mine.
+            I build products, write to understand what I am seeing, and test small agentic workflows around
+            real work. I am in my 40s, back in technology in a serious way, and learning in public from Toronto.
           </p>
         </header>
 
@@ -80,61 +55,55 @@ export default function AboutPage() {
               Bay Custom Clothing, and became its CEO.
             </p>
             <p>
-              Each chapter taught me something about how people make decisions, how trust is earned, and
-              what a business looks like when the systems behind it are imperfect. I am carrying those
-              lessons into a new chapter built around software, AI agents, Solana, and public experiments.
+              Those years taught me how people make decisions and how trust is earned when the systems behind
+              the work are imperfect. I am carrying that into software, AI agents, and public experiments.
             </p>
           </div>
         </section>
 
-        <section className="relaunch-content relaunch-page-section relaunch-page-section--stacked">
-          <div className="relaunch-page-section-code"><span>02</span><span>CURRENT WORK</span></div>
-          <h2>Three live threads.</h2>
-          <div className="relaunch-page-list">
-            {currentWork.map((item) => {
-              const content = (
-                <>
-                  <div className="relaunch-page-list-meta"><span>{item.number}</span><span>{item.label}</span></div>
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
-                  <span className="relaunch-page-list-arrow" aria-hidden="true">↗</span>
-                </>
-              )
-
-              return item.href.startsWith('http') ? (
-                <a key={item.title} href={item.href} target="_blank" rel="noopener noreferrer">{content}</a>
-              ) : (
-                <Link key={item.title} href={item.href}>{content}</Link>
-              )
-            })}
+        <section id="automation" className="relaunch-content relaunch-page-section">
+          <div className="relaunch-page-section-code"><span>02</span><span>AUTOMATION</span></div>
+          <h2>Small systems for messy work.</h2>
+          <div className="relaunch-page-prose">
+            <p>
+              I build assistants, routing layers, and review loops around work that gets lost between tools.
+              The useful part is rarely a bigger model. It is getting the right context to the right place.
+            </p>
+            <p>
+              My rule is boundaries before capabilities: make clear what an agent may read, what it may do,
+              and when it must stop and ask a person.
+            </p>
+            <Link href="/writings/agent-allowance-lab" className="relaunch-text-link">
+              See the bounded-authority experiment <span>→</span>
+            </Link>
           </div>
         </section>
 
         <section className="relaunch-content relaunch-page-section">
-          <div className="relaunch-page-section-code"><span>03</span><span>HUMANS + AGENTS</span></div>
-          <h2>Readable by people and agents.</h2>
+          <div className="relaunch-page-section-code"><span>03</span><span>PUBLIC CONTEXT</span></div>
+          <h2>Public context. Private boundaries.</h2>
           <div className="relaunch-page-prose">
             <p>
-              This site is my public context layer. The pages are written for people, but they are also
-              crawlable, attributable, and structured so another agent can understand what is public.
+              This site is a public workshop. People get the shorter version: projects, hackathons, and
+              writing. Agents get a structured index and dated build notes they can sweep and cite.
             </p>
             <p>
-              The site agent reads only reviewed public material. It cannot enter my private memory,
-              credentials, client work, or family records. A direct agent API is not public yet. I will add
-              one only when its capabilities, rate limits, and receipts are as clear as the website boundary.
+              The site agent reads reviewed public material only. It cannot enter private memory, credentials,
+              client work, or family records.
             </p>
+            <Link href="/agents" className="relaunch-text-link">Open the agent index <span>→</span></Link>
           </div>
         </section>
 
         <section className="relaunch-content relaunch-page-contact">
           <div>
             <p className="hub-eyebrow relaunch-kicker">A DIRECT DOORWAY</p>
-            <h2>The fastest route is the agent.</h2>
-            <p>Ask about a project, tell me what you are building, or leave a note that should reach me.</p>
+            <h2>Start with the work.</h2>
+            <p>Explore a project, read the field notes, or ask the site agent where to begin.</p>
           </div>
           <div className="relaunch-page-actions">
             <OpenAgentButton className="relaunch-page-action relaunch-page-action--primary">Ask the site agent <span>→</span></OpenAgentButton>
-            <a className="relaunch-page-action" href="mailto:hi@sathian.ai">Email hi@sathian.ai <span>→</span></a>
+            <Link className="relaunch-page-action" href="/#now">See current projects <span>→</span></Link>
           </div>
         </section>
       </main>
@@ -142,7 +111,7 @@ export default function AboutPage() {
       <footer className="relaunch-footer">
         <div className="relaunch-content">
           <div><span className="hub-mono">sathian.ai</span><span>© {new Date().getFullYear()} Sathian S.</span></div>
-          <nav aria-label="Footer navigation"><Link href="/#now">Projects</Link><Link href="/automation">Automation</Link><Link href="/writings">Writing</Link></nav>
+          <nav aria-label="Footer navigation"><Link href="/#now">Projects</Link><Link href="/hackathons">Hackathons</Link><Link href="/writings">Writing</Link><Link href="/agents">For agents</Link></nav>
         </div>
       </footer>
     </div>
