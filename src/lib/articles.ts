@@ -17,6 +17,7 @@ export interface Article {
   body: string
   pullQuotes: string[]      // Key sentences to feature as pull quotes
   theme: ArticleTheme
+  heroLayout?: 'background' | 'contained'
   media?: { src: string; alt: string; caption?: string; placement: 'hero' | 'full-bleed' | 'inline-left' | 'inline-right'; afterSection?: number }[]
   sectionHeadings?: string[]   // Heading for each section (index matches section index)
   sectionTints?: string[]      // Hex color tint per section (emotional arc)
@@ -36,22 +37,21 @@ export const articles: Article[] = [
     description: 'A one-day hackathon build about giving autonomous software spending power without giving it an unlimited wallet.',
     readTime: '4 min',
     pullQuotes: [
-      'If an AI agent can buy things, how much authority should it have?',
       'Companies already give employees cards without giving them the company bank account.',
-      'The current contract is a public rulebook and receipt book.',
       'Speed is useful. Boundaries are what let us trust it.',
     ],
     theme: {
-      accent: '#C9FF3D',
-      accentGlow: 'rgba(201, 255, 61, 0.14)',
+      accent: '#8C451C',
+      accentGlow: 'rgba(140, 69, 28, 0.14)',
       background: 'grid',
       mood: 'energetic',
     },
+    heroLayout: 'contained',
     media: [
       {
-        src: '/media/a-corporate-card-for-code-agenttab.jpg',
-        alt: 'AgentTab presentation page showing the bounded x402 payment demo on Monad',
-        caption: 'The finished one-day demo: three approved purchases, one policy block, and a public receipt.',
+        src: '/media/a-corporate-card-for-code-agenttab.png',
+        alt: 'AgentTab main page showing its payment-firewall mission on Monad Testnet',
+        caption: 'The AgentTab main page: a simple interface for giving an agent spending authority without giving it an unlimited wallet.',
         placement: 'hero',
       },
       {
@@ -63,14 +63,14 @@ export const articles: Article[] = [
       },
     ],
     sectionHeadings: ['The machine I brought home', 'A corporate card for code', 'Why Monad', 'The honest limit'],
-    sectionTints: ['#D79845', '#C9FF3D', '#7C6EFF', '#D79845'],
+    sectionTints: ['#8C451C', '#315D73', '#46583B', '#8C451C'],
     textHighlights: [
-      { text: 'AgentTab', color: '#C9FF3D', link: 'https://agenttab.sathian.ai' },
-      { text: 'x402', color: '#5EEAD4' },
-      { text: 'Monad', color: '#7C6EFF', link: 'https://docs.monad.xyz/' },
+      { text: 'AgentTab', color: '#8C451C', link: 'https://agenttab.sathian.ai' },
+      { text: 'x402', color: '#315D73' },
+      { text: 'Monad', color: '#46583B', link: 'https://docs.monad.xyz/' },
       {
         text: 'public rulebook and receipt book',
-        color: '#D79845',
+        color: '#8C451C',
         link: 'https://github.com/SathianSrikrishnan/monad-blitz-toronto',
       },
     ],

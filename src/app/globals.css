@@ -4550,6 +4550,46 @@ h1, h2, h3 {
   text-underline-offset: 3px;
 }
 
+.workshop-article blockquote,
+.workshop-article em {
+  color: #2b1c13 !important;
+}
+
+.workshop-article--contained-hero > header {
+  min-height: 0;
+  background:
+    linear-gradient(rgba(77, 49, 31, 0.045) 1px, transparent 1px),
+    #ead9bb;
+  background-size: 100% 44px;
+}
+
+.workshop-contained-hero-media {
+  overflow: hidden;
+  border: 1px solid rgba(76, 48, 30, 0.28);
+  background: #f7f3e9;
+  box-shadow: 16px 18px 0 rgba(76, 48, 30, 0.12);
+}
+
+.workshop-contained-hero-media img {
+  background: #f7f3e9;
+}
+
+.workshop-contained-hero-media figcaption {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(76, 48, 30, 0.18);
+  color: #6c5843;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 700px) {
+  .workshop-contained-hero-media {
+    box-shadow: 8px 10px 0 rgba(76, 48, 30, 0.12);
+  }
+}
+
 @media (max-width: 980px) {
   .relaunch-machine-band__grid {
     grid-template-columns: 1fr;

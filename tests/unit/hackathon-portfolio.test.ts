@@ -37,7 +37,7 @@ describe('hackathon portfolio release', () => {
     expect(article?.body).toContain('The current contract is a public rulebook and receipt book.')
     expect(
       article?.media?.some(
-        (media) => media.src === '/media/a-corporate-card-for-code-agenttab.jpg',
+        (media) => media.src === '/media/a-corporate-card-for-code-agenttab.png',
       ),
     ).toBe(true)
     expect(
@@ -46,11 +46,23 @@ describe('hackathon portfolio release', () => {
     expect(
       existsSync(
         new URL(
-          '../../public/media/a-corporate-card-for-code-agenttab.jpg',
+          '../../public/media/a-corporate-card-for-code-agenttab.png',
           import.meta.url,
         ),
       ),
     ).toBe(true)
+  })
+
+  it('gives the AgentTab essay a contained screenshot and readable workshop palette', () => {
+    const article = articles.find((entry) => entry.slug === 'a-corporate-card-for-code')
+    const renderer = readSource('src/components/article/ArticleRenderer.tsx')
+    const styles = readSource('src/app/globals.css')
+
+    expect(article?.heroLayout).toBe('contained')
+    expect(article?.pullQuotes).toHaveLength(2)
+    expect(article?.theme.accent).toBe('#8C451C')
+    expect(renderer).toContain("article.heroLayout === 'contained'")
+    expect(styles).toContain('.workshop-article blockquote')
   })
 
   it('uses the current workshop treatment for the floating site agent', () => {

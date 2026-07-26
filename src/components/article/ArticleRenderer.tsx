@@ -347,11 +347,12 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
   const minutes = readingTime(article.body)
   const articleUrl = `https://sathian.ai/writings/${article.slug}`
   const heroImage = article.media?.find((m) => m.placement === 'hero')
+  const containedHero = article.heroLayout === 'contained'
 
   return (
     <main
       data-theme="workshop"
-      className="workshop-article min-h-screen bg-[#0A0A12] text-[#C9D1D9] article-accent-selection"
+      className={`workshop-article min-h-screen bg-[#0A0A12] text-[#C9D1D9] article-accent-selection ${containedHero ? 'workshop-article--contained-hero' : ''}`}
       style={{
         ['--article-accent-selection' as string]: `${article.theme.accent}44`,
       }}
@@ -359,8 +360,8 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
       <ReadingProgress color={article.theme.accent} />
 
       {/* Hero */}
-      <header className="relative min-h-[75vh] flex flex-col justify-end pb-16 px-6 overflow-hidden">
-        {heroImage && (
+      <header className={`relative flex flex-col px-6 overflow-hidden ${containedHero ? 'pb-16 pt-24' : 'min-h-[75vh] justify-end pb-16'}`}>
+        {heroImage && !containedHero && (
           <div className="absolute inset-0 z-0">
             <motion.img
               src={heroImage.src}
@@ -389,7 +390,7 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
           <span className="text-gray-700 text-xs font-mono">{minutes} min read</span>
         </div>
 
-        <div className="max-w-2xl mx-auto w-full relative z-10">
+        <div className={`${containedHero ? 'max-w-5xl' : 'max-w-2xl'} mx-auto w-full relative z-10`}>
           <motion.div
             className="flex flex-wrap gap-2 mb-6"
             initial={{ opacity: 0, y: 20 }}
@@ -437,7 +438,7 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
             }
           </motion.h1>
 
-          {heroImage?.caption && (
+          {heroImage?.caption && !containedHero && (
             <motion.p
               className="text-sm italic mb-6 font-article"
               style={{ color: `${article.theme.accent}99` }}
@@ -459,6 +460,24 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
             <span className="text-gray-800">/</span>
             <span>{formatDate(article.date)}</span>
           </motion.div>
+
+          {heroImage && containedHero && (
+            <motion.figure
+              className="workshop-contained-hero-media mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] as const }}
+            >
+              <img
+                src={heroImage.src}
+                alt={heroImage.alt}
+                className="block w-full h-auto"
+              />
+              {heroImage.caption && (
+                <figcaption>{heroImage.caption}</figcaption>
+              )}
+            </motion.figure>
+          )}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-px z-10" style={{
