@@ -37,6 +37,14 @@ The public dashboard contains no licence number, VIN, policy number, full addres
 - Deployment: `dpl_AbUVCmTG2T5NFV3paG8adSDUYcPK`
 - Verified HTTP 200 with truthful `16 routes / 0 premiums` copy and no synthetic-price ledger.
 
+## Website deployment
+
+- Production page: https://sathian.ai/hackathons
+- Source commit: `ccc6c60883042602d0b8c5ac398be0be695402e3`
+- Deployment: `dpl_9meAWkfXhxMZhwmKXqpBXRCbe9u8`
+- Production verification: HTTP 200; Quote Coverage Ledger appears before AgentTab; the featured button links to the dashboard production alias.
+- Joint website/dashboard production privacy scan returned zero selected sensitive matches.
+
 ## Evidence
 
 - `docs/releases/2026-08-09-quote-ledger-hackathons-desktop.png`
