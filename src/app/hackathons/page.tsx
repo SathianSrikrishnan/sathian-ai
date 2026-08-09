@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 }
 
 const links = {
+  quoteCoverageLedger: {
+    demo: 'https://ontario-all-quote-agent.vercel.app',
+  },
   agentTab: {
     demo: 'https://agenttab.sathian.ai',
     presentation: 'https://agenttab.sathian.ai/presentation',
@@ -89,8 +92,8 @@ export default function HackathonsPage() {
           >
             <div>
               <div className="mb-7 flex flex-wrap gap-2">
-                <Tag>Monad Blitz Toronto</Tag>
-                <Tag>July 25, 2026</Tag>
+                <Tag>Brave AI Hackathon</Tag>
+                <Tag>August 2026</Tag>
                 <Tag>Solo build</Tag>
               </div>
 
@@ -98,7 +101,7 @@ export default function HackathonsPage() {
                 className="hub-mono"
                 style={{ color: '#C9FF3D', fontSize: 12, marginBottom: 14 }}
               >
-                001 / AGENT PAYMENTS
+                001 / INSURANCE SHOPPING
               </p>
               <h2
                 style={{
@@ -108,7 +111,7 @@ export default function HackathonsPage() {
                   marginBottom: 20,
                 }}
               >
-                AgentTab
+                Quote Coverage Ledger
               </h2>
               <p
                 style={{
@@ -118,11 +121,11 @@ export default function HackathonsPage() {
                   lineHeight: 1.7,
                 }}
               >
-                A payment firewall for autonomous AI agents. A human sets the
-                total allowance, maximum purchase, approved agent, and expiry.
-                Four API requests launch together: three approved x402
-                purchases proceed, while one over-limit purchase is blocked
-                before payment.
+                An evidence-first personal shopping agent for Ontario auto
+                insurance. It turns one private driver profile into a
+                deduplicated market plan, runs visible browser routes with
+                human approval gates, and records either a comparable quote or
+                the exact reason a route stopped.
               </p>
             </div>
 
@@ -130,10 +133,10 @@ export default function HackathonsPage() {
               className="grid content-start gap-0"
               style={{ borderTop: '1px solid var(--hub-border-subtle)' }}
             >
-              <Fact label="Network" value="Monad Testnet" />
-              <Fact label="Protocol" value="x402 payments" />
-              <Fact label="Contract" value="Solidity policy + receipts" />
-              <Fact label="Build window" value="One day" />
+              <Fact label="Market map" value="15 families / 16 routes" />
+              <Fact label="Private intake" value="44 fields / 43 available" />
+              <Fact label="Stack" value="LangGraph + Puppeteer + Zod" />
+              <Fact label="Current proof" value="16 routes / 0 premiums" />
             </dl>
           </div>
 
@@ -141,39 +144,36 @@ export default function HackathonsPage() {
             className="grid gap-px md:grid-cols-3"
             style={{ background: 'var(--hub-border-subtle)' }}
           >
-            <DemoValue label="Total allowance" value="0.030 USDC" />
-            <DemoValue label="Maximum purchase" value="0.002 USDC" />
-            <DemoValue label="Presentation" value="2:49" />
+            <DemoValue label="Public routes tested" value="16" />
+            <DemoValue label="Live premiums returned" value="0" />
+            <DemoValue label="Personal records exposed" value="0" />
           </div>
 
           <div className="flex flex-wrap gap-3 p-7 md:p-10">
-            <ProjectLink href={links.agentTab.presentation} primary>
-              Watch presentation
+            <ProjectLink href={links.quoteCoverageLedger.demo} primary>
+              Open current dashboard
             </ProjectLink>
-            <ProjectLink href={links.agentTab.demo}>Open live demo</ProjectLink>
-            <ProjectLink href={links.agentTab.github}>GitHub</ProjectLink>
-            <ProjectLink href={links.agentTab.contract}>On-chain contract</ProjectLink>
           </div>
         </article>
 
         <section
           className="mt-14 grid gap-8 md:grid-cols-3"
-          aria-label="AgentTab summary"
+          aria-label="Quote Coverage Ledger summary"
         >
           <Summary
             number="01"
             title="The problem"
-            body="Agents need to purchase data and services, but an unlimited wallet is an unacceptable security model."
+            body="Ontario presents dozens of brands and distribution paths, while ownership overlap and human-only routes make true comparison opaque."
           />
           <Summary
             number="02"
-            title="The primitive"
-            body="A public budget policy, a fail-closed payment check, and a cryptographic receipt for the completed batch."
+            title="The method"
+            body="Build one private profile, deduplicate the market, pause before disclosure, and preserve an honest quote or blocker for every route."
           />
           <Summary
             number="03"
             title="The next step"
-            body="Move custody into a smart-account vault so the on-chain policy directly controls the funds."
+            body="Complete the first personal-data adapter, return a real comparable premium, and resume the route queue after genuine human gates."
           />
         </section>
 
@@ -206,7 +206,7 @@ export default function HackathonsPage() {
                 lineHeight: 1.65,
               }}
             >
-              Three submissions, each carrying a lesson into the next build.
+              Four submissions, each carrying a lesson into the next build.
               This is a record of the work, not a list of prizes.
             </p>
           </div>
@@ -214,6 +214,27 @@ export default function HackathonsPage() {
           <div className="grid gap-5">
             <PastBuild
               number="002"
+              accent="#C9FF3D"
+              event="Monad Blitz Toronto"
+              date="July 25, 2026"
+              mode="Solo build"
+              title="AgentTab"
+              description="A payment firewall for autonomous AI agents. A human sets the total allowance, maximum purchase, approved agent, and expiry; over-limit requests fail before payment while approved x402 purchases produce public receipts."
+              facts={[
+                ['Network', 'Monad Testnet'],
+                ['Protocol', 'x402 payments'],
+                ['Contract', 'Solidity policy + receipts'],
+              ]}
+              links={[
+                { href: links.agentTab.presentation, label: 'Watch presentation', primary: true },
+                { href: links.agentTab.demo, label: 'Open live demo' },
+                { href: links.agentTab.github, label: 'GitHub' },
+                { href: links.agentTab.contract, label: 'On-chain contract' },
+              ]}
+            />
+
+            <PastBuild
+              number="003"
               accent="#B794F6"
               event="Colosseum Frontier 2026"
               date="May 2026"
@@ -233,7 +254,7 @@ export default function HackathonsPage() {
             />
 
             <PastBuild
-              number="003"
+              number="004"
               accent="#5EEAD4"
               event="U of T Healthcare AI Hackathon"
               date="March 2026"

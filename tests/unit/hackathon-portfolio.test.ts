@@ -9,17 +9,21 @@ const readSource = (path: string) =>
 describe('hackathon portfolio release', () => {
   const page = readSource('src/app/hackathons/page.tsx')
 
-  it('presents the three submissions in reverse chronological order', () => {
+  it('features Quote Coverage Ledger before the earlier submissions', () => {
+    const quoteLedger = page.indexOf('Quote Coverage Ledger')
     const agentTab = page.indexOf('AgentTab')
     const toothFairy = page.indexOf('title="Tooth Fairy Network"')
     const clinicalGuard = page.indexOf('title="ClinicalGuard"')
 
+    expect(quoteLedger).toBeGreaterThan(-1)
     expect(agentTab).toBeGreaterThan(-1)
+    expect(agentTab).toBeGreaterThan(quoteLedger)
     expect(toothFairy).toBeGreaterThan(agentTab)
     expect(clinicalGuard).toBeGreaterThan(toothFairy)
   })
 
   it('links each entry to its strongest public proof', () => {
+    expect(page).toContain('https://ontario-all-quote-agent.vercel.app')
     expect(page).toContain('https://github.com/SathianSrikrishnan/monad-blitz-toronto')
     expect(page).toContain('/writings/the-gap-between-weeks')
     expect(page).toContain(
