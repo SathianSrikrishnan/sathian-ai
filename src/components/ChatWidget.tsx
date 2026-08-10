@@ -326,7 +326,16 @@ export function ChatWidget() {
         setMessages((prev) => [...prev, ...responses])
       } else if (res.status === 429) {
         const data = await res.json().catch(() => null)
-        setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.error || "You've been chatting a lot! Give me a moment to catch up." }])
+        const retryAfterSeconds = typeof data?.retryAfterSeconds === 'number'
+          && Number.isFinite(data.retryAfterSeconds)
+          && data.retryAfterSeconds > 0
+          ? Math.ceil(data.retryAfterSeconds)
+          : null
+        const baseMessage = data?.error || "You've been chatting a lot! Give me a moment to catch up."
+        const rateLimitMessage = retryAfterSeconds
+          ? `${baseMessage} Try again in ${retryAfterSeconds} seconds.`
+          : baseMessage
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: rateLimitMessage }])
       } else {
         const data = await res.json().catch(() => null)
         setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.message || data?.error || 'Sorry, I couldn\'t process that right now. Try again in a moment.' }])

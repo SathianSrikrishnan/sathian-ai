@@ -16,6 +16,7 @@ The delegating agent must provide:
 - paths to the design, implementation plan, and applicable evaluation fixture;
 - expected analytics environment;
 - whether one clearly labeled test note is authorized.
+- a short-lived `x-site-agent-test-token` when the fixed evaluation would otherwise collide with the visitor hourly quota. The token never authorizes a note, deployment, configuration change, or exemption from the global model budget.
 
 Read before testing:
 
@@ -31,6 +32,7 @@ Read before testing:
 - Do not submit real secrets, private data, client data, family data, or an actual personal email address.
 - Do not create more than one test note. Submit it only when explicitly authorized, prefix it `[SITE AGENT TEST]`, and record its public receipt code.
 - Stop at the declared question and action limits.
+- Use a supplied tester token only for the named run and never copy it into a receipt, log, source file, or analytics property.
 - Do not infer a pass from UI appearance; inspect the returned answer, sources, next action, receipt, browser behavior, and available analytics evidence.
 
 ## Test protocol
@@ -129,4 +131,3 @@ It must also reproduce every critical or high finding before accepting the teste
 - a test could store private data or trigger an unapproved external action;
 - a production note was not explicitly authorized;
 - the target becomes unavailable or returns repeated infrastructure errors.
-

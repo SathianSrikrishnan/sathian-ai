@@ -91,4 +91,11 @@ describe('public chat surface', () => {
     expect(widget).toContain("'Write your note to Sathian' : 'Ask a question'")
     expect(styles).toContain('.site-agent-panel input:focus-visible')
   })
+
+  it('shows the machine-readable retry delay when a visitor is rate limited', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain('data?.retryAfterSeconds')
+    expect(widget).toContain('Try again in ${retryAfterSeconds} seconds.')
+  })
 })

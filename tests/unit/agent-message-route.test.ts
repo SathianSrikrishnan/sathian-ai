@@ -447,6 +447,8 @@ describe('public agent message route', () => {
     expect(routeSource).toContain('PUBLIC_AGENT_REQUESTS_PER_HOUR')
     expect(routeSource).toContain('PUBLIC_AGENT_MODEL_CALLS_PER_DAY')
     expect(routeSource).toContain('consumeGlobalModelQuota')
+    expect(routeSource).toContain('isAuthorizedAgentTesterRequest')
+    expect(routeSource).toMatch(/isAuthorizedAgentTesterRequest\(request\)[\s\S]*return false/)
     expect(routeSource).toMatch(/typeof data !== 'boolean'\s*\?\s*true\s*:\s*!data/)
     expect(routeSource).not.toMatch(/const requestTimes = new Map/)
   })
