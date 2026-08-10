@@ -27,7 +27,13 @@ export function buildSitemapForHost(
 ): MetadataRoute.Sitemap {
   if (!isToothFairyHost(host)) {
     const base = 'https://sathian.ai'
-    const coreRoutes = ['', '/hackathons', '/writings']
+    const coreRoutes = [
+      '',
+      '/hackathons',
+      '/writings',
+      '/projects/tooth-fairy-network/draw-with-tanda',
+      '/projects/clinicalguard',
+    ]
     const writingDates = publishedWritings.map((article) =>
       safeDate(article.updatedAt ?? article.date, updated),
     )

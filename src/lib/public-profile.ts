@@ -1,10 +1,52 @@
 import type { PublicMemoryCard } from '@/lib/agent/types'
+import {
+  CLINICAL_GUARD_PROJECT,
+  DRAW_WITH_TANDA_EPISODES,
+  LATEST_RELEASE,
+  type SiteRelease,
+} from '@/content/site-releases'
 
 const ABOUT_SOURCE = 'https://sathian.ai/about'
 const TOOTHLIGHT_DEVNET_PROOF = 'https://explorer.solana.com/tx/2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke?cluster=devnet'
 
+export function releaseToPublicMemoryCard(
+  release: SiteRelease,
+  options: { latest?: boolean } = {},
+): PublicMemoryCard {
+  const sourceRef = `https://sathian.ai${release.pageHref}`
+  return {
+    id: options.latest ? 'latest-release' : `release-${release.id}`,
+    slug: options.latest ? `latest-release-${release.slug}` : `release-${release.slug}`,
+    title: `${options.latest ? 'Latest release: ' : ''}${release.title}`,
+    body: release.agentSummary,
+    summary: release.description,
+    tags: [...release.tags, ...(options.latest ? ['latest-release'] : [])],
+    source: { ref: sourceRef, kind: 'published_page' },
+    validFrom: release.publishedAt,
+    validUntil: null,
+  }
+}
+
 export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
   return [
+    releaseToPublicMemoryCard(LATEST_RELEASE, { latest: true }),
+    ...DRAW_WITH_TANDA_EPISODES
+      .filter((release) => release.id !== LATEST_RELEASE.id)
+      .map((release) => releaseToPublicMemoryCard(release)),
+    {
+      id: 'project-clinicalguard',
+      slug: 'clinicalguard',
+      title: CLINICAL_GUARD_PROJECT.title,
+      body: `${CLINICAL_GUARD_PROJECT.description} It was built for the ${CLINICAL_GUARD_PROJECT.event}.`,
+      summary: CLINICAL_GUARD_PROJECT.tagline,
+      tags: ['project', 'hackathon', 'clinicalguard', 'healthcare-ai', 'langgraph'],
+      source: {
+        ref: `https://sathian.ai${CLINICAL_GUARD_PROJECT.pageHref}`,
+        kind: 'published_page',
+      },
+      validFrom: '2026-03-01T00:00:00.000Z',
+      validUntil: null,
+    },
     {
       id: 'profile-current-chapter',
       slug: 'sathian-current-chapter',

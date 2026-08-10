@@ -16,14 +16,19 @@ describe('sathian.ai relaunch surface', () => {
   const writingIndex = readOptional('src/app/writings/page.tsx')
   const agentIndex = readOptional('src/app/agents/page.tsx')
   const publicBuildNotes = readOptional('src/lib/public-build-notes.ts')
+  const releaseRegistry = readOptional('src/content/site-releases.ts')
+  const socialRegistry = readOptional('src/lib/social-links.ts')
   const homepage = `${page}\n${homeClient}`
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
-  it('leads with the live site agent as the fastest contact doorway', () => {
-    expect(homepage).toContain('SATHIAN S. / AGENT MANAGER + ORCHESTRATOR / TORONTO')
-    expect(homepage).toContain('The fastest way to reach me is to ask.')
+  it('leads with Sathian\'s editorial theme and the live site agent', () => {
+    expect(homepage).toContain('SATHIAN S.')
+    expect(homepage).toContain('AGENT MANAGER + ORCHESTRATOR')
+    expect(homepage).toContain('TORONTO')
+    expect(homepage).toContain("Welcome to Sathian's Digital Workshop")
+    expect(homepage).not.toContain('The fastest way to reach me is to ask.')
     expect(homeClient).toContain('id="home-agent-slot"')
-    expect(homepage).toContain('Ask anything about the work, or leave me a note.')
+    expect(homepage).toContain('Ask the site agent about what I am building and writing, or leave me a note.')
   })
 
   it('keeps the approved homepage baseline free of the retired TxODDS sprint', () => {
@@ -98,16 +103,55 @@ describe('sathian.ai relaunch surface', () => {
     expect(writingIndex).toContain('entries.map((article) =>')
   })
 
-  it('uses official and source-captured artwork for the featured projects', () => {
-    expect(homeClient).toContain("image: '/toothfairy/animation/tfn-tanda-hero-integrated-poster-v34.webp'")
+  it('uses approved and source-captured artwork for every visible project', () => {
+    expect(homeClient).toContain("image: '/projects/tooth-fairy-network/family-storybook-hero.webp'")
+    expect(homeClient).toContain("src=\"/projects/tooth-fairy-network/tanda-profile.png\"")
+    expect(homeClient).toContain("image: '/media/a-corporate-card-for-code-agenttab.png'")
+    expect(homeClient).toContain("image: '/projects/clinicalguard-dashboard.png'")
     expect(homeClient).toContain("image: '/projects/autoquote-automator-dashboard.png'")
     expect(homeClient).toContain("image: '/projects/solana-ecosystem-observatory.png'")
+    expect(existsSync(new URL('../../public/projects/tooth-fairy-network/family-storybook-hero.webp', import.meta.url))).toBe(true)
+    expect(existsSync(new URL('../../public/projects/tooth-fairy-network/tanda-profile.png', import.meta.url))).toBe(true)
+    expect(existsSync(new URL('../../public/projects/clinicalguard-dashboard.png', import.meta.url))).toBe(true)
     expect(
       existsSync(new URL('../../public/projects/autoquote-automator-dashboard.png', import.meta.url)),
     ).toBe(true)
     expect(
       existsSync(new URL('../../public/projects/solana-ecosystem-observatory.png', import.meta.url)),
     ).toBe(true)
+  })
+
+  it('features the live Draw with Tanda pilot and every official TFN social channel', () => {
+    const durableTfnSurface = `${homeClient}\n${releaseRegistry}\n${socialRegistry}`
+    expect(durableTfnSurface).toContain('Draw with Tanda')
+    expect(durableTfnSurface).toContain("youtubeVideoId: 'ZoY1ZEzJymY'")
+    expect(durableTfnSurface).toContain('https://toothfairy.network')
+    expect(homeClient).toContain('toothFairySocialLinks.map')
+    expect(existsSync(new URL('../../public/projects/tooth-fairy-network/draw-finn-thumbnail.jpg', import.meta.url))).toBe(true)
+  })
+
+  it('keeps one clear Draw with Tanda feature instead of a duplicate release banner', () => {
+    expect(homeClient).not.toContain('id="latest-release"')
+    expect(homeClient).not.toContain('minimal-latest-release')
+    expect(homeClient).toContain('Draw together. Keep the story.')
+    expect(homeClient).toContain('minimal-tfn-video')
+  })
+
+  it('uses the same bold editorial heading treatment for the Solana project', () => {
+    const styles = readOptional('src/app/globals.css')
+    expect(styles).toContain('.minimal-solana h2')
+  })
+
+  it('keeps the homepage identity and title inside the mobile viewport', () => {
+    const styles = readOptional('src/app/globals.css')
+    expect(homeClient.match(/minimal-home-identity__part/g)).toHaveLength(3)
+    expect(styles).toContain('.minimal-home-identity')
+    expect(styles).toContain('font-size: clamp(44px, 12vw, 50px)')
+  })
+
+  it('keeps the Writing index quiet and removes the rejected headline', () => {
+    expect(writingIndex).not.toContain('Writing to understand.')
+    expect(writingIndex).toContain('Notes on culture, money, technology, fatherhood, and the products I am learning to build.')
   })
 
   it('keeps the homepage focused while preserving older work in a quiet archive', () => {

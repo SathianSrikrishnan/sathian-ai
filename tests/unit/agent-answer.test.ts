@@ -121,6 +121,38 @@ describe('bounded public answer service', () => {
     expect(result.answer).toContain('family-memory ritual')
   })
 
+  it('answers the latest-release workflow deterministically with a source and next action', async () => {
+    const latestReleaseCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'latest-release',
+      slug: 'latest-release-draw-with-tanda-finn',
+      title: 'Latest release: Draw Finn the shark with Tanda',
+      body: 'The latest public release is the first Draw with Tanda episode, featuring Finn the shark.',
+      tags: ['latest-release', 'draw-with-tanda', 'video'],
+      source: {
+        ref: 'https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda',
+        kind: 'published_page',
+      },
+    }
+    const model = { generate: vi.fn(async () => 'Model answer should not be needed.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Show me the latest release',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'Show me the latest release' },
+      cards: [latestReleaseCard, tfnCard],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('Draw Finn the shark with Tanda')
+    expect(result.sources).toEqual([latestReleaseCard.source.ref])
+    expect(result.nextAction).toEqual({
+      label: 'Open the latest release',
+      href: '/projects/tooth-fairy-network/draw-with-tanda',
+    })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {
     const model = {
       generate: vi.fn(async () => 'Yes — **you can participate**. Ask about a track.'),

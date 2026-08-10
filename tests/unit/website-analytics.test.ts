@@ -18,6 +18,15 @@ describe('website analytics foundation', () => {
     expect(packageJson.dependencies?.['@vercel/analytics']).toBeTruthy()
     expect(analytics).toMatch(/NEXT_PUBLIC_GA_MEASUREMENT_ID/)
     expect(analytics).toMatch(/googletagmanager\.com\/gtag\/js/)
+    expect(analytics).toMatch(/send_page_view:\s*false/)
+    expect(analytics).toMatch(/gtag\('event',\s*'page_view'/)
     expect(analytics).toMatch(/<Analytics\s*\/>/)
+  })
+
+  it('forwards privacy-safe site events to both Vercel Analytics and GA4', () => {
+    const helper = source('src/lib/site-analytics.ts')
+    expect(helper).toContain("import { track } from '@vercel/analytics'")
+    expect(helper).toContain('track(eventName, properties)')
+    expect(helper).toContain("window.gtag('event', eventName, properties)")
   })
 })

@@ -1,7 +1,7 @@
 export const CHAT_SUGGESTIONS = [
+  'Show me the latest release',
   'What is Sathian building now?',
   'Tell me about Tooth Fairy Network',
-  'Which essay should I read?',
   'I want to leave Sathian a note',
 ]
 
@@ -21,7 +21,15 @@ export function isAllowedOrigin(origin: string | null): boolean {
   if (ALLOWED_ORIGINS.includes(origin)) return true
 
   try {
-    const originHost = new URL(origin).host
+    const parsedOrigin = new URL(origin)
+    const originHost = parsedOrigin.host
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      parsedOrigin.protocol === 'http:' &&
+      ['localhost', '127.0.0.1', '[::1]'].includes(parsedOrigin.hostname)
+    ) {
+      return true
+    }
     const currentDeploymentHost = process.env.VERCEL_URL
     const currentBranchHost = process.env.VERCEL_BRANCH_URL
 

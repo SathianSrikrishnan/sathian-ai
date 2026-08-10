@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
+import { trackSiteEvent } from '@/lib/site-analytics'
 import { CHAT_SUGGESTIONS } from '@/lib/constants'
 import {
   MAX_AGENT_FILE_BYTES,
@@ -17,6 +18,34 @@ import {
 const SUGGESTIONS = CHAT_SUGGESTIONS
 
 const AGENT_SESSION_KEY = 'sathian-agent-session-id'
+
+interface AgentMessage {
+  role: 'bot' | 'user'
+  text: string
+  sources?: string[]
+  nextAction?: {
+    label: string
+    href: string
+  }
+}
+
+function sourceLabel(source: string, index: number): string {
+  if (source.startsWith('/')) return 'sathian.ai'
+  try {
+    return new URL(source).hostname.replace(/^www\./, '')
+  } catch {
+    return `Source ${index + 1}`
+  }
+}
+
+function isSafePublicHref(href: string): boolean {
+  if (href.startsWith('/') && !href.startsWith('//')) return true
+  return /^https?:\/\//.test(href)
+}
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//.test(href)
+}
 
 function recordAgentEvent(input: {
   event: 'site_session_started' | 'agent_widget_viewed'
@@ -120,7 +149,7 @@ async function uploadAgentFile(input: {
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
+  const [messages, setMessages] = useState<AgentMessage[]>([
     { role: 'bot', text: 'Ask about Sathian’s reviewed public projects, writing, or current work. You can also leave him a note.' },
   ])
   const [input, setInput] = useState('')
@@ -205,6 +234,13 @@ export function ChatWidget() {
     const pendingFileContentType = pendingFile ? fileContentType(pendingFile) : ''
     const pendingTurnstileToken = turnstileToken
 
+    trackSiteEvent('agent_question_submitted', {
+      page: pathname,
+      inputMethod: text ? 'prompt' : 'typed',
+      hasContact: Boolean(displayName || replyEmail),
+      hasAttachment: Boolean(pendingFile),
+    })
+
     try {
       const res = await fetch('/api/agent/message', {
         method: 'POST',
@@ -225,14 +261,34 @@ export function ChatWidget() {
 
       if (res.ok) {
         const data = await res.json()
-        const responses: { role: 'bot'; text: string }[] = []
+        const responses: AgentMessage[] = []
         if (typeof data.answer === 'string' && data.answer.trim()) {
-          responses.push({ role: 'bot', text: data.answer })
+          const sources = Array.isArray(data.sources)
+            ? data.sources.filter((source: unknown): source is string => typeof source === 'string' && /^https?:\/\//.test(source))
+            : []
+          const nextAction = data.nextAction
+            && typeof data.nextAction.label === 'string'
+            && typeof data.nextAction.href === 'string'
+            && isSafePublicHref(data.nextAction.href)
+            ? { label: data.nextAction.label, href: data.nextAction.href }
+            : undefined
+          responses.push({ role: 'bot', text: data.answer, sources, nextAction })
+          trackSiteEvent('agent_answer_received', {
+            page: pathname,
+            route: typeof data.route === 'string' ? data.route : 'unknown',
+            sourceCount: sources.length,
+            hasNextAction: Boolean(nextAction),
+          })
         }
         if (data.receipt?.code && data.receipt?.message) {
           responses.push({
             role: 'bot',
             text: `Receipt ${data.receipt.code} · ${data.receipt.message}`,
+          })
+          trackSiteEvent('agent_note_sent', {
+            page: pathname,
+            hasContact: Boolean(displayName || replyEmail),
+            hasAttachment: Boolean(pendingFile),
           })
         }
         if (pendingFile && pendingTurnstileToken) {
@@ -285,8 +341,8 @@ export function ChatWidget() {
   sendRef.current = (text: string) => handleSend(text)
 
    useEffect(() => {
-     if (open && inputRef.current) inputRef.current.focus()
-   }, [open])
+     if (open && !isHomepage && inputRef.current) inputRef.current.focus()
+   }, [isHomepage, open])
 
    useEffect(() => {
      let sessionId = sessionStorage.getItem(AGENT_SESSION_KEY)
@@ -331,6 +387,10 @@ export function ChatWidget() {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail
       if (detail?.message) {
+        trackSiteEvent('agent_prompt_selected', {
+          page: pathname,
+          promptId: typeof detail.source === 'string' ? detail.source : 'page-prompt',
+        })
         setOpen(true)
         setTimeout(() => sendRef.current(detail.message), 300)
       } else {
@@ -340,7 +400,7 @@ export function ChatWidget() {
     }
     window.addEventListener('open-chat', handler)
     return () => window.removeEventListener('open-chat', handler)
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -408,7 +468,41 @@ export function ChatWidget() {
                 <div className={`site-agent-message site-agent-message--${msg.role} max-w-[82%] px-4 py-3 text-[14px] leading-relaxed`} style={{
                   borderTopLeftRadius: msg.role === 'bot' ? '4px' : undefined,
                   borderTopRightRadius: msg.role === 'user' ? '4px' : undefined,
-                }}>{msg.text}</div>
+                }}>
+                  <p>{msg.text}</p>
+                  {msg.role === 'bot' && msg.sources && msg.sources.length > 0 && (
+                    <nav className="site-agent-sources" aria-label="Agent source">
+                      {msg.sources.map((source, sourceIndex) => (
+                        <a
+                          key={source}
+                          href={source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => trackSiteEvent('agent_source_opened', {
+                            page: pathname,
+                            sourceHost: sourceLabel(source, sourceIndex),
+                          })}
+                        >
+                          {sourceLabel(source, sourceIndex)}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
+                  {msg.role === 'bot' && msg.nextAction && (
+                    <a
+                      href={msg.nextAction.href}
+                      target={isExternalHref(msg.nextAction.href) ? '_blank' : undefined}
+                      rel={isExternalHref(msg.nextAction.href) ? 'noopener noreferrer' : undefined}
+                      className="site-agent-next-action"
+                      onClick={() => trackSiteEvent('agent_source_opened', {
+                        page: pathname,
+                        sourceHost: sourceLabel(msg.nextAction!.href, 0),
+                      })}
+                    >
+                      {msg.nextAction.label}
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
             {isLoading && (
@@ -431,7 +525,13 @@ export function ChatWidget() {
             {showSuggestions && (
               <div className="flex flex-wrap gap-2 pt-2">
                 {SUGGESTIONS.map((s) => (
-                  <button key={s} type="button" onClick={() => handleSend(s)}
+                  <button key={s} type="button" onClick={() => {
+                    trackSiteEvent('agent_prompt_selected', {
+                      page: pathname,
+                      promptId: `suggestion-${SUGGESTIONS.indexOf(s) + 1}`,
+                    })
+                    handleSend(s)
+                  }}
                     className="site-agent-suggestion px-3 py-1.5 text-[12px] cursor-pointer transition-colors focus-visible:outline-none">
                     {s}
                   </button>
@@ -465,7 +565,10 @@ export function ChatWidget() {
              <div className="mb-2">
                <button
                  type="button"
-                 onClick={() => setShowContact((value) => !value)}
+                 onClick={() => setShowContact((value) => {
+                   if (!value) trackSiteEvent('agent_contact_started', { page: pathname })
+                   return !value
+                 })}
                  aria-expanded={showContact}
                  className="text-[11px] font-medium text-gray-500 underline decoration-gray-300 underline-offset-2 hover:text-gray-900 focus-visible:outline-none"
                >
@@ -473,24 +576,26 @@ export function ChatWidget() {
                </button>
                {showContact && (
                  <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                   <input
-                     type="text"
-                     name="displayName"
+                    <input
+                      type="text"
+                      name="displayName"
+                      aria-label="Your name (optional)"
                      autoComplete="name"
                      value={displayName}
                      onChange={(event) => setDisplayName(event.target.value)}
                      maxLength={120}
-                     placeholder="Your name (optional)"
+                      placeholder="Your name (optional)…"
                      className="site-agent-input px-3 py-2 text-xs focus-visible:outline-none"
                    />
-                   <input
-                     type="email"
-                     name="replyEmail"
+                    <input
+                      type="email"
+                      name="replyEmail"
+                      aria-label="Reply email (optional)"
                      autoComplete="email"
                      value={replyEmail}
                      onChange={(event) => setReplyEmail(event.target.value)}
                      maxLength={320}
-                     placeholder="Reply email (optional)"
+                      placeholder="Reply email (optional)…"
                      className="site-agent-input px-3 py-2 text-xs focus-visible:outline-none"
                    />
                  </div>
@@ -523,6 +628,7 @@ export function ChatWidget() {
               <input
                 ref={inputRef}
                 type="text" name="message" autoComplete="off" value={input}
+                aria-label="Ask a question or leave a note"
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
                 placeholder="Ask a question or leave a note…"

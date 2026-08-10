@@ -15,10 +15,14 @@ describe('public social destinations', () => {
 
   it('publishes the complete Tooth Fairy Network profile set', () => {
     expect(toothFairySocialLinks.map((link) => link.label)).toEqual([
+      'LinkedIn',
+      'Facebook',
       'Instagram',
       'X',
-      'LinkedIn',
       'YouTube',
     ])
+    expect(toothFairySocialLinks.find((link) => link.label === 'LinkedIn')?.href).toBe(
+      'https://www.linkedin.com/company/133427105/',
+    )
   })
 })

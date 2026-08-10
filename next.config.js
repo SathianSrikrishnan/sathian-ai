@@ -22,6 +22,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/btc-atlas',
+        destination: 'https://btc.sathian.ai',
+        permanent: true,
+      },
+      {
         source: '/toothfairy/network',
         destination: '/toothfairy',
         permanent: false, // 307 — avoid browser caching (old 301 caused issues)

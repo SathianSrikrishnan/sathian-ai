@@ -28,12 +28,34 @@ describe('public-site indexing', () => {
     expect(urls).toContain('https://sathian.ai')
     expect(urls).toContain('https://sathian.ai/hackathons')
     expect(urls).toContain('https://sathian.ai/writings')
+    expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
+    expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
     expect(urls).toContain('https://sathian.ai/writings/the-gap-between-weeks')
     expect(urls).not.toContain('https://sathian.ai/about')
     expect(urls).not.toContain('https://sathian.ai/agents')
     expect(urls).not.toContain('https://sathian.ai/links')
     expect(urls).not.toContain('https://sathian.ai/btc-atlas')
     expect(urls.every((url) => url.startsWith('https://sathian.ai'))).toBe(true)
+  })
+
+  it('keeps legacy prototypes out of the personal-site crawl surface', () => {
+    const buildRobots = (robotsModule as { buildRobotsForHost?: RobotsBuilder }).buildRobotsForHost
+    expect(buildRobots).toBeTypeOf('function')
+    if (!buildRobots) return
+
+    const disallow = buildRobots('sathian.ai').rules.disallow
+    expect(disallow).toEqual(expect.arrayContaining(['/animation/', '/voice/', '/tooth/', '/toothfairy/']))
+    expect(buildRobots('toothfairy.network').rules.disallow).not.toContain('/toothfairy/')
+  })
+
+  it('publishes a clear Sathian person entity from the homepage', () => {
+    const page = readFileSync(new URL('../../src/app/page.tsx', import.meta.url), 'utf8')
+    const identity = readFileSync(new URL('../../src/lib/site-identity.ts', import.meta.url), 'utf8')
+
+    expect(page).toContain('SATHIAN_PERSON_SCHEMA')
+    expect(identity).toContain("name: 'Sathian Srikrishnan'")
+    expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.']")
+    expect(identity).toContain('sameAs:')
   })
 
   it('uses stable modification dates and loads future published Studio articles', () => {

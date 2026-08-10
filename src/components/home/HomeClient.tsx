@@ -5,7 +5,13 @@ import Link from 'next/link'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
-import { TFNGlowingToothLogo } from '@/components/toothfairy/brand/tfn-glowing-tooth-logo'
+import {
+  DRAW_WITH_TANDA_CHANNEL_HREF,
+  DRAW_WITH_TANDA_EPISODES,
+  LATEST_RELEASE,
+} from '@/content/site-releases'
+import { trackSiteEvent } from '@/lib/site-analytics'
+import { toothFairySocialLinks } from '@/lib/social-links'
 
 export interface HomeWriting {
   title: string
@@ -28,8 +34,8 @@ const FEATURED_PROJECTS = [
       'A private time capsule for childhood masterpieces, built around a lost-tooth ritual and powered by Solana.',
     href: 'https://toothfairy.network',
     cta: 'Visit Tooth Fairy Network',
-    image: '/toothfairy/animation/tfn-tanda-hero-integrated-poster-v34.webp',
-    alt: 'Official Tooth Fairy Network artwork featuring Tanda and a glowing memory network',
+    image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
+    alt: 'Tanda preserving a child\'s drawing in the Tooth Fairy Network storybook',
   },
   {
     name: 'AutoQuote Automator',
@@ -66,15 +72,21 @@ const MORE_PROJECTS = [
     name: 'AgentTab',
     label: 'PRIOR HACKATHON',
     href: 'https://agenttab.sathian.ai',
-    image: null,
+    image: '/media/a-corporate-card-for-code-agenttab.png',
   },
   {
     name: 'ClinicalGuard',
     label: 'PRIOR HACKATHON',
-    href: 'https://github.com/SathianSrikrishnan/ClinicalGuard',
-    image: null,
+    href: '/projects/clinicalguard',
+    image: '/projects/clinicalguard-dashboard.png',
   },
 ]
+
+const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
+  .filter((release) => release.status === 'published' && release.youtubeVideoId)
+  .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
+const DRAW_WITH_TANDA_LATEST = LATEST_RELEASE
+const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.status === 'next')!
 
 function formatDate(value: string) {
   return new Date(`${value}T12:00:00`).toLocaleDateString('en-CA', {
@@ -91,9 +103,13 @@ export function HomeClient({ writings }: HomeClientProps) {
 
       <main>
         <header className="minimal-home-hero minimal-container">
-          <p className="minimal-kicker">SATHIAN S. / AGENT MANAGER + ORCHESTRATOR / TORONTO</p>
-          <h1>The fastest way to reach me is to ask.</h1>
-          <p className="minimal-lede">Ask anything about the work, or leave me a note. This is the fastest way to reach me.</p>
+          <p className="minimal-kicker minimal-home-identity">
+            <span className="minimal-home-identity__part">SATHIAN S.</span>
+            <span className="minimal-home-identity__part">AGENT MANAGER + ORCHESTRATOR</span>
+            <span className="minimal-home-identity__part">TORONTO</span>
+          </p>
+          <h1>{"Welcome to Sathian's Digital Workshop"}</h1>
+          <p className="minimal-lede">Ask the site agent about what I am building and writing, or leave me a note.</p>
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
@@ -114,7 +130,12 @@ export function HomeClient({ writings }: HomeClientProps) {
                 <div className="minimal-project-copy">
                   {index === 0 && (
                     <div className="minimal-tfn-title">
-                      <TFNGlowingToothLogo size={54} />
+                      <Image
+                        src="/projects/tooth-fairy-network/tanda-profile.png"
+                        alt="Tanda, the Tooth Fairy Network guide"
+                        width={58}
+                        height={58}
+                      />
                       <h3>{project.name}</h3>
                     </div>
                   )}
@@ -128,6 +149,64 @@ export function HomeClient({ writings }: HomeClientProps) {
                 <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={project.cta}>
                   <Image src={project.image} alt={project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
                 </a>
+                {index === 0 && (
+                  <div className="minimal-tfn-extension">
+                    <div className="minimal-tfn-extension__copy">
+                      <p className="minimal-kicker">DRAW WITH TANDA / TOOTH FAIRY NETWORK</p>
+                      <h4>Draw together. Keep the story.</h4>
+                      <p>
+                        A parent-and-child drawing channel from Tooth Fairy Network. {DRAW_WITH_TANDA_PUBLISHED.length} guided drawing {DRAW_WITH_TANDA_PUBLISHED.length === 1 ? 'episode is' : 'episodes are'} public now{DRAW_WITH_TANDA_NEXT ? `; ${DRAW_WITH_TANDA_NEXT.shortTitle} is next` : ''}.
+                      </p>
+                      <div className="minimal-record-links">
+                        <Link
+                          href={DRAW_WITH_TANDA_CHANNEL_HREF}
+                          className="minimal-text-link"
+                          onClick={() => trackSiteEvent('draw_with_tanda_opened', { placement: 'homepage' })}
+                        >
+                          Explore the channel
+                        </Link>
+                        <a
+                          href={DRAW_WITH_TANDA_LATEST.youtubeHref!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="minimal-text-link"
+                          onClick={() => trackSiteEvent('draw_with_tanda_watch_started', {
+                            placement: 'homepage',
+                            episode: DRAW_WITH_TANDA_LATEST.slug,
+                          })}
+                        >
+                          Watch on YouTube
+                        </a>
+                      </div>
+                      <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
+                        {toothFairySocialLinks.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => trackSiteEvent('tfn_social_opened', {
+                              placement: 'homepage',
+                              channel: link.label.toLowerCase(),
+                            })}
+                          >
+                            {link.label}
+                          </a>
+                        ))}
+                      </nav>
+                    </div>
+                    <div className="minimal-tfn-video">
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${DRAW_WITH_TANDA_LATEST.youtubeVideoId}`}
+                        title={DRAW_WITH_TANDA_LATEST.title}
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -174,15 +253,22 @@ export function HomeClient({ writings }: HomeClientProps) {
         <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-projects">
           <h2 id="more-projects">More projects &amp; curiosities</h2>
           <div className="minimal-more-list">
-            {MORE_PROJECTS.map((project) => (
-              <a key={project.name} href={project.href} target="_blank" rel="noopener noreferrer">
+            {MORE_PROJECTS.map((project) => {
+              const content = (
+                <>
                 <span className="minimal-more-thumb">
                   {project.image ? <Image src={project.image} alt="" fill sizes="136px" /> : <span aria-hidden="true" />}
                 </span>
                 <strong>{project.name}</strong>
                 <span className="minimal-label">{project.label}</span>
-              </a>
-            ))}
+                </>
+              )
+              return project.href.startsWith('/') ? (
+                <Link key={project.name} href={project.href}>{content}</Link>
+              ) : (
+                <a key={project.name} href={project.href} target="_blank" rel="noopener noreferrer">{content}</a>
+              )
+            })}
           </div>
         </section>
       </main>

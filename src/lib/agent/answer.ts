@@ -26,9 +26,18 @@ export interface AnswerModelAdapter {
 export interface AgentAnswerResult {
   answer: string
   sources: string[]
+  nextAction?: {
+    label: string
+    href: string
+  }
   unknown: boolean
   modelUsed: boolean
   operationalErrorCode?: 'model_timeout' | 'model_error'
+}
+
+function isLatestReleaseQuestion(message: string): boolean {
+  return /\b(latest|newest|most recent|current)\s+(release|launch|video|episode|work)\b/i.test(message)
+    || /\bwhat(?:'s| is) new\b/i.test(message)
 }
 
 function meaningfulTokens(message: string): string[] {
@@ -59,6 +68,18 @@ function uniqueSources(cards: PublicMemoryCard[]): string[] {
   return Array.from(new Set(cards.map((card) => card.source.ref)))
 }
 
+function contextualActionHref(sourceRef: string): string {
+  try {
+    const source = new URL(sourceRef)
+    if (['sathian.ai', 'www.sathian.ai'].includes(source.hostname)) {
+      return `${source.pathname}${source.search}${source.hash}`
+    }
+  } catch {
+    // Non-URL sources are returned unchanged and filtered by the client.
+  }
+  return sourceRef
+}
+
 function normalizeAnswerText(value: string): string {
   return value
     .trim()
@@ -82,6 +103,22 @@ export async function answerAgentQuestion(
     timeoutMs?: number
   },
 ): Promise<AgentAnswerResult> {
+  if (isLatestReleaseQuestion(input.message)) {
+    const release = input.cards.find((card) => card.tags.includes('latest-release'))
+    if (release) {
+      return {
+        answer: `${release.title}. ${release.body}`,
+        sources: [release.source.ref],
+        nextAction: {
+          label: 'Open the latest release',
+          href: contextualActionHref(release.source.ref),
+        },
+        unknown: false,
+        modelUsed: false,
+      }
+    }
+  }
+
   const cards = relevantCards(input.message, input.cards)
   if (cards.length === 0) {
     return { answer: SAFE_UNKNOWN, sources: [], unknown: true, modelUsed: false }
@@ -110,6 +147,9 @@ export async function answerAgentQuestion(
     return {
       answer: normalized,
       sources: uniqueSources(cards),
+      nextAction: cards[0]
+        ? { label: 'Open the source', href: contextualActionHref(cards[0].source.ref) }
+        : undefined,
       unknown: false,
       modelUsed: true,
     }

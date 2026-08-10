@@ -58,4 +58,27 @@ describe('public chat surface', () => {
     expect(widget).toContain('data.receipt')
     expect(widget).toContain('By sending, you agree this message may be stored and forwarded to Sathian.')
   })
+
+  it('keeps same-site next actions inside the active preview deployment', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain('isSafePublicHref(data.nextAction.href)')
+    expect(widget).toContain("href.startsWith('/')")
+  })
+
+  it('does not auto-focus the inline homepage input and pull mobile visitors past the introduction', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain('if (open && !isHomepage && inputRef.current) inputRef.current.focus()')
+  })
+
+  it('labels every agent input and preserves a visible keyboard focus treatment', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+    const styles = readSource('src/app/globals.css')
+
+    expect(widget).toContain('aria-label="Your name (optional)"')
+    expect(widget).toContain('aria-label="Reply email (optional)"')
+    expect(widget).toContain('aria-label="Ask a question or leave a note"')
+    expect(styles).toContain('.site-agent-panel input:focus-visible')
+  })
 })

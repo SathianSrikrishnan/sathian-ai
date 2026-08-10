@@ -1703,6 +1703,13 @@ h1, h2, h3 {
   border-color: rgba(94, 234, 212, 0.5);
 }
 
+.site-agent-panel input:focus-visible,
+.site-agent-panel button:focus-visible,
+.site-agent-reopen:focus-visible {
+  outline: 2px solid var(--agent-cyan);
+  outline-offset: 2px;
+}
+
 .site-agent-send {
   border: 0;
   border-radius: 11px;
@@ -3786,8 +3793,25 @@ h1, h2, h3 {
 }
 
 .minimal-home-hero {
-  padding-top: clamp(64px, 9vw, 112px);
-  padding-bottom: 34px;
+  padding-top: clamp(42px, 6vw, 76px);
+  padding-bottom: 24px;
+}
+
+.minimal-home-identity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.minimal-home-identity__part {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.minimal-home-identity__part + .minimal-home-identity__part::before {
+  content: '/';
+  margin-right: 10px;
 }
 
 .minimal-home-hero h1,
@@ -3804,10 +3828,17 @@ h1, h2, h3 {
 
 .minimal-home-hero .minimal-lede {
   max-width: 720px;
-  margin-top: 24px;
+  margin-top: 18px;
   color: var(--minimal-muted);
   font-size: 17px;
   line-height: 1.7;
+}
+
+.minimal-home-hero h1 {
+  max-width: 900px;
+  font-size: clamp(44px, 6vw, 70px);
+  line-height: 0.98;
+  text-wrap: balance;
 }
 
 .minimal-agent-section {
@@ -3826,6 +3857,121 @@ h1, h2, h3 {
   line-height: 1.6;
 }
 
+.site-agent-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(40, 26, 18, 0.14);
+}
+
+.site-agent-sources a,
+.site-agent-next-action {
+  color: #a5481d;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-transform: uppercase;
+  text-underline-offset: 3px;
+}
+
+.site-agent-next-action {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.minimal-latest-release {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 34px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #2a241f;
+  background: #15120f;
+  color: #f7ead2;
+}
+
+.minimal-latest-release__copy {
+  padding: clamp(28px, 4.6vw, 52px);
+}
+
+.minimal-latest-release h2 {
+  max-width: 520px;
+  margin-top: 14px;
+  color: #f7ead2;
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(35px, 4.7vw, 54px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.minimal-latest-release__copy > p:not(.minimal-kicker):not(.minimal-latest-release__next) {
+  max-width: 520px;
+  margin-top: 18px;
+  color: #cdbda7;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.minimal-latest-release .minimal-text-link,
+.minimal-latest-release .minimal-text-button {
+  color: #f58a51;
+}
+
+.minimal-text-button {
+  width: fit-content;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--minimal-rust);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.minimal-text-button:hover {
+  text-decoration: underline;
+}
+
+.minimal-latest-release__next {
+  margin-top: 23px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(247, 234, 210, 0.16);
+  color: #9e8e79;
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.minimal-latest-release__next strong {
+  color: #d9c9b3;
+}
+
+.minimal-latest-release__media {
+  position: relative;
+  min-height: 390px;
+  display: block;
+  border-left: 1px solid rgba(247, 234, 210, 0.16);
+}
+
+.minimal-latest-release__media img {
+  object-fit: cover;
+}
+
 .minimal-section {
   padding-block: 36px;
   border-bottom: 1px solid var(--minimal-rule);
@@ -3833,6 +3979,7 @@ h1, h2, h3 {
 
 .minimal-section > h2,
 .minimal-section-heading h2,
+.minimal-solana h2,
 .minimal-page-hero + .minimal-section > h2,
 .minimal-writing-cta h2 {
   color: var(--minimal-ink);
@@ -3908,6 +4055,83 @@ h1, h2, h3 {
   gap: 14px;
 }
 
+.minimal-tfn-title > img {
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.minimal-tfn-extension {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.55fr);
+  gap: clamp(34px, 6vw, 72px);
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid var(--minimal-rule);
+}
+
+.minimal-tfn-extension h4 {
+  max-width: 470px;
+  margin-top: 12px;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(28px, 3.4vw, 39px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+
+.minimal-tfn-extension__copy > p:not(.minimal-kicker) {
+  max-width: 510px;
+  margin-top: 16px;
+  color: var(--minimal-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.minimal-tfn-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(40, 26, 18, 0.25);
+  background: #090c17;
+}
+
+.minimal-tfn-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.minimal-tfn-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--minimal-rule);
+}
+
+.minimal-tfn-socials a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.minimal-tfn-socials a:hover {
+  text-decoration: underline;
+}
+
 .minimal-project-copy .minimal-label {
   margin-top: 12px;
 }
@@ -3953,7 +4177,7 @@ h1, h2, h3 {
 }
 
 .minimal-featured-project--1 .minimal-project-media img {
-  object-position: center;
+  object-position: 58% center;
 }
 
 .minimal-featured-project--2 .minimal-project-media img {
@@ -4115,6 +4339,21 @@ h1, h2, h3 {
   margin-top: 18px;
   color: var(--minimal-rust);
   font-size: 14px;
+}
+
+.minimal-writing-page-hero {
+  padding-bottom: 42px;
+}
+
+.minimal-page-hero > .minimal-writing-lede {
+  max-width: 820px;
+  margin-top: 20px;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(25px, 3.2vw, 36px);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
 }
 
 .minimal-hackathon-feature {
@@ -4371,6 +4610,295 @@ h1, h2, h3 {
   text-decoration: none;
 }
 
+.minimal-channel-hero {
+  padding-top: clamp(58px, 8vw, 104px);
+  padding-bottom: 54px;
+  border-bottom: 1px solid var(--minimal-rule);
+}
+
+.minimal-channel-hero__identity {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.minimal-channel-hero__identity img {
+  border-radius: 50%;
+}
+
+.minimal-channel-hero h1,
+.minimal-clinical-hero h1 {
+  max-width: 920px;
+  margin-top: 24px;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(58px, 9vw, 104px);
+  font-weight: 600;
+  letter-spacing: -0.058em;
+  line-height: 0.9;
+}
+
+.minimal-channel-hero > p {
+  max-width: 720px;
+  margin-top: 24px;
+  color: var(--minimal-ink);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.minimal-channel-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  align-items: center;
+}
+
+.minimal-channel-releases,
+.minimal-channel-about,
+.minimal-channel-social,
+.minimal-clinical-pipeline,
+.minimal-clinical-proof,
+.minimal-clinical-footer {
+  padding-block: 44px;
+  border-bottom: 1px solid var(--minimal-rule);
+}
+
+.minimal-channel-list {
+  margin-top: 16px;
+  border-top: 1px solid var(--minimal-rule);
+}
+
+.minimal-channel-episode {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(30px, 6vw, 72px);
+  align-items: center;
+  padding-block: 38px;
+  border-bottom: 1px solid var(--minimal-rule);
+  scroll-margin-top: 100px;
+}
+
+.minimal-channel-episode h3,
+.minimal-channel-about h2,
+.minimal-channel-social h2,
+.minimal-clinical-pipeline h2,
+.minimal-clinical-proof h2 {
+  margin-top: 13px;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(31px, 4vw, 45px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.minimal-channel-episode__copy > p:not(.minimal-kicker):not(.minimal-channel-episode__status) {
+  max-width: 520px;
+  margin-top: 16px;
+  color: var(--minimal-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.minimal-channel-episode__status {
+  max-width: 500px;
+  margin-top: 22px;
+  padding-top: 15px;
+  border-top: 1px solid var(--minimal-rule);
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+  text-transform: uppercase;
+}
+
+.minimal-channel-episode__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(40, 26, 18, 0.25);
+  background: #0b0d16;
+}
+
+.minimal-channel-episode__media iframe,
+.minimal-channel-episode__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.minimal-channel-episode__media img {
+  object-fit: cover;
+  object-position: center 54%;
+}
+
+.minimal-channel-about {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(34px, 7vw, 92px);
+}
+
+.minimal-channel-about > div {
+  display: grid;
+  gap: 18px;
+  color: var(--minimal-ink);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.minimal-channel-social {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
+  gap: 42px;
+  align-items: end;
+}
+
+.minimal-channel-social .minimal-tfn-socials {
+  margin: 0;
+}
+
+.minimal-clinical-hero {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(34px, 6vw, 78px);
+  align-items: center;
+  padding-top: clamp(58px, 8vw, 104px);
+  padding-bottom: 54px;
+  border-bottom: 1px solid var(--minimal-rule);
+}
+
+.minimal-clinical-hero h1 {
+  font-size: clamp(54px, 8vw, 86px);
+}
+
+.minimal-clinical-hero h2 {
+  margin-top: 19px;
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.minimal-clinical-hero__copy > p:not(.minimal-kicker) {
+  max-width: 620px;
+  margin-top: 22px;
+  color: var(--minimal-ink);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.minimal-clinical-hero__visual {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  border: 1px solid rgba(40, 26, 18, 0.25);
+  background: #eef3f8;
+}
+
+.minimal-clinical-hero__visual img {
+  object-fit: cover;
+  object-position: top left;
+}
+
+.minimal-clinical-pipeline ol {
+  margin-top: 20px;
+  border-top: 1px solid var(--minimal-rule);
+  list-style: none;
+}
+
+.minimal-clinical-pipeline li {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 24px;
+  padding-block: 22px;
+  border-bottom: 1px solid var(--minimal-rule);
+}
+
+.minimal-clinical-pipeline li > span {
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.minimal-clinical-pipeline h3 {
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.minimal-clinical-pipeline li p,
+.minimal-clinical-pipeline .minimal-section-heading > p,
+.minimal-clinical-proof > div > p:not(.minimal-kicker) {
+  max-width: 700px;
+  margin-top: 7px;
+  color: var(--minimal-muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.minimal-clinical-proof {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(34px, 7vw, 92px);
+  align-items: end;
+}
+
+.minimal-clinical-proof dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--minimal-rule);
+  border-left: 1px solid var(--minimal-rule);
+}
+
+.minimal-clinical-proof dl > div {
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  padding: 20px;
+  border-right: 1px solid var(--minimal-rule);
+  border-bottom: 1px solid var(--minimal-rule);
+}
+
+.minimal-clinical-proof dt {
+  color: var(--minimal-muted);
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.minimal-clinical-proof dd {
+  color: var(--minimal-rust);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: 31px;
+  font-weight: 600;
+}
+
+.minimal-clinical-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  align-items: center;
+}
+
+.minimal-clinical-footer p {
+  max-width: 680px;
+  color: var(--minimal-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 @media (max-width: 760px) {
   .minimal-container,
   .minimal-site-nav__inner,
@@ -4396,12 +4924,66 @@ h1, h2, h3 {
     font-size: clamp(46px, 14vw, 68px);
   }
 
+  .minimal-home-hero h1 {
+    font-size: clamp(44px, 12vw, 50px);
+  }
+
   .minimal-featured-project,
   .minimal-featured-project--2,
+  .minimal-tfn-extension,
   .minimal-solana,
-  .minimal-hackathon-record {
+  .minimal-hackathon-record,
+  .minimal-latest-release,
+  .minimal-channel-episode,
+  .minimal-channel-about,
+  .minimal-channel-social,
+  .minimal-clinical-hero,
+  .minimal-clinical-proof {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .minimal-latest-release {
+    margin-top: 24px;
+  }
+
+  .minimal-latest-release__media {
+    min-height: 250px;
+    border-top: 1px solid rgba(247, 234, 210, 0.16);
+    border-left: 0;
+  }
+
+  .minimal-channel-hero h1 {
+    font-size: clamp(48px, 15vw, 68px);
+  }
+
+  .minimal-clinical-hero h1 {
+    font-size: clamp(44px, 13vw, 52px);
+  }
+
+  .minimal-channel-releases .minimal-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .minimal-channel-hero__identity {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .minimal-channel-episode__media {
+    grid-row: 1;
+  }
+
+  .minimal-clinical-hero__visual {
+    grid-row: 1;
+    min-height: 290px;
+  }
+
+  .minimal-clinical-footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .minimal-featured-project--2 .minimal-project-media,

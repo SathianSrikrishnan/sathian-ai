@@ -32,6 +32,13 @@ describe('hackathon portfolio release', () => {
     expect(page).toContain('https://github.com/SathianSrikrishnan/ClinicalGuard')
   })
 
+  it('gives every earlier submission a visual proof surface', () => {
+    expect(page).toContain('image="/media/a-corporate-card-for-code-agenttab.png"')
+    expect(page).toContain('image="/projects/tooth-fairy-network/family-storybook-hero.webp"')
+    expect(page).toContain('image="/projects/clinicalguard-dashboard.png"')
+    expect(existsSync(new URL('../../public/projects/clinicalguard-dashboard.png', import.meta.url))).toBe(true)
+  })
+
   it('keeps the public evidence state explicit after the rename', () => {
     expect(page).toContain('15 families / 16 routes')
     expect(page).toContain('44 fields / 43 available')

@@ -30,6 +30,7 @@ const links = {
     product: 'https://toothfairy.network',
   },
   clinicalGuard: {
+    project: '/projects/clinicalguard',
     post: 'https://www.linkedin.com/posts/activity-7437509764399640577-86Rt',
     github: 'https://github.com/SathianSrikrishnan/ClinicalGuard',
   },
@@ -102,6 +103,8 @@ export default function HackathonsPage() {
               title="AgentTab"
               description="A payment firewall for autonomous AI agents. A human sets the allowance and purchase boundaries; over-limit requests fail before payment while approved x402 purchases produce public receipts."
               facts={['Monad Testnet', 'x402 payments', 'Solidity policy + receipts']}
+              image="/media/a-corporate-card-for-code-agenttab.png"
+              imageAlt="AgentTab allowance and payment-policy dashboard"
               links={[
                 { href: links.agentTab.demo, label: 'Live demo' },
                 { href: links.agentTab.presentation, label: 'Presentation' },
@@ -115,8 +118,8 @@ export default function HackathonsPage() {
               title="Tooth Fairy Network"
               description="A parent-controlled Solana keepsake and Smile Fund built around a child’s lost tooth. The memory ritual comes first; compressed assets, wallets, and an Anchor escrow sit underneath it."
               facts={['Solana', 'Keepsake + Smile Fund', 'The memory is the product']}
-              image="/toothfairy/animation/tfn-tanda-hero-integrated-poster-v34.webp"
-              imageAlt="Official Tooth Fairy Network artwork featuring Tanda"
+              image="/projects/tooth-fairy-network/family-storybook-hero.webp"
+              imageAlt="Tanda preserving a child\'s drawing in the Tooth Fairy Network storybook"
               links={[
                 { href: links.toothFairyNetwork.story, label: 'Read the submission' },
                 { href: links.toothFairyNetwork.product, label: 'Live product' },
@@ -129,7 +132,10 @@ export default function HackathonsPage() {
               title="ClinicalGuard"
               description="A five-step AI pipeline that extracts ICD-9 codes from discharge notes, checks them against laboratory and prescription evidence, and flags weak matches for human review."
               facts={['2,000 MIMIC admissions', 'LangGraph + Claude', 'Evidence before billing']}
+              image="/projects/clinicalguard-dashboard.png"
+              imageAlt="ClinicalGuard clinical coding validation dashboard"
               links={[
+                { href: links.clinicalGuard.project, label: 'Project story' },
                 { href: links.clinicalGuard.post, label: 'Read the submission' },
                 { href: links.clinicalGuard.github, label: 'GitHub' },
               ]}

@@ -7,8 +7,9 @@ export const personalSocialLinks = [
 ] as const
 
 export const toothFairySocialLinks = [
+  { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/company/133427105/' },
+  { label: 'Facebook', icon: null, href: 'https://www.facebook.com/profile.php?id=61591638105193' },
   { label: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/toothfairynetwork/' },
   { label: 'X', icon: 'x', href: 'https://x.com/toothfairy_net' },
-  { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/company/toothfairy-network/' },
   { label: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/@ToothFairy-Network' },
 ] as const

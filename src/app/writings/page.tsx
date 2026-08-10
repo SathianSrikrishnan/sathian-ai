@@ -54,10 +54,10 @@ export default async function WritingsIndex() {
       <SiteNav />
 
       <main>
-        <header className="minimal-page-hero minimal-container">
+        <header className="minimal-page-hero minimal-writing-page-hero minimal-container">
           <p className="minimal-kicker">FIELD NOTES / {entries.length} PUBLISHED</p>
-          <h1>Writing to understand.</h1>
-          <p>Notes on culture, money, technology, fatherhood, and the products I am learning to build.</p>
+          <h1 className="sr-only">Writing</h1>
+          <p className="minimal-writing-lede">Notes on culture, money, technology, fatherhood, and the products I am learning to build.</p>
           <Link href="/#agent" className="minimal-text-link">Not sure where to start? Ask the site agent</Link>
         </header>
 

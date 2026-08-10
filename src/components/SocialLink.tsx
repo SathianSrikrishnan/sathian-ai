@@ -40,7 +40,7 @@ export function SocialLink({
 }: {
   label: string
   href: string
-  icon: SocialKind
+  icon?: SocialKind | null
   className?: string
   onClick?: () => void
 }) {
@@ -53,9 +53,11 @@ export function SocialLink({
       className={className}
       onClick={onClick}
     >
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        {paths[icon]}
-      </svg>
+      {icon ? (
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {paths[icon]}
+        </svg>
+      ) : null}
       <span>{label}</span>
     </a>
   )

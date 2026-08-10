@@ -223,6 +223,7 @@ export function createAgentMessageHandler({
       route: policy.route,
       answer: answerResult?.answer ?? null,
       sources: answerResult?.sources ?? [],
+      nextAction: answerResult?.nextAction ?? null,
       receipt,
       capabilities: {
         answered: answerResult !== null,

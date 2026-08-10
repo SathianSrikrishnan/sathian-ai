@@ -1,5 +1,6 @@
 import { HomeClient, type HomeWriting } from '@/components/home/HomeClient'
 import { getPublishedArticles } from '@/lib/articles-db'
+import { SATHIAN_PERSON_SCHEMA, SATHIAN_WEBSITE_SCHEMA } from '@/lib/site-identity'
 
 export const revalidate = 60
 
@@ -13,5 +14,15 @@ export default async function Home() {
     readTime: article.readTime,
     accent: article.theme.accent,
   }))
-  return <HomeClient writings={writings} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([SATHIAN_PERSON_SCHEMA, SATHIAN_WEBSITE_SCHEMA]),
+        }}
+      />
+      <HomeClient writings={writings} />
+    </>
+  )
 }

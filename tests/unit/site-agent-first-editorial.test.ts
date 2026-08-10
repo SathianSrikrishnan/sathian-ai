@@ -24,7 +24,8 @@ describe('site-agent-first editorial pass', () => {
   })
 
   it('uses Sathian\'s approved minimal homepage language', () => {
-    expect(home).toContain('The fastest way to reach me is to ask.')
+    expect(home).toContain("Welcome to Sathian's Digital Workshop")
+    expect(home).not.toContain('The fastest way to reach me is to ask.')
     expect(home).toContain('Featured work')
     expect(home).toContain('More projects &amp; curiosities')
     expect(home).not.toContain('The systems underneath the work.')
