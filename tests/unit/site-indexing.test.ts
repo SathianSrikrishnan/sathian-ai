@@ -26,9 +26,13 @@ describe('public-site indexing', () => {
 
     const urls = buildSitemap('sathian.ai', new Date('2026-07-15T00:00:00.000Z')).map((entry) => entry.url)
     expect(urls).toContain('https://sathian.ai')
-    expect(urls).toContain('https://sathian.ai/about')
+    expect(urls).toContain('https://sathian.ai/hackathons')
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/writings/the-gap-between-weeks')
+    expect(urls).not.toContain('https://sathian.ai/about')
+    expect(urls).not.toContain('https://sathian.ai/agents')
+    expect(urls).not.toContain('https://sathian.ai/links')
+    expect(urls).not.toContain('https://sathian.ai/btc-atlas')
     expect(urls.every((url) => url.startsWith('https://sathian.ai'))).toBe(true)
   })
 

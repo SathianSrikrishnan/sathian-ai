@@ -12,16 +12,18 @@ describe('sathian.ai relaunch surface', () => {
   const page = readOptional('src/app/page.tsx')
   const homeClient = readOptional('src/components/home/HomeClient.tsx')
   const articleDatabase = readOptional('src/lib/articles-db.ts')
+  const rootLayout = readOptional('src/app/layout.tsx')
   const writingIndex = readOptional('src/app/writings/page.tsx')
   const agentIndex = readOptional('src/app/agents/page.tsx')
   const publicBuildNotes = readOptional('src/lib/public-build-notes.ts')
   const homepage = `${page}\n${homeClient}`
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
-  it('leads with a personal workshop and a useful agent doorway', () => {
-    expect(homepage).toContain('A personal workshop.')
-    expect(homepage).toContain('agent can help you')
-    expect(homepage).toContain('Ask the site agent')
+  it('leads with the live site agent as the fastest contact doorway', () => {
+    expect(homepage).toContain('SATHIAN S. / AGENT MANAGER + ORCHESTRATOR / TORONTO')
+    expect(homepage).toContain('The fastest way to reach me is to ask.')
+    expect(homeClient).toContain('id="home-agent-slot"')
+    expect(homepage).toContain('Ask anything about the work, or leave me a note.')
   })
 
   it('keeps the approved homepage baseline free of the retired TxODDS sprint', () => {
@@ -40,6 +42,10 @@ describe('sathian.ai relaunch surface', () => {
     expect(publicBuildRecord).toContain('What I learned')
     expect(publicBuildRecord).toContain('Next')
     expect(homepage).not.toMatch(/Signal\s*&\s*Noise/i)
+  })
+
+  it('uses agent management and orchestration as Sathian\'s public theme', () => {
+    expect(rootLayout).toContain('Agent manager and orchestrator')
   })
 
   it('frames AI-native infrastructure as a bounded public experiment, not a sales pitch', () => {
@@ -92,11 +98,29 @@ describe('sathian.ai relaunch surface', () => {
     expect(writingIndex).toContain('entries.map((article) =>')
   })
 
-  it('uses project-owned artwork behind Tooth Fairy Network and BTC Cultural Atlas', () => {
-    expect(homeClient).toContain("image: '/toothfairy/animation/tfn-tanda-hero-poster.webp'")
-    expect(homeClient).toContain("image: '/media/bitcoin-coin.jpg'")
+  it('uses official and source-captured artwork for the featured projects', () => {
+    expect(homeClient).toContain("image: '/toothfairy/animation/tfn-tanda-hero-integrated-poster-v34.webp'")
+    expect(homeClient).toContain("image: '/projects/autoquote-automator-dashboard.png'")
+    expect(homeClient).toContain("image: '/projects/solana-ecosystem-observatory.png'")
     expect(
-      existsSync(new URL('../../public/media/bitcoin-coin.jpg', import.meta.url)),
+      existsSync(new URL('../../public/projects/autoquote-automator-dashboard.png', import.meta.url)),
     ).toBe(true)
+    expect(
+      existsSync(new URL('../../public/projects/solana-ecosystem-observatory.png', import.meta.url)),
+    ).toBe(true)
+  })
+
+  it('keeps the homepage focused while preserving older work in a quiet archive', () => {
+    expect(homepage).toContain('Tooth Fairy Network')
+    expect(homepage).toContain('AutoQuote Automator')
+    expect(homepage).toContain('New to Solana?')
+    expect(homepage).toContain('Writing')
+    expect(homepage).toContain('More projects &amp; curiosities')
+    expect(homepage).toContain('Lex Rooftop Garden')
+    expect(homepage).toContain('BTC Cultural Atlas')
+    expect(homepage).toContain('AgentTab')
+    expect(homepage).toContain('ClinicalGuard')
+    expect(homepage).not.toContain('WRITING, BY EMAIL')
+    expect(homepage).not.toContain('03 / ABOUT')
   })
 })

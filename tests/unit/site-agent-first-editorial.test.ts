@@ -23,10 +23,10 @@ describe('site-agent-first editorial pass', () => {
     expect(widget).toContain('setOpen(true)')
   })
 
-  it('uses Sathian\'s annotated homepage language', () => {
-    expect(home).toContain('A personal workshop.')
-    expect(home).toContain('Projects, writing, and agentic experiments')
-    expect(home).toContain('Projects with a pulse.')
+  it('uses Sathian\'s approved minimal homepage language', () => {
+    expect(home).toContain('The fastest way to reach me is to ask.')
+    expect(home).toContain('Featured work')
+    expect(home).toContain('More projects &amp; curiosities')
     expect(home).not.toContain('The systems underneath the work.')
     expect(home).not.toContain('BUILD_NOTES')
     expect(home).not.toContain('Three things with a pulse.')
@@ -36,24 +36,21 @@ describe('site-agent-first editorial pass', () => {
   it('retires the short-lived TxODDS campaign without changing the editorial baseline', () => {
     expect(home).not.toMatch(/TxODDS|txodds|World Cup build/)
     expect(memory).not.toContain('getTxOddsCampaignMemoryCards')
-    expect(home).toContain('Projects with a pulse.')
+    expect(home).toContain('Featured work')
     expect(agentIndex).toContain('Public build record')
   })
 
-  it('consolidates About and Automation into one concise public page', () => {
-    expect(about).toContain('relaunch-inner-shell')
-    expect(about).toContain('relaunch-page-header')
-    expect(about).toContain('Small systems for messy work.')
-    expect(about).toContain('Public context. Private boundaries.')
-    expect(about).not.toContain('Four systems I keep returning to.')
-    expect(automation).toContain("redirect('/about#automation')")
+  it('folds About and Automation into the chat-first front door', () => {
+    expect(about).toContain("redirect('/')")
+    expect(automation).toContain("redirect('/#agent')")
   })
 
-  it('keeps the human navigation short and gives agents a quieter index', () => {
-    expect(nav).toContain("{ label: 'Projects', href: '/#now'")
+  it('keeps the human navigation to the three approved pages and gives agents a quieter index', () => {
+    expect(nav).toContain("{ label: 'Home', href: '/'")
     expect(nav).toContain("{ label: 'Hackathons', href: '/hackathons'")
     expect(nav).toContain("{ label: 'Writing', href: '/writings'")
-    expect(nav).toContain("{ label: 'About', href: '/about'")
+    expect(nav).not.toContain("{ label: 'Projects'")
+    expect(nav).not.toContain("{ label: 'About'")
     expect(nav).not.toContain("{ label: 'Automation'")
     expect(nav).not.toContain("{ label: 'Email'")
     expect(agentIndex).toContain('FOR AGENTS / PUBLIC CONTEXT')
@@ -66,9 +63,9 @@ describe('site-agent-first editorial pass', () => {
     expect(articles).toMatch(/slug: 'the-gap-between-weeks',[\s\S]*?date: '2026-07-04'/)
   })
 
-  it('points the Projects navigation item to the real homepage section', () => {
-    expect(nav).toContain("{ label: 'Projects', href: '/#now'")
-    expect(nav).not.toContain("{ label: 'Projects', href: '/#projects'")
+  it('points Home navigation to the chat-first front door', () => {
+    expect(nav).toContain("{ label: 'Home', href: '/'")
+    expect(nav).not.toContain("{ label: 'Projects'")
   })
 
   it('adds the reviewed current chapter to the bounded public-agent context', () => {

@@ -1,15 +1,16 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
+import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import { getPublishedArticles } from '@/lib/articles-db'
 
 export const metadata: Metadata = {
   title: 'Writing | sathian.ai',
-  description: 'Essays on culture, money, technology, and the things Sathian is building.',
+  description: 'Essays on culture, money, technology, fatherhood, and the products Sathian is learning to build.',
   openGraph: {
     title: 'Writing | sathian.ai',
-    description: 'Essays on culture, money, technology, and the things Sathian is building.',
+    description: 'Essays on culture, money, technology, fatherhood, and the products Sathian is learning to build.',
   },
 }
 
@@ -30,7 +31,7 @@ const agentAllowanceArticle = {
   readTime: '8 min',
   domains: 'SOLANA / AI AGENTS / BUILD NOTE',
   href: '/writings/agent-allowance-lab',
-  accent: '#14F195',
+  accent: '#B84E1A',
 }
 
 export default async function WritingsIndex() {
@@ -49,52 +50,43 @@ export default async function WritingsIndex() {
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
-    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell workshop-writing-index min-h-screen bg-[var(--hub-bg-primary)] text-[var(--hub-text-primary)]">
+    <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
       <SiteNav />
+
       <main>
-        <header className="mx-auto max-w-[1120px] px-6 pb-14 pt-36">
-          <p className="hub-eyebrow mb-5 text-[#5EEAD4]">FIELD NOTES / {entries.length} PUBLISHED</p>
-          <h1 className="max-w-[760px] font-display text-5xl font-semibold leading-[0.98] tracking-[-0.045em] md:text-7xl">
-            Essays from the workbench.
-          </h1>
-          <p className="mt-7 max-w-[620px] font-sans text-base leading-7 text-[var(--hub-text-secondary)]">
-            Notes on culture, money, technology, and the products I am learning to build.
-          </p>
+        <header className="minimal-page-hero minimal-container">
+          <p className="minimal-kicker">FIELD NOTES / {entries.length} PUBLISHED</p>
+          <h1>Writing to understand.</h1>
+          <p>Notes on culture, money, technology, fatherhood, and the products I am learning to build.</p>
+          <Link href="/#agent" className="minimal-text-link">Not sure where to start? Ask the site agent</Link>
         </header>
 
-        <section className="mx-auto max-w-[1120px] px-6 pb-28">
-          <div className="border-t border-white/10">
-            {entries.map((article) => (
-              <Link
-                key={article.href}
-                href={article.href}
-                className="group grid gap-4 border-b border-white/10 py-9 no-underline md:grid-cols-[170px_minmax(0,1fr)_auto] md:items-start md:gap-8"
-              >
-                <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--hub-text-muted)]">
-                  <time dateTime={article.date}>{formatDate(article.date)}</time>
-                  <span className="mt-2 block" style={{ color: article.accent }}>{article.domains}</span>
-                </div>
-                <div>
-                  <h2 className="font-display text-2xl font-medium leading-tight tracking-[-0.025em] text-[var(--hub-text-primary)] transition-colors group-hover:text-white md:text-3xl">
-                    {article.title}
-                  </h2>
-                  <p className="mt-3 max-w-[680px] font-sans text-sm leading-6 text-[var(--hub-text-secondary)]">
-                    {article.description}
-                  </p>
-                </div>
-                <span className="font-mono text-[10px] text-[var(--hub-text-muted)] md:pt-2">{article.readTime}</span>
-              </Link>
-            ))}
+        <section className="minimal-writing-index minimal-container" aria-label="Published writing">
+          {entries.map((article) => (
+            <Link key={article.href} href={article.href}>
+              <div className="minimal-writing-index__meta">
+                <time dateTime={article.date}>{formatDate(article.date)}</time>
+                <span style={{ color: article.accent }}>{article.domains}</span>
+              </div>
+              <div>
+                <h2>{article.title}</h2>
+                <p>{article.description}</p>
+              </div>
+              <span className="minimal-writing-index__time">{article.readTime}</span>
+            </Link>
+          ))}
+        </section>
+
+        <section className="minimal-writing-cta" aria-labelledby="writing-cta-title">
+          <div>
+            <h2 id="writing-cta-title">Looking for something specific?</h2>
+            <p>The site agent can recommend a piece or take a note.</p>
+            <Link href="/#agent">Ask the site agent</Link>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-white/10 bg-[var(--hub-bg-dark)] py-8">
-        <div className="mx-auto flex max-w-[1120px] items-center justify-between px-6 font-mono text-[10px] text-[var(--hub-text-muted)]">
-          <Link href="/" className="text-inherit no-underline">sathian.ai</Link>
-          <span>© {new Date().getFullYear()}</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

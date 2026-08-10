@@ -9,15 +9,15 @@ const readSource = (path: string) =>
 describe('hackathon portfolio release', () => {
   const page = readSource('src/app/hackathons/page.tsx')
 
-  it('features Quote Coverage Ledger before the earlier submissions', () => {
-    const quoteLedger = page.indexOf('Quote Coverage Ledger')
+  it('features AutoQuote Automator before the earlier submissions', () => {
+    const autoQuote = page.indexOf('AutoQuote Automator')
     const agentTab = page.indexOf('AgentTab')
     const toothFairy = page.indexOf('title="Tooth Fairy Network"')
     const clinicalGuard = page.indexOf('title="ClinicalGuard"')
 
-    expect(quoteLedger).toBeGreaterThan(-1)
+    expect(autoQuote).toBeGreaterThan(-1)
     expect(agentTab).toBeGreaterThan(-1)
-    expect(agentTab).toBeGreaterThan(quoteLedger)
+    expect(agentTab).toBeGreaterThan(autoQuote)
     expect(toothFairy).toBeGreaterThan(agentTab)
     expect(clinicalGuard).toBeGreaterThan(toothFairy)
   })
@@ -30,6 +30,15 @@ describe('hackathon portfolio release', () => {
       'https://www.linkedin.com/posts/activity-7437509764399640577-86Rt',
     )
     expect(page).toContain('https://github.com/SathianSrikrishnan/ClinicalGuard')
+  })
+
+  it('keeps the public evidence state explicit after the rename', () => {
+    expect(page).toContain('15 families / 16 routes')
+    expect(page).toContain('44 fields / 43 available')
+    expect(page).toContain('16 routes / 0 premiums')
+    expect(page).toContain('Public routes tested')
+    expect(page).toContain('Live premiums returned')
+    expect(page).toContain('Personal records exposed')
   })
 
   it('publishes the approved AgentTab essay with build and personal media', () => {
