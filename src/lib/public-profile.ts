@@ -5,9 +5,28 @@ import {
   LATEST_RELEASE,
   type SiteRelease,
 } from '@/content/site-releases'
+import {
+  AUTOQUOTE_AUTOMATOR_PROJECT,
+  SOLANA_OBSERVATORY_PROJECT,
+  type PublicSiteProject,
+} from '@/content/site-projects'
 
 const ABOUT_SOURCE = 'https://sathian.ai/about'
 const TOOTHLIGHT_DEVNET_PROOF = 'https://explorer.solana.com/tx/2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke?cluster=devnet'
+
+function projectToPublicMemoryCard(project: PublicSiteProject): PublicMemoryCard {
+  return {
+    id: project.id,
+    slug: project.slug,
+    title: project.name,
+    body: project.agentSummary,
+    summary: project.description,
+    tags: project.tags,
+    source: { ref: project.href, kind: 'published_project' },
+    validFrom: '2026-08-10T00:00:00.000Z',
+    validUntil: null,
+  }
+}
 
 export function releaseToPublicMemoryCard(
   release: SiteRelease,
@@ -33,6 +52,8 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
     ...DRAW_WITH_TANDA_EPISODES
       .filter((release) => release.id !== LATEST_RELEASE.id)
       .map((release) => releaseToPublicMemoryCard(release)),
+    projectToPublicMemoryCard(AUTOQUOTE_AUTOMATOR_PROJECT),
+    projectToPublicMemoryCard(SOLANA_OBSERVATORY_PROJECT),
     {
       id: 'project-clinicalguard',
       slug: 'clinicalguard',
@@ -45,6 +66,28 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
         kind: 'published_page',
       },
       validFrom: '2026-03-01T00:00:00.000Z',
+      validUntil: null,
+    },
+    {
+      id: 'published-writing',
+      slug: 'published-writing',
+      title: 'Sathian’s published writing',
+      body: 'Sathian publishes notes on culture, money, technology, fatherhood, and the products he is learning to build. The writing index is the canonical place to browse the current collection.',
+      summary: 'Notes on culture, money, technology, fatherhood, and building in public.',
+      tags: ['writing', 'articles', 'essays', 'culture', 'money', 'technology', 'fatherhood'],
+      source: { ref: 'https://sathian.ai/writings', kind: 'published_page' },
+      validFrom: '2026-08-10T00:00:00.000Z',
+      validUntil: null,
+    },
+    {
+      id: 'current-public-work',
+      slug: 'current-public-work',
+      title: 'What Sathian is building now',
+      body: 'Sathian’s current public work centers on Tooth Fairy Network and Draw with Tanda, AutoQuote Automator, Solana Ecosystem Observatory, and experiments in trustworthy AI agents. ClinicalGuard and earlier hackathons remain part of the public archive.',
+      summary: 'The current public project portfolio behind Digital Experiments.',
+      tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio'],
+      source: { ref: 'https://sathian.ai/', kind: 'published_page' },
+      validFrom: '2026-08-10T00:00:00.000Z',
       validUntil: null,
     },
     {

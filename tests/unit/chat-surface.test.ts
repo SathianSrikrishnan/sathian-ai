@@ -34,7 +34,8 @@ describe('public chat surface', () => {
 
     expect(widget).toContain('Sathian’s site agent')
     expect(widget).toContain('Ask about Sathian’s reviewed public projects, writing, or current work. You can also leave him a note.')
-    expect(widget).toContain('Ask a question or leave a note…')
+    expect(widget).toContain('Ask a question…')
+    expect(widget).toContain('Write your note to Sathian…')
     expect(prompt).toContain("You are Sathian's site agent")
     expect(prompt).not.toMatch(/You are Kai/i)
     expect(constants).toContain('What is Sathian building now?')
@@ -59,6 +60,15 @@ describe('public chat surface', () => {
     expect(widget).toContain('By sending, you agree this message may be stored and forwarded to Sathian.')
   })
 
+  it('has a dedicated note composer instead of submitting the suggestion label', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain("suggestion.action === 'compose_note'")
+    expect(widget).toContain("intent: composerMode === 'note' ? 'note' : 'question'")
+    expect(widget).toContain('Write your note to Sathian')
+    expect(widget).not.toContain("handleSend('I want to leave Sathian a note')")
+  })
+
   it('keeps same-site next actions inside the active preview deployment', () => {
     const widget = readSource('src/components/ChatWidget.tsx')
 
@@ -78,7 +88,7 @@ describe('public chat surface', () => {
 
     expect(widget).toContain('aria-label="Your name (optional)"')
     expect(widget).toContain('aria-label="Reply email (optional)"')
-    expect(widget).toContain('aria-label="Ask a question or leave a note"')
+    expect(widget).toContain("'Write your note to Sathian' : 'Ask a question'")
     expect(styles).toContain('.site-agent-panel input:focus-visible')
   })
 })

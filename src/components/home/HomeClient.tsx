@@ -10,6 +10,10 @@ import {
   DRAW_WITH_TANDA_EPISODES,
   LATEST_RELEASE,
 } from '@/content/site-releases'
+import {
+  AUTOQUOTE_AUTOMATOR_PROJECT,
+  SOLANA_OBSERVATORY_PROJECT,
+} from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
 
@@ -37,23 +41,8 @@ const FEATURED_PROJECTS = [
     image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
     alt: 'Tanda preserving a child\'s drawing in the Tooth Fairy Network storybook',
   },
-  {
-    name: 'AutoQuote Automator',
-    label: 'RECENT HACKATHON / ACTIVE BUILD',
-    description:
-      'An evidence-first personal shopping agent for Ontario auto insurance, with private intake, human approval gates, and an honest result for every route.',
-    href: 'https://ontario-all-quote-agent.vercel.app',
-    cta: 'Open the current dashboard',
-    image: '/projects/autoquote-automator-dashboard.png',
-    alt: 'The public AutoQuote Automator evidence dashboard',
-  },
+  AUTOQUOTE_AUTOMATOR_PROJECT,
 ]
-
-const SOLANA_PROJECT = {
-  name: 'Solana Ecosystem Observatory',
-  image: '/projects/solana-ecosystem-observatory.png',
-  href: 'https://htmlpreview.github.io/?https://raw.githubusercontent.com/SathianSrikrishnan/solana-ecosystem-dashboard/main/output/index.html',
-}
 
 const MORE_PROJECTS = [
   {
@@ -219,12 +208,12 @@ export function HomeClient({ writings }: HomeClientProps) {
               Learn the ecosystem visually, see what the network is doing now, and understand why Solana fits Tooth Fairy Network.
             </p>
             <p className="minimal-label">LIVE FOUNDATION / DIRECT RPC / SOURCE-VISIBLE</p>
-            <a href={SOLANA_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
-              Open the current public snapshot
+            <a href={SOLANA_OBSERVATORY_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
+              {SOLANA_OBSERVATORY_PROJECT.cta}
             </a>
           </div>
-          <a href={SOLANA_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={`Open ${SOLANA_PROJECT.name}`}>
-            <Image src={SOLANA_PROJECT.image} alt="The source-visible Solana Ecosystem Observatory dashboard" fill sizes="(max-width: 760px) 100vw, 58vw" />
+          <a href={SOLANA_OBSERVATORY_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={`Open ${SOLANA_OBSERVATORY_PROJECT.name}`}>
+            <Image src={SOLANA_OBSERVATORY_PROJECT.image} alt={SOLANA_OBSERVATORY_PROJECT.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
           </a>
         </section>
 

@@ -31,6 +31,7 @@ interface HandlerDependencies {
 
 interface AgentMessageBody {
   message?: unknown
+  intent?: unknown
   page?: unknown
   consent?: unknown
   displayName?: unknown
@@ -38,10 +39,10 @@ interface AgentMessageBody {
   attachmentIntent?: unknown
 }
 
-function json(body: unknown, status = 200): Response {
+function json(body: unknown, status = 200, headers: HeadersInit = {}): Response {
   return Response.json(body, {
     status,
-    headers: { 'Cache-Control': 'no-store' },
+    headers: { 'Cache-Control': 'no-store', ...headers },
   })
 }
 
@@ -94,7 +95,10 @@ export function createAgentMessageHandler({
 }: HandlerDependencies) {
   return async function handleAgentMessage(request: Request): Promise<Response> {
     if (await isRateLimited(request)) {
-      return json({ error: 'Too many messages. Please wait and try again.' }, 429)
+      return json({
+        error: 'Too many messages. Please wait and try again.',
+        retryAfterSeconds: 60,
+      }, 429, { 'Retry-After': '60' })
     }
 
     let body: AgentMessageBody
@@ -107,6 +111,9 @@ export function createAgentMessageHandler({
     if (typeof body.message !== 'string' || !body.message.trim() || body.message.length > 2000) {
       return json({ error: 'Message must be between 1 and 2000 characters.' }, 400)
     }
+    if (body.intent !== undefined && body.intent !== 'question' && body.intent !== 'note') {
+      return json({ error: 'Intent must be question or note.' }, 400)
+    }
 
     let policy = evaluateAgentPolicy({ message: body.message })
     if (policy.route === 'block') {
@@ -115,6 +122,13 @@ export function createAgentMessageHandler({
         reasonCodes: policy.reasonCodes,
         message: 'I cannot help with private data, credentials, system access, or external actions.',
       }, 403)
+    }
+    if (body.intent === 'note') {
+      policy = {
+        ...policy,
+        route: 'intake',
+        reasonCodes: [...policy.reasonCodes, 'EXPLICIT_NOTE_INTENT'],
+      }
     }
     if (body.attachmentIntent === true && policy.route === 'answer') {
       policy = {

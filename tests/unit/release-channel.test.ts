@@ -60,6 +60,8 @@ describe('durable release channel', () => {
     expect(chat).toContain("trackSiteEvent('agent_answer_received'")
     expect(chat).toContain("trackSiteEvent('agent_source_opened'")
     expect(chat).toContain("trackSiteEvent('agent_note_sent'")
+    expect(chat).toContain("trackSiteEvent('agent_answer_feedback'")
+    expect(chat).toContain("'helpful' | 'not_helpful'")
     expect(analytics).toContain("window.gtag('event'")
   })
 })

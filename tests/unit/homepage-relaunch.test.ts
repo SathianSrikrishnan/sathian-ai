@@ -17,9 +17,10 @@ describe('sathian.ai relaunch surface', () => {
   const agentIndex = readOptional('src/app/agents/page.tsx')
   const publicBuildNotes = readOptional('src/lib/public-build-notes.ts')
   const releaseRegistry = readOptional('src/content/site-releases.ts')
+  const siteProjects = readOptional('src/content/site-projects.ts')
   const socialRegistry = readOptional('src/lib/social-links.ts')
   const siteIdentity = readOptional('src/lib/site-identity.ts')
-  const homepage = `${page}\n${homeClient}`
+  const homepage = `${page}\n${homeClient}\n${siteProjects}`
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
   it('leads with the concise Digital Experiments title and the live site agent', () => {
@@ -113,8 +114,8 @@ describe('sathian.ai relaunch surface', () => {
     expect(homeClient).toContain("src=\"/projects/tooth-fairy-network/tanda-profile.png\"")
     expect(homeClient).toContain("image: '/media/a-corporate-card-for-code-agenttab.png'")
     expect(homeClient).toContain("image: '/projects/clinicalguard-dashboard.png'")
-    expect(homeClient).toContain("image: '/projects/autoquote-automator-dashboard.png'")
-    expect(homeClient).toContain("image: '/projects/solana-ecosystem-observatory.png'")
+    expect(siteProjects).toContain("image: '/projects/autoquote-automator-dashboard.png'")
+    expect(siteProjects).toContain("image: '/projects/solana-ecosystem-observatory.png'")
     expect(existsSync(new URL('../../public/projects/tooth-fairy-network/family-storybook-hero.webp', import.meta.url))).toBe(true)
     expect(existsSync(new URL('../../public/projects/tooth-fairy-network/tanda-profile.png', import.meta.url))).toBe(true)
     expect(existsSync(new URL('../../public/projects/clinicalguard-dashboard.png', import.meta.url))).toBe(true)

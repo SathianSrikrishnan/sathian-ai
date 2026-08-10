@@ -109,6 +109,50 @@ describe('public agent message route', () => {
     }))
   })
 
+  it('stores a visitor-written explicit note without asking the answer model', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const answerQuestion = vi.fn(async () => ({
+      answer: 'This should not be called.',
+      sources: [],
+      unknown: false,
+      modelUsed: true,
+    }))
+    const handler = createAgentMessageHandler({ persistIntake, answerQuestion })
+
+    const response = await handler(request({
+      intent: 'note',
+      message: 'I would like to discuss the AutoQuote project.',
+      page: '/',
+      consent: true,
+    }))
+    const body = await response.json()
+
+    expect(response.status).toBe(202)
+    expect(body.route).toBe('intake')
+    expect(body.receipt.code).toMatch(/^SA-/)
+    expect(answerQuestion).not.toHaveBeenCalled()
+    expect(persistIntake).toHaveBeenCalledWith(expect.objectContaining({
+      message: 'I would like to discuss the AutoQuote project.',
+      reasonCodes: expect.arrayContaining(['EXPLICIT_NOTE_INTENT']),
+    }))
+  })
+
+  it('rejects an unknown explicit intent', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const handler = createAgentMessageHandler({ persistIntake })
+
+    const response = await handler(request({
+      intent: 'operate-private-system',
+      message: 'Do something',
+      page: '/',
+      consent: true,
+    }))
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ error: 'Intent must be question or note.' })
+    expect(persistIntake).not.toHaveBeenCalled()
+  })
+
   it('normalizes optional contact information for a consented intake', async () => {
     const persistIntake = vi.fn(async () => persisted)
     const recordOperationalEvent = vi.fn(async () => undefined)
@@ -343,6 +387,11 @@ describe('public agent message route', () => {
     const response = await handler(request({ message: 'What is Tooth Fairy Network?', page: '/' }))
 
     expect(response.status).toBe(429)
+    expect(response.headers.get('Retry-After')).toBe('60')
+    expect(await response.json()).toEqual({
+      error: 'Too many messages. Please wait and try again.',
+      retryAfterSeconds: 60,
+    })
     expect(persistIntake).not.toHaveBeenCalled()
     expect(answerQuestion).not.toHaveBeenCalled()
   })

@@ -22,6 +22,7 @@ const AGENT_SESSION_KEY = 'sathian-agent-session-id'
 interface AgentMessage {
   role: 'bot' | 'user'
   text: string
+  feedbackEligible?: boolean
   sources?: string[]
   nextAction?: {
     label: string
@@ -170,6 +171,8 @@ export function ChatWidget() {
   const [showContact, setShowContact] = useState(false)
   const [displayName, setDisplayName] = useState('')
   const [replyEmail, setReplyEmail] = useState('')
+  const [composerMode, setComposerMode] = useState<'question' | 'note'>('question')
+  const [answerFeedback, setAnswerFeedback] = useState<Record<number, 'helpful' | 'not_helpful'>>({})
   const agentSessionRef = useRef<string | null>(null)
   const widgetViewRecordedRef = useRef(false)
 
@@ -233,6 +236,7 @@ export function ChatWidget() {
     const pendingFile = file
     const pendingFileContentType = pendingFile ? fileContentType(pendingFile) : ''
     const pendingTurnstileToken = turnstileToken
+    const pendingIntent = composerMode
 
     trackSiteEvent('agent_question_submitted', {
       page: pathname,
@@ -250,6 +254,7 @@ export function ChatWidget() {
         },
          body: JSON.stringify({
            message: msg,
+           intent: composerMode === 'note' ? 'note' : 'question',
            page: pathname,
            consent: true,
            attachmentIntent: Boolean(pendingFile),
@@ -272,7 +277,7 @@ export function ChatWidget() {
             && isSafePublicHref(data.nextAction.href)
             ? { label: data.nextAction.label, href: data.nextAction.href }
             : undefined
-          responses.push({ role: 'bot', text: data.answer, sources, nextAction })
+          responses.push({ role: 'bot', text: data.answer, sources, nextAction, feedbackEligible: true })
           trackSiteEvent('agent_answer_received', {
             page: pathname,
             route: typeof data.route === 'string' ? data.route : 'unknown',
@@ -290,6 +295,7 @@ export function ChatWidget() {
             hasContact: Boolean(displayName || replyEmail),
             hasAttachment: Boolean(pendingFile),
           })
+          if (pendingIntent === 'note') setComposerMode('question')
         }
         if (pendingFile && pendingTurnstileToken) {
           try {
@@ -336,7 +342,16 @@ export function ChatWidget() {
       clearTimeout(timeout)
       setIsLoading(false)
     }
-   }, [clearFile, displayName, file, input, isLoading, pathname, replyEmail, turnstileToken])
+   }, [clearFile, composerMode, displayName, file, input, isLoading, pathname, replyEmail, turnstileToken])
+
+  const recordAnswerFeedback = useCallback((messageIndex: number, feedback: 'helpful' | 'not_helpful') => {
+    if (answerFeedback[messageIndex]) return
+    setAnswerFeedback((current) => ({ ...current, [messageIndex]: feedback }))
+    trackSiteEvent('agent_answer_feedback', {
+      page: pathname,
+      feedback,
+    })
+  }, [answerFeedback, pathname])
 
   sendRef.current = (text: string) => handleSend(text)
 
@@ -501,6 +516,17 @@ export function ChatWidget() {
                       {msg.nextAction.label}
                     </a>
                   )}
+                  {msg.role === 'bot' && msg.feedbackEligible && (
+                    <div className="site-agent-feedback" aria-label="Was this answer helpful?">
+                      <span>{answerFeedback[i] ? 'Feedback recorded' : 'Helpful?'}</span>
+                      {!answerFeedback[i] && (
+                        <>
+                          <button type="button" onClick={() => recordAnswerFeedback(i, 'helpful')}>Yes</button>
+                          <button type="button" onClick={() => recordAnswerFeedback(i, 'not_helpful')}>No</button>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -523,16 +549,23 @@ export function ChatWidget() {
 
             {showSuggestions && (
               <div className="flex flex-wrap gap-2 pt-2">
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} type="button" onClick={() => {
+                {SUGGESTIONS.map((suggestion) => (
+                  <button key={suggestion.id} type="button" onClick={() => {
                     trackSiteEvent('agent_prompt_selected', {
                       page: pathname,
-                      promptId: `suggestion-${SUGGESTIONS.indexOf(s) + 1}`,
+                      promptId: suggestion.id,
                     })
-                    handleSend(s)
+                    if (suggestion.action === 'compose_note') {
+                      setComposerMode('note')
+                      setShowSuggestions(false)
+                      setInput('')
+                      requestAnimationFrame(() => inputRef.current?.focus())
+                      return
+                    }
+                    handleSend(suggestion.message)
                   }}
                     className="site-agent-suggestion px-3 py-1.5 text-[12px] cursor-pointer transition-colors focus-visible:outline-none">
-                    {s}
+                    {suggestion.label}
                   </button>
                 ))}
               </div>
@@ -541,6 +574,16 @@ export function ChatWidget() {
 
            {/* Input */}
            <div className="site-agent-composer px-5 py-4">
+            {composerMode === 'note' && (
+              <div className="site-agent-note-mode">
+                <span>Write your note to Sathian</span>
+                <button type="button" onClick={() => {
+                  setComposerMode('question')
+                  setInput('')
+                  setShowSuggestions(true)
+                }}>Cancel</button>
+              </div>
+            )}
             {file && (
               <div data-file-intake className="mb-3 border-l-2 border-amber-500 bg-amber-50/70 px-3 py-3">
                 <div className="flex items-start justify-between gap-3">
@@ -627,14 +670,14 @@ export function ChatWidget() {
               <input
                 ref={inputRef}
                 type="text" name="message" autoComplete="off" value={input}
-                aria-label="Ask a question or leave a note"
+                aria-label={composerMode === 'note' ? 'Write your note to Sathian' : 'Ask a question'}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-                placeholder="Ask a question or leave a note…"
+                placeholder={composerMode === 'note' ? 'Write your note to Sathian…' : 'Ask a question…'}
                 maxLength={2000}
                 className="site-agent-input flex-1 px-4 py-3 text-sm focus-visible:outline-none transition-colors"
               />
-              <button type="button" onClick={() => handleSend()} aria-label="Send message" className="site-agent-send w-11 h-11 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none">
+              <button type="button" onClick={() => handleSend()} aria-label={composerMode === 'note' ? 'Send note' : 'Send question'} className="site-agent-send w-11 h-11 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
               </button>
             </div>
