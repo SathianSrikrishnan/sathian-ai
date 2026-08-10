@@ -18,6 +18,7 @@ import {
 const SUGGESTIONS = CHAT_SUGGESTIONS
 
 const AGENT_SESSION_KEY = 'sathian-agent-session-id'
+const AGENT_TEST_TOKEN_SESSION_KEY = 'sathian-agent-test-token'
 
 interface AgentMessage {
   role: 'bot' | 'user'
@@ -237,6 +238,7 @@ export function ChatWidget() {
     const pendingFileContentType = pendingFile ? fileContentType(pendingFile) : ''
     const pendingTurnstileToken = turnstileToken
     const pendingIntent = composerMode
+    const agentTesterToken = sessionStorage.getItem(AGENT_TEST_TOKEN_SESSION_KEY)
 
     trackSiteEvent('agent_question_submitted', {
       page: pathname,
@@ -251,6 +253,7 @@ export function ChatWidget() {
         headers: {
           'Content-Type': 'application/json',
           'Idempotency-Key': idempotencyKey,
+          ...(agentTesterToken ? { 'x-site-agent-test-token': agentTesterToken } : {}),
         },
          body: JSON.stringify({
            message: msg,

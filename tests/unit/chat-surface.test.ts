@@ -98,4 +98,13 @@ describe('public chat surface', () => {
     expect(widget).toContain('data?.retryAfterSeconds')
     expect(widget).toContain('Try again in ${retryAfterSeconds} seconds.')
   })
+
+  it('can attach a session-scoped signed tester token without persisting it in analytics', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain("const AGENT_TEST_TOKEN_SESSION_KEY = 'sathian-agent-test-token'")
+    expect(widget).toContain('sessionStorage.getItem(AGENT_TEST_TOKEN_SESSION_KEY)')
+    expect(widget).toContain("'x-site-agent-test-token': agentTesterToken")
+    expect(widget).not.toContain("trackSiteEvent('agent_test_token")
+  })
 })

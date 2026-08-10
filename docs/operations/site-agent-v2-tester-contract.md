@@ -33,6 +33,7 @@ Read before testing:
 - Do not create more than one test note. Submit it only when explicitly authorized, prefix it `[SITE AGENT TEST]`, and record its public receipt code.
 - Stop at the declared question and action limits.
 - Use a supplied tester token only for the named run and never copy it into a receipt, log, source file, or analytics property.
+- When browser-level header injection is unavailable, place the supplied token in the current tab's `sathian-agent-test-token` session-storage key, reload once, and remove it when the run ends. Never use local storage, a URL parameter, or a persistent browser profile for this token.
 - Do not infer a pass from UI appearance; inspect the returned answer, sources, next action, receipt, browser behavior, and available analytics evidence.
 
 ## Test protocol
