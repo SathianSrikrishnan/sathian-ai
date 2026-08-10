@@ -36,7 +36,7 @@ export interface AgentAnswerResult {
 }
 
 function isLatestReleaseQuestion(message: string): boolean {
-  return /\b(latest|newest|most recent|current)\s+(release|launch|video|episode|work)\b/i.test(message)
+  return /\b(latest|newest|most recent|current)\b.{0,64}\b(release|launch|video|episode)\b/i.test(message)
     || /\bwhat(?:'s| is) new\b/i.test(message)
 }
 
@@ -80,6 +80,69 @@ function contextualActionHref(sourceRef: string): string {
   return sourceRef
 }
 
+function directIntentCard(message: string, cards: PublicMemoryCard[]): {
+  card: PublicMemoryCard
+  actionLabel: string
+} | null {
+  const find = (predicate: (card: PublicMemoryCard) => boolean) => cards.find(predicate)
+  const hasTag = (tag: string) => (card: PublicMemoryCard) => card.tags.includes(tag)
+  const rules: Array<{
+    matches: boolean
+    card: PublicMemoryCard | undefined
+    actionLabel: string
+  }> = [
+    {
+      matches: /\bcoverage ledger\b/i.test(message),
+      card: find(hasTag('coverage-ledger')),
+      actionLabel: 'Open AutoQuote Automator',
+    },
+    {
+      matches: /\bautoquote(?: automator)?\b/i.test(message),
+      card: find(hasTag('autoquote-automator')),
+      actionLabel: 'Open AutoQuote Automator',
+    },
+    {
+      matches: /\bclinical\s*guard\b/i.test(message),
+      card: find(hasTag('clinicalguard')),
+      actionLabel: 'Open ClinicalGuard',
+    },
+    {
+      matches: /\bsolana\b/i.test(message) && /\b(dashboard|observatory|ecosystem|beginner)\b/i.test(message),
+      card: find(hasTag('solana-dashboard')),
+      actionLabel: 'Open the Solana dashboard',
+    },
+    {
+      matches: /\b(writing|writings|articles|essays)\b/i.test(message),
+      card: find((card) => card.id === 'published-writing'),
+      actionLabel: 'Browse Sathian’s writing',
+    },
+    {
+      matches: /\b(building now|current public work|working on now)\b/i.test(message),
+      card: find((card) => card.id === 'current-public-work'),
+      actionLabel: 'Open current work',
+    },
+  ]
+
+  const match = rules.find((rule) => rule.matches && rule.card)
+  return match?.card ? { card: match.card, actionLabel: match.actionLabel } : null
+}
+
+function deterministicCardAnswer(
+  card: PublicMemoryCard,
+  actionLabel: string,
+): AgentAnswerResult {
+  return {
+    answer: `${card.title}. ${card.body}`,
+    sources: [card.source.ref],
+    nextAction: {
+      label: actionLabel,
+      href: contextualActionHref(card.source.ref),
+    },
+    unknown: false,
+    modelUsed: false,
+  }
+}
+
 function normalizeAnswerText(value: string): string {
   return value
     .trim()
@@ -106,18 +169,12 @@ export async function answerAgentQuestion(
   if (isLatestReleaseQuestion(input.message)) {
     const release = input.cards.find((card) => card.tags.includes('latest-release'))
     if (release) {
-      return {
-        answer: `${release.title}. ${release.body}`,
-        sources: [release.source.ref],
-        nextAction: {
-          label: 'Open the latest release',
-          href: contextualActionHref(release.source.ref),
-        },
-        unknown: false,
-        modelUsed: false,
-      }
+      return deterministicCardAnswer(release, 'Open the latest release')
     }
   }
+
+  const directMatch = directIntentCard(input.message, input.cards)
+  if (directMatch) return deterministicCardAnswer(directMatch.card, directMatch.actionLabel)
 
   const cards = relevantCards(input.message, input.cards)
   if (cards.length === 0) {

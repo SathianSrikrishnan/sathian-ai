@@ -30,13 +30,33 @@ function safePage(value: unknown): string | null {
   return value.length <= 256 ? value : null
 }
 
+function isSameEventOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin')
+  if (!origin) return false
+
+  try {
+    const supplied = new URL(origin)
+    const target = new URL(request.url)
+    if (supplied.origin === target.origin) return true
+    if (process.env.NODE_ENV === 'production') return false
+
+    const loopbackHosts = new Set(['localhost', '127.0.0.1', '[::1]'])
+    return supplied.protocol === 'http:'
+      && target.protocol === 'http:'
+      && supplied.port === target.port
+      && loopbackHosts.has(supplied.hostname)
+      && loopbackHosts.has(target.hostname)
+  } catch {
+    return false
+  }
+}
+
 export function createAgentEventHandler({
   recordEvent,
   isRateLimited = () => false,
 }: AgentEventDependencies) {
   return async function handleAgentEvent(request: Request): Promise<Response> {
-    const origin = request.headers.get('origin')
-    if (!origin || origin !== new URL(request.url).origin) {
+    if (!isSameEventOrigin(request)) {
       return json({ error: 'Cross-origin event writes are not allowed.' }, 403)
     }
 

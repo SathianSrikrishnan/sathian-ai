@@ -137,9 +137,9 @@ describe('bounded public answer service', () => {
     const model = { generate: vi.fn(async () => 'Model answer should not be needed.') }
 
     const result = await answerAgentQuestion({
-      message: 'Show me the latest release',
+      message: 'What is the latest Draw with Tanda release?',
       page: '/',
-      policy: { ...policy, normalizedMessage: 'Show me the latest release' },
+      policy: { ...policy, normalizedMessage: 'What is the latest Draw with Tanda release?' },
       cards: [latestReleaseCard, tfnCard],
     }, { model })
 
@@ -150,6 +150,56 @@ describe('bounded public answer service', () => {
       label: 'Open the latest release',
       href: '/projects/tooth-fairy-network/draw-with-tanda',
     })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('resolves the former Coverage Ledger name deterministically', async () => {
+    const autoQuoteCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'project-autoquote-automator',
+      slug: 'autoquote-automator',
+      title: 'AutoQuote Automator',
+      body: 'AutoQuote Automator was previously called Coverage Ledger. It is an Ontario auto-insurance shopping-agent experiment with human approval gates.',
+      tags: ['project', 'autoquote-automator', 'coverage-ledger'],
+      source: { ref: 'https://ontario-all-quote-agent.vercel.app', kind: 'published_project' },
+    }
+    const model = { generate: vi.fn(async () => 'Unsupported fallback.') }
+
+    const result = await answerAgentQuestion({
+      message: 'What happened to Coverage Ledger?',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'What happened to Coverage Ledger?' },
+      cards: [tfnCard, autoQuoteCard],
+    }, { model })
+
+    expect(result.answer).toContain('previously called Coverage Ledger')
+    expect(result.answer).toContain('AutoQuote Automator')
+    expect(result.nextAction?.href).toBe('https://ontario-all-quote-agent.vercel.app')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('answers writing discovery from the canonical writing card and action', async () => {
+    const writingCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'published-writing',
+      slug: 'published-writing',
+      title: 'Sathian’s published writing',
+      body: 'Sathian publishes notes on culture, money, technology, fatherhood, and the products he is learning to build.',
+      tags: ['writing', 'articles', 'essays', 'fatherhood'],
+      source: { ref: 'https://sathian.ai/writings', kind: 'published_page' },
+    }
+    const model = { generate: vi.fn(async () => 'A partial model answer.') }
+
+    const result = await answerAgentQuestion({
+      message: "Where can I read Sathian's writing and what is it about?",
+      page: '/',
+      policy: { ...policy, normalizedMessage: "Where can I read Sathian's writing and what is it about?" },
+      cards: [tfnCard, writingCard],
+    }, { model })
+
+    expect(result.answer).toContain('fatherhood')
+    expect(result.sources).toEqual(['https://sathian.ai/writings'])
+    expect(result.nextAction?.href).toBe('/writings')
     expect(model.generate).not.toHaveBeenCalled()
   })
 

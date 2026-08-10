@@ -20,7 +20,7 @@ export const AUTOQUOTE_AUTOMATOR_PROJECT: PublicSiteProject = {
   description:
     'An evidence-first personal shopping agent for Ontario auto insurance, with private intake, human approval gates, and an honest result for every route.',
   agentSummary:
-    'AutoQuote Automator is Sathian’s active Ontario auto-insurance shopping-agent experiment. It uses private intake, evidence-first research, and human approval gates rather than pretending to issue a binding insurance quote.',
+    'AutoQuote Automator, previously called Coverage Ledger, is Sathian’s active Ontario auto-insurance shopping-agent experiment. It uses private intake, evidence-first research, and human approval gates rather than pretending to issue a binding insurance quote.',
   href: 'https://ontario-all-quote-agent.vercel.app',
   cta: 'Open the current dashboard',
   image: '/projects/autoquote-automator-dashboard.png',

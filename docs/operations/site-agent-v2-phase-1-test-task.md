@@ -6,7 +6,7 @@ Act only as the independent tester described in `docs/operations/site-agent-v2-t
 
 ## Frozen inputs
 
-- Candidate commit: `bec8371`
+- Candidate commit: `2dba36d`
 - Local target: `http://127.0.0.1:3017` running with the development server so the existing production origin allowlist is not weakened
 - Phase: `Phase 1 — trust and coverage`
 - Dataset: `site-agent-phase-1/v1`
@@ -43,4 +43,4 @@ Install the token with a browser evaluation that calls `sessionStorage.setItem('
 
 Write exactly one new receipt under `docs/analytics/site-agent-evals/` using the tester contract format. The receipt is the only repository file you may change. Include exact reproduction steps for every finding and distinguish a product defect from a missing local credential or external dependency.
 
-Stop and report without improvising if the target is unavailable, the checked-out runtime code does not match `bec8371`, or testing would require a production note, secret, deployment, configuration change, or more submissions than the declared limit.
+Stop and report without improvising if the target is unavailable, the checked-out runtime code does not match `2dba36d`, or testing would require a production note, secret, deployment, configuration change, or more submissions than the declared limit.
