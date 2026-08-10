@@ -108,8 +108,7 @@ export function HomeClient({ writings }: HomeClientProps) {
             <span className="minimal-home-identity__part">AGENT MANAGER + ORCHESTRATOR</span>
             <span className="minimal-home-identity__part">TORONTO</span>
           </p>
-          <h1>{"Welcome to Sathian's Digital Workshop"}</h1>
-          <p className="minimal-lede">Ask the site agent about what I am building and writing, or leave me a note.</p>
+          <h1>Digital Experiments</h1>
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">

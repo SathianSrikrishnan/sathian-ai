@@ -445,7 +445,6 @@ export function ChatWidget() {
                   }} />
                 </div>
                 <div>
-                  <p className="site-agent-eyebrow">PUBLIC CONTEXT / PRIVATE INTAKE</p>
                   <h2 id="site-agent-title" className="text-[17px] font-semibold">Sathian’s site agent</h2>
                 </div>
               </div>

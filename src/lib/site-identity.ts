@@ -19,7 +19,7 @@ export const SATHIAN_WEBSITE_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': 'https://sathian.ai/#website',
-  name: "Sathian's Digital Workshop",
+  name: 'Digital Experiments',
   alternateName: 'sathian.ai',
   url: 'https://sathian.ai',
   publisher: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },

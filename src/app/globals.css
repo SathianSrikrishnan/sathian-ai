@@ -1630,14 +1630,6 @@ h1, h2, h3 {
   letter-spacing: -0.02em;
 }
 
-.site-agent-eyebrow {
-  margin-bottom: 3px;
-  color: var(--agent-cyan);
-  font-family: var(--font-mono), monospace;
-  font-size: 8px;
-  letter-spacing: 0.09em;
-}
-
 .site-agent-close {
   color: var(--agent-faint);
 }
@@ -3824,14 +3816,6 @@ h1, h2, h3 {
   font-weight: 650;
   letter-spacing: -0.052em;
   line-height: 0.94;
-}
-
-.minimal-home-hero .minimal-lede {
-  max-width: 720px;
-  margin-top: 18px;
-  color: var(--minimal-muted);
-  font-size: 17px;
-  line-height: 1.7;
 }
 
 .minimal-home-hero h1 {

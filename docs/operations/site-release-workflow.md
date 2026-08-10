@@ -17,6 +17,21 @@ Last updated: 2026-08-10
 4. Set `status: 'published'` only when the watch page is public and the publication date and video ID are known.
 5. Run the release-channel test. The homepage, Draw with Tanda page, structured data, and site-agent memory all update from the same registry.
 
+## What gets pushed to this site
+
+The portfolio is a front door, not a copy of every project repository. Project work stays in its own canonical repository and deployment. Update `sathian.ai` only when the public-facing record changes.
+
+| Change | Where it happens first | When Sathian.ai changes |
+| --- | --- | --- |
+| Project code, dashboard data, or internal workflow | The project's own canonical repository | No portfolio release unless its public URL, name, status, image, or summary changes. |
+| Draw with Tanda episode | Character Studio and the TFN YouTube channel | After the episode is publicly verified, update the single release record. |
+| Tooth Fairy Network product work | The TFN canonical repository | Update the portfolio only for a meaningful public milestone or new destination. |
+| Writing | The reviewed article source or Studio publishing flow | Published writing is read by the site automatically; change homepage framing only when editorial priorities change. |
+| Hackathon project | Its own source repository and public deployment | Update `/hackathons` when the name, evidence, live link, or project status changes. |
+| Chatbot knowledge | Reviewed public profile, release registry, or build-note source | Release when the public answer should materially change. Never mirror private project context. |
+
+Every Sathian.ai production change follows the same path: update the canonical `main` worktree, test, commit, push, deploy, verify, and record the receipt. Ongoing work in another repository never auto-merges into the portfolio.
+
 ## Release gate
 
 ```powershell

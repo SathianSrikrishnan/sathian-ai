@@ -18,17 +18,22 @@ describe('sathian.ai relaunch surface', () => {
   const publicBuildNotes = readOptional('src/lib/public-build-notes.ts')
   const releaseRegistry = readOptional('src/content/site-releases.ts')
   const socialRegistry = readOptional('src/lib/social-links.ts')
+  const siteIdentity = readOptional('src/lib/site-identity.ts')
   const homepage = `${page}\n${homeClient}`
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
-  it('leads with Sathian\'s editorial theme and the live site agent', () => {
+  it('leads with the concise Digital Experiments title and the live site agent', () => {
     expect(homepage).toContain('SATHIAN S.')
     expect(homepage).toContain('AGENT MANAGER + ORCHESTRATOR')
     expect(homepage).toContain('TORONTO')
-    expect(homepage).toContain("Welcome to Sathian's Digital Workshop")
+    expect(homepage).toContain('Digital Experiments')
+    expect(rootLayout.match(/title: 'Digital Experiments \| Sathian Srikrishnan'/g)).toHaveLength(3)
+    expect(siteIdentity).toContain("name: 'Digital Experiments'")
+    expect(homepage).not.toContain("Welcome to Sathian's Digital Workshop")
     expect(homepage).not.toContain('The fastest way to reach me is to ask.')
     expect(homeClient).toContain('id="home-agent-slot"')
-    expect(homepage).toContain('Ask the site agent about what I am building and writing, or leave me a note.')
+    expect(homepage).not.toContain('Ask the site agent about what I am building and writing, or leave me a note.')
+    expect(homepage).not.toContain('PUBLIC CONTEXT / PRIVATE INTAKE')
   })
 
   it('keeps the approved homepage baseline free of the retired TxODDS sprint', () => {
