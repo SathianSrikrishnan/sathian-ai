@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { answerAgentQuestion } from '@/lib/agent/answer'
 import { POLICY_VERSION } from '@/lib/agent/policy'
 import { buildAgentPrompt } from '@/lib/agent/prompt'
+import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
 
 const tfnCard: PublicMemoryCard = {
@@ -252,6 +253,70 @@ describe('bounded public answer service', () => {
     expect(model.generate.mock.calls[0]?.[0]?.system).toContain(solanaCard.body)
     expect(model.generate.mock.calls[0]?.[0]?.system).toContain(tfnCard.body)
     expect(result.nextAction?.label).not.toBe('Open the source')
+  })
+
+  it('routes an explicit TFN capability question to the canonical project instead of an older essay', async () => {
+    const originEssay: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'release-the-gap-between-weeks',
+      slug: 'release-the-gap-between-weeks',
+      title: 'The Gap Between Weeks',
+      body: 'An origin essay about what Tooth Fairy Network was actually for.',
+      tags: ['writing', 'tooth-fairy-network'],
+    }
+    const model = { generate: vi.fn(async () => 'The older essay.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Tell me about Tooth Fairy Network. What is live today on Solana Mainnet, can it accept deposits, and is the public card on-ramp or checkout released?',
+      page: '/',
+      policy,
+      cards: [originEssay, ...getPublicProfileMemoryCards()],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('deployed Solana Mainnet program is live')
+    expect(result.answer).toContain('supports time-locked SOL and canonical USDC deposits')
+    expect(result.answer).toContain('on-ramp checkout experience remains behind a release gate')
+    expect(result.sources).toEqual(['https://toothfairy.network'])
+    expect(result.nextAction).toEqual({
+      label: 'Visit Tooth Fairy Network',
+      href: 'https://toothfairy.network',
+    })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('routes a contextual Solana comparison action to the consumer guide', async () => {
+    const [tfnProject, ...profileCards] = getPublicProfileMemoryCards()
+    const solanaCard = profileCards.find((card) => card.id === 'project-solana-ecosystem-observatory')
+    expect(solanaCard).toBeDefined()
+    const contactCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'contact-site-agent',
+      slug: 'contact-site-agent',
+      title: 'Contact through the site agent',
+      body: 'Ask the site agent about Tooth Fairy Network or Solana.',
+      tags: ['site-agent', 'contact'],
+      source: { ref: 'https://sathian.ai/', kind: 'published_page' },
+    }
+    const model = {
+      generate: vi.fn(async () => 'Tooth Fairy Network is the consumer product. Solana is the public network underneath it.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from Solana?',
+      page: '/',
+      policy,
+      cards: [contactCard, tfnProject, solanaCard!],
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnProject.body },
+      ],
+    }, { model })
+
+    expect(result.nextAction).toEqual({
+      label: 'Open the Solana guide',
+      href: 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/',
+    })
   })
 
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {

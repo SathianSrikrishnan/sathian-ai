@@ -104,6 +104,20 @@ Write `docs/analytics/site-agent-evals/YYYY-MM-DD-HHMM-<phase>-receipt.md` with:
 
 The tester's final message must contain only the receipt path, recommendation, severity counts, and any condition that prevented completion.
 
+## Protected local target
+
+Use `tests/browser/run-agent-dev-with-env.cjs` for a production-mode local
+candidate. The runner binds to `SITE_AGENT_TEST_HOST` (default
+`127.0.0.1`) and declares that exact host and `PORT` as the process-only
+Vercel origin. This keeps CORS and same-origin checks active without adding a
+broad localhost exception to production.
+
+The delegating agent, not the read-only tester, supplies the process-only
+random `SITE_AGENT_TESTER_SECRET`, starts the isolated runner, and creates the
+short-lived named token. The runner, token, and signing secret must be removed
+at the end of the run. Agent message and funnel-event routes keep their own
+durable quotas and are not counted again by the generic middleware limiter.
+
 ## Verification command
 
 The delegating agent must independently run:

@@ -32,7 +32,7 @@ describe('canonical site-agent public knowledge', () => {
 
     expect(tfn?.body).toContain('deployed Solana Mainnet program')
     expect(tfn?.body).toContain('time-locked SOL and canonical USDC deposits')
-    expect(tfn?.body).toContain('on-ramp remains behind a release gate')
+    expect(tfn?.body).toContain('on-ramp checkout experience remains behind a release gate')
     expect(currentWork?.body).toContain('primary public build is Tooth Fairy Network')
     expect(currentWork?.body).not.toMatch(/AI practice/i)
     expect(cards.some((card) => card.id === 'toothlight-devnet-ownership-proof')).toBe(false)

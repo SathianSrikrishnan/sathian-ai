@@ -97,7 +97,8 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
   }> = [
     {
       matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
-      card: find(hasTag('tooth-fairy-network')),
+      card: find((card) => card.id === 'project-tooth-fairy-network')
+        ?? find(hasTag('tooth-fairy-network')),
       actionLabel: 'Visit Tooth Fairy Network',
     },
     {
@@ -134,6 +135,37 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
 
   const match = rules.find((rule) => rule.matches && rule.card)
   return match?.card ? { card: match.card, actionLabel: match.actionLabel } : null
+}
+
+function preferredModelAction(message: string, cards: PublicMemoryCard[]): {
+  label: string
+  href: string
+} | undefined {
+  const rules: Array<{
+    matches: boolean
+    cardId: string
+    label: string
+  }> = [
+    {
+      matches: /\bsolana\b/i.test(message),
+      cardId: 'project-solana-ecosystem-observatory',
+      label: 'Open the Solana guide',
+    },
+    {
+      matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
+      cardId: 'project-tooth-fairy-network',
+      label: 'Visit Tooth Fairy Network',
+    },
+    {
+      matches: /\b(writing|writings|articles|essays)\b/i.test(message),
+      cardId: 'published-writing',
+      label: 'Browse Sathianâ€™s writing',
+    },
+  ]
+  const match = rules.find((rule) => rule.matches)
+  const card = match ? cards.find((candidate) => candidate.id === match.cardId) : undefined
+  if (!match || !card) return undefined
+  return { label: match.label, href: contextualActionHref(card.source.ref) }
 }
 
 function deterministicCardAnswer(
@@ -224,9 +256,9 @@ export async function answerAgentQuestion(
     return {
       answer: normalized,
       sources: uniqueSources(cards),
-      nextAction: cards[0]
+      nextAction: preferredModelAction(input.message, cards) ?? (cards[0]
         ? { label: `Explore ${cards[0].title}`, href: contextualActionHref(cards[0].source.ref) }
-        : undefined,
+        : undefined),
       unknown: false,
       modelUsed: true,
     }

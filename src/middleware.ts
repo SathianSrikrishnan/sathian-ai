@@ -27,6 +27,10 @@ function isRateLimited(ip: string, limit: number, windowMs: number): boolean {
   return entry.count > limit
 }
 
+export function hasDedicatedApiRateLimit(pathname: string): boolean {
+  return pathname === '/api/agent/message' || pathname === '/api/agent/event'
+}
+
 // Clean up stale entries periodically (prevent memory leak)
 setInterval(() => {
   const now = Date.now()
@@ -195,7 +199,7 @@ export async function middleware(request: NextRequest) {
   const limit = isVoiceRoute ? 5 : 10  // 5/min voice, 10/min chat
   const windowMs = 60_000  // 1 minute
 
-  if (isRateLimited(ip, limit, windowMs)) {
+  if (!hasDedicatedApiRateLimit(pathname) && isRateLimited(ip, limit, windowMs)) {
     return NextResponse.json(
       { error: 'Too many requests. Please slow down.' },
       { status: 429 }

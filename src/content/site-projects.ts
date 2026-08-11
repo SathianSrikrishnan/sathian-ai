@@ -20,7 +20,7 @@ export const TOOTH_FAIRY_NETWORK_PROJECT: PublicSiteProject = {
   description:
     'A private family time capsule with an optional, guardian-controlled future gift secured on Solana.',
   agentSummary:
-    'Tooth Fairy Network turns a child\'s drawing and story into a private time capsule with an optional guardian-controlled future gift. Its deployed Solana Mainnet program is live and supports time-locked SOL and canonical USDC deposits. Verified founder-controlled canaries proved both rails. The public USDC experience and on-ramp remains behind a release gate until the customer flow is approved. Private child content stays off-chain by default.',
+    'Tooth Fairy Network turns a child\'s drawing and story into a private time capsule with an optional guardian-controlled future gift. Its deployed Solana Mainnet program is live and supports time-locked SOL and canonical USDC deposits. Verified founder-controlled canaries proved both rails. The public USDC and on-ramp checkout experience remains behind a release gate until the customer flow is approved. Private child content stays off-chain by default.',
   href: 'https://toothfairy.network',
   cta: 'Visit Tooth Fairy Network',
   image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
