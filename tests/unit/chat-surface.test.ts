@@ -99,6 +99,13 @@ describe('public chat surface', () => {
     expect(widget).toContain('if (open && !isHomepage && inputRef.current) inputRef.current.focus()')
   })
 
+  it('scrolls only the transcript when an answer arrives', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain('messagesContainer.scrollTop = messagesContainer.scrollHeight')
+    expect(widget).not.toContain('scrollIntoView')
+  })
+
   it('labels every agent input and preserves a visible keyboard focus treatment', () => {
     const widget = readSource('src/components/ChatWidget.tsx')
     const styles = readSource('src/app/globals.css')

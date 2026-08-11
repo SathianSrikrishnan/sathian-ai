@@ -164,7 +164,7 @@ export function ChatWidget() {
   const [showSuggestions, setShowSuggestions] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const sendRef = useRef<(text: string) => void>(() => {})
   const abortRef = useRef<AbortController | null>(null)
@@ -493,7 +493,9 @@ export function ChatWidget() {
   }, [pathname])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const messagesContainer = messagesContainerRef.current
+    if (!messagesContainer) return
+    messagesContainer.scrollTop = messagesContainer.scrollHeight
   }, [messages])
 
   // Don't render on any toothfairy pages (TFN is a separate product)
@@ -555,7 +557,7 @@ export function ChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="site-agent-messages min-h-[180px] flex-1 space-y-3 overflow-y-auto px-6 py-5 sm:min-h-[240px] sm:max-h-[440px]">
+          <div ref={messagesContainerRef} className="site-agent-messages min-h-[180px] flex-1 space-y-3 overflow-y-auto px-6 py-5 sm:min-h-[240px] sm:max-h-[440px]">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'bot' ? 'justify-start' : 'justify-end'} gap-2.5`}>
                 {msg.role === 'bot' && (
@@ -612,8 +614,6 @@ export function ChatWidget() {
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
-
             {showSuggestions && (
               <div className="flex flex-wrap gap-2 pt-2">
                 {SUGGESTIONS.map((suggestion) => (

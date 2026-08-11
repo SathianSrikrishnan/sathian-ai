@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
 
 BASE_URL = os.environ.get("PORTAL_BASE_URL", "http://127.0.0.1:3017").rstrip("/")
@@ -45,7 +45,7 @@ def install_agent_fixture(page, requests):
         else:
             prior = payload.get("conversation")
             assert prior and len(prior["turns"]) == 2
-            assert prior["turns"][0]["content"] == "Tell me about Tooth Fairy Network"
+            assert prior["turns"][0]["content"] == "What is Sathian building now?"
             turns = prior["turns"] + [
                 {"role": "user", "content": payload["message"]},
                 {
@@ -70,8 +70,15 @@ def install_agent_fixture(page, requests):
 
 
 def open_agent(page):
-    page.goto(BASE_URL, wait_until="networkidle")
+    page.goto(BASE_URL, wait_until="commit", timeout=90_000)
     panel = page.locator("[data-chat-panel]")
+    panel.wait_for(state="visible", timeout=90_000)
+    try:
+        page.wait_for_load_state("networkidle", timeout=10_000)
+    except PlaywrightTimeoutError:
+        # Analytics keeps a connection open on some builds; the rendered agent
+        # surface is the stronger readiness signal for this browser check.
+        pass
     if not panel.is_visible():
         page.get_by_role("button", name="Open the site agent").click()
     panel.wait_for(state="visible")
@@ -84,8 +91,17 @@ def check_desktop(browser):
     install_agent_fixture(page, requests)
     panel = open_agent(page)
 
-    page.get_by_role("button", name="Tell me about Tooth Fairy Network").click()
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(100)
+    page_scroll_before_answer = page.evaluate("window.scrollY")
+    page.get_by_role("button", name="What is Sathian building now?").click()
     panel.get_by_text("deployed Solana Mainnet program", exact=False).wait_for()
+    page.wait_for_timeout(750)
+    page_scroll_after_answer = page.evaluate("window.scrollY")
+    assert abs(page_scroll_after_answer - page_scroll_before_answer) <= 1, (
+        "chat answer moved the homepage viewport: "
+        f"before={page_scroll_before_answer}, after={page_scroll_after_answer}"
+    )
     assert panel.locator(".site-agent-next-action").count() == 1
     assert panel.locator(".site-agent-sources").count() == 0
 
