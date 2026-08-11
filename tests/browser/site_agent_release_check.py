@@ -20,7 +20,16 @@ def wait_for_ready(page):
 
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True)
-    page = browser.new_page(viewport={"width": 1880, "height": 1050})
+    bypass_secret = os.environ.get("VERCEL_AUTOMATION_BYPASS_SECRET")
+    extra_headers = {
+        "x-vercel-protection-bypass": bypass_secret,
+        "x-vercel-set-bypass-cookie": "true",
+    } if bypass_secret else None
+    context = browser.new_context(
+        viewport={"width": 1880, "height": 1050},
+        extra_http_headers=extra_headers,
+    )
+    page = context.new_page()
     panel = wait_for_ready(page)
 
     page.evaluate("window.scrollTo(0, 0)")
@@ -51,6 +60,7 @@ with sync_playwright() as playwright:
     if source_wall_count:
         failures.append(f"answer rendered the legacy source wall ({source_wall_count} block(s))")
 
+    context.close()
     browser.close()
 
 if failures:
