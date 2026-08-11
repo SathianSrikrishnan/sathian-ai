@@ -12,8 +12,9 @@ describe('canonical site-agent public knowledge', () => {
   const cards = getPublicProfileMemoryCards()
 
   it.each([
+    ['project-tooth-fairy-network', 'https://toothfairy.network'],
     ['project-autoquote-automator', 'https://ontario-all-quote-agent.vercel.app'],
-    ['project-solana-ecosystem-observatory', 'https://htmlpreview.github.io/'],
+    ['project-solana-ecosystem-observatory', 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/'],
     ['project-clinicalguard', 'https://sathian.ai/projects/clinicalguard'],
     ['published-writing', 'https://sathian.ai/writings'],
     ['current-public-work', 'https://sathian.ai/'],
@@ -23,6 +24,18 @@ describe('canonical site-agent public knowledge', () => {
     expect(card).toBeDefined()
     expect(card?.source.ref).toContain(expectedSource)
     expect(card?.tags.length).toBeGreaterThan(2)
+  })
+
+  it('leads with verified TFN Mainnet capability while keeping the public on-ramp gated', () => {
+    const tfn = cards.find((card) => card.id === 'project-tooth-fairy-network')
+    const currentWork = cards.find((card) => card.id === 'current-public-work')
+
+    expect(tfn?.body).toContain('deployed Solana Mainnet program')
+    expect(tfn?.body).toContain('time-locked SOL and canonical USDC deposits')
+    expect(tfn?.body).toContain('on-ramp remains behind a release gate')
+    expect(currentWork?.body).toContain('primary public build is Tooth Fairy Network')
+    expect(currentWork?.body).not.toMatch(/AI practice/i)
+    expect(cards.some((card) => card.id === 'toothlight-devnet-ownership-proof')).toBe(false)
   })
 
   it('keeps common stale and alternate project names searchable', () => {

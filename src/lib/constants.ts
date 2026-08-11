@@ -11,6 +11,12 @@ export type ChatSuggestion = {
 
 export const CHAT_SUGGESTIONS: readonly ChatSuggestion[] = [
   {
+    id: 'tooth-fairy-network',
+    label: 'Tell me about Tooth Fairy Network',
+    action: 'submit_question',
+    message: 'Tell me about Tooth Fairy Network',
+  },
+  {
     id: 'latest-release',
     label: 'Show me the latest release',
     action: 'submit_question',
@@ -21,12 +27,6 @@ export const CHAT_SUGGESTIONS: readonly ChatSuggestion[] = [
     label: 'What is Sathian building now?',
     action: 'submit_question',
     message: 'What is Sathian building now?',
-  },
-  {
-    id: 'tooth-fairy-network',
-    label: 'Tell me about Tooth Fairy Network',
-    action: 'submit_question',
-    message: 'Tell me about Tooth Fairy Network',
   },
   {
     id: 'leave-note',

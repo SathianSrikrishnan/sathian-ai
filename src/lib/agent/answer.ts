@@ -1,4 +1,8 @@
 import { buildAgentPrompt } from '@/lib/agent/prompt'
+import {
+  isContextDependentQuestion,
+  type AgentConversationTurn,
+} from '@/lib/agent/conversation'
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
 
 const ABSOLUTE_MAX_TOKENS = 400
@@ -92,6 +96,11 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
     actionLabel: string
   }> = [
     {
+      matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
+      card: find(hasTag('tooth-fairy-network')),
+      actionLabel: 'Visit Tooth Fairy Network',
+    },
+    {
       matches: /\bcoverage ledger\b/i.test(message),
       card: find(hasTag('coverage-ledger')),
       actionLabel: 'Open AutoQuote Automator',
@@ -159,6 +168,7 @@ export async function answerAgentQuestion(
     page: string
     policy: AgentPolicyDecision
     cards: PublicMemoryCard[]
+    history?: AgentConversationTurn[]
   },
   options: {
     model: AnswerModelAdapter
@@ -173,10 +183,15 @@ export async function answerAgentQuestion(
     }
   }
 
-  const directMatch = directIntentCard(input.message, input.cards)
+  const contextualQuestion = isContextDependentQuestion(input.message)
+    && Boolean(input.history?.length)
+  const directMatch = contextualQuestion ? null : directIntentCard(input.message, input.cards)
   if (directMatch) return deterministicCardAnswer(directMatch.card, directMatch.actionLabel)
 
-  const cards = relevantCards(input.message, input.cards)
+  const contextQuery = contextualQuestion
+    ? `${input.history?.map((turn) => turn.content).join(' ') ?? ''} ${input.message}`
+    : input.message
+  const cards = relevantCards(contextQuery, input.cards)
   if (cards.length === 0) {
     return { answer: SAFE_UNKNOWN, sources: [], unknown: true, modelUsed: false }
   }
@@ -188,7 +203,12 @@ export async function answerAgentQuestion(
   try {
     const answer = await Promise.race([
       options.model.generate({
-        system: buildAgentPrompt({ cards, page: input.page, policy: input.policy }),
+        system: buildAgentPrompt({
+          cards,
+          page: input.page,
+          policy: input.policy,
+          history: input.history,
+        }),
         user: input.message,
         maxTokens: Math.min(Math.max(options.maxTokens ?? ABSOLUTE_MAX_TOKENS, 1), ABSOLUTE_MAX_TOKENS),
         signal: controller.signal,
@@ -205,7 +225,7 @@ export async function answerAgentQuestion(
       answer: normalized,
       sources: uniqueSources(cards),
       nextAction: cards[0]
-        ? { label: 'Open the source', href: contextualActionHref(cards[0].source.ref) }
+        ? { label: `Explore ${cards[0].title}`, href: contextualActionHref(cards[0].source.ref) }
         : undefined,
       unknown: false,
       modelUsed: true,

@@ -8,11 +8,12 @@ import {
 import {
   AUTOQUOTE_AUTOMATOR_PROJECT,
   SOLANA_OBSERVATORY_PROJECT,
+  TOOTH_FAIRY_NETWORK_PROJECT,
   type PublicSiteProject,
 } from '@/content/site-projects'
 
-const ABOUT_SOURCE = 'https://sathian.ai/about'
-const TOOTHLIGHT_DEVNET_PROOF = 'https://explorer.solana.com/tx/2gWn6Jd1avq5pvvUBqBjELSxGKQEpbk5MeMamAQLzMpKeW8xieij4ZHR4iwJ7kchhjjZcAK4fcSaSNw7D8JP3Gke?cluster=devnet'
+const PROFILE_SOURCE = 'https://sathian.ai/'
+const TFN_MAINNET_PROGRAM = 'https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC'
 
 function projectToPublicMemoryCard(project: PublicSiteProject): PublicMemoryCard {
   return {
@@ -48,6 +49,7 @@ export function releaseToPublicMemoryCard(
 
 export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
   return [
+    projectToPublicMemoryCard(TOOTH_FAIRY_NETWORK_PROJECT),
     releaseToPublicMemoryCard(LATEST_RELEASE, { latest: true }),
     ...DRAW_WITH_TANDA_EPISODES
       .filter((release) => release.id !== LATEST_RELEASE.id)
@@ -83,9 +85,9 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       id: 'current-public-work',
       slug: 'current-public-work',
       title: 'What Sathian is building now',
-      body: 'Sathian’s current public work centers on Tooth Fairy Network and Draw with Tanda, AutoQuote Automator, Solana Ecosystem Observatory, and experiments in trustworthy AI agents. ClinicalGuard and earlier hackathons remain part of the public archive.',
-      summary: 'The current public project portfolio behind Digital Experiments.',
-      tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio'],
+      body: 'Sathian’s primary public build is Tooth Fairy Network, a private family time-capsule and future-gift product with a deployed Solana Mainnet program. Draw with Tanda and the Solana Ecosystem Observatory explain the story and the network behind it. AutoQuote Automator remains an active experiment. ClinicalGuard and earlier hackathons remain in the public archive.',
+      summary: 'Tooth Fairy Network first, supported by public learning, content, and a small active project portfolio.',
+      tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio', 'tooth-fairy-network'],
       source: { ref: 'https://sathian.ai/', kind: 'published_page' },
       validFrom: '2026-08-10T00:00:00.000Z',
       validUntil: null,
@@ -97,7 +99,7 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       body: 'Sathian is a builder, father, and student again in his 40s, based in Toronto. He is increasingly active in the Toronto technology community and is learning in public across AI agents, Solana, Web3, and product building. Many of the builders teaching him the most are closer to his children’s age than his own, which he finds humbling and energizing.',
       summary: 'A builder and student again in his 40s, learning in public from Toronto.',
       tags: ['bio', 'toronto', 'student', 'ai', 'solana', 'current-work'],
-      source: { ref: ABOUT_SOURCE, kind: 'published_profile' },
+      source: { ref: PROFILE_SOURCE, kind: 'published_profile' },
       validFrom: '2026-07-15T00:00:00.000Z',
       validUntil: null,
     },
@@ -108,7 +110,7 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       body: 'Sathian’s career has crossed recruiting, entrepreneurship, and custom clothing, including serving as CEO of King & Bay Custom Clothing. His first close exposure to startup-building came around Waterloo’s entrepreneurship community as a university co-op student in the mid-2000s. He now carries those business and relationship lessons into software, AI, and public experiments.',
       summary: 'A non-linear career from Waterloo entrepreneurship through recruiting and King & Bay to technology.',
       tags: ['bio', 'career', 'waterloo', 'king-and-bay', 'entrepreneurship'],
-      source: { ref: ABOUT_SOURCE, kind: 'published_profile' },
+      source: { ref: PROFILE_SOURCE, kind: 'published_profile' },
       validFrom: '2026-07-15T00:00:00.000Z',
       validUntil: null,
     },
@@ -119,19 +121,19 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       body: 'The site agent is a public doorway to Sathian. It can answer from reviewed public projects, writing, and current-work context, or persist a visitor note and return a receipt. It cannot enter Sathian’s private memory or operate his private systems. A direct public agent API is planned only after its capabilities, limits, and receipts can be documented clearly.',
       summary: 'A public-context guide and receipt-backed message doorway with a strict private boundary.',
       tags: ['site-agent', 'public-context', 'privacy', 'intake'],
-      source: { ref: ABOUT_SOURCE, kind: 'published_profile' },
+      source: { ref: PROFILE_SOURCE, kind: 'published_profile' },
       validFrom: '2026-07-15T00:00:00.000Z',
       validUntil: null,
     },
     {
-      id: 'toothlight-devnet-ownership-proof',
-      slug: 'toothlight-devnet-ownership-proof',
-      title: 'Toothlight ownership proof on Solana devnet',
-      body: 'On July 15, 2026, Tooth Fairy Network minted one synthetic private-provenance Toothlight on Solana devnet to a disposable guardian wallet. Metaplex DAS independently verified asset ID 4QnZV6aJ4jZLujSZZ3hUWJoQ9acSetyifcKVufYK4E9U, its owner, tree, and metadata. A Toothlight separates a private memory vault, an optional guardian-owned digital keepsake for verifiable ownership and provenance, and an optional future fund. The child\'s artwork and parent\'s future letter stay off-chain and private by default. Production and mainnet were unchanged. The Bubblegum V1 proof validates the ownership path while the recommended Bubblegum V2 path is evaluated for production.',
-      summary: 'A synthetic devnet Toothlight proved the ownership path while real family memories stayed private.',
-      tags: ['tooth-fairy-network', 'toothlight', 'solana', 'devnet', 'privacy', 'ownership', 'provenance'],
-      source: { ref: TOOTHLIGHT_DEVNET_PROOF, kind: 'verified_devnet_receipt' },
-      validFrom: '2026-07-15T00:00:00.000Z',
+      id: 'tooth-fairy-network-mainnet-proof',
+      slug: 'tooth-fairy-network-mainnet-proof',
+      title: 'Tooth Fairy Network Mainnet program and deposit proof',
+      body: 'Tooth Fairy Network’s executable Solana Mainnet program is deployed at FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC and governed by a recorded 2-of-3 Squads multisig. It is unpaused. Founder-controlled Mainnet canaries verified a 0.01 SOL deposit and a 1.00 canonical-USDC deposit, with the contract applying its documented 2% fee and protecting 98% in each deposit account. This proves the live contract rails; it does not mean the customer-facing USDC or on-ramp flow is released.',
+      summary: 'A live, multisig-governed Mainnet program with verified SOL and canonical-USDC deposit canaries.',
+      tags: ['tooth-fairy-network', 'toothlight', 'solana', 'mainnet', 'deposit', 'usdc', 'ownership', 'transparent-value-transfer'],
+      source: { ref: TFN_MAINNET_PROGRAM, kind: 'verified_mainnet_program' },
+      validFrom: '2026-07-30T00:00:00.000Z',
       validUntil: null,
     },
   ]

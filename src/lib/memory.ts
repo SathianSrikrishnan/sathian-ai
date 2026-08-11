@@ -10,6 +10,12 @@ import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 
 let publicMemoryClient: PublicMemoryClient | null | undefined
 
+const RETIRED_PUBLIC_MEMORY_SLUGS = new Set([
+  'sathian-ai-practice',
+  'btc-cultural-atlas',
+  'lex-rooftop-garden',
+])
+
 function getPublicMemoryClient(): PublicMemoryClient | null {
   if (publicMemoryClient !== undefined) return publicMemoryClient
 
@@ -41,6 +47,19 @@ export function buildMemoryContext(cards: PublicMemoryCard[]): MemoryContext {
   }
 }
 
+export function mergePublicMemoryCards(
+  reviewedCards: PublicMemoryCard[],
+  profileCards: PublicMemoryCard[],
+): PublicMemoryCard[] {
+  const currentReviewedCards = reviewedCards.filter(
+    (card) => !RETIRED_PUBLIC_MEMORY_SLUGS.has(card.slug),
+  )
+  const cardsBySlug = new Map(
+    [...currentReviewedCards, ...profileCards].map((card) => [card.slug, card]),
+  )
+  return Array.from(cardsBySlug.values())
+}
+
 export async function getPublicMemoryCards(): Promise<PublicMemoryCard[]> {
   const profileCards = getPublicProfileMemoryCards()
   const client = getPublicMemoryClient()
@@ -49,10 +68,7 @@ export async function getPublicMemoryCards(): Promise<PublicMemoryCard[]> {
   try {
     const repository = createPublicMemoryRepository(client)
     const reviewedCards = await repository.findApproved()
-    const cardsBySlug = new Map(
-      [...reviewedCards, ...profileCards].map((card) => [card.slug, card]),
-    )
-    return Array.from(cardsBySlug.values())
+    return mergePublicMemoryCards(reviewedCards, profileCards)
   } catch (error) {
     console.error('Public memory retrieval failed', error)
     return profileCards

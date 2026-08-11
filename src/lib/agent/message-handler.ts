@@ -12,6 +12,11 @@ import type { AgentOperationalRecord } from '@/lib/agent/observability'
 import { evaluateAgentPolicy } from '@/lib/agent/policy'
 import { createPublicReceipt } from '@/lib/agent/receipts'
 import type { AgentPolicyDecision } from '@/lib/agent/types'
+import {
+  appendAgentConversation,
+  parseAgentConversationState,
+  type AgentConversationTurn,
+} from '@/lib/agent/conversation'
 
 export const CONSENT_NOTICE_VERSION = 'public-agent-notice/2026-07-14'
 
@@ -20,6 +25,7 @@ type AnswerQuestion = (input: {
   message: string
   page: string
   policy: AgentPolicyDecision
+  history: AgentConversationTurn[]
 }) => Promise<AgentAnswerResult>
 
 interface HandlerDependencies {
@@ -37,6 +43,7 @@ interface AgentMessageBody {
   displayName?: unknown
   replyEmail?: unknown
   attachmentIntent?: unknown
+  conversation?: unknown
 }
 
 function json(body: unknown, status = 200, headers: HeadersInit = {}): Response {
@@ -139,6 +146,7 @@ export function createAgentMessageHandler({
     }
 
     const currentPage = pageContext(body.page)
+    const priorConversation = parseAgentConversationState(body.conversation)
     const displayName = optionalString(body.displayName, 120)
     const replyEmail = optionalReplyEmail(body.replyEmail)
     if (!replyEmail.valid) {
@@ -188,7 +196,12 @@ export function createAgentMessageHandler({
     if (policy.route === 'answer' || policy.route === 'answer_and_intake') {
       try {
         answerResult = answerQuestion
-          ? await answerQuestion({ message: policy.normalizedMessage, page: currentPage, policy })
+          ? await answerQuestion({
+              message: policy.normalizedMessage,
+              page: currentPage,
+              policy,
+              history: priorConversation?.turns ?? [],
+            })
           : {
               answer: SAFE_MODEL_FAILURE,
               sources: [],
@@ -232,12 +245,19 @@ export function createAgentMessageHandler({
     }
 
     const receipt = persisted?.ok ? createPublicReceipt(persisted) : null
+    const conversation = answerResult
+      ? appendAgentConversation(priorConversation, [
+          { role: 'user', content: policy.normalizedMessage },
+          { role: 'assistant', content: answerResult.answer },
+        ])
+      : null
 
     return json({
       route: policy.route,
       answer: answerResult?.answer ?? null,
       sources: answerResult?.sources ?? [],
       nextAction: answerResult?.nextAction ?? null,
+      conversation,
       receipt,
       capabilities: {
         answered: answerResult !== null,

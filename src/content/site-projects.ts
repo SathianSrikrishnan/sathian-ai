@@ -12,6 +12,33 @@ export interface PublicSiteProject {
   tags: string[]
 }
 
+export const TOOTH_FAIRY_NETWORK_PROJECT: PublicSiteProject = {
+  id: 'project-tooth-fairy-network',
+  slug: 'tooth-fairy-network',
+  name: 'Tooth Fairy Network',
+  label: 'PRIMARY BUILD / LIVE MAINNET FOUNDATION',
+  description:
+    'A private family time capsule with an optional, guardian-controlled future gift secured on Solana.',
+  agentSummary:
+    'Tooth Fairy Network turns a child\'s drawing and story into a private time capsule with an optional guardian-controlled future gift. Its deployed Solana Mainnet program is live and supports time-locked SOL and canonical USDC deposits. Verified founder-controlled canaries proved both rails. The public USDC experience and on-ramp remains behind a release gate until the customer flow is approved. Private child content stays off-chain by default.',
+  href: 'https://toothfairy.network',
+  cta: 'Visit Tooth Fairy Network',
+  image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
+  alt: 'Tanda in the Tooth Fairy Network storybook world',
+  tags: [
+    'project',
+    'primary-build',
+    'tooth-fairy-network',
+    'toothlight',
+    'solana',
+    'mainnet',
+    'family-savings',
+    'private-time-capsule',
+    'ownership',
+    'transparent-value-transfer',
+  ],
+}
+
 export const AUTOQUOTE_AUTOMATOR_PROJECT: PublicSiteProject = {
   id: 'project-autoquote-automator',
   slug: 'autoquote-automator',
@@ -41,13 +68,13 @@ export const SOLANA_OBSERVATORY_PROJECT: PublicSiteProject = {
   id: 'project-solana-ecosystem-observatory',
   slug: 'solana-ecosystem-observatory',
   name: 'Solana Ecosystem Observatory',
-  label: 'LIVE FOUNDATION / DIRECT RPC / SOURCE-VISIBLE',
+  label: 'LIVE CONSUMER GUIDE / SOURCE-VISIBLE DATA',
   description:
-    'A visual, source-visible introduction to the Solana ecosystem and the network characteristics behind Tooth Fairy Network.',
+    'A plain-English, interactive introduction to Solana with a live evidence layer and a verified Tooth Fairy Network example.',
   agentSummary:
-    'Solana Ecosystem Observatory is Sathian’s public visual dashboard for people who are new to Solana. It explains the ecosystem, shows a source-visible network snapshot, and connects those ideas to why Tooth Fairy Network is being built on Solana.',
-  href: 'https://htmlpreview.github.io/?https://raw.githubusercontent.com/SathianSrikrishnan/solana-ecosystem-dashboard/main/output/index.html',
-  cta: 'Open the current public snapshot',
+    'Solana Ecosystem Observatory is Sathian’s public mini app for people who are new to Solana. It explains the shared ledger in plain English, shows why low-cost inspectable rails may matter, walks through one verified Tooth Fairy Network Mainnet deposit example, and then exposes a source-visible network dashboard.',
+  href: 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/',
+  cta: 'Open the Solana guide',
   image: '/projects/solana-ecosystem-observatory.png',
   alt: 'The source-visible Solana Ecosystem Observatory dashboard',
   tags: [

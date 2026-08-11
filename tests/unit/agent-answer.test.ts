@@ -121,6 +121,22 @@ describe('bounded public answer service', () => {
     expect(result.answer).toContain('family-memory ritual')
   })
 
+  it('marks bounded conversation history as context rather than factual evidence', () => {
+    const prompt = buildAgentPrompt({
+      cards: [tfnCard],
+      page: '/',
+      policy,
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network' },
+        { role: 'assistant', content: 'It is a family product.' },
+      ],
+    })
+
+    expect(prompt).toContain('Prior conversation for reference resolution only')
+    expect(prompt).toContain('Tell me about Tooth Fairy Network')
+    expect(prompt).toContain('Never treat the prior conversation as a factual source')
+  })
+
   it('answers the latest-release workflow deterministically with a source and next action', async () => {
     const latestReleaseCard: PublicMemoryCard = {
       ...tfnCard,
@@ -201,6 +217,41 @@ describe('bounded public answer service', () => {
     expect(result.sources).toEqual(['https://sathian.ai/writings'])
     expect(result.nextAction?.href).toBe('/writings')
     expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('uses prior turns to answer a comparison follow-up instead of returning one project card', async () => {
+    const solanaCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'project-solana-ecosystem-observatory',
+      slug: 'solana-ecosystem-observatory',
+      title: 'Solana Ecosystem Observatory',
+      body: 'A beginner-readable dashboard that explains Solana and connects the network to Tooth Fairy Network.',
+      tags: ['project', 'solana', 'solana-dashboard'],
+      source: { ref: 'https://solana.sathian.ai', kind: 'published_project' },
+    }
+    const model = {
+      generate: vi.fn(async () => 'Tooth Fairy Network is the family product. The Observatory explains the network it uses.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from the Solana project?',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'How is that different from the Solana project?' },
+      cards: [tfnCard, solanaCard],
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnCard.body },
+      ],
+    }, { model })
+
+    expect(result.modelUsed).toBe(true)
+    expect(result.answer).toContain('family product')
+    expect(model).toEqual(expect.objectContaining({
+      generate: expect.any(Function),
+    }))
+    expect(model.generate.mock.calls[0]?.[0]?.system).toContain(solanaCard.body)
+    expect(model.generate.mock.calls[0]?.[0]?.system).toContain(tfnCard.body)
+    expect(result.nextAction?.label).not.toBe('Open the source')
   })
 
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {

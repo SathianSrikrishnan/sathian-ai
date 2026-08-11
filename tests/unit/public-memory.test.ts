@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { createPublicMemoryRepository } from '@/lib/agent/public-memory'
 import type { PublicMemoryClient } from '@/lib/agent/types'
-import { buildMemoryContext } from '@/lib/memory'
+import { buildMemoryContext, mergePublicMemoryCards } from '@/lib/memory'
 
 type Row = Record<string, unknown>
 
@@ -102,5 +102,31 @@ describe('reviewed public memory repository', () => {
 
     expect(cards).toEqual([])
     expect(buildMemoryContext(cards)).toEqual({ content: '', sources: [] })
+  })
+
+  it('removes retired portfolio context and lets canonical registry cards replace stale rows', () => {
+    const reviewed = [
+      {
+        id: 'old-practice', slug: 'sathian-ai-practice', title: 'AI practice', body: 'Old page',
+        summary: null, tags: ['ai'], source: { ref: 'https://sathian.ai/#practice', kind: 'published_page' },
+        validFrom: null, validUntil: null,
+      },
+      {
+        id: 'old-tfn', slug: 'tooth-fairy-network', title: 'Tooth Fairy Network', body: 'Only a speculative idea.',
+        summary: null, tags: ['project'], source: { ref: 'https://sathian.ai/writings/the-gap-between-weeks', kind: 'published_page' },
+        validFrom: null, validUntil: null,
+      },
+    ]
+    const canonical = [{
+      ...reviewed[1],
+      id: 'project-tooth-fairy-network',
+      body: 'A deployed Mainnet product.',
+      source: { ref: 'https://toothfairy.network', kind: 'published_project' },
+    }]
+
+    const merged = mergePublicMemoryCards(reviewed, canonical)
+
+    expect(merged.some((card) => card.slug === 'sathian-ai-practice')).toBe(false)
+    expect(merged.find((card) => card.slug === 'tooth-fairy-network')?.body).toContain('deployed Mainnet')
   })
 })
