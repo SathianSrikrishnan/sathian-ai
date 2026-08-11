@@ -70,4 +70,15 @@ describe('Supabase migration manifest', () => {
     expect(source).toContain('txodds-world-cup-hackathon')
     expect(source).not.toMatch(/delete\s+from\s+public_memory_cards/i)
   })
+
+  it('retires stale portfolio cards and refreshes TFN without deleting public-memory history', () => {
+    const refreshMigration = migrationContaining(/sathian-ai-practice[\s\S]*lex-rooftop-garden/i)
+
+    expect(refreshMigration).toBeDefined()
+    const source = readFileSync(new URL(refreshMigration!, migrationsUrl), 'utf8')
+    expect(source).toContain('btc-cultural-atlas')
+    expect(source).toContain('tooth-fairy-network')
+    expect(source).toMatch(/status\s*=\s*'retired'/i)
+    expect(source).not.toMatch(/delete\s+from\s+public_memory_cards/i)
+  })
 })

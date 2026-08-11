@@ -14,15 +14,23 @@ import {
   AGENT_FILE_INTAKE_CONFIGURED,
   AgentFileVerification,
 } from '@/components/AgentFileVerification'
+import {
+  appendAgentConversation,
+  parseAgentConversationState,
+  type AgentConversationState,
+} from '@/lib/agent/conversation'
 
 const SUGGESTIONS = CHAT_SUGGESTIONS
 
 const AGENT_SESSION_KEY = 'sathian-agent-session-id'
+const AGENT_TEST_TOKEN_SESSION_KEY = 'sathian-agent-test-token'
+const AGENT_CONVERSATION_SESSION_KEY = 'sathian-agent-conversation'
+const AGENT_INTRO_MESSAGE = 'Start with Tooth Fairy Network, the Solana learning dashboard, Sathian’s other public work, or leave him a note.'
 
 interface AgentMessage {
   role: 'bot' | 'user'
   text: string
-  sources?: string[]
+  feedbackEligible?: boolean
   nextAction?: {
     label: string
     href: string
@@ -150,7 +158,7 @@ async function uploadAgentFile(input: {
 export function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<AgentMessage[]>([
-    { role: 'bot', text: 'Ask about Sathian’s reviewed public projects, writing, or current work. You can also leave him a note.' },
+    { role: 'bot', text: AGENT_INTRO_MESSAGE },
   ])
   const [input, setInput] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -170,7 +178,10 @@ export function ChatWidget() {
   const [showContact, setShowContact] = useState(false)
   const [displayName, setDisplayName] = useState('')
   const [replyEmail, setReplyEmail] = useState('')
+  const [composerMode, setComposerMode] = useState<'question' | 'note'>('question')
+  const [answerFeedback, setAnswerFeedback] = useState<Record<number, 'helpful' | 'not_helpful'>>({})
   const agentSessionRef = useRef<string | null>(null)
+  const conversationRef = useRef<AgentConversationState | null>(null)
   const widgetViewRecordedRef = useRef(false)
 
   const clearFile = useCallback(() => {
@@ -206,6 +217,27 @@ export function ChatWidget() {
     setFile(selected)
   }, [clearFile])
 
+  const resetConversation = useCallback(() => {
+    abortRef.current?.abort()
+    setIsLoading(false)
+    conversationRef.current = null
+    sessionStorage.removeItem(AGENT_CONVERSATION_SESSION_KEY)
+    const sessionId = crypto.randomUUID()
+    sessionStorage.setItem(AGENT_SESSION_KEY, sessionId)
+    agentSessionRef.current = sessionId
+    setMessages([{ role: 'bot', text: AGENT_INTRO_MESSAGE }])
+    setAnswerFeedback({})
+    setComposerMode('question')
+    setInput('')
+    setShowSuggestions(true)
+    recordAgentEvent({
+      event: 'site_session_started',
+      sessionId,
+      page: pathname,
+      source: 'site',
+    })
+  }, [pathname])
+
   // Cleanup abort controller on unmount
   useEffect(() => {
     return () => { abortRef.current?.abort() }
@@ -233,6 +265,8 @@ export function ChatWidget() {
     const pendingFile = file
     const pendingFileContentType = pendingFile ? fileContentType(pendingFile) : ''
     const pendingTurnstileToken = turnstileToken
+    const pendingIntent = composerMode
+    const agentTesterToken = sessionStorage.getItem(AGENT_TEST_TOKEN_SESSION_KEY)
 
     trackSiteEvent('agent_question_submitted', {
       page: pathname,
@@ -247,14 +281,17 @@ export function ChatWidget() {
         headers: {
           'Content-Type': 'application/json',
           'Idempotency-Key': idempotencyKey,
+          ...(agentTesterToken ? { 'x-site-agent-test-token': agentTesterToken } : {}),
         },
          body: JSON.stringify({
            message: msg,
+           intent: composerMode === 'note' ? 'note' : 'question',
            page: pathname,
            consent: true,
            attachmentIntent: Boolean(pendingFile),
            displayName,
            replyEmail,
+           conversation: conversationRef.current,
          }),
         signal: controller.signal,
       })
@@ -272,7 +309,19 @@ export function ChatWidget() {
             && isSafePublicHref(data.nextAction.href)
             ? { label: data.nextAction.label, href: data.nextAction.href }
             : undefined
-          responses.push({ role: 'bot', text: data.answer, sources, nextAction })
+          responses.push({ role: 'bot', text: data.answer, nextAction, feedbackEligible: true })
+          if (pendingIntent === 'question') {
+            const serverConversation = parseAgentConversationState(data.conversation)
+            const conversation = serverConversation ?? appendAgentConversation(
+              conversationRef.current,
+              [
+                { role: 'user', content: msg },
+                { role: 'assistant', content: data.answer },
+              ],
+            )
+            conversationRef.current = conversation
+            sessionStorage.setItem(AGENT_CONVERSATION_SESSION_KEY, JSON.stringify(conversation))
+          }
           trackSiteEvent('agent_answer_received', {
             page: pathname,
             route: typeof data.route === 'string' ? data.route : 'unknown',
@@ -290,6 +339,7 @@ export function ChatWidget() {
             hasContact: Boolean(displayName || replyEmail),
             hasAttachment: Boolean(pendingFile),
           })
+          if (pendingIntent === 'note') setComposerMode('question')
         }
         if (pendingFile && pendingTurnstileToken) {
           try {
@@ -320,7 +370,16 @@ export function ChatWidget() {
         setMessages((prev) => [...prev, ...responses])
       } else if (res.status === 429) {
         const data = await res.json().catch(() => null)
-        setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.error || "You've been chatting a lot! Give me a moment to catch up." }])
+        const retryAfterSeconds = typeof data?.retryAfterSeconds === 'number'
+          && Number.isFinite(data.retryAfterSeconds)
+          && data.retryAfterSeconds > 0
+          ? Math.ceil(data.retryAfterSeconds)
+          : null
+        const baseMessage = data?.error || "You've been chatting a lot! Give me a moment to catch up."
+        const rateLimitMessage = retryAfterSeconds
+          ? `${baseMessage} Try again in ${retryAfterSeconds} seconds.`
+          : baseMessage
+        setMessages((prev) => [...prev, { role: 'bot' as const, text: rateLimitMessage }])
       } else {
         const data = await res.json().catch(() => null)
         setMessages((prev) => [...prev, { role: 'bot' as const, text: data?.message || data?.error || 'Sorry, I couldn\'t process that right now. Try again in a moment.' }])
@@ -336,7 +395,16 @@ export function ChatWidget() {
       clearTimeout(timeout)
       setIsLoading(false)
     }
-   }, [clearFile, displayName, file, input, isLoading, pathname, replyEmail, turnstileToken])
+   }, [clearFile, composerMode, displayName, file, input, isLoading, pathname, replyEmail, turnstileToken])
+
+  const recordAnswerFeedback = useCallback((messageIndex: number, feedback: 'helpful' | 'not_helpful') => {
+    if (answerFeedback[messageIndex]) return
+    setAnswerFeedback((current) => ({ ...current, [messageIndex]: feedback }))
+    trackSiteEvent('agent_answer_feedback', {
+      page: pathname,
+      feedback,
+    })
+  }, [answerFeedback, pathname])
 
   sendRef.current = (text: string) => handleSend(text)
 
@@ -345,6 +413,28 @@ export function ChatWidget() {
    }, [isHomepage, open])
 
    useEffect(() => {
+     const storedConversation = sessionStorage.getItem(AGENT_CONVERSATION_SESSION_KEY)
+     if (storedConversation) {
+       try {
+         const conversation = parseAgentConversationState(JSON.parse(storedConversation))
+         if (conversation) {
+           conversationRef.current = conversation
+           setMessages([
+             { role: 'bot', text: AGENT_INTRO_MESSAGE },
+             ...conversation.turns.map((turn): AgentMessage => ({
+               role: turn.role === 'assistant' ? 'bot' : 'user',
+               text: turn.content,
+             })),
+           ])
+           setShowSuggestions(false)
+         } else {
+           sessionStorage.removeItem(AGENT_CONVERSATION_SESSION_KEY)
+         }
+       } catch {
+         sessionStorage.removeItem(AGENT_CONVERSATION_SESSION_KEY)
+       }
+     }
+
      let sessionId = sessionStorage.getItem(AGENT_SESSION_KEY)
      if (!sessionId) {
        sessionId = crypto.randomUUID()
@@ -448,9 +538,19 @@ export function ChatWidget() {
                   <h2 id="site-agent-title" className="text-[17px] font-semibold">Sathian’s site agent</h2>
                 </div>
               </div>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="site-agent-close w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none">
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
-              </button>
+             <div className="flex items-center gap-1">
+               <button
+                 type="button"
+                 onClick={resetConversation}
+                 aria-label="Start a new conversation"
+                 className="site-agent-reset px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] focus-visible:outline-none"
+               >
+                 New
+               </button>
+               <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="site-agent-close w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none">
+                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
+               </button>
+             </div>
             </div>
           </div>
 
@@ -469,24 +569,6 @@ export function ChatWidget() {
                   borderTopRightRadius: msg.role === 'user' ? '4px' : undefined,
                 }}>
                   <p>{msg.text}</p>
-                  {msg.role === 'bot' && msg.sources && msg.sources.length > 0 && (
-                    <nav className="site-agent-sources" aria-label="Agent source">
-                      {msg.sources.map((source, sourceIndex) => (
-                        <a
-                          key={source}
-                          href={source}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => trackSiteEvent('agent_source_opened', {
-                            page: pathname,
-                            sourceHost: sourceLabel(source, sourceIndex),
-                          })}
-                        >
-                          {sourceLabel(source, sourceIndex)}
-                        </a>
-                      ))}
-                    </nav>
-                  )}
                   {msg.role === 'bot' && msg.nextAction && (
                     <a
                       href={msg.nextAction.href}
@@ -500,6 +582,17 @@ export function ChatWidget() {
                     >
                       {msg.nextAction.label}
                     </a>
+                  )}
+                  {msg.role === 'bot' && msg.feedbackEligible && (
+                    <div className="site-agent-feedback" aria-label="Was this answer helpful?">
+                      <span>{answerFeedback[i] ? 'Feedback recorded' : 'Helpful?'}</span>
+                      {!answerFeedback[i] && (
+                        <>
+                          <button type="button" onClick={() => recordAnswerFeedback(i, 'helpful')}>Yes</button>
+                          <button type="button" onClick={() => recordAnswerFeedback(i, 'not_helpful')}>No</button>
+                        </>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
@@ -523,16 +616,23 @@ export function ChatWidget() {
 
             {showSuggestions && (
               <div className="flex flex-wrap gap-2 pt-2">
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} type="button" onClick={() => {
+                {SUGGESTIONS.map((suggestion) => (
+                  <button key={suggestion.id} type="button" onClick={() => {
                     trackSiteEvent('agent_prompt_selected', {
                       page: pathname,
-                      promptId: `suggestion-${SUGGESTIONS.indexOf(s) + 1}`,
+                      promptId: suggestion.id,
                     })
-                    handleSend(s)
+                    if (suggestion.action === 'compose_note') {
+                      setComposerMode('note')
+                      setShowSuggestions(false)
+                      setInput('')
+                      requestAnimationFrame(() => inputRef.current?.focus())
+                      return
+                    }
+                    handleSend(suggestion.message)
                   }}
                     className="site-agent-suggestion px-3 py-1.5 text-[12px] cursor-pointer transition-colors focus-visible:outline-none">
-                    {s}
+                    {suggestion.label}
                   </button>
                 ))}
               </div>
@@ -541,6 +641,16 @@ export function ChatWidget() {
 
            {/* Input */}
            <div className="site-agent-composer px-5 py-4">
+            {composerMode === 'note' && (
+              <div className="site-agent-note-mode">
+                <span>Write your note to Sathian</span>
+                <button type="button" onClick={() => {
+                  setComposerMode('question')
+                  setInput('')
+                  setShowSuggestions(true)
+                }}>Cancel</button>
+              </div>
+            )}
             {file && (
               <div data-file-intake className="mb-3 border-l-2 border-amber-500 bg-amber-50/70 px-3 py-3">
                 <div className="flex items-start justify-between gap-3">
@@ -627,19 +737,19 @@ export function ChatWidget() {
               <input
                 ref={inputRef}
                 type="text" name="message" autoComplete="off" value={input}
-                aria-label="Ask a question or leave a note"
+                aria-label={composerMode === 'note' ? 'Write your note to Sathian' : 'Ask a question'}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSend() }}
-                placeholder="Ask a question or leave a note…"
+                placeholder={composerMode === 'note' ? 'Write your note to Sathian…' : 'Ask a question…'}
                 maxLength={2000}
                 className="site-agent-input flex-1 px-4 py-3 text-sm focus-visible:outline-none transition-colors"
               />
-              <button type="button" onClick={() => handleSend()} aria-label="Send message" className="site-agent-send w-11 h-11 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none">
+              <button type="button" onClick={() => handleSend()} aria-label={composerMode === 'note' ? 'Send note' : 'Send question'} className="site-agent-send w-11 h-11 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" /></svg>
               </button>
             </div>
             <p className="site-agent-disclosure mt-2 px-1 text-[10px] leading-relaxed">
-              By sending, you agree this message may be stored and forwarded to Sathian. One permitted file can be held privately for 30 days. Please do not send secrets.
+               Conversation context stays in this browser tab for up to 45 minutes. By sending, you agree this message may be stored and forwarded to Sathian. Please do not send secrets.
             </p>
           </div>
         </motion.div>

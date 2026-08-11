@@ -1,4 +1,8 @@
 import { buildAgentPrompt } from '@/lib/agent/prompt'
+import {
+  isContextDependentQuestion,
+  type AgentConversationTurn,
+} from '@/lib/agent/conversation'
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
 
 const ABSOLUTE_MAX_TOKENS = 400
@@ -36,7 +40,7 @@ export interface AgentAnswerResult {
 }
 
 function isLatestReleaseQuestion(message: string): boolean {
-  return /\b(latest|newest|most recent|current)\s+(release|launch|video|episode|work)\b/i.test(message)
+  return /\b(latest|newest|most recent|current)\b.{0,64}\b(release|launch|video|episode)\b/i.test(message)
     || /\bwhat(?:'s| is) new\b/i.test(message)
 }
 
@@ -80,6 +84,140 @@ function contextualActionHref(sourceRef: string): string {
   return sourceRef
 }
 
+function directIntentCard(message: string, cards: PublicMemoryCard[]): {
+  card: PublicMemoryCard
+  actionLabel: string
+} | null {
+  const find = (predicate: (card: PublicMemoryCard) => boolean) => cards.find(predicate)
+  const hasTag = (tag: string) => (card: PublicMemoryCard) => card.tags.includes(tag)
+  const rules: Array<{
+    matches: boolean
+    card: PublicMemoryCard | undefined
+    actionLabel: string
+  }> = [
+    {
+      matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
+      card: find((card) => card.id === 'project-tooth-fairy-network')
+        ?? find(hasTag('tooth-fairy-network')),
+      actionLabel: 'Visit Tooth Fairy Network',
+    },
+    {
+      matches: /\bcoverage ledger\b/i.test(message),
+      card: find(hasTag('coverage-ledger')),
+      actionLabel: 'Open AutoQuote Automator',
+    },
+    {
+      matches: /\bautoquote(?: automator)?\b/i.test(message),
+      card: find(hasTag('autoquote-automator')),
+      actionLabel: 'Open AutoQuote Automator',
+    },
+    {
+      matches: /\bclinical\s*guard\b/i.test(message),
+      card: find(hasTag('clinicalguard')),
+      actionLabel: 'Open ClinicalGuard',
+    },
+    {
+      matches: /\bsolana\b/i.test(message) && /\b(dashboard|observatory|ecosystem|beginner)\b/i.test(message),
+      card: find(hasTag('solana-dashboard')),
+      actionLabel: 'Open the Solana dashboard',
+    },
+    {
+      matches: /\b(writing|writings|articles|essays|fatherhood|publishes|published)\b/i.test(message)
+        || /\bwhere can i read\b/i.test(message),
+      card: find((card) => card.id === 'published-writing'),
+      actionLabel: 'Browse Sathian’s writing',
+    },
+    {
+      matches: /\b(building now|current public work|working on now)\b/i.test(message),
+      card: find((card) => card.id === 'current-public-work'),
+      actionLabel: 'Open current work',
+    },
+  ]
+
+  const match = rules.find((rule) => rule.matches && rule.card)
+  return match?.card ? { card: match.card, actionLabel: match.actionLabel } : null
+}
+
+function preferredModelAction(message: string, cards: PublicMemoryCard[]): {
+  label: string
+  href: string
+} | undefined {
+  const rules: Array<{
+    matches: boolean
+    cardId: string
+    label: string
+  }> = [
+    {
+      matches: /\bsolana\b/i.test(message),
+      cardId: 'project-solana-ecosystem-observatory',
+      label: 'Open the Solana guide',
+    },
+    {
+      matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
+      cardId: 'project-tooth-fairy-network',
+      label: 'Visit Tooth Fairy Network',
+    },
+    {
+      matches: /\b(writing|writings|articles|essays|fatherhood|publishes|published)\b/i.test(message)
+        || /\bwhere can i read\b/i.test(message),
+      cardId: 'published-writing',
+      label: 'Browse Sathianâ€™s writing',
+    },
+    {
+      matches: /\b(crypto|cryptocurrency|web3|smart contract|transfer of value)\b/i.test(message),
+      cardId: 'project-tooth-fairy-network',
+      label: 'Visit Tooth Fairy Network',
+    },
+  ]
+  const match = rules.find((rule) => rule.matches)
+  const card = match ? cards.find((candidate) => candidate.id === match.cardId) : undefined
+  if (!match || !card) return undefined
+  return { label: match.label, href: contextualActionHref(card.source.ref) }
+}
+
+function contextualComparisonAnswer(
+  message: string,
+  history: AgentConversationTurn[] = [],
+  cards: PublicMemoryCard[],
+): AgentAnswerResult | null {
+  if (!/\bsolana\b/i.test(message) || !/\b(different|difference|compare|compared)\b/i.test(message)) {
+    return null
+  }
+  const priorContext = history.map((turn) => turn.content).join(' ')
+  if (!/\b(tooth fairy network|toothlight|tfn)\b/i.test(priorContext)) return null
+
+  const tfn = cards.find((card) => card.id === 'project-tooth-fairy-network')
+  const solana = cards.find((card) => card.id === 'project-solana-ecosystem-observatory')
+  if (!tfn || !solana) return null
+
+  return {
+    answer: 'Tooth Fairy Network is the consumer product: a private family time capsule with an optional guardian-controlled future gift and a deployed Solana Mainnet program. Solana is the public network underneath it: the shared ledger and program runtime that make the contract rails and receipts inspectable. The Solana Ecosystem Observatory is the plain-English guide to that network. In short, Tooth Fairy Network is the product being built for families; Solana is the infrastructure underneath it. Private child content stays off-chain by default.',
+    sources: [tfn.source.ref, solana.source.ref],
+    nextAction: {
+      label: 'Open the Solana guide',
+      href: contextualActionHref(solana.source.ref),
+    },
+    unknown: false,
+    modelUsed: false,
+  }
+}
+
+function deterministicCardAnswer(
+  card: PublicMemoryCard,
+  actionLabel: string,
+): AgentAnswerResult {
+  return {
+    answer: `${card.title}. ${card.body}`,
+    sources: [card.source.ref],
+    nextAction: {
+      label: actionLabel,
+      href: contextualActionHref(card.source.ref),
+    },
+    unknown: false,
+    modelUsed: false,
+  }
+}
+
 function normalizeAnswerText(value: string): string {
   return value
     .trim()
@@ -96,6 +234,7 @@ export async function answerAgentQuestion(
     page: string
     policy: AgentPolicyDecision
     cards: PublicMemoryCard[]
+    history?: AgentConversationTurn[]
   },
   options: {
     model: AnswerModelAdapter
@@ -106,20 +245,23 @@ export async function answerAgentQuestion(
   if (isLatestReleaseQuestion(input.message)) {
     const release = input.cards.find((card) => card.tags.includes('latest-release'))
     if (release) {
-      return {
-        answer: `${release.title}. ${release.body}`,
-        sources: [release.source.ref],
-        nextAction: {
-          label: 'Open the latest release',
-          href: contextualActionHref(release.source.ref),
-        },
-        unknown: false,
-        modelUsed: false,
-      }
+      return deterministicCardAnswer(release, 'Open the latest release')
     }
   }
 
-  const cards = relevantCards(input.message, input.cards)
+  const contextualQuestion = isContextDependentQuestion(input.message)
+    && Boolean(input.history?.length)
+  if (contextualQuestion) {
+    const comparison = contextualComparisonAnswer(input.message, input.history, input.cards)
+    if (comparison) return comparison
+  }
+  const directMatch = contextualQuestion ? null : directIntentCard(input.message, input.cards)
+  if (directMatch) return deterministicCardAnswer(directMatch.card, directMatch.actionLabel)
+
+  const contextQuery = contextualQuestion
+    ? `${input.history?.map((turn) => turn.content).join(' ') ?? ''} ${input.message}`
+    : input.message
+  const cards = relevantCards(contextQuery, input.cards)
   if (cards.length === 0) {
     return { answer: SAFE_UNKNOWN, sources: [], unknown: true, modelUsed: false }
   }
@@ -131,7 +273,12 @@ export async function answerAgentQuestion(
   try {
     const answer = await Promise.race([
       options.model.generate({
-        system: buildAgentPrompt({ cards, page: input.page, policy: input.policy }),
+        system: buildAgentPrompt({
+          cards,
+          page: input.page,
+          policy: input.policy,
+          history: input.history,
+        }),
         user: input.message,
         maxTokens: Math.min(Math.max(options.maxTokens ?? ABSOLUTE_MAX_TOKENS, 1), ABSOLUTE_MAX_TOKENS),
         signal: controller.signal,
@@ -143,14 +290,13 @@ export async function answerAgentQuestion(
 
     const normalized = normalizeAnswerText(answer)
     if (!normalized) throw new Error('empty_answer')
+    const modelUnknown = /i (?:don[^\s]{0,3}t|do not) have approved public information/i.test(normalized)
 
     return {
       answer: normalized,
       sources: uniqueSources(cards),
-      nextAction: cards[0]
-        ? { label: 'Open the source', href: contextualActionHref(cards[0].source.ref) }
-        : undefined,
-      unknown: false,
+      nextAction: modelUnknown ? undefined : preferredModelAction(input.message, cards),
+      unknown: modelUnknown,
       modelUsed: true,
     }
   } catch {

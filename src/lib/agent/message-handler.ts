@@ -12,6 +12,11 @@ import type { AgentOperationalRecord } from '@/lib/agent/observability'
 import { evaluateAgentPolicy } from '@/lib/agent/policy'
 import { createPublicReceipt } from '@/lib/agent/receipts'
 import type { AgentPolicyDecision } from '@/lib/agent/types'
+import {
+  appendAgentConversation,
+  parseAgentConversationState,
+  type AgentConversationTurn,
+} from '@/lib/agent/conversation'
 
 export const CONSENT_NOTICE_VERSION = 'public-agent-notice/2026-07-14'
 
@@ -20,6 +25,7 @@ type AnswerQuestion = (input: {
   message: string
   page: string
   policy: AgentPolicyDecision
+  history: AgentConversationTurn[]
 }) => Promise<AgentAnswerResult>
 
 interface HandlerDependencies {
@@ -31,17 +37,19 @@ interface HandlerDependencies {
 
 interface AgentMessageBody {
   message?: unknown
+  intent?: unknown
   page?: unknown
   consent?: unknown
   displayName?: unknown
   replyEmail?: unknown
   attachmentIntent?: unknown
+  conversation?: unknown
 }
 
-function json(body: unknown, status = 200): Response {
+function json(body: unknown, status = 200, headers: HeadersInit = {}): Response {
   return Response.json(body, {
     status,
-    headers: { 'Cache-Control': 'no-store' },
+    headers: { 'Cache-Control': 'no-store', ...headers },
   })
 }
 
@@ -94,7 +102,10 @@ export function createAgentMessageHandler({
 }: HandlerDependencies) {
   return async function handleAgentMessage(request: Request): Promise<Response> {
     if (await isRateLimited(request)) {
-      return json({ error: 'Too many messages. Please wait and try again.' }, 429)
+      return json({
+        error: 'Too many messages. Please wait and try again.',
+        retryAfterSeconds: 60,
+      }, 429, { 'Retry-After': '60' })
     }
 
     let body: AgentMessageBody
@@ -107,6 +118,9 @@ export function createAgentMessageHandler({
     if (typeof body.message !== 'string' || !body.message.trim() || body.message.length > 2000) {
       return json({ error: 'Message must be between 1 and 2000 characters.' }, 400)
     }
+    if (body.intent !== undefined && body.intent !== 'question' && body.intent !== 'note') {
+      return json({ error: 'Intent must be question or note.' }, 400)
+    }
 
     let policy = evaluateAgentPolicy({ message: body.message })
     if (policy.route === 'block') {
@@ -115,6 +129,13 @@ export function createAgentMessageHandler({
         reasonCodes: policy.reasonCodes,
         message: 'I cannot help with private data, credentials, system access, or external actions.',
       }, 403)
+    }
+    if (body.intent === 'note') {
+      policy = {
+        ...policy,
+        route: 'intake',
+        reasonCodes: [...policy.reasonCodes, 'EXPLICIT_NOTE_INTENT'],
+      }
     }
     if (body.attachmentIntent === true && policy.route === 'answer') {
       policy = {
@@ -125,6 +146,7 @@ export function createAgentMessageHandler({
     }
 
     const currentPage = pageContext(body.page)
+    const priorConversation = parseAgentConversationState(body.conversation)
     const displayName = optionalString(body.displayName, 120)
     const replyEmail = optionalReplyEmail(body.replyEmail)
     if (!replyEmail.valid) {
@@ -174,7 +196,12 @@ export function createAgentMessageHandler({
     if (policy.route === 'answer' || policy.route === 'answer_and_intake') {
       try {
         answerResult = answerQuestion
-          ? await answerQuestion({ message: policy.normalizedMessage, page: currentPage, policy })
+          ? await answerQuestion({
+              message: policy.normalizedMessage,
+              page: currentPage,
+              policy,
+              history: priorConversation?.turns ?? [],
+            })
           : {
               answer: SAFE_MODEL_FAILURE,
               sources: [],
@@ -218,12 +245,19 @@ export function createAgentMessageHandler({
     }
 
     const receipt = persisted?.ok ? createPublicReceipt(persisted) : null
+    const conversation = answerResult
+      ? appendAgentConversation(priorConversation, [
+          { role: 'user', content: policy.normalizedMessage },
+          { role: 'assistant', content: answerResult.answer },
+        ])
+      : null
 
     return json({
       route: policy.route,
       answer: answerResult?.answer ?? null,
       sources: answerResult?.sources ?? [],
       nextAction: answerResult?.nextAction ?? null,
+      conversation,
       receipt,
       capabilities: {
         answered: answerResult !== null,

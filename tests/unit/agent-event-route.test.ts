@@ -10,6 +10,14 @@ function request(body: unknown, origin = 'https://sathian.ai') {
   })
 }
 
+function loopbackRequest(body: unknown, origin: string) {
+  return new Request('http://localhost:3017/api/agent/event', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', origin },
+    body: JSON.stringify(body),
+  })
+}
+
 describe('public agent funnel event route', () => {
   it('records only an allowlisted content-free session event', async () => {
     const recordEvent = vi.fn(async () => undefined)
@@ -77,5 +85,43 @@ describe('public agent funnel event route', () => {
     }))
     expect(response.status).toBe(429)
     expect(recordEvent).not.toHaveBeenCalled()
+  })
+
+  it('treats equivalent loopback hosts on the same port as same-origin outside production', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    const recordEvent = vi.fn(async () => undefined)
+    const handler = createAgentEventHandler({ recordEvent })
+
+    const response = await handler(loopbackRequest({
+      event: 'agent_widget_viewed',
+      sessionId: crypto.randomUUID(),
+      page: '/',
+      source: 'inline',
+    }, 'http://127.0.0.1:3017'))
+
+    expect(response.status).toBe(202)
+    expect(recordEvent).toHaveBeenCalledOnce()
+    vi.unstubAllEnvs()
+  })
+
+  it('accepts the exact process-declared deployment origin in a protected production-mode test', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.stubEnv('VERCEL_URL', '127.0.0.1:3018')
+    const recordEvent = vi.fn(async () => undefined)
+    const handler = createAgentEventHandler({ recordEvent })
+    const response = await handler(new Request('http://localhost:3018/api/agent/event', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'http://127.0.0.1:3018' },
+      body: JSON.stringify({
+        event: 'agent_widget_viewed',
+        sessionId: crypto.randomUUID(),
+        page: '/',
+        source: 'inline',
+      }),
+    }))
+
+    expect(response.status).toBe(202)
+    expect(recordEvent).toHaveBeenCalledOnce()
+    vi.unstubAllEnvs()
   })
 })

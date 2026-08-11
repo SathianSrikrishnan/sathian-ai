@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { answerAgentQuestion } from '@/lib/agent/answer'
 import { POLICY_VERSION } from '@/lib/agent/policy'
 import { buildAgentPrompt } from '@/lib/agent/prompt'
+import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
 
 const tfnCard: PublicMemoryCard = {
@@ -121,6 +122,22 @@ describe('bounded public answer service', () => {
     expect(result.answer).toContain('family-memory ritual')
   })
 
+  it('marks bounded conversation history as context rather than factual evidence', () => {
+    const prompt = buildAgentPrompt({
+      cards: [tfnCard],
+      page: '/',
+      policy,
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network' },
+        { role: 'assistant', content: 'It is a family product.' },
+      ],
+    })
+
+    expect(prompt).toContain('Prior conversation for reference resolution only')
+    expect(prompt).toContain('Tell me about Tooth Fairy Network')
+    expect(prompt).toContain('Never treat the prior conversation as a factual source')
+  })
+
   it('answers the latest-release workflow deterministically with a source and next action', async () => {
     const latestReleaseCard: PublicMemoryCard = {
       ...tfnCard,
@@ -137,9 +154,9 @@ describe('bounded public answer service', () => {
     const model = { generate: vi.fn(async () => 'Model answer should not be needed.') }
 
     const result = await answerAgentQuestion({
-      message: 'Show me the latest release',
+      message: 'What is the latest Draw with Tanda release?',
       page: '/',
-      policy: { ...policy, normalizedMessage: 'Show me the latest release' },
+      policy: { ...policy, normalizedMessage: 'What is the latest Draw with Tanda release?' },
       cards: [latestReleaseCard, tfnCard],
     }, { model })
 
@@ -151,6 +168,216 @@ describe('bounded public answer service', () => {
       href: '/projects/tooth-fairy-network/draw-with-tanda',
     })
     expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('resolves the former Coverage Ledger name deterministically', async () => {
+    const autoQuoteCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'project-autoquote-automator',
+      slug: 'autoquote-automator',
+      title: 'AutoQuote Automator',
+      body: 'AutoQuote Automator was previously called Coverage Ledger. It is an Ontario auto-insurance shopping-agent experiment with human approval gates.',
+      tags: ['project', 'autoquote-automator', 'coverage-ledger'],
+      source: { ref: 'https://ontario-all-quote-agent.vercel.app', kind: 'published_project' },
+    }
+    const model = { generate: vi.fn(async () => 'Unsupported fallback.') }
+
+    const result = await answerAgentQuestion({
+      message: 'What happened to Coverage Ledger?',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'What happened to Coverage Ledger?' },
+      cards: [tfnCard, autoQuoteCard],
+    }, { model })
+
+    expect(result.answer).toContain('previously called Coverage Ledger')
+    expect(result.answer).toContain('AutoQuote Automator')
+    expect(result.nextAction?.href).toBe('https://ontario-all-quote-agent.vercel.app')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('answers writing discovery from the canonical writing card and action', async () => {
+    const writingCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'published-writing',
+      slug: 'published-writing',
+      title: 'Sathian’s published writing',
+      body: 'Sathian publishes notes on culture, money, technology, fatherhood, and the products he is learning to build.',
+      tags: ['writing', 'articles', 'essays', 'fatherhood'],
+      source: { ref: 'https://sathian.ai/writings', kind: 'published_page' },
+    }
+    const model = { generate: vi.fn(async () => 'A partial model answer.') }
+
+    const result = await answerAgentQuestion({
+      message: "Where can I read Sathian's writing and what is it about?",
+      page: '/',
+      policy: { ...policy, normalizedMessage: "Where can I read Sathian's writing and what is it about?" },
+      cards: [tfnCard, writingCard],
+    }, { model })
+
+    expect(result.answer).toContain('fatherhood')
+    expect(result.sources).toEqual(['https://sathian.ai/writings'])
+    expect(result.nextAction?.href).toBe('/writings')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('uses prior turns to answer a comparison follow-up instead of returning one project card', async () => {
+    const solanaCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'project-solana-ecosystem-observatory',
+      slug: 'solana-ecosystem-observatory',
+      title: 'Solana Ecosystem Observatory',
+      body: 'A beginner-readable dashboard that explains Solana and connects the network to Tooth Fairy Network.',
+      tags: ['project', 'solana', 'solana-dashboard'],
+      source: { ref: 'https://solana.sathian.ai', kind: 'published_project' },
+    }
+    const model = {
+      generate: vi.fn(async () => 'Tooth Fairy Network is the family product. The Observatory explains the network it uses.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from the Solana project?',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'How is that different from the Solana project?' },
+      cards: [tfnCard, solanaCard],
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnCard.body },
+      ],
+    }, { model })
+
+    expect(result.modelUsed).toBe(true)
+    expect(result.answer).toContain('family product')
+    expect(model).toEqual(expect.objectContaining({
+      generate: expect.any(Function),
+    }))
+    expect(model.generate.mock.calls[0]?.[0]?.system).toContain(solanaCard.body)
+    expect(model.generate.mock.calls[0]?.[0]?.system).toContain(tfnCard.body)
+    expect(result.nextAction?.label).not.toBe('Open the source')
+  })
+
+  it('routes an explicit TFN capability question to the canonical project instead of an older essay', async () => {
+    const originEssay: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'release-the-gap-between-weeks',
+      slug: 'release-the-gap-between-weeks',
+      title: 'The Gap Between Weeks',
+      body: 'An origin essay about what Tooth Fairy Network was actually for.',
+      tags: ['writing', 'tooth-fairy-network'],
+    }
+    const model = { generate: vi.fn(async () => 'The older essay.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Tell me about Tooth Fairy Network. What is live today on Solana Mainnet, can it accept deposits, and is the public card on-ramp or checkout released?',
+      page: '/',
+      policy,
+      cards: [originEssay, ...getPublicProfileMemoryCards()],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('deployed Solana Mainnet program is live')
+    expect(result.answer).toContain('supports time-locked SOL and canonical USDC deposits')
+    expect(result.answer).toContain('on-ramp checkout experience remains behind a release gate')
+    expect(result.sources).toEqual(['https://toothfairy.network'])
+    expect(result.nextAction).toEqual({
+      label: 'Visit Tooth Fairy Network',
+      href: 'https://toothfairy.network',
+    })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('routes a contextual Solana comparison action to the consumer guide', async () => {
+    const [tfnProject, ...profileCards] = getPublicProfileMemoryCards()
+    const solanaCard = profileCards.find((card) => card.id === 'project-solana-ecosystem-observatory')
+    expect(solanaCard).toBeDefined()
+    const contactCard: PublicMemoryCard = {
+      ...tfnCard,
+      id: 'contact-site-agent',
+      slug: 'contact-site-agent',
+      title: 'Contact through the site agent',
+      body: 'Ask the site agent about Tooth Fairy Network or Solana.',
+      tags: ['site-agent', 'contact'],
+      source: { ref: 'https://sathian.ai/', kind: 'published_page' },
+    }
+    const model = {
+      generate: vi.fn(async () => 'Tooth Fairy Network is the consumer product. Solana is the public network underneath it.'),
+    }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from Solana?',
+      page: '/',
+      policy,
+      cards: [contactCard, tfnProject, solanaCard!],
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnProject.body },
+      ],
+    }, { model })
+
+    expect(result.nextAction).toEqual({
+      label: 'Open the Solana guide',
+      href: 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/',
+    })
+  })
+
+  it('answers the defining TFN-to-Solana follow-up deterministically from approved project cards', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const tfnProject = cards.find((card) => card.id === 'project-tooth-fairy-network')!
+    const model = { generate: vi.fn(async () => "I don't have approved public information about that.") }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from Solana?',
+      page: '/',
+      policy,
+      cards,
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnProject.body },
+      ],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.unknown).toBe(false)
+    expect(result.answer).toContain('Tooth Fairy Network is the consumer product')
+    expect(result.answer).toContain('Solana is the public network underneath it')
+    expect(result.nextAction?.label).toBe('Open the Solana guide')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('uses a writing action for fatherhood discovery and a TFN action for a crypto-project question', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const model = { generate: vi.fn(async (input: { user: string }) => `Approved answer for ${input.user}`) }
+
+    const writing = await answerAgentQuestion({
+      message: 'What does Sathian publish about fatherhood, and where can I read it?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+    const crypto = await answerAgentQuestion({
+      message: 'What is his crypto project?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+
+    expect(writing.nextAction?.href).toBe('/writings')
+    expect(writing.nextAction?.label).toContain('writing')
+    expect(crypto.nextAction).toEqual({ label: 'Visit Tooth Fairy Network', href: 'https://toothfairy.network' })
+  })
+
+  it('shows no generic homepage action when the model returns an honest unknown', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const model = { generate: vi.fn(async () => "I don't have approved public information about that.") }
+
+    const result = await answerAgentQuestion({
+      message: 'Are AI Practice, BTC Cultural Atlas, and Lex Rooftop Garden still current?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+
+    expect(result.unknown).toBe(true)
+    expect(result.nextAction).toBeUndefined()
   })
 
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {

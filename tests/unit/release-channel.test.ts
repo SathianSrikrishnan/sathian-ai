@@ -50,16 +50,18 @@ describe('durable release channel', () => {
     expect(hackathons).toContain("project: '/projects/clinicalguard'")
   })
 
-  it('renders answer sources, a next action, and privacy-safe interaction events in the site agent', () => {
+  it('renders one next action and privacy-safe interaction events in the site agent', () => {
     const analytics = readOptional('src/lib/site-analytics.ts')
-    expect(chat).toContain('sources?: string[]')
+    expect(chat).not.toContain('sources?: string[]')
     expect(chat).toContain('nextAction?:')
-    expect(chat).toContain('Agent source')
+    expect(chat).not.toContain('Agent source')
     expect(chat).toContain("trackSiteEvent('agent_prompt_selected'")
     expect(chat).toContain("trackSiteEvent('agent_question_submitted'")
     expect(chat).toContain("trackSiteEvent('agent_answer_received'")
     expect(chat).toContain("trackSiteEvent('agent_source_opened'")
     expect(chat).toContain("trackSiteEvent('agent_note_sent'")
+    expect(chat).toContain("trackSiteEvent('agent_answer_feedback'")
+    expect(chat).toContain("'helpful' | 'not_helpful'")
     expect(analytics).toContain("window.gtag('event'")
   })
 })

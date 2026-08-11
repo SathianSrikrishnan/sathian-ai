@@ -81,17 +81,17 @@ describe('site-agent-first editorial pass', () => {
     expect(profile).not.toMatch(/children(?:'s)? names|credentials|client data/i)
   })
 
-  it('links the verified TFN devnet proof without presenting it as a production release', () => {
+  it('keeps the devnet build note as history while publishing the verified Mainnet contract state', () => {
     const profile = readSource('src/lib/public-profile.ts')
     expect(buildNotes).toContain('Making a childhood memory ownable without making it public')
     expect(buildNotes).toContain('Inspect the devnet transaction')
     expect(buildNotes).toContain('proofHref')
     expect(buildNotes).toContain('No production or mainnet configuration changed')
     expect(buildNotes).not.toMatch(/decentralized Tooth Fairy Network|mainnet launch/i)
-    expect(profile).toContain('guardian-owned digital keepsake')
-    expect(profile).toContain('optional future fund')
-    expect(profile).toContain('4QnZV6aJ4jZLujSZZ3hUWJoQ9acSetyifcKVufYK4E9U')
-    expect(profile).toContain('Bubblegum V1')
-    expect(profile).toContain('Bubblegum V2')
+    expect(profile).toContain('FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC')
+    expect(profile).toContain('2-of-3 Squads multisig')
+    expect(profile).toContain('0.01 SOL deposit')
+    expect(profile).toContain('1.00 canonical-USDC deposit')
+    expect(profile).toContain('does not mean the customer-facing USDC or on-ramp flow is released')
   })
 })

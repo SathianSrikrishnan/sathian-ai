@@ -1,8 +1,38 @@
-export const CHAT_SUGGESTIONS = [
-  'Show me the latest release',
-  'What is Sathian building now?',
-  'Tell me about Tooth Fairy Network',
-  'I want to leave Sathian a note',
+export type ChatSuggestion = {
+  id: string
+  label: string
+  action: 'submit_question'
+  message: string
+} | {
+  id: string
+  label: string
+  action: 'compose_note'
+}
+
+export const CHAT_SUGGESTIONS: readonly ChatSuggestion[] = [
+  {
+    id: 'tooth-fairy-network',
+    label: 'Tell me about Tooth Fairy Network',
+    action: 'submit_question',
+    message: 'Tell me about Tooth Fairy Network',
+  },
+  {
+    id: 'latest-release',
+    label: 'Show me the latest release',
+    action: 'submit_question',
+    message: 'Show me the latest release',
+  },
+  {
+    id: 'current-work',
+    label: 'What is Sathian building now?',
+    action: 'submit_question',
+    message: 'What is Sathian building now?',
+  },
+  {
+    id: 'leave-note',
+    label: 'I want to leave Sathian a note',
+    action: 'compose_note',
+  },
 ]
 
 export const ALLOWED_ORIGINS = [

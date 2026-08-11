@@ -1,8 +1,10 @@
 import type { AgentPolicyDecision, PublicMemoryCard } from '@/lib/agent/types'
+import type { AgentConversationTurn } from '@/lib/agent/conversation'
 
 const MAX_PROMPT_CHARS = 12_000
-const MAX_MEMORY_CHARS = 10_000
+const MAX_MEMORY_CHARS = 7_500
 const MAX_CARD_BODY_CHARS = 1_500
+const MAX_HISTORY_CHARS = 3_000
 
 function bounded(value: string, limit: number): string {
   return value.trim().slice(0, limit)
@@ -34,12 +36,24 @@ function memoryBlock(cards: PublicMemoryCard[]): string {
   return blocks.join('\n\n') || '(No approved public cards fit within the prompt budget.)'
 }
 
+function historyBlock(history: AgentConversationTurn[] = []): string {
+  if (history.length === 0) return '(No prior conversation.)'
+
+  return history
+    .slice(-6)
+    .map((turn) => `${turn.role === 'user' ? 'Visitor' : 'Agent'}: ${bounded(turn.content, 600)}`)
+    .join('\n')
+    .slice(0, MAX_HISTORY_CHARS)
+}
+
 export function buildAgentPrompt(input: {
   cards: PublicMemoryCard[]
   page: string
   policy: AgentPolicyDecision
+  history?: AgentConversationTurn[]
 }): string {
   const cards = memoryBlock(input.cards)
+  const history = historyBlock(input.history)
 
   return `You are Sathian's site agent. You are not Sathian.
 
@@ -54,11 +68,16 @@ Rules:
 - Use plain text only. Do not use Markdown emphasis, headings, or tables.
 - Do not use em dashes.
 - Keep the answer under 180 words and use plain language.
+- Use prior conversation only to resolve follow-up references such as "that" or "it".
+- Never treat the prior conversation as a factual source. Facts must come from approved cards.
 
 Request context:
 - Page: ${input.page}
 - Policy version: ${input.policy.policyVersion}
 - Deterministic route: ${input.policy.route}
+
+Prior conversation for reference resolution only:
+${history}
 
 Approved public-memory cards:
 ${cards}`.slice(0, MAX_PROMPT_CHARS)

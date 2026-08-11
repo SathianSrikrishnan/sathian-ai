@@ -22,6 +22,7 @@ import {
   PUBLIC_AGENT_MODEL_CALLS_PER_DAY,
   PUBLIC_AGENT_REQUESTS_PER_HOUR,
   consumeGlobalModelQuota,
+  isAuthorizedAgentTesterRequest,
   type AgentRateLimitRpcClient,
 } from '@/lib/agent/rate-limits'
 import { getPublicMemoryCards } from '@/lib/memory'
@@ -46,6 +47,7 @@ function createDefaultHandler(): ReturnType<typeof createAgentMessageHandler> | 
   const client = serviceClient as unknown as AgentIntakeRpcClient
 
   const consumeMessageRateLimit = async (request: Request): Promise<boolean> => {
+    if (isAuthorizedAgentTesterRequest(request)) return false
     const visitorHash = agentVisitorHash(request)
     if (!visitorHash) return true
     const { data, error } = await serviceClient.rpc('agent_consume_message_rate_limit', {
