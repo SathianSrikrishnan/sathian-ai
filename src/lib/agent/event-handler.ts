@@ -38,6 +38,11 @@ function isSameEventOrigin(request: Request): boolean {
     const supplied = new URL(origin)
     const target = new URL(request.url)
     if (supplied.origin === target.origin) return true
+    const declaredDeploymentHosts = new Set([
+      process.env.VERCEL_URL,
+      process.env.VERCEL_BRANCH_URL,
+    ].filter((host): host is string => Boolean(host)))
+    if (declaredDeploymentHosts.has(supplied.host)) return true
     if (process.env.NODE_ENV === 'production') return false
 
     const loopbackHosts = new Set(['localhost', '127.0.0.1', '[::1]'])

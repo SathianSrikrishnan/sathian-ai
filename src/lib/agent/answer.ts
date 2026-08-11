@@ -122,7 +122,8 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
       actionLabel: 'Open the Solana dashboard',
     },
     {
-      matches: /\b(writing|writings|articles|essays)\b/i.test(message),
+      matches: /\b(writing|writings|articles|essays|fatherhood|publishes|published)\b/i.test(message)
+        || /\bwhere can i read\b/i.test(message),
       card: find((card) => card.id === 'published-writing'),
       actionLabel: 'Browse Sathian’s writing',
     },
@@ -157,15 +158,48 @@ function preferredModelAction(message: string, cards: PublicMemoryCard[]): {
       label: 'Visit Tooth Fairy Network',
     },
     {
-      matches: /\b(writing|writings|articles|essays)\b/i.test(message),
+      matches: /\b(writing|writings|articles|essays|fatherhood|publishes|published)\b/i.test(message)
+        || /\bwhere can i read\b/i.test(message),
       cardId: 'published-writing',
       label: 'Browse Sathianâ€™s writing',
+    },
+    {
+      matches: /\b(crypto|cryptocurrency|web3|smart contract|transfer of value)\b/i.test(message),
+      cardId: 'project-tooth-fairy-network',
+      label: 'Visit Tooth Fairy Network',
     },
   ]
   const match = rules.find((rule) => rule.matches)
   const card = match ? cards.find((candidate) => candidate.id === match.cardId) : undefined
   if (!match || !card) return undefined
   return { label: match.label, href: contextualActionHref(card.source.ref) }
+}
+
+function contextualComparisonAnswer(
+  message: string,
+  history: AgentConversationTurn[] = [],
+  cards: PublicMemoryCard[],
+): AgentAnswerResult | null {
+  if (!/\bsolana\b/i.test(message) || !/\b(different|difference|compare|compared)\b/i.test(message)) {
+    return null
+  }
+  const priorContext = history.map((turn) => turn.content).join(' ')
+  if (!/\b(tooth fairy network|toothlight|tfn)\b/i.test(priorContext)) return null
+
+  const tfn = cards.find((card) => card.id === 'project-tooth-fairy-network')
+  const solana = cards.find((card) => card.id === 'project-solana-ecosystem-observatory')
+  if (!tfn || !solana) return null
+
+  return {
+    answer: 'Tooth Fairy Network is the consumer product: a private family time capsule with an optional guardian-controlled future gift and a deployed Solana Mainnet program. Solana is the public network underneath it: the shared ledger and program runtime that make the contract rails and receipts inspectable. The Solana Ecosystem Observatory is the plain-English guide to that network. In short, Tooth Fairy Network is the product being built for families; Solana is the infrastructure underneath it. Private child content stays off-chain by default.',
+    sources: [tfn.source.ref, solana.source.ref],
+    nextAction: {
+      label: 'Open the Solana guide',
+      href: contextualActionHref(solana.source.ref),
+    },
+    unknown: false,
+    modelUsed: false,
+  }
 }
 
 function deterministicCardAnswer(
@@ -217,6 +251,10 @@ export async function answerAgentQuestion(
 
   const contextualQuestion = isContextDependentQuestion(input.message)
     && Boolean(input.history?.length)
+  if (contextualQuestion) {
+    const comparison = contextualComparisonAnswer(input.message, input.history, input.cards)
+    if (comparison) return comparison
+  }
   const directMatch = contextualQuestion ? null : directIntentCard(input.message, input.cards)
   if (directMatch) return deterministicCardAnswer(directMatch.card, directMatch.actionLabel)
 
@@ -252,14 +290,13 @@ export async function answerAgentQuestion(
 
     const normalized = normalizeAnswerText(answer)
     if (!normalized) throw new Error('empty_answer')
+    const modelUnknown = /i (?:don[^\s]{0,3}t|do not) have approved public information/i.test(normalized)
 
     return {
       answer: normalized,
       sources: uniqueSources(cards),
-      nextAction: preferredModelAction(input.message, cards) ?? (cards[0]
-        ? { label: `Explore ${cards[0].title}`, href: contextualActionHref(cards[0].source.ref) }
-        : undefined),
-      unknown: false,
+      nextAction: modelUnknown ? undefined : preferredModelAction(input.message, cards),
+      unknown: modelUnknown,
       modelUsed: true,
     }
   } catch {

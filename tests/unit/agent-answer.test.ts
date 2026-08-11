@@ -319,6 +319,67 @@ describe('bounded public answer service', () => {
     })
   })
 
+  it('answers the defining TFN-to-Solana follow-up deterministically from approved project cards', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const tfnProject = cards.find((card) => card.id === 'project-tooth-fairy-network')!
+    const model = { generate: vi.fn(async () => "I don't have approved public information about that.") }
+
+    const result = await answerAgentQuestion({
+      message: 'How is that different from Solana?',
+      page: '/',
+      policy,
+      cards,
+      history: [
+        { role: 'user', content: 'Tell me about Tooth Fairy Network.' },
+        { role: 'assistant', content: tfnProject.body },
+      ],
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.unknown).toBe(false)
+    expect(result.answer).toContain('Tooth Fairy Network is the consumer product')
+    expect(result.answer).toContain('Solana is the public network underneath it')
+    expect(result.nextAction?.label).toBe('Open the Solana guide')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('uses a writing action for fatherhood discovery and a TFN action for a crypto-project question', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const model = { generate: vi.fn(async (input: { user: string }) => `Approved answer for ${input.user}`) }
+
+    const writing = await answerAgentQuestion({
+      message: 'What does Sathian publish about fatherhood, and where can I read it?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+    const crypto = await answerAgentQuestion({
+      message: 'What is his crypto project?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+
+    expect(writing.nextAction?.href).toBe('/writings')
+    expect(writing.nextAction?.label).toContain('writing')
+    expect(crypto.nextAction).toEqual({ label: 'Visit Tooth Fairy Network', href: 'https://toothfairy.network' })
+  })
+
+  it('shows no generic homepage action when the model returns an honest unknown', async () => {
+    const cards = getPublicProfileMemoryCards()
+    const model = { generate: vi.fn(async () => "I don't have approved public information about that.") }
+
+    const result = await answerAgentQuestion({
+      message: 'Are AI Practice, BTC Cultural Atlas, and Lex Rooftop Garden still current?',
+      page: '/',
+      policy,
+      cards,
+    }, { model })
+
+    expect(result.unknown).toBe(true)
+    expect(result.nextAction).toBeUndefined()
+  })
+
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {
     const model = {
       generate: vi.fn(async () => 'Yes — **you can participate**. Ask about a track.'),

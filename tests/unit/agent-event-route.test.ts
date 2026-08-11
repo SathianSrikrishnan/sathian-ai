@@ -103,4 +103,25 @@ describe('public agent funnel event route', () => {
     expect(recordEvent).toHaveBeenCalledOnce()
     vi.unstubAllEnvs()
   })
+
+  it('accepts the exact process-declared deployment origin in a protected production-mode test', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    vi.stubEnv('VERCEL_URL', '127.0.0.1:3018')
+    const recordEvent = vi.fn(async () => undefined)
+    const handler = createAgentEventHandler({ recordEvent })
+    const response = await handler(new Request('http://localhost:3018/api/agent/event', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'http://127.0.0.1:3018' },
+      body: JSON.stringify({
+        event: 'agent_widget_viewed',
+        sessionId: crypto.randomUUID(),
+        page: '/',
+        source: 'inline',
+      }),
+    }))
+
+    expect(response.status).toBe(202)
+    expect(recordEvent).toHaveBeenCalledOnce()
+    vi.unstubAllEnvs()
+  })
 })
