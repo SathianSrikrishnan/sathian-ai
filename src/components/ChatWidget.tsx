@@ -656,7 +656,7 @@ export function ChatWidget() {
   )
 
   return (
-    <>
+    <div data-site-agent-root>
       {isHomepage ? (homeTarget ? createPortal(inlineSurface, homeTarget) : null) : chatSurface}
 
       {/* Floating button */}
@@ -683,6 +683,6 @@ export function ChatWidget() {
         )}
       </motion.button>
       )}
-    </>
+    </div>
   )
 }
