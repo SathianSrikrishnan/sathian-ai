@@ -230,6 +230,10 @@ async function executeLiveCase(testCase, runtime, baseUrl, testerToken) {
     'Content-Type': 'application/json',
     Origin: new URL(baseUrl).origin,
   }
+  const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+  if (automationBypassSecret) {
+    headers['x-vercel-protection-bypass'] = automationBypassSecret
+  }
   if (testerToken) headers['x-site-agent-test-token'] = testerToken
   const response = await fetch(target, {
     method: 'POST',

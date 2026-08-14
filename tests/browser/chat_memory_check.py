@@ -7,12 +7,22 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_pla
 
 
 BASE_URL = os.environ.get("PORTAL_BASE_URL", "http://127.0.0.1:3017").rstrip("/")
+AUTOMATION_BYPASS_SECRET = os.environ.get("VERCEL_AUTOMATION_BYPASS_SECRET")
 OUTPUT = Path(__file__).resolve().parents[2] / "docs" / "analytics" / "site-agent-evals" / "2026-08-11-phase-2-browser"
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
 
 def conversation(turns):
     return {"updatedAt": int(time.time() * 1000), "turns": turns}
+
+
+def new_page(browser, viewport):
+    options = {"viewport": viewport}
+    if AUTOMATION_BYPASS_SECRET:
+        options["extra_http_headers"] = {
+            "x-vercel-protection-bypass": AUTOMATION_BYPASS_SECRET,
+        }
+    return browser.new_page(**options)
 
 
 def install_agent_fixture(page, requests):
@@ -86,7 +96,7 @@ def open_agent(page):
 
 
 def check_desktop(browser):
-    page = browser.new_page(viewport={"width": 1440, "height": 1000})
+    page = new_page(browser, {"width": 1440, "height": 1000})
     requests = []
     install_agent_fixture(page, requests)
     panel = open_agent(page)
@@ -132,7 +142,7 @@ def check_desktop(browser):
 
 
 def check_mobile(browser):
-    page = browser.new_page(viewport={"width": 390, "height": 844})
+    page = new_page(browser, {"width": 390, "height": 844})
     requests = []
     install_agent_fixture(page, requests)
     panel = open_agent(page)

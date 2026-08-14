@@ -17,6 +17,8 @@ describe('site-agent CI contract', () => {
 
   it('runs an offline gate, protected preview canary, browser proof, and bounded daily smoke', () => {
     const workflow = readFileSync('.github/workflows/site-agent-quality.yml', 'utf8')
+    const runner = readFileSync('scripts/run-site-agent-eval.mjs', 'utf8')
+    const browserCheck = readFileSync('tests/browser/chat_memory_check.py', 'utf8')
 
     expect(workflow).toContain('branches: [main]')
     expect(workflow).toContain("cron: '17 13 * * *'")
@@ -28,10 +30,13 @@ describe('site-agent CI contract', () => {
     expect(workflow).toContain('npm run build')
     expect(workflow).toContain('vercel deploy --prebuilt')
     expect(workflow).toContain('SITE_AGENT_TESTER_SECRET: ${{ secrets.SITE_AGENT_TESTER_SECRET }}')
+    expect(workflow).toContain('VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}')
     expect(workflow).toContain('npm run agent:eval:live')
     expect(workflow).toContain('--tag daily-smoke')
     expect(workflow).toContain('tests/browser/chat_memory_check.py')
     expect(workflow).toContain('actions/upload-artifact@v4')
     expect(workflow).not.toContain('--sync-studio')
+    expect(runner).toContain("headers['x-vercel-protection-bypass'] = automationBypassSecret")
+    expect(browserCheck).toContain('"x-vercel-protection-bypass": AUTOMATION_BYPASS_SECRET')
   })
 })
