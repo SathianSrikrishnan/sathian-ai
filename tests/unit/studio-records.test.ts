@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   formatStudioReceipt,
+  parseAgentGapMutation,
   parseBuildNoteMutation,
   parseHomepageMutation,
   parseMemoryMutation,
@@ -124,6 +125,29 @@ describe('Studio display receipts', () => {
   })
 })
 
+describe('agent knowledge-gap triage', () => {
+  it('accepts only a bounded status and plain operator note', () => {
+    expect(parseAgentGapMutation({
+      id: FIRST_ID,
+      status: 'in_review',
+      operatorNote: 'Refresh the reviewed public project claim before the next release.',
+    })).toEqual({
+      ok: true,
+      value: {
+        id: FIRST_ID,
+        status: 'in_review',
+        operatorNote: 'Refresh the reviewed public project claim before the next release.',
+      },
+    })
+  })
+
+  it('rejects captured visitor content, HTML, and unknown workflow states', () => {
+    expect(parseAgentGapMutation({ id: FIRST_ID, status: 'fixed', operatorNote: 'Done' }).ok).toBe(false)
+    expect(parseAgentGapMutation({ id: FIRST_ID, status: 'resolved', operatorNote: '<script>bad</script>' }).ok).toBe(false)
+    expect(parseAgentGapMutation({ id: FIRST_ID, status: 'resolved', rawQuestion: 'visitor text' }).ok).toBe(false)
+  })
+})
+
 describe('control-room schema', () => {
   const migration = readFileSync(
     new URL('../../supabase/migrations/20260714103000_studio_control_room.sql', import.meta.url),
@@ -141,5 +165,25 @@ describe('control-room schema', () => {
   it('uses the same AAL2 Studio operator policy for both tables', () => {
     expect(migration).toMatch(/on\s+homepage_sections[\s\S]{0,180}is_studio_operator\(\)/i)
     expect(migration).toMatch(/on\s+build_notes[\s\S]{0,180}is_studio_operator\(\)/i)
+  })
+})
+
+describe('private evaluation-gap schema', () => {
+  const migration = readFileSync(
+    new URL('../../supabase/migrations/20260813213000_agent_evaluation_gaps.sql', import.meta.url),
+    'utf8',
+  )
+
+  it('stores sanitized case findings without raw question or answer columns', () => {
+    expect(migration).toMatch(/create\s+table\s+agent_knowledge_gaps/i)
+    expect(migration).toMatch(/eval_case_id\s+text\s+not\s+null/i)
+    expect(migration).toMatch(/expected_facts\s+text\[\]/i)
+    expect(migration).not.toMatch(/raw_question|visitor_question|raw_answer|visitor_answer|reply_email|filename/i)
+  })
+
+  it('keeps the queue private to service role and AAL2 Studio operators', () => {
+    expect(migration).toMatch(/revoke\s+all\s+on\s+agent_knowledge_gaps\s+from\s+anon,\s*authenticated/i)
+    expect(migration).toMatch(/is_studio_operator\(\)/i)
+    expect(migration).not.toMatch(/grant\s+select\s+on\s+agent_knowledge_gaps\s+to\s+anon/i)
   })
 })

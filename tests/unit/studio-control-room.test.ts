@@ -12,6 +12,7 @@ const apiRoutes = [
   '../../src/app/api/studio/memory/route.ts',
   '../../src/app/api/studio/homepage/route.ts',
   '../../src/app/api/studio/build-notes/route.ts',
+  '../../src/app/api/studio/agent-gaps/route.ts',
 ]
 
 describe('typed Studio control room', () => {
@@ -90,6 +91,20 @@ describe('typed Studio control room', () => {
     expect(notes).toContain('What changed')
     expect(notes).toContain('What I learned')
     expect(notes).toContain('Next')
+  })
+
+  it('shows a private, sanitized agent evaluation queue with explicit triage', () => {
+    const gaps = source('../../src/app/studio/agent-gaps/page.tsx')
+    const navigation = source('../../src/app/studio/StudioNavigation.tsx')
+    const data = source('../../src/lib/studio/data.ts')
+
+    expect(navigation).toContain('/studio/agent-gaps')
+    expect(gaps).toMatch(/Knowledge gaps|Agent gaps/)
+    expect(gaps).toMatch(/expectedFacts/)
+    expect(gaps).toMatch(/expectedSources/)
+    expect(gaps).toMatch(/in_review/)
+    expect(data).toMatch(/agent_knowledge_gaps/)
+    expect(gaps).not.toMatch(/visitor question|visitor answer|replyEmail|filename/i)
   })
 
   it('requires AAL2 again inside every control-room API handler', () => {

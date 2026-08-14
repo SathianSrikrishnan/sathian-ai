@@ -1,6 +1,7 @@
 export type PublicMemoryStatus = 'draft' | 'approved' | 'retired'
 export type PublicMemoryVisibility = 'public' | 'private'
 export type BuildNoteStatus = 'draft' | 'published'
+export type AgentGapStatus = 'open' | 'in_review' | 'resolved' | 'wont_fix'
 
 export type HomepageSectionFields = {
   label?: string | null
@@ -168,6 +169,29 @@ export function parseMemoryMutation(input: unknown): ParseResult<{
       ...(input.status !== undefined ? { status: input.status as PublicMemoryStatus } : {}),
       ...(input.visibility !== undefined ? { visibility: input.visibility as PublicMemoryVisibility } : {}),
       ...(input.validUntil !== undefined ? { validUntil: input.validUntil as string | null } : {}),
+    },
+  }
+}
+
+export function parseAgentGapMutation(input: unknown): ParseResult<{
+  id: string
+  status: AgentGapStatus
+  operatorNote: string | null
+}> {
+  if (!isRecord(input) || !hasOnlyKeys(input, new Set(['id', 'status', 'operatorNote']))) {
+    return { ok: false, error: 'Invalid agent-gap review.' }
+  }
+  if (!isUuid(input.id)) return { ok: false, error: 'Invalid agent gap.' }
+  const statuses = new Set<unknown>(['open', 'in_review', 'resolved', 'wont_fix'])
+  if (!statuses.has(input.status)) return { ok: false, error: 'Invalid agent-gap status.' }
+  const operatorNote = plainText(input.operatorNote, 1000, true)
+  if (!operatorNote.ok) return { ok: false, error: 'Agent-gap notes must be plain text.' }
+  return {
+    ok: true,
+    value: {
+      id: input.id,
+      status: input.status as AgentGapStatus,
+      operatorNote: operatorNote.value,
     },
   }
 }

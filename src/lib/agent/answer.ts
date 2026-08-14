@@ -350,7 +350,9 @@ export async function answerAgentQuestion(
 
     return {
       answer: normalized,
-      sources: uniqueSources(cards),
+      // An honest unknown must not render merely keyword-adjacent links. Those
+      // looked like citations for an answer the agent explicitly did not have.
+      sources: modelUnknown ? [] : uniqueSources(cards),
       nextAction: modelUnknown ? undefined : preferredModelAction(input.message, cards),
       unknown: modelUnknown,
       modelUsed: true,

@@ -57,11 +57,17 @@ describe('durable release channel', () => {
     expect(chat).not.toContain('Agent source')
     expect(chat).toContain("trackSiteEvent('agent_prompt_selected'")
     expect(chat).toContain("trackSiteEvent('agent_question_submitted'")
+    expect(chat).toContain("trackSiteEvent('agent_note_submitted'")
     expect(chat).toContain("trackSiteEvent('agent_answer_received'")
     expect(chat).toContain("trackSiteEvent('agent_source_opened'")
     expect(chat).toContain("trackSiteEvent('agent_note_sent'")
     expect(chat).toContain("trackSiteEvent('agent_answer_feedback'")
     expect(chat).toContain("'helpful' | 'not_helpful'")
     expect(analytics).toContain("window.gtag('event'")
+  })
+
+  it('does not count a deliberate note attempt as a chatbot question', () => {
+    expect(chat).toMatch(/pendingIntent\s*===\s*'question'[\s\S]{0,500}agent_question_submitted/)
+    expect(chat).toMatch(/pendingIntent\s*===\s*'note'[\s\S]{0,500}agent_note_submitted/)
   })
 })

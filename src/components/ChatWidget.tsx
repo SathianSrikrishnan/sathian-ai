@@ -268,12 +268,20 @@ export function ChatWidget() {
     const pendingIntent = composerMode
     const agentTesterToken = sessionStorage.getItem(AGENT_TEST_TOKEN_SESSION_KEY)
 
-    trackSiteEvent('agent_question_submitted', {
-      page: pathname,
-      inputMethod: text ? 'prompt' : 'typed',
-      hasContact: Boolean(displayName || replyEmail),
-      hasAttachment: Boolean(pendingFile),
-    })
+    if (pendingIntent === 'question') {
+      trackSiteEvent('agent_question_submitted', {
+        page: pathname,
+        inputMethod: text ? 'prompt' : 'typed',
+        hasContact: Boolean(displayName || replyEmail),
+        hasAttachment: Boolean(pendingFile),
+      })
+    } else if (pendingIntent === 'note') {
+      trackSiteEvent('agent_note_submitted', {
+        page: pathname,
+        hasContact: Boolean(displayName || replyEmail),
+        hasAttachment: Boolean(pendingFile),
+      })
+    }
 
     try {
       const res = await fetch('/api/agent/message', {

@@ -9,7 +9,11 @@ import {
   type RetentionCandidate,
   type RetentionCleanupReport,
 } from '@/lib/agent/retention'
-import type { BuildNoteInput, HomepageSectionFields } from '@/lib/studio/records'
+import type {
+  AgentGapStatus,
+  BuildNoteInput,
+  HomepageSectionFields,
+} from '@/lib/studio/records'
 import { formatStudioReceipt } from '@/lib/studio/records'
 
 export interface StudioOverview {
@@ -97,6 +101,24 @@ export interface StudioSubscriber {
   confirmationErrorCode: string | null
   createdAt: string
   unsubscribedAt: string | null
+}
+
+export interface StudioAgentKnowledgeGap {
+  id: string
+  caseId: string
+  datasetVersion: string
+  category: string
+  severity: 'critical' | 'high' | 'medium' | 'low'
+  expectedFacts: string[]
+  expectedSources: string[]
+  failedChecks: string[]
+  sourceReceipt: string
+  status: AgentGapStatus
+  operatorNote: string | null
+  firstSeenAt: string
+  lastSeenAt: string
+  occurrenceCount: number
+  reviewedAt: string | null
 }
 
 function admin() {
@@ -396,6 +418,59 @@ export async function updateStudioSubscriberStatus(
   await writeStudioAudit(actorId, 'newsletter_subscriber_status_changed', {
     subscriber_id: data.id,
     status,
+  })
+}
+
+export async function getStudioAgentKnowledgeGaps(): Promise<StudioAgentKnowledgeGap[]> {
+  const { data, error } = await admin()
+    .from('agent_knowledge_gaps')
+    .select('id, eval_case_id, dataset_version, category, severity, expected_facts, expected_sources, failed_checks, source_receipt, status, operator_note, first_seen_at, last_seen_at, occurrence_count, reviewed_at')
+    .order('last_seen_at', { ascending: false })
+    .limit(250)
+  if (error) throw error
+
+  return (data ?? []).map((row: any) => ({
+    id: row.id,
+    caseId: row.eval_case_id,
+    datasetVersion: row.dataset_version,
+    category: row.category,
+    severity: row.severity,
+    expectedFacts: row.expected_facts ?? [],
+    expectedSources: row.expected_sources ?? [],
+    failedChecks: row.failed_checks ?? [],
+    sourceReceipt: row.source_receipt,
+    status: row.status,
+    operatorNote: row.operator_note,
+    firstSeenAt: row.first_seen_at,
+    lastSeenAt: row.last_seen_at,
+    occurrenceCount: Number(row.occurrence_count),
+    reviewedAt: row.reviewed_at,
+  }))
+}
+
+export async function updateStudioAgentKnowledgeGap(
+  review: { id: string; status: AgentGapStatus; operatorNote: string | null },
+  actorId: string,
+) {
+  const now = new Date().toISOString()
+  const { data, error } = await admin()
+    .from('agent_knowledge_gaps')
+    .update({
+      status: review.status,
+      operator_note: review.operatorNote,
+      reviewed_by: actorId,
+      reviewed_at: now,
+      updated_at: now,
+    })
+    .eq('id', review.id)
+    .select('id')
+    .single()
+  if (error) throw error
+
+  await writeStudioAudit(actorId, 'agent_knowledge_gap_reviewed', {
+    gap_id: data.id,
+    status: review.status,
+    has_operator_note: Boolean(review.operatorNote),
   })
 }
 

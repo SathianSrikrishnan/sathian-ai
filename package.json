@@ -11,6 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "agent:test-token": "node scripts/create-site-agent-test-token.mjs",
+    "agent:eval": "node scripts/run-site-agent-eval.mjs --mode offline",
+    "agent:eval:live": "node scripts/run-site-agent-eval.mjs --mode live",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest"
   },

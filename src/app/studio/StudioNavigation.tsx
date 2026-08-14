@@ -26,6 +26,7 @@ export function StudioNavigation() {
         <Link href="/studio/build-notes">Build notes</Link>
         <Link href="/studio/homepage">Homepage</Link>
         <Link href="/studio/memory">Memory</Link>
+        <Link href="/studio/agent-gaps">Agent gaps</Link>
         <Link href="/studio/inbox">Inbox</Link>
         <Link href="/studio/subscribers">Subscribers</Link>
       </div>

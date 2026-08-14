@@ -105,6 +105,27 @@ describe('bounded public answer service', () => {
     expect(model.generate).not.toHaveBeenCalled()
   })
 
+  it('does not turn keyword-adjacent cards into citations for a model-declared unknown', async () => {
+    const model = {
+      generate: vi.fn(async () => "I don't have approved public information about that."),
+    }
+
+    const result = await answerAgentQuestion({
+      message: 'What is the private roadmap for the next client project?',
+      page: '/',
+      policy: {
+        ...policy,
+        normalizedMessage: 'What is the private roadmap for the next client project?',
+      },
+      cards: getPublicProfileMemoryCards(),
+    }, { model })
+
+    expect(model.generate).toHaveBeenCalledOnce()
+    expect(result.unknown).toBe(true)
+    expect(result.sources).toEqual([])
+    expect(result.nextAction).toBeUndefined()
+  })
+
   it('passes a hard token limit and only returns sources from supplied cards', async () => {
     const model = {
       generate: vi.fn(async () => 'It is a family-memory ritual built around a lost tooth.'),
