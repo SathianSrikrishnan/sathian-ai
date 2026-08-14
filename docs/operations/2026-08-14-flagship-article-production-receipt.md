@@ -51,3 +51,18 @@ change the established sitewide theme.
 This is deployment one of the planned three-pass editorial review. The next
 pass should evaluate copy density, the homepage crop, the personal-photo
 placement, and whether the bridge to Solana Observatory is obvious enough.
+
+## Deployment two
+
+- Production commit: `889c86cdce07a8d20a4b70ef874af28405f8eaca`
+- Deployment: `dpl_Cq8br3SVkSs5bWxqcMboSwrSPwrR`
+- Deployment URL: `https://sathian-ju77hld2h-sathiansrikrishnans-projects.vercel.app`
+- Production alias: `https://sathian.ai`
+- The author photograph is retained in a quieter byline aligned to the reading column.
+- The first visual-reel frame now preserves the complete paired image instead of cropping it.
+- The reel reports the current frame and retains swipe and arrow navigation.
+- Both Observatory calls to action now resolve to the live dashboard.
+- `npm run test:unit`: 54 files and 380 tests passed.
+- `npm run build`: production build and type checks passed locally and on Vercel.
+- Live desktop and 390px mobile checks passed image loading, alignment, interaction,
+  horizontal-overflow, and scoped Axe accessibility checks.
