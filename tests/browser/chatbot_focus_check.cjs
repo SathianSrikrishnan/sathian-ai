@@ -3,10 +3,12 @@ const { createHmac } = require('node:crypto')
 const { chromium } = require('playwright')
 
 const baseUrl = (process.env.PORTAL_BASE_URL || 'http://127.0.0.1:3017').replace(/\/$/, '')
-const output = path.resolve(
-  __dirname,
-  '../../docs/analytics/site-agent-evals/2026-08-13-chatbot-focus-browser.png',
-)
+const output = process.env.CHATBOT_FOCUS_SCREENSHOT
+  ? path.resolve(process.env.CHATBOT_FOCUS_SCREENSHOT)
+  : path.resolve(
+      __dirname,
+      '../../docs/analytics/site-agent-evals/2026-08-13-chatbot-focus-browser.png',
+    )
 
 async function waitForReady(page) {
   await page.goto(baseUrl, { waitUntil: 'commit', timeout: 90_000 })
