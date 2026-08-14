@@ -21,6 +21,7 @@ describe('site-agent CI contract', () => {
     expect(workflow).toContain('branches: [main]')
     expect(workflow).toContain("cron: '17 13 * * *'")
     expect(workflow).toContain('npm install --global npm@10.8.2')
+    expect(workflow).toContain('vercel env pull .env.local --environment=preview')
     expect(workflow).toContain('npm run agent:eval')
     expect(workflow).toContain('npm run test:unit')
     expect(workflow).toContain('npm run build')

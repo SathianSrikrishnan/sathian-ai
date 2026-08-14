@@ -31,6 +31,10 @@ jobs:
     if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,6 +47,8 @@ jobs:
         run: npm run test:unit
       - name: Site Agent 60-case gate
         run: npm run agent:eval -- --output-dir "$RUNNER_TEMP/site-agent-offline"
+      - name: Pull Preview build environment
+        run: npx --yes vercel@54.0.0 env pull .env.local --environment=preview --yes --token "$VERCEL_TOKEN"
       - name: Production build
         run: npm run build
       - name: Upload offline receipt
