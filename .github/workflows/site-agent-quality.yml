@@ -47,8 +47,10 @@ jobs:
         run: npm run test:unit
       - name: Site Agent 60-case gate
         run: npm run agent:eval -- --output-dir "$RUNNER_TEMP/site-agent-offline"
+      - name: Install pinned Vercel CLI
+        run: npm install --global vercel@54.0.0
       - name: Pull Preview build environment
-        run: npx --yes vercel@54.0.0 env pull .env.local --environment=preview --yes --token "$VERCEL_TOKEN"
+        run: vercel env pull .env.local --environment=preview --yes --token "$VERCEL_TOKEN"
       - name: Production build
         run: npm run build
       - name: Upload offline receipt
