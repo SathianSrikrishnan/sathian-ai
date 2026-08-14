@@ -41,7 +41,8 @@ async function inspect(viewport, suffix) {
   page.on('pageerror', (error) => errors.push(error.message))
 
   try {
-    await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' })
+    await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
+    await page.waitForTimeout(1500)
     const agent = page.locator('#agent')
     const featured = page.locator('#featured-work')
     const firstFeatured = page.locator('.minimal-featured-list article').first()
@@ -56,7 +57,8 @@ async function inspect(viewport, suffix) {
     await assertPageClean(page, `home-${suffix}`, '.minimal-featured-project--article')
     await page.screenshot({ path: resolve(outputDir, `home-${suffix}.png`), fullPage: true })
 
-    await page.goto(`${baseUrl}/writings`, { waitUntil: 'networkidle' })
+    await page.goto(`${baseUrl}/writings`, { waitUntil: 'domcontentloaded' })
+    await page.waitForTimeout(1000)
     const firstWriting = page.locator('main a[href^="/writings/"]').first()
     if (!await firstWriting.getByText('Saraswati, Lakshmi, and the Ledger').count()) {
       throw new Error(`${suffix}: flagship essay is not first in Writing`)
@@ -69,10 +71,16 @@ async function inspect(viewport, suffix) {
 
     const response = await page.goto(
       `${baseUrl}/writings/saraswati-lakshmi-and-the-ledger`,
-      { waitUntil: 'networkidle' },
+      { waitUntil: 'domcontentloaded' },
     )
+    await page.waitForTimeout(1000)
     if (!response || response.status() !== 200) throw new Error(`${suffix}: essay did not return 200`)
     await page.getByRole('heading', { name: /Saraswati, Lakshmi/ }).waitFor()
+    await page.waitForFunction(
+      () => Array.from(document.images).every((image) => image.complete),
+      undefined,
+      { timeout: 30000 },
+    )
     const failedImages = await page.locator('img').evaluateAll(
       (images) => images.filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
     )
