@@ -36,6 +36,7 @@ const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
   .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
 const DRAW_WITH_TANDA_LATEST = LATEST_RELEASE
 const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.status === 'next')!
+const FEATURED_WRITING_SLUG = 'saraswati-lakshmi-and-the-ledger'
 
 function formatDate(value: string) {
   return new Date(`${value}T12:00:00`).toLocaleDateString('en-CA', {
@@ -46,6 +47,10 @@ function formatDate(value: string) {
 }
 
 export function HomeClient({ writings }: HomeClientProps) {
+  const featuredWriting = writings.find(
+    (writing) => writing.href === `/writings/${FEATURED_WRITING_SLUG}`,
+  )
+
   return (
     <div className="relaunch-shell minimal-site" data-theme="workshop">
       <SiteNav />
@@ -73,6 +78,31 @@ export function HomeClient({ writings }: HomeClientProps) {
           <h2 id="featured-work">Featured work</h2>
 
           <div className="minimal-featured-list">
+            {featuredWriting && (
+              <article className="minimal-featured-project minimal-featured-project--article">
+                <div className="minimal-project-copy">
+                  <h3>{featuredWriting.title}</h3>
+                  <p className="minimal-label">NEW FEATURED ESSAY / INTERACTIVE FIELD NOTE</p>
+                  <p>{featuredWriting.description}</p>
+                  <Link href={featuredWriting.href} className="minimal-text-link">
+                    Read and try the two tests
+                  </Link>
+                </div>
+                <Link
+                  href={featuredWriting.href}
+                  className="minimal-project-media"
+                  aria-label={`Read ${featuredWriting.title}`}
+                >
+                  <Image
+                    src="/media/flagship-hero.png"
+                    alt="Saraswati and Lakshmi connected by a luminous ledger"
+                    fill
+                    priority
+                    sizes="(max-width: 760px) 100vw, 58vw"
+                  />
+                </Link>
+              </article>
+            )}
             {FEATURED_SITE_PROJECTS.map((project, index) => (
               <article key={project.name} className={`minimal-featured-project minimal-featured-project--${index + 1}`}>
                 <div className="minimal-project-copy">

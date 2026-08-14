@@ -38,6 +38,14 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/writings/saraswati-lakshmi-and-the-ledger',
+        destination: '/features/saraswati-lakshmi-ledger.html',
+      },
+    ]
+  },
   async headers() {
     return [
       {

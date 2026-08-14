@@ -9,6 +9,7 @@ const PAGE_CONTEXT: Record<string, string> = {
   '/agents': 'The visitor is on the public agent index, with canonical entry points, reading boundaries, and dated build notes.',
   '/hackathons': 'The visitor is browsing Sathian’s public hackathon record.',
   '/writings': 'The visitor is browsing the writing index and may want an article recommendation.',
+  '/writings/saraswati-lakshmi-and-the-ledger': 'The visitor is reading Sathian’s newest featured essay about the Saraswati and Lakshmi tests, polytheistic AI, programmable value, and the limits of cryptographic truth.',
   '/writings/the-gap-between-weeks': 'The visitor is reading The Gap Between Weeks, the origin essay for Tooth Fairy Network.',
   '/writings/cream-2-point-0': 'The visitor is reading C.R.E.A.M. 2.0, the Wu-Tang and Bitcoin parallel essay.',
   '/writings/the-yellow-box': 'The visitor is reading The Yellow Box, about inflation, glasnost, and institutional decay.',

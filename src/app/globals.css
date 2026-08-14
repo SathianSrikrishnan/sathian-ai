@@ -4043,6 +4043,11 @@ h1, h2, h3 {
   grid-column: 2;
 }
 
+.minimal-featured-project--article .minimal-label,
+.minimal-featured-project--article .minimal-text-link {
+  color: #7a3718;
+}
+
 .minimal-project-copy h3,
 .minimal-writing-preview h3,
 .minimal-more-list strong,
@@ -4565,6 +4570,10 @@ h1, h2, h3 {
 
 .minimal-writing-index__meta span {
   color: var(--minimal-rust) !important;
+}
+
+.minimal-writing-index__featured .minimal-writing-index__meta span {
+  color: #7a3718 !important;
 }
 
 .minimal-writing-index h2 {

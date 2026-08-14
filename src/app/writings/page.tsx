@@ -63,7 +63,13 @@ export default async function WritingsIndex() {
 
         <section className="minimal-writing-index minimal-container" aria-label="Published writing">
           {entries.map((article) => (
-            <Link key={article.href} href={article.href}>
+            <Link
+              key={article.href}
+              href={article.href}
+              className={article.href === '/writings/saraswati-lakshmi-and-the-ledger'
+                ? 'minimal-writing-index__featured'
+                : undefined}
+            >
               <div className="minimal-writing-index__meta">
                 <time dateTime={article.date}>{formatDate(article.date)}</time>
                 <span style={{ color: article.accent }}>{article.domains}</span>
