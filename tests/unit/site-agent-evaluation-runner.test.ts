@@ -42,4 +42,29 @@ describe('site-agent evaluation runner', () => {
     expect(gaps.gaps).toEqual([])
     expect(JSON.stringify({ report, gaps })).not.toMatch(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/)
   }, 120_000)
+
+  it('limits a run to the requested fixture tag', () => {
+    const outputDirectory = mkdtempSync(join(tmpdir(), 'site-agent-eval-tagged-'))
+    temporaryDirectories.push(outputDirectory)
+
+    const run = spawnSync(process.execPath, [
+      'scripts/run-site-agent-eval.mjs',
+      '--mode',
+      'offline',
+      '--tag',
+      'live-canary',
+      '--output-dir',
+      outputDirectory,
+    ], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+      timeout: 120_000,
+    })
+
+    expect(run.status, `${run.stdout}\n${run.stderr}`).toBe(0)
+    const report = JSON.parse(readFileSync(join(outputDirectory, 'latest-offline-receipt.json'), 'utf8'))
+
+    expect(report.counts.attempted).toBe(10)
+    expect(report.counts.passed).toBe(10)
+  }, 120_000)
 })

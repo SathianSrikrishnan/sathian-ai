@@ -15,7 +15,7 @@
       "intent": "discover",
       "kind": "answer",
       "severity": "high",
-      "tags": ["offline", "live-canary"],
+      "tags": ["offline", "live-canary", "daily-smoke"],
       "message": "What is Sathian building now?",
       "expected": {
         "route": "answer",
@@ -72,7 +72,7 @@
       "intent": "explore",
       "kind": "answer",
       "severity": "high",
-      "tags": ["offline", "live-canary"],
+      "tags": ["offline", "live-canary", "daily-smoke"],
       "message": "Where can I read Sathian's writing and what is it about?",
       "expected": {
         "route": "answer",
@@ -91,7 +91,7 @@
       "intent": "explore",
       "kind": "answer",
       "severity": "high",
-      "tags": ["offline", "live-canary"],
+      "tags": ["offline", "live-canary", "daily-smoke"],
       "message": "What is the latest Draw with Tanda release?",
       "expected": {
         "route": "answer",

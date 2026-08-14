@@ -10,6 +10,7 @@ function parseArguments(argv) {
   const options = {
     mode: 'offline',
     url: null,
+    tag: null,
     outputDirectory: resolve(root, 'docs/analytics/site-agent-evals'),
     syncStudio: false,
   }
@@ -17,6 +18,7 @@ function parseArguments(argv) {
     const value = argv[index]
     if (value === '--mode') options.mode = argv[++index]
     else if (value === '--url') options.url = argv[++index]
+    else if (value === '--tag') options.tag = argv[++index]
     else if (value === '--output-dir') options.outputDirectory = resolve(argv[++index])
     else if (value === '--sync-studio') options.syncStudio = true
     else if (value === '--help') {
@@ -25,6 +27,7 @@ function parseArguments(argv) {
         '',
         '  --mode offline|live',
         '  --url https://candidate.example   required for live mode',
+        '  --tag <fixture-tag>                run only cases carrying this tag',
         '  --output-dir <path>               defaults to docs/analytics/site-agent-evals',
         '  --sync-studio                     explicitly upsert sanitized failures',
         '',
@@ -36,6 +39,9 @@ function parseArguments(argv) {
   }
   if (!['offline', 'live'].includes(options.mode)) throw new Error('Mode must be offline or live.')
   if (options.mode === 'live' && !options.url) throw new Error('Live mode requires --url.')
+  if (options.tag !== null && !/^[a-z0-9][a-z0-9-]{0,63}$/.test(options.tag)) {
+    throw new Error('Tag must contain lowercase letters, numbers, or hyphens.')
+  }
   return options
 }
 
@@ -302,9 +308,15 @@ try {
   }
   const dataset = validation.dataset
   const started = new Date()
-  const candidateCases = options.mode === 'offline'
+  const modeCases = options.mode === 'offline'
     ? dataset.cases.filter((testCase) => testCase.tags.includes('offline'))
     : dataset.cases.filter((testCase) => testCase.tags.includes('live-canary'))
+  const candidateCases = options.tag
+    ? modeCases.filter((testCase) => testCase.tags.includes(options.tag))
+    : modeCases
+  if (candidateCases.length === 0) {
+    throw new Error(`No ${options.mode} evaluation cases matched tag ${options.tag}.`)
+  }
   const observations = []
   for (const testCase of candidateCases) {
     if (options.mode === 'offline') {

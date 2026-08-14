@@ -1,0 +1,165 @@
+name: Site Agent Quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 13 * * *'
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: Optional live target; defaults to https://sathian.ai
+        required: false
+        type: string
+      full_canary:
+        description: Run all 10 live-canary cases instead of the three daily cases
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+
+jobs:
+  quality:
+    name: Offline quality gate
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Site Agent 60-case gate
+        run: npm run agent:eval -- --output-dir "$RUNNER_TEMP/site-agent-offline"
+      - name: Production build
+        run: npm run build
+      - name: Upload offline receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-agent-offline-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/site-agent-offline
+          if-no-files-found: warn
+          retention-days: 30
+
+  preview-canary:
+    name: Protected preview canary
+    needs: quality
+    if: >-
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      SITE_AGENT_TESTER_SECRET: ${{ secrets.SITE_AGENT_TESTER_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - name: Install pinned Vercel CLI
+        run: npm install --global vercel@54.0.0
+      - name: Build preview artifact
+        run: |
+          vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          vercel build --token "$VERCEL_TOKEN"
+      - name: Deploy frozen preview
+        id: preview
+        run: |
+          target_url="$(vercel deploy --prebuilt \
+            --env "SITE_AGENT_TESTER_SECRET=$SITE_AGENT_TESTER_SECRET" \
+            --token "$VERCEL_TOKEN")"
+          echo "url=$target_url" >> "$GITHUB_OUTPUT"
+      - name: Run protected 10-case canary
+        env:
+          TARGET_URL: ${{ steps.preview.outputs.url }}
+        run: |
+          run_id="ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          token="$(node scripts/create-site-agent-test-token.mjs "$run_id" 20)"
+          echo "::add-mask::$token"
+          SITE_AGENT_TEST_TOKEN="$token" npm run agent:eval:live -- \
+            --url "$TARGET_URL" \
+            --output-dir "$RUNNER_TEMP/site-agent-live"
+      - name: Install browser verifier
+        run: |
+          python -m pip install playwright==1.58.0
+          python -m playwright install --with-deps chromium
+      - name: Verify chat UI without submitting a real note or question
+        env:
+          PORTAL_BASE_URL: ${{ steps.preview.outputs.url }}
+        run: python tests/browser/chat_memory_check.py
+      - name: Upload preview proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-agent-preview-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/site-agent-live
+            docs/analytics/site-agent-evals/2026-08-11-phase-2-browser
+          if-no-files-found: warn
+          retention-days: 30
+
+  daily-production-smoke:
+    name: Daily production smoke
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_AGENT_TESTER_SECRET: ${{ secrets.SITE_AGENT_TESTER_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run source safety gate
+        run: npm run agent:eval -- --output-dir "$RUNNER_TEMP/site-agent-offline"
+      - name: Run bounded production smoke
+        env:
+          REQUESTED_TARGET: ${{ inputs.target_url }}
+          REQUESTED_FULL_CANARY: ${{ inputs.full_canary }}
+        run: |
+          target_url="${REQUESTED_TARGET:-https://sathian.ai}"
+          run_id="daily-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          token="$(node scripts/create-site-agent-test-token.mjs "$run_id" 20)"
+          echo "::add-mask::$token"
+          if [ "$REQUESTED_FULL_CANARY" = "true" ]; then
+            SITE_AGENT_TEST_TOKEN="$token" npm run agent:eval:live -- \
+              --url "$target_url" \
+              --output-dir "$RUNNER_TEMP/site-agent-live"
+          else
+            SITE_AGENT_TEST_TOKEN="$token" npm run agent:eval:live -- \
+              --url "$target_url" \
+              --tag daily-smoke \
+              --output-dir "$RUNNER_TEMP/site-agent-live"
+          fi
+      - name: Upload daily receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-agent-daily-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/site-agent-offline
+            ${{ runner.temp }}/site-agent-live
+          if-no-files-found: warn
+          retention-days: 30
