@@ -85,6 +85,22 @@ async function inspect(viewport, suffix) {
       (images) => images.filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
     )
     if (failedImages.length) throw new Error(`${suffix}: failed images ${failedImages.join(', ')}`)
+    const authorAlignment = await page.evaluate(() => {
+      const reading = document.querySelector('#origin .reading')?.getBoundingClientRect()
+      const author = document.querySelector('.author-note')?.getBoundingClientRect()
+      return reading && author
+        ? { left: Math.abs(reading.left - author.left), width: Math.abs(reading.width - author.width) }
+        : null
+    })
+    if (!authorAlignment || authorAlignment.left > 2 || authorAlignment.width > 2) {
+      throw new Error(`${suffix}: author byline is not aligned to the reading column`)
+    }
+    const firstFrameFit = await page.locator('.reel-card').first().locator('img').evaluate(
+      (image) => getComputedStyle(image).objectFit,
+    )
+    if (firstFrameFit !== 'contain') {
+      throw new Error(`${suffix}: first visual frame still crops the paired image`)
+    }
     await page.locator('input[type="checkbox"]').first().check()
     if (await page.locator('[data-saraswati-score]').textContent() !== '1') {
       throw new Error(`${suffix}: interactive test did not update`)

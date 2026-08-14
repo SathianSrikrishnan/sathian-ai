@@ -31,6 +31,13 @@ describe('Saraswati, Lakshmi, and the Ledger release', () => {
     expect(essay).toContain('/media/flagship-hero.png')
     expect(essay).toContain('/sathian-profile.png')
     expect(essay).toContain('https://sathian.ai/media/flagship-hero.png')
+    expect(essay).toContain('.author-note { display: grid; grid-template-columns: 88px minmax(0, 1fr);')
+    expect(essay).toContain('width: min(var(--measure), 100%); margin: 46px auto 0;')
+    expect(essay).toContain('.reel-card:first-child img { height: auto; aspect-ratio: 16 / 9; object-fit: contain;')
+    expect(essay).toContain('.reel-card:first-child .reel-caption { position: static;')
+    expect(essay).toContain('data-reel-count>Frame 1 of 5')
+    expect(essay).not.toContain('href="index.html"')
+    expect(essay).toContain('href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/"')
   })
 
   it('puts the essay first in Featured Work without moving the chatbot', () => {
