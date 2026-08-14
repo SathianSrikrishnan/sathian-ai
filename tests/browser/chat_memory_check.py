@@ -8,7 +8,8 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_pla
 
 BASE_URL = os.environ.get("PORTAL_BASE_URL", "http://127.0.0.1:3017").rstrip("/")
 AUTOMATION_BYPASS_SECRET = os.environ.get("VERCEL_AUTOMATION_BYPASS_SECRET")
-OUTPUT = Path(__file__).resolve().parents[2] / "docs" / "analytics" / "site-agent-evals" / "2026-08-11-phase-2-browser"
+DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / "docs" / "analytics" / "site-agent-evals" / "2026-08-11-phase-2-browser"
+OUTPUT = Path(os.environ.get("SITE_AGENT_BROWSER_OUTPUT", DEFAULT_OUTPUT))
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -126,7 +127,7 @@ def check_desktop(browser):
     assert stored and len(json.loads(stored)["turns"]) == 4
     page.screenshot(path=str(OUTPUT / "desktop-follow-up.png"), full_page=True)
 
-    page.reload(wait_until="networkidle")
+    page.reload(wait_until="commit", timeout=90_000)
     page.get_by_text("How is that different from Solana?", exact=True).wait_for()
     page.get_by_role("button", name="Start a new conversation").click()
     assert page.evaluate("sessionStorage.getItem('sathian-agent-conversation')") is None

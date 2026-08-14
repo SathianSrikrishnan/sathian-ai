@@ -38,5 +38,7 @@ describe('site-agent CI contract', () => {
     expect(workflow).not.toContain('--sync-studio')
     expect(runner).toContain("headers['x-vercel-protection-bypass'] = automationBypassSecret")
     expect(browserCheck).toContain('"x-vercel-protection-bypass": AUTOMATION_BYPASS_SECRET')
+    expect(browserCheck).toContain('page.reload(wait_until="commit", timeout=90_000)')
+    expect(browserCheck).not.toContain('page.reload(wait_until="networkidle")')
   })
 })
