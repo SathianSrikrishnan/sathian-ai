@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - run: npm install --global npm@10.8.2
       - run: npm ci
       - name: Unit tests
         run: npm run test:unit
@@ -75,6 +76,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: npm install --global npm@10.8.2
       - run: npm ci
       - name: Install pinned Vercel CLI
         run: npm install --global vercel@54.0.0
@@ -131,6 +133,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - run: npm install --global npm@10.8.2
       - run: npm ci
       - name: Run source safety gate
         run: npm run agent:eval -- --output-dir "$RUNNER_TEMP/site-agent-offline"
