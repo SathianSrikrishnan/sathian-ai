@@ -22,6 +22,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/voice/:path*',
+        destination: '/#agent',
+        permanent: true,
+      },
+      {
         source: '/btc-atlas',
         destination: 'https://btc.sathian.ai',
         permanent: true,

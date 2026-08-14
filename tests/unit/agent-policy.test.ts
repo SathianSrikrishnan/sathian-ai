@@ -19,6 +19,18 @@ const fixtures = JSON.parse(
 ) as Fixture[]
 
 describe('deterministic public-agent policy', () => {
+  it.each([
+    'Can I leave Sathian a note?',
+    'How can I send Sathian a message?',
+    'Where do I leave a note for Sathian?',
+  ])('treats note-workflow help as a question, not as a submitted note: %s', (message) => {
+    const decision = evaluateAgentPolicy({ message })
+
+    expect(decision.route).toBe('answer')
+    expect(decision.reasonCodes).toContain('ANSWER_REQUEST')
+    expect(decision.reasonCodes).not.toContain('ANSWER_AND_INTAKE_REQUEST')
+  })
+
   it.each(fixtures)('$name', (fixture) => {
     const decision = evaluateAgentPolicy({
       message: fixture.message,

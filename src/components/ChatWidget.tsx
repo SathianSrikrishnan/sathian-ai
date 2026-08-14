@@ -25,7 +25,7 @@ const SUGGESTIONS = CHAT_SUGGESTIONS
 const AGENT_SESSION_KEY = 'sathian-agent-session-id'
 const AGENT_TEST_TOKEN_SESSION_KEY = 'sathian-agent-test-token'
 const AGENT_CONVERSATION_SESSION_KEY = 'sathian-agent-conversation'
-const AGENT_INTRO_MESSAGE = 'Start with Tooth Fairy Network, the Solana learning dashboard, Sathian’s other public work, or leave him a note.'
+const AGENT_INTRO_MESSAGE = 'I can explain and compare Sathian’s projects, find writing or the latest Draw with Tanda release, answer follow-up questions, and help you leave him a note.'
 
 interface AgentMessage {
   role: 'bot' | 'user'
@@ -577,10 +577,19 @@ export function ChatWidget() {
                       target={isExternalHref(msg.nextAction.href) ? '_blank' : undefined}
                       rel={isExternalHref(msg.nextAction.href) ? 'noopener noreferrer' : undefined}
                       className="site-agent-next-action"
-                      onClick={() => trackSiteEvent('agent_source_opened', {
-                        page: pathname,
-                        sourceHost: sourceLabel(msg.nextAction!.href, 0),
-                      })}
+                       onClick={(event) => {
+                         trackSiteEvent('agent_source_opened', {
+                           page: pathname,
+                           sourceHost: sourceLabel(msg.nextAction!.href, 0),
+                         })
+                         if (msg.nextAction?.href === '/#compose-note') {
+                           event.preventDefault()
+                           setComposerMode('note')
+                           setShowSuggestions(false)
+                           setInput('')
+                           requestAnimationFrame(() => inputRef.current?.focus())
+                         }
+                       }}
                     >
                       {msg.nextAction.label}
                     </a>

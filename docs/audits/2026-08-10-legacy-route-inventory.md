@@ -29,7 +29,7 @@ This is a conservative search and navigation cleanup. No application route or us
 ## Keep functional, remove from the personal search surface
 
 - `/animation/*`
-- `/voice/*`
+- `/voice/*` — retired; redirects to the public site agent at `/#agent`.
 - `/tooth/*`
 - `/toothfairy/*`
 

@@ -110,10 +110,10 @@ describe('sathian.ai relaunch surface', () => {
   })
 
   it('uses approved and source-captured artwork for every visible project', () => {
-    expect(homeClient).toContain("image: '/projects/tooth-fairy-network/family-storybook-hero.webp'")
+    expect(siteProjects).toContain("image: '/projects/tooth-fairy-network/family-storybook-hero.webp'")
     expect(homeClient).toContain("src=\"/projects/tooth-fairy-network/tanda-profile.png\"")
-    expect(homeClient).toContain("image: '/media/a-corporate-card-for-code-agenttab.png'")
-    expect(homeClient).toContain("image: '/projects/clinicalguard-dashboard.png'")
+    expect(siteProjects).toContain("image: '/media/a-corporate-card-for-code-agenttab.png'")
+    expect(siteProjects).toContain("image: '/projects/clinicalguard-dashboard.png'")
     expect(siteProjects).toContain("image: '/projects/autoquote-automator-dashboard.png'")
     expect(siteProjects).toContain("image: '/projects/solana-ecosystem-observatory.png'")
     expect(existsSync(new URL('../../public/projects/tooth-fairy-network/family-storybook-hero.webp', import.meta.url))).toBe(true)
@@ -128,7 +128,7 @@ describe('sathian.ai relaunch surface', () => {
   })
 
   it('features the live Draw with Tanda pilot and every official TFN social channel', () => {
-    const durableTfnSurface = `${homeClient}\n${releaseRegistry}\n${socialRegistry}`
+    const durableTfnSurface = `${homeClient}\n${releaseRegistry}\n${socialRegistry}\n${siteProjects}`
     expect(durableTfnSurface).toContain('Draw with Tanda')
     expect(durableTfnSurface).toContain("youtubeVideoId: 'ZoY1ZEzJymY'")
     expect(durableTfnSurface).toContain('https://toothfairy.network')
@@ -172,5 +172,12 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('ClinicalGuard')
     expect(homepage).not.toContain('WRITING, BY EMAIL')
     expect(homepage).not.toContain('03 / ABOUT')
+  })
+
+  it('renders featured and archived projects from the canonical project registry', () => {
+    expect(homeClient).toContain('FEATURED_SITE_PROJECTS')
+    expect(homeClient).toContain('ARCHIVE_SITE_PROJECTS')
+    expect(homeClient).not.toContain('const FEATURED_PROJECTS = [')
+    expect(homeClient).not.toContain('const MORE_PROJECTS = [')
   })
 })

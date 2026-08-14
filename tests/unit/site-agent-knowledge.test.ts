@@ -1,6 +1,12 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
+import {
+  ARCHIVE_SITE_PROJECTS,
+  FEATURED_SITE_PROJECTS,
+  SITE_PROJECTS,
+  findSiteProjectsByAlias,
+} from '@/content/site-projects'
 import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 
 const homepage = readFileSync(
@@ -11,6 +17,45 @@ const homepage = readFileSync(
 describe('canonical site-agent public knowledge', () => {
   const cards = getPublicProfileMemoryCards()
 
+  it('keeps every public portfolio project in one reviewed lifecycle registry', () => {
+    expect(SITE_PROJECTS.map((project) => project.id)).toEqual([
+      'project-tooth-fairy-network',
+      'project-autoquote-automator',
+      'project-solana-ecosystem-observatory',
+      'project-clinicalguard',
+      'project-agenttab',
+      'project-btc-cultural-atlas',
+      'project-lex-rooftop-garden',
+    ])
+
+    for (const project of SITE_PROJECTS) {
+      expect(['primary', 'active', 'archive']).toContain(project.status)
+      expect(project.aliases.length).toBeGreaterThan(0)
+      expect(project.approvedClaims.length).toBeGreaterThan(0)
+      expect(project.reviewedAt).toMatch(/^2026-\d{2}-\d{2}$/)
+      expect(project.href).toMatch(/^(?:https:\/\/|\/)/)
+    }
+
+    expect(FEATURED_SITE_PROJECTS.map((project) => project.status)).toEqual([
+      'primary',
+      'active',
+    ])
+    expect(ARCHIVE_SITE_PROJECTS).toHaveLength(4)
+    expect(ARCHIVE_SITE_PROJECTS.every((project) => project.status === 'archive')).toBe(true)
+  })
+
+  it.each([
+    ['TFN', 'project-tooth-fairy-network'],
+    ['Toothlight', 'project-tooth-fairy-network'],
+    ['Coverage Ledger', 'project-autoquote-automator'],
+    ['Clinical Guard', 'project-clinicalguard'],
+    ['AgentTab', 'project-agenttab'],
+    ['BTC Cultural Atlas', 'project-btc-cultural-atlas'],
+    ['Lex Rooftop Garden', 'project-lex-rooftop-garden'],
+  ])('resolves the public alias %s through the registry', (message, expectedId) => {
+    expect(findSiteProjectsByAlias(`Tell me about ${message}`).map((project) => project.id)).toContain(expectedId)
+  })
+
   it.each([
     ['project-tooth-fairy-network', 'https://toothfairy.network'],
     ['project-autoquote-automator', 'https://ontario-all-quote-agent.vercel.app'],
@@ -18,6 +63,8 @@ describe('canonical site-agent public knowledge', () => {
     ['project-clinicalguard', 'https://sathian.ai/projects/clinicalguard'],
     ['published-writing', 'https://sathian.ai/writings'],
     ['current-public-work', 'https://sathian.ai/'],
+    ['site-agent-capabilities', 'https://sathian.ai/#featured-work'],
+    ['site-agent-note-workflow', 'https://sathian.ai/#compose-note'],
   ])('publishes %s with a public source', (id, expectedSource) => {
     const card = cards.find((candidate) => candidate.id === id)
 
@@ -53,9 +100,43 @@ describe('canonical site-agent public knowledge', () => {
     ]))
   })
 
+  it('turns every registry record into a freshness-stamped public memory card', () => {
+    for (const project of SITE_PROJECTS) {
+      const card = cards.find((candidate) => candidate.id === project.id)
+
+      expect(card).toBeDefined()
+      expect(card?.body).toBe(project.approvedClaims.join(' '))
+      expect(card?.validFrom).toBe(`${project.reviewedAt}T00:00:00.000Z`)
+      expect(card?.tags).toEqual(expect.arrayContaining([
+        `status-${project.status}`,
+        ...project.aliases.map((alias) => alias.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')),
+      ]))
+    }
+  })
+
+  it('publishes a concise guide to the site agent instead of making visitors guess', () => {
+    const capabilities = cards.find((card) => card.id === 'site-agent-capabilities')
+
+    expect(capabilities?.body).toContain('explain and compare')
+    expect(capabilities?.body).toContain('latest Draw with Tanda release')
+    expect(capabilities?.body).toContain('find Sathian’s writing')
+    expect(capabilities?.body).toContain('leave Sathian a note')
+    expect(capabilities?.body).toContain('follow-up questions')
+    expect(capabilities?.body).not.toMatch(/private memory|operate his private systems/i)
+  })
+
+  it('documents deliberate note composition and a real receipt', () => {
+    const noteWorkflow = cards.find((card) => card.id === 'site-agent-note-workflow')
+
+    expect(noteWorkflow?.body).toContain('actual message')
+    expect(noteWorkflow?.body).toContain('deliberately send')
+    expect(noteWorkflow?.body).toContain('receipt')
+  })
+
   it('uses the same project registry for the homepage and agent', () => {
     expect(homepage).toContain("from '@/content/site-projects'")
-    expect(homepage).toContain('AUTOQUOTE_AUTOMATOR_PROJECT')
+    expect(homepage).toContain('FEATURED_SITE_PROJECTS')
+    expect(homepage).toContain('ARCHIVE_SITE_PROJECTS')
     expect(homepage).toContain('SOLANA_OBSERVATORY_PROJECT')
   })
 })

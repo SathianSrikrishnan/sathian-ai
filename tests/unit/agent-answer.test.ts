@@ -220,6 +220,74 @@ describe('bounded public answer service', () => {
     expect(model.generate).not.toHaveBeenCalled()
   })
 
+  it('explains its useful public capabilities deterministically with one clear next step', async () => {
+    const model = { generate: vi.fn(async () => 'A vague model answer.') }
+    const cards = getPublicProfileMemoryCards()
+
+    const result = await answerAgentQuestion({
+      message: 'What can you do and how can you help me use this site?',
+      page: '/',
+      policy: {
+        ...policy,
+        normalizedMessage: 'What can you do and how can you help me use this site?',
+      },
+      cards,
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.unknown).toBe(false)
+    expect(result.answer).toContain('explain and compare')
+    expect(result.answer).toContain('latest Draw with Tanda release')
+    expect(result.answer).toContain('leave Sathian a note')
+    expect(result.nextAction).toEqual({
+      label: 'Browse featured work',
+      href: '/#featured-work',
+    })
+    expect(result.sources).toEqual(['https://sathian.ai/#featured-work'])
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'What can I find here?',
+    'What are the main sections of this site?',
+    'Help me navigate this site.',
+    'What features does this site agent have?',
+  ])('recognizes natural site-guide wording: %s', async (message) => {
+    const model = { generate: vi.fn(async () => 'A vague model answer.') }
+
+    const result = await answerAgentQuestion({
+      message,
+      page: '/',
+      policy: { ...policy, normalizedMessage: message },
+      cards: getPublicProfileMemoryCards(),
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('explain and compare')
+    expect(result.nextAction?.href).toBe('/#featured-work')
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('explains the note workflow without pretending the question itself was submitted', async () => {
+    const model = { generate: vi.fn(async () => 'A vague model answer.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Can I leave Sathian a note?',
+      page: '/',
+      policy: { ...policy, normalizedMessage: 'Can I leave Sathian a note?' },
+      cards: getPublicProfileMemoryCards(),
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('actual message')
+    expect(result.answer).toContain('deliberately send')
+    expect(result.nextAction).toEqual({
+      label: 'Write a note',
+      href: '/#compose-note',
+    })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
   it('uses prior turns to answer a comparison follow-up instead of returning one project card', async () => {
     const solanaCard: PublicMemoryCard = {
       ...tfnCard,
@@ -365,19 +433,40 @@ describe('bounded public answer service', () => {
     expect(crypto.nextAction).toEqual({ label: 'Visit Tooth Fairy Network', href: 'https://toothfairy.network' })
   })
 
-  it('shows no generic homepage action when the model returns an honest unknown', async () => {
+  it('answers whether archived projects are current from reviewed lifecycle status', async () => {
     const cards = getPublicProfileMemoryCards()
     const model = { generate: vi.fn(async () => "I don't have approved public information about that.") }
 
     const result = await answerAgentQuestion({
-      message: 'Are AI Practice, BTC Cultural Atlas, and Lex Rooftop Garden still current?',
+      message: 'Are BTC Cultural Atlas and Lex Rooftop Garden still current?',
       page: '/',
       policy,
       cards,
     }, { model })
 
-    expect(result.unknown).toBe(true)
-    expect(result.nextAction).toBeUndefined()
+    expect(result.modelUsed).toBe(false)
+    expect(result.unknown).toBe(false)
+    expect(result.answer).toContain('BTC Cultural Atlas and Lex Rooftop Garden are archived projects')
+    expect(result.answer).toContain('not current active builds')
+    expect(result.nextAction).toEqual({ label: 'Browse more projects', href: '/#more-projects' })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
+  it('answers a single project status question without treating archived work as current', async () => {
+    const model = { generate: vi.fn(async () => 'ClinicalGuard is current.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Is Clinical Guard still an active project?',
+      page: '/',
+      policy,
+      cards: getPublicProfileMemoryCards(),
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('ClinicalGuard is an archived project')
+    expect(result.answer).toContain('not a current active build')
+    expect(result.nextAction).toEqual({ label: 'Open ClinicalGuard', href: '/projects/clinicalguard' })
+    expect(model.generate).not.toHaveBeenCalled()
   })
 
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {

@@ -44,7 +44,8 @@ describe('public-site indexing', () => {
     if (!buildRobots) return
 
     const disallow = buildRobots('sathian.ai').rules.disallow
-    expect(disallow).toEqual(expect.arrayContaining(['/animation/', '/voice/', '/tooth/', '/toothfairy/']))
+    expect(disallow).toEqual(expect.arrayContaining(['/animation/', '/tooth/', '/toothfairy/']))
+    expect(disallow).not.toContain('/voice/')
     expect(buildRobots('toothfairy.network').rules.disallow).not.toContain('/toothfairy/')
   })
 

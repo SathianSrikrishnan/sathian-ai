@@ -1,5 +1,9 @@
 import { buildAgentPrompt } from '@/lib/agent/prompt'
 import {
+  findSiteProjectsByAlias,
+  type PublicSiteProject,
+} from '@/content/site-projects'
+import {
   isContextDependentQuestion,
   type AgentConversationTurn,
 } from '@/lib/agent/conversation'
@@ -84,42 +88,91 @@ function contextualActionHref(sourceRef: string): string {
   return sourceRef
 }
 
+function joinProjectNames(projects: readonly PublicSiteProject[]): string {
+  const names = projects.map((project) => project.name)
+  if (names.length <= 1) return names[0] ?? ''
+  if (names.length === 2) return names.join(' and ')
+  return `${names.slice(0, -1).join(', ')}, and ${names.at(-1)}`
+}
+
+function projectLifecycleAnswer(
+  message: string,
+  cards: PublicMemoryCard[],
+): AgentAnswerResult | null {
+  if (!/\b(active|archive|archived|current|still|working on)\b/i.test(message)) return null
+  const projects = findSiteProjectsByAlias(message)
+  if (projects.length === 0) return null
+
+  const matchedCards = projects
+    .map((project) => cards.find((card) => card.id === project.id))
+    .filter((card): card is PublicMemoryCard => Boolean(card))
+  if (matchedCards.length !== projects.length) return null
+
+  const allArchived = projects.every((project) => project.status === 'archive')
+  let answer: string
+  if (projects.length > 1 && allArchived) {
+    answer = `${joinProjectNames(projects)} are archived projects, not current active builds. They remain available in Sathian's public portfolio for reference.`
+  } else if (projects.length === 1) {
+    const [project] = projects
+    const lifecycle = project.status === 'archive'
+      ? 'an archived project, not a current active build'
+      : project.status === 'primary'
+        ? "Sathian's primary public build"
+        : 'a current active public build'
+    answer = `${project.name} is ${lifecycle}. ${project.approvedClaims.join(' ')}`
+  } else {
+    const statuses = projects.map((project) => {
+      const lifecycle = project.status === 'archive'
+        ? 'archived'
+        : project.status === 'primary'
+          ? 'the primary build'
+          : 'active'
+      return `${project.name} is ${lifecycle}`
+    })
+    answer = `${statuses.join('; ')}.`
+  }
+
+  const [firstProject] = projects
+  const [firstCard] = matchedCards
+  return {
+    answer,
+    sources: uniqueSources(matchedCards),
+    nextAction: projects.length === 1
+      ? {
+          label: firstProject.cta,
+          href: contextualActionHref(firstCard.source.ref),
+        }
+      : { label: 'Browse more projects', href: '/#more-projects' },
+    unknown: false,
+    modelUsed: false,
+  }
+}
+
 function directIntentCard(message: string, cards: PublicMemoryCard[]): {
   card: PublicMemoryCard
   actionLabel: string
 } | null {
   const find = (predicate: (card: PublicMemoryCard) => boolean) => cards.find(predicate)
-  const hasTag = (tag: string) => (card: PublicMemoryCard) => card.tags.includes(tag)
+  const projectMatch = findSiteProjectsByAlias(message)[0]
   const rules: Array<{
     matches: boolean
     card: PublicMemoryCard | undefined
     actionLabel: string
   }> = [
     {
-      matches: /\b(tooth fairy network|toothlight|tfn)\b/i.test(message),
-      card: find((card) => card.id === 'project-tooth-fairy-network')
-        ?? find(hasTag('tooth-fairy-network')),
-      actionLabel: 'Visit Tooth Fairy Network',
+      matches: /^(?:(?:can|could)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?|(?:how|where)\s+(?:can|do)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?)\??$/i.test(message),
+      card: find((card) => card.id === 'site-agent-note-workflow'),
+      actionLabel: 'Write a note',
     },
     {
-      matches: /\bcoverage ledger\b/i.test(message),
-      card: find(hasTag('coverage-ledger')),
-      actionLabel: 'Open AutoQuote Automator',
+      matches: /\b(what can you do|how can you help|what can i ask|what can i find (?:here|on (?:this|the) site)|what (?:are )?the main sections(?: of (?:this|the) site)?|help me (?:use|navigate|explore)(?: (?:this|the) site)?|what features does (?:this|the) site agent have|site guide)\b/i.test(message),
+      card: find((card) => card.id === 'site-agent-capabilities'),
+      actionLabel: 'Browse featured work',
     },
     {
-      matches: /\bautoquote(?: automator)?\b/i.test(message),
-      card: find(hasTag('autoquote-automator')),
-      actionLabel: 'Open AutoQuote Automator',
-    },
-    {
-      matches: /\bclinical\s*guard\b/i.test(message),
-      card: find(hasTag('clinicalguard')),
-      actionLabel: 'Open ClinicalGuard',
-    },
-    {
-      matches: /\bsolana\b/i.test(message) && /\b(dashboard|observatory|ecosystem|beginner)\b/i.test(message),
-      card: find(hasTag('solana-dashboard')),
-      actionLabel: 'Open the Solana dashboard',
+      matches: Boolean(projectMatch),
+      card: projectMatch ? find((card) => card.id === projectMatch.id) : undefined,
+      actionLabel: projectMatch?.cta ?? 'Open project',
     },
     {
       matches: /\b(writing|writings|articles|essays|fatherhood|publishes|published)\b/i.test(message)
@@ -248,6 +301,9 @@ export async function answerAgentQuestion(
       return deterministicCardAnswer(release, 'Open the latest release')
     }
   }
+
+  const lifecycleAnswer = projectLifecycleAnswer(input.message, input.cards)
+  if (lifecycleAnswer) return lifecycleAnswer
 
   const contextualQuestion = isContextDependentQuestion(input.message)
     && Boolean(input.history?.length)

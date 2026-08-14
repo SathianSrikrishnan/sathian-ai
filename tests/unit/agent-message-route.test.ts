@@ -12,10 +12,6 @@ const uploadRouteSources = [
   '../../src/app/api/agent/upload/reserve/route.ts',
   '../../src/app/api/agent/upload/complete/route.ts',
 ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8'))
-const voiceRouteSource = readFileSync(
-  new URL('../../src/app/api/voice/conversation/route.ts', import.meta.url),
-  'utf8',
-)
 const fileVerificationSource = readFileSync(
   new URL('../../src/components/AgentFileVerification.tsx', import.meta.url),
   'utf8',
@@ -63,9 +59,6 @@ describe('public agent message route', () => {
     expect(routeSource).toContain('max_completion_tokens: input.maxTokens')
     expect(routeSource).not.toMatch(/Anthropic|ANTHROPIC_API_KEY|claude-sonnet/)
 
-    // The separate voice route is outside this provider change.
-    expect(voiceRouteSource).toContain("model: 'claude-sonnet-4-6'")
-    expect(voiceRouteSource).not.toContain('claude-sonnet-4-20250514')
   })
 
   it('keeps test helpers and policy constants out of the Next.js route export surface', () => {
@@ -135,6 +128,30 @@ describe('public agent message route', () => {
       message: 'I would like to discuss the AutoQuote project.',
       reasonCodes: expect.arrayContaining(['EXPLICIT_NOTE_INTENT']),
     }))
+  })
+
+  it('answers a note-workflow question without storing the question as a note', async () => {
+    const persistIntake = vi.fn(async () => persisted)
+    const answerQuestion = vi.fn(async () => ({
+      answer: 'Yes. Write the note deliberately, then send it for a receipt.',
+      sources: ['https://sathian.ai/#agent'],
+      unknown: false,
+      modelUsed: false,
+    }))
+    const handler = createAgentMessageHandler({ persistIntake, answerQuestion })
+
+    const response = await handler(request({
+      message: 'Can I leave Sathian a note?',
+      page: '/',
+      consent: true,
+    }))
+    const body = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(body.route).toBe('answer')
+    expect(body.receipt).toBeNull()
+    expect(answerQuestion).toHaveBeenCalledOnce()
+    expect(persistIntake).not.toHaveBeenCalled()
   })
 
   it('rejects an unknown explicit intent', async () => {

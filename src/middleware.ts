@@ -195,8 +195,7 @@ export async function middleware(request: NextRequest) {
     || request.headers.get('x-real-ip')
     || 'unknown'
 
-  const isVoiceRoute = pathname.startsWith('/api/voice/')
-  const limit = isVoiceRoute ? 5 : 10  // 5/min voice, 10/min chat
+  const limit = 10
   const windowMs = 60_000  // 1 minute
 
   if (!hasDedicatedApiRateLimit(pathname) && isRateLimited(ip, limit, windowMs)) {

@@ -27,6 +27,9 @@ const ARBITRARY_TOOL_REQUEST =
 const INTAKE_REQUEST =
   /(?:leave|send|pass|forward|share)[\s\S]{0,40}(?:a )?(?:note|message|feedback|idea)|(?:tell|ask|let)\s+sathian|(?:here is|here's)\s+my\s+(?:email|number)|contact\s+me/i
 
+const NOTE_WORKFLOW_HELP =
+  /^(?:(?:can|could)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?|(?:how|where)\s+(?:can|do)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?)\??$/i
+
 const ANSWER_REQUEST =
   /\?|^(?:who|what|when|where|why|how|which|can|could|would|does|do|is|are|tell me|explain)\b/i
 
@@ -45,13 +48,15 @@ function hardDenyReason(message: string): string | null {
   if (CLIENT_DATA_REQUEST.test(message)) return 'CLIENT_DATA_REQUEST'
   if (PRIVATE_MEMORY_REQUEST.test(message)) return 'PRIVATE_MEMORY_REQUEST'
   if (SHELL_ACCESS_REQUEST.test(message)) return 'SHELL_ACCESS_REQUEST'
-  if (ARBITRARY_TOOL_REQUEST.test(message)) return 'ARBITRARY_TOOL_REQUEST'
+  if (ARBITRARY_TOOL_REQUEST.test(message) && !NOTE_WORKFLOW_HELP.test(message)) {
+    return 'ARBITRARY_TOOL_REQUEST'
+  }
   return null
 }
 
 function classifyIntent(message: string): { route: AgentRoute; reason: string } {
   const requestsAnswer = ANSWER_REQUEST.test(message)
-  const requestsIntake = INTAKE_REQUEST.test(message)
+  const requestsIntake = INTAKE_REQUEST.test(message) && !NOTE_WORKFLOW_HELP.test(message)
 
   if (requestsAnswer && requestsIntake) {
     return { route: 'answer_and_intake', reason: 'ANSWER_AND_INTAKE_REQUEST' }

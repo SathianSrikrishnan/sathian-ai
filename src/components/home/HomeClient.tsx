@@ -11,7 +11,8 @@ import {
   LATEST_RELEASE,
 } from '@/content/site-releases'
 import {
-  AUTOQUOTE_AUTOMATOR_PROJECT,
+  ARCHIVE_SITE_PROJECTS,
+  FEATURED_SITE_PROJECTS,
   SOLANA_OBSERVATORY_PROJECT,
 } from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
@@ -29,47 +30,6 @@ export interface HomeWriting {
 interface HomeClientProps {
   writings: HomeWriting[]
 }
-
-const FEATURED_PROJECTS = [
-  {
-    name: 'Tooth Fairy Network',
-    label: 'FLAGSHIP / BUILDING',
-    description:
-      'A private time capsule for childhood masterpieces, built around a lost-tooth ritual and powered by Solana.',
-    href: 'https://toothfairy.network',
-    cta: 'Visit Tooth Fairy Network',
-    image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
-    alt: 'Tanda preserving a child\'s drawing in the Tooth Fairy Network storybook',
-  },
-  AUTOQUOTE_AUTOMATOR_PROJECT,
-]
-
-const MORE_PROJECTS = [
-  {
-    name: 'Lex Rooftop Garden',
-    label: 'COMMUNITY / HOBBY PROJECT',
-    href: 'https://garden.sathian.ai',
-    image: '/projects/lex-rooftop-aerial.jpg',
-  },
-  {
-    name: 'BTC Cultural Atlas',
-    label: 'CULTURE / HOBBY PROJECT',
-    href: 'https://btc.sathian.ai',
-    image: '/projects/btc-cultural-atlas-hero.png',
-  },
-  {
-    name: 'AgentTab',
-    label: 'PRIOR HACKATHON',
-    href: 'https://agenttab.sathian.ai',
-    image: '/media/a-corporate-card-for-code-agenttab.png',
-  },
-  {
-    name: 'ClinicalGuard',
-    label: 'PRIOR HACKATHON',
-    href: '/projects/clinicalguard',
-    image: '/projects/clinicalguard-dashboard.png',
-  },
-]
 
 const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
   .filter((release) => release.status === 'published' && release.youtubeVideoId)
@@ -113,7 +73,7 @@ export function HomeClient({ writings }: HomeClientProps) {
           <h2 id="featured-work">Featured work</h2>
 
           <div className="minimal-featured-list">
-            {FEATURED_PROJECTS.map((project, index) => (
+            {FEATURED_SITE_PROJECTS.map((project, index) => (
               <article key={project.name} className={`minimal-featured-project minimal-featured-project--${index + 1}`}>
                 <div className="minimal-project-copy">
                   {index === 0 && (
@@ -241,7 +201,7 @@ export function HomeClient({ writings }: HomeClientProps) {
         <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-projects">
           <h2 id="more-projects">More projects &amp; curiosities</h2>
           <div className="minimal-more-list">
-            {MORE_PROJECTS.map((project) => {
+            {ARCHIVE_SITE_PROJECTS.map((project) => {
               const content = (
                 <>
                 <span className="minimal-more-thumb">

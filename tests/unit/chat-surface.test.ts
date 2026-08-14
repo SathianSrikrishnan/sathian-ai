@@ -33,7 +33,7 @@ describe('public chat surface', () => {
     const constants = readSource('src/lib/constants.ts')
 
     expect(widget).toContain('Sathian’s site agent')
-    expect(widget).toContain('Start with Tooth Fairy Network, the Solana learning dashboard, Sathian’s other public work, or leave him a note.')
+    expect(widget).toContain('I can explain and compare Sathian’s projects, find writing or the latest Draw with Tanda release, answer follow-up questions, and help you leave him a note.')
     expect(widget).toContain('Ask a question…')
     expect(widget).toContain('Write your note to Sathian…')
     expect(prompt).toContain("You are Sathian's site agent")
@@ -97,6 +97,14 @@ describe('public chat surface', () => {
     const widget = readSource('src/components/ChatWidget.tsx')
 
     expect(widget).toContain('if (open && !isHomepage && inputRef.current) inputRef.current.focus()')
+  })
+
+  it('lets a note-workflow answer open the note composer without navigating away', () => {
+    const widget = readSource('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain("msg.nextAction?.href === '/#compose-note'")
+    expect(widget).toContain('event.preventDefault()')
+    expect(widget).toContain("setComposerMode('note')")
   })
 
   it('scrolls only the transcript when an answer arrives', () => {

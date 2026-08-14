@@ -1,14 +1,14 @@
 import type { PublicMemoryCard } from '@/lib/agent/types'
 import {
-  CLINICAL_GUARD_PROJECT,
   DRAW_WITH_TANDA_EPISODES,
   LATEST_RELEASE,
   type SiteRelease,
 } from '@/content/site-releases'
 import {
-  AUTOQUOTE_AUTOMATOR_PROJECT,
-  SOLANA_OBSERVATORY_PROJECT,
-  TOOTH_FAIRY_NETWORK_PROJECT,
+  ACTIVE_SITE_PROJECTS,
+  ARCHIVE_SITE_PROJECTS,
+  SITE_PROJECTS,
+  projectAliasTag,
   type PublicSiteProject,
 } from '@/content/site-projects'
 
@@ -16,15 +16,50 @@ const PROFILE_SOURCE = 'https://sathian.ai/'
 const TFN_MAINNET_PROGRAM = 'https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC'
 
 function projectToPublicMemoryCard(project: PublicSiteProject): PublicMemoryCard {
+  const sourceRef = project.href.startsWith('/')
+    ? `https://sathian.ai${project.href}`
+    : project.href
   return {
     id: project.id,
     slug: project.slug,
     title: project.name,
-    body: project.agentSummary,
+    body: project.approvedClaims.join(' '),
     summary: project.description,
-    tags: project.tags,
-    source: { ref: project.href, kind: 'published_project' },
-    validFrom: '2026-08-10T00:00:00.000Z',
+    tags: Array.from(new Set([
+      ...project.topics,
+      project.slug,
+      `status-${project.status}`,
+      ...project.aliases.map(projectAliasTag),
+    ])),
+    source: { ref: sourceRef, kind: 'published_project' },
+    validFrom: `${project.reviewedAt}T00:00:00.000Z`,
+    validUntil: null,
+  }
+}
+
+function joinProjectNames(projects: readonly PublicSiteProject[]): string {
+  const names = projects.map((project) => project.name)
+  if (names.length <= 1) return names[0] ?? ''
+  if (names.length === 2) return names.join(' and ')
+  return `${names.slice(0, -1).join(', ')}, and ${names.at(-1)}`
+}
+
+function currentPublicWorkCard(): PublicMemoryCard {
+  const primary = ACTIVE_SITE_PROJECTS.find((project) => project.status === 'primary')
+  const otherActive = ACTIVE_SITE_PROJECTS.filter((project) => project.status === 'active')
+  const lastReviewedAt = ACTIVE_SITE_PROJECTS
+    .map((project) => project.reviewedAt)
+    .sort()
+    .at(-1)
+  return {
+    id: 'current-public-work',
+    slug: 'current-public-work',
+    title: 'What Sathian is building now',
+    body: `Sathian's primary public build is ${primary?.name}. ${joinProjectNames(otherActive)} are also active public builds. Draw with Tanda is the public family-content stream inside Tooth Fairy Network. ${joinProjectNames(ARCHIVE_SITE_PROJECTS)} are archived portfolio projects, not current active builds.`,
+    summary: 'Tooth Fairy Network first, supported by public learning, content, and a small active project portfolio.',
+    tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio', 'tooth-fairy-network'],
+    source: { ref: 'https://sathian.ai/', kind: 'published_page' },
+    validFrom: lastReviewedAt ? `${lastReviewedAt}T00:00:00.000Z` : null,
     validUntil: null,
   }
 }
@@ -49,27 +84,11 @@ export function releaseToPublicMemoryCard(
 
 export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
   return [
-    projectToPublicMemoryCard(TOOTH_FAIRY_NETWORK_PROJECT),
+    ...SITE_PROJECTS.map(projectToPublicMemoryCard),
     releaseToPublicMemoryCard(LATEST_RELEASE, { latest: true }),
     ...DRAW_WITH_TANDA_EPISODES
       .filter((release) => release.id !== LATEST_RELEASE.id)
       .map((release) => releaseToPublicMemoryCard(release)),
-    projectToPublicMemoryCard(AUTOQUOTE_AUTOMATOR_PROJECT),
-    projectToPublicMemoryCard(SOLANA_OBSERVATORY_PROJECT),
-    {
-      id: 'project-clinicalguard',
-      slug: 'clinicalguard',
-      title: CLINICAL_GUARD_PROJECT.title,
-      body: `${CLINICAL_GUARD_PROJECT.description} It was built for the ${CLINICAL_GUARD_PROJECT.event}.`,
-      summary: CLINICAL_GUARD_PROJECT.tagline,
-      tags: ['project', 'hackathon', 'clinicalguard', 'healthcare-ai', 'langgraph'],
-      source: {
-        ref: `https://sathian.ai${CLINICAL_GUARD_PROJECT.pageHref}`,
-        kind: 'published_page',
-      },
-      validFrom: '2026-03-01T00:00:00.000Z',
-      validUntil: null,
-    },
     {
       id: 'published-writing',
       slug: 'published-writing',
@@ -81,15 +100,27 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       validFrom: '2026-08-10T00:00:00.000Z',
       validUntil: null,
     },
+    currentPublicWorkCard(),
     {
-      id: 'current-public-work',
-      slug: 'current-public-work',
-      title: 'What Sathian is building now',
-      body: 'Sathian’s primary public build is Tooth Fairy Network, a private family time-capsule and future-gift product with a deployed Solana Mainnet program. Draw with Tanda and the Solana Ecosystem Observatory explain the story and the network behind it. AutoQuote Automator remains an active experiment. ClinicalGuard and earlier hackathons remain in the public archive.',
-      summary: 'Tooth Fairy Network first, supported by public learning, content, and a small active project portfolio.',
-      tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio', 'tooth-fairy-network'],
-      source: { ref: 'https://sathian.ai/', kind: 'published_page' },
-      validFrom: '2026-08-10T00:00:00.000Z',
+      id: 'site-agent-capabilities',
+      slug: 'site-agent-capabilities',
+      title: 'How Sathian’s site agent can help',
+      body: 'The site agent can explain and compare Sathian’s public projects, show the latest Draw with Tanda release, find Sathian’s writing, answer follow-up questions using the current conversation, and help a visitor deliberately leave Sathian a note with an optional reply address. It uses reviewed public context and gives one useful next step instead of a wall of links.',
+      summary: 'A focused guide to Sathian’s projects, writing, releases, and confirmed note workflow.',
+      tags: ['site-agent', 'capabilities', 'help', 'site-guide', 'navigation', 'public-context'],
+      source: { ref: 'https://sathian.ai/#featured-work', kind: 'published_page' },
+      validFrom: '2026-08-13T00:00:00.000Z',
+      validUntil: null,
+    },
+    {
+      id: 'site-agent-note-workflow',
+      slug: 'site-agent-note-workflow',
+      title: 'How to leave Sathian a note',
+      body: 'To leave Sathian a note, write your actual message in the note composer and add optional contact details only if you want a reply. Nothing is stored when you merely ask how notes work. The agent stores the note only when you deliberately send it, then returns a receipt if the intake succeeds.',
+      summary: 'A deliberate note composer with optional reply details and a real intake receipt.',
+      tags: ['site-agent', 'note', 'message', 'contact', 'receipt', 'intake'],
+      source: { ref: 'https://sathian.ai/#compose-note', kind: 'published_page' },
+      validFrom: '2026-08-13T00:00:00.000Z',
       validUntil: null,
     },
     {
