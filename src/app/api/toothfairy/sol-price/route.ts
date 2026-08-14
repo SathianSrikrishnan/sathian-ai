@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 // Cache SOL price for 5 minutes to avoid hammering the API
 let cachedPrice: { price: number; source: string; fetchedAt: number } | null = null
 const CACHE_TTL_MS = 5 * 60 * 1000
