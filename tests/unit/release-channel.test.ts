@@ -21,17 +21,23 @@ describe('durable release channel', () => {
     expect(profile).toContain('LATEST_RELEASE')
   })
 
-  it('publishes both known Draw with Tanda episodes from their verified YouTube records', () => {
+  it('publishes all known Draw with Tanda episodes from their verified YouTube records', () => {
     expect(releases).toContain("slug: 'finn-the-shark'")
     expect(releases).toContain("youtubeVideoId: 'ZoY1ZEzJymY'")
     expect(releases).toContain("slug: 'nori-the-narwhal'")
     expect(releases).toContain("id: 'draw-with-tanda-nori-2026-08-10'")
     expect(releases).toContain("youtubeVideoId: 'D0I_6me_WcU'")
     expect(releases).toContain("youtubeHref: 'https://youtu.be/D0I_6me_WcU'")
+    expect(releases).toContain("slug: 'dot-the-snail'")
+    expect(releases).toContain("id: 'draw-with-tanda-dot-2026-08-15'")
+    expect(releases).toContain("youtubeVideoId: '0ToPyZuATRQ'")
+    expect(releases).toContain("youtubeHref: 'https://youtu.be/0ToPyZuATRQ'")
+    expect(releases).toContain("activitySlug: 'snail'")
     expect(releases).not.toContain("status: 'next'")
     expect(drawChannel).toContain('DRAW_WITH_TANDA_EPISODES')
     expect(drawChannel).toContain('VideoObject')
     expect(drawChannel).toContain("episode.status === 'published'")
+    expect(drawChannel).toContain('episode.activitySlug')
   })
 
   it('preserves the approved TFN brand and complete social-link contract on the channel page', () => {

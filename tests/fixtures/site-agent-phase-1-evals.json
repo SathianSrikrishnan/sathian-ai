@@ -66,9 +66,9 @@
       "intent": "discover",
       "message": "What is the latest Draw with Tanda release?",
       "expectedOutcome": "answer",
-      "requiredFacts": ["Nori", "narwhal"],
-      "requiredSourceFragments": ["nori-the-narwhal"],
-      "forbiddenClaims": ["Finn is the latest release"]
+      "requiredFacts": ["Dot", "snail"],
+      "requiredSourceFragments": ["dot-the-snail"],
+      "forbiddenClaims": ["Finn is the latest release", "Nori is the latest release"]
     },
     {
       "id": "P1-08",

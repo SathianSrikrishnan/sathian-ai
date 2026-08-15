@@ -12,6 +12,7 @@ export interface SiteRelease {
   status: ReleaseStatus
   publishedAt: string | null
   pageHref: string
+  activitySlug: string
   image: string
   imageAlt: string
   youtubeVideoId: string | null
@@ -30,10 +31,11 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     title: 'Draw Finn the shark with Tanda',
     shortTitle: 'Finn the shark',
     description: 'A parent-and-child guided drawing lesson about a shark that can replace lost teeth throughout its life.',
-    agentSummary: 'The latest public release is Draw Finn the shark with Tanda, the first Draw with Tanda episode from Tooth Fairy Network. Families can watch the guided lesson and draw Finn together.',
+    agentSummary: 'Draw Finn the shark with Tanda is the first Draw with Tanda episode from Tooth Fairy Network. Families can watch the guided lesson and draw Finn together.',
     status: 'published',
     publishedAt: '2026-08-08',
     pageHref: `${DRAW_WITH_TANDA_CHANNEL_HREF}#finn-the-shark`,
+    activitySlug: 'shark',
     image: '/projects/tooth-fairy-network/draw-finn-thumbnail.jpg',
     imageAlt: 'Draw Finn Together episode artwork with Tanda and the finished shark drawing',
     youtubeVideoId: 'ZoY1ZEzJymY',
@@ -48,14 +50,34 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     title: 'Draw Nori the Narwhal Together | Easy Silhouette Drawing for Kids',
     shortTitle: 'Nori the narwhal',
     description: 'A guided family drawing lesson about Nori and the narwhal tooth that grows into a tusk.',
-    agentSummary: 'The latest public release is Draw Nori the Narwhal Together, the second Draw with Tanda episode from Tooth Fairy Network. Families can watch the two-minute guided lesson and draw Nori together.',
+    agentSummary: 'Draw Nori the Narwhal Together is the second Draw with Tanda episode from Tooth Fairy Network. Families can watch the two-minute guided lesson and draw Nori together.',
     status: 'published',
     publishedAt: '2026-08-10',
     pageHref: `${DRAW_WITH_TANDA_CHANNEL_HREF}#nori-the-narwhal`,
+    activitySlug: 'narwhal',
     image: '/projects/tooth-fairy-network/nori-narwhal-next.png',
     imageAlt: 'Tanda presenting Nori the narwhal in an icy storybook drawing world',
     youtubeVideoId: 'D0I_6me_WcU',
     youtubeHref: 'https://youtu.be/D0I_6me_WcU',
+    tags: ['latest-release', 'draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
+  },
+  {
+    id: 'draw-with-tanda-dot-2026-08-15',
+    slug: 'dot-the-snail',
+    series: 'Draw with Tanda',
+    episode: 3,
+    title: 'Draw Dot the Snail with Tanda | Easy Drawing for Kids',
+    shortTitle: 'Dot the snail',
+    description: 'A child-first guided drawing lesson: follow each line, choose your own colors, and take a photo of the finished Dot.',
+    agentSummary: 'The latest public release is Draw Dot the Snail with Tanda, the third Draw with Tanda episode from Tooth Fairy Network. Children can follow the line-by-line lesson, choose their own colors, and draw Dot together with Tanda.',
+    status: 'published',
+    publishedAt: '2026-08-15',
+    pageHref: `${DRAW_WITH_TANDA_CHANNEL_HREF}#dot-the-snail`,
+    activitySlug: 'snail',
+    image: '/projects/tooth-fairy-network/dot-snail-cover.jpg',
+    imageAlt: 'Dot the finished snail drawing beside a full-body Tanda with both wings visible',
+    youtubeVideoId: '0ToPyZuATRQ',
+    youtubeHref: 'https://youtu.be/0ToPyZuATRQ',
     tags: ['latest-release', 'draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
   },
 ]

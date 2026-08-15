@@ -11,7 +11,7 @@ import { toothFairySocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
   title: 'Draw with Tanda | Tooth Fairy Network',
-  description: 'Parent-and-child guided drawing episodes from Tooth Fairy Network, beginning with Finn the shark and Nori the narwhal.',
+  description: 'Child-first guided drawing episodes from Tooth Fairy Network with Tanda, Finn, Nori, Dot, and more animals to come.',
   openGraph: {
     title: 'Draw with Tanda | Tooth Fairy Network',
     description: 'Draw together, discover an animal tooth fact, and keep the story.',
@@ -135,7 +135,7 @@ function Episode({ episode }: { episode: SiteRelease }) {
             <a href={episode.youtubeHref!} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
               Watch on YouTube
             </a>
-            <a href={`https://toothfairy.network/draw/${episode.slug === 'nori-the-narwhal' ? 'narwhal' : 'shark'}`} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
+            <a href={`https://toothfairy.network/draw/${episode.activitySlug}`} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
               Open the drawing activity
             </a>
           </div>

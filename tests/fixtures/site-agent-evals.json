@@ -96,11 +96,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Nori", "narwhal"],
-        "forbiddenClaims": ["Finn is the latest"],
-        "requiredSourceFragments": ["nori-the-narwhal"],
+        "requiredFacts": ["Dot", "snail"],
+        "forbiddenClaims": ["Finn is the latest", "Nori is the latest"],
+        "requiredSourceFragments": ["dot-the-snail"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "latest release", "hrefFragment": "nori-the-narwhal" },
+        "action": { "labelFragment": "latest release", "hrefFragment": "dot-the-snail" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
