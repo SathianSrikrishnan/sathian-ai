@@ -36,7 +36,12 @@ Scope: replace the latest Draw With Tanda feature from Nori the narwhal to Dot t
 
 ## Production
 
-- Release commit: pending
-- Vercel deployment ID: pending
-- Deployment URL: pending
-- `https://sathian.ai` verification: pending
+- Release commit: `639d64b214d8e71912d597b5dcc5d645620defbb`
+- Vercel deployment ID: `dpl_3Qxhmith6JMEXKF6F621fak5w6aj`
+- Deployment URL: `https://sathian-2lug3s8op-sathiansrikrishnans-projects.vercel.app`
+- Production alias: `https://sathian.ai`
+- Deployment status: `READY`
+- Live homepage: 3 public episodes and the Dot video ID were verified.
+- Live Draw With Tanda page: Dot, video ID `0ToPyZuATRQ`, and `/draw/snail` were verified; no horizontal overflow.
+- Regression routes: `/`, Draw With Tanda, ClinicalGuard, writings, hackathons, robots, and sitemap all returned HTTP 200.
+- Post-deploy Vercel error scan: no error logs found.
