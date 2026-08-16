@@ -46,7 +46,7 @@ async function inspect(viewport, suffix) {
     const agent = page.locator('#agent')
     const featured = page.locator('#featured-work')
     const firstFeatured = page.locator('.minimal-featured-list article').first()
-    if (!await firstFeatured.getByRole('heading', { name: 'Saraswati, Lakshmi, and the Ledger' }).count()) {
+    if (!await firstFeatured.getByRole('heading', { name: 'The Polytheistic Test' }).count()) {
       throw new Error(`${suffix}: flagship essay is not first in Featured Work`)
     }
     const agentBox = await agent.boundingBox()
@@ -60,7 +60,7 @@ async function inspect(viewport, suffix) {
     await page.goto(`${baseUrl}/writings`, { waitUntil: 'domcontentloaded' })
     await page.waitForTimeout(1000)
     const firstWriting = page.locator('main a[href^="/writings/"]').first()
-    if (!await firstWriting.getByText('Saraswati, Lakshmi, and the Ledger').count()) {
+    if (!await firstWriting.getByText('The Polytheistic Test').count()) {
       throw new Error(`${suffix}: flagship essay is not first in Writing`)
     }
     await assertPageClean(
@@ -75,7 +75,7 @@ async function inspect(viewport, suffix) {
     )
     await page.waitForTimeout(1000)
     if (!response || response.status() !== 200) throw new Error(`${suffix}: essay did not return 200`)
-    await page.getByRole('heading', { name: /Saraswati, Lakshmi/ }).waitFor()
+    await page.getByRole('heading', { name: 'The Polytheistic Test' }).waitFor()
     await page.waitForFunction(
       () => Array.from(document.images).every((image) => image.complete),
       undefined,
@@ -100,6 +100,14 @@ async function inspect(viewport, suffix) {
     )
     if (firstFrameFit !== 'contain') {
       throw new Error(`${suffix}: first visual frame still crops the paired image`)
+    }
+    if (suffix === 'mobile') {
+      const heroFit = await page.locator('.hero-art img').evaluate(
+        (image) => ({ fit: getComputedStyle(image).objectFit, ratio: getComputedStyle(image).aspectRatio }),
+      )
+      if (heroFit.fit !== 'contain' || heroFit.ratio !== 'auto') {
+        throw new Error(`${suffix}: hero image still crops instead of showing the complete composition`)
+      }
     }
     await page.locator('input[type="checkbox"]').first().check()
     if (await page.locator('[data-saraswati-score]').textContent() !== '1') {

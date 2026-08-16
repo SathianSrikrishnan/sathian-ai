@@ -7,17 +7,24 @@ import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 
 const read = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
 
-describe('Saraswati, Lakshmi, and the Ledger release', () => {
+describe('The Polytheistic Test release', () => {
   it('is the newest published writing with the approved editorial contract', () => {
     expect(articles[0]).toMatchObject({
       slug: 'saraswati-lakshmi-and-the-ledger',
-      title: 'Saraswati, Lakshmi, and the Ledger',
+      title: 'The Polytheistic Test',
       date: '2026-08-14',
     })
-    expect(articles[0].body).toContain('I do not see my daughters every day.')
-    expect(articles[0].body).toContain('two kinds of power')
+    expect(articles[0].body).toContain('“Why does Saraswati carry music?” one of my seven-year-old daughters asked me.')
+    expect(articles[0].body).toContain('I was born Hindu. It took my children to make me study what I had inherited.')
+    expect(articles[0].body).toContain('Every technology should pass two tests')
     expect(articles[0].body).toContain('AI is polytheistic, not monotheistic')
+    expect(articles[0].body).toContain('I used the tests first on the Solana Observatory')
+    expect(articles[0].sectionHeadings).toContain('Other places I am testing this')
+    expect(articles[0].sectionHeadings).toContain('Where this metaphor could break')
+    expect(articles[0].body).toContain('crypto communities become gated communities')
     expect(articles[0].body).toContain('What can the ledger actually prove?')
+    expect(articles[0].body).not.toContain('I do not see my daughters every day.')
+    expect(articles[0].body).not.toContain('promotional subject')
   })
 
   it('serves the interactive essay at its canonical writing URL', () => {
@@ -26,7 +33,16 @@ describe('Saraswati, Lakshmi, and the Ledger release', () => {
 
     expect(config).toContain("source: '/writings/saraswati-lakshmi-and-the-ledger'")
     expect(config).toContain("destination: '/features/saraswati-lakshmi-ledger.html'")
+    expect(essay).toContain('<title>The Polytheistic Test</title>')
+    expect(essay).toContain('<h1>The<span>Polytheistic Test</span></h1>')
+    expect(essay).toContain('“Why does Saraswati carry music?”')
     expect(essay).toContain('The Saraswati test and the Lakshmi test.')
+    expect(essay).toContain('class="project project-primary"')
+    expect(essay).toContain('Other places I am testing this.')
+    expect(essay).toContain('Where this metaphor could break.')
+    expect(essay).toContain('crypto communities become gated communities')
+    expect(essay).toContain('.hero-art img { aspect-ratio: auto; height: auto; object-fit: contain;')
+    expect(essay).not.toContain('My daughters remain part of the reason')
     expect(essay).toContain('data-saraswati-score')
     expect(essay).toContain('/media/flagship-hero.png')
     expect(essay).toContain('/sathian-profile.png')
@@ -61,6 +77,7 @@ describe('Saraswati, Lakshmi, and the Ledger release', () => {
 
     expect(writing?.source.ref).toBe('https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger')
     expect(writing?.body).toContain('newest featured writing')
+    expect(writing?.title).toContain('The Polytheistic Test')
     expect(writing?.body).toContain('Saraswati test')
     expect(release?.title).toContain('Latest release:')
   })

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Saraswati, Lakshmi, and the Ledger</title>
-  <meta name="description" content="An old framework for thinking about intelligence, programmable value, and what deserves to be built next.">
-  <meta property="og:title" content="Saraswati, Lakshmi, and the Ledger">
-  <meta property="og:description" content="Two ancient questions for the agentic age: does it deepen knowledge, and does it create durable value?">
+  <title>The Polytheistic Test</title>
+  <meta name="description" content="What Saraswati and Lakshmi ask of AI, crypto, and power.">
+  <meta property="og:title" content="The Polytheistic Test">
+  <meta property="og:description" content="What Saraswati and Lakshmi ask of AI, crypto, and power.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://sathian.ai/media/flagship-hero.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -149,6 +149,14 @@
     .project .utility { color: var(--brass); font-size: .6rem; }
     .project h3 { margin: 54px 0 12px; font-size: clamp(2rem, 3.4vw, 3.5rem); font-weight: 500; line-height: .95; }
     .project p { max-width: 480px; margin: 0; color: var(--stone); font-size: .9rem; }
+    .project-primary { grid-column: 1 / -1; min-height: 360px; background: linear-gradient(125deg, rgba(101,212,208,.08), rgba(200,154,67,.08)), var(--carbon-soft); }
+    .project-primary h3 { max-width: 900px; font-size: clamp(3rem, 6vw, 6.2rem); }
+    .project-primary p { max-width: 760px; font-size: 1rem; }
+    .project-secondary { min-height: 230px; }
+    .project-secondary h3 { margin-top: 34px; }
+    .project-secondary:last-child { grid-column: 1 / -1; }
+    .subchapter-head { margin-top: clamp(70px, 9vw, 120px); }
+    .closing-question { max-width: 900px; margin-top: 38px; }
     .breaks { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(40px, 8vw, 120px); align-items: start; }
     .breaks img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--line); }
     .breaks h2 { margin-bottom: 34px; }
@@ -173,9 +181,9 @@
     @media (max-width: 680px) {
       .nav-links a:not(:last-child) { display: none; }
       h1 { font-size: clamp(3.4rem, 17vw, 5.4rem); }
-      h1 span { margin-left: 0; }
+      h1 span { margin-left: 0; font-size: .78em; }
       .dek { width: 100%; margin-left: 0; }
-      .hero-art img { aspect-ratio: 4 / 5; object-position: center; }
+      .hero-art img { aspect-ratio: auto; height: auto; object-fit: contain; object-position: center; }
       .hero-art figcaption { position: static; border-left: 0; }
       .portrait-grid, .test-definitions, .balance-result, .projects { grid-template-columns: 1fr; }
       .portrait-grid { gap: 48px; }
@@ -186,6 +194,7 @@
       .reel { grid-auto-columns: 86vw; }
       .reel-card { min-height: 118vw; }
       .reel-card:first-child { min-height: auto; }
+      .project-primary, .project-secondary:last-child { grid-column: auto; }
       .timeline { grid-template-columns: 1fr; }
       .moment, .moment + .moment { min-height: auto; border-top: 1px solid var(--line); border-left: 0; }
       .moment:first-child { border-top: 0; }
@@ -206,15 +215,14 @@
       <div class="nav-links">
         <a href="#origin">Origin</a>
         <a href="#framework-test">Try the tests</a>
-        <a href="#crypto-101">Crypto 101</a>
         <a href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/">Observatory</a>
       </div>
     </nav>
 
     <header class="hero">
       <p class="eyebrow">A working framework for the agentic age</p>
-      <h1>Saraswati, Lakshmi,<span>and the Ledger</span></h1>
-      <p class="dek">AI is making capability easier to access. Crypto is making value easier to program. An old pair of questions helps me decide what deserves to be built next.</p>
+      <h1>The<span>Polytheistic Test</span></h1>
+      <p class="dek">What Saraswati and Lakshmi ask of AI, crypto, and power.</p>
     </header>
   </div>
 
@@ -226,14 +234,14 @@
   <main id="article">
     <section class="chapter shell" id="origin" data-reveal>
       <header class="chapter-head">
-        <h2>Two kinds of power.</h2>
+        <h2>A question I inherited.</h2>
       </header>
       <div class="reading body-copy">
-        <p>I do not see my daughters every day. But every time we are together, they leave me with at least one question I am still thinking about after they go home. At seven, they ask why different gods hold different things. Why one sits on a flower. Why knowledge has music.</p>
-        <p>I was born into Hinduism, but their questions have made me study parts of it more carefully than I did as a child. Every answer seems to produce another question. I have spent more time following the strange side paths of those conversations than I care to admit.</p>
-        <p>Eventually I gave them a simple mnemonic: two kinds of power. Saraswati is associated with learning, speech, music, memory, and discernment. Lakshmi is associated with prosperity, abundance, good fortune, and flourishing. One asks what you understand. The other asks what you do with what you have.</p>
-        <p>That is not a complete map of Hinduism. Hindu traditions are plural, regional, and full of overlapping meanings. What I like about the frame is that one figure is never asked to carry every human need. Knowledge, prosperity, protection, destruction, and devotion can have different faces. The stories can disagree and still leave something useful behind.</p>
-        <p class="quiet-note">My daughters remain part of the reason for this piece, not its promotional subject.</p>
+        <p>“Why does Saraswati carry music?” one of my seven-year-old daughters asked me.</p>
+        <p>I was born Hindu. It took my children to make me study what I had inherited. At their age, the questions are direct. Why does Lakshmi sit on a flower? Why do different gods hold different things? Why does knowledge need music?</p>
+        <p>I gave them a simple answer. Saraswati represents learning, speech, memory, music, and discernment. Lakshmi represents prosperity, abundance, good fortune, and flourishing. One asks what you understand. The other asks what you do with what you have.</p>
+        <p class="lead">That answer became a test I now use on technology: does it deepen human understanding, and does it create durable flourishing?</p>
+        <p>This is not a complete map of Hinduism. Hindu traditions are plural, regional, and full of overlapping meanings. What stays with me is the refusal to make one figure carry every human need. Power is divided so we can inspect it.</p>
       </div>
       <aside class="author-note" aria-label="About the author">
         <img src="/sathian-profile.png" alt="Sathian Srikrishnan">
@@ -255,7 +263,7 @@
       <blockquote id="polytheistic-title">What if AI is polytheistic?</blockquote>
       <div>
         <p>I encountered a modern version of this frame through Balaji Srinivasan and the Network School. His phrase is blunt: “AI is polytheistic, not monotheistic.” There may never be one all-knowing model. There are many models, built by different groups, with different strengths, limitations, values, and patrons.</p>
-        <p>That felt immediately familiar. In the Hindu frame, different forms of divinity help people think about different forces. You do not ask one symbol to explain everything. I now look at the frontier AI labs in a similar way: not one oracle, but a pantheon of imperfect intelligences. The model you choose matters. So does who built it, what it was trained to reward, and what you ask it to do.</p>
+        <p>That felt familiar. Polytheism, as I am using it here, is not a claim that software is divine. It is a refusal to collapse every kind of power into one authority. I look at the frontier AI labs as a pantheon of imperfect intelligences: not one oracle, but many models built by different groups. The model you choose matters. So does who built it, what it rewards, and what you ask it to do.</p>
         <p>The analogy is imperfect, but it gives me a better question than “Which AI wins?” What kind of power does this model offer—and what is missing from it? That is where the Saraswati and Lakshmi tests begin.</p>
         <p><a href="https://balajis.com/p/ai-is-polytheistic-not-monotheistic">Balaji: AI is polytheistic, not monotheistic</a> · <a href="https://balajis.com/p/network-school">The Network School</a></p>
       </div>
@@ -303,6 +311,17 @@
       </div>
     </section>
 
+    <section class="chapter shell" data-reveal>
+      <header class="chapter-head">
+        <h2>The temptation on both sides.</h2>
+      </header>
+      <div class="reading body-copy">
+        <p>AI can make intelligence easier to access. It can also make confident nonsense easier to produce. A model can help a child learn, help a founder write software, or help a fraudster manufacture evidence. Faster output does not pass the Saraswati test. Better judgment might.</p>
+        <p>Crypto can make ownership and settlement programmable. It can also build a faster casino and call the activity adoption. A rising token price does not pass the Lakshmi test. I want to know what value remains, who receives it, and who carried the risk.</p>
+        <p>The point is not to produce a perfect score. It is to expose the question enthusiasm would rather ignore.</p>
+      </div>
+    </section>
+
     <section class="chapter" aria-labelledby="reel-title" data-reveal>
       <div class="shell">
         <header class="chapter-head">
@@ -340,59 +359,36 @@
       </div>
     </section>
 
-    <section class="chapter shell" id="crypto-101" data-reveal>
-      <header class="chapter-head">
-        <h2>From digital money to software that can spend.</h2>
-      </header>
-      <p class="tests-intro">Bitcoin, Ethereum, Solana, and agentic payments are not the same technology. This is the shortest map I know from a digital receipt to software that can act on one.</p>
-      <div class="timeline">
-        <section class="moment">
-          <b>2008 / Bitcoin</b>
-          <h3>Scarcity strangers can check</h3>
-          <p>A public ledger made digital ownership and settlement possible without one central bookkeeper. <a href="https://sathian.ai/writings/nine-pages">Read Nine Pages</a>.</p>
-        </section>
-        <section class="moment">
-          <b>2015 / Ethereum</b>
-          <h3>The ledger becomes programmable</h3>
-          <p>Smart contracts let applications share executable rules, assets, and settlement.</p>
-        </section>
-        <section class="moment">
-          <b>2020 / Solana</b>
-          <h3 class="solana-heading"><img src="/media/solana-logomark.svg" alt="">Lower-cost execution</h3>
-          <p>Solana optimized a layer one for fast, inexpensive activity, with real validator hardware and stake-distribution trade-offs.</p>
-        </section>
-        <section class="moment">
-          <b>Next / Agentic</b>
-          <h3>Software can act—and settle</h3>
-          <p>Agents can choose and transact. The hard part is giving them limits, accountability, and receipts.</p>
-        </section>
-      </div>
-    </section>
-
     <section class="chapter shell" data-reveal>
       <header class="chapter-head">
-        <h2>What I am testing in public.</h2>
+        <h2>The Observatory test.</h2>
       </header>
       <div class="projects">
-        <a class="project" href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/">
-          <span class="utility">Inspect the rails →</span>
+        <a class="project project-primary" href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/">
+          <span class="utility">The primary worked example →</span>
           <h3>Solana Observatory</h3>
-          <p>Is the network reliable, used, economically meaningful, and becoming real financial infrastructure? The evidence stays attached to every claim.</p>
+          <p>I used the tests first on a dashboard asking whether Solana is reliable, used, economically meaningful, and becoming real financial infrastructure. The Saraswati side makes every number carry its definition, source, freshness, and limitation. The Lakshmi side asks whether the activity creates durable value—or merely mistakes motion for progress.</p>
+          <p>A ledger can prove what was recorded and which rules executed. It cannot prove that every outside claim was honest. Cryptographic truth has a boundary.</p>
         </a>
-        <a class="project" href="https://toothfairy.network">
+      </div>
+      <header class="chapter-head subchapter-head">
+         <h2>Other places I am testing this.</h2>
+      </header>
+      <div class="projects">
+        <a class="project project-secondary" href="https://toothfairy.network">
           <span class="utility">Family memory →</span>
           <h3>Tooth Fairy Network</h3>
-          <p>Can a childhood ritual become a durable memory object with transparent, longer-term incentives for families?</p>
+          <p>Can a childhood ritual become a durable memory without turning family affection into speculation?</p>
         </a>
-        <a class="project" href="https://sathian.ai/writings/agent-allowance-lab">
+        <a class="project project-secondary" href="https://sathian.ai/writings/agent-allowance-lab">
           <span class="utility">Bounded agency →</span>
           <h3>Agent Allowance Lab</h3>
-          <p>Can software receive a useful budget without receiving an unlimited wallet? This is the smallest version of accountable agentic payments.</p>
+          <p>Can software receive a useful budget without receiving an unlimited wallet?</p>
         </a>
-        <a class="project" href="https://sathian.ai">
+        <a class="project project-secondary" href="https://sathian.ai">
           <span class="utility">Public interface →</span>
           <h3>The site assistant</h3>
-          <p>Can my research, writing, and working memory become easier to question without turning an AI answer into unquestioned authority?</p>
+          <p>Can research and memory become easier to question without turning an AI answer into authority?</p>
         </a>
       </div>
     </section>
@@ -403,7 +399,8 @@
         <figcaption>The ledger preserves the receipt. Human judgment still decides what the receipt means.</figcaption>
       </figure>
       <div>
-        <h2>Where the metaphor breaks.</h2>
+         <h2>Where this metaphor could break.</h2>
+         <p class="tests-intro">The weak seams deserve their own explorations: what happens when crypto communities become gated communities, when access becomes status, and when a protocol's openness stops at the front door?</p>
         <div class="break-list">
           <div class="break-item"><b>AI is not wisdom</b><p>It predicts plausible outputs. It can accelerate learning and manipulation with the same machinery.</p></div>
           <div class="break-item"><b>Crypto is not prosperity</b><p>Programmable ownership can coordinate real value or manufacture a faster casino.</p></div>
@@ -415,7 +412,8 @@
 
     <section class="closing">
       <div class="shell">
-        <blockquote>What do we know? Who flourishes? What can the ledger actually prove?</blockquote>
+        <blockquote>I do not need my daughters to inherit my conclusions. I want them to inherit better questions.</blockquote>
+        <p class="lead closing-question">What do we know? Who flourishes? What can the ledger actually prove?</p>
         <div class="closing-actions">
           <a class="button" href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/">Open the Solana Observatory →</a>
           <a class="button secondary" href="https://sathian.ai">Explore the rest of the work →</a>
