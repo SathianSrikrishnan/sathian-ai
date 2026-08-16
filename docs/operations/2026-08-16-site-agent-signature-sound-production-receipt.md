@@ -42,4 +42,3 @@ The source reference is Fabolous's “Quiet Storm Freestyle” with DJ Clue. The
 ## Known unrelated finding
 
 The broad homepage Axe audit still reports the pre-existing rust-on-paper contrast issue (`#b84e1a` on `#ead9bb`) outside the site-agent panel. The agent-scoped desktop/mobile Axe checks for this release passed with no violations.
-
