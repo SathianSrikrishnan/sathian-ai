@@ -1,6 +1,6 @@
 # Sathian.ai release workflow
 
-Last updated: 2026-08-14
+Last updated: 2026-08-16
 
 ## One active source
 
@@ -47,6 +47,8 @@ Every Sathian.ai production change follows the same path: update the canonical `
 
 ## Release gate
 
+Every site change uses this same gate; do not create a page-specific release path. The gate checks unit and source contracts, the 60-case site-agent evaluation, critical production dependency exposure, a production build, visible editorial H1s and metadata on the main public surfaces, security headers, desktop/mobile overflow, and real browser audio playback. The preview workflow repeats the browser checks and stores screenshots before production approval.
+
 ```powershell
 # Source / context:
 # Sathian.ai canonical production release worktree
@@ -57,12 +59,11 @@ cd "C:\Users\sathi\Projects\sathian-ai\worktrees\hackathon-portfolio-release"
 git fetch origin main
 git rev-parse HEAD
 git rev-parse origin/main
-npm run test:unit
-npm run build
+npm run release:verify
 git diff --check
 ```
 
-The two commit hashes must match before release work begins. Preserve unrelated dirty or untracked files and stage only the intended release.
+The two commit hashes must match before release work begins. Preserve unrelated dirty or untracked files and stage only the intended release. A green critical-vulnerability gate does not erase the documented high/moderate dependency-upgrade backlog; that remains an isolated compatibility project rather than an automatic breaking upgrade.
 
 ## Production release
 
@@ -91,7 +92,7 @@ The separate 08:00 Telegram analytics digest remains in the protected `codex/web
 
 GitHub workflow: [Site Agent Quality](https://github.com/SathianSrikrishnan/sathian-ai/actions/workflows/site-agent-quality.yml)
 
-- Push or internal pull request: unit tests, 60-case offline evaluation, production build, frozen protected preview, 10-case live canary, and desktop/mobile browser proof.
+- Push or internal pull request: critical production dependency audit, unit tests, 60-case offline evaluation, production build, frozen protected preview, 10-case live canary, public-page title/metadata/security checks, and desktop/mobile chat and sound proof.
 - Daily at `13:17 UTC`: 60-case source gate plus exactly three production questions covering projects/web apps, writing, and the latest Draw with Tanda release.
 - Manual dispatch: the same bounded production smoke or an explicitly selected full 10-case canary.
 - Live runs cannot submit notes and stop at the first HTTP 429.

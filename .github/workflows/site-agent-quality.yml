@@ -47,6 +47,8 @@ jobs:
           cache: npm
       - run: npm install --global npm@10.8.2
       - run: npm ci
+      - name: Production dependency security gate
+        run: npm audit --omit=dev --audit-level=critical
       - name: Unit tests
         run: npm run test:unit
       - name: Site Agent 60-case gate
@@ -118,10 +120,20 @@ jobs:
         run: |
           python -m pip install playwright==1.58.0
           python -m playwright install --with-deps chromium
+          npx playwright install chromium
       - name: Verify chat UI without submitting a real note or question
         env:
           PORTAL_BASE_URL: ${{ steps.preview.outputs.url }}
         run: python tests/browser/chat_memory_check.py
+      - name: Verify public surfaces, security headers, and mobile layout
+        env:
+          SITE_URL: ${{ steps.preview.outputs.url }}
+          BROWSER_PROOF_DIR: ${{ runner.temp }}/public-surface
+        run: node tests/browser/public_surface_check.cjs
+      - name: Verify site-agent sound and real mobile playback
+        env:
+          SITE_URL: ${{ steps.preview.outputs.url }}
+        run: node tests/browser/site_agent_sound_check.cjs
       - name: Upload preview proof
         if: always()
         uses: actions/upload-artifact@v4
@@ -129,6 +141,7 @@ jobs:
           name: site-agent-preview-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/site-agent-live
+            ${{ runner.temp }}/public-surface
             docs/analytics/site-agent-evals/2026-08-11-phase-2-browser
           if-no-files-found: warn
           retention-days: 30

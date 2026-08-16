@@ -3,6 +3,16 @@ const { chromium } = require('playwright')
 const baseUrl = (process.env.SITE_URL || 'http://127.0.0.1:3000').replace(/\/$/, '')
 const axePath = require.resolve('axe-core/axe.min.js')
 const agentSessionKey = 'sathian-agent-session-id'
+const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+
+function contextOptions(viewport) {
+  return {
+    viewport,
+    extraHTTPHeaders: automationBypassSecret
+      ? { 'x-vercel-protection-bypass': automationBypassSecret }
+      : undefined,
+  }
+}
 
 async function gotoHydratedAgentPage(page, path) {
   await page.evaluate((key) => sessionStorage.removeItem(key), agentSessionKey).catch(() => undefined)
@@ -11,7 +21,7 @@ async function gotoHydratedAgentPage(page, path) {
 }
 
 async function verifyViewport(browser, label, viewport) {
-  const context = await browser.newContext({ viewport })
+  const context = await browser.newContext(contextOptions(viewport))
   await context.addInitScript(() => {
     window.__siteAgentSoundPlays = []
     window.__siteAgentEvents = []
@@ -157,7 +167,7 @@ async function verifyViewport(browser, label, viewport) {
 }
 
 async function verifyActualMobilePlayback(browser) {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  const context = await browser.newContext(contextOptions({ width: 390, height: 844 }))
   const page = await context.newPage()
   page.setDefaultTimeout(10_000)
   await page.route('**/api/agent/message', async (route) => {
