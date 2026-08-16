@@ -66,3 +66,21 @@ placement, and whether the bridge to Solana Observatory is obvious enough.
 - `npm run build`: production build and type checks passed locally and on Vercel.
 - Live desktop and 390px mobile checks passed image loading, alignment, interaction,
   horizontal-overflow, and scoped Axe accessibility checks.
+
+## Deployment three — final editorial pass
+
+- Production commit: `c8047ef2fabbc0a49d646c810540bc08354a3d81`
+- Deployment: `dpl_7B6Smt2hqnxbbzo2JFR9VDWdKgnm`
+- Deployment URL: `https://sathian-qwfub1grh-sathiansrikrishnans-projects.vercel.app`
+- Production alias: `https://sathian.ai`
+- Retitled the essay *The Polytheistic Test* and rewrote the opening around a
+  specific question from Sathian's daughter.
+- Brought the two tests forward, made Solana Observatory the worked example,
+  and moved the other projects into a secondary experiments section.
+- Reframed the final section as “Where this metaphor could break” and opened a
+  future question about crypto communities becoming gated communities.
+- The mobile hero now preserves the full paired composition without cropping.
+- `npm run test:unit`: 54 files and 380 tests passed.
+- Local and Vercel production builds passed.
+- Live desktop and 390px mobile checks passed page order, images, interaction,
+  complete mobile hero rendering, horizontal overflow, and scoped Axe checks.

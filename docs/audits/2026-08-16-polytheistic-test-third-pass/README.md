@@ -2,7 +2,7 @@
 
 Date: 2026-08-16
 
-Status: local review only; not committed, pushed, deployed, or published to Substack.
+Status: approved and deployed to sathian.ai. The Substack edition remains unpublished.
 
 ## Editorial changes
 
@@ -33,7 +33,13 @@ Status: local review only; not committed, pushed, deployed, or published to Subs
 
 ## Review URL
 
-`http://127.0.0.1:3120/writings/saraswati-lakshmi-and-the-ledger`
+`https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger`
 
-The local preview server must be running for this URL. Production remains on
-the previously approved version until Sathian explicitly approves deployment.
+Production deployment: `dpl_7B6Smt2hqnxbbzo2JFR9VDWdKgnm`.
+
+## Substack handoff
+
+The unpublished, Substack-native adaptation is preserved at
+`docs/publishing/2026-08-16-the-polytheistic-test-substack-draft.md`. It keeps
+the argument and four visual moments while replacing the web-only interaction
+with a concise reading flow. Publication still requires Sathian's approval.
