@@ -1,7 +1,7 @@
 # Site-agent signature replay readiness receipt
 
 Date: 2026-08-16
-State: Verified locally on canonical `main`; explicitly authorized for production deployment
+State: Released to production from canonical `main`
 
 ## Prepared change
 
@@ -35,6 +35,6 @@ The audit found no new component provider, API route, dependency, storage key, a
 
 ## Release boundary
 
-Production remains at the previously recorded sound release until the authorized push and deployment complete. The unrelated untracked publishing draft was preserved untouched.
+Production deployment and live verification are recorded in `docs/operations/2026-08-16-site-agent-signature-replay-production-receipt.md`. The unrelated untracked publishing draft was preserved untouched.
 
 The existing unresolved public-use clearance note for the DJ Clue master remains unchanged. This addition is treated as a measured site prototype, not advertising or a cross-platform asset.

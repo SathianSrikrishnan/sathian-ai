@@ -53,6 +53,15 @@ async function verifyViewport(browser, label, viewport) {
 
   await page.getByRole('button', { name: 'Open chat' }).click()
   await page.waitForTimeout(200)
+  const architectureCounts = await page.evaluate(() => ({
+    agentRoots: document.querySelectorAll('[data-site-agent-root]').length,
+    audioElements: document.querySelectorAll('[data-site-agent-root] audio').length,
+    chatPanels: document.querySelectorAll('[data-chat-panel]').length,
+    replayControls: document.querySelectorAll('[data-agent-signature-replay]').length,
+  }))
+  if (Object.values(architectureCounts).some((count) => count !== 1)) {
+    throw new Error(`${label}: duplicate or missing site-agent architecture: ${JSON.stringify(architectureCounts)}`)
+  }
   const wakePlays = await page.evaluate(() => window.__siteAgentSoundPlays)
   if (wakePlays.length === 0) {
     const diagnostics = await page.evaluate(() => ({
@@ -78,7 +87,16 @@ async function verifyViewport(browser, label, viewport) {
   const audibleReplays = replayPlays.filter((play) => !play.muted && play.src.includes('/audio/site-agent-note-signature.mp3'))
   if (audibleReplays.length !== 2) throw new Error(`${label}: expected two deliberate signature replays, saw ${audibleReplays.length}`)
 
-  const replayEvents = await page.evaluate(() => window.__siteAgentEvents.filter((event) => event.eventName === 'agent_signature_replayed'))
+  const replayEvents = await page.evaluate(() => {
+    const queuedEvents = Array.isArray(window.dataLayer)
+      ? window.dataLayer
+        .map((entry) => Array.from(entry))
+        .filter(([command]) => command === 'event')
+        .map(([, eventName, properties]) => ({ eventName, properties }))
+      : []
+    return [...window.__siteAgentEvents, ...queuedEvents]
+      .filter((event) => event.eventName === 'agent_signature_replayed')
+  })
   if (replayEvents.length !== 2 || replayEvents.some((event) => event.properties?.placement !== 'agent_controls')) {
     throw new Error(`${label}: replay analytics were not recorded safely: ${JSON.stringify(replayEvents)}`)
   }
