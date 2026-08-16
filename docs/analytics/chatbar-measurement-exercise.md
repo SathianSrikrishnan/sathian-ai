@@ -11,3 +11,10 @@ Use this after the release reaches production.
 7. Confirm that event parameters contain routes, labels, booleans, and counts—but no question text, email address, or filename.
 
 Mark `agent_note_sent` as the primary key event. Use `agent_question_submitted -> agent_answer_received -> agent_source_opened or agent_note_sent` as the first conversion funnel.
+
+## Signature replay check
+
+1. Open the agent with sounds enabled and press `Replay signature` once.
+2. Confirm one `agent_signature_replayed` event with `placement: agent_controls` and the current page. No chat text, identity, contact detail, or filename should be present.
+3. Mute agent sounds and confirm the replay control becomes unavailable. Turn sounds back on before continuing.
+4. Review `agent_signature_replayed / agent_widget_viewed` weekly as an optional engagement ratio. Do not mark replay as a conversion or optimize the site around it until there is a useful baseline.

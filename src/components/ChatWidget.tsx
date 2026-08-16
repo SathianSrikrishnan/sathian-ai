@@ -245,6 +245,14 @@ export function ChatWidget() {
     })
   }, [])
 
+  const replayAgentSignature = useCallback(() => {
+    trackSiteEvent('agent_signature_replayed', {
+      page: pathname,
+      placement: 'agent_controls',
+    })
+    playAgentSound('noteDelivered')
+  }, [pathname, playAgentSound])
+
   const clearFile = useCallback(() => {
     setFile(null)
     setFileError(null)
@@ -652,6 +660,20 @@ export function ChatWidget() {
                </button>
              </div>
             </div>
+            <button
+              type="button"
+              data-agent-signature-replay
+              onClick={replayAgentSignature}
+              disabled={!soundEnabled}
+              title={soundEnabled ? 'Play the complete site-agent signature' : 'Turn on agent sounds to replay the signature'}
+              className="site-agent-signature-replay focus-visible:outline-none"
+            >
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15.8 6.4A7 7 0 1 0 17 12" />
+                <path d="M15.8 2.8v3.6h-3.6" />
+              </svg>
+              Replay signature
+            </button>
           </div>
 
           {/* Messages */}

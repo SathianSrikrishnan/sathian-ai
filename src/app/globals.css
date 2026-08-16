@@ -1645,6 +1645,36 @@ h1, h2, h3 {
   color: var(--agent-muted);
 }
 
+.site-agent-signature-replay {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 5px;
+  margin: 4px 0 -6px 60px;
+  padding: 2px 0;
+  color: var(--agent-faint);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.site-agent-signature-replay:hover:not(:disabled) {
+  color: var(--agent-ink);
+}
+
+.site-agent-signature-replay:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--agent-cyan);
+  outline-offset: 3px;
+}
+
+.site-agent-signature-replay:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
 .site-agent-messages {
   background:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),

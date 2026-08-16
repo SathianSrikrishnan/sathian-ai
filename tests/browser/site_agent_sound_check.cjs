@@ -2,11 +2,22 @@ const { chromium } = require('playwright')
 
 const baseUrl = (process.env.SITE_URL || 'http://127.0.0.1:3000').replace(/\/$/, '')
 const axePath = require.resolve('axe-core/axe.min.js')
+const agentSessionKey = 'sathian-agent-session-id'
+
+async function gotoHydratedAgentPage(page, path) {
+  await page.evaluate((key) => sessionStorage.removeItem(key), agentSessionKey).catch(() => undefined)
+  await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded', timeout: 30_000 })
+  await page.waitForFunction((key) => Boolean(sessionStorage.getItem(key)), agentSessionKey)
+}
 
 async function verifyViewport(browser, label, viewport) {
   const context = await browser.newContext({ viewport })
   await context.addInitScript(() => {
     window.__siteAgentSoundPlays = []
+    window.__siteAgentEvents = []
+    window.gtag = (command, eventName, properties) => {
+      if (command === 'event') window.__siteAgentEvents.push({ eventName, properties })
+    }
     HTMLMediaElement.prototype.play = function play() {
       window.__siteAgentSoundPlays.push({
         muted: this.muted,
@@ -33,7 +44,7 @@ async function verifyViewport(browser, label, viewport) {
   })
 
   console.log(`${label}: inner-page wake flow`)
-  await page.goto(`${baseUrl}/writings`, { waitUntil: 'domcontentloaded' })
+  await gotoHydratedAgentPage(page, '/writings')
   const wakeAssetStatus = await page.evaluate(async () => {
     const response = await fetch('/audio/site-agent-wake-sting.mp3')
     return response.status
@@ -60,6 +71,18 @@ async function verifyViewport(browser, label, viewport) {
   const audibleWakeAfterReopen = repeatWakePlays.filter((play) => !play.muted && play.src.includes('/audio/site-agent-wake-sting.mp3'))
   if (audibleWakeAfterReopen.length !== 1) throw new Error(`${label}: wake sting repeated in the same tab`)
 
+  const replaySignature = page.getByRole('button', { name: 'Replay signature' })
+  await replaySignature.click()
+  await replaySignature.click()
+  const replayPlays = await page.evaluate(() => window.__siteAgentSoundPlays)
+  const audibleReplays = replayPlays.filter((play) => !play.muted && play.src.includes('/audio/site-agent-note-signature.mp3'))
+  if (audibleReplays.length !== 2) throw new Error(`${label}: expected two deliberate signature replays, saw ${audibleReplays.length}`)
+
+  const replayEvents = await page.evaluate(() => window.__siteAgentEvents.filter((event) => event.eventName === 'agent_signature_replayed'))
+  if (replayEvents.length !== 2 || replayEvents.some((event) => event.properties?.placement !== 'agent_controls')) {
+    throw new Error(`${label}: replay analytics were not recorded safely: ${JSON.stringify(replayEvents)}`)
+  }
+
   await page.waitForTimeout(650)
   await page.addScriptTag({ path: axePath })
   const agentViolations = await page.evaluate(async () => {
@@ -85,10 +108,11 @@ async function verifyViewport(browser, label, viewport) {
   }
   const storedMutedPreference = await page.evaluate(() => localStorage.getItem('sathian-agent-sound-enabled'))
   if (storedMutedPreference !== 'false') throw new Error(`${label}: muted preference was not persisted`)
+  if (!await replaySignature.isDisabled()) throw new Error(`${label}: signature replay remained enabled while sounds were muted`)
   await soundToggle.click()
 
   console.log(`${label}: homepage note-receipt flow`)
-  await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
+  await gotoHydratedAgentPage(page, '/')
   const signatureAssetStatus = await page.evaluate(async () => {
     const response = await fetch('/audio/site-agent-note-signature.mp3')
     return response.status
@@ -128,7 +152,7 @@ async function verifyActualMobilePlayback(browser) {
     })
   })
 
-  await page.goto(`${baseUrl}/writings`, { waitUntil: 'domcontentloaded' })
+  await gotoHydratedAgentPage(page, '/writings')
   await page.getByRole('button', { name: 'Open chat' }).click()
   await page.waitForTimeout(550)
   const wakeState = await page.locator('audio').evaluate((audio) => ({
@@ -141,7 +165,20 @@ async function verifyActualMobilePlayback(browser) {
     throw new Error(`mobile-real-playback: wake sting did not decode and advance: ${JSON.stringify(wakeState)}`)
   }
 
-  await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
+  await page.getByRole('button', { name: 'Replay signature' }).click()
+  await page.waitForTimeout(550)
+  const replayState = await page.locator('audio').evaluate((audio) => ({
+    currentTime: audio.currentTime,
+    error: audio.error?.message || null,
+    muted: audio.muted,
+    paused: audio.paused,
+    src: audio.src,
+  }))
+  if (replayState.error || replayState.paused || replayState.muted || replayState.currentTime <= 0.05 || !replayState.src.includes('/audio/site-agent-note-signature.mp3')) {
+    throw new Error(`mobile-real-playback: replay signature did not decode and advance: ${JSON.stringify(replayState)}`)
+  }
+
+  await gotoHydratedAgentPage(page, '/')
   await page.getByRole('button', { name: 'I want to leave Sathian a note' }).click()
   await page.getByRole('textbox', { name: 'Write your note to Sathian' }).fill('Synthetic decode verification; do not deliver.')
   await page.getByRole('button', { name: 'Send note' }).click()
@@ -159,7 +196,7 @@ async function verifyActualMobilePlayback(browser) {
   }
 
   await context.close()
-  return { label: 'mobile-real-playback', signatureSeconds: signatureState.currentTime, wakeSeconds: wakeState.currentTime }
+  return { label: 'mobile-real-playback', replaySeconds: replayState.currentTime, signatureSeconds: signatureState.currentTime, wakeSeconds: wakeState.currentTime }
 }
 
 ;(async () => {

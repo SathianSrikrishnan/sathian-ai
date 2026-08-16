@@ -37,4 +37,15 @@ describe('site-agent signature sound', () => {
     expect(widget).toContain('localStorage.setItem(SITE_AGENT_SOUND_PREFERENCE_KEY')
     expect(widget).toContain('if (!soundEnabledRef.current) return')
   })
+
+  it('offers a deliberate measured replay of the complete signature', () => {
+    const widget = readOptional('src/components/ChatWidget.tsx')
+
+    expect(widget).toContain('data-agent-signature-replay')
+    expect(widget).toContain('Replay signature')
+    expect(widget).toContain('disabled={!soundEnabled}')
+    expect(widget).toContain("playAgentSound('noteDelivered')")
+    expect(widget).toContain("trackSiteEvent('agent_signature_replayed'")
+    expect(widget).toContain("placement: 'agent_controls'")
+  })
 })
