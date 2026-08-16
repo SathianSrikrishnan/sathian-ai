@@ -2,7 +2,11 @@
 
 ## What Saraswati and Lakshmi ask of AI, crypto, and power
 
-**Substack status:** Draft only — not published  
+**Substack status:** Published 2026-08-16
+
+**Public edition:** https://sathians.substack.com/p/the-polytheistic-test
+
+**Tags:** Fatherhood, Web3, Philosophy, AI, Crypto
 **Preview text:** My daughters made me study what I inherited. Their questions became a test for the technologies I am building with.  
 **Canonical interactive edition:** https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger
 
@@ -82,10 +86,10 @@ I do not need my daughters to inherit my conclusions. I want them to inherit bet
 
 *Written by Sathian Srikrishnan, with AI-assisted research, editing, and visual production.*
 
-## Publishing checklist
+## Publishing receipt
 
-- Upload the four images in the marked positions; do not paste the local file paths into Substack.
-- Use the lead image as the social preview image.
-- Preserve the canonical link to the interactive edition.
-- Check the draft in Substack's desktop and mobile previews.
-- Publish only after Sathian gives action-time approval.
+- Four images were uploaded and re-hosted by Substack.
+- The lead image is the social preview image.
+- The canonical link to the interactive edition is preserved.
+- Desktop, mobile, and email previews were reviewed before publication.
+- Sathian completed the final publication action on 2026-08-16.
