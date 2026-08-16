@@ -80,6 +80,8 @@ I do not need my daughters to inherit my conclusions. I want them to inherit bet
 
 **Continue with the interactive edition:** [Take the Saraswati and Lakshmi tests, then explore the Solana Observatory](https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger).
 
+*Written by Sathian Srikrishnan, with AI-assisted research, editing, and visual production.*
+
 ## Publishing checklist
 
 - Upload the four images in the marked positions; do not paste the local file paths into Substack.
