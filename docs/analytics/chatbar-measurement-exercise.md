@@ -14,7 +14,7 @@ Mark `agent_note_sent` as the primary key event. Use `agent_question_submitted -
 
 ## Signature replay check
 
-1. Open the agent with sounds enabled and press `Replay signature` once.
+1. Open the agent with sounds enabled and press `Replay` once.
 2. Confirm one `agent_signature_replayed` event with `placement: agent_controls` and the current page. No chat text, identity, contact detail, or filename should be present.
 3. Mute agent sounds and confirm the replay control becomes unavailable. Turn sounds back on before continuing.
 4. Review `agent_signature_replayed / agent_widget_viewed` weekly as an optional engagement ratio. Do not mark replay as a conversion or optimize the site around it until there is a useful baseline.

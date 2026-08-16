@@ -665,6 +665,7 @@ export function ChatWidget() {
               data-agent-signature-replay
               onClick={replayAgentSignature}
               disabled={!soundEnabled}
+              aria-label="Replay complete signature"
               title={soundEnabled ? 'Play the complete site-agent signature' : 'Turn on agent sounds to replay the signature'}
               className="site-agent-signature-replay focus-visible:outline-none"
             >
@@ -672,7 +673,7 @@ export function ChatWidget() {
                 <path d="M15.8 6.4A7 7 0 1 0 17 12" />
                 <path d="M15.8 2.8v3.6h-3.6" />
               </svg>
-              Replay signature
+              <span>Replay</span>
             </button>
           </div>
 

@@ -2,7 +2,7 @@
 
 ## Decision
 
-Add one visibly labelled `Replay signature` control to the open site agent. It is an explicit visitor action, not an additional automatic trigger. Each press restarts the complete signature; the existing automatic wake sound remains limited to once per browser tab.
+Add one compact `Replay` control to the open site agent, with the explicit accessible name `Replay complete signature`. It is an explicit visitor action, not an additional automatic trigger. Each press restarts the complete signature; the existing automatic wake sound remains limited to once per browser tab.
 
 ## Interaction and data flow
 

@@ -71,7 +71,7 @@ async function verifyViewport(browser, label, viewport) {
   const audibleWakeAfterReopen = repeatWakePlays.filter((play) => !play.muted && play.src.includes('/audio/site-agent-wake-sting.mp3'))
   if (audibleWakeAfterReopen.length !== 1) throw new Error(`${label}: wake sting repeated in the same tab`)
 
-  const replaySignature = page.getByRole('button', { name: 'Replay signature' })
+  const replaySignature = page.getByRole('button', { name: 'Replay complete signature' })
   await replaySignature.click()
   await replaySignature.click()
   const replayPlays = await page.evaluate(() => window.__siteAgentSoundPlays)
@@ -165,7 +165,7 @@ async function verifyActualMobilePlayback(browser) {
     throw new Error(`mobile-real-playback: wake sting did not decode and advance: ${JSON.stringify(wakeState)}`)
   }
 
-  await page.getByRole('button', { name: 'Replay signature' }).click()
+  await page.getByRole('button', { name: 'Replay complete signature' }).click()
   await page.waitForTimeout(550)
   const replayState = await page.locator('audio').evaluate((audio) => ({
     currentTime: audio.currentTime,

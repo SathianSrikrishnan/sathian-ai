@@ -42,7 +42,8 @@ describe('site-agent signature sound', () => {
     const widget = readOptional('src/components/ChatWidget.tsx')
 
     expect(widget).toContain('data-agent-signature-replay')
-    expect(widget).toContain('Replay signature')
+    expect(widget).toContain('aria-label="Replay complete signature"')
+    expect(widget).toContain('<span>Replay</span>')
     expect(widget).toContain('disabled={!soundEnabled}')
     expect(widget).toContain("playAgentSound('noteDelivered')")
     expect(widget).toContain("trackSiteEvent('agent_signature_replayed'")
