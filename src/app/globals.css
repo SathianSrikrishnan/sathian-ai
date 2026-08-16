@@ -1630,13 +1630,19 @@ h1, h2, h3 {
   letter-spacing: -0.02em;
 }
 
-.site-agent-close {
+.site-agent-close,
+.site-agent-sound {
   color: var(--agent-faint);
 }
 
-.site-agent-close:hover {
+.site-agent-close:hover,
+.site-agent-sound:hover {
   background: rgba(255, 255, 255, 0.06);
   color: var(--agent-ink);
+}
+
+.site-agent-sound[aria-pressed="true"] {
+  color: var(--agent-muted);
 }
 
 .site-agent-messages {

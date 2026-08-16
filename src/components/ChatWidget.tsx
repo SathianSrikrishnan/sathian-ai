@@ -19,6 +19,12 @@ import {
   parseAgentConversationState,
   type AgentConversationState,
 } from '@/lib/agent/conversation'
+import {
+  SITE_AGENT_SOUND_PREFERENCE_KEY,
+  SITE_AGENT_SOUNDS,
+  SITE_AGENT_WAKE_SESSION_KEY,
+  type SiteAgentSound,
+} from '@/lib/agent/sounds'
 
 const SUGGESTIONS = CHAT_SUGGESTIONS
 
@@ -164,6 +170,8 @@ export function ChatWidget() {
   const [showSuggestions, setShowSuggestions] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const agentAudioRef = useRef<HTMLAudioElement>(null)
+  const audioOperationRef = useRef(0)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const sendRef = useRef<(text: string) => void>(() => {})
@@ -180,9 +188,62 @@ export function ChatWidget() {
   const [replyEmail, setReplyEmail] = useState('')
   const [composerMode, setComposerMode] = useState<'question' | 'note'>('question')
   const [answerFeedback, setAnswerFeedback] = useState<Record<number, 'helpful' | 'not_helpful'>>({})
+  const [soundEnabled, setSoundEnabled] = useState(true)
   const agentSessionRef = useRef<string | null>(null)
   const conversationRef = useRef<AgentConversationState | null>(null)
   const widgetViewRecordedRef = useRef(false)
+  const soundEnabledRef = useRef(true)
+
+  const playAgentSound = useCallback((sound: SiteAgentSound) => {
+    if (!soundEnabledRef.current) return
+    if (sound === 'wake' && sessionStorage.getItem(SITE_AGENT_WAKE_SESSION_KEY)) return
+    const audio = agentAudioRef.current
+    if (!audio) return
+
+    audioOperationRef.current += 1
+    audio.pause()
+    audio.src = SITE_AGENT_SOUNDS[sound]
+    audio.currentTime = 0
+    audio.muted = false
+    audio.volume = sound === 'wake' ? 0.42 : 0.5
+    void audio.play().then(() => {
+      if (sound === 'wake') sessionStorage.setItem(SITE_AGENT_WAKE_SESSION_KEY, 'true')
+    }).catch(() => undefined)
+  }, [])
+
+  const primeAgentSound = useCallback((sound: SiteAgentSound) => {
+    if (!soundEnabledRef.current) return
+    const audio = agentAudioRef.current
+    if (!audio) return
+
+    const operation = audioOperationRef.current + 1
+    audioOperationRef.current = operation
+    audio.pause()
+    audio.src = SITE_AGENT_SOUNDS[sound]
+    audio.currentTime = 0
+    audio.muted = true
+    void audio.play().then(() => {
+      if (audioOperationRef.current !== operation) return
+      audio.pause()
+      audio.currentTime = 0
+      audio.muted = false
+    }).catch(() => {
+      if (audioOperationRef.current === operation) audio.muted = false
+    })
+  }, [])
+
+  const toggleAgentSounds = useCallback(() => {
+    setSoundEnabled((current) => {
+      const next = !current
+      soundEnabledRef.current = next
+      localStorage.setItem(SITE_AGENT_SOUND_PREFERENCE_KEY, String(next))
+      if (!next) {
+        audioOperationRef.current += 1
+        agentAudioRef.current?.pause()
+      }
+      return next
+    })
+  }, [])
 
   const clearFile = useCallback(() => {
     setFile(null)
@@ -243,6 +304,12 @@ export function ChatWidget() {
     return () => { abortRef.current?.abort() }
   }, [])
 
+  useEffect(() => {
+    const enabled = localStorage.getItem(SITE_AGENT_SOUND_PREFERENCE_KEY) !== 'false'
+    soundEnabledRef.current = enabled
+    setSoundEnabled(enabled)
+  }, [])
+
   const handleSend = useCallback(async (text?: string) => {
     const msg = text || input.trim()
     if (!msg || isLoading) return
@@ -267,6 +334,8 @@ export function ChatWidget() {
     const pendingTurnstileToken = turnstileToken
     const pendingIntent = composerMode
     const agentTesterToken = sessionStorage.getItem(AGENT_TEST_TOKEN_SESSION_KEY)
+
+    if (pendingIntent === 'note') primeAgentSound('noteDelivered')
 
     if (pendingIntent === 'question') {
       trackSiteEvent('agent_question_submitted', {
@@ -347,6 +416,7 @@ export function ChatWidget() {
             hasContact: Boolean(displayName || replyEmail),
             hasAttachment: Boolean(pendingFile),
           })
+          if (pendingIntent === 'note') playAgentSound('noteDelivered')
           if (pendingIntent === 'note') setComposerMode('question')
         }
         if (pendingFile && pendingTurnstileToken) {
@@ -403,7 +473,7 @@ export function ChatWidget() {
       clearTimeout(timeout)
       setIsLoading(false)
     }
-   }, [clearFile, composerMode, displayName, file, input, isLoading, pathname, replyEmail, turnstileToken])
+   }, [clearFile, composerMode, displayName, file, input, isLoading, pathname, playAgentSound, primeAgentSound, replyEmail, turnstileToken])
 
   const recordAnswerFeedback = useCallback((messageIndex: number, feedback: 'helpful' | 'not_helpful') => {
     if (answerFeedback[messageIndex]) return
@@ -484,6 +554,7 @@ export function ChatWidget() {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail
+      playAgentSound('wake')
       if (detail?.message) {
         trackSiteEvent('agent_prompt_selected', {
           page: pathname,
@@ -498,7 +569,7 @@ export function ChatWidget() {
     }
     window.addEventListener('open-chat', handler)
     return () => window.removeEventListener('open-chat', handler)
-  }, [pathname])
+  }, [pathname, playAgentSound])
 
   useEffect(() => {
     const messagesContainer = messagesContainerRef.current
@@ -549,6 +620,25 @@ export function ChatWidget() {
                 </div>
               </div>
              <div className="flex items-center gap-1">
+               <button
+                 type="button"
+                 data-agent-sound-toggle
+                 onClick={toggleAgentSounds}
+                 aria-label={soundEnabled ? 'Mute agent sounds' : 'Turn on agent sounds'}
+                 aria-pressed={soundEnabled}
+                 className="site-agent-sound w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none"
+               >
+                 {soundEnabled ? (
+                   <svg aria-hidden="true" width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                     <path d="M3 8h3l4-3v10l-4-3H3z" />
+                     <path d="M13 7.2a4 4 0 0 1 0 5.6M15.3 5a7 7 0 0 1 0 10" />
+                   </svg>
+                 ) : (
+                   <svg aria-hidden="true" width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                     <path d="M3 8h3l4-3v10l-4-3H3zM13 8l4 4M17 8l-4 4" />
+                   </svg>
+                 )}
+               </button>
                <button
                  type="button"
                  onClick={resetConversation}
@@ -775,7 +865,10 @@ export function ChatWidget() {
   )
 
   const inlineSurface = open ? chatSurface : (
-    <button type="button" className="site-agent-reopen" onClick={() => setOpen(true)}>
+    <button type="button" className="site-agent-reopen" onClick={() => {
+      playAgentSound('wake')
+      setOpen(true)
+    }}>
       <span className="site-agent-reopen__status"><span /> SITE AGENT</span>
       <strong>Open the site agent</strong>
       <span>Ask about the work or leave Sathian a note.</span>
@@ -784,13 +877,17 @@ export function ChatWidget() {
 
   return (
     <div data-site-agent-root>
+      <audio ref={agentAudioRef} preload="auto" src={SITE_AGENT_SOUNDS.wake} aria-hidden="true" />
       {isHomepage ? (homeTarget ? createPortal(inlineSurface, homeTarget) : null) : chatSurface}
 
       {/* Floating button */}
       {!isHomepage && (
       <motion.button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          if (!open) playAgentSound('wake')
+          setOpen((o) => !o)
+        }}
         aria-label={open ? 'Close chat' : 'Open chat'}
         className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer overflow-hidden"
         style={{
