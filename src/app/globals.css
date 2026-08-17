@@ -4392,6 +4392,19 @@ h1, h2, h3 {
   padding-bottom: 42px;
 }
 
+.minimal-writing-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin-top: 18px;
+}
+
+.minimal-writing-links .minimal-text-link {
+  margin-top: 0;
+  color: var(--minimal-rust);
+  font-size: 14px;
+}
+
 .minimal-page-hero > .minimal-writing-lede {
   max-width: 820px;
   margin-top: 20px;

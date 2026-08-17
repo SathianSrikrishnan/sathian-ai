@@ -58,7 +58,12 @@ export default async function WritingsIndex() {
           <p className="minimal-kicker">FIELD NOTES / {entries.length} PUBLISHED</p>
           <h1>Writing.</h1>
           <p className="minimal-writing-lede">Notes on culture, money, technology, fatherhood, and the products I am learning to build.</p>
-          <Link href="/#agent" className="minimal-text-link">Not sure where to start? Ask the site agent</Link>
+          <nav className="minimal-writing-links" aria-label="Writing options">
+            <Link href="/#agent" className="minimal-text-link">Not sure where to start? Ask the site agent</Link>
+            <a href="https://sathians.substack.com" className="minimal-text-link" target="_blank" rel="noopener noreferrer">
+              Read and subscribe on Substack
+            </a>
+          </nav>
         </header>
 
         <section className="minimal-writing-index minimal-container" aria-label="Published writing">

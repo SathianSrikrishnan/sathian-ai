@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 const workLinks = [
   { label: 'Tooth Fairy Network', note: 'The live product', href: 'https://toothfairy.network' },
   { label: 'Writing', note: 'Essays and field notes', href: '/writings' },
+  { label: 'Substack', note: 'Subscribe to new essays', href: 'https://sathians.substack.com' },
   { label: 'For agents', note: 'Public context and build record', href: '/agents' },
   { label: 'GitHub', note: 'Public code', href: 'https://github.com/sathiandev' },
 ]
