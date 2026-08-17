@@ -10,6 +10,11 @@ import {
   processDailyReport,
   type DailyReportMetrics,
 } from './daily-report'
+import {
+  getGoogleAccessToken,
+  getSathianWebsiteTraffic,
+  parseServiceAccountJson,
+} from './website-analytics'
 
 interface ClaimRow {
   outbox_id: string
@@ -266,6 +271,11 @@ export default {
       const report = await processDailyReport({
         scheduledAt: new Date(controller.scheduledTime),
         getMetrics: (since, until) => getDailyReportMetrics(env, since, until),
+        getWebsiteTraffic: async () => {
+          const credential = parseServiceAccountJson(env.GA_SERVICE_ACCOUNT_JSON)
+          const accessToken = await getGoogleAccessToken(credential.email, credential.privateKey)
+          return getSathianWebsiteTraffic(env.SATHIAN_GA4_PROPERTY_ID, accessToken)
+        },
         sendMessage,
       })
       console.log(JSON.stringify({ event: 'telegram_daily_report', status: report.status }))
