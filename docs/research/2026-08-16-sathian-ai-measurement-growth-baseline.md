@@ -1,7 +1,14 @@
 # Sathian.ai measurement and growth baseline
 
 Date: 2026-08-16  
-Scope: read-only research and recommendations; no account, tag, consent, or reporting settings were changed.
+Scope: baseline research and recommendations, with implementation status updated on 2026-08-17.
+
+## Implementation update — 2026-08-17
+
+- `agent_note_sent` is now enabled as a GA4 key event for Sathian.ai property `546120838`. This affects future reporting; it does not rewrite historical events as key events.
+- The existing 8:00 AM Toronto Telegram report is the canonical reporting spine. A tested, single-Worker extension now adds 7- and 28-complete-day people/visit counts, 7-day notes sent, the top named source, and the top landing page. It keeps the current operational report working if GA4 is unavailable.
+- The extension is read-only, omits chat/contact content, strips landing-page query strings, escapes Telegram formatting, and is restricted to the Sathian.ai property. Production activation still requires an encrypted Google service-account secret and a Cloudflare Worker deployment.
+- Linking Search Console property `sc-domain:sathian.ai` to GA4 remains pending explicit approval because the link expands Analytics users' visibility into Search Console data and records the linking Google account.
 
 ## The simple picture
 

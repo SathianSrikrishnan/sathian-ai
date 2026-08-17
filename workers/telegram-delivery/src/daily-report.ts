@@ -12,9 +12,22 @@ export interface DailyReportMetrics {
   modelErrors: number
 }
 
+export interface WebsiteTrafficMetrics {
+  last7Users: number
+  last7Sessions: number
+  last28Users: number
+  last28Sessions: number
+  last7AgentNotes: number
+  leadingSourceMedium: string | null
+  leadingSourceSessions: number
+  leadingLandingPage: string | null
+  leadingLandingPageSessions: number
+}
+
 interface DailyReportDependencies {
   scheduledAt: Date
   getMetrics: (since: Date, until: Date) => Promise<DailyReportMetrics>
+  getWebsiteTraffic: () => Promise<WebsiteTrafficMetrics>
   sendMessage: (message: TelegramIntakeMessage) => Promise<{ messageId: number }>
 }
 
@@ -33,9 +46,17 @@ export function isTorontoDigestTime(date: Date): boolean {
   return torontoParts(date).hour === '08'
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
 export function buildDailyReportMessage(
   metrics: DailyReportMetrics,
   windowEndsAt: Date,
+  websiteTraffic: WebsiteTrafficMetrics | null = null,
 ): TelegramIntakeMessage {
   const parts = torontoParts(windowEndsAt)
   const dateLabel = `${parts.year}-${parts.month}-${parts.day}`
@@ -54,6 +75,18 @@ export function buildDailyReportMessage(
       `<b>Telegram dead letters:</b> ${metrics.telegramDeadLetters}`,
       `<b>Delivery backlog:</b> ${metrics.deliveryBacklog}`,
       `<b>Model errors:</b> ${metrics.modelErrors}`,
+      '',
+      '<b>Website reach</b>',
+      ...(websiteTraffic ? [
+        '<i>Google Analytics · complete through two days ago</i>',
+        `<b>7 complete days:</b> ${websiteTraffic.last7Users} people · ${websiteTraffic.last7Sessions} visits`,
+        `<b>28 complete days:</b> ${websiteTraffic.last28Users} people · ${websiteTraffic.last28Sessions} visits`,
+        `<b>Notes sent:</b> ${websiteTraffic.last7AgentNotes}`,
+        `<b>Top named source:</b> ${escapeHtml(websiteTraffic.leadingSourceMedium ?? 'not enough data')} · ${websiteTraffic.leadingSourceSessions} visits`,
+        `<b>Top landing page:</b> ${escapeHtml(websiteTraffic.leadingLandingPage ?? 'not enough data')} · ${websiteTraffic.leadingLandingPageSessions} visits`,
+      ] : [
+        '<b>Website reach:</b> temporarily unavailable',
+      ]),
     ].join('\n'),
     parseMode: 'HTML',
     disableWebPagePreview: true,
@@ -66,7 +99,14 @@ export async function processDailyReport(
   if (!isTorontoDigestTime(dependencies.scheduledAt)) return { status: 'skipped' }
 
   const since = new Date(dependencies.scheduledAt.getTime() - 24 * 60 * 60 * 1000)
-  const metrics = await dependencies.getMetrics(since, dependencies.scheduledAt)
-  await dependencies.sendMessage(buildDailyReportMessage(metrics, dependencies.scheduledAt))
+  const [metrics, websiteTraffic] = await Promise.all([
+    dependencies.getMetrics(since, dependencies.scheduledAt),
+    dependencies.getWebsiteTraffic().catch(() => null),
+  ])
+  await dependencies.sendMessage(buildDailyReportMessage(
+    metrics,
+    dependencies.scheduledAt,
+    websiteTraffic,
+  ))
   return { status: 'sent' }
 }

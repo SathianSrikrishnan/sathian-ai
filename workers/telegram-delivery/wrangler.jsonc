@@ -10,7 +10,8 @@
     "crons": ["* * * * *", "0 12 * * *", "0 13 * * *"]
   },
   "vars": {
-    "STUDIO_BASE_URL": "https://sathian.ai"
+    "STUDIO_BASE_URL": "https://sathian.ai",
+    "SATHIAN_GA4_PROPERTY_ID": "546120838"
   },
   "secrets": {
     "required": [
@@ -18,7 +19,8 @@
       "SUPABASE_SERVICE_ROLE_KEY",
       "TELEGRAM_BOT_TOKEN",
       "TELEGRAM_CHAT_ID",
-      "TELEGRAM_TOPIC_ID"
+      "TELEGRAM_TOPIC_ID",
+      "GA_SERVICE_ACCOUNT_JSON"
     ]
   },
   "observability": {

@@ -2,13 +2,15 @@
 
 This Cloudflare Worker delivers the site agent's durable Supabase outbox to one private Telegram topic. It has no public HTTP route. A UTC cron trigger claims up to ten ready rows once per minute, sends a standardized intake alert and Studio link, and records success, retry, or dead-letter state.
 
-Two additional UTC triggers provide one private daily report at 8:00 AM Toronto time. Both 12:00 and 13:00 UTC are configured so daylight-saving changes are handled safely; the Worker sends only when the scheduled instant is actually in Toronto's 08 hour. The report is a rolling 24-hour count of sessions, widget views, turns, intakes, reply-enabled requests, delivery health, backlog, and model errors. It contains no chat content or contact details.
+Two additional UTC triggers provide one private daily report at 8:00 AM Toronto time. Both 12:00 and 13:00 UTC are configured so daylight-saving changes are handled safely; the Worker sends only when the scheduled instant is actually in Toronto's 08 hour. The report combines the rolling 24-hour operational funnel with a compact, read-only GA4 scorecard for the last 7 and 28 complete days. It contains no chat content or contact details. If GA4 is temporarily unavailable, the operational report still sends and labels only the reach section unavailable.
 
 ## Security boundary
 
 - `TELEGRAM_BOT_TOKEN` and `SUPABASE_SERVICE_ROLE_KEY` are Cloudflare Worker secrets. They never enter Vercel client variables, browser code, Supabase rows, or logs.
 - Immediate alerts send message text, optional contact details, page context, a public receipt, and byte-cleared attachment metadata (safe filename, detected type, and size) to the approved private topic. They never send attachment bytes or private object paths.
 - Daily reports use only aggregate counts returned by the service-only `agent_get_daily_report` function.
+- GA4 access is read-only and restricted at runtime to the Sathian.ai property. The report requests only aggregate users, sessions, the exact `agent_note_sent` event count, source/medium, and landing-page paths.
+- Tooth Fairy Network and Homeland property IDs are not configured in this Worker.
 - Supabase functions are `SECURITY DEFINER`, revoked from public, anonymous, and authenticated roles, and granted only to `service_role`.
 - Logs contain batch status counts only, not visitor content or credentials.
 
