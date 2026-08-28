@@ -1,0 +1,223 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Clean foundation, clearer growth",
+    "description": "A decision report on Sathian.ai repository cleanup, analytics trust, agent health, search visibility, and the next content loop.",
+    "generatedAt": "2026-08-28T23:20:00.000Z",
+    "charts": [
+      {
+        "id": "worktree-disposition",
+        "title": "Worktree disposition",
+        "subtitle": "19 registered worktrees grouped into non-overlapping cleanup buckets on August 28, 2026",
+        "showDescription": true,
+        "intent": "comparison",
+        "question": "How many worktrees are ready for low-risk cleanup versus requiring preservation or a decision?",
+        "rationale": "Horizontal bars keep the five cleanup categories readable and preserve a zero-based count comparison.",
+        "comparisonContext": {
+          "denominator": "19 registered worktrees",
+          "grain": "one row per non-overlapping disposition bucket",
+          "unit": "worktrees"
+        },
+        "type": "horizontalBar",
+        "dataset": "worktree_disposition",
+        "sourceId": "worktree-chart-source",
+        "encodings": {
+          "x": {
+            "field": "bucket",
+            "type": "nominal",
+            "label": "Disposition"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "aggregate": "none",
+            "format": "number",
+            "label": "Worktrees"
+          },
+          "tooltip": [
+            {
+              "field": "count",
+              "type": "quantitative",
+              "format": "number",
+              "label": "Worktrees"
+            },
+            {
+              "field": "decision",
+              "type": "text",
+              "label": "Next decision"
+            }
+          ]
+        },
+        "valueFormat": "number",
+        "layout": "full",
+        "maxRows": 5,
+        "settings": {
+          "orientation": "horizontal",
+          "showValues": true,
+          "sort": "descending"
+        },
+        "emptyState": "No worktree inventory is available."
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "layout": "full",
+        "body": "# Clean foundation, clearer growth"
+      },
+      {
+        "id": "executive-summary",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "cleanup-audit",
+        "body": "## Executive Summary\n\n- **The valuable loose site work is preserved.** AutoQuote truth corrections and the rescued sitemap de-duplication are stored in local commit `b635940`; the full release gate passed. Nothing was pushed or deployed.\n- **The site agent and morning-report stack are healthy now.** GitHub production smoke, Vercel logs, the Cloudflare Worker, and Supabase showed no active incident. This is current evidence, not a guarantee against future failure.\n- **Read 35 / 42 as GA4 estimates, not a human headcount.** The accurate labels are 35 GA4 active users and 42 sessions. Known bots are filtered, but a defensible human-versus-bot percentage is not available from those aggregates.\n- **Growth should compound around identity and original work.** Make Sathian Srikrishnan the consistent site/author entity, then run one canonical essay-plus-artifact loop every two weeks with Substack and social as distribution—not duplicate homes."
+      },
+      {
+        "id": "cleanup-findings",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "cleanup-audit",
+        "body": "## The repo is controlled, but cleanup still needs decisions\n\nThere are 19 registered worktrees. Eight are clean and fully merged, making them low-risk removal candidates **after explicit approval**. Three dirty worktrees mainly preserve screenshots or a patch that has now been rescued. Three more are dirty preservation sources. Six worktrees carry distinct unmerged histories and should be classified adopt, superseded, or archive—not bulk-merged.\n\nThere is **no open personal-site pull request to `main`**. The two open draft pull requests are stale Tooth Fairy Network work (#7 and #5), so they belong in a TFN review rather than this site's cleanup.\n\nThe remaining canonical-tree loose ends are deliberately bounded: one copied third-party résumé PDF that should not enter Git without a decision, plus useful research/publishing notes that belong in a documentation commit."
+      },
+      {
+        "id": "worktree-disposition-chart",
+        "type": "chart",
+        "layout": "full",
+        "chartId": "worktree-disposition"
+      },
+      {
+        "id": "health-and-measurement",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "cleanup-audit",
+        "body": "## The system is healthy; the next reporting gain is confidence\n\nThe release candidate passed 396 unit/contract tests, all 60 agent evaluations, the production build, desktop/mobile checks, singleton behavior, and real mobile sound playback. Production error/500 log scans were empty for the inspected window; the Worker tail completed without exception; Supabase was healthy.\n\nThe morning report already has a good spine. Keep it short and add: engaged sessions, previous-seven-day comparison, production-host filter state, internal/test filter state, answer success/error rate, p50/p95 latency, and one evidence-calibrated action. Move Search Console, Bing, AI referrals, content performance, UTM outcomes, and the request-level bot ledger into one weekly review."
+      },
+      {
+        "id": "ga-trust",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "ga-guidance",
+        "body": "## GA4 measures browsers and sessions—not verified people\n\nGoogle excludes known bots and spiders to the extent possible, but it does not disclose the excluded count or certify the remainder as human. Browser identifiers can split one person across devices and cookie resets; blockers and consent choices can omit real visitors. Direct traffic is not proof of automation.\n\nUse the phrase **GA4 active users**, not people. Do not publish a bot percentage at this scale. First filter to `sathian.ai`, test internal-traffic exclusion, label automated QA, and compare GA4 behavior with a separate Vercel bot-request ledger. Report engaged sessions and meaningful actions beside raw reach.\n\nSuggested format: `35 GA4 active users · 42 sessions · [measured engaged sessions] · [measured meaningful actions]`."
+      },
+      {
+        "id": "search-growth",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "search-research",
+        "body": "## Full-name recognition is real; first-name ownership must be earned\n\nThe August 28 search snapshot surfaced Sathian.ai's About page and homepage plus maintained and older profiles for `Sathian Srikrishnan`. The first-name query `Sathian` also returned name-definition pages and other people, so exclusive ownership is not a credible promise.\n\nThe highest-leverage release is identity consistency: use **Sathian Srikrishnan** in the prominent identity, site name, visible bylines, author URL, and structured data; keep one stable Person entity; and align maintained profiles. Google and AI discovery still depend on crawlable, indexable, people-first pages. There is no special AIEO switch, and Google's current guidance says it does not use `llms.txt`.\n\nAdd Bing Webmaster Tools and later IndexNow at the stable publishing boundary. Verify search/retrieval crawler access separately from model-training policy."
+      },
+      {
+        "id": "content-loop",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "search-research",
+        "body": "## Publish one recognizable unit repeatedly\n\nUse three topic lanes: bounded agents and practical AI; technology, money, and culture; and honest building-in-public field notes.\n\nEvery two weeks:\n\n1. Publish one first-hand essay on Sathian.ai.\n2. Add a mini app, test, visualization, or annotated proof only when it improves the idea.\n3. Use Substack for newsletter framing/excerpt and a tagged canonical link.\n4. Publish a standalone LinkedIn adaptation and one short social derivative after approval.\n5. Check indexing and engagement after 7 days; deepen, consolidate, or stop after 28 days.\n\nThe goal is not content volume. It is a coherent body of work that gives search engines, AI systems, and people repeated evidence of who Sathian is and what he knows."
+      },
+      {
+        "id": "next-steps",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "cleanup-audit",
+        "body": "## Recommended next steps\n\n1. Review local commit `b635940`; approve a separate push/deploy task if the truth and sitemap changes should go live.\n2. Preserve the remaining useful notes in a documentation commit; keep the third-party résumé PDF out of Git pending a decision.\n3. Upgrade the daily GA4 block with production hostname, internal/test handling, engagement, comparison, and accurate labels.\n4. Add the weekly Google/Bing/content/AI/bot review.\n5. Ship the full-name identity/byline release.\n6. Begin the biweekly essay-plus-artifact loop.\n7. After the release decision, explicitly approve removal of the eight clean merged worktrees and route the two stale pull requests to TFN."
+      },
+      {
+        "id": "further-questions",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## Further questions\n\n- Should local commit `b635940` become the next public release, or remain local until the identity/reporting improvements are bundled with it?\n- Which first content packet should start the cadence: bounded agent authority, a second technology/culture essay, or an honest build postmortem?\n- Does the copied résumé PDF need to remain as local research evidence, or can it be removed after the visual audit is accepted?"
+      },
+      {
+        "id": "caveats",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## Caveats and assumptions\n\nSearch results vary by engine, locale, device, and personalization. The supplied GA4 totals were not decomposed into hostname, engagement, geography, device, or internal traffic, so this report does not estimate a human/bot share. No production setting, secret, account, post, push, deployment, pull-request closure, branch deletion, or worktree deletion was performed."
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-28T23:20:00.000Z",
+    "status": "ready",
+    "datasets": {
+      "worktree_disposition": [
+        {
+          "bucket": "Clean + merged",
+          "count": 8,
+          "decision": "Remove after approval"
+        },
+        {
+          "bucket": "Clean + distinct",
+          "count": 4,
+          "decision": "Classify"
+        },
+        {
+          "bucket": "Dirty artifacts",
+          "count": 3,
+          "decision": "Preserve artifacts"
+        },
+        {
+          "bucket": "Dirty sources",
+          "count": 3,
+          "decision": "Triage separately"
+        },
+        {
+          "bucket": "Canonical",
+          "count": 1,
+          "decision": "Keep"
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "cleanup-audit",
+      "label": "Sathian.ai cleanup, reporting, and growth audit",
+      "path": "docs/audits/2026-08-28-personal-site-cleanup-and-growth-audit.md"
+    },
+    {
+      "id": "worktree-chart-source",
+      "label": "Reviewed worktree disposition query",
+      "path": "docs/reports/2026-08-28-personal-site-cleanup-and-growth/worktree-disposition.sql",
+      "query": {
+        "engine": "SQLite",
+        "id": "worktree-disposition-2026-08-28",
+        "description": "Reproduces the five non-overlapping disposition counts from the reviewed Git worktree inventory.",
+        "executed_at": "2026-08-28T23:25:00.000Z",
+        "language": "sql",
+        "filters": [
+          "Registered Sathian.ai repository worktrees as of August 28, 2026",
+          "Each worktree assigned to exactly one disposition bucket"
+        ],
+        "metric_definitions": [
+          "count = number of registered worktrees assigned to the disposition bucket"
+        ],
+        "tables_used": [
+          "reviewed_git_worktree_inventory"
+        ]
+      }
+    },
+    {
+      "id": "search-research",
+      "label": "Sathian search and AI visibility research",
+      "path": "docs/research/2026-08-28-sathian-search-ai-visibility-reporting.md"
+    },
+    {
+      "id": "ga-guidance",
+      "label": "Google Analytics known-bot exclusion and reporting identity guidance",
+      "href": "https://support.google.com/analytics/answer/9888366"
+    },
+    {
+      "id": "google-ai-search",
+      "label": "Google generative AI optimization guidance",
+      "href": "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide"
+    },
+    {
+      "id": "openai-publishers",
+      "label": "OpenAI publisher and developer FAQ",
+      "href": "https://help.openai.com/en/articles/12627856-publishers-and-developers-faq"
+    }
+  ]
+}
