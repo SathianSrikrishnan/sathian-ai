@@ -34,7 +34,7 @@ describe('site-agent evaluation runner', () => {
     const markdown = readFileSync(join(outputDirectory, 'latest-offline-receipt.md'), 'utf8')
     const gaps = JSON.parse(readFileSync(join(outputDirectory, 'latest-knowledge-gaps.json'), 'utf8'))
 
-    expect(report.datasetVersion).toBe('site-agent-evals/v2')
+    expect(report.datasetVersion).toBe('site-agent-evals/v3')
     expect(report.counts.attempted).toBeGreaterThanOrEqual(50)
     expect(report.recommendation).toBe('PASS')
     expect(report.gates.trust.value).toBe(1)

@@ -15,9 +15,6 @@ export const metadata: Metadata = {
 }
 
 const links = {
-  autoQuoteAutomator: {
-    demo: 'https://ontario-all-quote-agent.vercel.app',
-  },
   agentTab: {
     demo: 'https://agenttab.sathian.ai',
     presentation: 'https://agenttab.sathian.ai/presentation',
@@ -50,50 +47,11 @@ export default function HackathonsPage() {
           </p>
         </header>
 
-        <section className="minimal-section minimal-container" aria-labelledby="current-build">
-          <h2 id="current-build">Current featured build</h2>
-
-          <article className="minimal-hackathon-feature">
-            <div className="minimal-hackathon-feature__copy">
-              <p className="minimal-label">BRAVE AI HACKATHON / AUGUST 2026 / SOLO BUILD</p>
-              <h3>AutoQuote Automator</h3>
-              <p>
-                An evidence-first personal shopping agent for Ontario auto insurance. One private profile becomes a deduplicated market plan; each route stops for human approval and returns a comparable quote or the exact reason it could not proceed.
-              </p>
-              <a href={links.autoQuoteAutomator.demo} target="_blank" rel="noopener noreferrer" className="minimal-button-link">
-                Open current dashboard
-              </a>
-            </div>
-
-            <div className="minimal-hackathon-feature__visual">
-              <Image
-                src="/projects/autoquote-automator-dashboard.png"
-                alt="AutoQuote Automator public evidence dashboard"
-                fill
-                sizes="(max-width: 760px) 100vw, 48vw"
-              />
-            </div>
-
-            <dl className="minimal-hackathon-facts">
-              <Fact label="Market map" value="15 families / 16 routes" />
-              <Fact label="Private intake" value="44 fields / 43 available" />
-              <Fact label="Stack" value="LangGraph + Puppeteer + Zod" />
-              <Fact label="Current proof" value="16 routes / 0 premiums" />
-            </dl>
-
-            <div className="minimal-proof-strip">
-              <Proof label="Public routes tested" value="16" />
-              <Proof label="Live premiums returned" value="0" />
-              <Proof label="Personal records exposed" value="0" />
-            </div>
-          </article>
-        </section>
-
-        <section className="minimal-section minimal-container" aria-labelledby="earlier-submissions">
+        <section className="minimal-section minimal-container" aria-labelledby="hackathon-submissions">
           <div className="minimal-section-heading minimal-section-heading--stacked">
             <div>
-              <h2 id="earlier-submissions">Earlier submissions</h2>
-              <p>The build record behind this one.</p>
+              <h2 id="hackathon-submissions">Hackathon submissions</h2>
+              <p>Documented builds completed under event constraints.</p>
             </div>
           </div>
 
@@ -145,24 +103,6 @@ export default function HackathonsPage() {
       </main>
 
       <SiteFooter />
-    </div>
-  )
-}
-
-function Fact({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt>{label}</dt>
-      <dd>{value}</dd>
-    </div>
-  )
-}
-
-function Proof({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <span>{label}</span>
-      <strong>{value}</strong>
     </div>
   )
 }

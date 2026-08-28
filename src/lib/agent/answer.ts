@@ -118,7 +118,9 @@ function projectLifecycleAnswer(
       ? 'an archived project, not a current active build'
       : project.status === 'primary'
         ? "Sathian's primary public build"
-        : 'a current active public build'
+        : project.status === 'prototype'
+          ? 'a private research prototype with public evidence, not a current active build or a hackathon submission'
+          : 'a current active public build'
     answer = `${project.name} is ${lifecycle}. ${project.approvedClaims.join(' ')}`
   } else {
     const statuses = projects.map((project) => {
@@ -126,7 +128,9 @@ function projectLifecycleAnswer(
         ? 'archived'
         : project.status === 'primary'
           ? 'the primary build'
-          : 'active'
+          : project.status === 'prototype'
+            ? 'a private prototype with public evidence'
+            : 'active'
       return `${project.name} is ${lifecycle}`
     })
     answer = `${statuses.join('; ')}.`

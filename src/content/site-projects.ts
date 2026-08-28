@@ -1,4 +1,4 @@
-export type PublicProjectStatus = 'primary' | 'active' | 'archive'
+export type PublicProjectStatus = 'primary' | 'active' | 'prototype' | 'archive'
 
 export interface PublicSiteProject {
   id: string
@@ -53,21 +53,23 @@ export const AUTOQUOTE_AUTOMATOR_PROJECT: PublicSiteProject = {
   id: 'project-autoquote-automator',
   slug: 'autoquote-automator',
   name: 'AutoQuote Automator',
-  label: 'RECENT HACKATHON / ACTIVE BUILD',
+  label: 'PRIVATE RESEARCH PROTOTYPE / PUBLIC EVIDENCE',
   description:
-    'An evidence-first personal shopping agent for Ontario auto insurance, with private intake, human approval gates, and an honest result for every route.',
+    'A personal Ontario auto-insurance research prototype. The public page shows the market map, workflow design, and redacted route observations; personal profile data and live form execution remain local.',
   approvedClaims: [
-    "AutoQuote Automator, previously called Coverage Ledger, is Sathian's active Ontario auto-insurance shopping-agent experiment.",
-    'It uses private intake, evidence-first research, and human approval gates rather than pretending to issue a binding insurance quote.',
+    "AutoQuote Automator, previously called Coverage Ledger, is Sathian's private, personalized Ontario auto-insurance research prototype.",
+    'It was not submitted to a hackathon.',
+    'The public research ledger shows the market map, workflow design, privacy boundary, and redacted route observations; personal profile data and live form execution remain local.',
+    'It is not a quoting service. No live premiums, public personal data, insurer-form submission, purchase, or binding action are available.',
   ],
   aliases: ['AutoQuote Automator', 'AutoQuote', 'Coverage Ledger', 'auto insurance agent'],
-  status: 'active',
-  reviewedAt: '2026-08-13',
+  status: 'prototype',
+  reviewedAt: '2026-08-18',
   href: 'https://ontario-all-quote-agent.vercel.app',
-  cta: 'Open AutoQuote Automator',
+  cta: 'View the public research ledger',
   image: '/projects/autoquote-automator-dashboard.png',
   alt: 'The public AutoQuote Automator evidence dashboard',
-  topics: ['project', 'hackathon', 'ontario-insurance', 'shopping-agent'],
+  topics: ['project', 'prototype', 'public-evidence', 'ontario-insurance', 'research-workflow'],
 }
 
 export const SOLANA_OBSERVATORY_PROJECT: PublicSiteProject = {

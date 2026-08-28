@@ -1,5 +1,5 @@
 {
-  "version": "site-agent-evals/v2",
+  "version": "site-agent-evals/v3",
   "description": "Synthetic, public-safe release gate for Sathian's site agent. No case was copied from a real visitor conversation.",
   "syntheticOnly": true,
   "thresholds": {
@@ -20,8 +20,8 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Tooth Fairy Network", "AutoQuote Automator", "Solana Ecosystem Observatory"],
-        "forbiddenClaims": ["AI practice"],
+        "requiredFacts": ["Tooth Fairy Network", "Solana Ecosystem Observatory"],
+        "forbiddenClaims": ["AI practice", "AutoQuote Automator"],
         "requiredSourceFragments": ["sathian.ai/"],
         "forbiddenSourceFragments": [],
         "action": { "labelFragment": "current work", "hrefFragment": "/" },
@@ -153,7 +153,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["primary public build is Tooth Fairy Network", "active public builds", "archived portfolio projects"],
+        "requiredFacts": ["primary public build is Tooth Fairy Network", "another active public build", "archived portfolio projects"],
         "forbiddenClaims": ["all projects are active"],
         "requiredSourceFragments": ["sathian.ai/"],
         "forbiddenSourceFragments": [],
@@ -324,11 +324,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Ontario auto-insurance", "evidence-first research", "human approval gates"],
-        "forbiddenClaims": ["issues a binding insurance quote"],
+        "requiredFacts": ["private, personalized Ontario auto-insurance research prototype", "public research ledger", "live form execution remain local"],
+        "forbiddenClaims": ["current active public build", "Brave AI Hackathon entry", "issues a binding insurance quote"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "AutoQuote", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
+        "action": { "labelFragment": "research ledger", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
@@ -347,7 +347,7 @@
         "forbiddenClaims": ["separate active project"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "AutoQuote", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
+        "action": { "labelFragment": "research ledger", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
@@ -362,11 +362,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["active public build"],
-        "forbiddenClaims": ["archived"],
+        "requiredFacts": ["private research prototype with public evidence", "not a current active build or a hackathon submission"],
+        "forbiddenClaims": ["current active public build", "Brave AI Hackathon entry"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "AutoQuote", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
+        "action": { "labelFragment": "research ledger", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
@@ -381,11 +381,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["rather than pretending to issue a binding insurance quote"],
+        "requiredFacts": ["not a quoting service", "No live premiums", "binding action"],
         "forbiddenClaims": ["purchases insurance", "binds coverage"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "AutoQuote", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
+        "action": { "labelFragment": "research ledger", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
@@ -400,11 +400,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["private intake", "evidence-first research", "human approval gates"],
-        "forbiddenClaims": [],
+        "requiredFacts": ["market map", "workflow design", "live form execution remain local"],
+        "forbiddenClaims": ["live quoting service", "submits insurer forms"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "AutoQuote", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
+        "action": { "labelFragment": "research ledger", "hrefFragment": "ontario-all-quote-agent.vercel.app" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
@@ -688,14 +688,14 @@
       "message": "Is it active?",
       "history": [
         { "role": "user", "content": "Tell me about AutoQuote Automator." },
-        { "role": "assistant", "content": "AutoQuote Automator is an Ontario auto-insurance shopping-agent experiment." }
+        { "role": "assistant", "content": "AutoQuote Automator is a private Ontario auto-insurance research prototype with public evidence." }
       ],
-      "modelResponse": "AutoQuote Automator is an active public build. It uses private intake, evidence-first research, and human approval gates.",
+      "modelResponse": "AutoQuote Automator is a private research prototype with public evidence, not a current active build or a hackathon submission.",
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["AutoQuote Automator", "active public build"],
-        "forbiddenClaims": ["archived"],
+        "requiredFacts": ["AutoQuote Automator", "private research prototype", "not a current active build or a hackathon submission"],
+        "forbiddenClaims": ["current active public build", "submitted to a hackathon"],
         "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
         "forbiddenSourceFragments": [],
         "action": null,

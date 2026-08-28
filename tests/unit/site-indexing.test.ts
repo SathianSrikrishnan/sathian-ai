@@ -10,7 +10,11 @@ type RobotsBuilder = (host: string) => {
   sitemap?: string | string[]
 }
 
-type SitemapBuilder = (host: string, updated?: Date) => Array<{ url: string; lastModified?: Date | string }>
+type SitemapBuilder = (
+  host: string,
+  updated?: Date,
+  publishedWritings?: Array<{ slug: string; date: string; updatedAt?: string }>,
+) => Array<{ url: string; lastModified?: Date | string }>
 
 describe('public-site indexing', () => {
   it('serves a sathian.ai crawler map on the personal domain and previews', () => {
@@ -36,6 +40,7 @@ describe('public-site indexing', () => {
     expect(urls).not.toContain('https://sathian.ai/links')
     expect(urls).not.toContain('https://sathian.ai/btc-atlas')
     expect(urls.every((url) => url.startsWith('https://sathian.ai'))).toBe(true)
+    expect(new Set(urls).size).toBe(urls.length)
   })
 
   it('keeps legacy prototypes out of the personal-site crawl surface', () => {
@@ -73,6 +78,18 @@ describe('public-site indexing', () => {
     const source = readFileSync(new URL('../../src/app/sitemap.ts', import.meta.url), 'utf8')
     expect(source).toMatch(/getPublishedArticles/)
     expect(source).toMatch(/export default async function sitemap/)
+  })
+
+  it('does not duplicate a Studio article that also has a built-in route', () => {
+    const buildSitemap = (sitemapModule as { buildSitemapForHost?: SitemapBuilder }).buildSitemapForHost
+    expect(buildSitemap).toBeTypeOf('function')
+    if (!buildSitemap) return
+
+    const urls = buildSitemap('sathian.ai', new Date('2026-07-15T00:00:00.000Z'), [
+      { slug: 'agent-allowance-lab', date: '2026-07-11' },
+    ]).map((entry) => entry.url)
+
+    expect(urls.filter((url) => url.endsWith('/writings/agent-allowance-lab'))).toHaveLength(1)
   })
 
   it('preserves the Tooth Fairy crawler map on Tooth Fairy hosts', () => {

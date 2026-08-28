@@ -9,21 +9,21 @@ const readSource = (path: string) =>
 describe('hackathon portfolio release', () => {
   const page = readSource('src/app/hackathons/page.tsx')
 
-  it('features AutoQuote Automator before the earlier submissions', () => {
-    const autoQuote = page.indexOf('AutoQuote Automator')
+  it('keeps the page to documented hackathon submissions', () => {
     const agentTab = page.indexOf('AgentTab')
     const toothFairy = page.indexOf('title="Tooth Fairy Network"')
     const clinicalGuard = page.indexOf('title="ClinicalGuard"')
 
-    expect(autoQuote).toBeGreaterThan(-1)
     expect(agentTab).toBeGreaterThan(-1)
-    expect(agentTab).toBeGreaterThan(autoQuote)
     expect(toothFairy).toBeGreaterThan(agentTab)
     expect(clinicalGuard).toBeGreaterThan(toothFairy)
+    expect(page).toContain('Hackathon submissions')
+    expect(page).not.toContain('AutoQuote Automator')
+    expect(page).not.toContain('BRAVE AI HACKATHON')
+    expect(page).not.toContain('Current featured build')
   })
 
   it('links each entry to its strongest public proof', () => {
-    expect(page).toContain('https://ontario-all-quote-agent.vercel.app')
     expect(page).toContain('https://github.com/SathianSrikrishnan/monad-blitz-toronto')
     expect(page).toContain('/writings/the-gap-between-weeks')
     expect(page).toContain(
@@ -39,13 +39,9 @@ describe('hackathon portfolio release', () => {
     expect(existsSync(new URL('../../public/projects/clinicalguard-dashboard.png', import.meta.url))).toBe(true)
   })
 
-  it('keeps the public evidence state explicit after the rename', () => {
-    expect(page).toContain('15 families / 16 routes')
-    expect(page).toContain('44 fields / 43 available')
-    expect(page).toContain('16 routes / 0 premiums')
-    expect(page).toContain('Public routes tested')
-    expect(page).toContain('Live premiums returned')
-    expect(page).toContain('Personal records exposed')
+  it('does not present an independent private prototype as a hackathon entry', () => {
+    expect(page).not.toContain('ontario-all-quote-agent.vercel.app')
+    expect(page).not.toContain('16 routes / 0 premiums')
   })
 
   it('publishes the approved AgentTab essay with build and personal media', () => {

@@ -54,12 +54,14 @@ export function buildSitemapForHost(
         changeFrequency: 'monthly',
         priority: 0.7,
       },
-      ...publishedWritings.map((article) => ({
-        url: `${base}/writings/${article.slug}`,
-        lastModified: safeDate(article.updatedAt ?? article.date, updated),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      })),
+      ...publishedWritings
+        .filter((article) => article.slug !== 'agent-allowance-lab')
+        .map((article) => ({
+          url: `${base}/writings/${article.slug}`,
+          lastModified: safeDate(article.updatedAt ?? article.date, updated),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        })),
     ]
 
     return [...coreEntries, ...writingEntries]

@@ -51,11 +51,14 @@ function currentPublicWorkCard(): PublicMemoryCard {
     .map((project) => project.reviewedAt)
     .sort()
     .at(-1)
+  const otherActiveSummary = otherActive.length === 1
+    ? `${otherActive[0].name} is another active public build.`
+    : `${joinProjectNames(otherActive)} are also active public builds.`
   return {
     id: 'current-public-work',
     slug: 'current-public-work',
     title: 'What Sathian is building now',
-    body: `Sathian's primary public build is ${primary?.name}. ${joinProjectNames(otherActive)} are also active public builds. Draw with Tanda is the public family-content stream inside Tooth Fairy Network. ${joinProjectNames(ARCHIVE_SITE_PROJECTS)} are archived portfolio projects, not current active builds.`,
+    body: `Sathian's primary public build is ${primary?.name}. ${otherActiveSummary} Draw with Tanda is the public family-content stream inside Tooth Fairy Network. ${joinProjectNames(ARCHIVE_SITE_PROJECTS)} are archived portfolio projects, not current active builds.`,
     summary: 'Tooth Fairy Network first, supported by public learning, content, and a small active project portfolio.',
     tags: ['current-work', 'building-now', 'projects', 'digital-experiments', 'portfolio', 'tooth-fairy-network'],
     source: { ref: 'https://sathian.ai/', kind: 'published_page' },

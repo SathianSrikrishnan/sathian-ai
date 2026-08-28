@@ -29,7 +29,7 @@ describe('canonical site-agent public knowledge', () => {
     ])
 
     for (const project of SITE_PROJECTS) {
-      expect(['primary', 'active', 'archive']).toContain(project.status)
+      expect(['primary', 'active', 'prototype', 'archive']).toContain(project.status)
       expect(project.aliases.length).toBeGreaterThan(0)
       expect(project.approvedClaims.length).toBeGreaterThan(0)
       expect(project.reviewedAt).toMatch(/^2026-\d{2}-\d{2}$/)
@@ -38,7 +38,7 @@ describe('canonical site-agent public knowledge', () => {
 
     expect(FEATURED_SITE_PROJECTS.map((project) => project.status)).toEqual([
       'primary',
-      'active',
+      'prototype',
     ])
     expect(ARCHIVE_SITE_PROJECTS).toHaveLength(4)
     expect(ARCHIVE_SITE_PROJECTS.every((project) => project.status === 'archive')).toBe(true)
@@ -98,6 +98,19 @@ describe('canonical site-agent public knowledge', () => {
       'solana-dashboard',
       'ecosystem-observatory',
     ]))
+  })
+
+  it('describes AutoQuote as private prototype evidence rather than an active hackathon build', () => {
+    const autoQuote = cards.find((card) => card.id === 'project-autoquote-automator')
+    const currentWork = cards.find((card) => card.id === 'current-public-work')
+
+    expect(autoQuote?.body).toContain('private, personalized Ontario auto-insurance research prototype')
+    expect(autoQuote?.body).toContain('was not submitted to a hackathon')
+    expect(autoQuote?.body).toContain('not a quoting service')
+    expect(autoQuote?.body).toContain('No live premiums')
+    expect(autoQuote?.body).toContain('insurer-form submission, purchase, or binding action')
+    expect(autoQuote?.tags).toContain('status-prototype')
+    expect(currentWork?.body).not.toContain('AutoQuote Automator')
   })
 
   it('turns every registry record into a freshness-stamped public memory card', () => {

@@ -12,7 +12,7 @@
       "intent": "discover",
       "message": "What is Sathian building now?",
       "expectedOutcome": "answer",
-      "requiredFacts": ["Tooth Fairy Network", "AutoQuote Automator", "Solana Ecosystem Observatory"],
+      "requiredFacts": ["Tooth Fairy Network", "Solana Ecosystem Observatory"],
       "requiredSourceFragments": ["sathian.ai"],
       "forbiddenClaims": ["I accessed Sathian's private systems"]
     },
@@ -21,9 +21,9 @@
       "intent": "explore",
       "message": "Tell me about AutoQuote Automator.",
       "expectedOutcome": "answer",
-      "requiredFacts": ["Ontario", "auto insurance", "human approval"],
+      "requiredFacts": ["Ontario", "auto insurance", "private", "research prototype"],
       "requiredSourceFragments": ["ontario-all-quote-agent.vercel.app"],
-      "forbiddenClaims": ["binding quote", "purchases insurance"]
+      "forbiddenClaims": ["active public build", "binding quote", "purchases insurance"]
     },
     {
       "id": "P1-03",

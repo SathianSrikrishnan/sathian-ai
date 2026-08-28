@@ -490,6 +490,27 @@ describe('bounded public answer service', () => {
     expect(model.generate).not.toHaveBeenCalled()
   })
 
+  it('answers a prototype status question without calling it active or archived', async () => {
+    const model = { generate: vi.fn(async () => 'AutoQuote is active.') }
+
+    const result = await answerAgentQuestion({
+      message: 'Is AutoQuote active?',
+      page: '/',
+      policy,
+      cards: getPublicProfileMemoryCards(),
+    }, { model })
+
+    expect(result.modelUsed).toBe(false)
+    expect(result.answer).toContain('private research prototype with public evidence')
+    expect(result.answer).toContain('not a current active build or a hackathon submission')
+    expect(result.answer).not.toContain('current active public build')
+    expect(result.nextAction).toEqual({
+      label: 'View the public research ledger',
+      href: 'https://ontario-all-quote-agent.vercel.app',
+    })
+    expect(model.generate).not.toHaveBeenCalled()
+  })
+
   it('returns clean plain text when a model adds markdown emphasis or an em dash', async () => {
     const model = {
       generate: vi.fn(async () => 'Yes — **you can participate**. Ask about a track.'),

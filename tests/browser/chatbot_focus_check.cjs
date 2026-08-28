@@ -131,9 +131,10 @@ async function main() {
   const currentWorkAnswer = panel.locator('.site-agent-message--bot').last()
   await currentWorkAnswer.getByText('primary public build is Tooth Fairy Network', { exact: false }).waitFor({ timeout: 30_000 })
   const currentWorkText = await currentWorkAnswer.innerText()
-  if (!currentWorkText.includes('AutoQuote Automator') || !currentWorkText.includes('Solana Ecosystem Observatory')) {
+  if (!currentWorkText.includes('Solana Ecosystem Observatory')) {
     throw new Error(`Current-work answer omitted an active project: ${currentWorkText}`)
   }
+  if (currentWorkText.includes('AutoQuote Automator')) throw new Error(`Current-work answer called a private prototype active: ${currentWorkText}`)
   if (/AI Practice/i.test(currentWorkText)) throw new Error(`Current-work answer revived retired AI Practice copy: ${currentWorkText}`)
   if (Math.abs(await page.evaluate(() => window.scrollY) - scrollBefore) > 1) {
     throw new Error('Current-work answer moved the homepage viewport')
