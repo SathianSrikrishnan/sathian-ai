@@ -73,11 +73,10 @@ describe('The Polytheistic Test release', () => {
 
   it('adds reviewed public context for the site agent without replacing the video release', () => {
     const cards = getPublicProfileMemoryCards()
-    const writing = cards.find((card) => card.id === 'latest-featured-writing')
+    const writing = cards.find((card) => card.id === 'featured-writing-polytheistic-test')
     const release = cards.find((card) => card.id === 'latest-release')
 
     expect(writing?.source.ref).toBe('https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger')
-    expect(writing?.body).toContain('newest featured writing')
     expect(writing?.title).toContain('The Polytheistic Test')
     expect(writing?.body).toContain('Saraswati test')
     expect(release?.title).toContain('Latest release:')
