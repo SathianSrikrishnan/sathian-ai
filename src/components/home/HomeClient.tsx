@@ -39,6 +39,7 @@ const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.
 const FEATURED_WRITINGS = [
   {
     slug: 'inside-monkedao',
+    prefetch: true,
     label: 'NEW FILM + FIRSTHAND FIELD REPORT',
     cta: 'Watch and read the field report',
     image: '/inside-monkedao/opening-cover.png',
@@ -46,6 +47,7 @@ const FEATURED_WRITINGS = [
   },
   {
     slug: 'saraswati-lakshmi-and-the-ledger',
+    prefetch: false,
     label: 'FEATURED ESSAY / INTERACTIVE FIELD NOTE',
     cta: 'Read and try the two tests',
     image: '/media/flagship-hero.png',
@@ -101,12 +103,13 @@ export function HomeClient({ writings }: HomeClientProps) {
                     <h3>{writing.title}</h3>
                     <p className="minimal-label">{feature.label}</p>
                     <p>{writing.description}</p>
-                    <Link href={writing.href} className="minimal-text-link">
+                    <Link href={writing.href} prefetch={feature.prefetch} className="minimal-text-link">
                       {feature.cta}
                     </Link>
                   </div>
                   <Link
                     href={writing.href}
+                    prefetch={feature.prefetch}
                     className="minimal-project-media"
                     aria-label={`Read ${writing.title}`}
                   >

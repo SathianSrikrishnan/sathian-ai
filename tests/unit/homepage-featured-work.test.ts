@@ -25,6 +25,10 @@ describe('homepage featured writing order', () => {
     expect(home).toContain("cta: 'Watch and read the field report'")
     expect(home).toContain("image: '/media/flagship-hero.png'")
     expect(home).toContain("cta: 'Read and try the two tests'")
+    expect(home).toMatch(
+      /slug: 'saraswati-lakshmi-and-the-ledger',\r?\n\s+prefetch: false/,
+    )
+    expect(home).toContain('prefetch={feature.prefetch}')
   })
 
   it('keeps both writings in reviewed public context', () => {
