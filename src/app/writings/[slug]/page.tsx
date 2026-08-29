@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getArticleBySlug } from '@/lib/articles-db'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
+import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
 type Props = { params: { slug: string } }
 
@@ -13,15 +14,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} — sathian.ai`,
     description: article.description,
-    authors: [{ name: 'Sathian S.', url: 'https://sathian.ai' }],
+    authors: [{ name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' }],
     keywords: article.domains,
     openGraph: {
       title: article.title,
       description: article.description,
       type: 'article',
       publishedTime: article.date,
-      authors: ['Sathian S.'],
-      siteName: 'sathian.ai',
+      authors: ['Sathian Srikrishnan'],
+      modifiedTime: article.updatedAt,
+      siteName: 'Sathian Srikrishnan',
     },
     twitter: {
       card: 'summary_large_image',
@@ -41,15 +43,18 @@ export default async function ArticlePage({ params }: Props) {
     headline: article.title,
     description: article.description,
     datePublished: article.date,
+    dateModified: article.updatedAt ?? article.date,
     author: {
       '@type': 'Person',
-      name: 'Sathian S.',
-      url: 'https://sathian.ai',
+      '@id': SATHIAN_PERSON_SCHEMA['@id'],
+      name: 'Sathian Srikrishnan',
+      url: 'https://sathian.ai/about',
     },
     publisher: {
       '@type': 'Person',
-      name: 'Sathian S.',
-      url: 'https://sathian.ai',
+      '@id': SATHIAN_PERSON_SCHEMA['@id'],
+      name: 'Sathian Srikrishnan',
+      url: 'https://sathian.ai/about',
     },
     url: `https://sathian.ai/writings/${article.slug}`,
     mainEntityOfPage: `https://sathian.ai/writings/${article.slug}`,

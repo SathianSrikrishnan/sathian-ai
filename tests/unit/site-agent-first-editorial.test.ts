@@ -44,17 +44,18 @@ describe('site-agent-first editorial pass', () => {
     expect(agentIndex).toContain('Public build record')
   })
 
-  it('folds About and Automation into the chat-first front door', () => {
-    expect(about).toContain("redirect('/')")
+  it('keeps a crawlable identity page while folding Automation into the chat-first front door', () => {
+    expect(about).toContain("'@type': 'ProfilePage'")
+    expect(about).toContain('Sathian Srikrishnan')
     expect(automation).toContain("redirect('/#agent')")
   })
 
-  it('keeps the human navigation to the three approved pages and gives agents a quieter index', () => {
+  it('keeps the human navigation to the four approved pages and gives agents a quieter index', () => {
     expect(nav).toContain("{ label: 'Home', href: '/'")
+    expect(nav).toContain("{ label: 'About', href: '/about'")
     expect(nav).toContain("{ label: 'Hackathons', href: '/hackathons'")
     expect(nav).toContain("{ label: 'Writing', href: '/writings'")
     expect(nav).not.toContain("{ label: 'Projects'")
-    expect(nav).not.toContain("{ label: 'About'")
     expect(nav).not.toContain("{ label: 'Automation'")
     expect(nav).not.toContain("{ label: 'Email'")
     expect(agentIndex).toContain('FOR AGENTS / PUBLIC CONTEXT')

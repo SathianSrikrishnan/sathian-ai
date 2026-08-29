@@ -30,12 +30,12 @@ describe('public-site indexing', () => {
 
     const urls = buildSitemap('sathian.ai', new Date('2026-07-15T00:00:00.000Z')).map((entry) => entry.url)
     expect(urls).toContain('https://sathian.ai')
+    expect(urls).toContain('https://sathian.ai/about')
     expect(urls).toContain('https://sathian.ai/hackathons')
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
     expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
     expect(urls).toContain('https://sathian.ai/writings/the-gap-between-weeks')
-    expect(urls).not.toContain('https://sathian.ai/about')
     expect(urls).not.toContain('https://sathian.ai/agents')
     expect(urls).not.toContain('https://sathian.ai/links')
     expect(urls).not.toContain('https://sathian.ai/btc-atlas')
@@ -56,12 +56,41 @@ describe('public-site indexing', () => {
 
   it('publishes a clear Sathian person entity from the homepage', () => {
     const page = readFileSync(new URL('../../src/app/page.tsx', import.meta.url), 'utf8')
+    const home = readFileSync(new URL('../../src/components/home/HomeClient.tsx', import.meta.url), 'utf8')
+    const layout = readFileSync(new URL('../../src/app/layout.tsx', import.meta.url), 'utf8')
     const identity = readFileSync(new URL('../../src/lib/site-identity.ts', import.meta.url), 'utf8')
 
     expect(page).toContain('SATHIAN_PERSON_SCHEMA')
     expect(identity).toContain("name: 'Sathian Srikrishnan'")
     expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.']")
     expect(identity).toContain('sameAs:')
+    expect(identity).toContain("name: 'Sathian Srikrishnan'")
+    expect(identity).toContain("alternateName: ['sathian.ai', 'Digital Experiments']")
+    expect(layout).toContain("siteName: 'Sathian Srikrishnan'")
+    expect(home).toContain('SATHIAN SRIKRISHNAN')
+  })
+
+  it('publishes a real indexable profile page for the same person entity', () => {
+    const about = readFileSync(new URL('../../src/app/about/page.tsx', import.meta.url), 'utf8')
+
+    expect(about).not.toContain("redirect('/')")
+    expect(about).toContain("'@type': 'ProfilePage'")
+    expect(about).toContain("SATHIAN_PERSON_SCHEMA['@id']")
+    expect(about).toContain('Sathian Srikrishnan')
+  })
+
+  it('uses the full identity and stable profile entity on every writing surface', () => {
+    const article = readFileSync(new URL('../../src/app/writings/[slug]/page.tsx', import.meta.url), 'utf8')
+    const allowance = readFileSync(new URL('../../src/app/writings/agent-allowance-lab/page.tsx', import.meta.url), 'utf8')
+    const renderer = readFileSync(new URL('../../src/components/article/ArticleRenderer.tsx', import.meta.url), 'utf8')
+
+    for (const source of [article, allowance]) {
+      expect(source).toContain("name: 'Sathian Srikrishnan'")
+      expect(source).toContain("SATHIAN_PERSON_SCHEMA['@id']")
+    }
+    expect(article).toContain('dateModified')
+    expect(renderer).toContain('By Sathian Srikrishnan')
+    expect(allowance).toContain('By Sathian Srikrishnan')
   })
 
   it('uses stable modification dates and loads future published Studio articles', () => {

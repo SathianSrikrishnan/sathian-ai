@@ -15,11 +15,15 @@ const analyticsPayload = {
       rows: [
         {
           dimensionValues: [{ value: 'current7' }],
-          metricValues: [{ value: '19' }, { value: '57' }],
+          metricValues: [{ value: '19' }, { value: '57' }, { value: '35' }],
         },
         {
-          dimensionValues: [{ value: 'baseline28' }],
-          metricValues: [{ value: '50' }, { value: '117' }],
+          dimensionValues: [{ value: 'previous7' }],
+          metricValues: [{ value: '14' }, { value: '42' }, { value: '21' }],
+        },
+        {
+          dimensionValues: [{ value: 'current28' }],
+          metricValues: [{ value: '50' }, { value: '117' }, { value: '72' }],
         },
       ],
     },
@@ -55,17 +59,22 @@ describe('Sathian.ai GA4 digest query', () => {
 
     expect(requests[0].dateRanges).toEqual([
       { startDate: '8daysAgo', endDate: '2daysAgo', name: 'current7' },
-      { startDate: '29daysAgo', endDate: '2daysAgo', name: 'baseline28' },
+      { startDate: '15daysAgo', endDate: '9daysAgo', name: 'previous7' },
+      { startDate: '29daysAgo', endDate: '2daysAgo', name: 'current28' },
+    ])
+    expect(requests[0].metrics).toEqual([
+      { name: 'activeUsers' },
+      { name: 'sessions' },
+      { name: 'engagedSessions' },
     ])
     expect(requests[1].dimensions).toEqual([{ name: 'sessionSource' }, { name: 'sessionMedium' }])
     expect(requests[2].dimensions).toEqual([{ name: 'landingPagePlusQueryString' }])
     expect(requests[3].dimensions).toEqual([{ name: 'eventName' }])
-    expect(requests[3].dimensionFilter).toEqual({
-      filter: {
-        fieldName: 'eventName',
-        stringFilter: { matchType: 'EXACT', value: 'agent_note_sent' },
-      },
-    })
+    for (const request of requests) {
+      expect(JSON.stringify(request.dimensionFilter)).toContain('hostName')
+      expect(JSON.stringify(request.dimensionFilter)).toContain('sathian.ai')
+    }
+    expect(JSON.stringify(requests[3].dimensionFilter)).toContain('agent_note_sent')
     expect(JSON.stringify(requests)).not.toMatch(/userId|email|message|city/i)
   })
 
@@ -75,6 +84,9 @@ describe('Sathian.ai GA4 digest query', () => {
     expect(result).toEqual({
       last7Users: 19,
       last7Sessions: 57,
+      last7EngagedSessions: 35,
+      previous7Users: 14,
+      previous7Sessions: 42,
       last28Users: 50,
       last28Sessions: 117,
       last7AgentNotes: 1,
@@ -102,7 +114,11 @@ describe('Sathian.ai GA4 digest query', () => {
       'https://analyticsdata.googleapis.com/v1beta/properties/546120838:batchRunReports',
     )
     expect(new Headers(requestedInit?.headers).get('authorization')).toBe('Bearer read-only-token')
-    expect(JSON.parse(String(requestedInit?.body)).requests).toHaveLength(4)
+    const requests = JSON.parse(String(requestedInit?.body)).requests
+    expect(requests).toHaveLength(4)
+    expect(requests.every((request: { dimensionFilter?: unknown }) => (
+      JSON.stringify(request.dimensionFilter).includes('sathian.ai')
+    ))).toBe(true)
     expect(result.leadingSourceMedium).toBe('luma / referral')
   })
 })

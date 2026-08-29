@@ -3,7 +3,7 @@ import { ImageResponse } from 'next/og'
 export const runtime = 'edge'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
-export const alt = 'About Sathian S.'
+export const alt = 'About Sathian Srikrishnan'
 
 export default function OGImage() {
   return new ImageResponse(
@@ -60,7 +60,7 @@ export default function OGImage() {
           fontFamily: 'Georgia, serif',
           maxWidth: '900px',
         }}>
-          Sathian S.
+          Sathian Srikrishnan
         </div>
 
         <div style={{

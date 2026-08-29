@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { motion, useInView } from 'motion/react'
 import { type Article } from '@/lib/articles'
@@ -456,7 +457,9 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <span className="text-gray-400">{article.author}</span>
+            <Link href="/about" className="text-gray-400 hover:text-gray-200 transition-colors">
+              By Sathian Srikrishnan
+            </Link>
             <span className="text-gray-800">/</span>
             <span>{formatDate(article.date)}</span>
           </motion.div>

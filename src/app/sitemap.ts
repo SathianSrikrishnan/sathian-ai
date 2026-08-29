@@ -29,6 +29,7 @@ export function buildSitemapForHost(
     const base = 'https://sathian.ai'
     const coreRoutes = [
       '',
+      '/about',
       '/hackathons',
       '/writings',
       '/projects/tooth-fairy-network/draw-with-tanda',

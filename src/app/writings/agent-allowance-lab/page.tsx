@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SiteNav } from '@/components/SiteNav'
+import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
 const repoUrl = 'https://github.com/SathianSrikrishnan/solana-agent-allowance-demo'
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana - sathian.ai',
   description:
     'A Superteam Canada technical deep dive from a Canadian student-builder experimenting with Solana allowances, agent budgets, and consumer wallet permissions.',
-  authors: [{ name: 'Sathian S.', url: 'https://sathian.ai' }],
+  authors: [{ name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' }],
   keywords: ['Solana', 'Superteam Canada', 'subscriptions', 'allowances', 'AI agents', 'devnet'],
   openGraph: {
     title: 'Agent Allowance Lab: Wallet-Safe Budgets for AI Agents on Solana',
@@ -16,8 +17,8 @@ export const metadata: Metadata = {
       'A technical deep dive on fixed token allowances, agent budgets, and receipt-first automation on Solana.',
     type: 'article',
     publishedTime: '2026-06-23',
-    authors: ['Sathian S.'],
-    siteName: 'sathian.ai',
+    authors: ['Sathian Srikrishnan'],
+    siteName: 'Sathian Srikrishnan',
     url: 'https://sathian.ai/writings/agent-allowance-lab',
   },
   twitter: {
@@ -62,8 +63,8 @@ export default function AgentAllowanceLabPage() {
     description:
       'A Superteam Canada technical deep dive on Solana Native Subscriptions and Allowances as a bounded spending primitive for AI agents.',
     datePublished: '2026-06-23',
-    author: { '@type': 'Person', name: 'Sathian S.', url: 'https://sathian.ai' },
-    publisher: { '@type': 'Person', name: 'Sathian S.', url: 'https://sathian.ai' },
+    author: { '@type': 'Person', '@id': SATHIAN_PERSON_SCHEMA['@id'], name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' },
+    publisher: { '@type': 'Person', '@id': SATHIAN_PERSON_SCHEMA['@id'], name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' },
     mainEntityOfPage: 'https://sathian.ai/writings/agent-allowance-lab',
     keywords: 'Solana, Superteam Canada, subscriptions, allowances, AI agents',
   }
@@ -86,6 +87,10 @@ export default function AgentAllowanceLabPage() {
           <h1 className="hub-hero-name" style={{ fontSize: 'clamp(36px, 6vw, 64px)', marginBottom: 24 }}>
             Agent Allowance Lab
           </h1>
+
+          <p className="hub-mono" style={{ color: 'var(--hub-text-secondary)', marginBottom: 24 }}>
+            <Link href="/about" style={{ color: '#14F195' }}>By Sathian Srikrishnan</Link> · June 23, 2026
+          </p>
 
           <p style={{ ...leadStyle, color: 'var(--hub-text-primary)' }}>
             AI agents should not receive raw wallets. They should receive explicit budgets.

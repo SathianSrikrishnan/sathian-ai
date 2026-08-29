@@ -8,7 +8,8 @@ const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
 const proofDirectory = process.env.BROWSER_PROOF_DIR
 
 const surfaces = [
-  { path: '/', heading: 'Digital Experiments', title: 'Digital Experiments | Sathian Srikrishnan' },
+  { path: '/', heading: 'Digital Experiments', title: 'Sathian Srikrishnan | Digital Experiments' },
+  { path: '/about', heading: 'Sathian Srikrishnan', title: 'About Sathian Srikrishnan' },
   { path: '/writings', heading: 'Writing.', title: 'Writing | sathian.ai' },
   { path: '/hackathons', heading: 'Ideas meet the clock.', title: 'Hackathons | sathian.ai' },
 ]

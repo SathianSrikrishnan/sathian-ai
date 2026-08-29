@@ -24,6 +24,9 @@ const metrics: DailyReportMetrics = {
 const websiteTraffic: WebsiteTrafficMetrics = {
   last7Users: 19,
   last7Sessions: 57,
+  last7EngagedSessions: 35,
+  previous7Users: 14,
+  previous7Sessions: 42,
   last28Users: 50,
   last28Sessions: 117,
   last7AgentNotes: 1,
@@ -62,11 +65,15 @@ describe('private Telegram daily front-door report', () => {
     expect(message.text).toContain('Reply-enabled:</b> 2')
     expect(message.text).toContain('Delivery backlog:</b> 1')
     expect(message.text).toContain('Website reach')
-    expect(message.text).toContain('7 complete days:</b> 19 people · 57 visits')
-    expect(message.text).toContain('28 complete days:</b> 50 people · 117 visits')
+    expect(message.text).toContain('7 complete days:</b> 19 GA4 active users · 57 sessions')
+    expect(message.text).toContain('Engaged sessions:</b> 35 (61%)')
+    expect(message.text).toContain('vs prior 7 days:</b> active users +36% · sessions +36%')
+    expect(message.text).toContain('28 complete days:</b> 50 GA4 active users · 117 sessions')
+    expect(message.text).toContain('Production hostname:</b> sathian.ai only')
+    expect(message.text).toContain('not verified people')
     expect(message.text).toContain('Notes sent:</b> 1')
-    expect(message.text).toContain('Top named source:</b> luma / referral · 14 visits')
-    expect(message.text).toContain('Top landing page:</b> /writings · 26 visits')
+    expect(message.text).toContain('Top named source:</b> luma / referral · 14 sessions')
+    expect(message.text).toContain('Top landing page:</b> /writings · 26 sessions')
     expect(JSON.stringify(message)).not.toMatch(/message|email|visitor content/i)
   })
 

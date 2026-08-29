@@ -15,6 +15,9 @@ export interface DailyReportMetrics {
 export interface WebsiteTrafficMetrics {
   last7Users: number
   last7Sessions: number
+  last7EngagedSessions: number
+  previous7Users: number
+  previous7Sessions: number
   last28Users: number
   last28Sessions: number
   last7AgentNotes: number
@@ -53,6 +56,17 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
 }
 
+function percentage(numerator: number, denominator: number): string {
+  if (denominator <= 0) return '0%'
+  return `${Math.round((numerator / denominator) * 100)}%`
+}
+
+function periodChange(current: number, previous: number): string {
+  if (previous <= 0) return current > 0 ? 'new from 0' : '0%'
+  const change = Math.round(((current - previous) / previous) * 100)
+  return `${change >= 0 ? '+' : ''}${change}%`
+}
+
 export function buildDailyReportMessage(
   metrics: DailyReportMetrics,
   windowEndsAt: Date,
@@ -79,11 +93,16 @@ export function buildDailyReportMessage(
       '<b>Website reach</b>',
       ...(websiteTraffic ? [
         '<i>Google Analytics · complete through two days ago</i>',
-        `<b>7 complete days:</b> ${websiteTraffic.last7Users} people · ${websiteTraffic.last7Sessions} visits`,
-        `<b>28 complete days:</b> ${websiteTraffic.last28Users} people · ${websiteTraffic.last28Sessions} visits`,
+        `<b>7 complete days:</b> ${websiteTraffic.last7Users} GA4 active users · ${websiteTraffic.last7Sessions} sessions`,
+        `<b>Engaged sessions:</b> ${websiteTraffic.last7EngagedSessions} (${percentage(websiteTraffic.last7EngagedSessions, websiteTraffic.last7Sessions)})`,
+        `<b>vs prior 7 days:</b> active users ${periodChange(websiteTraffic.last7Users, websiteTraffic.previous7Users)} · sessions ${periodChange(websiteTraffic.last7Sessions, websiteTraffic.previous7Sessions)}`,
+        `<b>28 complete days:</b> ${websiteTraffic.last28Users} GA4 active users · ${websiteTraffic.last28Sessions} sessions`,
         `<b>Notes sent:</b> ${websiteTraffic.last7AgentNotes}`,
-        `<b>Top named source:</b> ${escapeHtml(websiteTraffic.leadingSourceMedium ?? 'not enough data')} · ${websiteTraffic.leadingSourceSessions} visits`,
-        `<b>Top landing page:</b> ${escapeHtml(websiteTraffic.leadingLandingPage ?? 'not enough data')} · ${websiteTraffic.leadingLandingPageSessions} visits`,
+        `<b>Top named source:</b> ${escapeHtml(websiteTraffic.leadingSourceMedium ?? 'not enough data')} · ${websiteTraffic.leadingSourceSessions} sessions`,
+        `<b>Top landing page:</b> ${escapeHtml(websiteTraffic.leadingLandingPage ?? 'not enough data')} · ${websiteTraffic.leadingLandingPageSessions} sessions`,
+        `<b>Production hostname:</b> sathian.ai only`,
+        `<b>Internal/test traffic:</b> GA4 filter status not verified`,
+        '<i>Known bots are filtered by GA4 when recognized; active users are estimates, not verified people.</i>',
       ] : [
         '<b>Website reach:</b> temporarily unavailable',
       ]),

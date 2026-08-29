@@ -11,16 +11,19 @@ export interface AnalyticsBatchResponse {
   }>
 }
 
+interface AnalyticsFilterExpression {
+  filter?: {
+    fieldName: string
+    stringFilter: { matchType: 'EXACT'; value: string; caseSensitive?: boolean }
+  }
+  andGroup?: { expressions: AnalyticsFilterExpression[] }
+}
+
 interface AnalyticsRequest {
   dateRanges: Array<{ startDate: string; endDate: string; name?: string }>
   metrics: Array<{ name: string }>
   dimensions?: Array<{ name: string }>
-  dimensionFilter?: {
-    filter: {
-      fieldName: string
-      stringFilter: { matchType: 'EXACT'; value: string }
-    }
-  }
+  dimensionFilter?: AnalyticsFilterExpression
   orderBys?: Array<{ metric: { metricName: string }; desc: boolean }>
   limit?: string
 }
@@ -55,15 +58,27 @@ function descendingMetric(name: string) {
   return { metric: { metricName: name }, desc: true }
 }
 
+function exactDimension(fieldName: string, value: string): AnalyticsFilterExpression {
+  return {
+    filter: {
+      fieldName,
+      stringFilter: { matchType: 'EXACT', value, caseSensitive: false },
+    },
+  }
+}
+
 export function buildSathianAnalyticsRequests(): AnalyticsRequest[] {
   const complete7 = [{ startDate: '8daysAgo', endDate: '2daysAgo' }]
+  const productionHostname = exactDimension('hostName', 'sathian.ai')
   return [
     {
-      metrics: [metric('activeUsers'), metric('sessions')],
+      metrics: [metric('activeUsers'), metric('sessions'), metric('engagedSessions')],
       dateRanges: [
         { startDate: '8daysAgo', endDate: '2daysAgo', name: 'current7' },
-        { startDate: '29daysAgo', endDate: '2daysAgo', name: 'baseline28' },
+        { startDate: '15daysAgo', endDate: '9daysAgo', name: 'previous7' },
+        { startDate: '29daysAgo', endDate: '2daysAgo', name: 'current28' },
       ],
+      dimensionFilter: productionHostname,
     },
     {
       dimensions: [dimension('sessionSource'), dimension('sessionMedium')],
@@ -71,6 +86,7 @@ export function buildSathianAnalyticsRequests(): AnalyticsRequest[] {
       dateRanges: complete7,
       orderBys: [descendingMetric('sessions')],
       limit: '8',
+      dimensionFilter: productionHostname,
     },
     {
       dimensions: [dimension('landingPagePlusQueryString')],
@@ -78,15 +94,18 @@ export function buildSathianAnalyticsRequests(): AnalyticsRequest[] {
       dateRanges: complete7,
       orderBys: [descendingMetric('sessions')],
       limit: '8',
+      dimensionFilter: productionHostname,
     },
     {
       dimensions: [dimension('eventName')],
       metrics: [metric('eventCount')],
       dateRanges: complete7,
       dimensionFilter: {
-        filter: {
-          fieldName: 'eventName',
-          stringFilter: { matchType: 'EXACT', value: 'agent_note_sent' },
+        andGroup: {
+          expressions: [
+            productionHostname,
+            exactDimension('eventName', 'agent_note_sent'),
+          ],
         },
       },
     },
@@ -107,13 +126,14 @@ export function parseSathianAnalyticsResponse(
   payload: AnalyticsBatchResponse,
 ): WebsiteTrafficMetrics {
   const reports = payload.reports ?? []
-  const windows = new Map<string, { users: number; sessions: number }>()
+  const windows = new Map<string, { users: number; sessions: number; engagedSessions: number }>()
   for (const row of reports[0]?.rows ?? []) {
     const name = row.dimensionValues?.[0]?.value
     if (!name) continue
     windows.set(name, {
       users: numberAt(row.metricValues, 0),
       sessions: numberAt(row.metricValues, 1),
+      engagedSessions: numberAt(row.metricValues, 2),
     })
   }
 
@@ -127,8 +147,10 @@ export function parseSathianAnalyticsResponse(
     const path = row.dimensionValues?.[0]?.value ?? ''
     return path !== '' && path !== '(not set)'
   })
-  const current7 = windows.get('current7') ?? { users: 0, sessions: 0 }
-  const baseline28 = windows.get('baseline28') ?? { users: 0, sessions: 0 }
+  const emptyWindow = { users: 0, sessions: 0, engagedSessions: 0 }
+  const current7 = windows.get('current7') ?? emptyWindow
+  const previous7 = windows.get('previous7') ?? emptyWindow
+  const current28 = windows.get('current28') ?? emptyWindow
   const landingPagePath = landingPage?.dimensionValues?.[0]?.value
     ?.split('?', 1)[0]
     .slice(0, 200) ?? null
@@ -136,8 +158,11 @@ export function parseSathianAnalyticsResponse(
   return {
     last7Users: current7.users,
     last7Sessions: current7.sessions,
-    last28Users: baseline28.users,
-    last28Sessions: baseline28.sessions,
+    last7EngagedSessions: current7.engagedSessions,
+    previous7Users: previous7.users,
+    previous7Sessions: previous7.sessions,
+    last28Users: current28.users,
+    last28Sessions: current28.sessions,
     last7AgentNotes: numberAt(reports[3]?.rows?.[0]?.metricValues, 0),
     leadingSourceMedium: source && medium ? `${source} / ${medium}`.slice(0, 160) : null,
     leadingSourceSessions: numberAt(namedSource?.metricValues, 0),
