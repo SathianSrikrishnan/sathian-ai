@@ -8,23 +8,24 @@ import { getPublicProfileMemoryCards } from '@/lib/public-profile'
 const read = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
 
 describe('The Polytheistic Test release', () => {
-  it('is the newest published writing with the approved editorial contract', () => {
-    expect(articles[0]).toMatchObject({
+  it('remains published with the approved editorial contract', () => {
+    const article = articles.find((entry) => entry.slug === 'saraswati-lakshmi-and-the-ledger')
+    expect(article).toMatchObject({
       slug: 'saraswati-lakshmi-and-the-ledger',
       title: 'The Polytheistic Test',
       date: '2026-08-14',
     })
-    expect(articles[0].body).toContain('“Why does Saraswati carry music?” one of my seven-year-old daughters asked me.')
-    expect(articles[0].body).toContain('I was born Hindu. It took my children to make me study what I had inherited.')
-    expect(articles[0].body).toContain('Every technology should pass two tests')
-    expect(articles[0].body).toContain('AI is polytheistic, not monotheistic')
-    expect(articles[0].body).toContain('I used the tests first on the Solana Observatory')
-    expect(articles[0].sectionHeadings).toContain('Other places I am testing this')
-    expect(articles[0].sectionHeadings).toContain('Where this metaphor could break')
-    expect(articles[0].body).toContain('crypto communities become gated communities')
-    expect(articles[0].body).toContain('What can the ledger actually prove?')
-    expect(articles[0].body).not.toContain('I do not see my daughters every day.')
-    expect(articles[0].body).not.toContain('promotional subject')
+    expect(article?.body).toContain('“Why does Saraswati carry music?” one of my seven-year-old daughters asked me.')
+    expect(article?.body).toContain('I was born Hindu. It took my children to make me study what I had inherited.')
+    expect(article?.body).toContain('Every technology should pass two tests')
+    expect(article?.body).toContain('AI is polytheistic, not monotheistic')
+    expect(article?.body).toContain('I used the tests first on the Solana Observatory')
+    expect(article?.sectionHeadings).toContain('Other places I am testing this')
+    expect(article?.sectionHeadings).toContain('Where this metaphor could break')
+    expect(article?.body).toContain('crypto communities become gated communities')
+    expect(article?.body).toContain('What can the ledger actually prove?')
+    expect(article?.body).not.toContain('I do not see my daughters every day.')
+    expect(article?.body).not.toContain('promotional subject')
   })
 
   it('serves the interactive essay at its canonical writing URL', () => {
