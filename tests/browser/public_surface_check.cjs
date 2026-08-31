@@ -25,6 +25,7 @@ const surfaces = [
     heading: 'SolanaObservatory',
     title: 'Solana Observatory — a source-visible ecosystem dashboard',
     headingFont: /Bahnschrift|Franklin Gothic/,
+    heroTitleMustFitColumn: true,
     video: '/projects/solana-observatory-demo.mp4',
     videoDuration: 183.175,
   },
@@ -93,6 +94,11 @@ async function verifyViewport(browser, label, viewport) {
       const heading = headings[0]
       const rect = heading?.getBoundingClientRect()
       const style = heading ? getComputedStyle(heading) : null
+      const outlinedLine = heading?.querySelector('span')
+      const outlinedLineRange = outlinedLine ? document.createRange() : null
+      outlinedLineRange?.selectNodeContents(outlinedLine)
+      const outlinedLineRect = outlinedLineRange?.getBoundingClientRect()
+      const headingColumnRect = heading?.parentElement?.getBoundingClientRect()
       return {
         canonical: document.querySelector('link[rel="canonical"]')?.href ?? null,
         description: document.querySelector('meta[name="description"]')?.getAttribute('content') ?? '',
@@ -104,6 +110,9 @@ async function verifyViewport(browser, label, viewport) {
           width: rect?.width ?? 0,
         } : null,
         headingCount: headings.length,
+        heroTitleFitsColumn: outlinedLineRect && headingColumnRect
+          ? outlinedLineRect.right <= headingColumnRect.right + 0.5
+          : null,
         horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
         misspelledSolana: /\bSlana\b/i.test(document.body.innerText),
         title: document.title,
@@ -124,6 +133,9 @@ async function verifyViewport(browser, label, viewport) {
     const headingFont = surface.headingFont || /Iowan Old Style|Baskerville|Georgia/
     assert(headingFont.test(state.heading?.fontFamily ?? ''), `${label} ${surface.path}: primary title does not use the expected editorial display stack`)
     assert(!state.horizontalOverflow, `${label} ${surface.path}: horizontal overflow detected`)
+    if (surface.heroTitleMustFitColumn && label !== 'mobile') {
+      assert(state.heroTitleFitsColumn, `${label} ${surface.path}: outlined hero title crosses into the image column`)
+    }
     assert(!state.misspelledSolana, `${label} ${surface.path}: misspelled Solana is visible`)
     if (surface.video) {
       assert(state.video?.source === surface.video, `${label} ${surface.path}: unexpected video source ${state.video?.source}`)
@@ -149,6 +161,7 @@ async function verifyViewport(browser, label, viewport) {
   try {
     const results = [
       await verifyViewport(browser, 'desktop', { width: 1440, height: 1000 }),
+      await verifyViewport(browser, 'wide-desktop', { width: 1920, height: 1080 }),
       await verifyViewport(browser, 'mobile', { width: 390, height: 844 }),
     ]
     console.log(JSON.stringify({ baseUrl, results }, null, 2))
