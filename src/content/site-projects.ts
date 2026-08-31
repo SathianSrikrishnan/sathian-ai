@@ -11,6 +11,8 @@ export interface PublicSiteProject {
   status: PublicProjectStatus
   reviewedAt: string
   href: string
+  pageHref?: string
+  pageCta?: string
   cta: string
   image: string
   alt: string
@@ -82,11 +84,15 @@ export const SOLANA_OBSERVATORY_PROJECT: PublicSiteProject = {
   approvedClaims: [
     "Solana Ecosystem Observatory is Sathian's active public mini app for people who are new to Solana.",
     'It explains the shared ledger in plain English, shows why low-cost inspectable rails may matter, walks through one verified Tooth Fairy Network Mainnet deposit example, and then exposes a source-visible network dashboard.',
+    'It organizes 45 source-carrying records across six questions and publishes the same reviewed snapshot as an interactive dashboard, Markdown report, and machine-readable JSON.',
+    'Its scheduled refresh, explicit stale and unavailable states, evidence drawers, and deterministic anomaly review make the collection process inspectable instead of hiding source gaps.',
   ],
   aliases: ['Solana Ecosystem Observatory', 'Solana Observatory', 'Solana dashboard', 'Solana guide'],
   status: 'active',
-  reviewedAt: '2026-08-13',
+  reviewedAt: '2026-08-31',
   href: 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/',
+  pageHref: '/projects/solana-observatory',
+  pageCta: 'Watch the 3-minute walkthrough',
   cta: 'Open the Solana guide',
   image: '/projects/solana-ecosystem-observatory.png',
   alt: 'The source-visible Solana Ecosystem Observatory dashboard',

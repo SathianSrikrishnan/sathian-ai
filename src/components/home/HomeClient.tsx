@@ -36,7 +36,24 @@ const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
   .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
 const DRAW_WITH_TANDA_LATEST = LATEST_RELEASE
 const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.status === 'next')!
-const FEATURED_WRITING_SLUG = 'saraswati-lakshmi-and-the-ledger'
+const FEATURED_WRITINGS = [
+  {
+    slug: 'inside-monkedao',
+    prefetch: true,
+    label: 'NEW FILM + FIRSTHAND FIELD REPORT',
+    cta: 'Watch and read the field report',
+    image: '/inside-monkedao/opening-cover.png',
+    alt: 'Inside MonkeDAO — a firsthand field report from the Solana ecosystem',
+  },
+  {
+    slug: 'saraswati-lakshmi-and-the-ledger',
+    prefetch: false,
+    label: 'FEATURED ESSAY / INTERACTIVE FIELD NOTE',
+    cta: 'Read and try the two tests',
+    image: '/media/flagship-hero.png',
+    alt: 'Saraswati and Lakshmi connected by a luminous ledger',
+  },
+] as const
 
 function formatDate(value: string) {
   return new Date(`${value}T12:00:00`).toLocaleDateString('en-CA', {
@@ -47,10 +64,6 @@ function formatDate(value: string) {
 }
 
 export function HomeClient({ writings }: HomeClientProps) {
-  const featuredWriting = writings.find(
-    (writing) => writing.href === `/writings/${FEATURED_WRITING_SLUG}`,
-  )
-
   return (
     <div className="relaunch-shell minimal-site" data-theme="workshop">
       <SiteNav />
@@ -78,31 +91,39 @@ export function HomeClient({ writings }: HomeClientProps) {
           <h2 id="featured-work">Featured work</h2>
 
           <div className="minimal-featured-list">
-            {featuredWriting && (
-              <article className="minimal-featured-project minimal-featured-project--article">
-                <div className="minimal-project-copy">
-                  <h3>{featuredWriting.title}</h3>
-                  <p className="minimal-label">NEW FEATURED ESSAY / INTERACTIVE FIELD NOTE</p>
-                  <p>{featuredWriting.description}</p>
-                  <Link href={featuredWriting.href} className="minimal-text-link">
-                    Read and try the two tests
+            {FEATURED_WRITINGS.map((feature, index) => {
+              const writing = writings.find(
+                (entry) => entry.href === `/writings/${feature.slug}`,
+              )
+              if (!writing) return null
+
+              return (
+                <article key={feature.slug} className="minimal-featured-project minimal-featured-project--article">
+                  <div className="minimal-project-copy">
+                    <h3>{writing.title}</h3>
+                    <p className="minimal-label">{feature.label}</p>
+                    <p>{writing.description}</p>
+                    <Link href={writing.href} prefetch={feature.prefetch} className="minimal-text-link">
+                      {feature.cta}
+                    </Link>
+                  </div>
+                  <Link
+                    href={writing.href}
+                    prefetch={feature.prefetch}
+                    className="minimal-project-media"
+                    aria-label={`Read ${writing.title}`}
+                  >
+                    <Image
+                      src={feature.image}
+                      alt={feature.alt}
+                      fill
+                      priority={index === 0}
+                      sizes="(max-width: 760px) 100vw, 58vw"
+                    />
                   </Link>
-                </div>
-                <Link
-                  href={featuredWriting.href}
-                  className="minimal-project-media"
-                  aria-label={`Read ${featuredWriting.title}`}
-                >
-                  <Image
-                    src="/media/flagship-hero.png"
-                    alt="Saraswati and Lakshmi connected by a luminous ledger"
-                    fill
-                    priority
-                    sizes="(max-width: 760px) 100vw, 58vw"
-                  />
-                </Link>
-              </article>
-            )}
+                </article>
+              )
+            })}
             {FEATURED_SITE_PROJECTS.map((project, index) => (
               <article key={project.name} className={`minimal-featured-project minimal-featured-project--${index + 1}`}>
                 <div className="minimal-project-copy">
@@ -198,13 +219,13 @@ export function HomeClient({ writings }: HomeClientProps) {
               Learn the ecosystem visually, see what the network is doing now, and understand why Solana fits Tooth Fairy Network.
             </p>
             <p className="minimal-label">LIVE FOUNDATION / DIRECT RPC / SOURCE-VISIBLE</p>
-            <a href={SOLANA_OBSERVATORY_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
-              {SOLANA_OBSERVATORY_PROJECT.cta}
-            </a>
+            <Link href={SOLANA_OBSERVATORY_PROJECT.pageHref!} className="minimal-text-link">
+              {SOLANA_OBSERVATORY_PROJECT.pageCta ?? SOLANA_OBSERVATORY_PROJECT.cta}
+            </Link>
           </div>
-          <a href={SOLANA_OBSERVATORY_PROJECT.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={`Open ${SOLANA_OBSERVATORY_PROJECT.name}`}>
+          <Link href={SOLANA_OBSERVATORY_PROJECT.pageHref!} className="minimal-project-media" aria-label={`Open ${SOLANA_OBSERVATORY_PROJECT.name}`}>
             <Image src={SOLANA_OBSERVATORY_PROJECT.image} alt={SOLANA_OBSERVATORY_PROJECT.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
-          </a>
+          </Link>
         </section>
 
         {writings.length > 0 && (

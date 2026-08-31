@@ -28,6 +28,79 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    title: 'Inside MonkeDAO',
+    titleHighlight: 'MonkeDAO',
+    slug: 'inside-monkedao',
+    date: '2026-08-29',
+    author: 'Sathian',
+    domains: ['Solana', 'community', 'digital ownership'],
+    description:
+      'A firsthand interview and field report on what an NFT community becomes after the mint.',
+    readTime: '5 min + film',
+    pullQuotes: [
+      'Ownership can open the door. Standing still has to be earned.',
+      'I came looking for a DAO. I found a model of belonging.',
+      'Community still has to be earned slowly—one introduction, one contribution, and one room at a time.',
+    ],
+    theme: {
+      accent: '#14F195',
+      accentGlow: 'rgba(20, 241, 149, 0.16)',
+      background: 'grid',
+      mood: 'contemplative',
+    },
+    heroLayout: 'contained',
+    media: [
+      {
+        src: '/inside-monkedao/opening-cover.png',
+        alt: 'Inside MonkeDAO — a firsthand field report from the Solana ecosystem',
+        placement: 'hero',
+      },
+    ],
+    sectionHeadings: [
+      'The token is a door, not the room',
+      'Online identity becomes useful when people meet',
+      'Community can become builder infrastructure',
+      'Still early, still human',
+    ],
+    body: `I bought SMB Gen3 #13769 because I did not understand why anyone would. That was the point.
+
+I had been circling the Solana world: meeting people at Superteam gatherings, taking developer courses, entering a Colosseum hackathon, and building a product that I eventually realized was not very good. By then I was already in. I wanted to understand the people around the technology, not only the code.
+
+NFT communities were still a blank spot. So I bought a Monke, attended a meetup, and sat down with Benny, who works on MonkeFoundry, for a conversation that lasted close to an hour.
+
+---
+
+MonkeDAO describes itself as Solana's first community-owned and operated NFT DAO. A wallet proves that you hold a digital asset, and that proof can open a private community space.
+
+I assumed access was the product. Benny described something more demanding. He entered through volunteer work: hosting, helping with programming, and taking on more responsibility as people learned they could rely on him. The path was not “buy an NFT, receive authority.” It was: show up, help, become useful, get trusted with harder problems.
+
+Ownership can open the door. Standing still has to be earned.
+
+---
+
+MonkeDAO's public benefits page describes local chapters, meetups, workshops, networking events, and recurring project spotlights. The interview gave those nouns texture.
+
+Benny described Monday Monke Spotlight as a way to give builders attention. He talked about gatherings where people who recognize each other by pixelated avatars finally sit in the same room.
+
+I have attended one MonkeDAO meetup. That does not make me an insider. But I am close enough to see the mechanism: repeated contact turns a profile picture into a relationship.
+
+---
+
+Benny described the evolution from grants toward more structured support: identify teams, sharpen a product, connect builders with experienced people, create feedback loops, and give them access to community distribution.
+
+Community cannot rescue a product nobody needs. A warm introduction is not a customer. What a good community can do is shorten the distance between a confused builder and a useful conversation.
+
+That is why this belongs beside Superteam Canada in a human map of Solana. They use different participation models, but both can help newcomers find people, work, feedback, and proof that they can contribute.
+
+---
+
+The hard part of a DAO is not putting a vote on-chain. It is keeping enough people interested in the outcome to do something after the vote.
+
+I came looking for a DAO. I found a model of belonging.
+
+Technology can prove ownership in seconds. Community still has to be earned slowly—one introduction, one contribution, and one room at a time.`,
+  },
+  {
     title: 'The Polytheistic Test',
     titleHighlight: 'Polytheistic Test',
     slug: 'saraswati-lakshmi-and-the-ledger',
