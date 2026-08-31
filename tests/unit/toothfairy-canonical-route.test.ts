@@ -28,4 +28,18 @@ describe('Tooth Fairy Network canonical routing', () => {
       permanent: true,
     })
   })
+
+  it('retires the legacy Tooth Fairy subdomain at the current product site', async () => {
+    expect(nextConfig.redirects).toBeTypeOf('function')
+    if (!nextConfig.redirects) return
+
+    const redirects = await nextConfig.redirects()
+
+    expect(redirects).toContainEqual({
+      source: '/:path*',
+      has: [{ type: 'host', value: 'toothfairy.sathian.ai' }],
+      destination: 'https://toothfairy.network',
+      permanent: true,
+    })
+  })
 })

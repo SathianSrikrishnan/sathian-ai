@@ -22,6 +22,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'toothfairy.sathian.ai' }],
+        destination: 'https://toothfairy.network',
+        permanent: true,
+      },
+      {
         source: '/voice/:path*',
         destination: '/#agent',
         permanent: true,
