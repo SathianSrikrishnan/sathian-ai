@@ -1,9 +1,9 @@
 # Solana field projects — production receipt
 
 Date: 2026-08-31 EDT  
-Production commit: `936b47600f6a23bdf806d913b4cdc7dcd3910c3b`  
-Deployment: `dpl_6d8TMhNW6xyum2MySS4zq8EUHeb1`  
-Deployment URL: `https://sathian-ftonnkt5g-sathiansrikrishnans-projects.vercel.app`  
+Production commit: `a93d84bfc281d8a93bb37a89d630e71edfff650c`  
+Deployment: `dpl_BPD5TZzxLPSCiQVkUGLmNubadseC`  
+Deployment URL: `https://sathian-ee5dwqu6k-sathiansrikrishnans-projects.vercel.app`  
 Canonical domain: https://sathian.ai
 
 ## Released surfaces
@@ -41,9 +41,17 @@ Canonical domain: https://sathian.ai
 - The live dashboard, Markdown, JSON and public repository each returned HTTP 200.
 - Production screenshots: `docs/release-proofs/2026-08-31-solana-bounties-production/`.
 
+## Submission-day title-fit correction
+
+- Corrected the Solana Observatory hero scale so the outlined final `Y` remains inside the text column instead of being covered by the dashboard image.
+- Added a browser regression that measures the rendered text range against its grid column at 1440px and 1920px, while retaining the mobile check at 390px.
+- `npm run release:verify`: PASS with 409/409 tests, 60/60 offline evaluation, production build, three-viewport public-surface checks and desktop/mobile sound verification.
+- Canonical production checks passed at all three widths with no title collision or horizontal overflow.
+- Local proof: `docs/release-proofs/2026-08-31-observatory-title-fit/`.
+- Production proof: `docs/release-proofs/2026-08-31-observatory-title-fit-production/`.
+
 ## Explicitly not performed
 
 - No Superteam form was submitted.
 - No YouTube, LinkedIn, Substack, X, Telegram or community post was published or sent.
 - No private raw source, transcript, wallet record or identity ledger was added to the public site.
-
