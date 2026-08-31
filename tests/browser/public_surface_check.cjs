@@ -24,7 +24,8 @@ const surfaces = [
     path: '/projects/solana-observatory',
     heading: 'SolanaObservatory',
     title: 'Solana Observatory — a source-visible ecosystem dashboard',
-    headingFont: /Bahnschrift|Franklin Gothic/,
+    headingFont: /Outfit/,
+    headingUsesBundledDisplayFont: true,
     heroTitleMustFitColumn: true,
     video: '/projects/solana-observatory-demo.mp4',
     videoDuration: 183.175,
@@ -40,6 +41,10 @@ const requiredSecurityHeaders = {
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
+}
+
+function fontFamilies(value) {
+  return value.split(',').map((family) => family.trim().replace(/^['"]|['"]$/g, ''))
 }
 
 async function settleLazyMedia(page) {
@@ -100,6 +105,7 @@ async function verifyViewport(browser, label, viewport) {
       const outlinedLineRect = outlinedLineRange?.getBoundingClientRect()
       const headingColumnRect = heading?.parentElement?.getBoundingClientRect()
       return {
+        bundledDisplayFont: getComputedStyle(document.documentElement).getPropertyValue('--font-display').trim(),
         canonical: document.querySelector('link[rel="canonical"]')?.href ?? null,
         description: document.querySelector('meta[name="description"]')?.getAttribute('content') ?? '',
         heading: heading ? {
@@ -132,6 +138,13 @@ async function verifyViewport(browser, label, viewport) {
     assert((state.heading?.width ?? 0) >= 120 && (state.heading?.height ?? 0) >= 40, `${label} ${surface.path}: primary title is not visually prominent`)
     const headingFont = surface.headingFont || /Iowan Old Style|Baskerville|Georgia/
     assert(headingFont.test(state.heading?.fontFamily ?? ''), `${label} ${surface.path}: primary title does not use the expected editorial display stack`)
+    if (surface.headingUsesBundledDisplayFont) {
+      const headingFamilies = new Set(fontFamilies(state.heading?.fontFamily ?? ''))
+      assert(
+        fontFamilies(state.bundledDisplayFont).some((family) => headingFamilies.has(family)),
+        `${label} ${surface.path}: primary title does not use the bundled display font`,
+      )
+    }
     assert(!state.horizontalOverflow, `${label} ${surface.path}: horizontal overflow detected`)
     if (surface.heroTitleMustFitColumn && label !== 'mobile') {
       assert(state.heroTitleFitsColumn, `${label} ${surface.path}: outlined hero title crosses into the image column`)
@@ -161,6 +174,7 @@ async function verifyViewport(browser, label, viewport) {
   try {
     const results = [
       await verifyViewport(browser, 'desktop', { width: 1440, height: 1000 }),
+      await verifyViewport(browser, 'compact-desktop', { width: 1024, height: 900 }),
       await verifyViewport(browser, 'wide-desktop', { width: 1920, height: 1080 }),
       await verifyViewport(browser, 'mobile', { width: 390, height: 844 }),
     ]
