@@ -9,6 +9,9 @@ describe('Solana Observatory public project feature', () => {
   const routePath = 'src/app/projects/solana-observatory/page.tsx'
   const stylesPath = 'src/app/projects/solana-observatory/solana-observatory.module.css'
   const videoPath = 'public/projects/solana-observatory-demo.mp4'
+  const compactMetricsImagePath = 'public/projects/solana-observatory-six-metrics.png'
+  const interviewImagePath =
+    'public/inside-monkedao/inside-monkedao-interview-two-shot.png'
 
   it('routes the public project card through the first-party project page', () => {
     expect(SOLANA_OBSERVATORY_PROJECT.href).toBe(
@@ -48,6 +51,19 @@ describe('Solana Observatory public project feature', () => {
     expect(styles).toContain('grid-column: 2')
     expect(styles).toContain(':focus-visible')
     expect(styles).toContain('prefers-reduced-motion')
+  })
+
+  it('ships the compact Substack visuals from approved public sources', () => {
+    const compactMetricsImage = new URL(
+      `../../${compactMetricsImagePath}`,
+      import.meta.url,
+    )
+    const interviewImage = new URL(`../../${interviewImagePath}`, import.meta.url)
+
+    expect(existsSync(compactMetricsImage)).toBe(true)
+    expect(statSync(compactMetricsImage).size).toBeGreaterThan(50_000)
+    expect(existsSync(interviewImage)).toBe(true)
+    expect(statSync(interviewImage).size).toBeGreaterThan(100_000)
   })
 
   it('keeps review-only language out of the public route', () => {
