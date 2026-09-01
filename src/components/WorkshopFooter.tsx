@@ -8,7 +8,7 @@ export function WorkshopFooter() {
       <div className="relaunch-content">
         <div>
           <span className="hub-mono">sathian.ai</span>
-          <span>© {new Date().getFullYear()} Sathian S.</span>
+          <span>© {new Date().getFullYear()} Sathian</span>
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/#now">Projects</Link>

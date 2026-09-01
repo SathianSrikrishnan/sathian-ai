@@ -8,17 +8,17 @@ import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 import { personalSocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
-  title: 'About Sathian Srikrishnan',
+  title: 'About Sathian',
   description:
     'Sathian Srikrishnan is a Toronto-based agent manager and orchestrator building public experiments across AI, technology, money, culture, and family products.',
   alternates: { canonical: '/about' },
   openGraph: {
-    title: 'About Sathian Srikrishnan',
+    title: 'About Sathian',
     description:
       'A profile of Sathian Srikrishnan, his public work, writing, and experiments.',
     type: 'profile',
     url: 'https://sathian.ai/about',
-    siteName: 'Sathian Srikrishnan',
+    siteName: 'Sathian',
   },
 }
 
@@ -28,7 +28,7 @@ export default function AboutPage() {
     '@type': 'ProfilePage',
     '@id': 'https://sathian.ai/about#profile',
     url: 'https://sathian.ai/about',
-    name: 'About Sathian Srikrishnan',
+    name: 'About Sathian',
     mainEntity: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },
   }
 
@@ -45,11 +45,11 @@ export default function AboutPage() {
       <main>
         <header className="minimal-page-hero minimal-container">
           <p className="minimal-kicker">ABOUT / TORONTO</p>
-          <h1>Sathian Srikrishnan</h1>
+          <h1>Sathian</h1>
           <p>
-            I am an agent manager and orchestrator in Toronto. I build small public
-            experiments to understand where AI, technology, money, culture, and
-            family products meet real life.
+            I&apos;m Sathian Srikrishnan, an agent manager and orchestrator in Toronto.
+            I build small public experiments to understand where AI, technology,
+            money, culture, and family products meet real life.
           </p>
         </header>
 
@@ -76,7 +76,7 @@ export default function AboutPage() {
           </div>
           <Image
             src="/sathian-profile.png"
-            alt="Sathian Srikrishnan"
+            alt="Portrait of Sathian"
             width={512}
             height={512}
             priority
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <section className="minimal-section minimal-container" aria-labelledby="about-find">
           <p className="minimal-kicker">FIND ME</p>
           <h2 id="about-find">One identity, across the places I maintain.</h2>
-          <nav className="minimal-writing-links" aria-label="Sathian Srikrishnan profiles">
+          <nav className="minimal-writing-links" aria-label="Sathian profiles">
             {personalSocialLinks.map((link) => (
               <a
                 key={link.href}

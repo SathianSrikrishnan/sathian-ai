@@ -458,7 +458,7 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             <Link href="/about" className="text-gray-400 hover:text-gray-200 transition-colors">
-              By Sathian Srikrishnan
+              By Sathian
             </Link>
             <span className="text-gray-800">/</span>
             <span>{formatDate(article.date)}</span>

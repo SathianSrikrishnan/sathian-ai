@@ -14,16 +14,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} — sathian.ai`,
     description: article.description,
-    authors: [{ name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' }],
+    authors: [{ name: 'Sathian', url: 'https://sathian.ai/about' }],
     keywords: article.domains,
     openGraph: {
       title: article.title,
       description: article.description,
       type: 'article',
       publishedTime: article.date,
-      authors: ['Sathian Srikrishnan'],
+      authors: ['Sathian'],
       modifiedTime: article.updatedAt,
-      siteName: 'Sathian Srikrishnan',
+      siteName: 'Sathian',
     },
     twitter: {
       card: 'summary_large_image',

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { SiteNav } from '@/components/SiteNav'
+import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
 import styles from './inside-monkedao.module.css'
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   title: 'Inside MonkeDAO: A Firsthand Solana Field Report - sathian.ai',
   description:
     'A firsthand interview and field report on what an NFT community becomes after the mint.',
-  authors: [{ name: 'Sathian S.', url: 'https://sathian.ai' }],
+  authors: [{ name: 'Sathian', url: 'https://sathian.ai/about' }],
   keywords: ['MonkeDAO', 'Solana', 'community', 'NFTs', 'MonkeFoundry', 'Superteam Canada'],
   alternates: { canonical: canonicalUrl },
   openGraph: {
@@ -20,8 +21,8 @@ export const metadata: Metadata = {
     description: 'I bought an NFT to understand a community. I found a model of belonging.',
     type: 'article',
     publishedTime: '2026-08-29',
-    authors: ['Sathian S.'],
-    siteName: 'sathian.ai',
+    authors: ['Sathian'],
+    siteName: 'Sathian',
     url: canonicalUrl,
     images: [
       {
@@ -48,8 +49,8 @@ export default function InsideMonkeDAOPage() {
     alternativeHeadline: 'I bought an NFT to understand a community. I found a model of belonging.',
     description: metadata.description,
     datePublished: '2026-08-29',
-    author: { '@type': 'Person', name: 'Sathian S.', url: 'https://sathian.ai' },
-    publisher: { '@type': 'Person', name: 'Sathian S.', url: 'https://sathian.ai' },
+    author: { '@type': 'Person', '@id': SATHIAN_PERSON_SCHEMA['@id'], name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' },
+    publisher: { '@type': 'Person', '@id': SATHIAN_PERSON_SCHEMA['@id'], name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' },
     mainEntityOfPage: canonicalUrl,
     image: 'https://sathian.ai/inside-monkedao/opening-cover.png',
     about: ['MonkeDAO', 'Solana', 'online communities', 'digital ownership'],
@@ -87,6 +88,7 @@ export default function InsideMonkeDAOPage() {
               I bought an NFT to understand a community. I found a model of belonging built through contribution.
             </p>
             <div className={styles.meta}>
+              <Link href="/about">By Sathian</Link>
               <span>8:40 film</span>
               <span>Under 900 words</span>
               <span>Firsthand + source-labelled</span>

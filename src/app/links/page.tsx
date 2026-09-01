@@ -5,16 +5,14 @@ import { WorkshopFooter } from '@/components/WorkshopFooter'
 import { personalSocialLinks, toothFairySocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
-  title: 'Links | Sathian S.',
-  description: 'Links and profiles for Sathian S.',
+  title: 'Links | Sathian',
+  description: "Sathian's maintained profiles, projects, writing, events, and public channels in one place.",
 }
 
 const workLinks = [
   { label: 'Tooth Fairy Network', note: 'The live product', href: 'https://toothfairy.network' },
   { label: 'Writing', note: 'Essays and field notes', href: '/writings' },
-  { label: 'Substack', note: 'Subscribe to new essays', href: 'https://sathians.substack.com' },
   { label: 'For agents', note: 'Public context and build record', href: '/agents' },
-  { label: 'GitHub', note: 'Public code', href: 'https://github.com/sathiandev' },
 ]
 
 export default function LinksPage() {
@@ -23,7 +21,7 @@ export default function LinksPage() {
       <SiteNav />
       <main className="relaunch-content workshop-links-main">
         <header>
-          <p className="hub-eyebrow relaunch-kicker">LINKS / SATHIAN S.</p>
+          <p className="hub-eyebrow relaunch-kicker">LINKS / SATHIAN</p>
           <h1>A few ways in.</h1>
           <p>Current projects, writing, and the channels where I share work in progress.</p>
         </header>

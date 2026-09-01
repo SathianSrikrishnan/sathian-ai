@@ -26,8 +26,8 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
   alternates: { canonical: './' },
-  title: 'Sathian Srikrishnan | Digital Experiments',
-  description: "Agent manager and orchestrator Sathian Srikrishnan's digital workshop: useful agents, public projects, and notes on culture, money, technology, and fatherhood.",
+  title: 'Sathian | Digital Experiments',
+  description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -36,15 +36,15 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Sathian Srikrishnan | Digital Experiments',
-    description: "Sathian Srikrishnan's digital workshop: useful agents, public projects, and notes on culture, money, technology, and fatherhood.",
-    siteName: 'Sathian Srikrishnan',
+    title: 'Sathian | Digital Experiments',
+    description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
+    siteName: 'Sathian',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sathian Srikrishnan | Digital Experiments',
-    description: "Sathian Srikrishnan's digital workshop: useful agents, public projects, and notes on culture, money, technology, and fatherhood.",
+    title: 'Sathian | Digital Experiments',
+    description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
   },
 }
 

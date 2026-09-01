@@ -71,7 +71,7 @@ export function HomeClient({ writings }: HomeClientProps) {
       <main>
         <header className="minimal-home-hero minimal-container">
           <p className="minimal-kicker minimal-home-identity">
-            <span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span>
+            <span className="minimal-home-identity__part">SATHIAN</span>
             <span className="minimal-home-identity__part">AGENT MANAGER + ORCHESTRATOR</span>
             <span className="minimal-home-identity__part">TORONTO</span>
           </p>

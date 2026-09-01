@@ -249,7 +249,7 @@ What do we know? Who flourishes? What can the ledger actually prove?`,
       },
       {
         src: '/sathian-profile.png',
-        alt: 'Sathian S.',
+        alt: 'Sathian',
         caption: 'A solo build, with a lot of help from the people and tools in the room.',
         placement: 'inline-left',
         afterSection: 0,
@@ -486,7 +486,7 @@ The protocol changed. The rule didn't. The arena changes. The frequency doesn't.
 
 ---
 
-*Sathian S. builds at sathian.ai*`,
+*Sathian builds at sathian.ai*`,
   },
   {
     title: 'The Yellow Box',
@@ -588,7 +588,7 @@ My Uber driver already did the math. He's still driving. He's still watching the
 
 ---
 
-*Sathian S. builds at sathian.ai*`,
+*Sathian builds at sathian.ai*`,
   },
   {
     title: 'Nine Pages',
@@ -689,7 +689,7 @@ Nine pages. Twenty minutes. Read the thing. Then we can talk.
 
 ---
 
-*Sathian S. builds at sathian.ai*`,
+*Sathian builds at sathian.ai*`,
   },
   {
     title: 'Yakko\'s World Was Already Wrong',
@@ -861,7 +861,7 @@ The map was wrong the day Yakko sang it. The song was right. The world is ready 
 
 *Sources: Eric Hughes, A Cypherpunk\'s Manifesto (March 9, 1993). James Dale Davidson & William Rees-Mogg, The Sovereign Individual (1997). CERN, "The Birth of the Web" \u2014 April 30, 1993. Satoshi Nakamoto, Bitcoin: A Peer-to-Peer Electronic Cash System (October 31, 2008). India\'s 1991 Economic Liberalization. VSNL Internet Launch \u2014 August 15, 1995.*
 
-*Sathian S. builds at sathian.ai*`,
+*Sathian builds at sathian.ai*`,
   },
 ]
 

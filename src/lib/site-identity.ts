@@ -19,10 +19,10 @@ export const SATHIAN_WEBSITE_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': 'https://sathian.ai/#website',
-  name: 'Sathian Srikrishnan',
-  alternateName: ['sathian.ai', 'Digital Experiments'],
+  name: 'Sathian',
+  alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments'],
   url: 'https://sathian.ai',
   publisher: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },
   description:
-    'Projects and notes by Sathian Srikrishnan on agents, technology, money, culture, and fatherhood.',
+    'Projects and notes by Sathian on agents, technology, money, culture, and fatherhood.',
 } as const

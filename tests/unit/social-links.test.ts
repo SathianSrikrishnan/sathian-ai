@@ -10,6 +10,8 @@ describe('public social destinations', () => {
       'Luma',
       'LinkedIn',
       'YouTube',
+      'Substack',
+      'GitHub',
     ])
   })
 

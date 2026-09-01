@@ -64,10 +64,11 @@ describe('public-site indexing', () => {
     expect(identity).toContain("name: 'Sathian Srikrishnan'")
     expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.']")
     expect(identity).toContain('sameAs:')
-    expect(identity).toContain("name: 'Sathian Srikrishnan'")
-    expect(identity).toContain("alternateName: ['sathian.ai', 'Digital Experiments']")
-    expect(layout).toContain("siteName: 'Sathian Srikrishnan'")
-    expect(home).toContain('SATHIAN SRIKRISHNAN')
+    expect(identity).toContain("name: 'Sathian'")
+    expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments']")
+    expect(layout).toContain("siteName: 'Sathian'")
+    expect(home).toContain('>SATHIAN</span>')
+    expect(home).not.toContain('SATHIAN SRIKRISHNAN')
   })
 
   it('publishes a real indexable profile page for the same person entity', () => {
@@ -76,6 +77,7 @@ describe('public-site indexing', () => {
     expect(about).not.toContain("redirect('/')")
     expect(about).toContain("'@type': 'ProfilePage'")
     expect(about).toContain("SATHIAN_PERSON_SCHEMA['@id']")
+    expect(about).toContain('<h1>Sathian</h1>')
     expect(about).toContain('Sathian Srikrishnan')
   })
 
@@ -89,8 +91,35 @@ describe('public-site indexing', () => {
       expect(source).toContain("SATHIAN_PERSON_SCHEMA['@id']")
     }
     expect(article).toContain('dateModified')
-    expect(renderer).toContain('By Sathian Srikrishnan')
-    expect(allowance).toContain('By Sathian Srikrishnan')
+    expect(renderer).toContain('By Sathian')
+    expect(renderer).not.toContain('By Sathian Srikrishnan')
+    expect(allowance).toContain('By Sathian')
+    expect(allowance).not.toContain('By Sathian Srikrishnan')
+  })
+
+  it('connects Substack and GitHub to the shared Sathian identity', () => {
+    const socialLinks = readFileSync(new URL('../../src/lib/social-links.ts', import.meta.url), 'utf8')
+    const links = readFileSync(new URL('../../src/app/links/page.tsx', import.meta.url), 'utf8')
+
+    expect(socialLinks).toContain("https://sathians.substack.com")
+    expect(socialLinks).toContain("https://github.com/sathiandev")
+    expect(links).not.toContain("label: 'Substack'")
+    expect(links).not.toContain("label: 'GitHub'")
+  })
+
+  it('uses Sathian as the visible identity in shared public chrome and agent guidance', () => {
+    const footer = readFileSync(new URL('../../src/components/WorkshopFooter.tsx', import.meta.url), 'utf8')
+    const links = readFileSync(new URL('../../src/app/links/page.tsx', import.meta.url), 'utf8')
+    const prompts = readFileSync(new URL('../../src/lib/prompts.ts', import.meta.url), 'utf8')
+    const articles = readFileSync(new URL('../../src/lib/articles.ts', import.meta.url), 'utf8')
+
+    expect(footer).toContain('© {new Date().getFullYear()} Sathian</span>')
+    expect(footer).not.toContain('Sathian S.</span>')
+    expect(links).toContain('LINKS / SATHIAN</p>')
+    expect(links).not.toContain('LINKS / SATHIAN S.</p>')
+    expect(prompts).toContain('Use "Sathian" publicly.')
+    expect(prompts).not.toContain('Use "Sathian S." publicly.')
+    expect(articles).not.toContain('Sathian S. builds at sathian.ai')
   })
 
   it('uses stable modification dates and loads future published Studio articles', () => {
