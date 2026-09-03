@@ -19,6 +19,11 @@ async function inspectViewport(page, name, width, height) {
   await heading.waitFor({ state: 'visible' })
   const video = page.locator('video')
   await video.waitFor({ state: 'visible' })
+  await page.waitForFunction(
+    () => document.querySelector('video')?.readyState >= 1,
+    null,
+    { timeout: 30_000 },
+  )
 
   const media = await video.evaluate((element) => ({
     readyState: element.readyState,
