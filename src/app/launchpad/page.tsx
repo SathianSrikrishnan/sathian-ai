@@ -28,6 +28,29 @@ export default function LaunchpadApplicationPage() {
         <span>Stan Launchpad / October 4–19, 2026</span>
       </header>
 
+      <nav className={styles.proofBar} aria-label="Product proof">
+        <a
+          className={`${styles.proofLink} ${styles.productLink}`}
+          href="https://toothfairy.network"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit toothfairy.network"
+        >
+          <span>Live product</span>
+          <strong>toothfairy.network ↗</strong>
+        </a>
+        <a
+          className={styles.proofLink}
+          href="https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Verify Solana program"
+        >
+          <span>Solana mainnet</span>
+          <strong>Verify Solana program ↗</strong>
+        </a>
+      </nav>
+
       <main className={styles.main}>
         <section className={styles.hero} aria-labelledby="launchpad-title">
           <div className={styles.intro}>

@@ -11,6 +11,7 @@
 }
 
 .header,
+.proofBar,
 .main,
 .footer {
   width: min(1040px, calc(100% - 48px));
@@ -43,6 +44,56 @@
 
 .header > span {
   color: var(--minimal-muted);
+}
+
+.proofBar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  margin-top: 18px;
+  border: 1px solid var(--minimal-rule);
+}
+
+.proofLink {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 20px;
+  color: var(--minimal-ink);
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  text-decoration: none;
+}
+
+.proofLink + .proofLink {
+  border-left: 1px solid var(--minimal-rule);
+}
+
+.proofLink span {
+  color: var(--minimal-muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.proofLink strong {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+.productLink {
+  background: var(--minimal-rust);
+  color: var(--minimal-paper);
+}
+
+.productLink span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.proofLink:hover strong {
+  text-decoration: underline;
 }
 
 .page :is(a, video):focus-visible {
@@ -256,6 +307,7 @@
 
 @media (max-width: 720px) {
   .header,
+  .proofBar,
   .main,
   .footer {
     width: min(100% - 28px, 1040px);
@@ -271,6 +323,21 @@
     padding-top: 7px;
     text-align: right;
     line-height: 1.5;
+  }
+
+  .proofBar {
+    grid-template-columns: 1fr;
+    margin-top: 14px;
+  }
+
+  .proofLink {
+    min-height: 66px;
+    padding: 13px 15px;
+  }
+
+  .proofLink + .proofLink {
+    border-top: 1px solid var(--minimal-rule);
+    border-left: 0;
   }
 
   .hero {

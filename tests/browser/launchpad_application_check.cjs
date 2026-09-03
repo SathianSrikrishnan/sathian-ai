@@ -63,6 +63,12 @@ async function inspectViewport(page, name, width, height) {
   if (!(await page.getByRole('link', { name: 'Tooth Fairy Network ↗' }).isVisible())) {
     throw new Error('Project link is not visible')
   }
+  if (!(await page.getByRole('link', { name: 'Visit toothfairy.network' }).isVisible())) {
+    throw new Error('Prominent product link is not visible')
+  }
+  if (!(await page.getByRole('link', { name: 'Verify Solana program' }).isVisible())) {
+    throw new Error('Solana program proof link is not visible')
+  }
   const prospectusLabels = await page.locator('dt').allTextContents()
   const expectedLabels = ['Who', 'What', 'Where', 'When', 'Why', 'How']
   if (JSON.stringify(prospectusLabels) !== JSON.stringify(expectedLabels)) {
@@ -79,9 +85,28 @@ async function inspectViewport(page, name, width, height) {
     href: document.activeElement?.getAttribute('href'),
   }))
   await page.keyboard.press('Tab')
-  const secondFocus = await page.evaluate(() => document.activeElement?.tagName)
-  if (firstFocus.tag !== 'A' || firstFocus.href !== '/' || secondFocus !== 'VIDEO') {
-    throw new Error(`Unexpected keyboard order: ${JSON.stringify({ firstFocus, secondFocus })}`)
+  const secondFocus = await page.evaluate(() => ({
+    tag: document.activeElement?.tagName,
+    href: document.activeElement?.getAttribute('href'),
+  }))
+  await page.keyboard.press('Tab')
+  const thirdFocus = await page.evaluate(() => ({
+    tag: document.activeElement?.tagName,
+    href: document.activeElement?.getAttribute('href'),
+  }))
+  await page.keyboard.press('Tab')
+  const fourthFocus = await page.evaluate(() => document.activeElement?.tagName)
+  if (
+    firstFocus.tag !== 'A' ||
+    firstFocus.href !== '/' ||
+    secondFocus.href !== 'https://toothfairy.network' ||
+    thirdFocus.href !==
+      'https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC' ||
+    fourthFocus !== 'VIDEO'
+  ) {
+    throw new Error(
+      `Unexpected keyboard order: ${JSON.stringify({ firstFocus, secondFocus, thirdFocus, fourthFocus })}`,
+    )
   }
 
   const screenshot = join(OUTPUT, `${name}.png`)

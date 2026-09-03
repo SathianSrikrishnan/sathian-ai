@@ -91,6 +91,21 @@ describe('Stan Launchpad application page', () => {
     }
   })
 
+  it('puts the live product and Solana program proof above the application video', () => {
+    const page = readFileSync(pagePath, 'utf8')
+    const productHref = 'href="https://toothfairy.network"'
+    const programHref =
+      'href="https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC"'
+
+    expect(page).toContain('aria-label="Product proof"')
+    expect(page).toContain(productHref)
+    expect(page).toContain('toothfairy.network ↗')
+    expect(page).toContain(programHref)
+    expect(page).toContain('Verify Solana program ↗')
+    expect(page.indexOf(productHref)).toBeLessThan(page.indexOf('<video'))
+    expect(page.indexOf(programHref)).toBeLessThan(page.indexOf('<video'))
+  })
+
   it('uses the existing editorial system and removes the site-agent distraction', () => {
     const page = readFileSync(pagePath, 'utf8')
     const css = readFileSync(cssPath, 'utf8')
