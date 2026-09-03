@@ -48,6 +48,14 @@ describe('Inside MonkeDAO public feature', () => {
     expect(existsSync(new URL('../../public/inside-monkedao/solana-mark.svg', import.meta.url))).toBe(true)
   })
 
+  it('describes the field film for video discovery', () => {
+    const route = read(routePath)
+
+    expect(route).toContain("'@type': 'VideoObject'")
+    expect(route).toContain("duration: 'PT8M40S'")
+    expect(route).toContain('inside-monkedao-field-report-v1.9.0.mp4')
+  })
+
   it('does not leak private-review labels or the corrected misspelling', () => {
     const publicSurface = `${read(routePath)}\n${read(stylesPath)}`
     expect(publicSurface).not.toMatch(/private review|private prototype|owner review/iu)

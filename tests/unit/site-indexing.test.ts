@@ -33,11 +33,12 @@ describe('public-site indexing', () => {
     expect(urls).toContain('https://sathian.ai/about')
     expect(urls).toContain('https://sathian.ai/hackathons')
     expect(urls).toContain('https://sathian.ai/writings')
+    expect(urls).toContain('https://sathian.ai/agents')
+    expect(urls).toContain('https://sathian.ai/links')
+    expect(urls).toContain('https://sathian.ai/projects/solana-observatory')
     expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
     expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
     expect(urls).toContain('https://sathian.ai/writings/the-gap-between-weeks')
-    expect(urls).not.toContain('https://sathian.ai/agents')
-    expect(urls).not.toContain('https://sathian.ai/links')
     expect(urls).not.toContain('https://sathian.ai/btc-atlas')
     expect(urls.every((url) => url.startsWith('https://sathian.ai'))).toBe(true)
     expect(new Set(urls).size).toBe(urls.length)
@@ -62,12 +63,12 @@ describe('public-site indexing', () => {
 
     expect(page).toContain('SATHIAN_PERSON_SCHEMA')
     expect(identity).toContain("name: 'Sathian Srikrishnan'")
-    expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.']")
+    expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.', 'SATHN']")
     expect(identity).toContain('sameAs:')
     expect(identity).toContain("name: 'Sathian'")
-    expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments']")
+    expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'SATHN', 'Digital Experiments']")
     expect(layout).toContain("siteName: 'Sathian'")
-    expect(home).toContain('>SATHIAN</span>')
+    expect(home).toContain('>SATHIAN / SATHN</span>')
     expect(home).not.toContain('SATHIAN SRIKRISHNAN')
   })
 
@@ -79,6 +80,7 @@ describe('public-site indexing', () => {
     expect(about).toContain("SATHIAN_PERSON_SCHEMA['@id']")
     expect(about).toContain('<h1>Sathian</h1>')
     expect(about).toContain('Sathian Srikrishnan')
+    expect(about).toContain('SATHN is my short search handle')
   })
 
   it('uses the full identity and stable profile entity on every writing surface', () => {

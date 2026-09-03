@@ -36,6 +36,17 @@ describe('Solana Observatory public project feature', () => {
     expect(route).toContain('six-hour refresh')
   })
 
+  it('connects the project and walkthrough to Sathian with machine-readable metadata', () => {
+    const route = read(routePath)
+
+    expect(route).toContain("authors: [{ name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' }]")
+    expect(route).toContain("'@type': 'CreativeWork'")
+    expect(route).toContain("author: { '@id': SATHIAN_PERSON_SCHEMA['@id'] }")
+    expect(route).toContain("'@type': 'VideoObject'")
+    expect(route).toContain("duration: 'PT3M3S'")
+    expect(route).toContain('type="application/ld+json"')
+  })
+
   it('includes the verified public walkthrough and responsive editorial treatment', () => {
     const video = new URL(`../../${videoPath}`, import.meta.url)
     expect(existsSync(video)).toBe(true)

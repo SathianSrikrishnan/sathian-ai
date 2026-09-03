@@ -87,6 +87,17 @@ export function releaseToPublicMemoryCard(
 
 export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
   return [
+    {
+      id: 'profile-search-identity',
+      slug: 'sathian-search-identity',
+      title: 'Sathian and SATHN',
+      body: 'Sathian Srikrishnan is a Toronto-based agent manager, orchestrator, builder, and writer. He publishes publicly as Sathian. SATHN is his short search handle for the same person and body of work, not a separate company or persona.',
+      summary: 'The canonical public identity connecting Sathian, Sathian Srikrishnan, SATHN, and sathian.ai.',
+      tags: ['bio', 'identity', 'sathian', 'sathian-srikrishnan', 'sathn', 'search-handle'],
+      source: { ref: 'https://sathian.ai/about', kind: 'published_profile' },
+      validFrom: '2026-09-03T00:00:00.000Z',
+      validUntil: null,
+    },
     ...SITE_PROJECTS.map(projectToPublicMemoryCard),
     releaseToPublicMemoryCard(LATEST_RELEASE, { latest: true }),
     ...DRAW_WITH_TANDA_EPISODES

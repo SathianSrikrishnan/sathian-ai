@@ -30,8 +30,11 @@ export function buildSitemapForHost(
     const coreRoutes = [
       '',
       '/about',
+      '/agents',
       '/hackathons',
+      '/links',
       '/writings',
+      '/projects/solana-observatory',
       '/projects/tooth-fairy-network/draw-with-tanda',
       '/projects/clinicalguard',
     ]

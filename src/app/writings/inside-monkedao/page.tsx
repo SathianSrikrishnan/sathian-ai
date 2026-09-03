@@ -54,6 +54,15 @@ export default function InsideMonkeDAOPage() {
     mainEntityOfPage: canonicalUrl,
     image: 'https://sathian.ai/inside-monkedao/opening-cover.png',
     about: ['MonkeDAO', 'Solana', 'online communities', 'digital ownership'],
+    video: {
+      '@type': 'VideoObject',
+      name: 'Inside MonkeDAO — edited field interview with Benny',
+      description: 'An eight-minute field film about participation, trust, and builder support inside MonkeDAO.',
+      thumbnailUrl: ['https://sathian.ai/inside-monkedao/opening-cover.png'],
+      uploadDate: '2026-08-29T00:00:00-04:00',
+      duration: 'PT8M40S',
+      contentUrl: 'https://sathian.ai/inside-monkedao/inside-monkedao-field-report-v1.9.0.mp4',
+    },
   }
 
   return (

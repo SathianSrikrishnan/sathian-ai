@@ -63,6 +63,7 @@ describe('canonical site-agent public knowledge', () => {
     ['project-clinicalguard', 'https://sathian.ai/projects/clinicalguard'],
     ['published-writing', 'https://sathian.ai/writings'],
     ['current-public-work', 'https://sathian.ai/'],
+    ['profile-search-identity', 'https://sathian.ai/about'],
     ['site-agent-capabilities', 'https://sathian.ai/#featured-work'],
     ['site-agent-note-workflow', 'https://sathian.ai/#compose-note'],
   ])('publishes %s with a public source', (id, expectedSource) => {
@@ -97,6 +98,19 @@ describe('canonical site-agent public knowledge', () => {
     expect(solana?.tags).toEqual(expect.arrayContaining([
       'solana-dashboard',
       'ecosystem-observatory',
+    ]))
+  })
+
+  it('answers the SATHN shorthand from the reviewed public identity', () => {
+    const identity = cards.find((card) => card.id === 'profile-search-identity')
+
+    expect(identity?.body).toContain('Sathian Srikrishnan')
+    expect(identity?.body).toContain('SATHN is his short search handle')
+    expect(identity?.tags).toEqual(expect.arrayContaining([
+      'sathian',
+      'sathian-srikrishnan',
+      'sathn',
+      'search-handle',
     ]))
   })
 

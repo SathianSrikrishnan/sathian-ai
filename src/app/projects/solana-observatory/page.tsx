@@ -4,24 +4,37 @@ import Link from 'next/link'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
+import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
 import styles from './solana-observatory.module.css'
 
 const DASHBOARD = 'https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/'
 const REPOSITORY = 'https://github.com/SathianSrikrishnan/solana-ecosystem-dashboard'
+const CANONICAL_URL = 'https://sathian.ai/projects/solana-observatory'
+const WALKTHROUGH_URL = 'https://sathian.ai/projects/solana-observatory-demo.mp4'
+const PROJECT_IMAGE = 'https://sathian.ai/projects/solana-ecosystem-observatory.png'
 
 export const metadata: Metadata = {
   title: 'Solana Observatory — a source-visible ecosystem dashboard',
   description:
     'A three-minute walkthrough and public proof map for an automated Solana ecosystem dashboard built by Sathian Srikrishnan.',
+  authors: [{ name: 'Sathian Srikrishnan', url: 'https://sathian.ai/about' }],
+  keywords: ['Solana', 'ecosystem data', 'public data', 'source-visible dashboard', 'Sathian'],
   alternates: {
-    canonical: 'https://sathian.ai/projects/solana-observatory',
+    canonical: CANONICAL_URL,
   },
   openGraph: {
     title: 'Solana Observatory',
     description: 'Six questions. Forty-five source-carrying records. Every claim inspectable.',
-    url: 'https://sathian.ai/projects/solana-observatory',
+    url: CANONICAL_URL,
     type: 'website',
+    siteName: 'Sathian',
+    images: ['/projects/solana-ecosystem-observatory.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Solana Observatory',
+    description: 'Six questions. Forty-five source-carrying records. Every claim inspectable.',
     images: ['/projects/solana-ecosystem-observatory.png'],
   },
 }
@@ -36,8 +49,41 @@ const layers = [
 ] as const
 
 export default function SolanaObservatoryPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CreativeWork',
+        '@id': `${CANONICAL_URL}#project`,
+        name: 'Solana Observatory',
+        description: metadata.description,
+        url: CANONICAL_URL,
+        image: PROJECT_IMAGE,
+        datePublished: '2026-08-30',
+        author: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },
+        mainEntityOfPage: CANONICAL_URL,
+        about: ['Solana', 'ecosystem data', 'network activity', 'validator resilience'],
+        sameAs: [DASHBOARD, REPOSITORY],
+        hasPart: { '@id': `${CANONICAL_URL}#walkthrough` },
+      },
+      {
+        '@type': 'VideoObject',
+        '@id': `${CANONICAL_URL}#walkthrough`,
+        name: 'Solana Observatory product walkthrough',
+        description: 'A three-minute walkthrough of the source-visible Solana ecosystem dashboard.',
+        thumbnailUrl: [PROJECT_IMAGE],
+        uploadDate: '2026-08-30T00:00:00-04:00',
+        duration: 'PT3M3S',
+        contentUrl: WALKTHROUGH_URL,
+        creator: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },
+        isPartOf: { '@id': `${CANONICAL_URL}#project` },
+      },
+    ],
+  }
+
   return (
     <div className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteNav />
 
       <main>

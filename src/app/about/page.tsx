@@ -49,7 +49,8 @@ export default function AboutPage() {
           <p>
             I&apos;m Sathian Srikrishnan, an agent manager and orchestrator in Toronto.
             I build small public experiments to understand where AI, technology,
-            money, culture, and family products meet real life.
+            money, culture, and family products meet real life. SATHN is my short search handle
+            for this work.
           </p>
         </header>
 
