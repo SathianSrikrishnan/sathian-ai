@@ -19,6 +19,9 @@ describe('Stan Launchpad application page', () => {
     expect(statSync(videoPath).size).toBe(30_169_940)
     const hash = createHash('sha256').update(readFileSync(videoPath)).digest('hex')
     expect(hash).toBe('81082a4b7e92f6b7db01641b246067af84536cb8249ae0ca7cfc75a19d5fb4d4')
+
+    const posterHash = createHash('sha256').update(readFileSync(posterPath)).digest('hex')
+    expect(posterHash).toBe('785c369a7138ec29438e3f6e0f111127e20cfefedb033640a036a2e6f83bfbd2')
   })
 
   it('keeps the application unlisted and focused on the native video', () => {
@@ -33,27 +36,57 @@ describe('Stan Launchpad application page', () => {
     expect(page).toContain('preload="metadata"')
     expect(page).toContain('/media/launchpad/sathian-launchpad-application.mp4')
     expect(page).toContain('/media/launchpad/sathian-launchpad-application.en.vtt')
+    expect(page).not.toContain('<figcaption>')
     expect(sitemap).not.toContain("'/launchpad'")
   })
 
-  it('uses a concise, parent-led explanation instead of a crypto pitch', () => {
+  it('frames the application as a six-question founder prospectus', () => {
     const page = readFileSync(pagePath, 'utf8')
+    const copy = page.replace(/\s+/g, ' ')
 
     for (const required of [
-      'I built it first for my own children.',
-      'A toll-free call',
+      'Who',
+      'What',
+      'When',
+      'Where',
+      'Why',
+      'How',
+      'Sathian Srikrishnan, 43.',
+      'Divorced father of two.',
+      'working web application',
+      'deployed Solana mainnet program',
+      'real deposits for my family and a small circle of friends',
+      'Colosseum\u2019s Frontier Hackathon',
+      'May 2026',
+      'Camp Timberlake',
+      'October 4\u201319',
+      'Twenty primary teeth',
+      'Call one toll-free number.',
       'physical keepsake',
-      'guardian-owned digital wallet',
-      '20 primary teeth',
-      'Families worldwide',
-      'Parent-led by design',
-      'two weeks',
-      'paying families',
+      'parent-controlled future gift',
+      'fourteen days',
+      'first paying families',
     ]) {
-      expect(page).toContain(required)
+      expect(copy).toContain(required)
     }
 
-    for (const prohibited of ['Binance', 'Coinbase', '150 traditions', 'total addressable market']) {
+    expect(page).toContain('href="/writings/the-gap-between-weeks"')
+    expect(page).toContain('The Gap Between Weeks')
+    expect(page).toContain('href="/hackathons"')
+
+    const requestedOrder = ['<dt>Who</dt>', '<dt>What</dt>', '<dt>Where</dt>', '<dt>When</dt>', '<dt>Why</dt>', '<dt>How</dt>']
+    const positions = requestedOrder.map((label) => page.indexOf(label))
+    expect(positions).toEqual([...positions].sort((a, b) => a - b))
+
+    for (const prohibited of [
+      'Binance',
+      'Coinbase',
+      '150 traditions',
+      'total addressable market',
+      'The version I&apos;m testing now.',
+      'An old ritual, rebuilt for now.',
+      'Two weeks to find the truth.',
+    ]) {
       expect(page).not.toContain(prohibited)
     }
   })

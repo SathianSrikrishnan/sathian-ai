@@ -59,7 +59,7 @@
 }
 
 .intro h1,
-.section h2 {
+.prospectus h2 {
   margin: 0;
   color: var(--minimal-ink);
   font-family: Iowan Old Style, Baskerville, Georgia, serif;
@@ -82,14 +82,6 @@
   letter-spacing: -0.03em;
   line-height: 1.08;
   text-wrap: balance;
-}
-
-.origin {
-  max-width: 570px;
-  margin-top: 28px;
-  color: var(--minimal-muted);
-  font-size: 15px;
-  line-height: 1.75;
 }
 
 .videoFigure {
@@ -123,22 +115,18 @@
   object-fit: contain;
 }
 
-.videoFigure figcaption {
-  margin-top: 17px;
-  color: var(--minimal-muted);
-  font-family: var(--font-mono), "JetBrains Mono", monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+.prospectus {
+  padding-block: clamp(56px, 8vw, 88px);
+  border-top: 1px solid var(--minimal-rule);
+  border-bottom: 1px solid var(--minimal-rule);
 }
 
-.section {
+.prospectusHeading,
+.market,
+.ask {
   display: grid;
   grid-template-columns: 170px minmax(0, 1fr);
   gap: clamp(28px, 5vw, 68px);
-  padding-block: clamp(50px, 7vw, 76px);
-  border-top: 1px solid var(--minimal-rule);
 }
 
 .number {
@@ -152,51 +140,92 @@
   text-transform: uppercase;
 }
 
-.section h2 {
+.prospectus h2 {
   max-width: 680px;
   font-size: clamp(34px, 4.8vw, 55px);
   line-height: 0.98;
   text-wrap: balance;
 }
 
-.section > div > p {
-  max-width: 710px;
-  margin-top: 24px;
-  color: var(--minimal-muted);
-  font-size: 16px;
-  line-height: 1.75;
-}
-
-.signals {
+.brief {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 31px 0 0;
-  padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: clamp(42px, 6vw, 64px) 0 0;
   border-top: 1px solid var(--minimal-rule);
+}
+
+.briefItem {
+  min-height: 236px;
+  padding: 29px clamp(24px, 4vw, 42px) 34px 0;
   border-bottom: 1px solid var(--minimal-rule);
-  list-style: none;
 }
 
-.signals li {
-  min-height: 84px;
-  display: flex;
-  align-items: center;
-  padding: 18px 20px;
-  color: var(--minimal-ink);
-  font-family: var(--font-mono), "JetBrains Mono", monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.035em;
-  line-height: 1.45;
-  text-transform: uppercase;
-}
-
-.signals li + li {
+.briefItem:nth-child(even) {
+  padding-right: 0;
+  padding-left: clamp(24px, 4vw, 42px);
   border-left: 1px solid var(--minimal-rule);
 }
 
-.lastSection {
+.briefItem dt {
+  margin: 0;
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.briefItem dd {
+  margin: 24px 0 0;
+}
+
+.briefItem dd p,
+.ask > p:last-child {
+  margin: 0;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(22px, 2.4vw, 27px);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.briefItem a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  color: var(--minimal-rust);
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.briefItem a:hover {
+  text-decoration: underline;
+}
+
+.market,
+.ask {
+  padding-block: clamp(35px, 5vw, 48px);
+}
+
+.market {
   border-bottom: 1px solid var(--minimal-rule);
+}
+
+.market > p:last-child {
+  margin: 0;
+  max-width: 760px;
+  color: var(--minimal-ink);
+  font-family: Iowan Old Style, Baskerville, Georgia, serif;
+  font-size: clamp(30px, 4.4vw, 49px);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: balance;
 }
 
 .footer {
@@ -254,10 +283,6 @@
     font-size: clamp(50px, 15vw, 70px);
   }
 
-  .origin {
-    font-size: 14px;
-  }
-
   .videoFigure {
     width: min(100%, 390px);
     margin-inline: auto;
@@ -267,32 +292,47 @@
     box-shadow: 8px 8px 0 rgba(184, 78, 26, 0.14);
   }
 
-  .section {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  .prospectus {
     padding-block: 49px;
   }
 
-  .number {
+  .prospectusHeading,
+  .market,
+  .ask {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .prospectusHeading .number,
+  .market .number,
+  .ask .number {
     margin-top: 0;
   }
 
-  .section > div > p {
-    font-size: 15px;
-  }
-
-  .signals {
+  .brief {
     grid-template-columns: 1fr;
+    margin-top: 42px;
   }
 
-  .signals li {
-    min-height: 58px;
-    padding-inline: 0;
-  }
-
-  .signals li + li {
-    border-top: 1px solid var(--minimal-rule);
+  .briefItem,
+  .briefItem:nth-child(even) {
+    min-height: 0;
+    padding: 28px 0 31px;
     border-left: 0;
+  }
+
+  .briefItem dd {
+    margin-top: 18px;
+  }
+
+  .briefItem dd p,
+  .ask > p:last-child {
+    font-size: 23px;
+  }
+
+  .market,
+  .ask {
+    padding-block: 34px;
   }
 
   .footer {

@@ -4,7 +4,9 @@ const { chromium } = require('playwright')
 
 const BASE_URL = `${(process.env.SITE_URL || 'http://127.0.0.1:3013').replace(/\/$/, '')}/launchpad`
 const ROOT = resolve(__dirname, '../..')
-const OUTPUT = join(ROOT, 'docs', 'operations', '2026-09-03-launchpad-local-review')
+const OUTPUT = process.env.REVIEW_DIR
+  ? resolve(process.env.REVIEW_DIR)
+  : join(ROOT, 'docs', 'operations', '2026-09-03-launchpad-local-review')
 mkdirSync(OUTPUT, { recursive: true })
 
 async function inspectViewport(page, name, width, height) {
@@ -60,6 +62,14 @@ async function inspectViewport(page, name, width, height) {
   }
   if (!(await page.getByRole('link', { name: 'Tooth Fairy Network ↗' }).isVisible())) {
     throw new Error('Project link is not visible')
+  }
+  const prospectusLabels = await page.locator('dt').allTextContents()
+  const expectedLabels = ['Who', 'What', 'Where', 'When', 'Why', 'How']
+  if (JSON.stringify(prospectusLabels) !== JSON.stringify(expectedLabels)) {
+    throw new Error(`Unexpected prospectus labels: ${JSON.stringify(prospectusLabels)}`)
+  }
+  if (!(await page.getByRole('link', { name: 'Read The Gap Between Weeks →' }).isVisible())) {
+    throw new Error('Origin essay link is not visible')
   }
 
   await page.locator('body').click({ position: { x: 4, y: 4 } })

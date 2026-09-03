@@ -18,8 +18,6 @@ export const metadata: Metadata = {
   },
 }
 
-const signals = ['20 primary teeth', 'Families worldwide', 'Parent-led by design']
-
 export default function LaunchpadApplicationPage() {
   return (
     <div className={`${styles.page} minimal-site`} data-theme="workshop">
@@ -27,7 +25,7 @@ export default function LaunchpadApplicationPage() {
         <Link href="/" className={styles.wordmark}>
           sathian.ai
         </Link>
-        <span>Stan Launchpad / September 2026</span>
+        <span>Stan Launchpad / October 4–19, 2026</span>
       </header>
 
       <main className={styles.main}>
@@ -35,11 +33,7 @@ export default function LaunchpadApplicationPage() {
           <div className={styles.intro}>
             <p className="minimal-kicker">Founder application</p>
             <h1 id="launchpad-title">Tooth Fairy Network</h1>
-            <p className={styles.thesis}>A new global ritual for losing a tooth.</p>
-            <p className={styles.origin}>
-              I&apos;m Sathian Srikrishnan—a divorced dad of two and the solo founder.
-              I built it first for my own children.
-            </p>
+            <p className={styles.thesis}>A family ritual, built to travel.</p>
           </div>
 
           <figure className={styles.videoFigure}>
@@ -65,48 +59,85 @@ export default function LaunchpadApplicationPage() {
                 Your browser does not support embedded video.
               </video>
             </div>
-            <figcaption>One take · Toronto · 02:27</figcaption>
           </figure>
         </section>
 
-        <section className={styles.section} aria-labelledby="current-test-title">
-          <p className={styles.number}>01 / Now</p>
-          <div>
-            <h2 id="current-test-title">The version I&apos;m testing now.</h2>
-            <p>
-              A toll-free call to Tanda starts the experience. A parent and child talk
-              through the moment. The parent decides whether that memory stays private,
-              becomes a physical keepsake, or opens a guardian-owned digital wallet for
-              the child.
-            </p>
+        <section className={styles.prospectus} aria-labelledby="prospectus-title">
+          <div className={styles.prospectusHeading}>
+            <p className={styles.number}>Founder prospectus</p>
+            <h2 id="prospectus-title">The case for Tooth Fairy Network.</h2>
           </div>
-        </section>
 
-        <section className={styles.section} aria-labelledby="market-title">
-          <p className={styles.number}>02 / Market</p>
-          <div>
-            <h2 id="market-title">An old ritual, rebuilt for now.</h2>
-            <ul className={styles.signals} aria-label="Tooth Fairy Network market signals">
-              {signals.map((signal) => (
-                <li key={signal}>{signal}</li>
-              ))}
-            </ul>
-            <p>
-              Tooth loss is the first ritual. The larger idea is a series of things
-              parents and children do together—memory, confidence, creativity, and early
-              financial learning. The wallet is infrastructure, not the pitch.
-            </p>
+          <dl className={styles.brief}>
+            <div className={styles.briefItem}>
+              <dt>Who</dt>
+              <dd>
+                <p>Sathian Srikrishnan, 43. Solo founder in Toronto. Divorced father of two.</p>
+              </dd>
+            </div>
+
+            <div className={styles.briefItem}>
+              <dt>What</dt>
+              <dd>
+                <p>
+                  A working web application, a deployed Solana mainnet program, and real
+                  deposits for my family and a small circle of friends.
+                </p>
+              </dd>
+            </div>
+
+            <div className={styles.briefItem}>
+              <dt>Where</dt>
+              <dd>
+                <p>
+                  Built in Toronto. Applying to spend October 4–19 at Camp Timberlake, just
+                  outside New York, turning a family experiment into a global tradition.
+                </p>
+              </dd>
+            </div>
+
+            <div className={styles.briefItem}>
+              <dt>When</dt>
+              <dd>
+                <p>
+                  Submitted to Colosseum’s Frontier Hackathon in May 2026. I kept building,
+                  stripped back the technology and started learning in public.
+                </p>
+                <Link href="/hackathons">See the build history →</Link>
+              </dd>
+            </div>
+
+            <div className={styles.briefItem}>
+              <dt>Why</dt>
+              <dd>
+                <p>
+                  I built it for my own children after my divorce. I had missed the middle
+                  of a small moment and wanted a way to stay part of the memory.
+                </p>
+                <Link href="/writings/the-gap-between-weeks">Read The Gap Between Weeks →</Link>
+              </dd>
+            </div>
+
+            <div className={styles.briefItem}>
+              <dt>How</dt>
+              <dd>
+                <p>
+                  Call one toll-free number. Tanda preserves the child’s version of what
+                  happened. We mail a physical keepsake, and an adult can add a
+                  parent-controlled future gift.
+                </p>
+              </dd>
+            </div>
+          </dl>
+
+          <div className={styles.market} aria-label="Market opportunity">
+            <p className={styles.number}>Market</p>
+            <p>Every child. Twenty primary teeth. One ritual families already understand.</p>
           </div>
-        </section>
 
-        <section className={`${styles.section} ${styles.lastSection}`} aria-labelledby="launchpad-why-title">
-          <p className={styles.number}>03 / Launchpad</p>
-          <div>
-            <h2 id="launchpad-why-title">Two weeks to find the truth.</h2>
-            <p>
-              I want two weeks to stop polishing in private: talk to parents, test the
-              ritual, ship the first physical version, and find paying families.
-            </p>
+          <div className={styles.ask}>
+            <p className={styles.number}>The fourteen days</p>
+            <p>Talk to parents every day. Ship the physical offer. Find the first paying families.</p>
           </div>
         </section>
       </main>
