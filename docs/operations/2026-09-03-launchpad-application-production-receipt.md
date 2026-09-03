@@ -1,6 +1,6 @@
 # Stan Launchpad application page — production receipt
 
-Date: 2026-09-03  
+Date: 2026-09-03
 Status: `LIVE / READY FOR SATHIAN TO SUBMIT`
 
 ## Release
