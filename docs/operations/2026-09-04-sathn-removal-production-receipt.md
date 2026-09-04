@@ -24,4 +24,3 @@ Removed the `SATHN` shorthand from the homepage identity, About copy, structured
 - Live public-surface verification passed at desktop, compact desktop, wide desktop, and mobile viewports.
 - Vercel inspection reported the production deployment `Ready` and aliased to `https://sathian.ai`.
 - Recent production deployment error-log scan returned no logs.
-
