@@ -24,14 +24,15 @@ describe('sathian.ai relaunch surface', () => {
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
   it('leads with the concise Digital Experiments title and the live site agent', () => {
-    expect(homepage).toContain('>SATHIAN / SATHN</span>')
+    expect(homepage).toContain('>SATHIAN</span>')
+    expect(homepage).not.toContain('SATHN')
     expect(homepage).not.toContain('SATHIAN SRIKRISHNAN')
     expect(homepage).toContain('AGENT MANAGER + ORCHESTRATOR')
     expect(homepage).toContain('TORONTO')
     expect(homepage).toContain('Digital Experiments')
     expect(rootLayout.match(/title: 'Sathian \| Digital Experiments'/g)).toHaveLength(3)
     expect(siteIdentity).toContain("name: 'Sathian'")
-    expect(siteIdentity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'SATHN', 'Digital Experiments']")
+    expect(siteIdentity).not.toContain('SATHN')
     expect(homepage).not.toContain("Welcome to Sathian's Digital Workshop")
     expect(homepage).not.toContain('The fastest way to reach me is to ask.')
     expect(homeClient).toContain('id="home-agent-slot"')

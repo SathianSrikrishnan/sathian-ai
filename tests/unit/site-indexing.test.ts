@@ -63,12 +63,13 @@ describe('public-site indexing', () => {
 
     expect(page).toContain('SATHIAN_PERSON_SCHEMA')
     expect(identity).toContain("name: 'Sathian Srikrishnan'")
-    expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.', 'SATHN']")
+    expect(identity).toContain("alternateName: ['Sathian', 'Sathian S.']")
     expect(identity).toContain('sameAs:')
     expect(identity).toContain("name: 'Sathian'")
-    expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'SATHN', 'Digital Experiments']")
+    expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments']")
     expect(layout).toContain("siteName: 'Sathian'")
-    expect(home).toContain('>SATHIAN / SATHN</span>')
+    expect(home).toContain('>SATHIAN</span>')
+    expect(home).not.toContain('SATHN')
     expect(home).not.toContain('SATHIAN SRIKRISHNAN')
   })
 
@@ -80,7 +81,7 @@ describe('public-site indexing', () => {
     expect(about).toContain("SATHIAN_PERSON_SCHEMA['@id']")
     expect(about).toContain('<h1>Sathian</h1>')
     expect(about).toContain('Sathian Srikrishnan')
-    expect(about).toContain('SATHN is my short search handle')
+    expect(about).not.toContain('SATHN')
   })
 
   it('uses the full identity and stable profile entity on every writing surface', () => {

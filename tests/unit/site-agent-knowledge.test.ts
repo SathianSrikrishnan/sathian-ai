@@ -101,17 +101,16 @@ describe('canonical site-agent public knowledge', () => {
     ]))
   })
 
-  it('answers the SATHN shorthand from the reviewed public identity', () => {
+  it('uses Sathian without publishing an extra shorthand identity', () => {
     const identity = cards.find((card) => card.id === 'profile-search-identity')
 
     expect(identity?.body).toContain('Sathian Srikrishnan')
-    expect(identity?.body).toContain('SATHN is his short search handle')
+    expect(identity?.body).not.toContain('SATHN')
     expect(identity?.tags).toEqual(expect.arrayContaining([
       'sathian',
       'sathian-srikrishnan',
-      'sathn',
-      'search-handle',
     ]))
+    expect(identity?.tags).not.toEqual(expect.arrayContaining(['sathn', 'search-handle']))
   })
 
   it('describes AutoQuote as private prototype evidence rather than an active hackathon build', () => {

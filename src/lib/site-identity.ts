@@ -5,7 +5,7 @@ export const SATHIAN_PERSON_SCHEMA = {
   '@type': 'Person',
   '@id': 'https://sathian.ai/#sathian',
   name: 'Sathian Srikrishnan',
-  alternateName: ['Sathian', 'Sathian S.', 'SATHN'],
+  alternateName: ['Sathian', 'Sathian S.'],
   url: 'https://sathian.ai/about',
   image: 'https://sathian.ai/sathian-profile.png',
   jobTitle: 'Agent Manager and Orchestrator',
@@ -20,7 +20,7 @@ export const SATHIAN_WEBSITE_SCHEMA = {
   '@type': 'WebSite',
   '@id': 'https://sathian.ai/#website',
   name: 'Sathian',
-  alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'SATHN', 'Digital Experiments'],
+  alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments'],
   url: 'https://sathian.ai',
   publisher: { '@id': SATHIAN_PERSON_SCHEMA['@id'] },
   description:
