@@ -33,6 +33,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/ccac-vibe-piano',
+        destination: '/ccac',
+        permanent: false,
+      },
+      {
         source: '/btc-atlas',
         destination: 'https://btc.sathian.ai',
         permanent: true,
@@ -51,6 +56,10 @@ const nextConfig = {
   },
   async rewrites() {
     return [
+      {
+        source: '/ccac',
+        destination: '/ccac-vibe-piano/index.html',
+      },
       {
         source: '/writings/saraswati-lakshmi-and-the-ledger',
         destination: '/features/saraswati-lakshmi-ledger.html',

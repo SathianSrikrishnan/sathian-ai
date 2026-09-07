@@ -180,6 +180,29 @@ export const LEX_ROOFTOP_GARDEN_SITE_PROJECT: PublicSiteProject = {
   topics: ['project', 'community', 'hobby-project', 'garden', 'toronto'],
 }
 
+export const CCAC_VIBE_PIANO_SITE_PROJECT: PublicSiteProject = {
+  id: 'project-ccac-vibe-piano',
+  slug: 'ccac-vibe-piano',
+  name: 'CCAC Vibe Learning',
+  label: 'COMMUNITY PIANO / PUBLIC PROTOTYPE',
+  description:
+    'A public prototype that pairs an original synthesized melody with falling notes and synchronized piano keys.',
+  approvedClaims: [
+    'CCAC Vibe Learning is a public prototype for a free community piano-learning idea.',
+    'The prototype plays Little Lanterns, an original technical demo with synchronized falling notes and highlighted keys.',
+    'River Flows in You by Yiruma remains a requested song and is unavailable until an authorized music asset and permitted use are established.',
+    'The current page has no request form and does not collect contact details or send requests.',
+  ],
+  aliases: ['CCAC Vibe Learning', 'CCAC piano', 'community piano demo', 'piano playground'],
+  status: 'prototype',
+  reviewedAt: '2026-09-07',
+  href: '/ccac',
+  cta: 'Open CCAC Vibe Learning',
+  image: '/projects/ccac-vibe-piano.svg',
+  alt: 'A compact coral and teal piano-key icon for CCAC Vibe Learning',
+  topics: ['project', 'prototype', 'community', 'piano', 'music-learning', 'visual-learning'],
+}
+
 export const SITE_PROJECTS: readonly PublicSiteProject[] = [
   TOOTH_FAIRY_NETWORK_PROJECT,
   AUTOQUOTE_AUTOMATOR_PROJECT,
@@ -188,6 +211,7 @@ export const SITE_PROJECTS: readonly PublicSiteProject[] = [
   AGENTTAB_SITE_PROJECT,
   BTC_CULTURAL_ATLAS_SITE_PROJECT,
   LEX_ROOFTOP_GARDEN_SITE_PROJECT,
+  CCAC_VIBE_PIANO_SITE_PROJECT,
 ]
 
 export const FEATURED_SITE_PROJECTS: readonly PublicSiteProject[] = [
@@ -203,6 +227,10 @@ export const ARCHIVE_SITE_PROJECTS: readonly PublicSiteProject[] = [
   BTC_CULTURAL_ATLAS_SITE_PROJECT,
   AGENTTAB_SITE_PROJECT,
   CLINICAL_GUARD_SITE_PROJECT,
+]
+
+export const MORE_SITE_PROJECTS: readonly PublicSiteProject[] = [
+  CCAC_VIBE_PIANO_SITE_PROJECT,
 ]
 
 function normalizeAlias(value: string): string {

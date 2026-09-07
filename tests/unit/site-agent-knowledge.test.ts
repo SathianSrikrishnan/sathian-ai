@@ -26,6 +26,7 @@ describe('canonical site-agent public knowledge', () => {
       'project-agenttab',
       'project-btc-cultural-atlas',
       'project-lex-rooftop-garden',
+      'project-ccac-vibe-piano',
     ])
 
     for (const project of SITE_PROJECTS) {
@@ -52,6 +53,7 @@ describe('canonical site-agent public knowledge', () => {
     ['AgentTab', 'project-agenttab'],
     ['BTC Cultural Atlas', 'project-btc-cultural-atlas'],
     ['Lex Rooftop Garden', 'project-lex-rooftop-garden'],
+    ['CCAC Vibe Learning', 'project-ccac-vibe-piano'],
   ])('resolves the public alias %s through the registry', (message, expectedId) => {
     expect(findSiteProjectsByAlias(`Tell me about ${message}`).map((project) => project.id)).toContain(expectedId)
   })

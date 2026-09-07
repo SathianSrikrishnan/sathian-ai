@@ -13,6 +13,7 @@ import {
 import {
   ARCHIVE_SITE_PROJECTS,
   FEATURED_SITE_PROJECTS,
+  MORE_SITE_PROJECTS,
   SOLANA_OBSERVATORY_PROJECT,
 } from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
@@ -252,7 +253,7 @@ export function HomeClient({ writings }: HomeClientProps) {
         <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-projects">
           <h2 id="more-projects">More projects &amp; curiosities</h2>
           <div className="minimal-more-list">
-            {ARCHIVE_SITE_PROJECTS.map((project) => {
+            {[...MORE_SITE_PROJECTS, ...ARCHIVE_SITE_PROJECTS].map((project) => {
               const content = (
                 <>
                 <span className="minimal-more-thumb">

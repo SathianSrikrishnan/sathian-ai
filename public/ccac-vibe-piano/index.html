@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CCAC Vibe Learning local piano prototype.">
+  <title>CCAC Vibe Learning · Piano playground</title>
+  <link rel="stylesheet" href="/ccac-vibe-piano/style.css">
+  <script type="module" src="/ccac-vibe-piano/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#instrument">Skip to piano</a>
+  <header class="masthead wrap">
+    <a class="brand" href="#" aria-label="CCAC Vibe Learning home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>CCAC <b>Vibe Learning</b></span></a>
+    <span class="preview-stamp"><span aria-hidden="true">●</span> Prototype</span>
+  </header>
+  <main class="wrap">
+    <section class="compact-title" aria-labelledby="welcome">
+      <p class="eyebrow">CCAC VIBE LEARNING</p>
+      <h1 id="welcome">Piano Playground</h1>
+    </section>
+    <section id="instrument" class="instrument" aria-labelledby="song-title" tabindex="-1">
+        <div class="song-heading"><div><p class="eyebrow">NOW PLAYING <span class="demo-chip">ORIGINAL DEMO</span></p><h2 id="song-title">Little Lanterns</h2></div><div class="tempo-badge"><strong>96</strong><span>BPM · C MAJOR</span></div></div>
+        <div class="instrument-topline"><span><i class="legend-dot melody"></i> Melody <i class="legend-dot harmony"></i> Harmony</span><span id="transport-status" role="status">Ready</span></div>
+        <div class="piano-scroll" id="piano-scroll" tabindex="0" aria-label="Piano notes and keys; scroll sideways on small screens">
+          <div class="piano-world" id="piano-world">
+            <div class="roll" id="roll" aria-hidden="true"><div class="roll-caption" id="roll-caption">Press play <span>↓</span></div><div id="lanes" class="lanes"></div><div id="falling-notes"></div><div class="strike-line"></div></div>
+            <div id="keyboard" class="keyboard" role="group" aria-label="Playable piano, C3 through C5"></div>
+          </div>
+        </div>
+        <div class="keyboard-help"><span>Computer keys <kbd>A</kbd>–<kbd>K</kbd></span></div>
+        <div class="transport">
+          <div class="progress-row"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Song position" aria-valuetext="0 seconds"><span id="duration">0:40</span></div>
+          <div class="control-row"><div class="primary-controls"><button id="play" class="button primary" type="button"><span aria-hidden="true">▶</span> Play demo</button><button id="replay" class="button secondary" type="button" aria-label="Replay from beginning"><span aria-hidden="true">↺</span> Replay</button></div><div class="speed-control"><label for="speed">Speed</label><select id="speed"><option value="0.5">0.5× · gentle</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option></select></div></div>
+          <div class="settings"><label class="check"><input id="labels" type="checkbox" checked> Note names</label><label class="check"><input id="motion" type="checkbox" checked> Falling notes</label><label class="volume" for="volume">Volume <input id="volume" type="range" min="0" max="100" value="65"></label></div>
+          <p id="audio-error" class="error" role="alert" hidden></p>
+          <p class="sound-note">Synthesized demo audio.</p>
+        </div>
+    </section>
+    <p class="song-status"><strong>Requested: River Flows in You — Yiruma.</strong> This requested song is not playable yet. Awaiting an authorized music asset.</p>
+  </main>
+  <footer class="wrap"><span>CCAC Vibe Learning</span><span>Sathian AI · Prototype</span></footer>
+  <noscript>This piano needs JavaScript enabled for playback and interactive keys.</noscript>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">CCAC Vibe Learning piano</title>
+  <desc id="desc">Cream piano keys with coral and teal highlighted notes.</desc>
+  <rect width="320" height="220" rx="28" fill="#203a37"/>
+  <g transform="translate(24 44)">
+    <rect width="272" height="132" rx="10" fill="#f9f5e9"/>
+    <g fill="none" stroke="#203a37" stroke-width="3">
+      <path d="M45 0v132M90 0v132M136 0v132M181 0v132M227 0v132"/>
+    </g>
+    <g fill="#203a37">
+      <rect x="30" width="29" height="80" rx="0 0 5 5"/>
+      <rect x="75" width="29" height="80" rx="0 0 5 5"/>
+      <rect x="166" width="29" height="80" rx="0 0 5 5"/>
+      <rect x="211" width="29" height="80" rx="0 0 5 5"/>
+    </g>
+    <rect x="91" y="80" width="44" height="52" fill="#ff9479"/>
+    <rect x="182" y="80" width="44" height="52" fill="#8dd4c2"/>
+  </g>
+  <circle cx="69" cy="27" r="7" fill="#ff9479"/>
+  <circle cx="93" cy="27" r="7" fill="#8dd4c2"/>
+</svg>

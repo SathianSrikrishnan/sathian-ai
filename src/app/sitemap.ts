@@ -30,6 +30,7 @@ export function buildSitemapForHost(
     const coreRoutes = [
       '',
       '/about',
+      '/ccac',
       '/agents',
       '/hackathons',
       '/links',
