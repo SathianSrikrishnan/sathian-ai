@@ -31,4 +31,15 @@ Owner authorized both high-quality songs, with Little Lanterns preserved as a se
 
 ## Production verification
 
-Pending deployment and fresh live-domain checks.
+- Music release commit: `8fdbfbfe17cb5eab74ac81b184753d62e37b59a4`.
+- First deployment: `dpl_Bsh7AcftzUR9cnTmAmZCcSA6nNAx`, `https://sathian-jd7i6btfj-sathiansrikrishnans-projects.vercel.app`.
+- Fresh actual `https://sathian.ai/ccac` checks (no route interception): desktop and mobile passed. Canon audio, 20 samples, pause/resume, speed, seek, completion, and Little Lanterns playback passed. 23 sampled note comparisons had zero mismatches; maximum sampled display lag was 6.8 ms.
+- River: full 237.641-second performance; unmuted playing media with 67/73 decoded frames in desktop/mobile captures; 720p desktop and adaptive 360p mobile; visible player-control pause passed.
+- Zero page errors and document overflow in both viewport runs. Evidence: `piano-community-studio/evidence/live-music-verification.json` and live desktop/mobile screenshots.
+- The timing verifier waits for the audio output clock to move after a seek before comparing keys; the intentional silent scheduling lead-in correctly has no highlighted keys.
+- Existing-browser check found a four-hour cache policy on static assets. Cache fix commit `49f1a2a` versions the stylesheet and app-module URLs so a refreshed page cannot combine new markup with the old player. The full release gate passed again after that fix.
+- Final cache-fix application commit: `49f1a2aaf4bd2001a24572949ad660c921fd5f2a`. Deployment `dpl_4MQLnXXdRa49Z8i4nnT2ESQfvPje`, https://sathian-eli8x8s4l-sathiansrikrishnans-projects.vercel.app, READY and aliased to https://sathian.ai.
+- Final deployment rerun against the real public page passed desktop/mobile: 27 sampled note comparisons, zero mismatches, maximum display lag 23.9 ms, real audio and pause cleanup; River decoded 64/76 frames, unmuted, with the full 237.641-second duration. Zero page errors and document overflow. Live evidence files now contain this final run.
+- Reloading the already-open in-app browser showed the correct River title, Load performance button, three song links and credits, confirming the stale-player issue is resolved.
+- Final deployment error-log query returned no logs. No runtime errors were observed during the browser checks.
+- Completed owning goal and archived the previous task contract in `piano-community-studio/docs/2026-09-07-card-33-archive.md`. Current project brief: `piano-community-studio/README.md`. A receipt-only follow-up commit does not change the deployed application.
