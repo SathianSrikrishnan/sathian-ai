@@ -25,4 +25,18 @@ The page is deliberately minimal: the original **Little Lanterns** demo, falling
 
 ## Production proof
 
-Pending deployment and live browser verification. This section will record the production commit, Vercel deployment, canonical URL checks, homepage link, mobile layout, real user-gesture audio, synchronized notes, pause behavior, and error-log scan.
+- Production application commit: `ee4884741312e3dba1d5df0b412cafd98f6536a9`
+- Deployment: `dpl_FXHTXLRR9eLqHewViLgMFpsce7WV`
+- Deployment URL: `https://sathian-3f6jctd51-sathiansrikrishnans-projects.vercel.app`
+- Canonical page: `https://sathian.ai/ccac` returned HTTP 200 with the expected title and content.
+- Compatibility route: `/ccac-vibe-piano` returned HTTP 307 to `/ccac`.
+- Project icon returned HTTP 200; the sitemap returned HTTP 200 and contains `https://sathian.ai/ccac`.
+- The live homepage contains the exact **CCAC Vibe Learning** link and piano icon under **More projects & curiosities**.
+- A real browser click started playback. Web Audio reported `running`, RMS `0.09998`, peak `0.19736`, and 97 scheduled voices during playback.
+- Twenty 50 ms synchronization samples captured active piano keys in 18 samples, with up to two concurrent keys and nonzero audio throughout the sampled phrase.
+- Pause changed the control to **Resume**, set `playing` false, cleared active keys, reduced audio to zero, and cleared all scheduled voices.
+- At a 390 × 844 mobile viewport, the page had no document overflow, kept the playable keyboard, and contained no side panel or form.
+- Browser console: zero observed entries during the live CCAC and homepage checks.
+- Vercel production error-log scan: no logs found after verification traffic.
+
+The release is complete. Requested-song playback remains blocked only on an authorized music asset and permitted use.
