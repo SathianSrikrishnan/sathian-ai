@@ -17,7 +17,18 @@ Owner explicitly requested building and featuring a reusable song-to-piano exper
 - Candidate desktop 1440×1050 and mobile 390×844 browser tests pass: incorrect key holds position, correct key advances, complete imported phrase succeeds, local Canon file loads, malformed file reports an error without losing the prior lesson, native audio is unmuted with a measured nonzero rendered waveform, half-speed works, previous/next phrase works, no page errors, no document overflow and no network writes.
 - Screenshots inspected. Evidence: `piano-community-studio/evidence/2026-09-08-candidate-practice-verification.json` and dated practice screenshots. Repeatable browser verifier: `scripts/verify-practice.cjs`.
 - Reusable `$song-to-piano-practice` skill initialized and passed the official validator; installed at `C:\Users\sathi\.agents\skills\song-to-piano-practice\SKILL.md`, with source in `piano-community-studio/skills/song-to-piano-practice`.
-- Full site release gate and production readback recorded below after completion.
+- Full `npm run release:verify` passed: 63 files / 427 tests, 60/60 evaluation, production build, shared public surfaces, mobile sound, critical audit threshold and patch hygiene. The existing non-critical dependency backlog is unchanged.
+
+## Production verification
+
+- Application commit `dcc303977c9f55e1be934d6ef22079b3d008b428`, matched origin/main before deployment.
+- Deployment `dpl_5vs9cMhXEFT3KHb9gT7bej1psoFq`, https://sathian-oty8uy9ki-sathiansrikrishnans-projects.vercel.app — READY, aliased to https://sathian.ai.
+- Actual live desktop/mobile checks passed all game, import, invalid-file recovery, rendered-audio, repeat/stop, and layout assertions. Prepared waveform peak before normalization was 0.086; media was unmuted and playing at half speed. No page errors or document overflow.
+- Existing Cloudflare performance telemetry sends a `/cdn-cgi/rum` beacon on the public domain. The initial zero-write assertion detected it. The verifier now distinguishes that configured beacon from file uploads, checks its payload for the MIDI fixture/name, and rejects other writes. No MIDI bytes or filename were present; no file upload endpoint exists in the application.
+- Live evidence: `piano-community-studio/evidence/2026-09-08-live-practice-verification.json` and dated live screenshots. This proof uses the actual public site, without route interception.
+- In-app browser confirmed the featured link, actual River video playback (237.641 s) and automatic video pause when Follow mode begins. The game was left ready at E4. Final deployment error-log query returned no logs.
+- Refreshed the identified local piano server; its existing port 4318 now serves the practice route with HTTP 200. Installed skill checksum matched the project source.
+- Release complete. Receipt-only follow-up commits do not change the deployed application. Remaining musical-source and teacher-feedback scope is described below.
 
 ## Background and next scope
 
