@@ -16,7 +16,17 @@ River is the default and first link, Canon second, original Little Lanterns thir
 - Local desktop/mobile regression passes start, seek, pause, half speed, replay, completion, original playback, River default/order, no unsolicited iframe, no overflow and no page errors. Evidence: `piano-community-studio/evidence/2026-09-08-candidate-native-verification.json`; dated desktop/mobile screenshots reviewed.
 - The local server initially lacked byte-range responses, preventing native audio seeking. Added audio-only range support and reran successfully; production uses Vercel's static-file range support.
 - Two music contract tests, syntax and eight local HTTP/source checks passed. Both complete MP3 files decode without errors. Canon: 5,892,640 bytes / 245.45 seconds; Little Lanterns: 961,767 bytes / 40 seconds. Deterministic renderer: `piano-community-studio/scripts/render-piano.mjs`; measurements: `evidence/rendered-piano.json`.
-- Complete site gate and production readback pending below.
+- Complete `npm run release:verify` passed: 63 files / 427 tests, 60/60 evaluation, build, shared public surfaces, mobile sound, critical audit threshold and patch hygiene. Existing dependency backlog is unchanged. A transient aborted HTTP request appeared during public-surface checks; the gate completed successfully.
+
+## Production proof
+
+- Application commit `46cdb90e2a512a60cdede05c06b8fadfe7aa8b15` matched origin/main before deployment.
+- Deployment `dpl_6H6ei2vADcb3BVprj3MDzEUJ2SDQ`, https://sathian-h4csabr94-sathiansrikrishnans-projects.vercel.app — READY, aliased to https://sathian.ai.
+- Actual live desktop/mobile regression with AudioContext disabled passed all native playback controls, default/order checks, 21 synchronized-note comparisons with no mismatch, no overflow and no page errors. Evidence: `piano-community-studio/evidence/2026-09-08-live-native-verification.json` and dated live screenshots.
+- The public Canon MP3 returned HTTP 206 with `Content-Range: bytes 0-255/5892640`, verifying partial-file seeking support. Final deployment error-log query returned no logs.
+- Actual in-app River playback started unmuted, with duration 237.641 seconds. Its visible speed menu offered 0.5×; selecting it produced playbackRate 0.5. Left the deliverable page paused at half speed. This is a temporary player setting, not automatic slowed playback for every visitor.
+- The existing local server on port 4318 was identified by its exact project command and refreshed. Its audio-range response also returned 206; local Canon and Lanterns are available on the existing preview URL.
+- Work is delivered. The remaining uncertainty is the owner's physical speaker output; do not replace that with a claim that automated checks prove what the owner hears. If silence persists, compare the audio-only link on the same device/browser.
 
 ## River learning view
 
