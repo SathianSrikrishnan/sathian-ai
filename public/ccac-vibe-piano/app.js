@@ -1,5 +1,5 @@
 import { noteName } from './music.js';
-import { getSong } from './songs.js';
+import { getSong } from './songs.js?v=20260908-1';
 import { loadPiano, pianoVoice as makeTone, pianoSampleCount } from './piano-audio.js';
 
 const selected=getSong(new URLSearchParams(location.search).get('song'));
@@ -19,6 +19,9 @@ if(selected.kind==='video'){
   },{once:true});
 }else{
 const song=selected,{notes,secondsPerBeat,duration}=song;
+const recording=new Audio(new URL(song.audio,import.meta.url));
+recording.preload='metadata';recording.preservesPitch=true;
+document.getElementById('audio-only').href=recording.src;
 
 const $ = id => document.getElementById(id);
 const keyboard=$('keyboard'), roll=$('roll');
@@ -57,23 +60,14 @@ const falling=notes.map(note=>{
   return {note,element};
 });
 
-let context,master,analyser,contextStart=0,position=0,renderedPosition=0,speed=1,playing=false,busy=false,voices=[],lastVisibleNote;
+let context,master,analyser,position=0,renderedPosition=0,speed=1,playing=false,busy=false,lastVisibleNote;
 const manual=new Map();
 const audioError=$('audio-error');
 const fmt=seconds=>`${Math.floor(seconds/60)}:${Math.floor(seconds%60).toString().padStart(2,'0')}`;
 $('duration').textContent=fmt(duration);$('seek').max=duration;
 updateTransport();
 
-function audibleTime(){
-  if(!context)return 0;
-  const stamp=context.getOutputTimestamp?.();
-  // Align display with the device's rendered output clock where supported.
-  if(stamp?.performanceTime>0&&stamp.contextTime>0){
-    return Math.min(context.currentTime,stamp.contextTime+Math.max(0,performance.now()-stamp.performanceTime)/1000);
-  }
-  return Math.max(0,context.currentTime-(context.outputLatency||context.baseLatency||0));
-}
-function currentPosition(){return playing?Math.min(duration,Math.max(position,(audibleTime()-contextStart)*speed)):position;}
+function currentPosition(){return playing?Math.min(duration,recording.currentTime):position;}
 async function ensureAudio(){
   if(!context){
     const Audio=window.AudioContext||window.webkitAudioContext;
@@ -83,23 +77,12 @@ async function ensureAudio(){
     analyser=context.createAnalyser();analyser.fftSize=2048;
     const compressor=context.createDynamicsCompressor();compressor.threshold.value=-12;compressor.knee.value=12;compressor.ratio.value=3;
     master.connect(compressor);compressor.connect(analyser);analyser.connect(context.destination);
-    context.onstatechange=()=>{if(playing&&context.state!=='running')pause('Audio interrupted · press play to continue');};
+    // Manual keys use Web Audio; song playback has its own native media clock.
   }
   if(context.state!=='running')await context.resume();
   if(context.state!=='running')throw new Error('Sound could not start. Press play again to enable audio.');
   if(pianoSampleCount()===0){$('transport-status').textContent='Loading grand piano…';await loadPiano(context);}
   audioError.hidden=true;
-}
-function stopScheduled(){voices.forEach(stop=>stop());voices=[];}
-function schedule(){
-  contextStart=context.currentTime+0.09-position/speed;
-  for(const note of notes){
-    const start=note.beat*secondsPerBeat,end=(note.beat+note.length)*secondsPerBeat;
-    if(end<=position)continue;
-    const remaining=end-Math.max(position,start);
-    const expression=(note.velocity??.72)*(note.hand==='melody'?.8:.58);
-    voices.push(makeTone(context,master,note.midi,contextStart+Math.max(position,start)/speed,remaining/speed,expression));
-  }
 }
 function updateTransport(message){
   $('play').innerHTML=playing?'<span aria-hidden="true">Ⅱ</span> Pause':'<span aria-hidden="true">▶</span> '+(position>=duration?'Play again':position>0?'Resume':'Play');
@@ -111,26 +94,33 @@ async function play(){
   if(busy||playing)return;
   busy=true;
   try{
-    await ensureAudio();
-    if(document.hidden)return;
     if(position>=duration)position=0;
-    stopScheduled();schedule();playing=true;updateTransport();
-  }catch(error){audioError.textContent=error.message;audioError.hidden=false;updateTransport('Sound needs attention');}
+    recording.currentTime=position;recording.playbackRate=speed;recording.volume=Number($('volume').value)/100;recording.muted=false;
+    $('transport-status').textContent='Loading piano audio…';
+    let timer;
+    try{await Promise.race([recording.play(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Audio is taking too long. Check your connection and press Play again.')),15000);})]);}finally{clearTimeout(timer);}
+    if(document.hidden){recording.pause();updateTransport('Ready · press Play when you return');return;}
+    audioError.hidden=true;playing=true;updateTransport();
+  }catch(error){recording.pause();audioError.textContent=error.message+' You can also try the audio-only link.';audioError.hidden=false;updateTransport('Sound needs attention');}
   finally{busy=false;}
 }
 function pause(message){
   if(playing)position=currentPosition();
-  playing=false;stopScheduled();updateTransport(message);render();
+  playing=false;recording.pause();updateTransport(message);render();
 }
 function setPosition(next){
   const resume=playing;pause();position=Math.min(duration,Math.max(0,next));
   updateTransport();render();if(resume&&position<duration)void play();
 }
+recording.addEventListener('ended',()=>{position=duration;playing=false;updateTransport();render();});
+recording.addEventListener('waiting',()=>{if(playing)$('transport-status').textContent='Buffering piano audio…';});
+recording.addEventListener('playing',()=>{if(playing)updateTransport();});
+recording.addEventListener('error',()=>{pause('Sound needs attention');audioError.textContent='Piano audio could not load. Check your connection, try Play again, or use the audio-only link.';audioError.hidden=false;});
 $('play').addEventListener('click',()=>playing?pause():void play());
 $('replay').addEventListener('click',()=>{pause();position=0;void play();});
 $('seek').addEventListener('input',e=>setPosition(Number(e.target.value)));
 $('speed').addEventListener('change',e=>{const resume=playing;pause();speed=Number(e.target.value);document.querySelector('.tempo-badge strong').textContent=Math.round(song.bpm*speed);if(resume)void play();});
-$('volume').addEventListener('input',e=>{if(master)master.gain.setTargetAtTime(Number(e.target.value)/100,context.currentTime,0.02);});
+$('volume').addEventListener('input',e=>{recording.volume=Number(e.target.value)/100;if(master)master.gain.setTargetAtTime(Number(e.target.value)/100,context.currentTime,0.02);});
 $('labels').addEventListener('change',e=>$('instrument').classList.toggle('hide-labels',!e.target.checked));
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 function applyMotion(){ $('instrument').classList.toggle('hide-motion',!$('motion').checked); }
@@ -143,7 +133,7 @@ function render(){
   const visiblePiano=$('piano-scroll');
   $('roll-caption').style.left=`${visiblePiano.scrollLeft}px`;
   $('roll-caption').style.width=`${visiblePiano.clientWidth}px`;
-  const outputStarted=playing&&audibleTime()>=contextStart+position/speed;
+  const outputStarted=playing&&!recording.paused&&!recording.seeking&&recording.readyState>=2;
   if(outputStarted)for(const note of notes)if(beat>=note.beat&&beat<note.beat+note.length)active.set(note.midi,note.hand);
   for(const [midi] of manual)active.set(midi,'manual');
   for(const [midi,key] of keys){
@@ -172,7 +162,7 @@ function render(){
     lastVisibleNote=currentMelody;
   }
   $('seek').value=now;$('seek').setAttribute('aria-valuetext',`${Math.floor(now)} of ${duration} seconds`);$('elapsed').textContent=fmt(now);
-  if(playing&&now>=duration){position=duration;playing=false;stopScheduled();updateTransport();}
+  if(playing&&now>=duration){position=duration;playing=false;recording.pause();updateTransport();}
 }
 function frame(){render();requestAnimationFrame(frame);}requestAnimationFrame(frame);
 
@@ -222,6 +212,6 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearManua
 window.pianoDiagnostics=()=>{
   let rms=0,peak=0;
   if(analyser){const samples=new Float32Array(analyser.fftSize);analyser.getFloatTimeDomainData(samples);for(const value of samples){rms+=value*value;peak=Math.max(peak,Math.abs(value));}rms=Math.sqrt(rms/samples.length);}
-  return {songId:song.id,playing,position:currentPosition(),renderedPosition,duration,speed,audioState:context?.state??'not-started',samples:pianoSampleCount(),rms,peak,scheduledVoices:voices.length,manualNotes:[...manual.keys()],activeKeys:[...keys].filter(([,key])=>key.dataset.active).map(([midi,key])=>({midi,hand:key.dataset.active})),outputLatency:context?.outputLatency??null};
+  return {songId:song.id,playing,position:currentPosition(),renderedPosition,duration,speed,audioState:context?.state??'not-started',samples:pianoSampleCount(),rms,peak,engine:"media",media:{paused:recording.paused,muted:recording.muted,volume:recording.volume,readyState:recording.readyState,currentSrc:recording.currentSrc,error:recording.error?.code??null},scheduledVoices:0,manualNotes:[...manual.keys()],activeKeys:[...keys].filter(([,key])=>key.dataset.active).map(([midi,key])=>({midi,hand:key.dataset.active})),outputLatency:context?.outputLatency??null};
 };
 }
