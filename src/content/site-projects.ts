@@ -186,11 +186,11 @@ export const CCAC_VIBE_PIANO_SITE_PROJECT: PublicSiteProject = {
   name: 'CCAC Vibe Learning',
   label: 'COMMUNITY PIANO / PUBLIC PROTOTYPE',
   description:
-    'A public prototype that pairs an original synthesized melody with falling notes and synchronized piano keys.',
+    'A public prototype with Canon in D on sampled grand piano, a River Flows in You video performance, and the original Little Lanterns.',
   approvedClaims: [
     'CCAC Vibe Learning is a public prototype for a free community piano-learning idea.',
-    'The prototype plays Little Lanterns, an original technical demo with synchronized falling notes and highlighted keys.',
-    'River Flows in You by Yiruma remains a requested song and is unavailable until an authorized music asset and permitted use are established.',
+    'Canon in D uses the complete licensed Mutopia score, sampled grand-piano sound, synchronized falling notes, and interactive keys. Little Lanterns remains an original secondary song.',
+    'River Flows in You by Yiruma plays through an embedded YouTube performance by Kassia with its own falling-note visualization and video controls. It does not use the custom interactive keyboard.',
     'The current page has no request form and does not collect contact details or send requests.',
   ],
   aliases: ['CCAC Vibe Learning', 'CCAC piano', 'community piano demo', 'piano playground'],

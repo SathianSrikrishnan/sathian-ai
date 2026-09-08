@@ -16,7 +16,11 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(page).toContain('<title>CCAC Vibe Learning · Piano playground</title>')
     expect(page).toContain('Little Lanterns')
     expect(page).toContain('River Flows in You')
-    expect(page).toContain('This requested song is not playable yet.')
+    expect(page).toContain('Canon in D')
+    expect(page).toContain('performed by Kassia')
+    expect(page).toContain('data-song="little-lanterns"')
+    expect(page).toContain('creativecommons.org/licenses/by/4.0/')
+    expect(page).not.toContain('This requested song is not playable yet.')
     expect(page).toContain('Prototype')
     expect(page).not.toContain('Local prototype')
     expect(page).not.toContain('noindex,nofollow')
@@ -26,7 +30,7 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(page).not.toContain('class="side-notes"')
     expect(page).not.toContain('id="review-form"')
 
-    for (const asset of ['app.js', 'music.js', 'style.css']) {
+    for (const asset of ['app.js', 'music.js', 'style.css', 'songs.js', 'canon-score.js', 'piano-audio.js', 'samples/C4.mp3']) {
       expect(existsSync(new URL(`../../public/ccac-vibe-piano/${asset}`, import.meta.url))).toBe(true)
     }
   })

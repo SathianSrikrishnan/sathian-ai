@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CCAC Vibe Learning local piano prototype.">
+  <meta name="description" content="Play Pachelbel’s Canon in D on grand piano, enjoy River Flows in You, and explore music with falling notes.">
   <title>CCAC Vibe Learning · Piano playground</title>
   <link rel="stylesheet" href="/ccac-vibe-piano/style.css">
   <script type="module" src="/ccac-vibe-piano/app.js"></script>
@@ -19,8 +19,13 @@
       <p class="eyebrow">CCAC VIBE LEARNING</p>
       <h1 id="welcome">Piano Playground</h1>
     </section>
+    <nav class="song-links" aria-label="Choose a song">
+      <a href="?song=canon" data-song="canon">Canon in D <span>Pachelbel</span></a>
+      <a href="?song=river" data-song="river">River Flows in You <span>Yiruma · video</span></a>
+      <a href="?song=little-lanterns" data-song="little-lanterns">Little Lanterns <span>Our original</span></a>
+    </nav>
     <section id="instrument" class="instrument" aria-labelledby="song-title" tabindex="-1">
-        <div class="song-heading"><div><p class="eyebrow">NOW PLAYING <span class="demo-chip">ORIGINAL DEMO</span></p><h2 id="song-title">Little Lanterns</h2></div><div class="tempo-badge"><strong>96</strong><span>BPM · C MAJOR</span></div></div>
+        <div class="song-heading"><div><p class="eyebrow">NOW PLAYING <span class="demo-chip" id="song-badge">GRAND PIANO</span></p><h2 id="song-title">Canon in D</h2><p id="song-composer">Johann Pachelbel</p></div><div class="tempo-badge"><strong>55</strong><span id="song-key">BPM · D MAJOR</span></div></div>
         <div class="instrument-topline"><span><i class="legend-dot melody"></i> Melody <i class="legend-dot harmony"></i> Harmony</span><span id="transport-status" role="status">Ready</span></div>
         <div class="piano-scroll" id="piano-scroll" tabindex="0" aria-label="Piano notes and keys; scroll sideways on small screens">
           <div class="piano-world" id="piano-world">
@@ -31,13 +36,18 @@
         <div class="keyboard-help"><span>Computer keys <kbd>A</kbd>–<kbd>K</kbd></span></div>
         <div class="transport">
           <div class="progress-row"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Song position" aria-valuetext="0 seconds"><span id="duration">0:40</span></div>
-          <div class="control-row"><div class="primary-controls"><button id="play" class="button primary" type="button"><span aria-hidden="true">▶</span> Play demo</button><button id="replay" class="button secondary" type="button" aria-label="Replay from beginning"><span aria-hidden="true">↺</span> Replay</button></div><div class="speed-control"><label for="speed">Speed</label><select id="speed"><option value="0.5">0.5× · gentle</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option></select></div></div>
+          <div class="control-row"><div class="primary-controls"><button id="play" class="button primary" type="button"><span aria-hidden="true">▶</span> Play</button><button id="replay" class="button secondary" type="button" aria-label="Replay from beginning"><span aria-hidden="true">↺</span> Replay</button></div><div class="speed-control"><label for="speed">Speed</label><select id="speed"><option value="0.5">0.5× · gentle</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option></select></div></div>
           <div class="settings"><label class="check"><input id="labels" type="checkbox" checked> Note names</label><label class="check"><input id="motion" type="checkbox" checked> Falling notes</label><label class="volume" for="volume">Volume <input id="volume" type="range" min="0" max="100" value="65"></label></div>
           <p id="audio-error" class="error" role="alert" hidden></p>
-          <p class="sound-note">Synthesized demo audio.</p>
+          <p class="sound-note" id="sound-note">Complete four-voice score, rendered on grand piano.</p>
         </div>
     </section>
-    <p class="song-status"><strong>Requested: River Flows in You — Yiruma.</strong> This requested song is not playable yet. Awaiting an authorized music asset.</p>
+    <section id="river-player" class="instrument river-player" aria-labelledby="river-title" hidden>
+      <div class="song-heading"><div><p class="eyebrow">PIANO PERFORMANCE <span class="demo-chip">VIDEO</span></p><h2 id="river-title">River Flows in You</h2><p>Yiruma · performed by Kassia</p></div></div>
+      <div class="river-screen" id="river-screen"><button id="river-load" type="button" class="river-load"><span aria-hidden="true">▶</span> Load performance <small>Piano, falling notes and original video controls</small></button></div>
+      <p class="river-caption">Loads YouTube when you choose to listen. <a href="https://www.youtube.com/watch?v=owl5oyzchKk" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a> · <a href="https://www.youtube.com/watch?v=7maJOI3QMu0" target="_blank" rel="noopener noreferrer">Yiruma’s own performance ↗</a></p>
+    </section>
+    <details class="music-credits"><summary>Music &amp; piano credits</summary><p>Canon in D — Johann Pachelbel. Complete four-voice score from <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2047">Mutopia 2047</a>, typeset by Michael Fischer v. Mollard, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Converted to timed notes and rendered on piano at 55 BPM.</p><p>Grand piano samples — Alexander Holm, Salamander Grand Piano (Yamaha C5), <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, distributed by <a href="https://github.com/Tonejs/audio/tree/master/salamander">Tone.js</a>. Selected samples are pitch-shifted for neighbouring keys.</p><p>River Flows in You — Yiruma; performance and visuals by Kassia, played through YouTube. It uses the video’s controls; our interactive keyboard is available for Canon and Little Lanterns. Little Lanterns is the original CCAC demo.</p></details>
   </main>
   <footer class="wrap"><span>CCAC Vibe Learning</span><span>Sathian AI · Prototype</span></footer>
   <noscript>This piano needs JavaScript enabled for playback and interactive keys.</noscript>

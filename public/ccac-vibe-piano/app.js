@@ -1,11 +1,39 @@
-import { song, notes, secondsPerBeat, duration, noteName, makeTone } from './music.js';
+import { noteName } from './music.js';
+import { getSong } from './songs.js';
+import { loadPiano, pianoVoice as makeTone, pianoSampleCount } from './piano-audio.js';
+
+const selected=getSong(new URLSearchParams(location.search).get('song'));
+document.querySelectorAll('[data-song]').forEach(link=>{if(link.dataset.song===selected.id)link.setAttribute('aria-current','page');});
+document.title=selected.title+' · CCAC Vibe Learning';
+if(selected.kind==='video'){
+  const skip=document.querySelector('.skip');skip.href='#river-player';skip.textContent='Skip to performance';
+  document.getElementById('instrument').hidden=true;
+  document.getElementById('river-player').hidden=false;
+  document.getElementById('river-load').addEventListener('click',()=>{
+    const frame=document.createElement('iframe');
+    frame.src='https://www.youtube-nocookie.com/embed/'+selected.videoId+'?playsinline=1&rel=0&autoplay=1';
+    frame.title='River Flows in You — piano performance and falling notes by Kassia';
+    frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+    frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;
+    document.getElementById('river-screen').replaceChildren(frame);
+  },{once:true});
+}else{
+const song=selected,{notes,secondsPerBeat,duration}=song;
 
 const $ = id => document.getElementById(id);
 const keyboard=$('keyboard'), roll=$('roll');
 const whites=[], positions=new Map(), keys=new Map();
 const shortcutMap={a:60,w:61,s:62,e:63,d:64,f:65,t:66,g:67,y:68,h:69,u:70,j:71,k:72};
 let whiteIndex=0;
-for(let midi=48;midi<=72;midi++) {
+const isBlack=midi=>[1,3,6,8,10].includes(midi%12);
+const whiteCount=Array.from({length:song.maxMidi-song.minMidi+1},(_,i)=>song.minMidi+i).filter(m=>!isBlack(m)).length;
+const whiteWidth=100/whiteCount,blackWidth=whiteWidth*.6225;
+$('song-title').textContent=song.title;$('song-composer').textContent=song.composer;
+$('song-badge').textContent=song.badge;$('song-key').textContent='BPM · '+song.key;
+$('sound-note').textContent=song.credit;document.querySelector('.tempo-badge strong').textContent=song.bpm;
+keyboard.setAttribute('aria-label',`Playable piano, ${noteName(song.minMidi)} through ${noteName(song.maxMidi)}`);
+$('piano-world').style.minWidth=Math.max(585,whiteCount*31)+'px';
+for(let midi=song.minMidi;midi<=song.maxMidi;midi++) {
   const black=[1,3,6,8,10].includes(midi%12);
   const button=document.createElement('button');
   button.type='button';button.className=`piano-key ${black?'black':'white'}`;
@@ -14,25 +42,27 @@ for(let midi=48;midi<=72;midi++) {
   const name=document.createElement('span');name.textContent=noteName(midi);button.append(name);
   const shortcut=Object.keys(shortcutMap).find(k=>shortcutMap[k]===midi);
   if(shortcut){const help=document.createElement('small');help.textContent=shortcut.toUpperCase();button.append(help);}
-  const left=black ? (whiteIndex/15*100-2.075) : (whiteIndex/15*100);
+  const left=black ? whiteIndex*whiteWidth-blackWidth/2 : whiteIndex*whiteWidth;
+  button.style.width=(black?blackWidth:whiteWidth)+'%';
   if(black)button.style.left=`${left}%`;
   else {whiteIndex++;whites.push(midi);}
-  positions.set(midi,{left,width:black?4.15:100/15});keys.set(midi,button);keyboard.append(button);
+  positions.set(midi,{left,width:black?blackWidth:whiteWidth});keys.set(midi,button);keyboard.append(button);
 }
-whites.forEach(()=>{const lane=document.createElement('div');lane.className='lane';$('lanes').append(lane);});
+whites.forEach(()=>{const lane=document.createElement('div');lane.className='lane';lane.style.width=whiteWidth+'%';$('lanes').append(lane);});
 const falling=notes.map(note=>{
   const element=document.createElement('div'),pos=positions.get(note.midi);
   element.className=`falling-note ${note.hand}`;
-  element.style.left=`${pos.left+0.6}%`;element.style.width=`${pos.width-1.2}%`;
+  element.style.left=`${pos.left+pos.width*.08}%`;element.style.width=`${pos.width*.84}%`;
   element.textContent=noteName(note.midi);$('falling-notes').append(element);
   return {note,element};
 });
 
-let context,master,analyser,contextStart=0,position=0,speed=1,playing=false,busy=false,voices=[],lastVisibleNote;
+let context,master,analyser,contextStart=0,position=0,renderedPosition=0,speed=1,playing=false,busy=false,voices=[],lastVisibleNote;
 const manual=new Map();
 const audioError=$('audio-error');
 const fmt=seconds=>`${Math.floor(seconds/60)}:${Math.floor(seconds%60).toString().padStart(2,'0')}`;
 $('duration').textContent=fmt(duration);$('seek').max=duration;
+updateTransport();
 
 function audibleTime(){
   if(!context)return 0;
@@ -51,11 +81,13 @@ async function ensureAudio(){
     context=new Audio({latencyHint:'interactive'});
     master=context.createGain();master.gain.value=Number($('volume').value)/100;
     analyser=context.createAnalyser();analyser.fftSize=2048;
-    master.connect(analyser);analyser.connect(context.destination);
+    const compressor=context.createDynamicsCompressor();compressor.threshold.value=-12;compressor.knee.value=12;compressor.ratio.value=3;
+    master.connect(compressor);compressor.connect(analyser);analyser.connect(context.destination);
     context.onstatechange=()=>{if(playing&&context.state!=='running')pause('Audio interrupted · press play to continue');};
   }
   if(context.state!=='running')await context.resume();
   if(context.state!=='running')throw new Error('Sound could not start. Press play again to enable audio.');
+  if(pianoSampleCount()===0){$('transport-status').textContent='Loading grand piano…';await loadPiano(context);}
   audioError.hidden=true;
 }
 function stopScheduled(){voices.forEach(stop=>stop());voices=[];}
@@ -65,11 +97,12 @@ function schedule(){
     const start=note.beat*secondsPerBeat,end=(note.beat+note.length)*secondsPerBeat;
     if(end<=position)continue;
     const remaining=end-Math.max(position,start);
-    voices.push(makeTone(context,master,note.midi,contextStart+Math.max(position,start)/speed,remaining/speed,note.hand==='melody'?0.7:0.35));
+    const expression=(note.velocity??.72)*(note.hand==='melody'?.8:.58);
+    voices.push(makeTone(context,master,note.midi,contextStart+Math.max(position,start)/speed,remaining/speed,expression));
   }
 }
 function updateTransport(message){
-  $('play').innerHTML=playing?'<span aria-hidden="true">Ⅱ</span> Pause':'<span aria-hidden="true">▶</span> '+(position>=duration?'Play again':position>0?'Resume':'Play demo');
+  $('play').innerHTML=playing?'<span aria-hidden="true">Ⅱ</span> Pause':'<span aria-hidden="true">▶</span> '+(position>=duration?'Play again':position>0?'Resume':'Play');
   $('instrument').classList.toggle('is-playing',playing);
   $('transport-status').textContent=message||(playing?'Playing':position>=duration?'Finished':position>0?'Paused':'Ready');
   $('roll-caption').innerHTML=position>=duration?'Finished <span>♫</span>':playing?'':'Press play <span>↓</span>';
@@ -106,6 +139,7 @@ reduced.addEventListener('change',e=>{if(e.matches){$('motion').checked=false;ap
 
 function render(){
   const now=currentPosition(),beat=now/secondsPerBeat,active=new Map();
+  renderedPosition=now;
   const visiblePiano=$('piano-scroll');
   $('roll-caption').style.left=`${visiblePiano.scrollLeft}px`;
   $('roll-caption').style.width=`${visiblePiano.clientWidth}px`;
@@ -123,7 +157,9 @@ function render(){
     const visible=end>=now&&start<=now+horizon;
     element.hidden=!visible;
     if(visible){
-      element.style.height=`${Math.max(9,(end-start)*pixelsPerSecond)}px`;
+      const height=Math.max(9,(end-start)*pixelsPerSecond);
+      element.style.height=`${height}px`;
+      element.style.fontSize=height<20?'0':'';
       element.style.transform=`translateY(${(now-start)*pixelsPerSecond}px)`;
       element.classList.toggle('active',outputStarted&&start<=now&&end>now);
     }
@@ -186,5 +222,6 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearManua
 window.pianoDiagnostics=()=>{
   let rms=0,peak=0;
   if(analyser){const samples=new Float32Array(analyser.fftSize);analyser.getFloatTimeDomainData(samples);for(const value of samples){rms+=value*value;peak=Math.max(peak,Math.abs(value));}rms=Math.sqrt(rms/samples.length);}
-  return {songId:song.id,playing,position:currentPosition(),duration,speed,audioState:context?.state??'not-started',rms,peak,scheduledVoices:voices.length,manualNotes:[...manual.keys()],activeKeys:[...keys].filter(([,key])=>key.dataset.active).map(([midi,key])=>({midi,hand:key.dataset.active})),outputLatency:context?.outputLatency??null};
+  return {songId:song.id,playing,position:currentPosition(),renderedPosition,duration,speed,audioState:context?.state??'not-started',samples:pianoSampleCount(),rms,peak,scheduledVoices:voices.length,manualNotes:[...manual.keys()],activeKeys:[...keys].filter(([,key])=>key.dataset.active).map(([midi,key])=>({midi,hand:key.dataset.active})),outputLatency:context?.outputLatency??null};
 };
+}
