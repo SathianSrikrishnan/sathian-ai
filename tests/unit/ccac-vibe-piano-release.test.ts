@@ -17,6 +17,8 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(page).toContain('Little Lanterns')
     expect(page).toContain('River Flows in You')
     expect(page).toContain('Canon in D')
+    expect(page).toMatch(/app\.js\?v=[^"']+/)
+    expect(page).toMatch(/style\.css\?v=[^"']+/)
     expect(page).toContain('performed by Kassia')
     expect(page).toContain('data-song="little-lanterns"')
     expect(page).toContain('creativecommons.org/licenses/by/4.0/')
