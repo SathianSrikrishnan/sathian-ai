@@ -6,7 +6,7 @@
   <meta name="description" content="Play Pachelbel’s Canon in D on grand piano, enjoy River Flows in You, and explore music with falling notes.">
   <title>CCAC Vibe Learning · Piano playground</title>
   <link rel="stylesheet" href="/ccac-vibe-piano/style.css?v=20260908-2">
-  <script type="module" src="/ccac-vibe-piano/app.js?v=20260908-2"></script>
+  <script type="module" src="/ccac-vibe-piano/app.js?v=20260909-3"></script>
 </head>
 <body>
   <a class="skip" href="#instrument">Skip to piano</a>
@@ -18,11 +18,12 @@
     <section class="compact-title" aria-labelledby="welcome">
       <p class="eyebrow">CCAC VIBE LEARNING</p>
       <h1 id="welcome">Piano Playground</h1>
+      <p class="teacher-dedication">For students of Mary Ann Hawkes</p>
     </section>
-    <div class="practice-feature"><div><strong>Try the Piano Practice Studio</strong><p>Slow down a phrase. Follow the glowing keys. Bring your own MIDI.</p></div><a href="/ccac-vibe-piano/practice.html">Open practice studio →</a></div>
     <nav class="song-links" aria-label="Choose a song">
       <a href="?song=river" data-song="river">River Flows in You <span>Yiruma · video</span></a>
       <a href="?song=canon" data-song="canon">Canon in D <span>Pachelbel</span></a>
+      <a href="?song=fur-elise" data-song="fur-elise">Für Elise <span>Beethoven</span></a>
       <a href="?song=little-lanterns" data-song="little-lanterns">Little Lanterns <span>Our original</span></a>
     </nav>
     <section id="instrument" class="instrument" aria-labelledby="song-title" tabindex="-1">
@@ -41,7 +42,7 @@
           <div class="settings"><label class="check"><input id="labels" type="checkbox" checked> Note names</label><label class="check"><input id="motion" type="checkbox" checked> Falling notes</label><label class="volume" for="volume">Volume <input id="volume" type="range" min="0" max="100" value="65"></label></div>
           <p class="sound-note"><a id="audio-only" target="_blank" rel="noopener">Listen to audio only ↗</a></p>
           <p id="audio-error" class="error" role="alert" hidden></p>
-          <p class="sound-note" id="sound-note">Complete four-voice score, rendered on grand piano.</p>
+          <p class="sound-note" id="sound-note" hidden>Complete four-voice score, rendered on grand piano.</p>
         </div>
     </section>
     <section id="river-player" class="instrument river-player" aria-labelledby="river-title" hidden>
@@ -50,7 +51,7 @@
       <p class="river-caption">To follow along slowly, open the video’s settings → Playback speed → 0.5×. Start with one short phrase.</p>
       <p class="river-caption">Loads YouTube when you choose to listen. <a href="https://www.youtube.com/watch?v=owl5oyzchKk" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a> · <a href="https://www.youtube.com/watch?v=7maJOI3QMu0" target="_blank" rel="noopener noreferrer">Yiruma’s own performance ↗</a></p>
     </section>
-    <details class="music-credits"><summary>Music &amp; piano credits</summary><p>Canon in D — Johann Pachelbel. Complete four-voice score from <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2047">Mutopia 2047</a>, typeset by Michael Fischer v. Mollard, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Converted to timed notes and rendered on piano at 55 BPM.</p><p>Grand piano samples — Alexander Holm, Salamander Grand Piano (Yamaha C5), <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, distributed by <a href="https://github.com/Tonejs/audio/tree/master/salamander">Tone.js</a>. Selected samples are pitch-shifted for neighbouring keys.</p><p>River Flows in You — Yiruma; performance and visuals by Kassia, played through YouTube. It uses the video’s controls; our interactive keyboard is available for Canon and Little Lanterns. Little Lanterns is the original CCAC demo.</p></details>
+    <p class="sound-note"><a href="/ccac-vibe-piano/music-credits.xlsx" download>Music &amp; piano credits (Excel)</a></p>
   </main>
   <footer class="wrap"><span>CCAC Vibe Learning</span><span>Sathian AI · Prototype</span></footer>
   <noscript>This piano needs JavaScript enabled for playback and interactive keys.</noscript>

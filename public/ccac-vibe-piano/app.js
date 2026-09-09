@@ -1,5 +1,5 @@
 import { noteName } from './music.js';
-import { getSong } from './songs.js?v=20260908-1';
+import { getSong } from './songs.js?v=20260909-3';
 import { loadPiano, pianoVoice as makeTone, pianoSampleCount } from './piano-audio.js';
 
 const selected=getSong(new URLSearchParams(location.search).get('song'));
@@ -147,7 +147,7 @@ function render(){
     const visible=end>=now&&start<=now+horizon;
     element.hidden=!visible;
     if(visible){
-      const height=Math.max(9,(end-start)*pixelsPerSecond);
+      const height=Math.max(song.id==='fur-elise'?20:9,(end-start)*pixelsPerSecond);
       element.style.height=`${height}px`;
       element.style.fontSize=height<20?'0':'';
       element.style.transform=`translateY(${(now-start)*pixelsPerSecond}px)`;

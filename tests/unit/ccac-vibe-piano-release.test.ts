@@ -21,7 +21,13 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(page).toMatch(/style\.css\?v=[^"']+/)
     expect(page).toContain('performed by Kassia')
     expect(page).toContain('data-song="little-lanterns"')
-    expect(page).toContain('creativecommons.org/licenses/by/4.0/')
+    expect(page).toContain('href="/ccac-vibe-piano/music-credits.xlsx" download')
+    const credits = readFileSync(new URL('../../public/ccac-vibe-piano/music-credits.xlsx', import.meta.url))
+    expect(credits.subarray(0, 2).toString()).toBe('PK')
+    expect(credits.length).toBeGreaterThan(1000)
+    expect(page).toContain('For students of Mary Ann Hawkes')
+    expect(page).toContain('data-song="fur-elise"')
+    expect(page).not.toContain('class="practice-feature"')
     expect(page).not.toContain('This requested song is not playable yet.')
     expect(page).toContain('Prototype')
     expect(page).not.toContain('Local prototype')
@@ -32,7 +38,7 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(page).not.toContain('class="side-notes"')
     expect(page).not.toContain('id="review-form"')
 
-    for (const asset of ['app.js', 'music.js', 'style.css', 'songs.js', 'canon-score.js', 'piano-audio.js', 'samples/C4.mp3']) {
+    for (const asset of ['app.js', 'music.js', 'style.css', 'songs.js', 'canon-score.js', 'fur-elise-score.js', 'recordings/fur-elise.mp3', 'piano-audio.js', 'samples/C4.mp3']) {
       expect(existsSync(new URL(`../../public/ccac-vibe-piano/${asset}`, import.meta.url))).toBe(true)
     }
   })
