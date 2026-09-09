@@ -48,12 +48,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const host = headers().get('host') ?? ''
+  const host = (await headers()).get('host') ?? ''
   const isTfnDomain =
     host === 'toothfairy.network' ||
     host === 'www.toothfairy.network' ||

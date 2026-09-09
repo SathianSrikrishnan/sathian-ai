@@ -13,16 +13,16 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const denial = await requireStudioAal2(request)
   if (denial) return denial
-  if (!supabaseAdmin || !/^[a-f0-9-]{36}$/i.test(params.id)) {
+  if (!supabaseAdmin || !/^[a-f0-9-]{36}$/i.test((await params).id)) {
     return NextResponse.json({ error: 'Attachment not found.' }, { status: 404 })
   }
 
   try {
-    const attachment = await getStudioAttachmentAccess(params.id)
+    const attachment = await getStudioAttachmentAccess((await params).id)
     if (!attachment) {
       return NextResponse.json({ error: 'Attachment not found.' }, { status: 404 })
     }
@@ -32,7 +32,7 @@ export async function GET(
       attachment.objectPath,
       attachment.filename,
     )
-    await recordStudioAttachmentAccess(params.id, await getStudioOperatorId(request))
+    await recordStudioAttachmentAccess((await params).id, await getStudioOperatorId(request))
     const response = NextResponse.redirect(access.url, 307)
     response.headers.set('Cache-Control', 'private, no-store')
     return response

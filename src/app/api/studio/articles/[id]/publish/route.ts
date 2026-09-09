@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const denial = await requireStudioAal2(request)
   if (denial) return denial
@@ -16,7 +16,7 @@ export async function POST(
     if (status !== 'draft' && status !== 'published') {
       return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
     }
-    const article = await togglePublish(params.id, status)
+    const article = await togglePublish((await params).id, status)
     return NextResponse.json(article)
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 })

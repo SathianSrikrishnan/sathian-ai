@@ -89,7 +89,7 @@ export function buildSitemapForHost(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const host = headers().get('host') ?? ''
+  const host = (await headers()).get('host') ?? ''
   if (isToothFairyHost(host)) return buildSitemapForHost(host)
 
   const { getPublishedArticles } = await import('@/lib/articles-db')

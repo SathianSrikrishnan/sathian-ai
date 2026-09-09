@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 interface BitcoinBayPageProps {
-  searchParams?: { error?: string | string[] }
+  searchParams?: Promise<{ error?: string | string[] }>
 }
 
 function AccessGate({ error, configured }: { error?: string; configured: boolean }) {
@@ -78,11 +78,12 @@ function AccessGate({ error, configured }: { error?: string; configured: boolean
   )
 }
 
-export default function BitcoinBayPage({ searchParams }: BitcoinBayPageProps) {
+export default async function BitcoinBayPage({ searchParams }: BitcoinBayPageProps) {
   const config = readAccessConfig()
-  const accessToken = cookies().get(BITCOINBAY_ACCESS_COOKIE)?.value
+  const accessToken = (await cookies()).get(BITCOINBAY_ACCESS_COOKIE)?.value
   const unlocked = config ? verifyAccessToken(accessToken, config.secret) : false
-  const error = Array.isArray(searchParams?.error) ? searchParams?.error[0] : searchParams?.error
+  const query = await searchParams
+  const error = Array.isArray(query?.error) ? query?.error[0] : query?.error
 
   if (!unlocked) return <AccessGate error={error} configured={Boolean(config)} />
 

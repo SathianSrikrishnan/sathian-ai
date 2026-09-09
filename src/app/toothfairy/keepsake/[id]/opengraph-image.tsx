@@ -33,8 +33,8 @@ function formatDate(date: Date): string {
   });
 }
 
-export default async function OGImage({ params }: { params: { id: string } }) {
-  const data = await getKeepsakeOGData(params.id);
+export default async function OGImage({ params }: { params: Promise<{ id: string }> }) {
+  const data = await getKeepsakeOGData((await params).id);
 
   const cream = 'oklch(97.5% 0.01 80)';
   const creamDeep = 'oklch(95% 0.015 75)';

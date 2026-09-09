@@ -2,18 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
-  experimental: {
-    workerThreads: true,
-    // Prevent webpack from bundling native modules used by Solana/Umi
-    serverComponentsExternalPackages: [
+  outputFileTracingRoot: __dirname,
+  // Prevent webpack from bundling native modules used by Solana/Umi
+  serverExternalPackages: [
       "ws",
       "bufferutil",
       "utf-8-validate",
       "@solana/web3.js",
       "@coral-xyz/anchor",
       "@metaplex-foundation/umi-uploader-irys",
-    ],
-  },
+  ],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'media.sathian.ai' },

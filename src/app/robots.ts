@@ -21,6 +21,6 @@ export function buildRobotsForHost(host: string): MetadataRoute.Robots {
   }
 }
 
-export default function robots(): MetadataRoute.Robots {
-  return buildRobotsForHost(headers().get('host') ?? '')
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  return buildRobotsForHost((await headers()).get('host') ?? '')
 }

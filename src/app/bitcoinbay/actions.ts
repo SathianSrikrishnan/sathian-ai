@@ -19,7 +19,7 @@ export async function unlockBitcoinBay(formData: FormData): Promise<never> {
     redirect('/bitcoinbay?error=invalid')
   }
 
-  cookies().set({
+  (await cookies()).set({
     name: BITCOINBAY_ACCESS_COOKIE,
     value: createAccessToken(config.secret),
     httpOnly: true,

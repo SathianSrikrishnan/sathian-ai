@@ -4,12 +4,12 @@ import { getArticleBySlug } from '@/lib/articles-db'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
 import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
-type Props = { params: { slug: string } }
+type Props = { params: Promise<{ slug: string }> }
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = await getArticleBySlug(params.slug)
+  const article = await getArticleBySlug((await params).slug)
   if (!article) return {}
   return {
     title: `${article.title} — sathian.ai`,
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const article = await getArticleBySlug(params.slug)
+  const article = await getArticleBySlug((await params).slug)
   if (!article) notFound()
 
   const jsonLd = {

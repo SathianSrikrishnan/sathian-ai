@@ -5,8 +5,8 @@ export const alt = "Tooth Fairy Network"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default async function Image({ params }: { params: { name: string } }) {
-  const childName = decodeURIComponent(params.name).replace(/-/g, " ")
+export default async function Image({ params }: { params: Promise<{ name: string }> }) {
+  const childName = decodeURIComponent((await params).name).replace(/-/g, " ")
   const capitalized = childName.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
 
   return new ImageResponse(
