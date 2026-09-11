@@ -95,6 +95,8 @@ async function verifyViewport(browser, label, viewport) {
       )
     }
 
+    // Measure the bundled typeface, not a transient fallback on a cold page load.
+    await page.evaluate(() => document.fonts.ready)
     const state = await page.evaluate(() => {
       const headings = Array.from(document.querySelectorAll('main h1'))
       const heading = headings[0]

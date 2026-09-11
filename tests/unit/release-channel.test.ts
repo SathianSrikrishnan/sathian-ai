@@ -1,5 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { DRAW_WITH_TANDA_EPISODES, LATEST_RELEASE } from '../../src/content/site-releases'
+import { getPublicProfileMemoryCards } from '../../src/lib/public-profile'
 
 const readOptional = (path: string) => {
   const url = new URL(`../../${path}`, import.meta.url)
@@ -13,6 +15,16 @@ describe('durable release channel', () => {
   const clinicalGuard = readOptional('src/app/projects/clinicalguard/page.tsx')
   const profile = readOptional('src/lib/public-profile.ts')
   const chat = readOptional('src/components/ChatWidget.tsx')
+
+  it('keeps the newest same-day episode and public agent aligned', () => {
+    expect(LATEST_RELEASE.slug).toBe('arlo-the-axolotl')
+    expect(LATEST_RELEASE.youtubeVideoId).toBe('2pvtvVRGdWw')
+    expect(DRAW_WITH_TANDA_EPISODES.find((episode) => episode.slug === 'fiona-the-fox')?.youtubeVideoId).toBe('f9cYTJ34AqI')
+    const latest = getPublicProfileMemoryCards().filter((card) => card.tags.includes('latest-release'))
+    expect(latest).toHaveLength(1)
+    expect(latest[0].source.ref).toContain('#arlo-the-axolotl')
+    expect(latest[0].body).toContain('Arlo')
+  })
 
   it('uses one registry for the latest release across the homepage and site agent', () => {
     expect(releases).toContain('export const LATEST_RELEASE')

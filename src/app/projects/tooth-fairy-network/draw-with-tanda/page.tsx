@@ -5,23 +5,24 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import {
   DRAW_WITH_TANDA_EPISODES,
+  LATEST_RELEASE,
   type SiteRelease,
 } from '@/content/site-releases'
 import { toothFairySocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
   title: 'Draw with Tanda | Tooth Fairy Network',
-  description: 'Child-first guided drawing episodes from Tooth Fairy Network with Tanda, Finn, Nori, Dot, and more animals to come.',
+  description: 'Draw and colour with Tanda in narrated parent-child activities. Meet Arlo the Axolotl, Fiona the Fox, and more.',
   openGraph: {
     title: 'Draw with Tanda | Tooth Fairy Network',
-    description: 'Draw together, discover an animal tooth fact, and keep the story.',
-    images: ['/projects/tooth-fairy-network/draw-finn-thumbnail.jpg'],
+    description: 'Draw together, one little line at a time.',
+    images: [LATEST_RELEASE.image],
   },
 }
 
 const publishedEpisodes = DRAW_WITH_TANDA_EPISODES.filter(
   (episode) => episode.status === 'published' && episode.youtubeVideoId,
-)
+).sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '') || b.episode - a.episode)
 
 const VideoObject = publishedEpisodes.map((episode) => ({
   '@context': 'https://schema.org',
@@ -135,9 +136,9 @@ function Episode({ episode }: { episode: SiteRelease }) {
             <a href={episode.youtubeHref!} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
               Watch on YouTube
             </a>
-            <a href={`https://toothfairy.network/draw/${episode.activitySlug}`} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
+            {episode.activityHref !== null && <a href={episode.activityHref ?? `https://toothfairy.network/draw/${episode.activitySlug}`} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
               Open the drawing activity
-            </a>
+            </a>}
           </div>
         ) : (
           <p className="minimal-channel-episode__status">

@@ -13,6 +13,7 @@ export interface SiteRelease {
   publishedAt: string | null
   pageHref: string
   activitySlug: string
+  activityHref?: string | null
   image: string
   imageAlt: string
   youtubeVideoId: string | null
@@ -23,6 +24,56 @@ export interface SiteRelease {
 export const DRAW_WITH_TANDA_CHANNEL_HREF = '/projects/tooth-fairy-network/draw-with-tanda'
 
 export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
+{
+  "id": "draw-with-tanda-arlo-2026-09-10",
+  "slug": "arlo-the-axolotl",
+  "series": "Draw with Tanda",
+  "episode": 5,
+  "title": "How to Draw an Axolotl for Kids | Arlo | Draw with Tanda",
+  "shortTitle": "Arlo the Axolotl",
+  "description": "Draw and colour Arlo with Tanda, one little line at a time. A parent-child activity with narrated steps and room to pause.",
+  "agentSummary": "Draw Arlo the Axolotl with Tanda from Tooth Fairy Network. Children can follow a 12-minute narrated drawing and colouring lesson, pausing to work at their own pace. Bring paper, a pencil, an eraser, a marker and colouring pencils.",
+  "status": "published",
+  "publishedAt": "2026-09-10",
+  "pageHref": "/projects/tooth-fairy-network/draw-with-tanda#arlo-the-axolotl",
+  "activitySlug": "axolotl",
+  "activityHref": null,
+  "image": "/projects/tooth-fairy-network/draw-arlo-thumbnail.png",
+  "imageAlt": "Arlo the pink axolotl beside the Tanda-on-D Draw with Tanda wordmark",
+  "youtubeVideoId": "2pvtvVRGdWw",
+  "youtubeHref": "https://youtu.be/2pvtvVRGdWw",
+  "tags": [
+    "draw-with-tanda",
+    "tooth-fairy-network",
+    "video",
+    "family"
+  ]
+},
+{
+  "id": "draw-with-tanda-fiona-2026-09-10",
+  "slug": "fiona-the-fox",
+  "series": "Draw with Tanda",
+  "episode": 4,
+  "title": "How to Draw a Fox for Kids | Fiona the Fox | Draw with Tanda",
+  "shortTitle": "Fiona the Fox",
+  "description": "Draw and colour Fiona with Tanda, one little line at a time. A parent-child activity with narrated steps and room to pause.",
+  "agentSummary": "Draw Fiona the Fox with Tanda from Tooth Fairy Network. Children can follow a 13-minute narrated drawing and colouring lesson, pausing to work at their own pace. Bring paper, a pencil, an eraser, a marker and colouring pencils.",
+  "status": "published",
+  "publishedAt": "2026-09-10",
+  "pageHref": "/projects/tooth-fairy-network/draw-with-tanda#fiona-the-fox",
+  "activitySlug": "fox",
+  "activityHref": null,
+  "image": "/projects/tooth-fairy-network/draw-fiona-thumbnail.png",
+  "imageAlt": "Fiona the Fox beside the Tanda-on-D Draw with Tanda wordmark",
+  "youtubeVideoId": "f9cYTJ34AqI",
+  "youtubeHref": "https://youtu.be/f9cYTJ34AqI",
+  "tags": [
+    "draw-with-tanda",
+    "tooth-fairy-network",
+    "video",
+    "family"
+  ]
+},
   {
     id: 'draw-with-tanda-finn-2026-08-08',
     slug: 'finn-the-shark',
@@ -40,7 +91,7 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     imageAlt: 'Draw Finn Together episode artwork with Tanda and the finished shark drawing',
     youtubeVideoId: 'ZoY1ZEzJymY',
     youtubeHref: 'https://youtu.be/ZoY1ZEzJymY',
-    tags: ['latest-release', 'draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
+    tags: ['draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
   },
   {
     id: 'draw-with-tanda-nori-2026-08-10',
@@ -59,7 +110,7 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     imageAlt: 'Tanda presenting Nori the narwhal in an icy storybook drawing world',
     youtubeVideoId: 'D0I_6me_WcU',
     youtubeHref: 'https://youtu.be/D0I_6me_WcU',
-    tags: ['latest-release', 'draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
+    tags: ['draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
   },
   {
     id: 'draw-with-tanda-dot-2026-08-15',
@@ -69,7 +120,7 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     title: 'Draw Dot the Snail with Tanda | Easy Drawing for Kids',
     shortTitle: 'Dot the snail',
     description: 'A child-first guided drawing lesson: follow each line, choose your own colors, and take a photo of the finished Dot.',
-    agentSummary: 'The latest public release is Draw Dot the Snail with Tanda, the third Draw with Tanda episode from Tooth Fairy Network. Children can follow the line-by-line lesson, choose their own colors, and draw Dot together with Tanda.',
+    agentSummary: 'Draw Dot the Snail with Tanda, the third Draw with Tanda episode from Tooth Fairy Network. Children can follow the line-by-line lesson, choose their own colors, and draw Dot together with Tanda.',
     status: 'published',
     publishedAt: '2026-08-15',
     pageHref: `${DRAW_WITH_TANDA_CHANNEL_HREF}#dot-the-snail`,
@@ -78,13 +129,13 @@ export const DRAW_WITH_TANDA_EPISODES: SiteRelease[] = [
     imageAlt: 'Dot the finished snail drawing beside a full-body Tanda with both wings visible',
     youtubeVideoId: '0ToPyZuATRQ',
     youtubeHref: 'https://youtu.be/0ToPyZuATRQ',
-    tags: ['latest-release', 'draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
+    tags: ['draw-with-tanda', 'tooth-fairy-network', 'video', 'family'],
   },
 ]
 
 export const LATEST_RELEASE = [...DRAW_WITH_TANDA_EPISODES]
   .filter((release) => release.status === 'published' && release.publishedAt)
-  .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))[0] as SiteRelease
+  .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '') || b.episode - a.episode)[0] as SiteRelease
 
 export const CLINICAL_GUARD_PROJECT = {
   title: 'ClinicalGuard',

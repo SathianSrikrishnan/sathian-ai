@@ -96,11 +96,11 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Dot", "snail"],
+        "requiredFacts": ["Arlo", "axolotl"],
         "forbiddenClaims": ["Finn is the latest", "Nori is the latest"],
-        "requiredSourceFragments": ["dot-the-snail"],
+        "requiredSourceFragments": ["arlo-the-axolotl"],
         "forbiddenSourceFragments": [],
-        "action": { "labelFragment": "latest release", "hrefFragment": "dot-the-snail" },
+        "action": { "labelFragment": "latest release", "hrefFragment": "arlo-the-axolotl" },
         "reasonCodes": ["ANSWER_REQUEST"]
       }
     },
