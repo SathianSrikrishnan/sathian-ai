@@ -1,0 +1,182 @@
+[
+  {
+    "width": 360,
+    "height": 780,
+    "song": "canon",
+    "viewport": 360,
+    "visible": 326,
+    "total": 326,
+    "first": 20,
+    "last": 339.6875
+  },
+  {
+    "width": 360,
+    "height": 780,
+    "song": "fur-elise",
+    "viewport": 360,
+    "visible": 326,
+    "total": 326,
+    "first": 20,
+    "last": 340
+  },
+  {
+    "width": 360,
+    "height": 780,
+    "song": "little-lanterns",
+    "viewport": 360,
+    "visible": 326,
+    "total": 326,
+    "first": 20,
+    "last": 339.921875
+  },
+  {
+    "width": 384,
+    "height": 832,
+    "song": "canon",
+    "viewport": 384,
+    "visible": 350,
+    "total": 350,
+    "first": 20,
+    "last": 363.90625
+  },
+  {
+    "width": 384,
+    "height": 832,
+    "song": "fur-elise",
+    "viewport": 384,
+    "visible": 350,
+    "total": 350,
+    "first": 20,
+    "last": 363.75
+  },
+  {
+    "width": 384,
+    "height": 832,
+    "song": "little-lanterns",
+    "viewport": 384,
+    "visible": 350,
+    "total": 350,
+    "first": 20,
+    "last": 363.828125
+  },
+  {
+    "width": 412,
+    "height": 915,
+    "song": "canon",
+    "viewport": 412,
+    "visible": 378,
+    "total": 378,
+    "first": 20,
+    "last": 392
+  },
+  {
+    "width": 412,
+    "height": 915,
+    "song": "fur-elise",
+    "viewport": 412,
+    "visible": 378,
+    "total": 378,
+    "first": 20,
+    "last": 391.875
+  },
+  {
+    "width": 412,
+    "height": 915,
+    "song": "little-lanterns",
+    "viewport": 412,
+    "visible": 378,
+    "total": 378,
+    "first": 20,
+    "last": 391.953125
+  },
+  {
+    "width": 832,
+    "height": 384,
+    "song": "canon",
+    "viewport": 832,
+    "visible": 776,
+    "total": 776,
+    "first": 31,
+    "last": 800.671875
+  },
+  {
+    "width": 832,
+    "height": 384,
+    "song": "fur-elise",
+    "viewport": 832,
+    "visible": 776,
+    "total": 776,
+    "first": 31,
+    "last": 801
+  },
+  {
+    "width": 832,
+    "height": 384,
+    "song": "little-lanterns",
+    "viewport": 832,
+    "visible": 776,
+    "total": 776,
+    "first": 31,
+    "last": 800.921875
+  },
+  {
+    "width": 915,
+    "height": 412,
+    "song": "canon",
+    "viewport": 915,
+    "visible": 859,
+    "total": 859,
+    "first": 31,
+    "last": 883.984375
+  },
+  {
+    "width": 915,
+    "height": 412,
+    "song": "fur-elise",
+    "viewport": 915,
+    "visible": 859,
+    "total": 859,
+    "first": 31,
+    "last": 883.5
+  },
+  {
+    "width": 915,
+    "height": 412,
+    "song": "little-lanterns",
+    "viewport": 915,
+    "visible": 859,
+    "total": 859,
+    "first": 31,
+    "last": 883.890625
+  },
+  {
+    "width": 1280,
+    "height": 1000,
+    "song": "canon",
+    "viewport": 1280,
+    "visible": 1078,
+    "total": 1078,
+    "first": 104,
+    "last": 1175.921875
+  },
+  {
+    "width": 1280,
+    "height": 1000,
+    "song": "fur-elise",
+    "viewport": 1280,
+    "visible": 1078,
+    "total": 1240,
+    "first": 104,
+    "last": 1337.75
+  },
+  {
+    "width": 1280,
+    "height": 1000,
+    "song": "little-lanterns",
+    "viewport": 1280,
+    "visible": 1078,
+    "total": 1078,
+    "first": 104,
+    "last": 1175.796875
+  }
+]

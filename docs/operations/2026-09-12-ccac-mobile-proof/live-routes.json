@@ -1,0 +1,42 @@
+[
+  {
+    "route": "/ccac?song=canon",
+    "status": 200,
+    "mobileVersion": true
+  },
+  {
+    "route": "/",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/projects/tooth-fairy-network/draw-with-tanda",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/projects/clinicalguard",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/writings",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/hackathons",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/robots.txt",
+    "status": 200,
+    "mobileVersion": null
+  },
+  {
+    "route": "/sitemap.xml",
+    "status": 200,
+    "mobileVersion": null
+  }
+]

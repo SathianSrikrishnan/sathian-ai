@@ -1,0 +1,11 @@
+{
+  "before": {
+    "width": 350,
+    "world": 350
+  },
+  "swipe": 205,
+  "rotated": {
+    "width": 776,
+    "world": 776
+  }
+}
