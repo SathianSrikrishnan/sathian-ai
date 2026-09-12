@@ -15,3 +15,30 @@
 @media(max-width:600px){.compact-title{padding:28px 0 18px}.compact-title h1{font-size:38px}.song-status{margin:18px auto 32px;font-size:10px}.keyboard-help span:first-child:after{content:' · slide sideways'}}
 
 .practice-feature{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px;margin-bottom:22px;border:1px solid #b7c8b8;border-radius:12px;background:#e5ecdc;font-size:13px}.practice-feature p{margin:5px 0 0;font-size:11px}.practice-feature a{font-weight:700;white-space:nowrap;padding:12px 14px;border-radius:6px;background:#243d39;color:#fffdf5;text-decoration:none}@media(max-width:600px){.practice-feature{display:block}.practice-feature a{display:inline-block;margin-top:12px}}
+
+/* Phone overview keeps every key and note lane visible; zoom is explicit. */
+.piano-view-toggle{display:none}
+@media(max-width:1000px){
+  .wrap,.instrument,.transport,.river-player{min-width:0;max-width:100%}
+  .piano-scroll{width:100%;max-width:100%}
+  .piano-world{width:100%;min-width:0!important}
+  .piano-scroll.is-zoomed .piano-world{min-width:max(var(--piano-natural-width),125%)!important}
+  .piano-key.white{flex-shrink:0;min-width:0}
+  .piano-scroll:not(.is-zoomed) .piano-key span{font-size:7px!important;margin-bottom:12px;line-height:1;letter-spacing:-.4px}
+  .piano-scroll:not(.is-zoomed) .piano-key.black span,.piano-key small{display:none}
+  .piano-scroll:not(.is-zoomed) .falling-note{font-size:7px;letter-spacing:-.5px;padding-bottom:2px}
+  .piano-key{touch-action:pan-x pan-y}
+  .keyboard-help{align-items:center;flex-wrap:wrap;gap:6px;font-size:11px}
+  .keyboard-help>span:first-child{display:none}
+  .keyboard-help:before{content:'Full piano · enlarge keys to play or swipe';flex:1;min-width:140px}
+  .piano-view-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:7px 12px;background:#f5f1e7;color:#253b39;border:1px solid #82968b;border-radius:6px;font-size:12px}
+  .control-row,.primary-controls{flex-wrap:wrap}
+  .control-row{gap:8px}
+  .settings{gap:8px}
+  .river-screen{min-width:0;width:100%}
+  .river-screen iframe{max-width:100%}
+}
+@media(max-width:1000px) and (orientation:landscape){
+  .masthead{padding:12px 0}.compact-title{padding:16px 0 10px}.compact-title h1{font-size:34px}
+  .song-links{margin-bottom:12px}.song-heading{padding:14px 18px}.roll{height:130px}.keyboard{height:110px}
+}

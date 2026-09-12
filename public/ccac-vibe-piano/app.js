@@ -36,6 +36,16 @@ $('song-badge').textContent=song.badge;$('song-key').textContent='BPM · '+song.
 $('sound-note').textContent=song.credit;document.querySelector('.tempo-badge strong').textContent=song.bpm;
 keyboard.setAttribute('aria-label',`Playable piano, ${noteName(song.minMidi)} through ${noteName(song.maxMidi)}`);
 $('piano-world').style.minWidth=Math.max(585,whiteCount*31)+'px';
+$('piano-world').style.setProperty('--piano-natural-width',Math.max(585,whiteCount*31)+'px');
+const viewToggle=document.createElement('button');
+viewToggle.type='button';viewToggle.className='piano-view-toggle';viewToggle.textContent='Larger keys';
+viewToggle.setAttribute('aria-pressed','false');viewToggle.setAttribute('aria-controls','piano-scroll');
+document.querySelector('.keyboard-help').append(viewToggle);
+viewToggle.addEventListener('click',()=>{
+  const zoomed=$('piano-scroll').classList.toggle('is-zoomed');
+  viewToggle.setAttribute('aria-pressed',String(zoomed));viewToggle.textContent=zoomed?'Show full piano':'Larger keys';
+  $('piano-scroll').scrollLeft=0;lastVisibleNote=undefined;
+});
 for(let midi=song.minMidi;midi<=song.maxMidi;midi++) {
   const black=[1,3,6,8,10].includes(midi%12);
   const button=document.createElement('button');
