@@ -18,6 +18,7 @@ import {
 } from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
+import { LATEST_WRITING } from '@/content/latest-writing'
 
 export interface HomeWriting {
   title: string
@@ -38,6 +39,7 @@ const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
 const DRAW_WITH_TANDA_LATEST = LATEST_RELEASE
 const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.status === 'next')!
 const FEATURED_WRITINGS = [
+  LATEST_WRITING.feature,
   {
     slug: 'inside-monkedao',
     prefetch: true,

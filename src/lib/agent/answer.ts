@@ -299,6 +299,13 @@ export async function answerAgentQuestion(
     timeoutMs?: number
   },
 ): Promise<AgentAnswerResult> {
+  if (/\b(latest|newest|most recent)\b.{0,64}\b(writing|article|essay|post)\b/i.test(input.message)
+    || /\b(writing|article|essay|post)\b.{0,32}\b(latest|newest|most recent)\b/i.test(input.message)) {
+    const writing = input.cards.find((card) => card.tags.includes('latest-writing'))
+    if (writing) {
+      return deterministicCardAnswer({ ...writing, body: writing.summary || writing.body }, 'Read the latest essay')
+    }
+  }
   if (isLatestReleaseQuestion(input.message)) {
     const release = input.cards.find((card) => card.tags.includes('latest-release'))
     if (release) {

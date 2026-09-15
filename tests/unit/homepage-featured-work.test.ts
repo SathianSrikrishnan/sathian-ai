@@ -3,6 +3,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { getPublicProfileMemoryCards } from '@/lib/public-profile'
+import { LATEST_WRITING } from '@/content/latest-writing'
 
 const ROOT = process.cwd()
 
@@ -11,11 +12,12 @@ function read(relativePath: string) {
 }
 
 describe('homepage featured writing order', () => {
-  it('leads with Inside MonkeDAO and keeps The Polytheistic Test second', () => {
+  it('leads with the reviewed latest writing and preserves the older features', () => {
     const home = read('src/components/home/HomeClient.tsx')
     const insideIndex = home.indexOf("slug: 'inside-monkedao'")
     const polytheisticIndex = home.indexOf("slug: 'saraswati-lakshmi-and-the-ledger'")
     const projectsIndex = home.indexOf('FEATURED_SITE_PROJECTS.map')
+    expect(home.indexOf('  LATEST_WRITING.feature,')).toBeLessThan(insideIndex)
 
     expect(insideIndex).toBeGreaterThan(-1)
     expect(polytheisticIndex).toBeGreaterThan(insideIndex)
@@ -38,9 +40,12 @@ describe('homepage featured writing order', () => {
       (card) => card.id === 'featured-writing-polytheistic-test',
     )
 
-    expect(latest?.title).toContain('Inside MonkeDAO')
-    expect(latest?.source.ref).toBe('https://sathian.ai/writings/inside-monkedao')
-    expect(latest?.body).toContain('firsthand field report')
+    expect(latest?.title).toContain(LATEST_WRITING.title)
+    expect(latest?.source.ref).toBe(`https://sathian.ai${LATEST_WRITING.href}`)
+    expect(latest?.body).toContain(LATEST_WRITING.substackHref)
+    expect(cards.filter(card => card.tags.includes('latest-writing'))).toHaveLength(1)
+    expect(cards.find(card => card.id === 'featured-writing-inside-monkedao')?.body).toContain('firsthand field report')
+    expect(fs.existsSync(path.join(ROOT, 'public', LATEST_WRITING.feature.image))).toBe(true)
     expect(polytheistic?.title).toContain('The Polytheistic Test')
     expect(polytheistic?.source.ref).toBe(
       'https://sathian.ai/writings/saraswati-lakshmi-and-the-ledger',

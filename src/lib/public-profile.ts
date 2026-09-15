@@ -1,4 +1,5 @@
 import type { PublicMemoryCard } from '@/lib/agent/types'
+import { LATEST_WRITING } from '@/content/latest-writing'
 import {
   DRAW_WITH_TANDA_EPISODES,
   LATEST_RELEASE,
@@ -105,11 +106,22 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       .map((release) => releaseToPublicMemoryCard(release)),
     {
       id: 'latest-featured-writing',
-      slug: 'latest-featured-writing-inside-monkedao',
-      title: 'Newest featured writing: Inside MonkeDAO',
-      body: 'Sathian’s newest featured writing is Inside MonkeDAO, a firsthand field report and edited interview about how a Solana NFT collection became an operating community. Benny describes MonkeDAO’s origin, the role of in-person trust, and how MonkeFoundry helps founders move from introductions to useful support. Sathian adds his own early experience as an SMB Gen3 holder while clearly separating firsthand reporting from interpretation.',
+      slug: `latest-featured-writing-${LATEST_WRITING.slug}`,
+      title: `Newest featured writing: ${LATEST_WRITING.title}`,
+      body: `${LATEST_WRITING.agentSummary} Read the article at https://sathian.ai${LATEST_WRITING.href}. Read and subscribe on Substack: ${LATEST_WRITING.substackHref}`,
+      summary: LATEST_WRITING.description,
+      tags: [...LATEST_WRITING.tags],
+      source: { ref: `https://sathian.ai${LATEST_WRITING.href}`, kind: 'published_page' },
+      validFrom: LATEST_WRITING.publishedAt,
+      validUntil: null,
+    },
+    {
+      id: 'featured-writing-inside-monkedao',
+      slug: 'featured-writing-inside-monkedao',
+      title: 'Featured writing: Inside MonkeDAO',
+      body: 'Inside MonkeDAO is a firsthand field report and edited interview about how a Solana NFT collection became an operating community. Benny describes MonkeDAO’s origin, the role of in-person trust, and how MonkeFoundry helps founders move from introductions to useful support. Sathian adds his own early experience as an SMB Gen3 holder while clearly separating firsthand reporting from interpretation.',
       summary: 'A firsthand film and field report about ownership, participation, and community infrastructure on Solana.',
-      tags: ['latest-writing', 'featured-writing', 'monkedao', 'solana', 'community', 'field-report', 'film'],
+      tags: ['featured-writing', 'monkedao', 'solana', 'community', 'field-report', 'film'],
       source: { ref: 'https://sathian.ai/writings/inside-monkedao', kind: 'published_page' },
       validFrom: '2026-08-29T00:00:00.000Z',
       validUntil: null,
@@ -129,7 +141,7 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       id: 'published-writing',
       slug: 'published-writing',
       title: 'Sathian’s published writing',
-      body: 'Sathian publishes notes on culture, money, technology, fatherhood, and the products he is learning to build. His newest featured work is Inside MonkeDAO, followed by The Polytheistic Test. The writing index is the canonical place to browse the current collection.',
+      body: `Sathian publishes notes on culture, money, technology, fatherhood, and the products he is learning to build. His newest featured work is ${LATEST_WRITING.title}, followed by Inside MonkeDAO and The Polytheistic Test. The writing index is the canonical place to browse the current collection. The latest essay is also on Substack: ${LATEST_WRITING.substackHref}`,
       summary: 'Notes on culture, money, technology, fatherhood, and building in public.',
       tags: ['writing', 'articles', 'essays', 'culture', 'money', 'technology', 'fatherhood'],
       source: { ref: 'https://sathian.ai/writings', kind: 'published_page' },

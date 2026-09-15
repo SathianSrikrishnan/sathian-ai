@@ -30,6 +30,16 @@ const policy: AgentPolicyDecision = {
 }
 
 describe('bounded public answer service', () => {
+  it.each(['What is your latest writing?', 'Show me the newest article', 'Which essay is the most recent?'])(
+    'routes %s to the current article rather than the writing index or latest video', async (message) => {
+      const model = { generate: vi.fn(async () => 'An obsolete answer') }
+      const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
+      expect(result.answer).toContain('Building in Public Is an Idea Maze')
+      expect(result.nextAction?.href).toBe('/writings/building-in-public-is-an-idea-maze')
+      expect(result.sources).toEqual(['https://sathian.ai/writings/building-in-public-is-an-idea-maze'])
+      expect(model.generate).not.toHaveBeenCalled()
+    },
+  )
   it('builds its prompt from only the public cards returned for this request', () => {
     const prompt = buildAgentPrompt({ cards: [tfnCard], page: '/', policy })
 
