@@ -26,7 +26,7 @@ The portfolio is a front door, not a copy of every project repository. Project w
 | Project code, dashboard data, or internal workflow | The project's own canonical repository | No portfolio release unless its public URL, name, status, image, or summary changes. |
 | Draw with Tanda episode | Character Studio and the TFN YouTube channel | After the episode is publicly verified, update the single release record. |
 | Tooth Fairy Network product work | The TFN canonical repository | Update the portfolio only for a meaningful public milestone or new destination. |
-| Writing | The reviewed article source or Studio publishing flow | Published writing is read by the site automatically; change homepage framing only when editorial priorities change. |
+| Writing | The reviewed article source or Studio publishing flow | Verify the database article, then promote the reviewed `src/content/latest-writing.ts` record for homepage image/summary/quicklink and chatbot context in the same writing release. |
 | Hackathon project | Its own source repository and public deployment | Update `/hackathons` when the name, evidence, live link, or project status changes. |
 | Chatbot knowledge | Reviewed public profile, release registry, or build-note source | Release when the public answer should materially change. Never mirror private project context. |
 
@@ -34,14 +34,14 @@ The portfolio is a front door, not a copy of every project repository. Project w
 
 Use this checklist when an article, web app, and YouTube episode are being released together:
 
-1. **Article:** publish through the reviewed Studio/database flow, verify the public article URL, then update the newest-writing cards in `src/lib/public-profile.ts`. The writing page is database-backed, but newest-writing chatbot context is still reviewed source code until the content-publication unifier is built.
+1. **Article:** publish through the reviewed Studio/database flow, verify the public article and Substack URLs, then update the shared `src/content/latest-writing.ts` record and approved cover. Homepage and public agent consume that same record. Follow [the writing publication contract](writing-release-workflow.md), including live latest-writing answer and native social tag verification.
 2. **Web app:** deploy it from its own repository, verify its public URL, then add or update its reviewed portfolio record in `src/content/site-projects.ts`.
 3. **Draw with Tanda:** publish to the official YouTube channel, verify the video ID and watch page, then add or update the episode in `src/content/site-releases.ts`.
 4. Run the release gate below, commit only the reviewed records, and push `main`.
 5. Read the `Site Agent Quality` receipts. A green source gate alone is not enough; the protected-preview 10-case canary and browser verifier must also pass.
 6. Deploy production only after explicit approval, then confirm the next daily three-case production receipt.
 
-Projects and Draw with Tanda releases already generate public agent memory from their registries. Article-to-agent synchronization is the remaining manual step and the next automation milestone.
+Projects, Draw with Tanda, and latest-writing records generate public agent memory from their reviewed registries. Database article publication still needs a supervised promotion into the latest-writing record; do not claim an unattended database-to-social publishing system.
 
 Every Sathian.ai production change follows the same path: update the canonical `main` worktree, test, commit, push, deploy, verify, and record the receipt. Ongoing work in another repository never auto-merges into the portfolio.
 
