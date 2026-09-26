@@ -19,6 +19,10 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: '/ccac', destination: 'https://ccac-piano-playground.sathians.chatgpt.site', permanent: false },
+      { source: '/:path*', has: [{ type: 'host', value: 'piano.sathian.ai' }], destination: 'https://ccac-piano-playground.sathians.chatgpt.site/:path*', permanent: false },
+      { source: '/piano', destination: 'https://ccac-piano-playground.sathians.chatgpt.site', permanent: false },
+      { source: '/ccac/studio', destination: 'https://ccac-piano-playground.sathians.chatgpt.site/studio', permanent: false },
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'toothfairy.sathian.ai' }],
