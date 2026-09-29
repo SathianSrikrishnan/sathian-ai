@@ -6,6 +6,7 @@ import {
   isStudioEmailAllowed,
   parseStudioAllowedEmails,
 } from '@/lib/studio-authorization'
+import { isStudioAccessGranted } from '@/lib/cloudflare-access'
 import {
   copySupabaseCookies,
   createRouteSupabase,
@@ -13,6 +14,10 @@ import {
 } from '@/lib/supabase-auth'
 
 export async function requireStudioAal2(request: NextRequest) {
+  // Google sign-in through Cloudflare Access counts as the owner's strong login (see cloudflare-access.ts).
+  if (await isStudioAccessGranted(request.headers, parseStudioAllowedEmails(process.env.STUDIO_ACCESS_EMAILS))) {
+    return null
+  }
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: 'studio_not_configured' }, { status: 503 })
   }

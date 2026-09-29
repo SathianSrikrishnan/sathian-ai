@@ -44,6 +44,7 @@ setInterval(() => {
 }, 60_000)
 
 import { ALLOWED_ORIGINS, isAllowedOrigin } from '@/lib/constants'
+import { isStudioAccessGranted } from '@/lib/cloudflare-access'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -148,7 +149,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // --- Studio authentication ---
-  if (isStudioPath && !studioE2eBypass) {
+  // Cloudflare Access (Google sign-in at studio.sathian.ai) is accepted first; the Supabase login stays
+  // as the fallback, e.g. for a deployment URL that doesn't sit behind Access.
+  const studioViaAccess = isStudioPath && !studioE2eBypass
+    && await isStudioAccessGranted(request.headers, parseStudioAllowedEmails(process.env.STUDIO_ACCESS_EMAILS))
+  if (isStudioPath && !studioE2eBypass && !studioViaAccess) {
     let aal: 'aal1' | 'aal2' | null = null
     if (studioSession?.user) {
       const { data, error } = await studioSession.supabase.auth.mfa.getAuthenticatorAssuranceLevel()
