@@ -29,10 +29,15 @@ describe('Studio authorization enforcement', () => {
     expect(playwrightSource).toMatch(/STUDIO_E2E_BYPASS:\s*'true'/)
   })
 
-  it('uses Supabase AAL authorization instead of the legacy password cookie', () => {
-    expect(middlewareSource).toMatch(/decideStudioAccess/)
-    expect(middlewareSource).toMatch(/getAuthenticatorAssuranceLevel/)
-    expect(middlewareSource).not.toMatch(/studio_auth|STUDIO_PASSWORD|verifyStudioToken/)
+  it('lets Studio in only through a verified Cloudflare Access JWT, never the old logins', () => {
+    expect(middlewareSource).toMatch(/isStudioAccessGranted/)
+    expect(middlewareSource).toMatch(/STUDIO_ACCESS_EMAILS/)
+    expect(middlewareSource).not.toMatch(/decideStudioAccess|getAuthenticatorAssuranceLevel|studio_auth|STUDIO_PASSWORD|verifyStudioToken/)
+  })
+
+  it('sends Studio on any other host to studio.sathian.ai, where Access guards it', () => {
+    expect(middlewareSource).toMatch(/hostname !== 'studio\.sathian\.ai'/)
+    expect(middlewareSource).toMatch(/'https:\/\/studio\.sathian\.ai'\), 308/)
   })
 
   it('requires handler-level AAL2 authorization on every Studio article API', () => {

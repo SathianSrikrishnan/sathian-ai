@@ -4,12 +4,7 @@ import {
   isSupabaseConfigured,
   refreshSupabaseSession,
 } from '@/lib/supabase-auth'
-import {
-  decideStudioAccess,
-  hasStudioAdminRole,
-  isStudioEmailAllowed,
-  parseStudioAllowedEmails,
-} from '@/lib/studio-authorization'
+import { parseStudioAllowedEmails } from '@/lib/studio-authorization'
 
 // Simple in-memory rate limiter (resets on deploy/restart — fine for Vercel serverless)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -54,23 +49,38 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/studio', request.url), 307)
   }
 
-  // ── Supabase session refresh for TFN app + API routes ──
-  // Captures the response so auth cookies propagate through domain rewrites.
-  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
-  const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
+  // --- Studio authentication ---
+  // Studio lives only at studio.sathian.ai, behind Cloudflare Access (Google, owner only). The app
+  // verifies the Access JWT itself (cloudflare-access.ts); there is no other way in.
   const isStudioPath = pathname.startsWith('/studio') || pathname.startsWith('/api/studio/')
   const studioE2eBypass = isStudioPath
     && process.env.NODE_ENV !== 'production'
     && process.env.STUDIO_E2E_BYPASS === 'true'
-  const publicStudioDecision = isStudioPath ? decideStudioAccess({ pathname }) : null
-  const needsStudioSession = isStudioPath && !studioE2eBypass && publicStudioDecision?.kind !== 'allow'
+  if (isStudioPath && !studioE2eBypass) {
+    const isLocal = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(hostname)
+    if (hostname !== 'studio.sathian.ai' && !isLocal) {
+      return NextResponse.redirect(new URL(`${pathname}${request.nextUrl.search}`, 'https://studio.sathian.ai'), 308)
+    }
+    const granted = await isStudioAccessGranted(request.headers, parseStudioAllowedEmails(process.env.STUDIO_ACCESS_EMAILS))
+    if (!granted) {
+      return pathname.startsWith('/api/')
+        ? NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+        : new NextResponse('Open Studio from hub.sathian.ai (Google sign-in).', {
+            status: 401,
+            headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' },
+          })
+    }
+  }
+
+  // ── Supabase session refresh for TFN app + API routes ──
+  // Captures the response so auth cookies propagate through domain rewrites.
+  const isTfnApp = pathname.startsWith('/toothfairy/app') || pathname.startsWith('/app/')
+  const isTfnApi = pathname.startsWith('/api/toothfairy/') || pathname.startsWith('/api/auth/')
   const hasSupabaseConfig = isSupabaseConfigured()
   let supabaseResponse: NextResponse | null = null
-  let studioSession: Awaited<ReturnType<typeof refreshSupabaseSession>> | null = null
-  if ((isTfnApp || isTfnApi || needsStudioSession) && hasSupabaseConfig) {
+  if ((isTfnApp || isTfnApi) && hasSupabaseConfig) {
     const refreshed = await refreshSupabaseSession(request)
     supabaseResponse = refreshed.response
-    if (needsStudioSession) studioSession = refreshed
   }
 
   // Helper: create a rewrite that preserves auth cookies from session refresh
@@ -146,39 +156,6 @@ export async function middleware(request: NextRequest) {
     }
     // Everything else
     return rewriteWithCookies(new URL(`/toothfairy${pathname}`, request.url))
-  }
-
-  // --- Studio authentication ---
-  // Cloudflare Access (Google sign-in at studio.sathian.ai) is accepted first; the Supabase login stays
-  // as the fallback, e.g. for a deployment URL that doesn't sit behind Access.
-  const studioViaAccess = isStudioPath && !studioE2eBypass
-    && await isStudioAccessGranted(request.headers, parseStudioAllowedEmails(process.env.STUDIO_ACCESS_EMAILS))
-  if (isStudioPath && !studioE2eBypass && !studioViaAccess) {
-    let aal: 'aal1' | 'aal2' | null = null
-    if (studioSession?.user) {
-      const { data, error } = await studioSession.supabase.auth.mfa.getAuthenticatorAssuranceLevel()
-      if (!error) aal = data.currentLevel
-    }
-
-    const decision = decideStudioAccess({
-      pathname,
-      hasUser: Boolean(studioSession?.user),
-      emailAllowed: isStudioEmailAllowed(
-        studioSession?.user?.email,
-        parseStudioAllowedEmails(process.env.STUDIO_ALLOWED_EMAILS),
-      ),
-      hasStudioRole: hasStudioAdminRole(studioSession?.user?.app_metadata),
-      aal,
-    })
-
-    if (decision.kind === 'redirect') {
-      const response = NextResponse.redirect(new URL(decision.location, request.url))
-      return supabaseResponse ? copySupabaseCookies(supabaseResponse, response) : response
-    }
-    if (decision.kind === 'deny') {
-      const response = NextResponse.json({ error: decision.code }, { status: decision.status })
-      return supabaseResponse ? copySupabaseCookies(supabaseResponse, response) : response
-    }
   }
 
   // Only apply rate limiting / CORS to API routes
