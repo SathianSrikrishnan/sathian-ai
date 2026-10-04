@@ -27,13 +27,15 @@ export const TOOTH_FAIRY_NETWORK_PROJECT: PublicSiteProject = {
   description:
     'A private family time capsule with an optional, guardian-controlled future gift secured on Solana.',
   approvedClaims: [
+    'PROOF is Sathian\'s visual introduction to why he is building Tooth Fairy Network: a founder introduction and seven chapters covering Prologue, Bitcoin (Work), Ethereum (Stake), Solana (History), Growth, Love, and Dollars That Travel. Read and watch at https://sathian.ai/proof.',
+    'The product explanation pairs a physical Proof booklet for the child with a parent-controlled digital wallet that can be handed over when the child is ready. Growth and Love express the child\'s milestones and the network of people supporting them; they are metaphors, not literal blockchain staking.',
     'Tooth Fairy Network turns a child\'s drawing and story into a private time capsule with an optional guardian-controlled future gift.',
     'Its deployed Solana Mainnet program is live and supports time-locked SOL and canonical USDC deposits.',
     'Verified founder-controlled canaries proved both rails.',
     'The public USDC and on-ramp checkout experience remains behind a release gate until the customer flow is approved.',
     'Private child content stays off-chain by default.',
   ],
-  aliases: ['Tooth Fairy Network', 'TFN', 'Toothlight'],
+  aliases: ['Tooth Fairy Network', 'TFN', 'Toothlight', 'PROOF', 'Proof of Growth', 'Proof of Love'],
   status: 'primary',
   reviewedAt: '2026-08-13',
   href: 'https://toothfairy.network',

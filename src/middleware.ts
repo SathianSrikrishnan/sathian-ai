@@ -45,6 +45,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.headers.get('host') || ''
 
+  if (hostname === 'proof.sathian.ai' && pathname === '/') {
+    const proofUrl = request.nextUrl.clone()
+    proofUrl.pathname = '/proof'
+    return NextResponse.rewrite(proofUrl)
+  }
+
   if (hostname === 'studio.sathian.ai' && pathname === '/') {
     return NextResponse.redirect(new URL('/studio', request.url), 307)
   }

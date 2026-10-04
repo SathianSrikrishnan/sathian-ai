@@ -37,6 +37,7 @@ export const CHAT_SUGGESTIONS: readonly ChatSuggestion[] = [
 
 export const ALLOWED_ORIGINS = [
   'https://sathian.ai',
+  'https://proof.sathian.ai',
   'https://www.sathian.ai',
   'https://studio.sathian.ai',
   'https://btc.sathian.ai',
