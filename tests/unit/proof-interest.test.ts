@@ -4,6 +4,7 @@ const data={name:'Sample Adult',contact:'sample@example.com',childAge:6,relation
 const req=(body:unknown=data,origin='https://sathian.ai')=>new Request('https://sathian.ai/api/proof-interest',{method:'POST',headers:{origin,'Content-Type':'application/json'},body:JSON.stringify(body)})
 afterEach(()=>{vi.unstubAllEnvs();vi.unstubAllGlobals()})
 describe('proof interest',()=>{
+ it('rejects excessive feedback before saving',async()=>expect((await POST(req({...data,feedback:'x'.repeat(1501)}))).status).toBe(400))
  it('rejects cross-origin requests',async()=>expect((await POST(req(data,'https://elsewhere.example'))).status).toBe(403))
  it('rejects invalid ages and contact',async()=>{expect((await POST(req({...data,childAge:18}))).status).toBe(400);expect((await POST(req({...data,contact:'bad'}))).status).toBe(400)})
  it('does not report saved without configuration',async()=>{vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL','');expect((await POST(req())).status).toBe(503)})

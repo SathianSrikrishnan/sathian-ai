@@ -1,5 +1,6 @@
 import type { PublicMemoryCard } from '@/lib/agent/types'
 import { LATEST_WRITING } from '@/content/latest-writing'
+import { PROOF } from '@/content/proof'
 import {
   DRAW_WITH_TANDA_EPISODES,
   LATEST_RELEASE,
@@ -88,6 +89,7 @@ export function releaseToPublicMemoryCard(
 
 export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
   return [
+    { id: 'proof-front-door', slug: 'proof-front-door', title: 'PROOF and founding families', body: PROOF.agentSummary, summary: PROOF.description, tags: ['proof', 'founding-families', 'seven-chapters'], source: { ref: PROOF.href, kind: 'published_page' }, validFrom: '2026-10-04T00:00:00.000Z', validUntil: null },
     {
       id: 'profile-search-identity',
       slug: 'sathian-search-identity',

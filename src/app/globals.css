@@ -3831,6 +3831,13 @@ h1, h2, h3 {
   gap: 4px 10px;
 }
 
+.home-proof-entry { display:flex; align-items:center; gap:18px; max-width:650px; margin-top:28px; padding:16px; border:1px solid var(--minimal-rule); border-radius:12px; color:var(--minimal-ink); text-decoration:none; }
+.home-proof-entry img { flex-shrink:0; width:64px; height:76px; object-fit:cover; border-radius:6px; }
+.home-proof-entry strong { display:block; font-size:18px; margin-bottom:5px; }
+.home-proof-entry span span { display:block; font-size:14px; line-height:1.5; }
+.home-proof-entry:hover { border-color:currentColor; }
+.home-proof-entry:focus-visible { outline:2px solid currentColor; outline-offset:4px; }
+
 .minimal-home-identity__part {
   display: inline-flex;
   align-items: center;

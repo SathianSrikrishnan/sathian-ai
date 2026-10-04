@@ -19,6 +19,7 @@ import {
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
+import { PROOF } from '@/content/proof'
 
 export interface HomeWriting {
   title: string
@@ -79,6 +80,10 @@ export function HomeClient({ writings }: HomeClientProps) {
             <span className="minimal-home-identity__part">TORONTO</span>
           </p>
           <h1>Digital Experiments</h1>
+          <a className="home-proof-entry" href={PROOF.href} onClick={() => trackSiteEvent('proof_opened', { placement: 'homepage' })}>
+            <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.jpg" alt="" width="76" height="76" />
+            <span><strong>Start here — PROOF ↗</strong><span>{PROOF.description}</span></span>
+          </a>
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">

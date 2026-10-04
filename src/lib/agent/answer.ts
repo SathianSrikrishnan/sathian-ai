@@ -164,6 +164,11 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
     actionLabel: string
   }> = [
     {
+      matches: /\b(proof(?: of (?:growth|love))?|founding famil(?:y|ies)|seven chapters|7 chapters)\b/i.test(message) && !/\b(proof of (?:work|stake|history)|cryptograph|mathematical|mainnet|contract|audit)\b/i.test(message),
+      card: find((card) => card.id === 'proof-front-door'),
+      actionLabel: 'Watch PROOF · join the founding families',
+    },
+    {
       matches: /^(?:(?:can|could)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?|(?:how|where)\s+(?:can|do)\s+i\s+(?:leave|send|write)\s+(?:sathian\s+)?(?:a\s+)?(?:note|message)(?:\s+(?:for|to)\s+sathian)?)\??$/i.test(message),
       card: find((card) => card.id === 'site-agent-note-workflow'),
       actionLabel: 'Write a note',
@@ -299,6 +304,8 @@ export async function answerAgentQuestion(
     timeoutMs?: number
   },
 ): Promise<AgentAnswerResult> {
+  const proofIntent = directIntentCard(input.message, input.cards)
+  if (proofIntent?.card.id === 'proof-front-door') return deterministicCardAnswer(proofIntent.card, proofIntent.actionLabel)
   if (/\b(latest|newest|most recent)\b.{0,64}\b(writing|article|essay|post)\b/i.test(input.message)
     || /\b(writing|article|essay|post)\b.{0,32}\b(latest|newest|most recent)\b/i.test(input.message)) {
     const writing = input.cards.find((card) => card.tags.includes('latest-writing'))

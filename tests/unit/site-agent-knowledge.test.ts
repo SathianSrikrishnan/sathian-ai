@@ -76,13 +76,13 @@ describe('canonical site-agent public knowledge', () => {
     expect(card?.tags.length).toBeGreaterThan(2)
   })
 
-  it('leads with verified TFN Mainnet capability while keeping the public on-ramp gated', () => {
+  it('uses current TFN rails and delayed funding without implying Ethereum availability', () => {
     const tfn = cards.find((card) => card.id === 'project-tooth-fairy-network')
     const currentWork = cards.find((card) => card.id === 'current-public-work')
 
-    expect(tfn?.body).toContain('deployed Solana Mainnet program')
-    expect(tfn?.body).toContain('time-locked SOL and canonical USDC deposits')
-    expect(tfn?.body).toContain('on-ramp checkout experience remains behind a release gate')
+    expect(tfn?.body).toContain('Dollars, Bitcoin or Solana')
+    expect(tfn?.body).toContain('seven days after payment')
+    expect(tfn?.body).toContain('does not mean an Ethereum product rail is available')
     expect(currentWork?.body).toContain('primary public build is Tooth Fairy Network')
     expect(currentWork?.body).not.toMatch(/AI practice/i)
     expect(cards.some((card) => card.id === 'toothlight-devnet-ownership-proof')).toBe(false)

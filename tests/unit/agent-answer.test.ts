@@ -30,6 +30,16 @@ const policy: AgentPolicyDecision = {
 }
 
 describe('bounded public answer service', () => {
+  it.each(['What is PROOF and how do I join the founding families?', 'Show me the latest PROOF page', 'How do I join the founding families?'])(
+    'gives a concise public signup route for %s without promising funding', async(message)=>{
+      const model={generate:vi.fn(async()=> 'unexpected')}
+      const result=await answerAgentQuestion({message,page:'/',policy,cards:getPublicProfileMemoryCards()},{model})
+      expect(result.answer).toContain('Become a founding family')
+      expect(result.answer).toContain('not a purchase or a guaranteed funded place')
+      expect(result.nextAction?.href).toBe('https://proof.sathian.ai/')
+      expect(result.answer.length).toBeLessThan(900)
+      expect(model.generate).not.toHaveBeenCalled()
+    })
   it.each(['What is your latest writing?', 'Show me the newest article', 'Which essay is the most recent?'])(
     'routes %s to the current article rather than the writing index or latest video', async (message) => {
       const model = { generate: vi.fn(async () => 'An obsolete answer') }
@@ -373,9 +383,9 @@ describe('bounded public answer service', () => {
     }, { model })
 
     expect(result.modelUsed).toBe(false)
-    expect(result.answer).toContain('deployed Solana Mainnet program is live')
-    expect(result.answer).toContain('supports time-locked SOL and canonical USDC deposits')
-    expect(result.answer).toContain('on-ramp checkout experience remains behind a release gate')
+    expect(result.answer).toContain('Dollars, Bitcoin or Solana')
+    expect(result.answer).toContain('seven days after payment')
+    expect(result.answer).toContain('does not mean an Ethereum product rail is available')
     expect(result.sources).toEqual(['https://toothfairy.network'])
     expect(result.nextAction).toEqual({
       label: 'Visit Tooth Fairy Network',

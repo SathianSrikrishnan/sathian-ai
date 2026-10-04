@@ -172,7 +172,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["private time capsule", "Solana Mainnet", "SOL", "USDC"],
+        "requiredFacts": ["Proof booklet", "Dollars, Bitcoin or Solana", "seven days after payment"],
         "forbiddenClaims": ["public checkout is released"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -191,7 +191,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["child's drawing", "guardian-controlled future gift"],
+        "requiredFacts": ["Proof booklet", "parent’s key", "Private child content stays off-chain"],
         "forbiddenClaims": [],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -229,7 +229,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["time-locked SOL", "canonical USDC deposits", "public USDC and on-ramp checkout experience remains behind a release gate"],
+        "requiredFacts": ["Dollars, Bitcoin or Solana", "seven days after payment", "does not mean an Ethereum product rail is available"],
         "forbiddenClaims": ["customer checkout is live"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -286,7 +286,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["guardian-controlled future gift", "Solana Mainnet"],
+        "requiredFacts": ["Dollars, Bitcoin or Solana", "parent’s key"],
         "forbiddenClaims": ["financial advice"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -305,7 +305,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["deployed Solana Mainnet program", "Verified founder-controlled canaries"],
+        "requiredFacts": ["Dollars, Bitcoin or Solana", "seven days after payment"],
         "forbiddenClaims": ["customer-facing flow is released"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -985,7 +985,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["private time capsule", "Solana Mainnet"],
+        "requiredFacts": ["Proof booklet", "seven days after payment"],
         "forbiddenClaims": ["private memory"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
