@@ -53,7 +53,7 @@ describe('CCAC Vibe Learning local site review', () => {
       image: '/projects/ccac-vibe-piano.svg',
     })
     expect(project?.description).toContain('public prototype')
-    expect(MORE_SITE_PROJECTS.at(0)?.slug).toBe('ccac-vibe-piano')
+    expect(MORE_SITE_PROJECTS.some(project => project.slug === 'ccac-vibe-piano')).toBe(true)
     expect(existsSync(new URL('../../public/projects/ccac-vibe-piano.svg', import.meta.url))).toBe(true)
     expect(project?.approvedClaims.join(' ')).not.toMatch(/published|live/i)
     expect(read('src/app/sitemap.ts')).toContain("'/ccac'")

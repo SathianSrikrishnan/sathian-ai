@@ -44,9 +44,9 @@ describe('bounded public answer service', () => {
     'routes %s to the current article rather than the writing index or latest video', async (message) => {
       const model = { generate: vi.fn(async () => 'An obsolete answer') }
       const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
-      expect(result.answer).toContain('Building in Public Is an Idea Maze')
-      expect(result.nextAction?.href).toBe('/writings/building-in-public-is-an-idea-maze')
-      expect(result.sources).toEqual(['https://sathian.ai/writings/building-in-public-is-an-idea-maze'])
+      expect(result.answer).toContain('Keep the Internet Open')
+      expect(result.nextAction?.href).toBe('/writings/keep-the-internet-open')
+      expect(result.sources).toEqual(['https://sathian.ai/writings/keep-the-internet-open'])
       expect(model.generate).not.toHaveBeenCalled()
     },
   )
@@ -340,7 +340,7 @@ describe('bounded public answer service', () => {
       source: { ref: 'https://solana.sathian.ai', kind: 'published_project' },
     }
     const model = {
-      generate: vi.fn(async () => 'Tooth Fairy Network is the family product. The Observatory explains the network it uses.'),
+      generate: vi.fn(async (_input: { system: string }) => 'Tooth Fairy Network is the family product. The Observatory explains the network it uses.'),
     }
 
     const result = await answerAgentQuestion({

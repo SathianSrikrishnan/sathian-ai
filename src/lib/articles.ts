@@ -28,6 +28,36 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+  "title": "Keep the Internet Open",
+  "slug": "keep-the-internet-open",
+  "date": "2026-10-21",
+  "author": "Sathian",
+  "domains": [
+    "open internet",
+    "digital ownership",
+    "building"
+  ],
+  "description": "A visual history of people building more freedom into our digital lives—and where I want to contribute.",
+  "readTime": "4 min",
+  "body": "1985 → Today Keep the Internet Open. A brief history of people building more freedom into our digital lives. 1985 GNU emblem — Aurélio A. Heckert, 2001; later artwork accompanying the 1985 landmark. Richard Stallman Freedom to change the tools. The GNU Manifesto asks for software people can study, change and share. Open the original ↗ 1985 Security Without Identification — opening page, 1985. David Chaum A payment without a dossier. Security and privacy can be designed together. Every transaction need not reveal your life. Open the original ↗ 1993 Eric Hughes, photographed in 2025; the manifesto dates to 1993. Eric Hughes Choose what you reveal. Privacy needs working tools. The cypherpunks set out to write them. Open the original ↗ 1993 WorldWideWeb browser/editor — 1993 screenshot, Tim Berners-Lee / W3C archive. Tim Berners-Lee · CERN A web anyone can build on. CERN releases Web software for general use at no cost. An open door for the next builder. Open the original ↗ 1996 John Perry Barlow — later portrait, accompanying his 1996 declaration. John Perry Barlow Imagine governing ourselves. His declaration asks who gets to set the terms of life in cyberspace. Open the original ↗ 1999 Code and Other Laws of Cyberspace — 1999 edition. Lawrence Lessig The architecture sets the rules. Software shapes what is possible. Its design can protect freedom or restrict it. Open the original ↗ 2007 Firefox 1.0, 2004 — the browser before the 2007 manifesto. Mozilla Keep the internet open. A public resource needs usable alternatives, open standards and institutions willing to defend it. Open the original ↗ 2008 Bitcoin white paper — current hosted PDF of the 2008 proposal. Satoshi Nakamoto Money without a central gatekeeper. A concrete proposal for peer-to-peer payments, built from ideas others had begun. Open the original ↗ What we do with that freedom It has to work in ordinary life. I use the big platforms too. They save me time. I can live with some advertising. The harder question is how much of my work and my life depends on a service that can change the terms or close the door. An open network gives us possibilities. Most people meet it through a product: a browser, a wallet, a place to keep their photographs. The easy option becomes the one we use. Leaving gets harder as our work, our habits and our people collect there. I want to understand these technologies well enough to build useful alternatives. A parent saving a drawing should be able to choose where it lives and who can use it. They should be able to change the app without starting their family’s history over. That is the work I want to take on: make that freedom practical enough to use. Today Solid Pod Tour — illustration from the Solid project. Solid · Tim Berners-Lee & collaborators Keep the data. Choose the app. A personal data store, with access you grant to the tools you want to use. Open the original ↗ Keep what they make. Keep the people around it. Existing TFN sample artwork and product imagery. 2026 / Where I’m starting What a child makes is worth keeping. A drawing. A small discovery. A piece of who they were before they worried about who was watching. I’m building ways for families to preserve those things and support the person making them. Tooth Fairy Network is my first attempt. Keep the work → invite their people → attach a gift. The direction: photograph a drawing, save it privately, approve a $1 gift to their vault. Make it easy enough to become an ordinary family moment. The Solid connection is a local experiment: private artwork storage, selected-community read access and revocation have been tested on Community Solid Server. An early browser trial is available through the project page; hosted-provider compatibility is still being tested. No payments or promised investment growth. PROOF ↗ TOOTH FAIRY NETWORK ↗ THE FAMILY ART GALLERY EXPERIMENT ↗ Sources & image credits A selective thematic map, not a claim of direct influence between every entry. Labels are paraphrases. Captions distinguish the historical event from later images. GNU emblem: Aurélio A. Heckert (2001), original , Free Art License . David Chaum, Security Without Identification (1985) : opening-page thumbnail used for historical identification and commentary; rights remain with the author/publisher. Eric Hughes portrait (2025), Kspiers: source , CC BY-SA 4.0 . Displayed cropped; the image retains that license. WorldWideWeb browser/editor screenshot (1993), Tim Berners-Lee / W3C: source , W3C document license . Copyright © W3C and its original author; reproduced for historical illustration, without implying endorsement. John Perry Barlow portrait (2012), Alec Perkins: source , CC BY 2.0 . Displayed cropped. Lawrence Lessig, Code and Other Laws of Cyberspace (1999) : cover/document thumbnail for identification and commentary; rights remain with the author/publisher. Firefox 1.0 (2004): historical interface screenshot, Web Design Museum source . Mozilla and third-party marks remain their owners' property. Used to discuss the browser's history, without endorsement. Satoshi Nakamoto, Bitcoin: A Peer-to-Peer Electronic Cash System (2008) : opening-page thumbnail for identification and commentary. Solid Pod Tour illustration, Solid project contributors: source , content license , CC BY 4.0 . Family artwork and parent/child imagery: existing Tooth Fairy Network illustrative product assets. No child's personal Pod is published here. Document and interface thumbnails illustrate the work discussed, rather than reproduce complete publications. All original-source links remain available. Solid is an optional private-data layer for the experiment; Solana serves the relevant on-chain records and transfers. Neither this article nor the app claims affiliation with Solid.",
+  "pullQuotes": [
+    "Make that freedom practical enough to use."
+  ],
+  "theme": {
+    "accent": "#f7931a",
+    "accentGlow": "rgba(247,147,26,0.16)",
+    "background": "grid",
+    "mood": "contemplative"
+  },
+  "media": [
+    {
+      "src": "/media/keep-the-internet-open/tfn-child-drawing.jpg",
+      "alt": "Sample artwork of a child and parent playing football",
+      "placement": "hero"
+    }
+  ]
+},
+  {
     title: 'Inside MonkeDAO',
     titleHighlight: 'MonkeDAO',
     slug: 'inside-monkedao',

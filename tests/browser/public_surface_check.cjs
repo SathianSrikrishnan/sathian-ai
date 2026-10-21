@@ -8,6 +8,8 @@ const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
 const proofDirectory = process.env.BROWSER_PROOF_DIR
 
 const surfaces = [
+  { path: '/writings/keep-the-internet-open', heading: 'Keep the Internet Open.', title: 'Keep the Internet Open — sathian.ai' },
+  { path: '/projects/family-art-pod', heading: 'A little masterpiece. A home of its own.', title: 'Family Art Pod | Sathian' },
   { path: '/', heading: 'Digital Experiments', title: 'Sathian | Digital Experiments' },
   { path: '/about', heading: 'Sathian', title: 'About Sathian' },
   { path: '/links', heading: 'A few ways in.', title: 'Links | Sathian' },
@@ -156,6 +158,12 @@ async function verifyViewport(browser, label, viewport) {
     if (surface.video) {
       assert(state.video?.source === surface.video, `${label} ${surface.path}: unexpected video source ${state.video?.source}`)
       assert(Math.abs(Number(state.video?.duration) - surface.videoDuration) < 0.03, `${label} ${surface.path}: unexpected video duration ${state.video?.duration}`)
+    }
+
+    if (surface.path === '/writings/keep-the-internet-open') {
+      await settleLazyMedia(page)
+      const images = await page.locator('#internet-open img').evaluateAll(nodes => nodes.map(img => ({ src: img.getAttribute('src'), loaded: img.complete && img.naturalWidth > 0 })))
+      assert(images.length === 11 && images.every(img => img.loaded), `${label}: timeline images missing or broken`)
     }
 
     if (proofDirectory) {

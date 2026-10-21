@@ -1,3 +1,4 @@
+import { KeepInternetOpen } from '@/components/article/keep-internet-open/KeepInternetOpen'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getArticleBySlug } from '@/lib/articles-db'
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} — sathian.ai`,
     description: article.description,
+    alternates: { canonical: `https://sathian.ai/writings/${article.slug}` },
     authors: [{ name: 'Sathian', url: 'https://sathian.ai/about' }],
     keywords: article.domains,
     openGraph: {
@@ -24,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: ['Sathian'],
       modifiedTime: article.updatedAt,
       siteName: 'Sathian',
+      ...(article.slug === 'keep-the-internet-open' ? { images: [{ url: 'https://sathian.ai/media/keep-the-internet-open/tfn-child-drawing.jpg', alt: 'Sample family artwork — Keep the Internet Open' }] } : {}),
     },
     twitter: {
       card: 'summary_large_image',
@@ -68,7 +71,7 @@ export default async function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ArticleRenderer article={article} />
+      {article.slug === 'keep-the-internet-open' ? <KeepInternetOpen /> : <ArticleRenderer article={article} />}
     </>
   )
 }

@@ -71,7 +71,7 @@ export default async function WritingsIndex() {
             <Link
               key={article.href}
               href={article.href}
-              className={article.href === '/writings/saraswati-lakshmi-and-the-ledger'
+              className={article.href === '/writings/keep-the-internet-open'
                 ? 'minimal-writing-index__featured'
                 : undefined}
             >
