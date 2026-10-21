@@ -42,7 +42,8 @@ describe('homepage featured writing order', () => {
 
     expect(latest?.title).toContain(LATEST_WRITING.title)
     expect(latest?.source.ref).toBe(`https://sathian.ai${LATEST_WRITING.href}`)
-    expect(latest?.body).toContain(LATEST_WRITING.substackHref)
+    expect(latest?.body).toContain('no separate Substack edition')
+    expect(latest?.body).not.toContain('null')
     expect(cards.filter(card => card.tags.includes('latest-writing'))).toHaveLength(1)
     expect(cards.find(card => card.id === 'featured-writing-inside-monkedao')?.body).toContain('firsthand field report')
     expect(fs.existsSync(path.join(ROOT, 'public', LATEST_WRITING.feature.image))).toBe(true)

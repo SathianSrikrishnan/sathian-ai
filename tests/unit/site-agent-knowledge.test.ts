@@ -19,6 +19,7 @@ describe('canonical site-agent public knowledge', () => {
 
   it('keeps every public portfolio project in one reviewed lifecycle registry', () => {
     expect(SITE_PROJECTS.map((project) => project.id)).toEqual([
+      'project-family-art-pod',
       'project-tooth-fairy-network',
       'project-autoquote-automator',
       'project-solana-ecosystem-observatory',

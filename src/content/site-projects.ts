@@ -203,7 +203,39 @@ export const CCAC_VIBE_PIANO_SITE_PROJECT: PublicSiteProject = {
   topics: ['project', 'prototype', 'community', 'piano', 'music-learning', 'visual-learning'],
 }
 
+export const FAMILY_ART_POD_PROJECT: PublicSiteProject = {
+  "id": "project-family-art-pod",
+  "slug": "family-art-pod",
+  "name": "Family Art Pod",
+  "label": "NEW EXPERIMENT / OPEN TRIAL",
+  "description": "A family-controlled home for artwork, with selected community access using Solid.",
+  "approvedClaims": [
+    "Sathian built a local Family Art Pod prototype: browser sign-in, photo upload to a WAC-compatible Solid Pod, selected-community read access and revocation.",
+    "The browser app is hosted at https://family-art-pod-sathiansrikrishnans-projects.vercel.app. Real local Community Solid Server access tests pass; hosted-provider interoperability, independent-app use and a parent pilot are still being tested.",
+    "An early trial, with no payments, auctions, Solid team membership or accepted upstream contribution claimed. Revocation cannot recall downloaded copies."
+  ],
+  "aliases": [
+    "Family Art Pod",
+    "family artwork",
+    "Solid experiment"
+  ],
+  "status": "prototype",
+  "reviewedAt": "2026-10-21",
+  "href": "/projects/family-art-pod",
+  "cta": "See the experiment",
+  "image": "/media/keep-the-internet-open/tfn-child-drawing.jpg",
+  "alt": "Sample drawing of a child and parent playing football",
+  "topics": [
+    "project",
+    "solid",
+    "family-art",
+    "private-data",
+    "open-internet"
+  ]
+}
+
 export const SITE_PROJECTS: readonly PublicSiteProject[] = [
+  FAMILY_ART_POD_PROJECT,
   TOOTH_FAIRY_NETWORK_PROJECT,
   AUTOQUOTE_AUTOMATOR_PROJECT,
   SOLANA_OBSERVATORY_PROJECT,
@@ -230,6 +262,7 @@ export const ARCHIVE_SITE_PROJECTS: readonly PublicSiteProject[] = [
 ]
 
 export const MORE_SITE_PROJECTS: readonly PublicSiteProject[] = [
+  FAMILY_ART_POD_PROJECT,
   CCAC_VIBE_PIANO_SITE_PROJECT,
 ]
 
