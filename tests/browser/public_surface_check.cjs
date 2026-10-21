@@ -162,8 +162,27 @@ async function verifyViewport(browser, label, viewport) {
 
     if (surface.path === '/writings/keep-the-internet-open') {
       await settleLazyMedia(page)
-      const images = await page.locator('#internet-open img').evaluateAll(nodes => nodes.map(img => ({ src: img.getAttribute('src'), loaded: img.complete && img.naturalWidth > 0 })))
+      const images = await page.locator('#internet-open .timeline img, #internet-open .family-pair img').evaluateAll(nodes => nodes.map(img => ({ src: img.getAttribute('src'), loaded: img.complete && img.naturalWidth > 0 })))
       assert(images.length === 11 && images.every(img => img.loaded), `${label}: timeline images missing or broken`)
+      const note = page.locator('.article-note-dialog')
+      const noteVideo = note.locator('video')
+      assert(await noteVideo.evaluate(v => v.paused && !v.autoplay && v.preload === 'none'), `${label}: article note must not autoplay or preload the movie`)
+      await page.getByRole('button', { name: 'Play a note from Sathian' }).click()
+      assert(await note.evaluate(d => d.open), `${label}: article note did not open`)
+      const fitted = await note.evaluate(d => { const r=d.getBoundingClientRect(); return r.left>=0 && r.right<=innerWidth && r.height<=innerHeight && Math.abs(r.left+r.width/2-innerWidth/2)<2 && Math.abs(r.top+r.height/2-innerHeight/2)<2 })
+      assert(fitted, `${label}: article note does not fit viewport`)
+      await noteVideo.evaluate(async v => { await v.play() })
+      await page.waitForFunction(() => document.querySelector('.article-note-dialog video').currentTime > 0.2)
+      const playing = await noteVideo.evaluate(v => ({duration:v.duration,paused:v.paused,muted:v.muted,error:!!v.error}))
+      assert(!playing.paused && !playing.muted && !playing.error && Math.abs(playing.duration-17.6)<0.1, `${label}: approved article movie did not play with sound enabled`)
+      await noteVideo.evaluate(v => { v.currentTime=10 })
+      await page.waitForFunction(() => document.querySelector('.article-note-dialog video').currentTime>=10)
+      const captions = await page.request.get(`${baseUrl}/media/keep-the-internet-open/sathian-intro-v1.vtt`)
+      assert(captions.ok() && (await captions.text()).startsWith('WEBVTT'), `${label}: article captions missing`)
+      await page.keyboard.press('Escape')
+      await page.waitForFunction(() => !document.querySelector('.article-note-dialog').open && document.querySelector('.article-note-dialog video').paused)
+      assert(await noteVideo.evaluate(v => v.paused), `${label}: closing article note did not stop playback`)
+      assert(await page.getByRole('button', { name: 'Play a note from Sathian' }).evaluate(b => b===document.activeElement), `${label}: article note did not restore focus`)
     }
 
     if (proofDirectory) {
