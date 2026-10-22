@@ -5,6 +5,7 @@ import { personalSocialLinks, toothFairySocialLinks } from '@/lib/social-links'
 describe('public social destinations', () => {
   it('publishes the complete personal profile set', () => {
     expect(personalSocialLinks.map((link) => link.label)).toEqual([
+      'Farcaster',
       'Instagram',
       'X',
       'Luma',
@@ -13,6 +14,11 @@ describe('public social destinations', () => {
       'Substack',
       'GitHub',
     ])
+  })
+
+  it('uses the verified GitHub and main Farcaster identities', () => {
+    expect(personalSocialLinks.find(link => link.label === 'GitHub')?.href).toBe('https://github.com/SathianSrikrishnan')
+    expect(personalSocialLinks.find(link => link.label === 'Farcaster')?.href).toBe('https://farcaster.xyz/sathian')
   })
 
   it('publishes the complete Tooth Fairy Network profile set', () => {

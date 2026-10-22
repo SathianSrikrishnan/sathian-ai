@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SiteNav } from '@/components/SiteNav'
+import { OpenAgentButton } from '@/components/OpenAgentButton'
 import { SiteFooter } from '@/components/SiteFooter'
 import styles from './farcaster.module.css'
 
@@ -13,7 +14,7 @@ export default function FarcasterLayout({children}:{children:React.ReactNode}) {
         <Link href="/farcaster/library">Explanations</Link>
       </nav>
       {children}
-      <p className={`${styles.section} ${styles.muted}`}>An independent project by <Link href="/about">Sathian</Link>. <a href="https://farcaster.xyz/sathian">Find me on Farcaster</a> or <Link href="/links">get in touch</Link>.</p>
+      <p className={`${styles.section} ${styles.muted}`}>An independent project by <Link href="/about">Sathian</Link>. <a href="https://farcaster.xyz/sathian">Find me on Farcaster</a> or <OpenAgentButton className={styles.contactButton}>leave me a note</OpenAgentButton>. <Link href="/links">All my links</Link>.</p>
     </main>
     <SiteFooter />
   </div>

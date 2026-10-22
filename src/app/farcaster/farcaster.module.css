@@ -33,3 +33,5 @@
 .faq h2{font-size:26px}
 .why{border-left:3px solid var(--minimal-rust);background:var(--minimal-paper-strong);padding:20px 24px;margin:32px 0}
 .why h2{font:24px/1.2 Georgia,serif;margin:0 0 10px}.why p{margin:0;max-width:620px}
+
+.contactButton{font:inherit;color:inherit;background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}.contactButton:focus-visible{outline:2px solid var(--minimal-rust);outline-offset:4px}
