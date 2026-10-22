@@ -29,4 +29,3 @@ export default function FarcasterProject(){return <>
   <div className={styles.sources}><a href="https://ns.com/about/">Network School</a></div>
 
 </>}
-

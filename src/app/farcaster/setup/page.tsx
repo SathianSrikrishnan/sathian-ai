@@ -35,4 +35,3 @@ export default function FarcasterSetup(){return <>
   <p className={styles.section}><Link href="/farcaster/library">What does a node actually do?</Link></p>
 
 </>}
-
