@@ -1,0 +1,21 @@
+import Link from 'next/link'
+import { SiteNav } from '@/components/SiteNav'
+import { OpenAgentButton } from '@/components/OpenAgentButton'
+import { SiteFooter } from '@/components/SiteFooter'
+import styles from './farcaster.module.css'
+
+export default function FarcasterLayout({children}:{children:React.ReactNode}) {
+  return <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
+    <SiteNav />
+    <main className={`minimal-container ${styles.main}`}>
+      <nav aria-label="Farcaster project" className={styles.nav}>
+        <Link href="/farcaster">The project</Link>
+        <Link href="/farcaster/setup">Setup</Link>
+        <Link href="/farcaster/library">Explanations</Link>
+      </nav>
+      {children}
+      <p className={`${styles.section} ${styles.muted}`}>An independent project by <Link href="/about">Sathian</Link>. <a href="https://farcaster.xyz/sathian">Find me on Farcaster</a> or <OpenAgentButton className={styles.contactButton}>leave me a note</OpenAgentButton>. <Link href="/links">All my links</Link>.</p>
+    </main>
+    <SiteFooter />
+  </div>
+}

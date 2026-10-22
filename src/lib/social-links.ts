@@ -1,11 +1,12 @@
 export const personalSocialLinks = [
+  { label: 'Farcaster', icon: null, href: 'https://farcaster.xyz/sathian' },
   { label: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/sathians/' },
   { label: 'X', icon: 'x', href: 'https://x.com/_sathian_' },
   { label: 'Luma', icon: 'luma', href: 'https://luma.com/user/Sathians' },
   { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/sathians' },
   { label: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/@SathianSrikrishnan' },
   { label: 'Substack', icon: 'substack', href: 'https://sathians.substack.com' },
-  { label: 'GitHub', icon: 'github', href: 'https://github.com/sathiandev' },
+  { label: 'GitHub', icon: 'github', href: 'https://github.com/SathianSrikrishnan' },
 ] as const
 
 export const toothFairySocialLinks = [

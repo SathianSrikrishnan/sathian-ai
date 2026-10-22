@@ -8,6 +8,9 @@ const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
 const proofDirectory = process.env.BROWSER_PROOF_DIR
 
 const surfaces = [
+  { path: '/farcaster', heading: 'Run your own Farcaster server.', title: 'Run your own Farcaster server | Sathian' },
+  { path: '/farcaster/setup', heading: 'Set up your server.', title: 'Farcaster setup | Sathian' },
+  { path: '/farcaster/library', heading: 'Short explanations.', title: 'Farcaster and Network School, explained | Sathian' },
   { path: '/writings/keep-the-internet-open', heading: 'Keep the Internet Open.', title: 'Keep the Internet Open — sathian.ai' },
   { path: '/projects/family-art-pod', heading: 'A little masterpiece. A home of its own.', title: 'Family Art Pod | Sathian' },
   { path: '/', heading: 'Digital Experiments', title: 'Sathian | Digital Experiments' },

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 const workLinks = [
+  { label: 'Farcaster setup', note: 'My server, setup and short explanations', href: '/farcaster' },
   { label: 'Tooth Fairy Network', note: 'The live product', href: 'https://toothfairy.network' },
   { label: 'Writing', note: 'Essays and field notes', href: '/writings' },
   { label: 'For agents', note: 'Public context and build record', href: '/agents' },
