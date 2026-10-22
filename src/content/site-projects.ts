@@ -234,7 +234,24 @@ export const FAMILY_ART_POD_PROJECT: PublicSiteProject = {
   ]
 }
 
+export const FARCASTER_QUICKSTART_PROJECT: PublicSiteProject = {
+  id: 'project-farcaster-quickstart', slug: 'farcaster', name: 'Farcaster Quickstart',
+  label: 'LOCAL PROTOTYPE / TEST BUILD',
+  description: 'A Farcaster server setup experiment, a small reading app and short explanations.',
+  approvedClaims: [
+    'Sathian has run a synchronized Farcaster read node and verified posting, following and reactions through an isolated test account, including undo and revocation.',
+    'The Windows 11 x64 and Ubuntu 24.04 x64 installer is a test candidate. A fresh independent installation and endorsement are still outstanding. macOS is not supported by this kit.',
+    'Reading through the app needs no Farcaster account. Posting tests require a separate account with storage and compatible MetaMask wallet access. A second phone is not required.',
+    'This is an independent project, not an official Network School service. No bounty win, validator role, automatic rewards or public hosted node API is claimed.',
+  ],
+  aliases: ['Farcaster', 'Farcaster Quickstart', 'Farcaster server'], status: 'prototype',
+  reviewedAt: '2026-10-22', href: '/farcaster', cta: 'See the test build',
+  image: '/projects/farcaster-server.svg', alt: 'A server connected to a reading app',
+  topics: ['project', 'farcaster', 'open-source', 'server', 'network-school'],
+}
+
 export const SITE_PROJECTS: readonly PublicSiteProject[] = [
+  FARCASTER_QUICKSTART_PROJECT,
   FAMILY_ART_POD_PROJECT,
   TOOTH_FAIRY_NETWORK_PROJECT,
   AUTOQUOTE_AUTOMATOR_PROJECT,
