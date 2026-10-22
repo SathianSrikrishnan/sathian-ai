@@ -105,7 +105,7 @@ describe('public-site indexing', () => {
     const links = readFileSync(new URL('../../src/app/links/page.tsx', import.meta.url), 'utf8')
 
     expect(socialLinks).toContain("https://sathians.substack.com")
-    expect(socialLinks).toContain("https://github.com/sathiandev")
+    expect(socialLinks).toContain("https://github.com/SathianSrikrishnan")
     expect(links).not.toContain("label: 'Substack'")
     expect(links).not.toContain("label: 'GitHub'")
   })
