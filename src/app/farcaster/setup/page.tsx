@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import styles from '../farcaster.module.css'
 
-export const metadata:Metadata={title:'Farcaster setup | Sathian',description:'Check the computer requirements and the current state of the Farcaster setup.',alternates:{canonical:'https://sathian.ai/farcaster/setup'},robots:{index:false,follow:false}}
+export const metadata:Metadata={title:'Farcaster setup | Sathian',description:'Check the computer requirements and the current state of the Farcaster setup.',alternates:{canonical:'https://sathian.ai/farcaster/setup'},openGraph:{title:'Run your own Farcaster server',description:'Open-source setup guide. Looking for one independent tester. Windows or Ubuntu; 16 GB RAM and 2 TB free disk.',url:'https://sathian.ai/farcaster/setup',type:'website',images:[{url:'https://sathian.ai/farcaster/social-card',width:1200,height:630,alt:'Run your own Farcaster server. One independent tester wanted.'}]},twitter:{card:'summary_large_image',title:'Run your own Farcaster server',description:'Open-source setup guide. One independent tester wanted.',images:['https://sathian.ai/farcaster/social-card']},robots:{index:false,follow:false}}
 
 export default function FarcasterSetup(){return <>
 
@@ -17,6 +17,8 @@ export default function FarcasterSetup(){return <>
   <section className={styles.section}><h2>Windows</h2><p>Windows 11 x64, <a href="https://nodejs.org/">Node.js 24</a> and <a href="https://learn.microsoft.com/windows/wsl/install">current WSL2</a> are needed.</p>
 
   <div className={styles.actions}><a className={styles.primary} href="/downloads/farcaster-quickstart-test.zip" download>Download the test build</a></div>
+
+  <p className={styles.muted}><a href="https://github.com/SathianSrikrishnan/farcaster-client-quickstart">View the code</a> · <a href="https://github.com/SathianSrikrishnan/farcaster-client-quickstart/issues/new?template=independent-test.md">Report your test</a></p>
 
   <ol><li>Extract the ZIP and open <strong>Start.cmd</strong>.</li><li>Choose a new data folder. In the local page, press <strong>Set up server</strong>.</li><li>When ready, press <strong>Open the app</strong>.</li></ol>
 
