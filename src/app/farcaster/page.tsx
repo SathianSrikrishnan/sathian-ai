@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import styles from './farcaster.module.css'
 
-export const metadata:Metadata={title:'Run your own Farcaster server | Sathian',description:'A simple Farcaster setup experiment, with a small reading app and plain-English explanations.',alternates:{canonical:'https://sathian.ai/farcaster'},robots:{index:false,follow:false}}
+export const metadata:Metadata={title:'Run your own Farcaster server | Sathian',description:'A simple Farcaster setup experiment, with a small reading app and plain-English explanations.',alternates:{canonical:'https://sathian.ai/farcaster'},openGraph:{title:'Run your own Farcaster server',description:'Open-source setup guide. Looking for one independent tester. Windows or Ubuntu; 16 GB RAM and 2 TB free disk.',url:'https://sathian.ai/farcaster',type:'website',images:[{url:'https://sathian.ai/farcaster/social-card',width:1200,height:630,alt:'Run your own Farcaster server. One independent tester wanted.'}]},twitter:{card:'summary_large_image',title:'Run your own Farcaster server',description:'Open-source setup guide. One independent tester wanted.',images:['https://sathian.ai/farcaster/social-card']},robots:{index:false,follow:false}}
 
 export default function FarcasterProject(){return <>
 
