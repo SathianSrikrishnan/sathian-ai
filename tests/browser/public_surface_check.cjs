@@ -65,6 +65,30 @@ async function settleLazyMedia(page) {
   await page.waitForTimeout(300)
 }
 
+async function verifyProof(page, label) {
+  await page.goto(`${baseUrl}/proof/`, { waitUntil: 'domcontentloaded' })
+  assert(await page.locator('[data-film]').count() === 7, `${label}: Proof chapter count`)
+  assert(!await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), `${label}: Proof overflow`)
+  const expected = {
+    growth: { hash: '459fe4d983d61effe7a04aa89b9a8241e8ac5c02dfc1338e849932b04b6ab081', duration: 35.583333 },
+    love: { hash: 'be7aff9cf319dbadaf2ea8564c06314a22f603318a4652a32b2325288d8c4986', duration: 50.5 },
+  }
+  for (const [name, film] of Object.entries(expected)) {
+    await page.locator(`[data-film="${name}"]`).click()
+    await page.waitForFunction(() => document.querySelector('#video').currentTime > 0.2)
+    const state = await page.locator('#video').evaluate(v => ({ src: new URL(v.currentSrc).pathname, duration: v.duration, paused: v.paused, error: !!v.error }))
+    assert(state.src === `/proof-assets/proof-voiced-v10-20261023/${name}.mp4`, `${label}: ${name} version`)
+    assert(!state.paused && !state.error && Math.abs(state.duration - film.duration) < 0.05, `${label}: ${name} playback`)
+    const response = await page.request.get(`${baseUrl}${state.src}`)
+    const hash = require('node:crypto').createHash('sha256').update(await response.body()).digest('hex')
+    assert(response.ok() && hash === film.hash, `${label}: ${name} exact approved bytes`)
+    await page.locator('#close').click()
+    await page.waitForFunction(() => document.querySelector('#video').paused)
+    assert(await page.locator('#video').evaluate(v => v.paused), `${label}: Proof close pauses`)
+  }
+  if (proofDirectory) await page.screenshot({ fullPage: true, path: join(proofDirectory, `${label}-proof-v10.png`) })
+}
+
 async function verifyViewport(browser, label, viewport) {
   const context = await browser.newContext({
     viewport,
@@ -211,6 +235,10 @@ async function verifyViewport(browser, label, viewport) {
       await verifyViewport(browser, 'wide-desktop', { width: 1920, height: 1080 }),
       await verifyViewport(browser, 'mobile', { width: 390, height: 844 }),
     ]
+    for (const [label, viewport] of [['proof-desktop', { width: 1440, height: 1000 }], ['proof-mobile', { width: 390, height: 844 }]]) {
+      const context = await browser.newContext({ viewport, extraHTTPHeaders: automationBypassSecret ? { 'x-vercel-protection-bypass': automationBypassSecret } : undefined })
+      try { await verifyProof(await context.newPage(), label); results.push({ label, proofV10: 'approved hashes and playback passed' }) } finally { await context.close() }
+    }
     console.log(JSON.stringify({ baseUrl, results }, null, 2))
   } finally {
     await browser.close()
