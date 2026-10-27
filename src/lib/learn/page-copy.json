@@ -1,8 +1,8 @@
 {
   "heading": "Understand the technology behind the gift.",
   "welcome": "Join Dad and Tanda to explore how digital keys, shared rules and security work, what they protect, and where trust still matters.",
-  "founderOpening": "Hi, I’m Sathian. I’m a dad, and this started with things I made with my own children. I wanted to connect the moments we treasure with something we can give a child: a parent-controlled digital wallet and a keepsake they can hold.",
-  "founderMore": "Bitcoin opened my eyes to a powerful idea: people can share a record and check its rules for themselves. That raises good questions. Who controls it? What stays private? What can go wrong? That’s why Learn with Tanda is here. We explore Bitcoin, Ethereum and Solana in simple language, including their differences and limits. Watch a lesson, or try the questions together with your child. I’ll be learning alongside Tanda, too.",
+  "founderOpening": "Hi, I\u2019m Sathian. I\u2019m a dad, and this started with things I made with my own children. I wanted to connect the moments we treasure with something we can give a child: a parent-controlled digital wallet and a keepsake they can hold.",
+  "founderMore": "Bitcoin opened my eyes to a powerful idea: people can share a record and check its rules for themselves. That raises good questions. Who controls it? What stays private? What can go wrong? That\u2019s why Learn with Tanda is here. We explore Bitcoin, Ethereum and Solana in simple language, including their differences and limits. Watch a lesson, or try the questions together with your child. I\u2019ll be learning alongside Tanda, too.",
   "lessonPurpose": "Cryptography includes encryption and digital signatures. Signatures help computers check which key signed a message. Shared rules help them check records. Each design has its own protections and limits.",
   "founderFilm": {
     "status": "not-produced",
@@ -10,5 +10,6 @@
     "poster": null
   },
   "familyHeading": "Learn with Tanda",
-  "familyWelcome": "Watch a lesson, draw a pattern or read a story together."
+  "familyWelcome": "Watch a lesson, draw a pattern or read a story together.",
+  "activityPurpose": "Stories, drawings and questions give families ways to create, explore and learn together. They grew from the family moments behind Tooth Fairy Network."
 }
