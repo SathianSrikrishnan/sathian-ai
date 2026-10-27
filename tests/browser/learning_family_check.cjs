@@ -7,7 +7,19 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
 ;(async () => {
   fs.mkdirSync(proof, { recursive: true })
   const browser = await chromium.launch({ headless: true })
-  const context = await browser.newContext({ extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET } : undefined })
+  const context = await browser.newContext()
+  // Scope test authentication to this preview. Public story art and YouTube
+  // embeds must never receive the preview bypass credential.
+  if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+    const previewOrigin = new URL(base).origin
+    await context.route('**/*', route => {
+      const request = route.request()
+      const headers = { ...request.headers() }
+      if (new URL(request.url()).origin === previewOrigin) headers['x-vercel-protection-bypass'] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      else delete headers['x-vercel-protection-bypass']
+      return route.continue({ headers })
+    })
+  }
   const page = await context.newPage(), errors = []
   page.on('pageerror', e => errors.push(e.message))
   try {
