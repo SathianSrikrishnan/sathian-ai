@@ -7,17 +7,48 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
 ;(async () => {
   fs.mkdirSync(proof, { recursive: true })
   const browser = await chromium.launch({ headless: true })
-  const context = await browser.newContext({ extraHTTPHeaders: process.env.VERCEL_AUTOMATION_BYPASS_SECRET ? { 'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET } : undefined })
+  const context = await browser.newContext()
+  // Scope test authentication to this preview. Public story art and YouTube
+  // embeds must never receive the preview bypass credential.
+  if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+    const previewOrigin = new URL(base).origin
+    await context.route('**/*', route => {
+      const request = route.request()
+      const headers = { ...request.headers() }
+      if (new URL(request.url()).origin === previewOrigin) headers['x-vercel-protection-bypass'] = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+      else delete headers['x-vercel-protection-bypass']
+      return route.continue({ headers })
+    })
+  }
   const page = await context.newPage(), errors = []
   page.on('pageerror', e => errors.push(e.message))
   try {
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 })
+      await page.emulateMedia({ reducedMotion: width === 390 ? 'reduce' : 'no-preference' })
       await page.goto(base + '/learn')
       await page.getByRole('heading', { name: 'Learn with Tanda', exact: true }).waitFor()
       assert(await page.locator('h1').count() === 1, 'one main heading')
       assert(await page.locator('.learn-collection video').count() === 3, 'three genuine Watch films')
       assert(await page.locator('video[autoplay]').count() === 0, 'no autoplay')
+      assert(await page.locator('video[src*="founder"], video[src*="dad-welcome"], video[src*="stablecoins"], video[src*="planet-v2"], video[src*="recovered-review"]').count() === 0, 'held or rejected review media must not appear publicly')
+      assert(await page.locator('.border-earth, .border-venus').count() === 0, 'no decorative top planets')
+      assert(await page.locator('.learn-proof-hub').getAttribute('href') === 'https://proof.sathian.ai', 'simple Proof link retained')
+      const hero = page.locator('.learn-classroom-art')
+      await hero.evaluate(i => i.decode())
+      assert(await hero.evaluate(i => i.naturalWidth === 1672), 'approved complete hero decoded')
+      assert(await page.locator('.learn-hero-zoom').getAttribute('target') === '_blank', 'complete illustration can be enlarged')
+      const meet = page.locator('.learn-meet-controls details').first()
+      const summary = meet.locator('summary')
+      await summary.focus()
+      await page.keyboard.press('Enter')
+      await page.waitForFunction(() => document.querySelector('.learn-meet-controls details').open)
+      await meet.locator('video').evaluate(async v => { v.muted = true; await v.play() })
+      await page.waitForFunction(() => document.querySelector('.learn-meet-controls video').currentTime > 0.1)
+      await summary.focus()
+      await page.keyboard.press('Enter')
+      await page.waitForFunction(() => !document.querySelector('.learn-meet-controls details').open && document.querySelector('.learn-meet-controls video').paused)
+      assert(await page.locator('.learn-meet-controls details').nth(1).locator('video').count() === 0, 'founder revision has no fake or rejected player')
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'home fits viewport')
       await page.screenshot({ path: path.join(proof, `home-${width}.png`), fullPage: true })
       await page.goto(base + '/learn/stories')

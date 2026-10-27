@@ -1,0 +1,2 @@
+# Preserve the approved caption asset byte-for-byte across Windows and hosted builds.
+public/learn-media/welcome-r2/tanda-welcome-review.vtt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

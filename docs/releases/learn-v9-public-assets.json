@@ -1,0 +1,23 @@
+{
+  "scope": "Approved Learn V9 classroom and Tanda welcome; existing production story media retained",
+  "assets": [
+    {
+      "path": "public/learn-art/classroom-master.webp",
+      "sha256": "b63cda86ea1a66b370bd6dd898bd8f16f7a0c44733d9c992d34e2ae32d491617"
+    },
+    {
+      "path": "public/learn-media/welcome-r2/tanda-welcome-review.mp4",
+      "sha256": "e1c4dccc8b5e7de505085a4aa399ab58f6ee0d9d050cd3d97e39cce957a35882"
+    },
+    {
+      "path": "public/learn-media/welcome-r2/tanda-welcome-review.vtt",
+      "sha256": "800d1308aedd6fcd760de0f096e31fdade1f12c3adbddf61b77a3c110216cb8f"
+    }
+  ],
+  "storyFilms": [
+    "tanda-origin",
+    "first-tooth-fee",
+    "toothlight-treaty"
+  ],
+  "notIncluded": "Rejected founder/stablecoin films, voice-held Planet review reels and four uncleared story films remain outside this public source"
+}

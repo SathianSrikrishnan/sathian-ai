@@ -4,20 +4,32 @@
     "title": "The Night the Network Woke",
     "src": "/learn-story-media/the-night-the-network-woke-v1-read-together.mp4",
     "poster": "/learn-story-media/the-night-the-network-woke-v1-read-together-poster.webp",
-    "captions": "/learn-story-media/the-night-the-network-woke-v1-read-together.en.vtt"
+    "captions": "/learn-story-media/the-night-the-network-woke-v1-read-together.en.vtt",
+    "durationSeconds": 365.666667,
+    "durationLabel": "6:06",
+    "reviewStatus": "",
+    "editionStatus": ""
   },
   {
     "slug": "first-tooth-fee",
     "title": "Tanda Faye and the First Tooth Fee",
     "src": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.mp4",
     "poster": "/learn-story-media/tanda-first-tooth-fee-v4-read-together-poster.webp",
-    "captions": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.en.vtt"
+    "captions": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.en.vtt",
+    "durationSeconds": 315.4,
+    "durationLabel": "5:15",
+    "reviewStatus": "",
+    "editionStatus": ""
   },
   {
     "slug": "toothlight-treaty",
     "title": "The Toothlight Treaty",
     "src": "/learn-story-media/the-toothlight-treaty-v5-read-together.mp4",
     "poster": "/learn-story-media/the-toothlight-treaty-v5-read-together-poster.webp",
-    "captions": "/learn-story-media/the-toothlight-treaty-v5-read-together.en.vtt"
+    "captions": "/learn-story-media/the-toothlight-treaty-v5-read-together.en.vtt",
+    "durationSeconds": 340.066667,
+    "durationLabel": "5:40",
+    "reviewStatus": "",
+    "editionStatus": ""
   }
 ]
