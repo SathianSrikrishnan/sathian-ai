@@ -15,7 +15,8 @@
     "agent:eval:live": "node scripts/run-site-agent-eval.mjs --mode live",
     "release:verify": "node scripts/verify-site-release.mjs",
     "test:unit": "vitest run",
-    "test:unit:watch": "vitest"
+    "test:unit:watch": "vitest",
+    "learn:verify-media": "node scripts/verify-learning-media.mjs"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",

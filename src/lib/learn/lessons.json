@@ -1,0 +1,1254 @@
+[
+  {
+    "id": "bitcoin",
+    "title": "Bitcoin",
+    "label": "Proof of Work",
+    "description": "Copies, signatures, and a history we can check.",
+    "art": "/learn-art/bitcoin.webp",
+    "poster": "/learn-art/bitcoin-poster.jpg",
+    "chapters": [
+      {
+        "id": "copy",
+        "title": "Pictures and payments",
+        "question": "Do I still have my picture?",
+        "answer": "yes",
+        "art": "/learn-art/copy.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/copy-question.mp4",
+            "transcript": "Let's try something. If I send you my picture, do I still have it?",
+            "duration": 8.0,
+            "sha256": "3dc449e361803bc892d6dc63533731034573dd9edc97b8f7bea860ce87ce1afe",
+            "captions": [
+              [
+                0.8200000000000005,
+                2.13,
+                "Let's try something."
+              ],
+              [
+                2.58,
+                5.57,
+                "If I send you my picture, do I"
+              ],
+              [
+                5.42,
+                6.37,
+                "still have it?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/copy-yes.mp4",
+            "transcript": "Yes. We both have a copy. That is useful for pictures. But money needs different rules.",
+            "duration": 8.0,
+            "sha256": "af8b59d4290543966cb010f23adfd9586c5181df4423746572ea034e879f4fef",
+            "captions": [
+              [
+                0.0,
+                2.4899999999999998,
+                "Yes, we both have a copy."
+              ],
+              [
+                2.98,
+                4.45,
+                "That is useful for pictures."
+              ],
+              [
+                5.04,
+                6.890000000000001,
+                "But money needs different rules."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/copy-no.mp4",
+            "transcript": "Sending a copy does not erase mine. We both have a drawing. But money needs different rules.",
+            "duration": 8.0,
+            "sha256": "03e82d12d5f057ac0da26c0eb0ab18129175b673e87407340d8d09b7cd813c4f",
+            "captions": [
+              [
+                0.0,
+                2.59,
+                "Sending a copy does not erase mine."
+              ],
+              [
+                3.28,
+                4.49,
+                "We both have a drawing."
+              ],
+              [
+                5.18,
+                6.970000000000001,
+                "But money needs different rules."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/copy-close.mp4",
+            "transcript": "The same money cannot pay two people in a valid history. Bitcoin's computers check the rules together. That is where our story of proof begins.",
+            "duration": 10.005,
+            "sha256": "b8157c7a9f7fa80c77518aec949bf53f8ed972fcc5d5743074a22f38a535b5c6",
+            "captions": [
+              [
+                0.0,
+                2.71,
+                "The same money cannot pay two people in"
+              ],
+              [
+                2.56,
+                3.59,
+                "a valid history."
+              ],
+              [
+                4.22,
+                6.53,
+                "Bitcoin's computers check the rules together."
+              ],
+              [
+                7.14,
+                9.57,
+                "That is where our story of proof begins."
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "signature",
+        "title": "What can a signature prove?",
+        "question": "Does signing prove it wasn’t spent already?",
+        "answer": "no",
+        "art": "/learn-art/signature.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/signature-question.mp4",
+            "transcript": "A secret key signs a payment. Other computers can check it. Does that signature prove the money has not already been spent?",
+            "duration": 10.005,
+            "sha256": "ef6dba4fb91013e6ad5116f2a3b83f05ca6fa17fe7b7fc8703ba4e024a4f7a8f",
+            "captions": [
+              [
+                0.0,
+                2.21,
+                "A secret key signs a payment."
+              ],
+              [
+                3.64,
+                5.29,
+                "Other computers can check it."
+              ],
+              [
+                5.98,
+                8.25,
+                "Does that signature prove the money has not"
+              ],
+              [
+                8.1,
+                9.13,
+                "already been spent?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/signature-yes.mp4",
+            "transcript": "It proves the key signed. It does not check the whole payment history.",
+            "duration": 6.016,
+            "sha256": "c5a86c0b50bca3543c1f5776c509dc6bebe16a9faae8352c07f1a8aa17ab5b13",
+            "captions": [
+              [
+                0.0,
+                1.91,
+                "It proves the key signed."
+              ],
+              [
+                2.26,
+                4.83,
+                "It does not check the whole payment history."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/signature-no.mp4",
+            "transcript": "Right. It shows permission. We still need to check the payment history.",
+            "duration": 6.016,
+            "sha256": "49b10ffdba6ba69801745bd3d45135825ed00e1f7de759680a39faa6ff863e4c",
+            "captions": [
+              [
+                0.0,
+                2.0100000000000002,
+                "Right, it shows permission."
+              ],
+              [
+                2.88,
+                4.930000000000001,
+                "We still need to check the payment history."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/signature-close.mp4",
+            "transcript": "Keep your secret key safe. A signature can authorize a payment, but it cannot tell the whole story.",
+            "duration": 8.0,
+            "sha256": "fbaf4802138289ae34bc43799a687fa79eaeeb0c64bb2a4f8cacddfa66c0baea",
+            "captions": [
+              [
+                0.7400000000000004,
+                2.67,
+                "Keep your secret key safe."
+              ],
+              [
+                2.82,
+                5.65,
+                "A signature can authorize a payment, but it"
+              ],
+              [
+                5.5,
+                7.17,
+                "cannot tell the whole story."
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "history",
+        "title": "Can both payments count?",
+        "question": "Should the history accept both payments?",
+        "answer": "no",
+        "art": "/learn-art/history.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/history-question.mp4",
+            "transcript": "Imagine I sign two payments using the same money. Both signatures check out. Should the shared history accept both payments?",
+            "duration": 10.005,
+            "sha256": "432ed5f0b45bf104e9279b3d754b621b2247b7c8177d8b972ce77912f183b924",
+            "captions": [
+              [
+                0.7999999999999985,
+                3.51,
+                "Imagine I sign two payments using the same"
+              ],
+              [
+                3.36,
+                3.85,
+                "money."
+              ],
+              [
+                4.36,
+                5.83,
+                "Both signatures check out."
+              ],
+              [
+                6.18,
+                8.47,
+                "Should the shared history accept both payments?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/history-yes.mp4",
+            "transcript": "They can both be signed, but the same money can only be spent once.",
+            "duration": 6.016,
+            "sha256": "9c0de17de031bcba48301f5fe44a67fe77a1de59e4d4c90496727e69efe393a7",
+            "captions": [
+              [
+                0.0,
+                3.31,
+                "They can both be signed, but the same"
+              ],
+              [
+                3.16,
+                5.010000000000001,
+                "money can only be spent once."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/history-no.mp4",
+            "transcript": "Right. The history must accept one payment and reject the conflicting one.",
+            "duration": 6.016,
+            "sha256": "bfa37b4eb9f8f9a9c32d5e0b0716033baabcab97607fbf2f95248a67d4c7771b",
+            "captions": [
+              [
+                0.0,
+                3.77,
+                "Right, the history must accept one payment and"
+              ],
+              [
+                3.62,
+                5.11,
+                "reject the conflicting one."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/history-close.mp4",
+            "transcript": "Bitcoin's computers check payments against a shared history. Next, we'll see how they agree on which history to follow.",
+            "duration": 8.0,
+            "sha256": "8c3f4797be4371116f438f10c6d4060d483619a903717b285a6568ac83a5b6f8",
+            "captions": [
+              [
+                0.0,
+                3.4499999999999997,
+                "Bitcoin's computers check payments against a shared history."
+              ],
+              [
+                4.02,
+                6.37,
+                "Next, we'll see how they agree on which"
+              ],
+              [
+                6.22,
+                7.29,
+                "history to follow."
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "fingerprint",
+        "title": "Can a changed record hide?",
+        "question": "Can it change without leaving a clue?",
+        "answer": "no",
+        "art": "/learn-art/fingerprint.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/fingerprint-question.mp4",
+            "transcript": "A record has a digital fingerprint. Change the record, and its fingerprint changes too. Can someone change it without leaving a clue?",
+            "duration": 10.005,
+            "sha256": "48a7a33d1d0e51885271a3015c32d111003dfe9d576ddfb0b6b2934a01f3f9c5",
+            "captions": [
+              [
+                0.0,
+                2.17,
+                "A record has a digital fingerprint."
+              ],
+              [
+                3.02,
+                5.87,
+                "Change the record and its fingerprint changes too."
+              ],
+              [
+                6.4,
+                8.75,
+                "Can someone change it without leaving a clue?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/fingerprint-yes.mp4",
+            "transcript": "The new fingerprint is the clue. Other computers can check it.",
+            "duration": 6.016,
+            "sha256": "d0f4ce0a3f585c384ba45aa973ba5a121f5bba4e398405385bd2dcf85fa41249",
+            "captions": [
+              [
+                0.0,
+                1.99,
+                "The new fingerprint is the clue."
+              ],
+              [
+                2.48,
+                4.15,
+                "Other computers can check it."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/fingerprint-no.mp4",
+            "transcript": "Right. A changed fingerprint gives the other computers a clue.",
+            "duration": 6.016,
+            "sha256": "b6cc206b9663858310f8d0836b355d6975b3540609aab762d471c94b72362107",
+            "captions": [
+              [
+                0.0,
+                1.3299999999999998,
+                "Right!"
+              ],
+              [
+                1.64,
+                4.15,
+                "A changed fingerprint gives the other computers a"
+              ],
+              [
+                4.0,
+                4.41,
+                "clue."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/fingerprint-close.mp4",
+            "transcript": "Each block points to the fingerprint of the one before it. Change an old block, and the links after it change too.",
+            "duration": 8.0,
+            "sha256": "ce1729343678085632b126b9d7c6fd3f119a2d8b66ff861ea8c6c210c9c73cbd",
+            "captions": [
+              [
+                0.0,
+                2.81,
+                "Each block points to the fingerprint of the"
+              ],
+              [
+                2.66,
+                3.65,
+                "one before it."
+              ],
+              [
+                4.28,
+                6.630000000000001,
+                "Change an old block, and the links after"
+              ],
+              [
+                6.48,
+                7.510000000000001,
+                "it change too."
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "work",
+        "title": "Work and rules",
+        "question": "Is work alone enough?",
+        "answer": "no",
+        "art": "/learn-art/work.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/work-question.mp4",
+            "transcript": "Bitcoin miners try many guesses to earn a block. Checking their answer is easy. Do computers accept any block just because it took work?",
+            "duration": 10.005,
+            "sha256": "f93c6e403d6d112e69e86a795e517e3b6fcb67a87e5c93f8b0edc0de848b0e2d",
+            "captions": [
+              [
+                0.6599999999999995,
+                3.4499999999999997,
+                "Bitcoin miners try many guesses to earn a"
+              ],
+              [
+                3.3,
+                3.69,
+                "block."
+              ],
+              [
+                4.14,
+                5.61,
+                "Checking their answer is easy."
+              ],
+              [
+                6.14,
+                8.83,
+                "Do computers accept any block just because it"
+              ],
+              [
+                8.68,
+                9.31,
+                "took work?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/work-yes.mp4",
+            "transcript": "Work is only part of the test. The payments must follow the rules too.",
+            "duration": 6.016,
+            "sha256": "dfe142cbd06d97b4d99a24e3a4456114fe9d94b3a30f2af2a98a671d560b705a",
+            "captions": [
+              [
+                0.0,
+                1.93,
+                "Work is only part of the test."
+              ],
+              [
+                2.42,
+                4.61,
+                "The payments must follow the rules, too."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/work-no.mp4",
+            "transcript": "Right. Every computer still checks the payments and the work.",
+            "duration": 6.016,
+            "sha256": "d0f2aec30ec6e73e495f2c2a40eb8f0bdb2eabc386e0e0b157d53df4f6810f30",
+            "captions": [
+              [
+                0.0,
+                1.5899999999999999,
+                "Right!"
+              ],
+              [
+                2.04,
+                4.91,
+                "Every computer still checks the payments and the"
+              ],
+              [
+                4.76,
+                5.15,
+                "work."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/work-close.mp4",
+            "transcript": "When valid histories compete, computers follow the one with the most accumulated work. Replacing old history means rebuilding its work and catching up.",
+            "duration": 10.005,
+            "sha256": "b4cb234c976010854724725343f6adfce270e69d7c6be6dcc5a15ad47774f40d",
+            "captions": [
+              [
+                0.0,
+                3.71,
+                "When valid histories compete, computers follow the one"
+              ],
+              [
+                3.56,
+                5.41,
+                "with the most accumulated work."
+              ],
+              [
+                5.98,
+                9.110000000000001,
+                "Replacing old history means rebuilding its work and"
+              ],
+              [
+                8.96,
+                9.75,
+                "catching up."
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "confidence",
+        "title": "Confidence and care",
+        "question": "Does every risk disappear?",
+        "answer": "no",
+        "art": "/learn-art/confidence.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/bitcoin/confidence-question.mp4",
+            "transcript": "More blocks add more work after a payment. That makes replacing its history harder. Does that mean nothing can ever go wrong?",
+            "duration": 10.005,
+            "sha256": "93218c3fb5afaff1664a5508b354df8babfa1e15f50dbca74c9cc9508ae62967",
+            "captions": [
+              [
+                0.0,
+                2.77,
+                "More blocks add more work after a payment."
+              ],
+              [
+                3.5,
+                5.57,
+                "That makes replacing its history harder."
+              ],
+              [
+                6.98,
+                9.25,
+                "Does that mean nothing can ever go wrong?"
+              ]
+            ]
+          },
+          "yes": {
+            "src": "/learn-media/bitcoin/confidence-yes.mp4",
+            "transcript": "It makes changes harder. It does not make every risk disappear.",
+            "duration": 6.016,
+            "sha256": "fd2fddfbdfccfbeb801d92ca90566818767c6b767cc8206c6ec70e3ee1777e1b",
+            "captions": [
+              [
+                0.0,
+                1.51,
+                "It makes changes harder."
+              ],
+              [
+                1.96,
+                4.17,
+                "It does not make every risk disappear."
+              ]
+            ]
+          },
+          "no": {
+            "src": "/learn-media/bitcoin/confidence-no.mp4",
+            "transcript": "Right. Strong rules help, but we still need to use them carefully.",
+            "duration": 6.016,
+            "sha256": "58bcab7040035a2e88228274bd20f59da86e40aadbd76ca9726db96c14ddf918",
+            "captions": [
+              [
+                0.0,
+                3.9299999999999997,
+                "Right, strong rules help, but we still need"
+              ],
+              [
+                3.78,
+                4.890000000000001,
+                "to use them carefully."
+              ]
+            ]
+          },
+          "close": {
+            "src": "/learn-media/bitcoin/confidence-close.mp4",
+            "transcript": "Check who you pay. Protect your secret key. The network checks its rules, but cannot fix every mistake. Proof helps us know what to trust.",
+            "duration": 10.005,
+            "sha256": "f305e9ff3157c3cbad25768664b8a2ce9da972e33fa226f328f13508e9a12198",
+            "captions": [
+              [
+                0.0,
+                1.19,
+                "Check who you pay."
+              ],
+              [
+                1.46,
+                2.83,
+                "Protect your secret key."
+              ],
+              [
+                3.18,
+                6.03,
+                "The network checks its rules, but cannot fix"
+              ],
+              [
+                5.88,
+                6.87,
+                "every mistake."
+              ],
+              [
+                7.36,
+                9.39,
+                "Proof helps us know what to trust."
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "sources": [
+      {
+        "title": "Bitcoin: a peer-to-peer electronic cash system, sections 2–6, 9 and 11",
+        "url": "https://bitcoin.org/bitcoin.pdf"
+      }
+    ],
+    "watch": {
+      "src": "/learn-media/bitcoin/watch-review.mp4",
+      "transcript": "",
+      "duration": 141.29,
+      "sha256": "cd7f0c1f03ee9d6d660eef2f2ae6c92cac65311f51c41463060b15e30180e16e"
+    }
+  },
+  {
+    "id": "ethereum",
+    "title": "Ethereum",
+    "label": "Proof of Stake",
+    "description": "Shared rules, programs, and something at stake.",
+    "art": "/learn-art/ethereum.webp",
+    "poster": "/learn-art/ethereum-poster.jpg",
+    "chapters": [
+      {
+        "id": "ethereum-01",
+        "title": "Shared rules",
+        "question": "Two computers start with the same numbers and follow the same instruction. Should they get the same answer?",
+        "answer": "yes",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-01-question.mp4",
+            "transcript": "Two computers start with the same numbers and follow the same instruction. Should they get the same answer?",
+            "sha256": "cfad00e2f25957279f896875c665198ec2a3488a5ef1bbdc1609ef83ccf5e195",
+            "duration": 8.75,
+            "captions": [
+              [
+                0.6799999999999999,
+                5.72,
+                "Two computers start with the same numbers and follow the same instruction."
+              ],
+              [
+                6.68,
+                7.84,
+                "Should they get the same answer?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-01-yes.mp4",
+            "transcript": "Yes. Both computers can check the same change for themselves.",
+            "sha256": "87d2f3cd009c177b13c7e06047385db6426f76566b2053c2e39d4c0e857f8c9b",
+            "duration": 5.416667,
+            "captions": [
+              [
+                0.0,
+                4.58,
+                "Yes. Both computers can check the same change for themselves."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-01-no.mp4",
+            "transcript": "They should. Matching starting numbers and the same instruction lead to the same answer.",
+            "sha256": "504f95c231d950d2672ee444549b251988ba1eef545409f0b1ec32d8d7d96d4f",
+            "duration": 7.1,
+            "captions": [
+              [
+                0.0,
+                6.32,
+                "They should. Matching starting numbers and the same instruction lead to the same answer."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-01-close.mp4",
+            "transcript": "Both get the same answer. Ethereum uses shared rules to check changes.",
+            "sha256": "171234ad94c31408be3ec3f82d383b430886b08f1b58be2c01701b8943783e47",
+            "duration": 6.1,
+            "captions": [
+              [
+                0.0,
+                5.26,
+                "Both get the same answer. Ethereum uses shared rules to check changes."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      },
+      {
+        "id": "ethereum-02",
+        "title": "What a signature checks",
+        "question": "A digital signature checks which key signed an instruction. Does it prove the person understood what they signed?",
+        "answer": "no",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-02-question.mp4",
+            "transcript": "A digital signature checks which key signed an instruction. Does it prove the person understood what they signed?",
+            "sha256": "368c5d9ac73dd75e564c3a727568e37d2d9009b3023c383af32f835ace29b37e",
+            "duration": 7.5,
+            "captions": [
+              [
+                0,
+                3.64,
+                "A digital signature checks which key signed an instruction."
+              ],
+              [
+                4.18,
+                6.58,
+                "Does it prove the person understood what they signed?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-02-yes.mp4",
+            "transcript": "The signature cannot show what the person understood.",
+            "sha256": "5b2799d6d8ba8e2c866ddd61eef81bdb60c0feeb26a9f7364928d8e306661f8c",
+            "duration": 4.1,
+            "captions": [
+              [
+                0,
+                3.48,
+                "The signature cannot show what the person understood."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-02-no.mp4",
+            "transcript": "No. It checks the signed instruction, not what was in someone’s mind.",
+            "sha256": "799c42afc2395285016c014f08c3af10c1bdcdf6850856bccd9da98bc3d9ed17",
+            "duration": 5.8,
+            "captions": [
+              [
+                0,
+                4.9,
+                "No. It checks the signed instruction, not what was in someone’s mind."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-02-close.mp4",
+            "transcript": "A signature helps check permission. We still need to understand the instruction before agreeing.",
+            "sha256": "8cb3de4c9b917145af6d1fd10759abe74184fd23b5aa4304e3e89afd0998b718",
+            "duration": 8.25,
+            "captions": [
+              [
+                0,
+                2.84,
+                "A signature helps check permission."
+              ],
+              [
+                4.4,
+                7.42,
+                "We still need to understand the instruction before agreeing."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      },
+      {
+        "id": "ethereum-03",
+        "title": "Programs follow code",
+        "question": "A smart contract follows code. This one needs a ticket. Can it ignore that rule just to be kind?",
+        "answer": "no",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-03-question.mp4",
+            "transcript": "A smart contract follows code. This one needs a ticket. Can it ignore that rule just to be kind?",
+            "sha256": "836e6bb590421c008b2ddfd73ffe8925924faf5406fa7daf96e47e8b738730cb",
+            "duration": 9.166667,
+            "captions": [
+              [
+                0,
+                2.3,
+                "A smart contract follows code."
+              ],
+              [
+                3.4,
+                4.54,
+                "This one needs a ticket."
+              ],
+              [
+                6.1,
+                8.28,
+                "Can it ignore that rule just to be kind?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-03-yes.mp4",
+            "transcript": "It has no feelings to make that choice. It must follow the code.",
+            "sha256": "a8c1d9685ac09b33ce715d3d323dc377d719814146914487fcb1809aa23aac10",
+            "duration": 5.5,
+            "captions": [
+              [
+                0.64,
+                4.6,
+                "It has no feelings to make that choice. It must follow the code."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-03-no.mp4",
+            "transcript": "No. With no ticket, this program refuses the request.",
+            "sha256": "4b365a8f7e3f1c93284d0868da397fc511a661878ef514013c6015d427847e1b",
+            "duration": 5.166667,
+            "captions": [
+              [
+                0,
+                4.28,
+                "No. With no ticket, this program refuses the request."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-03-close.mp4",
+            "transcript": "Following code can check a rule. It cannot guarantee the program is safe or fair.",
+            "sha256": "4de478005cdf181a6a05c876c199c92dcc126901d7a943463440e78743b3a238",
+            "duration": 6.916667,
+            "captions": [
+              [
+                0,
+                1.8,
+                "Following code can check a rule."
+              ],
+              [
+                2.5,
+                6.08,
+                "It cannot guarantee the program is safe or fair."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      },
+      {
+        "id": "ethereum-04",
+        "title": "Something at stake",
+        "question": "Ethereum’s checkers set aside some money. If a checker signs two conflicting records, can it lose some?",
+        "answer": "yes",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-04-question.mp4",
+            "transcript": "Ethereum’s checkers set aside some money. If a checker signs two conflicting records, can it lose some?",
+            "sha256": "1b535a6de988881b417832ee5f229401556666a0a0fd15e1f8cab6a3e16e1429",
+            "duration": 8.708333,
+            "captions": [
+              [
+                0.94,
+                3.3,
+                "Ethereum’s checkers set aside some money."
+              ],
+              [
+                4.2,
+                7.84,
+                "If a checker signs two conflicting records, can it lose some?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-04-yes.mp4",
+            "transcript": "Yes. The two records reveal the broken rule, and some of that money can be taken away.",
+            "sha256": "780bc90e5318ad23fcf753f59fc25cc4f8bb7aba12e8fdbd8643fe782e09bdcb",
+            "duration": 7.3,
+            "captions": [
+              [
+                0,
+                6.4,
+                "Yes. The two records reveal the broken rule, and some of that money can be taken away."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-04-no.mp4",
+            "transcript": "It can. Signing both records breaks this rule, so some money can be taken away.",
+            "sha256": "baaa45850d9745859e4f85685616d5e9005950124e41feaec3f88a79f10f43ac",
+            "duration": 7.666667,
+            "captions": [
+              [
+                0,
+                1.4,
+                "It can."
+              ],
+              [
+                2.32,
+                6.8,
+                "Signing both records breaks this rule, so some money can be taken away."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-04-close.mp4",
+            "transcript": "That money is called stake. Losing it makes cheating costly.",
+            "sha256": "1c716c56f08726795431706c66fad80e802aad295d8dfe4250a6b8788d82cd06",
+            "duration": 5.666667,
+            "captions": [
+              [
+                0,
+                2.46,
+                "That money is called stake."
+              ],
+              [
+                3.2,
+                4.6,
+                "Losing it makes cheating costly."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      },
+      {
+        "id": "ethereum-05",
+        "title": "When a page is settled",
+        "question": "Ethereum adds a new page to its record. Is that page settled as soon as it appears?",
+        "answer": "no",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-05-question.mp4",
+            "transcript": "Ethereum adds a new page to its record. Is that page settled as soon as it appears?",
+            "sha256": "1fb24bcdfee9e25138c2e411098ac91b1cbd71ccc5402f3ce1c2091a6de7d840",
+            "duration": 7.55,
+            "captions": [
+              [
+                0.8,
+                3.3,
+                "Ethereum adds a new page to its record."
+              ],
+              [
+                4.06,
+                6.7,
+                "Is that page settled as soon as it appears?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-05-yes.mp4",
+            "transcript": "It still needs more checks. A new page can be replaced before those checks are finished.",
+            "sha256": "83c7f05281631b7eddfe30239586ca7dc8cf04a0d62161d0b711acd8953496aa",
+            "duration": 6.75,
+            "captions": [
+              [
+                0.58,
+                5.86,
+                "It still needs more checks. A new page can be replaced before those checks are finished."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-05-no.mp4",
+            "transcript": "No. The checkers must complete more checks before treating that part of the record as settled.",
+            "sha256": "0579f295ad672a55bb2f872b46bc2f17ed50434fa224b4819d5f2eb01b8d1929",
+            "duration": 7.958333,
+            "captions": [
+              [
+                0,
+                7.08,
+                "No. The checkers must complete more checks before treating that part of the record as settled."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-05-close.mp4",
+            "transcript": "A settled record is very hard to replace. This strong commitment is called finality.",
+            "sha256": "9c91bc47dd84922ba9b53bac931facc10bfc5c59401975584cace3c5128a1a9e",
+            "duration": 7.666667,
+            "captions": [
+              [
+                0,
+                3.34,
+                "A settled record is very hard to replace."
+              ],
+              [
+                4.18,
+                6.78,
+                "This strong commitment is called finality."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      },
+      {
+        "id": "ethereum-06",
+        "title": "Outside facts need evidence",
+        "question": "A program receives a message saying it rained. Does running the program correctly prove it really rained?",
+        "answer": "no",
+        "art": "/learn-art/ethereum.webp",
+        "clips": {
+          "question": {
+            "src": "/learn-media/ethereum/ethereum-06-question.mp4",
+            "transcript": "A program receives a message saying it rained. Does running the program correctly prove it really rained?",
+            "sha256": "e72c1e640a73a8fff4adb7ffb57d9de486530e22aec9ec67d31aff0e53ef9771",
+            "duration": 8.85,
+            "captions": [
+              [
+                0,
+                2.58,
+                "A program receives a message saying"
+              ],
+              [
+                3.12,
+                3.84,
+                "it rained."
+              ],
+              [
+                4.76,
+                7.98,
+                "Does running the program correctly prove it really rained?"
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "yes": {
+            "src": "/learn-media/ethereum/ethereum-06-yes.mp4",
+            "transcript": "The message could be wrong.",
+            "sha256": "842c1a93f0e10c9be4607f719b0dd5630003d2c3643322277678fd8edf701644",
+            "duration": 2.55,
+            "captions": [
+              [
+                0,
+                2.12,
+                "The message could be wrong."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "no": {
+            "src": "/learn-media/ethereum/ethereum-06-no.mp4",
+            "transcript": "No. The message could be wrong.",
+            "sha256": "404955a154498b9b54d26444513fd338ae446ad795edbdf99550918c7e40b68e",
+            "duration": 3.791667,
+            "captions": [
+              [
+                0,
+                0.74,
+                "No."
+              ],
+              [
+                1.6,
+                3.3,
+                "The message could be wrong."
+              ]
+            ],
+            "embeddedDrawing": true
+          },
+          "close": {
+            "src": "/learn-media/ethereum/ethereum-06-close.mp4",
+            "transcript": "Computers check instructions and records. We still need evidence about the outside world. Ask what each check actually proves.",
+            "sha256": "439ea62a538aafc697cecc29febe261cd06f7e08a057b3f217c64e61f6d2072a",
+            "duration": 9.916667,
+            "captions": [
+              [
+                0,
+                5.44,
+                "Computers check instructions and records. We still need evidence about the outside"
+              ],
+              [
+                5.44,
+                9.06,
+                "world. Ask what each check actually proves."
+              ]
+            ],
+            "embeddedDrawing": true
+          }
+        }
+      }
+    ],
+    "sources": [
+      {
+        "title": "Ethereum Virtual Machine",
+        "url": "https://ethereum.org/developers/docs/evm/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Nodes and clients",
+        "url": "https://ethereum.org/developers/docs/nodes-and-clients/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Transactions",
+        "url": "https://ethereum.org/developers/docs/transactions/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Introduction to smart contracts",
+        "url": "https://ethereum.org/developers/docs/smart-contracts/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Smart contract security",
+        "url": "https://ethereum.org/developers/docs/smart-contracts/security/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Gas and fees",
+        "url": "https://ethereum.org/developers/docs/gas/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Proof of stake",
+        "url": "https://ethereum.org/developers/docs/consensus-mechanisms/pos/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Gasper",
+        "url": "https://ethereum.org/developers/docs/consensus-mechanisms/pos/gasper/",
+        "checked_utc": "2026-10-17"
+      },
+      {
+        "title": "Oracles",
+        "url": "https://ethereum.org/developers/docs/oracles/",
+        "checked_utc": "2026-10-17"
+      }
+    ],
+    "watch": {
+      "src": "/learn-media/ethereum/watch-review.mp4",
+      "transcript": "",
+      "duration": 133.536,
+      "sha256": "734aa16f76bc151971b92449cfd19e2e3a2966eedf2f877f6333f2a8be3bdbed"
+    }
+  },
+  {
+    "id": "solana",
+    "title": "Proof of History",
+    "label": "An early Solana idea",
+    "description": "A sequence we can check. Agreement is a separate step.",
+    "art": "/learn-art/solana.webp",
+    "poster": "/learn-art/solana.webp",
+    "chapters": [],
+    "watch": {
+      "src": "/learn-media/solana/proof-of-history.mp4",
+      "transcript": "Solana’s original design tracks order. Can swapping “add two” and “double” change our answer? Yes. Starting from one, adding first gives six. Doubling first gives four. The order changes the answer. A calculation makes a fingerprint. In Proof of History, does each new fingerprint use the one before it? Yes, each result feeds the next calculation. Each new result waits for the previous one, building a linked trail. A message joins the trail here. Can computers check that it was included before the next step? Yes, the message helps make the next fingerprint. These links let computers check where messages joined the trail. With each piece’s start and end saved, can computers check different pieces at the same time? Yes. Saved fingerprints let computers check separate pieces together. Building needs linked steps. Checking can happen side-by-side. A trail’s calculations check out. Does that mean the network has already agreed to accept that record? No. The network still needs its voting rules to choose a shared record. Checking calculations and reaching agreement have different jobs. If one checking step is quick, must the message’s whole journey be quick too? No. Messages can still wait for delivery or a busy computer. The whole journey depends on all its parts.",
+      "duration": 123.12,
+      "sha256": "e59d1b74d16966544e74017ff8454391cbf69bc65865bbef46318f617be48d9d",
+      "captions": [
+        [
+          0,
+          10,
+          "Solana’s original design tracks order. Can swapping “add two” and “double” change our answer?"
+        ],
+        [
+          10.5,
+          20.544,
+          "Yes. Starting from one, adding first gives six. Doubling first gives four. The order changes the answer."
+        ],
+        [
+          20.544,
+          30.544,
+          "A calculation makes a fingerprint. In Proof of History, does each new fingerprint use the one before it?"
+        ],
+        [
+          31.044,
+          41.088,
+          "Yes, each result feeds the next calculation. Each new result waits for the previous one, building a linked trail."
+        ],
+        [
+          41.088,
+          51.088,
+          "A message joins the trail here. Can computers check that it was included before the next step?"
+        ],
+        [
+          51.588,
+          61.632,
+          "Yes, the message helps make the next fingerprint. These links let computers check where messages joined the trail."
+        ],
+        [
+          61.632,
+          71.632,
+          "With each piece’s start and end saved, can computers check different pieces at the same time?"
+        ],
+        [
+          72.132,
+          82.176,
+          "Yes. Saved fingerprints let computers check separate pieces together. Building needs linked steps. Checking can happen side-by-side."
+        ],
+        [
+          82.176,
+          92.176,
+          "A trail’s calculations check out. Does that mean the network has already agreed to accept that record?"
+        ],
+        [
+          92.676,
+          102.72,
+          "No. The network still needs its voting rules to choose a shared record. Checking calculations and reaching agreement have different jobs."
+        ],
+        [
+          102.72,
+          112.72,
+          "If one checking step is quick, must the message’s whole journey be quick too?"
+        ],
+        [
+          113.22,
+          123.12,
+          "No. Messages can still wait for delivery or a busy computer. The whole journey depends on all its parts."
+        ]
+      ],
+      "captionSrc": "/learn-media/solana/historical-review.vtt"
+    },
+    "sources": [
+      {
+        "title": "Solana white paper",
+        "url": "https://solana.com/solana-whitepaper.pdf"
+      },
+      {
+        "title": "Solana Foundation: Alpenglow — October 2026 update",
+        "url": "https://solana.com/upgrades/alpenglow"
+      }
+    ],
+    "boardTitle": "Solana’s early design",
+    "introduction": "Two people try to spend the club’s last point. Order matters. This historical animation shows how Solana’s early design made a sequence checkable. The network still needs separate rules to agree.",
+    "sourceNote": "October 2026: Solana now uses Alpenglow for agreement, and PoH no longer paces block production. This clip teaches an earlier design idea."
+  }
+]

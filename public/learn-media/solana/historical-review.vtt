@@ -1,0 +1,49 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:10.000
+Solana’s original design tracks order. Can swapping “add two” and “double” change our answer?
+
+2
+00:00:10.500 --> 00:00:20.544
+Yes. Starting from one, adding first gives six. Doubling first gives four. The order changes the answer.
+
+3
+00:00:20.544 --> 00:00:30.544
+A calculation makes a fingerprint. In Proof of History, does each new fingerprint use the one before it?
+
+4
+00:00:31.044 --> 00:00:41.088
+Yes, each result feeds the next calculation. Each new result waits for the previous one, building a linked trail.
+
+5
+00:00:41.088 --> 00:00:51.088
+A message joins the trail here. Can computers check that it was included before the next step?
+
+6
+00:00:51.588 --> 00:01:01.632
+Yes, the message helps make the next fingerprint. These links let computers check where messages joined the trail.
+
+7
+00:01:01.632 --> 00:01:11.632
+With each piece’s start and end saved, can computers check different pieces at the same time?
+
+8
+00:01:12.132 --> 00:01:22.176
+Yes. Saved fingerprints let computers check separate pieces together. Building needs linked steps. Checking can happen side-by-side.
+
+9
+00:01:22.176 --> 00:01:32.176
+A trail’s calculations check out. Does that mean the network has already agreed to accept that record?
+
+10
+00:01:32.676 --> 00:01:42.720
+No. The network still needs its voting rules to choose a shared record. Checking calculations and reaching agreement have different jobs.
+
+11
+00:01:42.720 --> 00:01:52.720
+If one checking step is quick, must the message’s whole journey be quick too?
+
+12
+00:01:53.220 --> 00:02:03.120
+No. Messages can still wait for delivery or a busy computer. The whole journey depends on all its parts.

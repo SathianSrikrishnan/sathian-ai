@@ -1,5 +1,7 @@
 'use client'
 
+import { isLearningPath } from '@/lib/learn/route-policy'
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { usePathname } from 'next/navigation'
@@ -162,6 +164,12 @@ async function uploadAgentFile(input: {
 }
 
 export function ChatWidget() {
+  const pathname = usePathname()
+  if (isLearningPath(pathname)) return null
+  return <ChatWidgetContent />
+}
+
+function ChatWidgetContent() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<AgentMessage[]>([
     { role: 'bot', text: AGENT_INTRO_MESSAGE },

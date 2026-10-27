@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "tanda-origin",
+    "title": "The Night the Network Woke",
+    "src": "/learn-story-media/the-night-the-network-woke-v1-read-together.mp4",
+    "poster": "/learn-story-media/the-night-the-network-woke-v1-read-together-poster.webp",
+    "captions": "/learn-story-media/the-night-the-network-woke-v1-read-together.en.vtt"
+  },
+  {
+    "slug": "first-tooth-fee",
+    "title": "Tanda Faye and the First Tooth Fee",
+    "src": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.mp4",
+    "poster": "/learn-story-media/tanda-first-tooth-fee-v4-read-together-poster.webp",
+    "captions": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.en.vtt"
+  },
+  {
+    "slug": "toothlight-treaty",
+    "title": "The Toothlight Treaty",
+    "src": "/learn-story-media/the-toothlight-treaty-v5-read-together.mp4",
+    "poster": "/learn-story-media/the-toothlight-treaty-v5-read-together-poster.webp",
+    "captions": "/learn-story-media/the-toothlight-treaty-v5-read-together.en.vtt"
+  }
+]

@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'About', href: '/about', external: false },
   { label: 'Hackathons', href: '/hackathons', external: false },
   { label: 'Writing', href: '/writings', external: false },
+  { label: 'Learn', href: '/learn', external: false },
 ]
 
 export function SiteNav() {

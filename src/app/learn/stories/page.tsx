@@ -1,0 +1,4 @@
+import Link from 'next/link'
+import { STORIES } from '@/lib/learn/storybook'
+export const metadata = { title: 'Storybook World | Learn with Tanda', description: 'Seven illustrated stories to read together.' }
+export default function Storybook() { return <main className="learn-board"><nav className="learn-nav"><Link href="/learn">Learn with Tanda</Link></nav><header className="learn-intro"><h1>Storybook World</h1><p>Meet Tanda the Tooth Fairy and friends. Choose a story to read together.</p></header><div className="learn-story-grid">{STORIES.map(story => <Link className="learn-story-card" key={story.slug} href={`/learn/stories/${story.slug}`}><img src={story.cover} alt="" loading="lazy" /><div><p className="learn-resource-title">{story.title}</p><p>{story.hook}</p><small>{story.minutes} minute read</small></div></Link>)}</div></main> }
