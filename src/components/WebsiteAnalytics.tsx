@@ -1,11 +1,19 @@
 'use client'
 
+import { isLearningPath } from '@/lib/learn/route-policy'
+
 import { Analytics } from '@vercel/analytics/react'
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
 export function WebsiteAnalytics() {
+  const pathname = usePathname()
+  if (isLearningPath(pathname)) return null
+  return <WebsiteAnalyticsContent />
+}
+
+function WebsiteAnalyticsContent() {
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
   const pathname = usePathname()
 

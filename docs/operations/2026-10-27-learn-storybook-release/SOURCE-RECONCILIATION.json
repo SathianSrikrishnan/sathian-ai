@@ -1,0 +1,12 @@
+{
+  "base": "6d506b7930a92929ed5fee84df72c5813e039f97",
+  "rollback": "dpl_GPXHgXFtBuTKw3MGtq1JfSyAZvNy",
+  "unchangedV10": {
+    "public/proof-assets/proof-voiced-v10-20261023/growth.mp4": "459fe4d983d61effe7a04aa89b9a8241e8ac5c02dfc1338e849932b04b6ab081",
+    "public/proof-assets/proof-voiced-v10-20261023/love.mp4": "be7aff9cf319dbadaf2ea8564c06314a22f603318a4652a32b2325288d8c4986"
+  },
+  "proofHtml": "byte-identical after removing one added Learn link",
+  "securityConfiguration": "unchanged",
+  "tfnProduction": "unchanged",
+  "browserExecution": "hosted CI only; SSBrain UI forbidden"
+}

@@ -1,0 +1,16 @@
+{
+  "solana": {
+    "status": "historical-release-approved",
+    "reviewedOn": "2026-10-27",
+    "source": "https://solana.com/upgrades/alpenglow",
+    "reason": "Owner approved assembled Learn app and historical film; historical scope and Alpenglow context remain explicit.",
+    "audit": "docs/learn-with-tanda-2026-10-25/POH-TRANSCRIPT-AND-SENTENCE-AUDIT-2026-10-25.md",
+    "exactFilmTranscriptAvailable": true,
+    "transcriptBasis": "Recovered archived full-film and clip ASR supplied by producer; not original manuscript or new listening",
+    "textAuditComplete": true,
+    "localFramingCorrected": true,
+    "publicReleaseApproved": true,
+    "filmApprovedByOwner": true,
+    "libraryFileId": "libfile_86da0711b29c8191a5baa33ccc9bcd7b"
+  }
+}
