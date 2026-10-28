@@ -1,0 +1,5 @@
+.card{max-width:640px;margin:28px 0;padding:24px;border:1px solid #c8b58f;border-radius:12px;background:#fff7e6;color:#243e45;overflow-wrap:anywhere}
+.card h2{font-size:clamp(27px,4vw,36px);line-height:1.2;margin:8px 0 14px}.card p{font-size:16px;line-height:1.6}.card .adult{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#4b6660}
+.form{display:grid;gap:12px}.form label{font-size:16px}.email{width:100%;min-height:48px;border:1px solid #72857a;border-radius:5px;padding:12px;background:#fffdf6;color:#243e45;font:16px Arial,sans-serif}
+.form .notice{font-size:14px;margin:0;line-height:1.5}.submit{min-height:48px;padding:12px 18px;background:#b74835;color:#fff9ec;border:0;border-radius:5px;font-size:16px;cursor:pointer}.submit:disabled{opacity:.65;cursor:wait}.form .status{font-size:15px;line-height:1.5;margin:0}.form a{display:inline-flex;min-height:44px;align-items:center;text-decoration:underline;color:#245e61}.form :focus-visible{outline:3px solid #b74835;outline-offset:4px}
+@media(max-width:600px){.card{padding:20px 16px;margin:24px 0}}

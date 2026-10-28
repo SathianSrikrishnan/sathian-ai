@@ -29,6 +29,7 @@ export function StudioNavigation() {
         <Link href="/studio/agent-gaps">Agent gaps</Link>
         <Link href="/studio/inbox">Inbox</Link>
         <Link href="/studio/subscribers">Subscribers</Link>
+        <Link href="/studio/early-testers">Early testers</Link>
       </div>
       <div className={styles.actions}>
         <span className={styles.securityState}>AAL2 session</span>

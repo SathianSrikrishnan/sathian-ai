@@ -34,8 +34,8 @@ describe('bounded public answer service', () => {
     'gives a concise public signup route for %s without promising funding', async(message)=>{
       const model={generate:vi.fn(async()=> 'unexpected')}
       const result=await answerAgentQuestion({message,page:'/',policy,cards:getPublicProfileMemoryCards()},{model})
-      expect(result.answer).toContain('Become a founding family')
-      expect(result.answer).toContain('not a purchase or a guaranteed funded place')
+      expect(result.answer).toContain('Keep me posted')
+      expect(result.answer).toContain('does not confirm a testing place')
       expect(result.nextAction?.href).toBe('https://proof.sathian.ai/')
       expect(result.answer.length).toBeLessThan(900)
       expect(model.generate).not.toHaveBeenCalled()
