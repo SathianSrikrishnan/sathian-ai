@@ -8,7 +8,7 @@ export function WorkshopFooter() {
       <div className="relaunch-content">
         <div>
           <span className="hub-mono">sathian.ai</span>
-          <span>© {new Date().getFullYear()} Sathian</span>
+          <span>© {new Date().getFullYear()} Sathian Srikrishnan</span>
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/#now">Projects</Link>
@@ -16,6 +16,7 @@ export function WorkshopFooter() {
           <Link href="/writings">Writing</Link>
           <Link href="/about">About</Link>
           <Link href="/agents">For agents</Link>
+          <Link href="/privacy">Privacy</Link>
           {personalSocialLinks.map((link) => (
             <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer">
               {link.label}

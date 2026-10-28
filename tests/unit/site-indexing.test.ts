@@ -35,6 +35,7 @@ describe('public-site indexing', () => {
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/agents')
     expect(urls).toContain('https://sathian.ai/links')
+    expect(urls).toContain('https://sathian.ai/farcaster')
     expect(urls).toContain('https://sathian.ai/projects/solana-observatory')
     expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
     expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
@@ -44,13 +45,14 @@ describe('public-site indexing', () => {
     expect(new Set(urls).size).toBe(urls.length)
   })
 
-  it('keeps legacy prototypes out of the personal-site crawl surface', () => {
+  it('lets crawlers see legacy prototype redirects so they leave the index', () => {
     const buildRobots = (robotsModule as { buildRobotsForHost?: RobotsBuilder }).buildRobotsForHost
     expect(buildRobots).toBeTypeOf('function')
     if (!buildRobots) return
 
     const disallow = buildRobots('sathian.ai').rules.disallow
-    expect(disallow).toEqual(expect.arrayContaining(['/animation/', '/tooth/', '/toothfairy/']))
+    expect(disallow).toEqual(expect.arrayContaining(['/studio', '/api/', '/toothfairy/admin/']))
+    for (const legacy of ['/animation/', '/tooth/', '/toothfairy/']) expect(disallow).not.toContain(legacy)
     expect(disallow).not.toContain('/voice/')
     expect(buildRobots('toothfairy.network').rules.disallow).not.toContain('/toothfairy/')
   })
@@ -116,7 +118,8 @@ describe('public-site indexing', () => {
     const prompts = readFileSync(new URL('../../src/lib/prompts.ts', import.meta.url), 'utf8')
     const articles = readFileSync(new URL('../../src/lib/articles.ts', import.meta.url), 'utf8')
 
-    expect(footer).toContain('© {new Date().getFullYear()} Sathian</span>')
+    expect(footer).toContain('© {new Date().getFullYear()} Sathian Srikrishnan</span>')
+    expect(footer).toContain('href="/privacy"')
     expect(footer).not.toContain('Sathian S.</span>')
     expect(links).toContain('LINKS / SATHIAN</p>')
     expect(links).not.toContain('LINKS / SATHIAN S.</p>')

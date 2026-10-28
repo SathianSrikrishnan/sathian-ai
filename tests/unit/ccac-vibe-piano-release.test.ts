@@ -56,6 +56,7 @@ describe('CCAC Vibe Learning local site review', () => {
     expect(MORE_SITE_PROJECTS.some(project => project.slug === 'ccac-vibe-piano')).toBe(true)
     expect(existsSync(new URL('../../public/projects/ccac-vibe-piano.svg', import.meta.url))).toBe(true)
     expect(project?.approvedClaims.join(' ')).not.toMatch(/published|live/i)
-    expect(read('src/app/sitemap.ts')).toContain("'/ccac'")
+    // /ccac redirects off-site, so it stays out of the sitemap (Search Console flags listed redirects).
+    expect(read('src/app/sitemap.ts')).not.toContain("'/ccac'")
   })
 })
