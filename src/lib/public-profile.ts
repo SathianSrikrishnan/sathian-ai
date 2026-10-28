@@ -95,7 +95,7 @@ export function getPublicProfileMemoryCards(): PublicMemoryCard[] {
       id: 'profile-search-identity',
       slug: 'sathian-search-identity',
       title: 'Sathian Srikrishnan',
-      body: 'Sathian Srikrishnan is a founder and dad in Toronto. He builds products people love, starting with the ones his own children need, and is building Tooth Fairy Network. He publishes publicly as Sathian.',
+      body: 'Sathian Srikrishnan is a founder and dad in Toronto. He builds products people love, starting with the ones his own children need. Today that is Tooth Fairy Network: a child’s first digital wallet and a personalized Vault Book, given by the people who love them. After ten years leading a startup he co-founded, he stepped away in 2025 to learn and build again, and he writes about what worked and what didn’t. He publishes publicly as Sathian.',
       summary: 'The canonical public identity connecting Sathian, Sathian Srikrishnan, and sathian.ai.',
       tags: ['bio', 'identity', 'sathian', 'sathian-srikrishnan'],
       source: { ref: 'https://sathian.ai/about', kind: 'published_profile' },
