@@ -33,9 +33,9 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell">
+    <div data-theme="workshop" className="relaunch-shell relaunch-inner-shell workshop-links-page">
       <SiteNav />
-      <main className="relaunch-content">
+      <main className="relaunch-content workshop-links-main">
         <header>
           <p className="hub-eyebrow relaunch-kicker">PRIVACY / SATHIAN.AI</p>
           <h1>Privacy.</h1>
