@@ -11,6 +11,7 @@ import { LessonCollection } from '@/components/learn/LessonCollection'
 
 
 import { DrawingShelf } from '@/components/learn/DrawingShelf'
+import { PlanetShelf } from '@/components/learn/PlanetShelf'
 import { StoryShelf } from '@/components/learn/StoryShelf'
 import { ClassroomBorder } from '@/components/learn/ClassroomBorder'
 
@@ -33,7 +34,7 @@ export default function LearningBoard() {
     <StoryShelf />
     <DrawingShelf />
 
-    <div className="learn-play-shelf"><a className="learn-play-card learn-play-planets" aria-label="Open Planet Patterns drawing app" href="https://srikrishnan.work/planet-patterns"><div className="learn-play-planets-art"><img src="/learn-art/venus.png" alt="" loading="lazy" /><img src="/learn-art/earth.png" alt="" loading="lazy" /></div><div><p className="learn-resource-title">Planet Patterns</p><span>Try the interactive planet-drawing app.</span></div></a></div>
+    <PlanetShelf />
 
 
     <aside className="learn-adult-invitation" aria-label="Gift invitation for adults"><div><a className="learn-proof-hub" href="https://proof.sathian.ai">Explore PROOF</a></div><a className="learn-button learn-gift-invitation" href="https://toothfairy.network/give/start">Create a gift</a></aside>

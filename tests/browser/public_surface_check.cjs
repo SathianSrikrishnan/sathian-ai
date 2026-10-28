@@ -190,6 +190,16 @@ async function verifyViewport(browser, label, viewport) {
 
     if (surface.path === '/writings/keep-the-internet-open') {
       await settleLazyMedia(page)
+      try {
+        await page.waitForFunction(() => {
+          const images = [...document.querySelectorAll('#internet-open .timeline img, #internet-open .family-pair img')]
+          return images.length === 11 && images.every(img => img.complete && img.naturalWidth > 0)
+        }, undefined, { timeout: 15000 })
+      } catch {
+        const diagnostic = await page.locator('#internet-open .timeline img, #internet-open .family-pair img').evaluateAll(nodes => nodes.map(img => ({ src: img.getAttribute('src'), complete: img.complete, naturalWidth: img.naturalWidth })))
+        if (proofDirectory) { mkdirSync(proofDirectory, { recursive: true }); await page.screenshot({ fullPage: true, path: join(proofDirectory, `${label}-timeline-load-failure.png`) }) }
+        throw new Error(`${label}: timeline images did not load within 15 seconds: ${JSON.stringify(diagnostic)}`)
+      }
       const images = await page.locator('#internet-open .timeline img, #internet-open .family-pair img').evaluateAll(nodes => nodes.map(img => ({ src: img.getAttribute('src'), loaded: img.complete && img.naturalWidth > 0 })))
       assert(images.length === 11 && images.every(img => img.loaded), `${label}: timeline images missing or broken`)
       const note = page.locator('.article-note-dialog')

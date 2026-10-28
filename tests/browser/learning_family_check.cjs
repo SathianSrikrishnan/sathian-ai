@@ -7,7 +7,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
 ;(async () => {
   fs.mkdirSync(proof, { recursive: true })
   const browser = await chromium.launch({ headless: true })
-  const context = await browser.newContext()
+  const context = await browser.newContext({ hasTouch: true })
   // Scope test authentication to this preview. Public story art and YouTube
   // embeds must never receive the preview bypass credential.
   if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
@@ -42,6 +42,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       const hero = page.locator('.learn-classroom-art')
       await hero.evaluate(i => i.decode())
       assert(await hero.evaluate(i => i.naturalWidth === 1672), 'approved complete hero decoded')
+      await page.screenshot({ path: path.join(proof, `arrival-learn-${width}.png`), fullPage: false })
       performanceMetrics.push({ page: 'learn', width, ...await page.evaluate(() => ({ ...window.learnVitals, responseMs: performance.getEntriesByType('navigation')[0]?.responseEnd, transferredBytes: performance.getEntriesByType('resource').reduce((sum, r) => sum + r.transferSize, 0), initialIframes: document.querySelectorAll('iframe').length })) })
       const storyFilms = page.locator('.learn-room-stories video')
       assert(await storyFilms.count() === 8, 'eight full story films retained')
@@ -57,6 +58,19 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.locator('.learn-drawing-launch').count() === 6, 'six drawing choices')
       assert(await page.locator('.learn-drawing-shelf iframe').count() === 0, 'drawing embeds wait for a user action')
       assert(await page.locator('.learn-drawing-shelf a[href^="https://www.youtube.com/watch"]').count() === 6, 'direct drawing fallbacks')
+      const planets = page.locator('.learn-planet-grid video')
+      assert(await planets.count() === 3, 'all three corrected Planet films visible')
+      assert(await page.locator('.learn-planets a').getAttribute('href') === 'https://srikrishnan.work/planet-patterns', 'Planet drawing app retained')
+      for (const video of await planets.all()) {
+        assert(await video.getAttribute('preload') === 'none', 'Planet waits for playback')
+        const captionPath = await video.locator('track').getAttribute('src')
+        assert(await page.evaluate(async src => { const r=await fetch(src); return r.ok && (await r.text()).startsWith('WEBVTT') }, captionPath), 'Planet caption route works')
+        await video.evaluate(async v => { v.muted=true; await v.play() })
+        await page.waitForFunction(src => [...document.querySelectorAll('.learn-planet-grid video')].some(v=>v.getAttribute('src')===src && v.currentTime>.1), await video.getAttribute('src'))
+        assert(await video.evaluate(v => v.duration > 40 && v.duration < 52), 'corrected full Planet movie decoded')
+      }
+      assert(await planets.first().evaluate(v=>v.paused), 'starting a Planet pauses the previous one')
+      await planets.last().evaluate(v=>v.pause())
       assert(await page.locator('.learn-hero-zoom').getAttribute('target') === '_blank', 'complete illustration can be enlarged')
       const guides = page.locator('.learn-meet-controls video')
       assert(await guides.count() === 2, 'both approved guide players visible')
@@ -73,6 +87,16 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.locator('.proof-family-wall').evaluate(e => getComputedStyle(e).position === 'fixed'), 'drawing wall continues at every scroll position')
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'home fits viewport')
       await page.screenshot({ path: path.join(proof, `home-${width}.png`), fullPage: true })
+      await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight))
+      assert(await page.locator('.proof-family-wall').evaluate(e=>Math.abs(e.getBoundingClientRect().top)<1), 'Learn drawing wall remains at bottom of page')
+      await page.screenshot({ path: path.join(proof, `bottom-learn-${width}.png`) })
+      await page.route('https://www.youtube-nocookie.com/embed/**', route=>route.fulfill({contentType:'text/html',body:'<!doctype html><title>Mock drawing embed</title>'}))
+      await page.getByRole('button',{name:'Play Ember the Dragon on YouTube',exact:true}).click()
+      assert((await page.locator('.learn-drawing-shelf iframe').getAttribute('src')).includes('EjE5abtCRzI'), 'first drawing launches intended embed')
+      await page.getByRole('button',{name:'Play Letter Robot on YouTube',exact:true}).click()
+      assert(await page.locator('.learn-drawing-shelf iframe').count()===1, 'drawing switch replaces prior embed')
+      assert((await page.locator('.learn-drawing-shelf iframe').getAttribute('src')).includes('CD0_I67VlFc'), 'second drawing launches intended embed')
+      await page.unroute('https://www.youtube-nocookie.com/embed/**')
       await page.goto(base + '/proof')
       assert(await page.locator('[data-film]').count() === 7, 'seven approved Proof chapters')
       assert(await page.locator('video[autoplay]').count() === 0, 'Proof no autoplay')
@@ -81,6 +105,9 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.getByText(/Future tools or network activity/).isVisible(), 'one-time purchase scope explained')
       assert(await page.locator('input[name="email"]').count() === 0, 'inactive signup is removed from the sales page')
       assert(await page.locator('a[href^="mailto:info@toothfairy.network"]').count() > 0, 'working email fallback retained')
+      for(const image of await page.locator('.product-card img, .faq-art img').all()) { await image.scrollIntoViewIfNeeded(); await image.evaluate(i=>i.decode()); assert(await image.evaluate(i=>i.naturalWidth>0),'actual product and FAQ images decode') }
+      await page.evaluate(()=>window.scrollTo(0,0))
+      await page.screenshot({path:path.join(proof,`arrival-proof-${width}.png`),fullPage:true})
       if (await page.locator('#proof-question').count()) {
         let mockedQuestions = 0
         // This route is fulfilled in the browser: no real inquiry, database write or notification.
@@ -130,7 +157,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
         for (let step = 0; step < 4; step++) {
           assert(await page.getByRole('button', { name: 'Continue', exact: true }).count() === 0, 'answer before continuing')
           const answer = page.getByRole('button', { name: (mask >> step) & 1 ? 'Yes' : 'No', exact: true })
-          if (width === 1440) { await answer.focus(); await page.keyboard.press('Enter') } else await answer.click()
+          if (width === 1440) { await answer.focus(); await page.keyboard.press('Enter') } else await answer.tap()
           await page.getByRole('button', { name: 'Continue', exact: true }).click()
         }
         await page.getByRole('heading', { name: 'You explored USDC.', exact: true }).waitFor()

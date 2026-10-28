@@ -1,5 +1,5 @@
 {
-  "base": "6bfbcf35a66b2f7b71371a1bb4a5a2fc43494f73",
+  "base": "b32a6788bc022225f4e2201fc5df8c78912dca70",
   "originalAssetManifestUnchanged": "docs/releases/proof-learn-gift-20261028-assets.json",
   "optimizedApprovedDrawings": [
     {
@@ -158,8 +158,10 @@
     },
     {
       "path": "public/learn-story-media/roof-song-v1-read-together.en.vtt",
-      "bytes": 4391,
-      "sha256": "0e2e274b8e2b626e55116640a1071e611ee09ba40cbf35c74451381d7725ceef"
+      "bytes": 4239,
+      "sha256": "3a8f9812e3319c9fd2b47f61432bbbb2514aa9c2dda55ed1d8c1fbd20e8f0fa8",
+      "sourceSha256": "0e2e274b8e2b626e55116640a1071e611ee09ba40cbf35c74451381d7725ceef",
+      "normalization": "utf8-lf"
     },
     {
       "path": "public/learn-story-media/edge-of-the-light-v1-read-together.mp4",
@@ -173,8 +175,10 @@
     },
     {
       "path": "public/learn-story-media/edge-of-the-light-v1-read-together.en.vtt",
-      "bytes": 4586,
-      "sha256": "db88140360841dbe79c27e190a51063516862456e8b046846cc03c135e30ecaf"
+      "bytes": 4434,
+      "sha256": "0b35184565ded2734e118f2e374815309557921da71584d7f905276221ff191c",
+      "sourceSha256": "db88140360841dbe79c27e190a51063516862456e8b046846cc03c135e30ecaf",
+      "normalization": "utf8-lf"
     },
     {
       "path": "public/learn-story-media/one-year-wish-v1-read-together.mp4",
@@ -188,8 +192,10 @@
     },
     {
       "path": "public/learn-story-media/one-year-wish-v1-read-together.en.vtt",
-      "bytes": 6815,
-      "sha256": "aa0404efdafccddbce31c4dc06f0c15efb0e8fdb8278ce7af96d63b6ce0b5188"
+      "bytes": 6663,
+      "sha256": "c30fc3478fbf325bb3e82eb553f67463860361eb751c9e79d2bb015ae6a4987b",
+      "sourceSha256": "aa0404efdafccddbce31c4dc06f0c15efb0e8fdb8278ce7af96d63b6ce0b5188",
+      "normalization": "utf8-lf"
     },
     {
       "path": "public/learn-story-media/gap-in-the-gold-v1-read-together.mp4",
@@ -203,8 +209,10 @@
     },
     {
       "path": "public/learn-story-media/gap-in-the-gold-v1-read-together.en.vtt",
-      "bytes": 5876,
-      "sha256": "4375ba9e358ccc7d4cad5c27ebf6495b8630dd79d79527f26f3936eccfa60e4e"
+      "bytes": 5724,
+      "sha256": "ea01459cbd62a9198e9b3e092ec20b5889f38b5e25891842ddeca34cde9a4636",
+      "sourceSha256": "4375ba9e358ccc7d4cad5c27ebf6495b8630dd79d79527f26f3936eccfa60e4e",
+      "normalization": "utf8-lf"
     },
     {
       "path": "public/learn-story-media/tanda-origin-v2-web.mp4",
@@ -218,8 +226,10 @@
     },
     {
       "path": "public/learn-story-media/tanda-origin-v2.en.vtt",
-      "bytes": 1970,
-      "sha256": "084bb06c8542f97b5da0983f6d60aa3cb04e3cb0ed35f5c4f6a7ef64f5fb4d36"
+      "bytes": 1918,
+      "sha256": "8effcf3531b8dda6603ed16bf767c4b8d242dea590fbf50294860c97bcae2b87",
+      "sourceSha256": "084bb06c8542f97b5da0983f6d60aa3cb04e3cb0ed35f5c4f6a7ef64f5fb4d36",
+      "normalization": "utf8-lf"
     }
   ],
   "fatherSource": {
@@ -232,7 +242,7 @@
     "captionSha256": "084bb06c8542f97b5da0983f6d60aa3cb04e3cb0ed35f5c4f6a7ef64f5fb4d36",
     "openingCardNote": "Legacy opening card says Tanda Fae and the First Tooth Fee; exact matched narrative is the shipbuilder-daughter origin supplied as Tanda and Her Father, kept standalone rather than associated with another reader."
   },
-  "independentChangesPreserved": "Merged PR24 homepage, PR25 About and PR26 site-agent preserved on base6bfbcf3; publication pending final checks",
+  "independentChangesPreserved": "Merged PR24,PR25,PR26,PR27,PR29 About and PR30 click attribution preserved; final release checks pending",
   "cartoonDadWelcome": {
     "durationSeconds": 26.916667,
     "assets": [
@@ -243,8 +253,10 @@
       },
       {
         "path": "public/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.vtt",
-        "bytes": 990,
-        "sha256": "7626c53ab8213219d9d5d19f1d5d57fda4e7df9b4a2401cea0e1a5399bd6c636"
+        "bytes": 938,
+        "sha256": "0a8082ae6169df51b66893ab0c7203e6f7ce4e2f57e3944c5137a14df3b7996e",
+        "sourceSha256": "7626c53ab8213219d9d5d19f1d5d57fda4e7df9b4a2401cea0e1a5399bd6c636",
+        "normalization": "utf8-lf"
       },
       {
         "path": "public/learn-media/cartoon-dad-welcome-20261028/poster.webp",
@@ -255,5 +267,110 @@
     "sourceReceipt": "FINAL-COHERENT-RECEIPT.json",
     "visualCheck": "Source contact sheet and exact final poster inspected, cartoon presenter and approved V9 classroom; no audible playback",
     "voiceListening": "Not claimed; owner reviews on finished site"
-  }
+  },
+  "planetPatterns": {
+    "films": [
+      {
+        "slug": "earth-mars",
+        "title": "Earth and Mars",
+        "src": "/learn-media/planet-patterns-20261028/earth-mars.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/earth-mars-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/earth-mars.vtt",
+        "durationSeconds": 41.582683,
+        "sha256": "9259bb7e70c4da7da9dabeaf62bc77e372efe5fa848512d49dad0807f1bbd619",
+        "captionSha256": "b2d95701e56ccffb2cd5736df369ec3e1b022d51025cb049616e28f5a9924792",
+        "libraryMovie": "libfile_5a09b09c00a88191a676b2fb16b516f3",
+        "libraryCaptions": "libfile_fe45702f745081918791373ed8635785",
+        "sourceCaptionSha256": "725ffb6f6bb9d6be54cb7da7b8552b735870b67db4232d3b8f0277a0b1925055"
+      },
+      {
+        "slug": "venus-earth",
+        "title": "Venus and Earth",
+        "src": "/learn-media/planet-patterns-20261028/venus-earth.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/venus-earth-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/venus-earth.vtt",
+        "durationSeconds": 50.957683,
+        "sha256": "ded99153c0d18c2963856da535b0e3845f516bffeeab0d0a080ca6b8894e7c9a",
+        "captionSha256": "7cde060196408f65ebf67c7b3e28542f85d865c21b6f1d853806278e264dd55a",
+        "libraryMovie": "libfile_5ee7ed9cce4881919ce7088d36640579",
+        "libraryCaptions": "libfile_ef7c0c793e1c8191bf1afb00a0cc0c87",
+        "sourceCaptionSha256": "ff0da94d44df139b68a51652b8b3016ff15fb5a4b419473add9b7085cc26e849"
+      },
+      {
+        "slug": "jupiter-saturn",
+        "title": "Jupiter and Saturn",
+        "src": "/learn-media/planet-patterns-20261028/jupiter-saturn.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/jupiter-saturn-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/jupiter-saturn.vtt",
+        "durationSeconds": 44.582683,
+        "sha256": "917cc522576a4f3afbc32c896371176a229fabe306a6fff25ad93497cc7f06db",
+        "captionSha256": "5131fa8ee9fc970e511cdf633b07e44b4ff97e262a40319352c34f4a7591552a",
+        "libraryMovie": "libfile_f78bb96f494081918e4da083f35d703c",
+        "libraryCaptions": "libfile_b208c124046881918c6f1bad038c9abe",
+        "sourceCaptionSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d"
+      }
+    ],
+    "assets": [
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars-poster.webp",
+        "bytes": 22280,
+        "sha256": "e8f8832526841fbb153e901c3466deb13e5e0f00d9b1bc3e76f6916bab5008a9"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars.mp4",
+        "bytes": 8179392,
+        "sha256": "9259bb7e70c4da7da9dabeaf62bc77e372efe5fa848512d49dad0807f1bbd619"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars.vtt",
+        "bytes": 982,
+        "sha256": "b2d95701e56ccffb2cd5736df369ec3e1b022d51025cb049616e28f5a9924792",
+        "sourceSha256": "725ffb6f6bb9d6be54cb7da7b8552b735870b67db4232d3b8f0277a0b1925055",
+        "normalization": "utf8-lf"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn-poster.webp",
+        "bytes": 12972,
+        "sha256": "92c454ef37249c169df9cbd94c20841553f368140544cdb3a02fe29ad36568c1"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn.mp4",
+        "bytes": 7989742,
+        "sha256": "917cc522576a4f3afbc32c896371176a229fabe306a6fff25ad93497cc7f06db"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn.vtt",
+        "bytes": 1005,
+        "sha256": "5131fa8ee9fc970e511cdf633b07e44b4ff97e262a40319352c34f4a7591552a",
+        "sourceSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d",
+        "normalization": "utf8-lf"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth-poster.webp",
+        "bytes": 10784,
+        "sha256": "f50d560d3d6a7dd60e2bc0e06e5950a9950b0776d0bfa9a598397046f9c9d6cd"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth.mp4",
+        "bytes": 8654018,
+        "sha256": "ded99153c0d18c2963856da535b0e3845f516bffeeab0d0a080ca6b8894e7c9a"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth.vtt",
+        "bytes": 1162,
+        "sha256": "7cde060196408f65ebf67c7b3e28542f85d865c21b6f1d853806278e264dd55a",
+        "sourceSha256": "ff0da94d44df139b68a51652b8b3016ff15fb5a4b419473add9b7085cc26e849",
+        "normalization": "utf8-lf"
+      }
+    ],
+    "sourceReceipt": "FINAL-THREE-REELS-DELIVERY.json / libfile_f9500807902c819196b638c78f146f11",
+    "visualCheck": "All three final contact sheets and exact posters inspected; Earth/Mars and Jupiter/Saturn frame28s, Venus/Earth star frame34s",
+    "limitations": [
+      "No audible local playback, listening or perceptual accent/voice acceptance performed. ASR is not listening.",
+      "Own paired hook audio/mouth timing preserved structurally; normal-speed fullplayback lip-sync gate remains unverified.",
+      "AllusedEM126handframes inspected; allusedVE119/JS130lowercropboundaryframes checked toexcludehands; wholefilm drawings sampled1fps, not everyanimationframe.",
+      "Creativeownerapproval remainsboundto exact finalhash; no website publishing performed."
+    ]
+  },
+  "captionTransport": "Caption source hashes retained; text line endings normalized to UTF-8 LF for deterministic Windows/Linux delivery. Words and timing unchanged."
 }
