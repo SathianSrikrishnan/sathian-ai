@@ -236,13 +236,6 @@ export function HomeClient({ writings }: HomeClientProps) {
           </section>
         )}
 
-        <section className="minimal-section minimal-container" aria-labelledby="home-hackathons">
-          <div className="minimal-section-heading">
-            <h2 id="home-hackathons">Hackathons</h2>
-            <Link href="/hackathons" className="minimal-text-link">All builds</Link>
-          </div>
-          <p>Working systems built against the clock: {HACKATHON_SITE_PROJECTS.map((project) => project.name).join(', ')}.</p>
-        </section>
 
         <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-projects">
           <h2 id="more-projects">More projects &amp; curiosities</h2>
@@ -264,6 +257,13 @@ export function HomeClient({ writings }: HomeClientProps) {
               )
             })}
           </div>
+        </section>
+        <section className="minimal-section minimal-container" aria-labelledby="home-hackathons">
+          <div className="minimal-section-heading">
+            <h2 id="home-hackathons">Hackathons</h2>
+            <Link href="/hackathons" className="minimal-text-link">All builds</Link>
+          </div>
+          <p>Working systems built against the clock: {HACKATHON_SITE_PROJECTS.map((project) => project.name).join(', ')}.</p>
         </section>
       </main>
 
