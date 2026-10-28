@@ -26,8 +26,48 @@ async function inspectProof(page,url,width,folder,label){
  await how.screenshot({path:path.join(folder,`${label}-how-${width}.png`)})
  return state
 }
+async function inspectLessonEntries(page,base,width,folder){
+ await page.setViewportSize({width,height:1000});await page.goto(base+'/learn',{waitUntil:'domcontentloaded'})
+ const card=page.locator('.learn-stablecoin-card'),start=card.getByRole('button',{name:'Start the USDC lesson',exact:true})
+ await card.getByRole('heading',{name:'What is a stablecoin?',exact:true}).waitFor()
+ assert(await card.locator('video').count()===0,'USDC card does not pretend to be a film')
+ if(width===1440){await start.focus();await page.keyboard.press('Enter')}else await start.tap()
+ let panel=page.locator('.learn-inline');await panel.getByRole('heading',{name:'What is a stablecoin?',exact:true}).waitFor()
+ await page.waitForFunction(()=>document.activeElement===document.querySelector('.learn-inline>h2'))
+ await panel.getByText('Does minting create USDC?',{exact:true}).waitFor()
+ await panel.getByRole('button',{name:'No',exact:true}).click();await panel.getByRole('button',{name:'Continue',exact:true}).click()
+ await panel.getByRole('heading',{name:'Transfer',exact:true}).waitFor()
+ await start.click();await panel.getByText('Does minting create USDC?',{exact:true}).waitFor()
+ await panel.getByRole('button',{name:'Back to the lessons',exact:true}).click();await panel.waitFor({state:'detached'})
+ await page.waitForFunction(()=>document.activeElement===document.querySelector('.learn-stablecoin-card button'))
+ assert(await start.evaluate(e=>{const r=e.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}),'return focus is visible on the USDC start button')
+ assert(!new URL(page.url()).hash,'back to lessons clears the lesson hash')
+ await card.screenshot({path:path.join(folder,`usdc-entry-${width}.png`)})
+ await page.locator('.topic-bitcoin .learn-picture-caption button').click();panel=page.locator('.learn-inline')
+ const bitcoin=panel.locator('video');await bitcoin.evaluate(v=>{v.muted=true;v.playbackRate=16})
+ await panel.getByRole('button',{name:'Start learning',exact:true}).click()
+ await panel.getByRole('button',{name:'Yes',exact:true}).waitFor({timeout:30000})
+ assert(await bitcoin.evaluate(v=>v.paused),'Bitcoin pauses for the question')
+ await panel.getByRole('button',{name:'Back to the lessons',exact:true}).click();await panel.waitFor({state:'detached'})
+ await page.waitForFunction(()=>document.activeElement===document.querySelector('.topic-bitcoin .learn-picture-caption button'))
+ await page.goto(base+'/learn#solana-try',{waitUntil:'domcontentloaded'});panel=page.locator('.learn-inline')
+ await panel.getByRole('heading',{name:/Solana.*early design/}).waitFor()
+ await panel.getByRole('button',{name:'Watch the story',exact:true}).waitFor()
+ assert(new URL(page.url()).hash==='#solana-watch','legacy Solana try link resolves to the accepted film')
+ const solana=panel.locator('video');await solana.evaluate(v=>{v.muted=true;v.playbackRate=16})
+ await panel.getByRole('button',{name:'Watch the story',exact:true}).click()
+ await page.waitForFunction(()=>document.querySelector('.learn-inline video')?.currentTime>.1)
+ assert(await solana.evaluate(v=>Math.abs(v.duration-123.12)<.1),'full accepted Solana film loads')
+ await panel.getByRole('button',{name:'Pause video',exact:true}).click();assert(await solana.evaluate(v=>v.paused),'Solana pause works')
+ await panel.getByRole('button',{name:'Back to the lessons',exact:true}).click();await panel.waitFor({state:'detached'})
+ await page.goto(base+'/learn#stablecoin-watch',{waitUntil:'domcontentloaded'});panel=page.locator('.learn-inline')
+ await panel.getByText('Does minting create USDC?',{exact:true}).waitFor()
+ assert(new URL(page.url()).hash==='#stablecoin-try'&&await panel.locator('video').count()===0,'USDC watch link safely opens the real questions')
+ return{width,usdcStartAndRestart:true,returnFocus:true,bitcoinQuestion:true,solanaLegacyLinkAndPlayback:true,usdcLegacyLink:true}
+}
 module.exports=async function verifyLegibility(context,base,folder){
- const page=await context.newPage();const receipt={baseline:[],candidate:[],notes:'Read-only baseline and protected candidate; no form submissions, video playback or navigation changes.'}
+ const page=await context.newPage(),pageErrors=[];page.on('pageerror',e=>pageErrors.push(e.message))
+ const receipt={baseline:[],candidate:[],lessonEntries:[],notes:'Live baseline visual reads; candidate lesson playback muted. No form submissions or site menu changes.'}
  try{
   for(const width of [320,390,768,1440]){
    const baselineSolana=await inspectSolana(page,'https://sathian.ai',width,folder,'before')
@@ -38,10 +78,14 @@ module.exports=async function verifyLegibility(context,base,folder){
    const proof=await inspectProof(page,base,width,folder,'after')
    assert(!proof.overflow&&proof.questionFont>=19&&proof.questionWeight>=600&&proof.bodyFont>=17&&proof.heading.weight>=600&&proof.steps.every(s=>s.inside&&s.weight>=600),`${width}: readable headings and questions without overflow`)
    assert(Math.abs(proof.artWidth/proof.artHeight-1.5)<.02,'FAQ artwork retains original aspect ratio')
-   if(width===1440)assert(proof.artWidth>=400&&proof.artFraction>=.4&&proof.artFraction<=.6&&proof.artWidth>baselineProof.artWidth*1.25,'FAQ artwork materially enlarged alongside questions')
+   if(width===1440){
+    assert(proof.artWidth>=400&&proof.artFraction>=.4&&proof.artFraction<=.6,'FAQ artwork is balanced alongside questions')
+    if(baselineProof.artWidth<400)assert(proof.artWidth>baselineProof.artWidth*1.25,'FAQ artwork materially enlarged from the older live layout')
+   }
    if(width<=900)assert(proof.artFraction>.95,'narrow FAQ artwork uses the available width')
    receipt.candidate.push({width,solana,proof})
   }
-  receipt.status='passed'
+  for(const width of [390,1440])receipt.lessonEntries.push(await inspectLessonEntries(page,base,width,folder))
+  assert(pageErrors.length===0,pageErrors.join('\n'));receipt.status='passed'
  }catch(error){receipt.status='failed';receipt.error=error.message;throw error}finally{fs.writeFileSync(path.join(folder,'legibility-receipt.json'),JSON.stringify(receipt,null,2));await page.close()}
 }

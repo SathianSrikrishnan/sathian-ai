@@ -23,3 +23,4 @@
 .learn-room.family-surface .topic-solana .learn-history-note{white-space:normal;overflow-wrap:anywhere;max-width:100%;font-size:16px;line-height:1.6}
 .learn-room.family-surface .topic-solana>.learn-history-note{margin:8px 5px 14px}
 @media(max-width:900px){.family-surface .faq-layout{grid-template-columns:minmax(0,1fr);gap:24px}}
+.learn-room.family-surface .learn-stablecoin-card{background:#edf1e7;border-color:#b2bfa2}.learn-room.family-surface .learn-stablecoin-card .learn-topic-title{font-weight:700;margin:0}.learn-stablecoin-card .learn-token-preview{width:100%;padding:1rem 0}.learn-stablecoin-card .learn-picture-caption{height:100%;justify-content:space-between}
