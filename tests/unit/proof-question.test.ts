@@ -2,10 +2,16 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 const { receiveNote }=vi.hoisted(()=>({receiveNote:vi.fn()}))
 vi.mock('@/app/api/agent/message/route',()=>({POST:receiveNote}))
 import { POST } from '@/app/api/proof-question/route'
+import { proofQuestionMarkup } from '@/lib/proof-question'
 const valid={question:'A private adult question',replyEmail:'adult@example.invalid',sourcePage:'/learn',consent:true,company:''}
 const request=(body:unknown=valid,origin='https://proof.sathian.ai')=>new Request('https://proof.sathian.ai/api/proof-question',{method:'POST',headers:{origin,'content-type':'application/json','idempotency-key':'question-test-key-123456'},body:JSON.stringify(body)})
 beforeEach(()=>{vi.stubEnv('PUBLIC_AGENT_ENABLED','true');vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY','unit-only');vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL','https://unit.supabase.co');receiveNote.mockReset()})
 afterEach(()=>vi.unstubAllEnvs())
+it('cannot fall back to putting private question fields in a URL',()=>{
+ expect(proofQuestionMarkup).toContain('method="post" action="/api/proof-question"')
+ expect(proofQuestionMarkup).toContain('No marketing signup.')
+ expect(proofQuestionMarkup).not.toContain('name="child')
+})
 it('forwards only a purpose-consented note to existing private intake, with idempotency',async()=>{
  receiveNote.mockResolvedValue(Response.json({capabilities:{intakeStored:true},receipt:{code:'SA-ABCDEFGHIJ',deliveryStatus:'queued',message:valid.question,email:valid.replyEmail,token:'private'}},{status:202}))
  const response=await POST(request());expect(response.status).toBe(202)
