@@ -80,7 +80,7 @@ describe('public-site indexing', () => {
     expect(about).not.toContain("redirect('/')")
     expect(about).toContain("'@type': 'ProfilePage'")
     expect(about).toContain("SATHIAN_PERSON_SCHEMA['@id']")
-    expect(about).toContain('<h1>Sathian</h1>')
+    expect(about).toContain('<h1>Hi, I&apos;m Sathian.</h1>')
     expect(about).toContain('Sathian Srikrishnan')
     expect(about).not.toContain('SATHN')
   })
