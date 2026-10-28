@@ -6513,3 +6513,7 @@ h1, h2, h3 {
 .workshop-article > header:has(img) img {
   filter: saturate(0.85) !important;
 }
+
+.workshop-article > header:has(img) p.italic {
+  color: #8c451c !important;
+}
