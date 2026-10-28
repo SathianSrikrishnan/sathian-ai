@@ -39,7 +39,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["explain and compare", "latest Draw with Tanda release", "leave Sathian a note"],
+        "requiredFacts": ["explain and compare", "first digital wallet", "leave Sathian a note"],
         "forbiddenClaims": ["private systems"],
         "requiredSourceFragments": ["#featured-work"],
         "forbiddenSourceFragments": [],
@@ -172,7 +172,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Proof booklet", "Dollars, Bitcoin or Solana", "seven days after payment"],
+        "requiredFacts": ["Vault Book", "Dollars, Bitcoin or Solana", "seven days after payment"],
         "forbiddenClaims": ["public checkout is released"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -191,7 +191,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Proof booklet", "parent’s key", "Private child content stays off-chain"],
+        "requiredFacts": ["Vault Book", "parent’s key", "Private child content stays off-chain"],
         "forbiddenClaims": [],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],
@@ -670,7 +670,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["consumer product", "public network underneath it", "Private child content stays off-chain"],
+        "requiredFacts": ["consumer product", "public networks underneath it", "Private child content stays off-chain"],
         "forbiddenClaims": [],
         "requiredSourceFragments": ["toothfairy.network", "solana-ecosystem-dashboard"],
         "forbiddenSourceFragments": [],
@@ -985,7 +985,7 @@
       "expected": {
         "route": "answer",
         "outcome": "answer",
-        "requiredFacts": ["Proof booklet", "seven days after payment"],
+        "requiredFacts": ["Vault Book", "seven days after payment"],
         "forbiddenClaims": ["private memory"],
         "requiredSourceFragments": ["toothfairy.network"],
         "forbiddenSourceFragments": [],

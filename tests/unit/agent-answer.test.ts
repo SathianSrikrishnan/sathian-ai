@@ -40,6 +40,32 @@ describe('bounded public answer service', () => {
       expect(result.answer.length).toBeLessThan(900)
       expect(model.generate).not.toHaveBeenCalled()
     })
+  it.each(['How much does it cost?', 'How do I buy a gift for my niece?', 'Can I give my grandson one?', 'What is the Vault Book?'])(
+    'sends buyer question %s straight to the tracked gift page', async (message) => {
+      const model = { generate: vi.fn(async () => 'unexpected') }
+      const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
+      expect(result.answer).toContain('US$59')
+      expect(result.answer).toContain('not a bank account')
+      expect(result.nextAction).toEqual({
+        label: 'Give a gift',
+        href: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=site-agent&utm_campaign=agent',
+      })
+      expect(model.generate).not.toHaveBeenCalled()
+    })
+  it.each(['Can I leave Sathian a note about a gift?', 'What does Sathian write about?'])(
+    'does not treat %s as a purchase', async (message) => {
+      const model = { generate: vi.fn(async () => 'A model answer.') }
+      const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
+      expect(result.nextAction?.label).not.toBe('Give a gift')
+    })
+  it.each(['What is Learn with Tanda?', 'Do you have stories for kids?', 'Who is Tanda?'])(
+    'routes %s to Learn with Tanda', async (message) => {
+      const model = { generate: vi.fn(async () => 'unexpected') }
+      const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
+      expect(result.answer).toContain('seven illustrated stories')
+      expect(result.nextAction).toEqual({ label: 'Start learning', href: '/learn' })
+      expect(model.generate).not.toHaveBeenCalled()
+    })
   it.each(['What is your latest writing?', 'Show me the newest article', 'Which essay is the most recent?'])(
     'routes %s to the current article rather than the writing index or latest video', async (message) => {
       const model = { generate: vi.fn(async () => 'An obsolete answer') }
@@ -278,7 +304,7 @@ describe('bounded public answer service', () => {
     expect(result.modelUsed).toBe(false)
     expect(result.unknown).toBe(false)
     expect(result.answer).toContain('explain and compare')
-    expect(result.answer).toContain('latest Draw with Tanda release')
+    expect(result.answer).toContain('first digital wallet')
     expect(result.answer).toContain('leave Sathian a note')
     expect(result.nextAction).toEqual({
       label: 'Browse featured work',
@@ -408,7 +434,7 @@ describe('bounded public answer service', () => {
       source: { ref: 'https://sathian.ai/', kind: 'published_page' },
     }
     const model = {
-      generate: vi.fn(async () => 'Tooth Fairy Network is the consumer product. Solana is the public network underneath it.'),
+      generate: vi.fn(async () => 'Tooth Fairy Network is the consumer product. Solana is one of the public networks underneath it.'),
     }
 
     const result = await answerAgentQuestion({
@@ -447,7 +473,7 @@ describe('bounded public answer service', () => {
     expect(result.modelUsed).toBe(false)
     expect(result.unknown).toBe(false)
     expect(result.answer).toContain('Tooth Fairy Network is the consumer product')
-    expect(result.answer).toContain('Solana is the public network underneath it')
+    expect(result.answer).toContain('Solana is one of the public networks underneath it')
     expect(result.nextAction?.label).toBe('Open the Solana guide')
     expect(model.generate).not.toHaveBeenCalled()
   })

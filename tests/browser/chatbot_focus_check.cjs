@@ -47,7 +47,7 @@ async function main() {
   if (!intro.includes('explain and compare Sathian') || !intro.includes('projects')) {
     throw new Error(`Incomplete intro: ${intro}`)
   }
-  if (!intro.includes('latest Draw with Tanda release')) throw new Error(`Incomplete intro: ${intro}`)
+  if (!intro.includes('first digital wallet')) throw new Error(`Incomplete intro: ${intro}`)
 
   const messageResponses = []
   page.on('response', (response) => {

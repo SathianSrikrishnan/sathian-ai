@@ -164,6 +164,18 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
     actionLabel: string
   }> = [
     {
+      matches: /\b(buy|purchase|price|pricing|cost|costs|how much|gift|gifts|vault book|first (?:digital )?wallet|tooth fairy money|give (?:it|one|a child|my|our|to)|(?:grand(?:child|children|son|daughter|kid|kids)|niece|nephew|godchild|godson|goddaughter))\b/i.test(message)
+        && !/\b(note|message)\b/i.test(message),
+      card: find((card) => card.id === 'tfn-give-a-gift'),
+      actionLabel: 'Give a gift',
+    },
+    {
+      matches: /\b(learn with tanda|tanda|lessons?|storybooks?|stories for (?:kids|children)|teach (?:my )?(?:kids|children|child)|for (?:my )?kids)\b/i.test(message)
+        && !/\bdraw with tanda\b/i.test(message),
+      card: find((card) => card.id === 'learn-with-tanda'),
+      actionLabel: 'Start learning',
+    },
+    {
       matches: /\b(proof(?: of (?:growth|love))?|founding famil(?:y|ies)|seven chapters|7 chapters)\b/i.test(message) && !/\b(proof of (?:work|stake|history)|cryptograph|mathematical|mainnet|contract|audit)\b/i.test(message),
       card: find((card) => card.id === 'proof-front-door'),
       actionLabel: 'Watch PROOF · join the founding families',
@@ -253,7 +265,7 @@ function contextualComparisonAnswer(
   if (!tfn || !solana) return null
 
   return {
-    answer: 'Tooth Fairy Network is the consumer product: a private family time capsule with an optional guardian-controlled future gift and a deployed Solana Mainnet program. Solana is the public network underneath it: the shared ledger and program runtime that make the contract rails and receipts inspectable. The Solana Ecosystem Observatory is the plain-English guide to that network. In short, Tooth Fairy Network is the product being built for families; Solana is the infrastructure underneath it. Private child content stays off-chain by default.',
+    answer: 'Tooth Fairy Network is the consumer product: a child’s first digital wallet and a personalized Vault Book, given by family and controlled by the parent. Solana is one of the public networks underneath it: a shared ledger where anyone can check the vault. The Solana Ecosystem Observatory is the plain-English guide to that network. In short, Tooth Fairy Network is the product being built for families; Solana is the infrastructure underneath it. Private child content stays off-chain by default.',
     sources: [tfn.source.ref, solana.source.ref],
     nextAction: {
       label: 'Open the Solana guide',
