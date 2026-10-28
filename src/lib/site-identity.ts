@@ -9,6 +9,11 @@ export const SATHIAN_PERSON_SCHEMA = {
   url: 'https://sathian.ai/about',
   image: 'https://sathian.ai/sathian-profile.png',
   jobTitle: 'Agent Manager and Orchestrator',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Tooth Fairy Network',
+    url: 'https://toothfairy.network',
+  },
   homeLocation: {
     '@type': 'Place',
     name: 'Toronto, Ontario, Canada',

@@ -9,13 +9,14 @@ export function buildRobotsForHost(host: string): MetadataRoute.Robots {
   const toothFairyHost = isToothFairyHost(host)
   const base = toothFairyHost ? 'https://toothfairy.network' : 'https://sathian.ai'
   const privateRoutes = ['/studio', '/api/', '/toothfairy/admin/']
-  const personalLegacyRoutes = ['/animation/', '/tooth/', '/toothfairy/']
 
+  // Legacy /toothfairy, /tooth and /animation URLs stay crawlable on purpose: they now return
+  // permanent redirects or 404s, and Google only drops them from the index once it can see that.
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: toothFairyHost ? privateRoutes : [...privateRoutes, ...personalLegacyRoutes],
+      disallow: privateRoutes,
     },
     sitemap: `${base}/sitemap.xml`,
   }

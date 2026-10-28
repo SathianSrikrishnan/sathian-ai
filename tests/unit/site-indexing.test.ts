@@ -35,6 +35,7 @@ describe('public-site indexing', () => {
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/agents')
     expect(urls).toContain('https://sathian.ai/links')
+    expect(urls).toContain('https://sathian.ai/farcaster')
     expect(urls).toContain('https://sathian.ai/projects/solana-observatory')
     expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
     expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
@@ -44,13 +45,14 @@ describe('public-site indexing', () => {
     expect(new Set(urls).size).toBe(urls.length)
   })
 
-  it('keeps legacy prototypes out of the personal-site crawl surface', () => {
+  it('lets crawlers see legacy prototype redirects so they leave the index', () => {
     const buildRobots = (robotsModule as { buildRobotsForHost?: RobotsBuilder }).buildRobotsForHost
     expect(buildRobots).toBeTypeOf('function')
     if (!buildRobots) return
 
     const disallow = buildRobots('sathian.ai').rules.disallow
-    expect(disallow).toEqual(expect.arrayContaining(['/animation/', '/tooth/', '/toothfairy/']))
+    expect(disallow).toEqual(expect.arrayContaining(['/studio', '/api/', '/toothfairy/admin/']))
+    for (const legacy of ['/animation/', '/tooth/', '/toothfairy/']) expect(disallow).not.toContain(legacy)
     expect(disallow).not.toContain('/voice/')
     expect(buildRobots('toothfairy.network').rules.disallow).not.toContain('/toothfairy/')
   })
