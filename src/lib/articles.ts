@@ -28,6 +28,118 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    title: 'Gold at Birth',
+    titleHighlight: 'Gold',
+    slug: 'gold-at-birth',
+    date: '2026-10-28',
+    author: 'Sathian',
+    domains: ['family', 'money', 'culture'],
+    description: 'For centuries, grandparents have given gold when a child is born. Here is how I am making that gift simple, personal and digital.',
+    readTime: '5 min',
+    pullQuotes: [
+      'When a child arrives, the people who love them give something that lasts.',
+      'They scan their own drawing and see a number on a screen. That number is theirs.',
+      'The most you can lose is the small amount you put in.',
+    ],
+    theme: {
+      accent: '#D4A017',
+      accentGlow: 'rgba(212, 160, 23, 0.12)',
+      background: 'aurora',
+      mood: 'contemplative',
+    },
+    sectionHeadings: [
+      'A grandfather\'s gift',
+      'A gift as old as families',
+      'What we give today',
+      'Gold, made simple',
+      'A dollar under the pillow',
+      'One tap, one moment',
+      'Who loses?',
+    ],
+    sectionTints: ['#D4A017', '#F59E0B', '#EF4444', '#22C55E', '#F7931A', '#06B6D4', '#D4A017'],
+    textHighlights: [
+      { text: 'Give a child their first wallet', color: '#D4A017', link: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
+      { text: 'Watch Proof', color: '#D4A017', link: 'https://proof.sathian.ai/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
+      { text: 'Learn with Tanda', color: '#22C55E', link: '/learn' },
+    ],
+    media: [
+      { src: '/media/gold-at-birth/grandma-gift.webp', alt: 'A crayon drawing of a grandmother and her granddaughter on a park bench, receiving a green Vault Book from Tanda the tooth fairy', caption: 'The gift that lasts, drawn the way a child would draw it.', placement: 'hero' },
+      { src: '/sathian-portrait.webp', alt: 'A pencil sketch of Sathian', caption: 'I have spent a silly amount on that drawer.', placement: 'inline-right', afterSection: 2 },
+      { src: '/proof-assets/product-samples-20261028/sample-front.webp', alt: 'The Vault Book cover: a crayon sketch of Tanda dropping a coin into a piggy bank', caption: 'The Vault Book: the child\'s own art, a QR code and a note from the giver.', placement: 'inline-left', afterSection: 3 },
+    ],
+    body: `A friend told me that when he was born, his grandfather gave him gold.
+
+He didn't understand it as a baby, of course. He understood it later. Someone who loved him had put something aside before he could walk. It was his, and it stayed his.
+
+That story stuck with me, because so many families have their own version of it.
+
+---
+
+In India, families give gold at a baby's naming ceremony and keep it for decades.
+
+In China, a baby's first-month or hundred-day party often brings a small gold or silver lock on a chain. It is a wish for a long life.
+
+In Turkey, visitors pin small gold coins to a newborn's clothes.
+
+In England, godparents gave a silver spoon at the christening. That is where "born with a silver spoon" is said to come from.
+
+The details change from place to place. The idea stays the same. When a child arrives, the people who love them give something that lasts.
+
+---
+
+I'm a dad of two young kids. I know what we actually give.
+
+Plastic toys. Things that light up for a week. Things that end up in a drawer, then in a bag, then in the trash. Most of us have a drawer like that.
+
+Grandparents feel this too. They want to give something meaningful, and the easy options are things that won't last.
+
+---
+
+This is why I'm building Tooth Fairy Network.
+
+Anyone who loves a child can give them their first digital wallet. It comes with a printed Vault Book: the child's own drawing, a QR code and a note from the person who gave it.
+
+The child doesn't need to understand money on the internet. They scan their own drawing and see a number on a screen. That number is theirs.
+
+The parent holds the key. The savings sit in the child's own vault, and anyone can check the balance on a public record. Families choose Dollars, Bitcoin or Solana. If crypto isn't for you, choose Dollars.
+
+---
+
+Think about a dollar under a child's pillow. By morning it's spent, or lost under the couch. Even if it's saved, a dollar from 2011 buys about two-thirds of what it did then.
+
+Now think about Bitcoin. It has run since 2009. No government or single person has managed to shut it down, and it was built so that no one can. In early 2011, one bitcoin cost about a dollar. This fall it trades around $80,000, more than 10,000 times higher. Along the way it has fallen by half or more several times. It will have highs and lows.
+
+Put a small amount aside for a child, in a vault no one else can spend, and the most you can lose is that small amount. What it could become over twenty years is much bigger.
+
+If you'd rather keep it simple, pick Dollars. The point is the habit: something set aside, in the child's name, that stays put.
+
+---
+
+Here's the part I'm most excited about. It's coming soon.
+
+I'm testing an app that lets me snap a photo on my phone, or on my glasses, and send that moment to my child's vault with a dollar attached. A soccer game. A drawing on the fridge. A first lost tooth.
+
+Picture a grandparent doing that from across the world. One tap. The moment and the dollar stay in the child's vault.
+
+Years later, the child can look back and see it: *Grandpa sent this the day I learned to ride a bike.*
+
+---
+
+I keep asking myself that question, and I can't find an answer.
+
+The child gets savings of their own, and years of watching how money works.
+
+The parent stays in control and learns alongside their child.
+
+The grandparents, aunts, uncles and godparents get an easy way to give something that lasts.
+
+If you already have an RESP or another savings account for your child, keep it. This is a small extra, built around your child's art, that the whole family can add to.
+
+My friend's grandfather gave him gold. I want every grandparent to be able to do the same, in a way a six-year-old can hold in their hands.
+
+Give a child their first wallet. Or Watch Proof to see why I'm building it, and try Learn with Tanda with your kids.`,
+  },
+  {
   "title": "Keep the Internet Open",
   "slug": "keep-the-internet-open",
   "date": "2026-10-21",
