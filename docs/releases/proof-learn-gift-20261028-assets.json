@@ -331,8 +331,9 @@
     },
     {
       "path": "public/learn-media/solana/historical-review.vtt",
-      "bytes": 1750,
-      "sha256": "a7d2aebfa82f6bb245e985bfd7b13bb1665de1600c2cdc008273095225f4aaf7"
+      "bytes": 1701,
+      "sha256": "f41016c71ef775e808f300f075ff90a58d62f083941104b581a735ea3cd6673f",
+      "normalization": "Git LF text"
     },
     {
       "path": "public/learn-media/solana/proof-of-history.mp4",
@@ -416,8 +417,9 @@
     },
     {
       "path": "public/proof-assets/proof-main-20261027/proof-main-before-final-cta-review.vtt",
-      "bytes": 2371,
-      "sha256": "44ff6b5388fcc97a0d1aa843f7d34064235eb534783f3085071654c4640b08b3"
+      "bytes": 2245,
+      "sha256": "a2a466e89ef3a8821c2ca47743ee1890dcb5980e8ea50d4ad58d14ca6cc36785",
+      "normalization": "Git LF text"
     },
     {
       "path": "public/proof-assets/proof-original-trio-v2/history.jpg",
@@ -496,8 +498,9 @@
     },
     {
       "path": "public/proof-assets/proof-site-first-edition/ethereum.svg",
-      "bytes": 98143,
-      "sha256": "0c8b97ef623c504b1d3357102a3ab2a5183b3ab6fa5fe64c6389627c8a856ad0"
+      "bytes": 98135,
+      "sha256": "335f39552e96193121de4c8d55d8170ea0fc061dfa7540a78a21699a762d0088",
+      "normalization": "Git LF text"
     },
     {
       "path": "public/proof-assets/proof-site-first-edition/hand.woff2",
@@ -521,8 +524,9 @@
     },
     {
       "path": "public/proof-assets/proof-site-first-edition/solana.svg",
-      "bytes": 2532,
-      "sha256": "1805113b617aab69cb7dcfab1c0001c85e7da28858c9be024e1ebc54b9b4209b"
+      "bytes": 2519,
+      "sha256": "3d3401109aa061dec40a8659f1847817a8e647f98de1e65e76e86a95bbe1f08a",
+      "normalization": "Git LF text"
     },
     {
       "path": "public/proof-assets/proof-site-first-edition/tanda-current.png",
@@ -531,8 +535,9 @@
     },
     {
       "path": "public/proof-assets/proof-site-first-edition/usdc-token.svg",
-      "bytes": 1315,
-      "sha256": "db180d2193c13cfae97c553a7e8da03ac02f68cce1871d05621c9de1ffe4f410"
+      "bytes": 1309,
+      "sha256": "fe4f9d5f34ef4ebeb5d80e1f5ff63dcaf5a0d5495f4adf206e4c3011d1f5c57d",
+      "normalization": "Git LF text"
     },
     {
       "path": "public/proof-assets/proof-voiced-v10-20261023/growth.mp4",

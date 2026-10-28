@@ -15,7 +15,7 @@ it('keeps the two approved guide players visible and transcript disclosures out 
   expect(collection).toContain('Try the questions')
   const inventory = JSON.parse(readFileSync('docs/releases/proof-learn-gift-20261028-assets.json', 'utf8'))
   for (const asset of inventory.assets) {
-    expect(createHash('sha256').update(readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
+    expect(createHash('sha256').update(asset.normalization ? readFileSync(asset.path, 'utf8').replace(/\r\n/g, '\n') : readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
   }
 })
 
@@ -28,6 +28,6 @@ it('ships the approved classroom and Tanda assets while retaining only the produ
   expect(existsSync('public/learn-media/welcome-r2/dad-welcome-review.mp4')).toBe(false)
   const approved = JSON.parse(readFileSync('docs/releases/learn-v9-public-assets.json', 'utf8'))
   for (const asset of approved.assets) {
-    expect(createHash('sha256').update(readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
+    expect(createHash('sha256').update(asset.normalization ? readFileSync(asset.path, 'utf8').replace(/\r\n/g, '\n') : readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
   }
 })
