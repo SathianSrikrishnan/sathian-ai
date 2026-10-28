@@ -1,5 +1,6 @@
 'use client'
 
+import { rememberAdClick } from '@/lib/ad-click'
 import { isLearningPath } from '@/lib/learn/route-policy'
 
 import { Analytics } from '@vercel/analytics/react'
@@ -16,6 +17,10 @@ export function WebsiteAnalytics() {
 function WebsiteAnalyticsContent() {
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
   const pathname = usePathname()
+
+  useEffect(() => {
+    rememberAdClick(window.location.search)
+  }, [])
 
   useEffect(() => {
     if (!measurementId || typeof window.gtag !== 'function') return

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import { applyAdClick } from '@/lib/ad-click'
 import { trackSiteEvent } from '@/lib/site-analytics'
 
 /**
@@ -22,9 +23,19 @@ export function TrackedLink({
   className?: string
   children: ReactNode
 }) {
-  const onClick = () => trackSiteEvent(event, { placement })
   if (href.startsWith('/')) {
-    return <Link href={href} className={className} onClick={onClick}>{children}</Link>
+    return <Link href={href} className={className} onClick={() => trackSiteEvent(event, { placement })}>{children}</Link>
   }
-  return <a href={href} className={className} onClick={onClick}>{children}</a>
+  return (
+    <a
+      href={href}
+      className={className}
+      onClick={(clickEvent) => {
+        applyAdClick(clickEvent.currentTarget)
+        trackSiteEvent(event, { placement })
+      }}
+    >
+      {children}
+    </a>
+  )
 }
