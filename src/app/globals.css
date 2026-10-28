@@ -6500,3 +6500,51 @@ h1, h2, h3 {
     gap: 32px;
   }
 }
+
+/* Article image heroes: cream wash so the dark workshop title stays readable */
+.workshop-article > header:has(img) .bg-gradient-to-t {
+  background: linear-gradient(to top, #f6ead3 0%, rgba(246, 234, 211, 0.88) 45%, rgba(246, 234, 211, 0.45) 100%) !important;
+}
+
+.workshop-article > header:has(img) .mix-blend-color {
+  display: none;
+}
+
+.workshop-article > header:has(img) img {
+  filter: saturate(0.85) !important;
+}
+
+.workshop-article > header:has(img) p.italic {
+  color: #8c451c !important;
+}
+
+.article-cta {
+  margin-top: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+.article-cta__primary {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: #b84c17;
+  color: #fff8ec !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.article-cta__primary:hover {
+  background: #9a3d10;
+}
+
+.article-cta__secondary {
+  color: #8c451c !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  text-decoration: underline;
+}

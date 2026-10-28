@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRef } from 'react'
 import { motion, useInView } from 'motion/react'
 import { type Article } from '@/lib/articles'
+import { applyAdClick } from '@/lib/ad-click'
+import { trackSiteEvent } from '@/lib/site-analytics'
 import { ReadingProgress } from '@/components/article/ReadingProgress'
 import { ShareBar } from '@/components/article/ShareBar'
 import { FullBleedImage, InlineImage } from '@/components/article/FullBleedImage'
@@ -495,6 +497,30 @@ export function ArticleRenderer({ article, backHref = '/', backLabel = 'sathian.
         </div>
 
         <div className="max-w-2xl mx-auto">
+          {article.cta && (
+            <div className="article-cta">
+              <a
+                href={article.cta.href}
+                className="article-cta__primary"
+                onClick={(event) => {
+                  applyAdClick(event.currentTarget)
+                  trackSiteEvent('gift_cta_clicked', { placement: 'essay', article: article.slug })
+                }}
+              >
+                {article.cta.label}
+              </a>
+              {article.cta.secondary && (
+                <a
+                  href={article.cta.secondary.href}
+                  className="article-cta__secondary"
+                  onClick={() => trackSiteEvent('proof_opened', { placement: 'essay', article: article.slug })}
+                >
+                  {article.cta.secondary.label}
+                </a>
+              )}
+            </div>
+          )}
+
           {article.hiddenSignal && (
             <div className="mt-20 pt-8 border-t border-gray-800/50">
               <details className="text-sm group">
