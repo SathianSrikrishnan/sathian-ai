@@ -15,7 +15,7 @@ const surfaces = [
   { path: '/projects/family-art-pod', heading: 'A little masterpiece. A home of its own.', title: 'Family Art Pod | Sathian' },
   { path: '/', heading: 'Digital Experiments', title: 'Sathian Srikrishnan | Digital Experiments' },
   { path: '/privacy', heading: 'Privacy.', title: 'Privacy | Sathian' },
-  { path: '/about', heading: 'Sathian', title: 'About Sathian' },
+  { path: '/about', heading: 'Sathian', title: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },
   { path: '/links', heading: 'A few ways in.', title: 'Links | Sathian' },
   { path: '/writings', heading: 'Writing.', title: 'Writing | sathian.ai' },
   { path: '/hackathons', heading: 'Ideas meet the clock.', title: 'Hackathons | sathian.ai' },

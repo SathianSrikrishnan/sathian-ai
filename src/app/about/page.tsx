@@ -8,14 +8,14 @@ import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 import { personalSocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
-  title: 'About Sathian',
+  title: { absolute: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },
   description:
-    'Sathian Srikrishnan is a Toronto-based agent manager and orchestrator building public experiments across AI, technology, money, culture, and family products.',
+    'Sathian Srikrishnan is a founder and dad in Toronto building Tooth Fairy Network: a child’s first digital wallet and a personalized Vault Book, given by the people who love them.',
   alternates: { canonical: '/about' },
   openGraph: {
-    title: 'About Sathian',
+    title: 'About Sathian Srikrishnan',
     description:
-      'A profile of Sathian Srikrishnan, his public work, writing, and experiments.',
+      'Founder and dad in Toronto, building products people love, starting with the ones his own children need.',
     type: 'profile',
     url: 'https://sathian.ai/about',
     siteName: 'Sathian',
@@ -44,30 +44,32 @@ export default function AboutPage() {
 
       <main>
         <header className="minimal-page-hero minimal-container">
-          <p className="minimal-kicker">ABOUT / TORONTO</p>
+          <p className="minimal-kicker">FOUNDER + DAD / TORONTO</p>
           <h1>Sathian</h1>
           <p>
-            I&apos;m Sathian Srikrishnan, an agent manager and orchestrator in Toronto.
-            I build small public experiments to understand where AI, technology,
-            money, culture, and family products meet real life.
+            I&apos;m Sathian Srikrishnan. I build products people love, starting with the
+            ones my own children need, for children and parents everywhere.
           </p>
         </header>
 
         <section className="minimal-section minimal-container" aria-labelledby="about-work">
           <div className="minimal-project-copy">
-            <p className="minimal-kicker">THE WORK</p>
-            <h2 id="about-work">Learning by building, then showing the receipts.</h2>
+            <p className="minimal-kicker">WHAT I&apos;M BUILDING</p>
+            <h2 id="about-work">Tooth Fairy Network.</h2>
             <p>
-              My current work includes bounded AI agents, public data tools,
-              consumer experiments, and Tooth Fairy Network. I write about what
-              worked, what failed, and how the underlying ideas change once they
-              become something a person can use.
+              A child&apos;s first digital wallet and a personalized Vault Book, given by the
+              people who love them. The child is the hero: they start saving early, and every
+              grandparent, aunt and uncle can add to it.
             </p>
             <p>
-              This site is the canonical home for that work. The writing is mine;
-              the site agent answers from reviewed public context and can route a
-              note, but it is not an authority or a substitute for my judgment.
+              After ten years leading a startup I co-founded, I stepped away in 2025 to learn
+              and build again. I write about what worked and what didn&apos;t.
             </p>
+            <nav className="minimal-writing-links" aria-label="Start here">
+              <a href="https://proof.sathian.ai/" className="minimal-text-link">Watch Proof: why I&apos;m building it</a>
+              <a href="https://toothfairy.money/?utm_source=sathian.ai&amp;utm_medium=referral&amp;utm_campaign=about" className="minimal-text-link">Give a child their first wallet</a>
+              <Link href="/learn" className="minimal-text-link">Learn with Tanda</Link>
+            </nav>
             <nav className="minimal-writing-links" aria-label="About Sathian links">
               <Link href="/writings" className="minimal-text-link">Read the writing</Link>
               <Link href="/hackathons" className="minimal-text-link">See the builds</Link>
