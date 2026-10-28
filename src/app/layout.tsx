@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://sathian.ai'),
   alternates: { canonical: './' },
   title: 'Sathian Srikrishnan | Digital Experiments',
-  description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
+  description: 'Sathian Srikrishnan, founder and dad in Toronto, builds products people love, starting with the ones his own children need. Projects, essays and Tooth Fairy Network.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Sathian Srikrishnan | Digital Experiments',
-    description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
+    description: 'Sathian Srikrishnan, founder and dad in Toronto, builds products people love, starting with the ones his own children need. Projects, essays and Tooth Fairy Network.',
     siteName: 'Sathian',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sathian Srikrishnan | Digital Experiments',
-    description: 'Agent manager and orchestrator Sathian builds useful agents, public projects, and notes on culture, money, technology, and fatherhood.',
+    description: 'Sathian Srikrishnan, founder and dad in Toronto, builds products people love, starting with the ones his own children need. Projects, essays and Tooth Fairy Network.',
   },
 }
 

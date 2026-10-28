@@ -29,7 +29,7 @@ describe('site-agent-first editorial pass', () => {
     expect(home).not.toContain('Ask the site agent about what I am building and writing, or leave me a note.')
     expect(widget).not.toContain('PUBLIC CONTEXT / PRIVATE INTAKE')
     expect(home).not.toContain('The fastest way to reach me is to ask.')
-    expect(home).toContain('Featured work')
+    expect(home).toContain('Featured writing')
     expect(home).toContain('More projects &amp; curiosities')
     expect(home).not.toContain('The systems underneath the work.')
     expect(home).not.toContain('BUILD_NOTES')
@@ -40,7 +40,7 @@ describe('site-agent-first editorial pass', () => {
   it('retires the short-lived TxODDS campaign without changing the editorial baseline', () => {
     expect(home).not.toMatch(/TxODDS|txodds|World Cup build/)
     expect(memory).not.toContain('getTxOddsCampaignMemoryCards')
-    expect(home).toContain('Featured work')
+    expect(home).toContain('Featured writing')
     expect(agentIndex).toContain('Public build record')
   })
 

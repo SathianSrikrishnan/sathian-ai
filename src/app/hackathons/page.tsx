@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
+import { HACKATHON_SITE_PROJECTS } from '@/content/site-projects'
 
 export const metadata: Metadata = {
   title: 'Hackathons | sathian.ai',
@@ -32,6 +33,11 @@ const links = {
     github: 'https://github.com/SathianSrikrishnan/ClinicalGuard',
   },
 }
+
+// AgentTab and ClinicalGuard already have full records above.
+const MORE_BUILDS = HACKATHON_SITE_PROJECTS.filter(
+  (project) => project.slug !== 'agenttab' && project.slug !== 'clinicalguard',
+)
 
 export default function HackathonsPage() {
   return (
@@ -98,6 +104,29 @@ export default function HackathonsPage() {
                 { href: links.clinicalGuard.github, label: 'GitHub' },
               ]}
             />
+          </div>
+        </section>
+
+        <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-builds">
+          <h2 id="more-builds">More builds &amp; experiments</h2>
+          <div className="minimal-more-list">
+            {MORE_BUILDS.map((project) => {
+              const content = (
+                <>
+                  <span className="minimal-more-thumb">
+                    {project.image ? <Image src={project.image} alt="" fill sizes="136px" /> : <span aria-hidden="true" />}
+                  </span>
+                  <strong>{project.name}</strong>
+                  <span className="minimal-label">{project.label}</span>
+                </>
+              )
+              const href = project.pageHref ?? project.href
+              return href.startsWith('/') ? (
+                <Link key={project.name} href={href}>{content}</Link>
+              ) : (
+                <a key={project.name} href={href} target="_blank" rel="noopener noreferrer">{content}</a>
+              )
+            })}
           </div>
         </section>
       </main>

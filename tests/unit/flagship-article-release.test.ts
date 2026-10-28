@@ -57,17 +57,17 @@ describe('The Polytheistic Test release', () => {
     expect(essay).toContain('href="https://sathiansrikrishnan.github.io/solana-ecosystem-dashboard/"')
   })
 
-  it('puts the essay first in Featured Work without moving the chatbot', () => {
+  it('keeps the chatbot first, then Building now, then Featured writing', () => {
     const home = read('src/components/home/HomeClient.tsx')
     const agentIndex = home.indexOf('id="agent"')
+    const projectIndex = home.indexOf('FEATURED_SITE_PROJECTS.map')
     const featuredIndex = home.indexOf('id="featured-work"')
     const essayIndex = home.indexOf('minimal-featured-project--article')
-    const projectIndex = home.indexOf('FEATURED_SITE_PROJECTS.map')
 
     expect(agentIndex).toBeGreaterThan(-1)
-    expect(featuredIndex).toBeGreaterThan(agentIndex)
+    expect(projectIndex).toBeGreaterThan(agentIndex)
+    expect(featuredIndex).toBeGreaterThan(projectIndex)
     expect(essayIndex).toBeGreaterThan(featuredIndex)
-    expect(projectIndex).toBeGreaterThan(essayIndex)
     expect(home).toContain('/media/flagship-hero.png')
   })
 

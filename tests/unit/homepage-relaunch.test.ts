@@ -60,8 +60,9 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).not.toMatch(/Signal\s*&\s*Noise/i)
   })
 
-  it('uses agent management and orchestration as Sathian\'s public theme', () => {
-    expect(rootLayout).toContain('Agent manager and orchestrator')
+  it('uses founder and dad as Sathian\'s public theme (owner, Oct 28)', () => {
+    expect(rootLayout).toContain('founder and dad in Toronto')
+    expect(rootLayout).not.toContain('Agent manager and orchestrator')
   })
 
   it('frames AI-native infrastructure as a bounded public experiment, not a sales pitch', () => {
@@ -146,7 +147,8 @@ describe('sathian.ai relaunch surface', () => {
     expect(homeClient).not.toContain('minimal-latest-release')
     expect(homeClient).not.toContain('minimal-tfn-video')
     expect(homeClient).not.toContain('youtube-nocookie.com/embed')
-    expect(homeClient).toContain('LEARN WITH TANDA / TOOTH FAIRY NETWORK')
+    expect(homeClient).toContain('<h3>Learn with Tanda</h3>')
+    expect(homeClient).toContain('/learn-art/classroom-master.webp')
     expect(homeClient).toContain('href="/learn"')
   })
 
@@ -167,23 +169,23 @@ describe('sathian.ai relaunch surface', () => {
     expect(writingIndex).toContain('Notes on culture, money, technology, fatherhood, and the products I am learning to build.')
   })
 
-  it('keeps the homepage focused while preserving older work in a quiet archive', () => {
+  it('keeps the homepage focused and moves older builds to Hackathons', () => {
+    const hackathons = readOptional('src/app/hackathons/page.tsx')
     expect(homepage).toContain('Tooth Fairy Network')
     expect(homepage).not.toContain('New to Solana?')
-    expect(homeClient).toContain('[...MORE_SITE_PROJECTS, ...ARCHIVE_SITE_PROJECTS]')
+    expect(homeClient).toContain('MORE_SITE_PROJECTS.map')
+    expect(homeClient).toContain('href="/hackathons"')
     expect(homepage).toContain('Writing')
     expect(homepage).toContain('More projects &amp; curiosities')
-    expect(homepage).toContain('Lex Rooftop Garden')
-    expect(homepage).toContain('BTC Cultural Atlas')
-    expect(homepage).toContain('AgentTab')
-    expect(homepage).toContain('ClinicalGuard')
+    expect(hackathons).toContain('HACKATHON_SITE_PROJECTS')
+    expect(hackathons).toContain('More builds &amp; experiments')
     expect(homepage).not.toContain('WRITING, BY EMAIL')
     expect(homepage).not.toContain('03 / ABOUT')
   })
 
   it('renders featured and archived projects from the canonical project registry', () => {
     expect(homeClient).toContain('FEATURED_SITE_PROJECTS')
-    expect(homeClient).toContain('ARCHIVE_SITE_PROJECTS')
+    expect(homeClient).toContain('HACKATHON_SITE_PROJECTS')
     expect(homeClient).not.toContain('const FEATURED_PROJECTS = [')
     expect(homeClient).not.toContain('const MORE_PROJECTS = [')
   })

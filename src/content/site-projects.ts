@@ -279,9 +279,15 @@ export const ARCHIVE_SITE_PROJECTS: readonly PublicSiteProject[] = [
 
 export const MORE_SITE_PROJECTS: readonly PublicSiteProject[] = [
   FAMILY_ART_POD_PROJECT,
+  FARCASTER_QUICKSTART_PROJECT,
+  CCAC_VIBE_PIANO_SITE_PROJECT,
+]
+
+// Owner, Oct 28: hackathon and side builds live on /hackathons, not the homepage.
+export const HACKATHON_SITE_PROJECTS: readonly PublicSiteProject[] = [
   SOLANA_OBSERVATORY_PROJECT,
   AUTOQUOTE_AUTOMATOR_PROJECT,
-  CCAC_VIBE_PIANO_SITE_PROJECT,
+  ...ARCHIVE_SITE_PROJECTS,
 ]
 
 function normalizeAlias(value: string): string {

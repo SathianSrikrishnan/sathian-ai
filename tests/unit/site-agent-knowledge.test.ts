@@ -163,7 +163,7 @@ describe('canonical site-agent public knowledge', () => {
   it('uses the same project registry for the homepage and agent', () => {
     expect(homepage).toContain("from '@/content/site-projects'")
     expect(homepage).toContain('FEATURED_SITE_PROJECTS')
-    expect(homepage).toContain('ARCHIVE_SITE_PROJECTS')
+    expect(homepage).toContain('HACKATHON_SITE_PROJECTS')
     expect(homepage).toContain('MORE_SITE_PROJECTS')
   })
 })

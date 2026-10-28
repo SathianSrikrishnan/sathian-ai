@@ -6,8 +6,8 @@ import Link from 'next/link'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import {
-  ARCHIVE_SITE_PROJECTS,
   FEATURED_SITE_PROJECTS,
+  HACKATHON_SITE_PROJECTS,
   MORE_SITE_PROJECTS,
 } from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
@@ -70,7 +70,7 @@ export function HomeClient({ writings }: HomeClientProps) {
           </p>
           <h1>Digital Experiments</h1>
           <p className="minimal-home-mission">
-            I build products people really love, starting with the ones my own children need, for children and parents everywhere.
+            I build products people love, starting with the ones my own children need. This site is built for people and agents: ask it anything.
           </p>
           <a className="home-proof-entry" href={PROOF.href} onClick={() => trackSiteEvent('proof_opened', { placement: 'homepage' })}>
             <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.jpg" alt="" width="76" height="76" />
@@ -87,11 +87,84 @@ export function HomeClient({ writings }: HomeClientProps) {
           </p>
         </section>
 
+        <section className="minimal-section minimal-container" aria-labelledby="building-now">
+          <h2 id="building-now">Building now</h2>
+          <div className="minimal-featured-list">
+            {FEATURED_SITE_PROJECTS.map((project, index) => (
+              <article key={project.name} className={`minimal-featured-project minimal-featured-project--${index + 1}`}>
+                <div className="minimal-project-copy">
+                  {index === 0 && (
+                    <div className="minimal-tfn-title">
+                      <Image
+                        src="/projects/tooth-fairy-network/tanda-profile.png"
+                        alt="Tanda, the Tooth Fairy Network guide"
+                        width={58}
+                        height={58}
+                      />
+                      <h3>{project.name}</h3>
+                    </div>
+                  )}
+                  {index !== 0 && <h3>{project.name}</h3>}
+                  <p className="minimal-label">{project.label}</p>
+                  <p>{project.description}</p>
+                  <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
+                    {project.cta}
+                  </a>
+                  {index === 0 && (
+                    <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
+                      {toothFairySocialLinks.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => trackSiteEvent('tfn_social_opened', {
+                            placement: 'homepage',
+                            channel: link.label.toLowerCase(),
+                          })}
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
+                </div>
+                <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={project.cta}>
+                  <Image src={project.image} alt={project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
+                </a>
+              </article>
+            ))}
+            <article className="minimal-featured-project minimal-featured-project--learn">
+              <div className="minimal-project-copy">
+                <p className="minimal-kicker">TOOTH FAIRY NETWORK</p>
+                <h3>Learn with Tanda</h3>
+                <p className="minimal-label">STORIES + SHORT LESSONS / FREE</p>
+                <p>Stories and short lessons on saving, money and the internet, for children and the grown-ups who love them.</p>
+                <Link
+                  href="/learn"
+                  className="minimal-text-link"
+                  onClick={() => trackSiteEvent('learn_opened', { placement: 'homepage' })}
+                >
+                  Start learning
+                </Link>
+              </div>
+              <Link href="/learn" className="minimal-project-media" aria-label="Open Learn with Tanda">
+                <Image
+                  src="/learn-art/classroom-master.webp"
+                  alt="Tanda teaching a dad and two children at a chalkboard about a child's digital vault"
+                  fill
+                  sizes="(max-width: 760px) 100vw, 58vw"
+                />
+              </Link>
+            </article>
+          </div>
+        </section>
+
         <section className="minimal-section minimal-container" aria-labelledby="featured-work">
-          <h2 id="featured-work">Featured work</h2>
+          <h2 id="featured-work">Featured writing</h2>
 
           <div className="minimal-featured-list">
-            {FEATURED_WRITINGS.map((feature, index) => {
+            {FEATURED_WRITINGS.map((feature) => {
               const writing = writings.find(
                 (entry) => entry.href === `/writings/${feature.slug}`,
               )
@@ -117,73 +190,12 @@ export function HomeClient({ writings }: HomeClientProps) {
                       src={feature.image}
                       alt={feature.alt}
                       fill
-                      priority={index === 0}
                       sizes="(max-width: 760px) 100vw, 58vw"
                     />
                   </Link>
                 </article>
               )
             })}
-            {FEATURED_SITE_PROJECTS.map((project, index) => (
-              <article key={project.name} className={`minimal-featured-project minimal-featured-project--${index + 1}`}>
-                <div className="minimal-project-copy">
-                  {index === 0 && (
-                    <div className="minimal-tfn-title">
-                      <Image
-                        src="/projects/tooth-fairy-network/tanda-profile.png"
-                        alt="Tanda, the Tooth Fairy Network guide"
-                        width={58}
-                        height={58}
-                      />
-                      <h3>{project.name}</h3>
-                    </div>
-                  )}
-                  {index !== 0 && <h3>{project.name}</h3>}
-                  <p className="minimal-label">{project.label}</p>
-                  <p>{project.description}</p>
-                  <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
-                    {project.cta}
-                  </a>
-                </div>
-                <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={project.cta}>
-                  <Image src={project.image} alt={project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
-                </a>
-                {index === 0 && (
-                  <div className="minimal-tfn-extension minimal-tfn-extension--learn">
-                    <div className="minimal-tfn-extension__copy">
-                      <p className="minimal-kicker">LEARN WITH TANDA / TOOTH FAIRY NETWORK</p>
-                      <h4>Read the stories together.</h4>
-                      <p>Seven Tanda stories to read, watch and draw with your child.</p>
-                      <div className="minimal-record-links">
-                        <Link
-                          href="/learn"
-                          className="minimal-text-link"
-                          onClick={() => trackSiteEvent('learn_opened', { placement: 'homepage' })}
-                        >
-                          Learn with Tanda
-                        </Link>
-                      </div>
-                      <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
-                        {toothFairySocialLinks.map((link) => (
-                          <a
-                            key={link.label}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => trackSiteEvent('tfn_social_opened', {
-                              placement: 'homepage',
-                              channel: link.label.toLowerCase(),
-                            })}
-                          >
-                            {link.label}
-                          </a>
-                        ))}
-                      </nav>
-                    </div>
-                  </div>
-                )}
-              </article>
-            ))}
           </div>
         </section>
 
@@ -208,10 +220,18 @@ export function HomeClient({ writings }: HomeClientProps) {
           </section>
         )}
 
+        <section className="minimal-section minimal-container" aria-labelledby="home-hackathons">
+          <div className="minimal-section-heading">
+            <h2 id="home-hackathons">Hackathons</h2>
+            <Link href="/hackathons" className="minimal-text-link">All builds</Link>
+          </div>
+          <p>Working systems built against the clock: {HACKATHON_SITE_PROJECTS.map((project) => project.name).join(', ')}.</p>
+        </section>
+
         <section className="minimal-section minimal-container minimal-more" aria-labelledby="more-projects">
           <h2 id="more-projects">More projects &amp; curiosities</h2>
           <div className="minimal-more-list">
-            {[...MORE_SITE_PROJECTS, ...ARCHIVE_SITE_PROJECTS].map((project) => {
+            {MORE_SITE_PROJECTS.map((project) => {
               const content = (
                 <>
                 <span className="minimal-more-thumb">
