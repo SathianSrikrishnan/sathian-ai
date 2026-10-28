@@ -1,0 +1,553 @@
+{
+  "baseline": "e9484bf78b20664b4d818bcfa32a0e214f6899be",
+  "founderSubstitution": "Same approved Proof 82.517-second founder film; not a newly produced Learn welcome",
+  "held": [
+    "Earth/Mars V2",
+    "Venus/Earth V2",
+    "Jupiter/Saturn V2",
+    "rejected founder welcome",
+    "stablecoin revised lesson"
+  ],
+  "sevenProofFilms": [
+    {
+      "name": "prologue",
+      "title": "Prologue",
+      "id": "BIP-113",
+      "sha256": "ddea9f1b05bab368d9824501e2f29173c1c20aacf2b2a77bae998693c63157fc",
+      "url": "/proof-assets/proof-documentary-v9/prologue.mp4",
+      "duration": 69.708333,
+      "poster": "/proof-assets/proof-documentary-v9/prologue.jpg",
+      "role": "current"
+    },
+    {
+      "name": "work",
+      "title": "Proof of Work: Bitcoin",
+      "id": "BIP-114",
+      "sha256": "ea2bd1f8522ac8e06d46683f6c97105cacf1b08301ef48a73b3421d20836a003",
+      "url": "/proof-assets/proof-documentary-v9/work.mp4",
+      "duration": 99.625,
+      "poster": "/proof-assets/proof-documentary-v9/work.jpg",
+      "role": "current"
+    },
+    {
+      "name": "stake",
+      "title": "Proof of Stake: Ethereum",
+      "id": "BIP-118",
+      "sha256": "cd81c5e2a46aaaedcadeb8bf8c9694a1fb24ae922dfc5df8e0268b990ed5a397",
+      "url": "/proof-assets/proof-original-trio-v2/stake.mp4",
+      "poster": "/proof-assets/proof-original-trio-v2/stake.jpg",
+      "duration": 37.833333,
+      "role": "current"
+    },
+    {
+      "name": "history",
+      "title": "Proof of History: Solana",
+      "id": "BIP-119",
+      "sha256": "0b0333ca5ce644a470bb8a4c7eb665b74130a58ab01cdcd6d8e24c1aac47a44c",
+      "url": "/proof-assets/proof-original-trio-v2/history.mp4",
+      "poster": "/proof-assets/proof-original-trio-v2/history.jpg",
+      "duration": 37.208333,
+      "role": "current"
+    },
+    {
+      "name": "growth",
+      "title": "Proof of Growth",
+      "id": "BIP-121",
+      "sha256": "459fe4d983d61effe7a04aa89b9a8241e8ac5c02dfc1338e849932b04b6ab081",
+      "url": "/proof-assets/proof-voiced-v10-20261023/growth.mp4",
+      "poster": "/proof-assets/proof-review-v16/growth.jpg",
+      "duration": 35.583333,
+      "role": "current"
+    },
+    {
+      "name": "love",
+      "title": "Proof of Love",
+      "id": "BIP-122",
+      "sha256": "be7aff9cf319dbadaf2ea8564c06314a22f603318a4652a32b2325288d8c4986",
+      "url": "/proof-assets/proof-voiced-v10-20261023/love.mp4",
+      "poster": "/proof-assets/proof-editorial-v15/love.jpg",
+      "duration": 50.5,
+      "role": "current"
+    },
+    {
+      "name": "stablecoin",
+      "title": "Dollars That Travel",
+      "url": "/proof-assets/claude-studio/proof-r6-f4-raw.mp4",
+      "poster": "/proof-assets/claude-studio/proof-r6-f4-raw.jpg",
+      "duration": 50.046667,
+      "sha256": "7d2386844990ea825f74c3cbdf14d08ad8979ba470e55c4f90c241e2cba43dd4"
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/learn-media/bitcoin/confidence-close.mp4",
+      "bytes": 1812167,
+      "sha256": "f305e9ff3157c3cbad25768664b8a2ce9da972e33fa226f328f13508e9a12198"
+    },
+    {
+      "path": "public/learn-media/bitcoin/confidence-no.mp4",
+      "bytes": 1090652,
+      "sha256": "58bcab7040035a2e88228274bd20f59da86e40aadbd76ca9726db96c14ddf918"
+    },
+    {
+      "path": "public/learn-media/bitcoin/confidence-question.mp4",
+      "bytes": 1923921,
+      "sha256": "93218c3fb5afaff1664a5508b354df8babfa1e15f50dbca74c9cc9508ae62967"
+    },
+    {
+      "path": "public/learn-media/bitcoin/confidence-yes.mp4",
+      "bytes": 1132004,
+      "sha256": "fd2fddfbdfccfbeb801d92ca90566818767c6b767cc8206c6ec70e3ee1777e1b"
+    },
+    {
+      "path": "public/learn-media/bitcoin/copy-close.mp4",
+      "bytes": 1903264,
+      "sha256": "b8157c7a9f7fa80c77518aec949bf53f8ed972fcc5d5743074a22f38a535b5c6"
+    },
+    {
+      "path": "public/learn-media/bitcoin/copy-no.mp4",
+      "bytes": 1540339,
+      "sha256": "03e82d12d5f057ac0da26c0eb0ab18129175b673e87407340d8d09b7cd813c4f"
+    },
+    {
+      "path": "public/learn-media/bitcoin/copy-question.mp4",
+      "bytes": 1511760,
+      "sha256": "3dc449e361803bc892d6dc63533731034573dd9edc97b8f7bea860ce87ce1afe"
+    },
+    {
+      "path": "public/learn-media/bitcoin/copy-yes.mp4",
+      "bytes": 1545403,
+      "sha256": "af8b59d4290543966cb010f23adfd9586c5181df4423746572ea034e879f4fef"
+    },
+    {
+      "path": "public/learn-media/bitcoin/fingerprint-close.mp4",
+      "bytes": 1557572,
+      "sha256": "ce1729343678085632b126b9d7c6fd3f119a2d8b66ff861ea8c6c210c9c73cbd"
+    },
+    {
+      "path": "public/learn-media/bitcoin/fingerprint-no.mp4",
+      "bytes": 1166718,
+      "sha256": "b6cc206b9663858310f8d0836b355d6975b3540609aab762d471c94b72362107"
+    },
+    {
+      "path": "public/learn-media/bitcoin/fingerprint-question.mp4",
+      "bytes": 1754742,
+      "sha256": "48a7a33d1d0e51885271a3015c32d111003dfe9d576ddfb0b6b2934a01f3f9c5"
+    },
+    {
+      "path": "public/learn-media/bitcoin/fingerprint-yes.mp4",
+      "bytes": 1202465,
+      "sha256": "d0f4ce0a3f585c384ba45aa973ba5a121f5bba4e398405385bd2dcf85fa41249"
+    },
+    {
+      "path": "public/learn-media/bitcoin/history-close.mp4",
+      "bytes": 1489736,
+      "sha256": "8c3f4797be4371116f438f10c6d4060d483619a903717b285a6568ac83a5b6f8"
+    },
+    {
+      "path": "public/learn-media/bitcoin/history-no.mp4",
+      "bytes": 1035067,
+      "sha256": "bfa37b4eb9f8f9a9c32d5e0b0716033baabcab97607fbf2f95248a67d4c7771b"
+    },
+    {
+      "path": "public/learn-media/bitcoin/history-question.mp4",
+      "bytes": 1829913,
+      "sha256": "432ed5f0b45bf104e9279b3d754b621b2247b7c8177d8b972ce77912f183b924"
+    },
+    {
+      "path": "public/learn-media/bitcoin/history-yes.mp4",
+      "bytes": 1215854,
+      "sha256": "9c0de17de031bcba48301f5fe44a67fe77a1de59e4d4c90496727e69efe393a7"
+    },
+    {
+      "path": "public/learn-media/bitcoin/signature-close.mp4",
+      "bytes": 1447941,
+      "sha256": "fbaf4802138289ae34bc43799a687fa79eaeeb0c64bb2a4f8cacddfa66c0baea"
+    },
+    {
+      "path": "public/learn-media/bitcoin/signature-no.mp4",
+      "bytes": 1163547,
+      "sha256": "49b10ffdba6ba69801745bd3d45135825ed00e1f7de759680a39faa6ff863e4c"
+    },
+    {
+      "path": "public/learn-media/bitcoin/signature-question.mp4",
+      "bytes": 1827931,
+      "sha256": "ef6dba4fb91013e6ad5116f2a3b83f05ca6fa17fe7b7fc8703ba4e024a4f7a8f"
+    },
+    {
+      "path": "public/learn-media/bitcoin/signature-yes.mp4",
+      "bytes": 1186094,
+      "sha256": "c5a86c0b50bca3543c1f5776c509dc6bebe16a9faae8352c07f1a8aa17ab5b13"
+    },
+    {
+      "path": "public/learn-media/bitcoin/watch-review.mp4",
+      "bytes": 21831557,
+      "sha256": "cd7f0c1f03ee9d6d660eef2f2ae6c92cac65311f51c41463060b15e30180e16e"
+    },
+    {
+      "path": "public/learn-media/bitcoin/work-close.mp4",
+      "bytes": 1852822,
+      "sha256": "b4cb234c976010854724725343f6adfce270e69d7c6be6dcc5a15ad47774f40d"
+    },
+    {
+      "path": "public/learn-media/bitcoin/work-no.mp4",
+      "bytes": 1142649,
+      "sha256": "d0f2aec30ec6e73e495f2c2a40eb8f0bdb2eabc386e0e0b157d53df4f6810f30"
+    },
+    {
+      "path": "public/learn-media/bitcoin/work-question.mp4",
+      "bytes": 1796434,
+      "sha256": "f93c6e403d6d112e69e86a795e517e3b6fcb67a87e5c93f8b0edc0de848b0e2d"
+    },
+    {
+      "path": "public/learn-media/bitcoin/work-yes.mp4",
+      "bytes": 1315706,
+      "sha256": "dfe142cbd06d97b4d99a24e3a4456114fe9d94b3a30f2af2a98a671d560b705a"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-01-close.mp4",
+      "bytes": 842108,
+      "sha256": "171234ad94c31408be3ec3f82d383b430886b08f1b58be2c01701b8943783e47"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-01-no.mp4",
+      "bytes": 899383,
+      "sha256": "504f95c231d950d2672ee444549b251988ba1eef545409f0b1ec32d8d7d96d4f"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-01-question.mp4",
+      "bytes": 985094,
+      "sha256": "cfad00e2f25957279f896875c665198ec2a3488a5ef1bbdc1609ef83ccf5e195"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-01-yes.mp4",
+      "bytes": 752837,
+      "sha256": "87d2f3cd009c177b13c7e06047385db6426f76566b2053c2e39d4c0e857f8c9b"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-02-close.mp4",
+      "bytes": 1013324,
+      "sha256": "8cb3de4c9b917145af6d1fd10759abe74184fd23b5aa4304e3e89afd0998b718"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-02-no.mp4",
+      "bytes": 736649,
+      "sha256": "799c42afc2395285016c014f08c3af10c1bdcdf6850856bccd9da98bc3d9ed17"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-02-question.mp4",
+      "bytes": 976029,
+      "sha256": "368c5d9ac73dd75e564c3a727568e37d2d9009b3023c383af32f835ace29b37e"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-02-yes.mp4",
+      "bytes": 541407,
+      "sha256": "5b2799d6d8ba8e2c866ddd61eef81bdb60c0feeb26a9f7364928d8e306661f8c"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-03-close.mp4",
+      "bytes": 846303,
+      "sha256": "4de478005cdf181a6a05c876c199c92dcc126901d7a943463440e78743b3a238"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-03-no.mp4",
+      "bytes": 644234,
+      "sha256": "4b365a8f7e3f1c93284d0868da397fc511a661878ef514013c6015d427847e1b"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-03-question.mp4",
+      "bytes": 1088042,
+      "sha256": "836e6bb590421c008b2ddfd73ffe8925924faf5406fa7daf96e47e8b738730cb"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-03-yes.mp4",
+      "bytes": 621134,
+      "sha256": "a8c1d9685ac09b33ce715d3d323dc377d719814146914487fcb1809aa23aac10"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-04-close.mp4",
+      "bytes": 758026,
+      "sha256": "1c716c56f08726795431706c66fad80e802aad295d8dfe4250a6b8788d82cd06"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-04-no.mp4",
+      "bytes": 964583,
+      "sha256": "baaa45850d9745859e4f85685616d5e9005950124e41feaec3f88a79f10f43ac"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-04-question.mp4",
+      "bytes": 1031807,
+      "sha256": "1b535a6de988881b417832ee5f229401556666a0a0fd15e1f8cab6a3e16e1429"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-04-yes.mp4",
+      "bytes": 901097,
+      "sha256": "780bc90e5318ad23fcf753f59fc25cc4f8bb7aba12e8fdbd8643fe782e09bdcb"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-05-close.mp4",
+      "bytes": 906255,
+      "sha256": "9c91bc47dd84922ba9b53bac931facc10bfc5c59401975584cace3c5128a1a9e"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-05-no.mp4",
+      "bytes": 991774,
+      "sha256": "0579f295ad672a55bb2f872b46bc2f17ed50434fa224b4819d5f2eb01b8d1929"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-05-question.mp4",
+      "bytes": 887581,
+      "sha256": "1fb24bcdfee9e25138c2e411098ac91b1cbd71ccc5402f3ce1c2091a6de7d840"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-05-yes.mp4",
+      "bytes": 830807,
+      "sha256": "83c7f05281631b7eddfe30239586ca7dc8cf04a0d62161d0b711acd8953496aa"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-06-close.mp4",
+      "bytes": 1148626,
+      "sha256": "439ea62a538aafc697cecc29febe261cd06f7e08a057b3f217c64e61f6d2072a"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-06-no.mp4",
+      "bytes": 470429,
+      "sha256": "404955a154498b9b54d26444513fd338ae446ad795edbdf99550918c7e40b68e"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-06-question.mp4",
+      "bytes": 1092595,
+      "sha256": "e72c1e640a73a8fff4adb7ffb57d9de486530e22aec9ec67d31aff0e53ef9771"
+    },
+    {
+      "path": "public/learn-media/ethereum/ethereum-06-yes.mp4",
+      "bytes": 315098,
+      "sha256": "842c1a93f0e10c9be4607f719b0dd5630003d2c3643322277678fd8edf701644"
+    },
+    {
+      "path": "public/learn-media/ethereum/watch-review.mp4",
+      "bytes": 20828453,
+      "sha256": "734aa16f76bc151971b92449cfd19e2e3a2966eedf2f877f6333f2a8be3bdbed"
+    },
+    {
+      "path": "public/learn-media/solana/historical-review.vtt",
+      "bytes": 1701,
+      "sha256": "f41016c71ef775e808f300f075ff90a58d62f083941104b581a735ea3cd6673f",
+      "normalization": "Git LF text"
+    },
+    {
+      "path": "public/learn-media/solana/proof-of-history.mp4",
+      "bytes": 8858788,
+      "sha256": "e59d1b74d16966544e74017ff8454391cbf69bc65865bbef46318f617be48d9d"
+    },
+    {
+      "path": "public/learn-media/welcome-r2/tanda-welcome-review-poster.jpg",
+      "bytes": 39922,
+      "sha256": "670ac7f1f69c9a2930288aef0f1f1884ddedcf8f8ea1e277656ef75fe76c5f0b"
+    },
+    {
+      "path": "public/learn-media/welcome-r2/tanda-welcome-review.mp4",
+      "bytes": 3997051,
+      "sha256": "e1c4dccc8b5e7de505085a4aa399ab58f6ee0d9d050cd3d97e39cce957a35882"
+    },
+    {
+      "path": "public/learn-media/welcome-r2/tanda-welcome-review.vtt",
+      "bytes": 773,
+      "sha256": "800d1308aedd6fcd760de0f096e31fdade1f12c3adbddf61b77a3c110216cb8f"
+    },
+    {
+      "path": "public/proof-assets/classroom-master-v9.webp",
+      "bytes": 253164,
+      "sha256": "b63cda86ea1a66b370bd6dd898bd8f16f7a0c44733d9c992d34e2ae32d491617"
+    },
+    {
+      "path": "public/proof-assets/claude-studio/proof-r6-f4-raw.jpg",
+      "bytes": 48444,
+      "sha256": "8cc58597043b7cde2e3ed7fb98ceb1220cce876b8caf3027d3113d631c09aa01"
+    },
+    {
+      "path": "public/proof-assets/claude-studio/proof-r6-f4-raw.mp4",
+      "bytes": 8896226,
+      "sha256": "7d2386844990ea825f74c3cbdf14d08ad8979ba470e55c4f90c241e2cba43dd4"
+    },
+    {
+      "path": "public/proof-assets/product-samples-20261028/sample-back.webp",
+      "bytes": 62540,
+      "sha256": "d63ee3bc22b9c885e040078372f942b7f6e5dbc3dfd4ce0e3457f39a81d29208"
+    },
+    {
+      "path": "public/proof-assets/product-samples-20261028/sample-front.webp",
+      "bytes": 48362,
+      "sha256": "67cc95570b3cbb7e55faa9aeda7a38a04c4e30c9997e8ff9820f896774267067"
+    },
+    {
+      "path": "public/proof-assets/proof-documentary-v9/prologue.jpg",
+      "bytes": 33275,
+      "sha256": "a59e97b29531b7025634bfbe9495fcb184d5f3521101b5f732452404e6600b75"
+    },
+    {
+      "path": "public/proof-assets/proof-documentary-v9/prologue.mp4",
+      "bytes": 51900693,
+      "sha256": "ddea9f1b05bab368d9824501e2f29173c1c20aacf2b2a77bae998693c63157fc"
+    },
+    {
+      "path": "public/proof-assets/proof-documentary-v9/work.jpg",
+      "bytes": 47009,
+      "sha256": "d6501ca27b48363ad945894afc1950c374b3abf173fa7930ef51ae179a7ef0ef"
+    },
+    {
+      "path": "public/proof-assets/proof-documentary-v9/work.mp4",
+      "bytes": 67543465,
+      "sha256": "ea2bd1f8522ac8e06d46683f6c97105cacf1b08301ef48a73b3421d20836a003"
+    },
+    {
+      "path": "public/proof-assets/proof-editorial-v15/love.jpg",
+      "bytes": 55401,
+      "sha256": "41552f7a0a6fbac4153cd9426b50242e1826610c1b69454f267c05be00cb8771"
+    },
+    {
+      "path": "public/proof-assets/proof-editorial-v15/love.mp4",
+      "bytes": 16041594,
+      "sha256": "3b1c11e6142a8c657d8ad30544324ce8323a60cfd251d04fdc2591e06436cc6f"
+    },
+    {
+      "path": "public/proof-assets/proof-main-20261027/proof-main-before-final-cta-review.mp4",
+      "bytes": 16751193,
+      "sha256": "8da1b24435060de76df3c336ba4543f2a5597c86a7fed1e264e4b9653ecdd352"
+    },
+    {
+      "path": "public/proof-assets/proof-main-20261027/proof-main-before-final-cta-review.vtt",
+      "bytes": 2245,
+      "sha256": "a2a466e89ef3a8821c2ca47743ee1890dcb5980e8ea50d4ad58d14ca6cc36785",
+      "normalization": "Git LF text"
+    },
+    {
+      "path": "public/proof-assets/proof-original-trio-v2/history.jpg",
+      "bytes": 37382,
+      "sha256": "9c4b87d6bf79e4f45f9de9859658005d74e562e42d4277f04a784246c2634080"
+    },
+    {
+      "path": "public/proof-assets/proof-original-trio-v2/history.mp4",
+      "bytes": 24205839,
+      "sha256": "0b0333ca5ce644a470bb8a4c7eb665b74130a58ab01cdcd6d8e24c1aac47a44c"
+    },
+    {
+      "path": "public/proof-assets/proof-original-trio-v2/stake.jpg",
+      "bytes": 60079,
+      "sha256": "89d6d4ae6672d74a9bb3dc33960333b24240c9809696b444a85d5df8ed33b9f4"
+    },
+    {
+      "path": "public/proof-assets/proof-original-trio-v2/stake.mp4",
+      "bytes": 35090625,
+      "sha256": "cd81c5e2a46aaaedcadeb8bf8c9694a1fb24ae922dfc5df8e0268b990ed5a397"
+    },
+    {
+      "path": "public/proof-assets/proof-review-v16/growth.jpg",
+      "bytes": 47852,
+      "sha256": "c290663e34777a8d1b3260a5355bd3edbb4a24be24786ae9701c65643929895d"
+    },
+    {
+      "path": "public/proof-assets/proof-review-v16/growth.mp4",
+      "bytes": 23240131,
+      "sha256": "af63207672a05427db11827f0af2e9e2a45a64f100023e7553aebc371048f720"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-0.jpg",
+      "bytes": 85298,
+      "sha256": "7c51188f308442cde3efd8916354f28fdbc2eed131994dfd2bb0aecf5d30a9af"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-1.jpg",
+      "bytes": 90013,
+      "sha256": "efedc4f0bfb21e16644701cb71e619fd03842220d22ccd86e7863fc2d02b13b8"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-2.jpg",
+      "bytes": 111288,
+      "sha256": "d25d288d5390b8d5b88006ea3231446c14c0246a4ee527321ed70109e45d2701"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-3.jpg",
+      "bytes": 90870,
+      "sha256": "707f4cdda6e88d0f2271ef97738d855ab8f5bf95718e0f551016f39970ee4114"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-4.jpg",
+      "bytes": 100545,
+      "sha256": "9898c9208bdeeb837023d4a0054cb37c545284769f534b0738447fedee4d9bd3"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-5.jpg",
+      "bytes": 91747,
+      "sha256": "82ea07179da4b5b535817a572febdd86c72baf389bf53317c234d975785ff08d"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-6.jpg",
+      "bytes": 81175,
+      "sha256": "479a56b3ad1cc590839bbbe954a6cf98054cde4192ca33724b48079b30969f85"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-7.jpg",
+      "bytes": 144090,
+      "sha256": "58e2f451a943a19bb03f16ba2e8cb91ecc54c29a6ec12998b4365a95bd413d9c"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/drawings.png",
+      "bytes": 2922005,
+      "sha256": "117965d2aa24f3f592ed7e8cf8f2b9a979b5c6049bf616659a700ad82753e7fe"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/ethereum.svg",
+      "bytes": 98135,
+      "sha256": "335f39552e96193121de4c8d55d8170ea0fc061dfa7540a78a21699a762d0088",
+      "normalization": "Git LF text"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/hand.woff2",
+      "bytes": 74932,
+      "sha256": "891951df5e8b5b0f0bc760d31375405e795c666b5add70437de12d4a6482b33f"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.jpg",
+      "bytes": 40076,
+      "sha256": "5b5308a9ba13c4cabb2f1743742c0cfceb208af3c163a5342543c93f8441e359"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.mp4",
+      "bytes": 21470045,
+      "sha256": "db0fd4db14d8cfd1dc090a17d20245c487f85ded35edb889d44336725cdf6640"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/sathian.png",
+      "bytes": 911799,
+      "sha256": "b1899bc9cb9aca20f1566d0ed7f051b457581092be86b8f9e034c86fd76a777b"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/solana.svg",
+      "bytes": 2519,
+      "sha256": "3d3401109aa061dec40a8659f1847817a8e647f98de1e65e76e86a95bbe1f08a",
+      "normalization": "Git LF text"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/tanda-current.png",
+      "bytes": 1709205,
+      "sha256": "2af033fa63412282a20900cbdd04d44d69861b06f7e1bba70544fb00eae37fcd"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/usdc-token.svg",
+      "bytes": 1309,
+      "sha256": "fe4f9d5f34ef4ebeb5d80e1f5ff63dcaf5a0d5495f4adf206e4c3011d1f5c57d",
+      "normalization": "Git LF text"
+    },
+    {
+      "path": "public/proof-assets/proof-voiced-v10-20261023/growth.mp4",
+      "bytes": 3233149,
+      "sha256": "459fe4d983d61effe7a04aa89b9a8241e8ac5c02dfc1338e849932b04b6ab081"
+    },
+    {
+      "path": "public/proof-assets/proof-voiced-v10-20261023/love.mp4",
+      "bytes": 5627671,
+      "sha256": "be7aff9cf319dbadaf2ea8564c06314a22f603318a4652a32b2325288d8c4986"
+    }
+  ]
+}

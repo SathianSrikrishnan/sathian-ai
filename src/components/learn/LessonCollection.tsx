@@ -34,15 +34,15 @@ export function LessonCollection({ lessons, readyIds }: { lessons: Lesson[]; rea
       <div className="learn-picture-caption"><div><p className="learn-topic-title">{lesson.boardTitle || lesson.title}</p><p className="learn-child-question"><strong>{childQuestions[lesson.id]}</strong></p></div>
         {ready && lesson.chapters.length > 0 ? <button className="learn-button" aria-label={`Try the ${lesson.title} Q&A together`} onClick={() => choose(lesson.id, 'try')}>Try the questions</button> : <span className="learn-history-note">History lesson</span>}
       </div>
-      <details className="learn-sources"><summary>Parent notes</summary><p>{lesson.introduction || lesson.description}</p>{lesson.sourceNote && <p>{lesson.sourceNote}</p>}{lesson.id === 'solana' && <p>This film explores Proof of History in Solana’s early design. A new introduction to current Solana is planned.</p>}{lesson.chapters.map(c => <div key={c.id}><strong>{c.title}</strong><p>{c.clips.question.transcript}</p><p>Yes: {c.clips.yes.transcript}</p><p>No: {c.clips.no.transcript}</p><p>{c.clips.close.transcript}</p></div>)}{lesson.chapters.length === 0 && lesson.watch?.transcript && <p>{lesson.watch.transcript}</p>}<ul>{lesson.sources.map(s => <li key={s.url}><a href={s.url}>{s.title}</a></li>)}</ul></details>
+      {lesson.id === 'solana' && <p className="learn-history-note">An introduction to Solana’s early Proof of History design.</p>}
+
     </article>
   }
   return <div className="learn-collection" ref={collection} onPlayCapture={e => {
     const active = e.target as HTMLVideoElement
     collection.current?.querySelectorAll('video').forEach(v => { if (v !== active) v.pause() })
   }}>
-    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}<article className="learn-picture-lesson learn-solana-planned" aria-label="Current Solana basics planned lesson"><img src="/learn-art/solana.webp" alt="" loading="lazy" width="640" height="360" /><div className="learn-picture-caption"><p className="learn-topic-title">Solana today</p><p className="learn-child-question"><strong>How can computers agree?</strong></p><span className="learn-coming-note">New beginner film planned</span></div></article>
-    <article className="learn-picture-lesson learn-planned-picture" aria-label="Stablecoins lesson being revised"><div className="learn-planned-art" aria-hidden="true"><span>$</span><span>?</span></div><div className="learn-picture-caption"><p className="learn-topic-title">Stablecoins</p><strong className="learn-coming-note">Lesson being revised</strong></div></article>{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}</div><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
+    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}</div><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
 
     {selected && selection && <section className="learn-inline" ref={panel} aria-label={`${selected.title} questions`}>
       <div className="learn-nav"><button className="learn-button secondary" onClick={clear}>Back to the lessons</button><span>{selected.label}</span></div>

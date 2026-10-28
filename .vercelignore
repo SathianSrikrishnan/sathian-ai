@@ -4,3 +4,11 @@
 src/app/animation/tanda-hero-ritual/
 src/app/animation/tanda-pose-pack/
 tools/
+
+# Local review evidence/configuration never ships.
+.env*
+review-*
+*.patch
+node_modules/
+.next/
+docs/central-email-intake/
