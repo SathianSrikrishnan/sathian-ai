@@ -8,7 +8,7 @@ export const SATHIAN_PERSON_SCHEMA = {
   alternateName: ['Sathian', 'Sathian S.'],
   url: 'https://sathian.ai/about',
   image: 'https://sathian.ai/sathian-profile.png',
-  jobTitle: 'Agent Manager and Orchestrator',
+  jobTitle: 'Founder, Tooth Fairy Network',
   worksFor: {
     '@type': 'Organization',
     name: 'Tooth Fairy Network',

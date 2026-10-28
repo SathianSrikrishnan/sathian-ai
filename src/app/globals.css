@@ -3401,7 +3401,9 @@ h1, h2, h3 {
   pointer-events: none;
   opacity: 0.12;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.76' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
+  /* Pre-rendered from the original feTurbulence grain: a live SVG filter over the full viewport delayed first paint on phones. */
+  background-image: url('/workshop-grain.webp');
+  background-size: 180px 180px;
 }
 
 .relaunch-shell[data-theme="workshop"] .hub-nav {
@@ -3579,7 +3581,6 @@ h1, h2, h3 {
 .relaunch-shell[data-theme="workshop"] .site-agent-panel--inline {
   min-height: 566px;
 }
-
 .relaunch-shell[data-theme="workshop"] .site-agent-header,
 .relaunch-shell[data-theme="workshop"] .site-agent-composer {
   background: rgba(23, 16, 12, 0.96);
@@ -3868,6 +3869,14 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+.minimal-home-mission {
+  max-width: 640px;
+  margin-top: 18px;
+  color: var(--minimal-ink);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.45;
+}
+
 .minimal-agent-section {
   padding-bottom: 22px;
   border-bottom: 1px solid var(--minimal-rule);
@@ -4122,6 +4131,10 @@ h1, h2, h3 {
   align-items: center;
   padding-top: 32px;
   border-top: 1px solid var(--minimal-rule);
+}
+
+.minimal-tfn-extension--learn {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .minimal-tfn-extension h4 {

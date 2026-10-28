@@ -70,9 +70,8 @@ describe('public-site indexing', () => {
     expect(identity).toContain("name: 'Sathian'")
     expect(identity).toContain("alternateName: ['sathian.ai', 'Sathian Srikrishnan', 'Digital Experiments']")
     expect(layout).toContain("siteName: 'Sathian'")
-    expect(home).toContain('>SATHIAN</span>')
+    expect(home).toContain('>SATHIAN SRIKRISHNAN</span>')
     expect(home).not.toContain('SATHN')
-    expect(home).not.toContain('SATHIAN SRIKRISHNAN')
   })
 
   it('publishes a real indexable profile page for the same person entity', () => {

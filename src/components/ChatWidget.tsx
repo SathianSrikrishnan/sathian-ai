@@ -625,7 +625,7 @@ function ChatWidgetContent() {
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full relative overflow-hidden flex-shrink-0 shadow-sm">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sathian-profile.png" alt="Sathian" className="w-full h-full object-cover" />
+                  <img src="/sathian-profile.webp" alt="Sathian" className="w-full h-full object-cover" />
                   <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full" style={{
                     background: '#22c55e', border: '2px solid #ffffff',
                     boxShadow: '0 0 4px rgba(34,197,94,0.4)',
@@ -692,7 +692,7 @@ function ChatWidgetContent() {
                 {msg.role === 'bot' && (
                   <div className="w-7 h-7 rounded-full flex-shrink-0 mt-1 overflow-hidden shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/sathian-profile.png" alt="" className="w-full h-full object-cover" />
+                    <img src="/sathian-profile.webp" alt="" className="w-full h-full object-cover" />
                   </div>
                 )}
                 <div className={`site-agent-message site-agent-message--${msg.role} max-w-[82%] px-4 py-3 text-[14px] leading-relaxed`} style={{
@@ -741,7 +741,7 @@ function ChatWidgetContent() {
               <div className="flex justify-start gap-2.5">
                 <div className="w-7 h-7 rounded-full flex-shrink-0 mt-1 overflow-hidden shadow-sm">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sathian-profile.png" alt="" className="w-full h-full object-cover" />
+                  <img src="/sathian-profile.webp" alt="" className="w-full h-full object-cover" />
                 </div>
                 <div className="site-agent-message site-agent-message--bot px-4 py-3" style={{ borderTopLeftRadius: '4px' }}>
                   <div className="flex gap-1">
@@ -934,7 +934,7 @@ function ChatWidgetContent() {
           </div>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src="/sathian-profile.png" alt="Open Sathian’s site agent" className="w-full h-full object-cover" />
+          <img src="/sathian-profile.webp" alt="Open Sathian’s site agent" className="w-full h-full object-cover" />
         )}
       </motion.button>
       )}

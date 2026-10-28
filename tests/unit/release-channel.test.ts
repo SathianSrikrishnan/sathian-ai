@@ -28,7 +28,8 @@ describe('durable release channel', () => {
 
   it('uses one registry for the latest release across the homepage and site agent', () => {
     expect(releases).toContain('export const LATEST_RELEASE')
-    expect(homepage).toContain('LATEST_RELEASE')
+    // Homepage no longer embeds the latest episode (owner, Oct 27); the agent still reads the registry.
+    expect(homepage).not.toContain('LATEST_RELEASE')
     expect(profile).toContain('releaseToPublicMemoryCard')
     expect(profile).toContain('LATEST_RELEASE')
   })

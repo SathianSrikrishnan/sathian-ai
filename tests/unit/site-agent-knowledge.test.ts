@@ -39,10 +39,7 @@ describe('canonical site-agent public knowledge', () => {
       expect(project.href).toMatch(/^(?:https:\/\/|\/)/)
     }
 
-    expect(FEATURED_SITE_PROJECTS.map((project) => project.status)).toEqual([
-      'primary',
-      'prototype',
-    ])
+    expect(FEATURED_SITE_PROJECTS.map((project) => project.status)).toEqual(['primary'])
     expect(ARCHIVE_SITE_PROJECTS).toHaveLength(4)
     expect(ARCHIVE_SITE_PROJECTS.every((project) => project.status === 'archive')).toBe(true)
   })
@@ -166,7 +163,7 @@ describe('canonical site-agent public knowledge', () => {
   it('uses the same project registry for the homepage and agent', () => {
     expect(homepage).toContain("from '@/content/site-projects'")
     expect(homepage).toContain('FEATURED_SITE_PROJECTS')
-    expect(homepage).toContain('ARCHIVE_SITE_PROJECTS')
-    expect(homepage).toContain('SOLANA_OBSERVATORY_PROJECT')
+    expect(homepage).toContain('HACKATHON_SITE_PROJECTS')
+    expect(homepage).toContain('MORE_SITE_PROJECTS')
   })
 })

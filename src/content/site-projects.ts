@@ -23,9 +23,9 @@ export const TOOTH_FAIRY_NETWORK_PROJECT: PublicSiteProject = {
   id: 'project-tooth-fairy-network',
   slug: 'tooth-fairy-network',
   name: 'Tooth Fairy Network',
-  label: 'PRIMARY BUILD / LIVE MAINNET FOUNDATION',
+  label: 'PRIMARY BUILD / LIVE',
   description:
-    'A printed Proof of childhood milestones, paired with a child’s vault and the parent’s key.',
+    'A child’s first digital wallet and a personalized Vault Book, given by the people who love them.',
   approvedClaims: [
     'PROOF is Sathian\'s visual introduction to why he is building Tooth Fairy Network: a founder introduction and seven chapters covering Prologue, Bitcoin (Work), Ethereum (Stake), Solana (History), Growth, Love, and Dollars That Travel. Watch and express interest in the founding-family pilot at https://proof.sathian.ai/.',
     'The product pairs a physical Proof booklet for the child with a child’s vault, controlled by the parent’s key and handed over when the child is ready. Growth and Love express the child\'s milestones and the network of people supporting them; they are metaphors, not literal blockchain staking.',
@@ -265,7 +265,6 @@ export const SITE_PROJECTS: readonly PublicSiteProject[] = [
 
 export const FEATURED_SITE_PROJECTS: readonly PublicSiteProject[] = [
   TOOTH_FAIRY_NETWORK_PROJECT,
-  AUTOQUOTE_AUTOMATOR_PROJECT,
 ]
 
 export const ACTIVE_SITE_PROJECTS: readonly PublicSiteProject[] = SITE_PROJECTS
@@ -280,7 +279,15 @@ export const ARCHIVE_SITE_PROJECTS: readonly PublicSiteProject[] = [
 
 export const MORE_SITE_PROJECTS: readonly PublicSiteProject[] = [
   FAMILY_ART_POD_PROJECT,
+  FARCASTER_QUICKSTART_PROJECT,
   CCAC_VIBE_PIANO_SITE_PROJECT,
+]
+
+// Owner, Oct 28: hackathon and side builds live on /hackathons, not the homepage.
+export const HACKATHON_SITE_PROJECTS: readonly PublicSiteProject[] = [
+  SOLANA_OBSERVATORY_PROJECT,
+  AUTOQUOTE_AUTOMATOR_PROJECT,
+  ...ARCHIVE_SITE_PROJECTS,
 ]
 
 function normalizeAlias(value: string): string {
