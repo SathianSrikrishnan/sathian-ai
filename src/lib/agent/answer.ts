@@ -164,6 +164,11 @@ function directIntentCard(message: string, cards: PublicMemoryCard[]): {
     actionLabel: string
   }> = [
     {
+      matches: /^\s*(?:who(?:'s|’s| is) sathian(?: srikrishnan)?|who is (?:the )?(?:founder|owner)|who (?:built|made|runs) (?:this|the) (?:site|website)|(?:tell me )?about sathian(?: srikrishnan)?|tell me about (?:him|sathian(?: srikrishnan)?)|what does sathian do)\s*[?.!]*\s*$/i.test(message),
+      card: find((card) => card.id === 'profile-search-identity'),
+      actionLabel: 'Read his story',
+    },
+    {
       matches: /\b(buy|purchase|price|pricing|cost|costs|how much|gift|gifts|vault book|first (?:digital )?wallet|tooth fairy money|give (?:it|one|a child|my|our|to)|(?:grand(?:child|children|son|daughter|kid|kids)|niece|nephew|godchild|godson|goddaughter))\b/i.test(message)
         && !/\b(note|message)\b/i.test(message),
       card: find((card) => card.id === 'tfn-give-a-gift'),

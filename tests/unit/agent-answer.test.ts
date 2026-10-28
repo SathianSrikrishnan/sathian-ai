@@ -52,6 +52,15 @@ describe('bounded public answer service', () => {
       })
       expect(model.generate).not.toHaveBeenCalled()
     })
+  it.each(['Who is Sathian?', 'who is sathian srikrishnan', 'Tell me about Sathian', 'What does Sathian do?'])(
+    'answers %s from the founder card and points to /about', async (message) => {
+      const model = { generate: vi.fn(async () => 'unexpected') }
+      const result = await answerAgentQuestion({ message, page: '/', policy, cards: getPublicProfileMemoryCards() }, { model })
+      expect(result.answer).toContain('founder and dad in Toronto')
+      expect(result.answer).toContain('Tooth Fairy Network')
+      expect(result.nextAction).toEqual({ label: 'Read his story', href: '/about' })
+      expect(model.generate).not.toHaveBeenCalled()
+    })
   it.each(['Can I leave Sathian a note about a gift?', 'What does Sathian write about?'])(
     'does not treat %s as a purchase', async (message) => {
       const model = { generate: vi.fn(async () => 'A model answer.') }
