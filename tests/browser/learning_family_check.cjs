@@ -80,7 +80,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       await page.getByText('Why no subscription?', { exact: true }).click()
       assert(await page.getByText(/Future tools or network activity/).isVisible(), 'one-time purchase scope explained')
       assert(await page.locator('input[name="email"]').count() === 0, 'inactive signup is removed from the sales page')
-      assert(await page.locator('a[href="mailto:info@toothfairy.network"]').count() > 0, 'working email fallback retained')
+      assert(await page.locator('a[href^="mailto:info@toothfairy.network"]').count() > 0, 'working email fallback retained')
       if (await page.locator('#proof-question').count()) {
         let mockedQuestions = 0
         // This route is fulfilled in the browser: no real inquiry, database write or notification.
