@@ -31,5 +31,60 @@
     "durationLabel": "5:40",
     "reviewStatus": "",
     "editionStatus": ""
+  },
+  {
+    "slug": "roof-song",
+    "title": "Kkachi and the Roof Song",
+    "src": "/learn-story-media/roof-song-v1-read-together.mp4",
+    "poster": "/learn-story-media/roof-song-v1-poster.webp",
+    "captions": "/learn-story-media/roof-song-v1-read-together.en.vtt",
+    "durationSeconds": 278.195,
+    "durationLabel": "4:38",
+    "reviewStatus": "",
+    "editionStatus": ""
+  },
+  {
+    "slug": "edge-of-the-light",
+    "title": "Waraba at the Edge of the Light",
+    "src": "/learn-story-media/edge-of-the-light-v1-read-together.mp4",
+    "poster": "/learn-story-media/edge-of-the-light-v1-poster.webp",
+    "captions": "/learn-story-media/edge-of-the-light-v1-read-together.en.vtt",
+    "durationSeconds": 295.599,
+    "durationLabel": "4:56",
+    "reviewStatus": "",
+    "editionStatus": ""
+  },
+  {
+    "slug": "one-year-wish",
+    "title": "Daga and the One-Year Wish",
+    "src": "/learn-story-media/one-year-wish-v1-read-together.mp4",
+    "poster": "/learn-story-media/one-year-wish-v1-poster.webp",
+    "captions": "/learn-story-media/one-year-wish-v1-read-together.en.vtt",
+    "durationSeconds": 501.848,
+    "durationLabel": "8:22",
+    "reviewStatus": "",
+    "editionStatus": ""
+  },
+  {
+    "slug": "gap-in-the-gold",
+    "title": "Anna Bogle and the Gap in the Gold",
+    "src": "/learn-story-media/gap-in-the-gold-v1-read-together.mp4",
+    "poster": "/learn-story-media/gap-in-the-gold-v1-poster.webp",
+    "captions": "/learn-story-media/gap-in-the-gold-v1-read-together.en.vtt",
+    "durationSeconds": 436.366667,
+    "durationLabel": "7:16",
+    "reviewStatus": "",
+    "editionStatus": ""
+  },
+  {
+    "slug": "tanda-and-her-father",
+    "title": "Tanda and Her Father",
+    "src": "/learn-story-media/tanda-origin-v2-web.mp4",
+    "poster": "/learn-story-media/tanda-and-her-father-poster.webp",
+    "captions": "/learn-story-media/tanda-origin-v2.en.vtt",
+    "durationSeconds": 127.893,
+    "durationLabel": "2:08",
+    "reviewStatus": "",
+    "editionStatus": ""
   }
 ]

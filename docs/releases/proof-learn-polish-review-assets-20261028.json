@@ -1,0 +1,376 @@
+{
+  "base": "b32a6788bc022225f4e2201fc5df8c78912dca70",
+  "originalAssetManifestUnchanged": "docs/releases/proof-learn-gift-20261028-assets.json",
+  "optimizedApprovedDrawings": [
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-0-640.webp",
+      "bytes": 26892,
+      "sha256": "05ceb533b70e139802c187bf71ea6f0ca10cb2cb1977db0f2e4163ae6a992e38"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-1-640.webp",
+      "bytes": 28778,
+      "sha256": "043324de4454ced4fec5b8b987219704b07f6ead918b96c267f85e1f35ef8fac"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-2-640.webp",
+      "bytes": 30286,
+      "sha256": "4284703a00f183e70117a550fdf62acf2dcc9b95339f71d3e26c31ffdc8ebb4e"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-3-640.webp",
+      "bytes": 26752,
+      "sha256": "6c816c270cac0bc3ce9df8afc61b19727a1a1d0bd396af9ce91a5d9cc72d957e"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-4-640.webp",
+      "bytes": 32590,
+      "sha256": "de0fd70b04b82d73c5b3efc1729bcc664bc3296e30a3b9441cfab1dc240acb53"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-5-640.webp",
+      "bytes": 31872,
+      "sha256": "7497fc906965406e26a6b766725b817c0832efdabbc2f68cd5b38a23609eb61c"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-6-640.webp",
+      "bytes": 22764,
+      "sha256": "df951e58aa08c97a1f9c9b1824eeed9f17c347192efa788c304ef2dbc889cf2b"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/collage-7-640.webp",
+      "bytes": 50286,
+      "sha256": "6e0ad800156352bcf50ec58ecd64f86e609b32ef5df5777d7b366aff431389ce"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/drawings-384.webp",
+      "bytes": 26830,
+      "sha256": "cb39acc51dd1834daf1fbdb65254f5ac16da357bc74ba3f8c03631d3fab6a8b3"
+    },
+    {
+      "path": "public/proof-assets/proof-site-first-edition/drawings-768.webp",
+      "bytes": 86952,
+      "sha256": "62f780619cca2f4b03778c75a64c668687f834f5f16d325c3b7da3289ac53001"
+    }
+  ],
+  "storyFilmInventory": [
+    {
+      "slug": "tanda-origin",
+      "title": "The Night the Network Woke",
+      "src": "/learn-story-media/the-night-the-network-woke-v1-read-together.mp4",
+      "poster": "/learn-story-media/the-night-the-network-woke-v1-read-together-poster.webp",
+      "captions": "/learn-story-media/the-night-the-network-woke-v1-read-together.en.vtt",
+      "durationSeconds": 365.666667,
+      "durationLabel": "6:06",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "first-tooth-fee",
+      "title": "Tanda Faye and the First Tooth Fee",
+      "src": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.mp4",
+      "poster": "/learn-story-media/tanda-first-tooth-fee-v4-read-together-poster.webp",
+      "captions": "/learn-story-media/tanda-first-tooth-fee-v4-read-together.en.vtt",
+      "durationSeconds": 315.4,
+      "durationLabel": "5:15",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "toothlight-treaty",
+      "title": "The Toothlight Treaty",
+      "src": "/learn-story-media/the-toothlight-treaty-v5-read-together.mp4",
+      "poster": "/learn-story-media/the-toothlight-treaty-v5-read-together-poster.webp",
+      "captions": "/learn-story-media/the-toothlight-treaty-v5-read-together.en.vtt",
+      "durationSeconds": 340.066667,
+      "durationLabel": "5:40",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "roof-song",
+      "title": "Kkachi and the Roof Song",
+      "src": "/learn-story-media/roof-song-v1-read-together.mp4",
+      "poster": "/learn-story-media/roof-song-v1-poster.webp",
+      "captions": "/learn-story-media/roof-song-v1-read-together.en.vtt",
+      "durationSeconds": 278.195,
+      "durationLabel": "4:38",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "edge-of-the-light",
+      "title": "Waraba at the Edge of the Light",
+      "src": "/learn-story-media/edge-of-the-light-v1-read-together.mp4",
+      "poster": "/learn-story-media/edge-of-the-light-v1-poster.webp",
+      "captions": "/learn-story-media/edge-of-the-light-v1-read-together.en.vtt",
+      "durationSeconds": 295.599,
+      "durationLabel": "4:56",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "one-year-wish",
+      "title": "Daga and the One-Year Wish",
+      "src": "/learn-story-media/one-year-wish-v1-read-together.mp4",
+      "poster": "/learn-story-media/one-year-wish-v1-poster.webp",
+      "captions": "/learn-story-media/one-year-wish-v1-read-together.en.vtt",
+      "durationSeconds": 501.848,
+      "durationLabel": "8:22",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "gap-in-the-gold",
+      "title": "Anna Bogle and the Gap in the Gold",
+      "src": "/learn-story-media/gap-in-the-gold-v1-read-together.mp4",
+      "poster": "/learn-story-media/gap-in-the-gold-v1-poster.webp",
+      "captions": "/learn-story-media/gap-in-the-gold-v1-read-together.en.vtt",
+      "durationSeconds": 436.366667,
+      "durationLabel": "7:16",
+      "reviewStatus": "",
+      "editionStatus": ""
+    },
+    {
+      "slug": "tanda-and-her-father",
+      "title": "Tanda and Her Father",
+      "src": "/learn-story-media/tanda-origin-v2-web.mp4",
+      "poster": "/learn-story-media/tanda-and-her-father-poster.webp",
+      "captions": "/learn-story-media/tanda-origin-v2.en.vtt",
+      "durationSeconds": 127.893,
+      "durationLabel": "2:08",
+      "reviewStatus": "",
+      "editionStatus": ""
+    }
+  ],
+  "planetCard": "plain external link, Earth/Venus drawings, no Dad player or shared open state",
+  "welcomeFallback": "unchanged approved 82.517-second actual founder film; intended cartoon-Dad welcome pending",
+  "newStoryAssets": [
+    {
+      "path": "public/learn-story-media/roof-song-v1-read-together.mp4",
+      "bytes": 11516945,
+      "sha256": "2089af28a71840f402c0190d41b2c6f6380e5b4b7184aeff86e831e55a4d2b25"
+    },
+    {
+      "path": "public/learn-story-media/roof-song-v1-poster.webp",
+      "bytes": 27456,
+      "sha256": "20b136e4e7f2f0433f1e5a38203260b19db1ed74a7c6bc551a6f6a8e23337d7f"
+    },
+    {
+      "path": "public/learn-story-media/roof-song-v1-read-together.en.vtt",
+      "bytes": 4239,
+      "sha256": "3a8f9812e3319c9fd2b47f61432bbbb2514aa9c2dda55ed1d8c1fbd20e8f0fa8",
+      "sourceSha256": "0e2e274b8e2b626e55116640a1071e611ee09ba40cbf35c74451381d7725ceef",
+      "normalization": "utf8-lf"
+    },
+    {
+      "path": "public/learn-story-media/edge-of-the-light-v1-read-together.mp4",
+      "bytes": 12307689,
+      "sha256": "c0176ec708997fa29207590208cb5783fe327ffd9b422e015c51108939da34cc"
+    },
+    {
+      "path": "public/learn-story-media/edge-of-the-light-v1-poster.webp",
+      "bytes": 21418,
+      "sha256": "fb4879b983d91fc9ead6ed224581685fe3e6f0fb2a356cb60ba08c6fa55b666a"
+    },
+    {
+      "path": "public/learn-story-media/edge-of-the-light-v1-read-together.en.vtt",
+      "bytes": 4434,
+      "sha256": "0b35184565ded2734e118f2e374815309557921da71584d7f905276221ff191c",
+      "sourceSha256": "db88140360841dbe79c27e190a51063516862456e8b046846cc03c135e30ecaf",
+      "normalization": "utf8-lf"
+    },
+    {
+      "path": "public/learn-story-media/one-year-wish-v1-read-together.mp4",
+      "bytes": 17353202,
+      "sha256": "d92efe04185ac51106f96876bd242f9595a0a79b9dd8606225e8648e89763afe"
+    },
+    {
+      "path": "public/learn-story-media/one-year-wish-v1-poster.webp",
+      "bytes": 25200,
+      "sha256": "974ab80949dd2c79087a098dfa19ca518cf04e0603102b1dbebf3a3bfe3529fb"
+    },
+    {
+      "path": "public/learn-story-media/one-year-wish-v1-read-together.en.vtt",
+      "bytes": 6663,
+      "sha256": "c30fc3478fbf325bb3e82eb553f67463860361eb751c9e79d2bb015ae6a4987b",
+      "sourceSha256": "aa0404efdafccddbce31c4dc06f0c15efb0e8fdb8278ce7af96d63b6ce0b5188",
+      "normalization": "utf8-lf"
+    },
+    {
+      "path": "public/learn-story-media/gap-in-the-gold-v1-read-together.mp4",
+      "bytes": 17795221,
+      "sha256": "9afb01282d0e182061b0bd50ba4259768f9c9a6a9d23495d851728760aa07a6f"
+    },
+    {
+      "path": "public/learn-story-media/gap-in-the-gold-v1-poster.webp",
+      "bytes": 27468,
+      "sha256": "ecabd0b40f3ea37a3a67b588c62bf8a672ba51d9f2d870cbf7a1f4e66c1d2ebe"
+    },
+    {
+      "path": "public/learn-story-media/gap-in-the-gold-v1-read-together.en.vtt",
+      "bytes": 5724,
+      "sha256": "ea01459cbd62a9198e9b3e092ec20b5889f38b5e25891842ddeca34cde9a4636",
+      "sourceSha256": "4375ba9e358ccc7d4cad5c27ebf6495b8630dd79d79527f26f3936eccfa60e4e",
+      "normalization": "utf8-lf"
+    },
+    {
+      "path": "public/learn-story-media/tanda-origin-v2-web.mp4",
+      "bytes": 6674887,
+      "sha256": "c24163567472de4d5bb83fb3fbac899ded1f28933ec218886a08d7bdab59fc38"
+    },
+    {
+      "path": "public/learn-story-media/tanda-and-her-father-poster.webp",
+      "bytes": 39606,
+      "sha256": "c223f3ef3c9829964664b02f75d76d6c371b8fd071812ecdf215535ee0acac77"
+    },
+    {
+      "path": "public/learn-story-media/tanda-origin-v2.en.vtt",
+      "bytes": 1918,
+      "sha256": "8effcf3531b8dda6603ed16bf767c4b8d242dea590fbf50294860c97bcae2b87",
+      "sourceSha256": "084bb06c8542f97b5da0983f6d60aa3cb04e3cb0ed35f5c4f6a7ef64f5fb4d36",
+      "normalization": "utf8-lf"
+    }
+  ],
+  "fatherSource": {
+    "driveId": "1ti45qcxQikx6eb0sp3vOY1erooTKpxFW",
+    "bytes": 6674887,
+    "durationSeconds": 127.893,
+    "sha256": "c24163567472de4d5bb83fb3fbac899ded1f28933ec218886a08d7bdab59fc38",
+    "poster": "Exact frame at ten seconds; movie unmodified",
+    "captionStatus": "Exact canonical track verified: 17 blocks; 94.38% timed display coverage; 2.830s lead and 4.363s tail; all 17 narration blocks retained",
+    "captionSha256": "084bb06c8542f97b5da0983f6d60aa3cb04e3cb0ed35f5c4f6a7ef64f5fb4d36",
+    "openingCardNote": "Legacy opening card says Tanda Fae and the First Tooth Fee; exact matched narrative is the shipbuilder-daughter origin supplied as Tanda and Her Father, kept standalone rather than associated with another reader."
+  },
+  "independentChangesPreserved": "Merged PR24,PR25,PR26,PR27,PR29 About and PR30 click attribution preserved; final release checks pending",
+  "cartoonDadWelcome": {
+    "durationSeconds": 26.916667,
+    "assets": [
+      {
+        "path": "public/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4",
+        "bytes": 8116642,
+        "sha256": "424acaff37c6281ee66f161f1aa027a3ec5a3f733b6f5ffbfc6c8d262c38f5ee"
+      },
+      {
+        "path": "public/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.vtt",
+        "bytes": 938,
+        "sha256": "0a8082ae6169df51b66893ab0c7203e6f7ce4e2f57e3944c5137a14df3b7996e",
+        "sourceSha256": "7626c53ab8213219d9d5d19f1d5d57fda4e7df9b4a2401cea0e1a5399bd6c636",
+        "normalization": "utf8-lf"
+      },
+      {
+        "path": "public/learn-media/cartoon-dad-welcome-20261028/poster.webp",
+        "bytes": 30426,
+        "sha256": "79030014b25201e62e620ffd552b079007536b84a913e79d307a19f5b551c075"
+      }
+    ],
+    "sourceReceipt": "FINAL-COHERENT-RECEIPT.json",
+    "visualCheck": "Source contact sheet and exact final poster inspected, cartoon presenter and approved V9 classroom; no audible playback",
+    "voiceListening": "Not claimed; owner reviews on finished site"
+  },
+  "planetPatterns": {
+    "films": [
+      {
+        "slug": "earth-mars",
+        "title": "Earth and Mars",
+        "src": "/learn-media/planet-patterns-20261028/earth-mars.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/earth-mars-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/earth-mars.vtt",
+        "durationSeconds": 41.582683,
+        "sha256": "9259bb7e70c4da7da9dabeaf62bc77e372efe5fa848512d49dad0807f1bbd619",
+        "captionSha256": "b2d95701e56ccffb2cd5736df369ec3e1b022d51025cb049616e28f5a9924792",
+        "libraryMovie": "libfile_5a09b09c00a88191a676b2fb16b516f3",
+        "libraryCaptions": "libfile_fe45702f745081918791373ed8635785",
+        "sourceCaptionSha256": "725ffb6f6bb9d6be54cb7da7b8552b735870b67db4232d3b8f0277a0b1925055"
+      },
+      {
+        "slug": "venus-earth",
+        "title": "Venus and Earth",
+        "src": "/learn-media/planet-patterns-20261028/venus-earth.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/venus-earth-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/venus-earth.vtt",
+        "durationSeconds": 50.957683,
+        "sha256": "ded99153c0d18c2963856da535b0e3845f516bffeeab0d0a080ca6b8894e7c9a",
+        "captionSha256": "7cde060196408f65ebf67c7b3e28542f85d865c21b6f1d853806278e264dd55a",
+        "libraryMovie": "libfile_5ee7ed9cce4881919ce7088d36640579",
+        "libraryCaptions": "libfile_ef7c0c793e1c8191bf1afb00a0cc0c87",
+        "sourceCaptionSha256": "ff0da94d44df139b68a51652b8b3016ff15fb5a4b419473add9b7085cc26e849"
+      },
+      {
+        "slug": "jupiter-saturn",
+        "title": "Jupiter and Saturn",
+        "src": "/learn-media/planet-patterns-20261028/jupiter-saturn.mp4",
+        "poster": "/learn-media/planet-patterns-20261028/jupiter-saturn-poster.webp",
+        "captions": "/learn-media/planet-patterns-20261028/jupiter-saturn.vtt",
+        "durationSeconds": 44.582683,
+        "sha256": "917cc522576a4f3afbc32c896371176a229fabe306a6fff25ad93497cc7f06db",
+        "captionSha256": "5131fa8ee9fc970e511cdf633b07e44b4ff97e262a40319352c34f4a7591552a",
+        "libraryMovie": "libfile_f78bb96f494081918e4da083f35d703c",
+        "libraryCaptions": "libfile_b208c124046881918c6f1bad038c9abe",
+        "sourceCaptionSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d"
+      }
+    ],
+    "assets": [
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars-poster.webp",
+        "bytes": 22280,
+        "sha256": "e8f8832526841fbb153e901c3466deb13e5e0f00d9b1bc3e76f6916bab5008a9"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars.mp4",
+        "bytes": 8179392,
+        "sha256": "9259bb7e70c4da7da9dabeaf62bc77e372efe5fa848512d49dad0807f1bbd619"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/earth-mars.vtt",
+        "bytes": 982,
+        "sha256": "b2d95701e56ccffb2cd5736df369ec3e1b022d51025cb049616e28f5a9924792",
+        "sourceSha256": "725ffb6f6bb9d6be54cb7da7b8552b735870b67db4232d3b8f0277a0b1925055",
+        "normalization": "utf8-lf"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn-poster.webp",
+        "bytes": 12972,
+        "sha256": "92c454ef37249c169df9cbd94c20841553f368140544cdb3a02fe29ad36568c1"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn.mp4",
+        "bytes": 7989742,
+        "sha256": "917cc522576a4f3afbc32c896371176a229fabe306a6fff25ad93497cc7f06db"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/jupiter-saturn.vtt",
+        "bytes": 1005,
+        "sha256": "5131fa8ee9fc970e511cdf633b07e44b4ff97e262a40319352c34f4a7591552a",
+        "sourceSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d",
+        "normalization": "utf8-lf"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth-poster.webp",
+        "bytes": 10784,
+        "sha256": "f50d560d3d6a7dd60e2bc0e06e5950a9950b0776d0bfa9a598397046f9c9d6cd"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth.mp4",
+        "bytes": 8654018,
+        "sha256": "ded99153c0d18c2963856da535b0e3845f516bffeeab0d0a080ca6b8894e7c9a"
+      },
+      {
+        "path": "public/learn-media/planet-patterns-20261028/venus-earth.vtt",
+        "bytes": 1162,
+        "sha256": "7cde060196408f65ebf67c7b3e28542f85d865c21b6f1d853806278e264dd55a",
+        "sourceSha256": "ff0da94d44df139b68a51652b8b3016ff15fb5a4b419473add9b7085cc26e849",
+        "normalization": "utf8-lf"
+      }
+    ],
+    "sourceReceipt": "FINAL-THREE-REELS-DELIVERY.json / libfile_f9500807902c819196b638c78f146f11",
+    "visualCheck": "All three final contact sheets and exact posters inspected; Earth/Mars and Jupiter/Saturn frame28s, Venus/Earth star frame34s",
+    "limitations": [
+      "No audible local playback, listening or perceptual accent/voice acceptance performed. ASR is not listening.",
+      "Own paired hook audio/mouth timing preserved structurally; normal-speed fullplayback lip-sync gate remains unverified.",
+      "AllusedEM126handframes inspected; allusedVE119/JS130lowercropboundaryframes checked toexcludehands; wholefilm drawings sampled1fps, not everyanimationframe.",
+      "Creativeownerapproval remainsboundto exact finalhash; no website publishing performed."
+    ]
+  },
+  "captionTransport": "Caption source hashes retained; text line endings normalized to UTF-8 LF for deterministic Windows/Linux delivery. Words and timing unchanged."
+}

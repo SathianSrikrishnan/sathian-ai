@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { LessonPlayer } from './LessonPlayer'
+import { StablecoinLesson } from './StablecoinLesson'
 import type { Lesson, Mode } from '@/lib/learn/types'
 
 const childQuestions: Record<string, string> = {
@@ -30,7 +31,7 @@ export function LessonCollection({ lessons, readyIds }: { lessons: Lesson[]; rea
   function renderLesson(lesson: Lesson) {
     const ready = readyIds.includes(lesson.id)
     return <article className={`learn-picture-lesson topic-${lesson.id}`} key={lesson.id} aria-label={lesson.boardTitle || lesson.title}>
-      <div className="learn-picture-film">{ready && lesson.watch ? <video controls playsInline preload="metadata" poster={lesson.poster} aria-label={`Watch the ${lesson.title} lesson`} src={lesson.watch.src}>{lesson.watch.captionSrc && <track kind="captions" src={lesson.watch.captionSrc} srcLang="en" label="English questions and answers" />}<a href={lesson.watch.src}>Open the lesson video</a>.</video> : <p>{lesson.availabilityMessage || 'Video pending.'}</p>}</div>
+      <div className="learn-picture-film">{ready && lesson.watch ? <video controls playsInline preload="none" poster={lesson.poster} aria-label={`Watch the ${lesson.title} lesson`} src={lesson.watch.src}>{lesson.watch.captionSrc && <track kind="captions" src={lesson.watch.captionSrc} srcLang="en" label="English questions and answers" />}<a href={lesson.watch.src}>Open the lesson video</a>.</video> : <p>{lesson.availabilityMessage || 'Video pending.'}</p>}</div>
       <div className="learn-picture-caption"><div><p className="learn-topic-title">{lesson.boardTitle || lesson.title}</p><p className="learn-child-question"><strong>{childQuestions[lesson.id]}</strong></p></div>
         {ready && lesson.chapters.length > 0 ? <button className="learn-button" aria-label={`Try the ${lesson.title} Q&A together`} onClick={() => choose(lesson.id, 'try')}>Try the questions</button> : <span className="learn-history-note">History lesson</span>}
       </div>
@@ -42,13 +43,13 @@ export function LessonCollection({ lessons, readyIds }: { lessons: Lesson[]; rea
     const active = e.target as HTMLVideoElement
     collection.current?.querySelectorAll('video').forEach(v => { if (v !== active) v.pause() })
   }}>
-    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}</div><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
+    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}<article className="learn-picture-lesson learn-stablecoin-card" aria-label="Stablecoin interactive lesson"><div className="learn-token-preview" aria-hidden="true"><span>$1</span><span>↔</span><span>USDC</span></div><div className="learn-picture-caption"><p className="learn-topic-title">What is a stablecoin?</p><button className="learn-button" onClick={()=>choose('stablecoin','try')}>Try the questions</button></div></article></div><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
 
     {selected && selection && <section className="learn-inline" ref={panel} aria-label={`${selected.title} questions`}>
       <div className="learn-nav"><button className="learn-button secondary" onClick={clear}>Back to the lessons</button><span>{selected.label}</span></div>
       <h2>{selected.title}</h2>
-      <p className="learn-context">{childQuestions[selected.id]}</p>
-      {readyIds.includes(selected.id) ? <LessonPlayer key={`${selected.id}-${selection.mode}-${selection.revision}`} lesson={selected} mode={selection.mode} onChooseTopic={clear} /> : <p>{selected.availabilityMessage}</p>}
+      {!selected.interactive && <p className="learn-context">{childQuestions[selected.id]}</p>}
+      {selected.interactive === 'stablecoin' ? <StablecoinLesson /> : readyIds.includes(selected.id) ? <LessonPlayer key={`${selected.id}-${selection.mode}-${selection.revision}`} lesson={selected} mode={selection.mode} onChooseTopic={clear} /> : <p>{selected.availabilityMessage}</p>}
     </section>}
   </div>
 }

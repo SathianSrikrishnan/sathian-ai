@@ -19,10 +19,11 @@ describe('migrated story collection', () => {
     }
     expect(getStory('unknown-story')).toBeUndefined()
   })
-  it('maps three films to their own story and retains local posters and captions', () => {
-    expect(films.map(f => f.slug)).toEqual(['tanda-origin', 'first-tooth-fee', 'toothlight-treaty'])
+  it('maps seven films to their readers plus one clearly standalone earlier film, with local posters and captions', () => {
+    expect(films).toHaveLength(8)
+    expect(films.filter(f=>getStory(f.slug))).toHaveLength(7)
+    expect(films.filter(f=>!getStory(f.slug)).map(f=>f.slug)).toEqual(['tanda-and-her-father'])
     for (const film of films) {
-      expect(getStory(film.slug)).toBeDefined()
       for (const src of [film.src, film.poster, film.captions]) {
         expect(src.startsWith('/learn-story-media/')).toBe(true)
         expect(existsSync('public' + src)).toBe(true)

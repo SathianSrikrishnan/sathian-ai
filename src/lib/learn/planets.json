@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "earth-mars",
+    "title": "Earth and Mars",
+    "src": "/learn-media/planet-patterns-20261028/earth-mars.mp4",
+    "poster": "/learn-media/planet-patterns-20261028/earth-mars-poster.webp",
+    "captions": "/learn-media/planet-patterns-20261028/earth-mars.vtt",
+    "durationSeconds": 41.582683,
+    "sha256": "9259bb7e70c4da7da9dabeaf62bc77e372efe5fa848512d49dad0807f1bbd619",
+    "captionSha256": "b2d95701e56ccffb2cd5736df369ec3e1b022d51025cb049616e28f5a9924792",
+    "libraryMovie": "libfile_5a09b09c00a88191a676b2fb16b516f3",
+    "libraryCaptions": "libfile_fe45702f745081918791373ed8635785",
+    "sourceCaptionSha256": "725ffb6f6bb9d6be54cb7da7b8552b735870b67db4232d3b8f0277a0b1925055"
+  },
+  {
+    "slug": "venus-earth",
+    "title": "Venus and Earth",
+    "src": "/learn-media/planet-patterns-20261028/venus-earth.mp4",
+    "poster": "/learn-media/planet-patterns-20261028/venus-earth-poster.webp",
+    "captions": "/learn-media/planet-patterns-20261028/venus-earth.vtt",
+    "durationSeconds": 50.957683,
+    "sha256": "ded99153c0d18c2963856da535b0e3845f516bffeeab0d0a080ca6b8894e7c9a",
+    "captionSha256": "7cde060196408f65ebf67c7b3e28542f85d865c21b6f1d853806278e264dd55a",
+    "libraryMovie": "libfile_5ee7ed9cce4881919ce7088d36640579",
+    "libraryCaptions": "libfile_ef7c0c793e1c8191bf1afb00a0cc0c87",
+    "sourceCaptionSha256": "ff0da94d44df139b68a51652b8b3016ff15fb5a4b419473add9b7085cc26e849"
+  },
+  {
+    "slug": "jupiter-saturn",
+    "title": "Jupiter and Saturn",
+    "src": "/learn-media/planet-patterns-20261028/jupiter-saturn.mp4",
+    "poster": "/learn-media/planet-patterns-20261028/jupiter-saturn-poster.webp",
+    "captions": "/learn-media/planet-patterns-20261028/jupiter-saturn.vtt",
+    "durationSeconds": 44.582683,
+    "sha256": "917cc522576a4f3afbc32c896371176a229fabe306a6fff25ad93497cc7f06db",
+    "captionSha256": "5131fa8ee9fc970e511cdf633b07e44b4ff97e262a40319352c34f4a7591552a",
+    "libraryMovie": "libfile_f78bb96f494081918e4da083f35d703c",
+    "libraryCaptions": "libfile_b208c124046881918c6f1bad038c9abe",
+    "sourceCaptionSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d"
+  }
+]
