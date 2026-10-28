@@ -20,7 +20,12 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       return route.continue({ headers })
     })
   }
-  const page = await context.newPage(), errors = []
+  const page = await context.newPage(), errors = [], performanceMetrics = []
+  await page.addInitScript(() => {
+    window.learnVitals = { lcp: null, cls: 0 }
+    try { new PerformanceObserver(list => { for (const entry of list.getEntries()) window.learnVitals.lcp = entry.startTime }).observe({ type: 'largest-contentful-paint', buffered: true }) } catch {}
+    try { new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.learnVitals.cls += entry.value }).observe({ type: 'layout-shift', buffered: true }) } catch {}
+  })
   page.on('pageerror', e => errors.push(e.message))
   try {
     for (const width of [1440, 390]) {
@@ -37,6 +42,21 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       const hero = page.locator('.learn-classroom-art')
       await hero.evaluate(i => i.decode())
       assert(await hero.evaluate(i => i.naturalWidth === 1672), 'approved complete hero decoded')
+      performanceMetrics.push({ page: 'learn', width, ...await page.evaluate(() => ({ ...window.learnVitals, responseMs: performance.getEntriesByType('navigation')[0]?.responseEnd, transferredBytes: performance.getEntriesByType('resource').reduce((sum, r) => sum + r.transferSize, 0), initialIframes: document.querySelectorAll('iframe').length })) })
+      const storyFilms = page.locator('.learn-room-stories video')
+      assert(await storyFilms.count() === 8, 'eight full story films retained')
+      for (const video of await storyFilms.all()) {
+        assert(await video.getAttribute('preload') === 'none', 'story film does not preload on arrival')
+        const track = video.locator('track[kind="captions"]')
+        assert(await track.count() === 1, 'each full story has captions')
+        const captionPath = await track.getAttribute('src')
+        assert(await page.evaluate(async src => { const response = await fetch(src); return response.ok && (await response.text()).startsWith('WEBVTT') }, captionPath), 'caption route returns WebVTT')
+        await video.evaluate(v => new Promise((resolve, reject) => { v.onloadedmetadata = () => resolve(true); v.onerror = () => reject(new Error('Story metadata failed')); v.preload = 'metadata'; v.load(); if (v.readyState >= 1) resolve(true) }))
+        assert(await video.evaluate(v => v.duration > 100 && v.paused), 'full story metadata decodes without playback')
+      }
+      assert(await page.locator('.learn-drawing-launch').count() === 6, 'six drawing choices')
+      assert(await page.locator('.learn-drawing-shelf iframe').count() === 0, 'drawing embeds wait for a user action')
+      assert(await page.locator('.learn-drawing-shelf a[href^="https://www.youtube.com/watch"]').count() === 6, 'direct drawing fallbacks')
       assert(await page.locator('.learn-hero-zoom').getAttribute('target') === '_blank', 'complete illustration can be enlarged')
       const guides = page.locator('.learn-meet-controls video')
       assert(await guides.count() === 2, 'both approved guide players visible')
@@ -139,6 +159,6 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       await page.waitForFunction(() => document.querySelector('.learn-part-label').textContent.includes('1 / 6'))
     }
     assert(errors.length === 0, errors.join('\n'))
-    fs.writeFileSync(path.join(proof, 'receipt.json'), JSON.stringify({ status: 'passed', errors, note: 'Real decoded clips at 16x/muted for behavior; no subjective voice or creative approval claim.' }, null, 2))
+    fs.writeFileSync(path.join(proof, 'receipt.json'), JSON.stringify({ status: 'passed', errors, performanceMetrics, note: 'Lab timings from hosted Chromium without mobile network throttling, not field Core Web Vitals or Ads approval. Real decoded lesson clips at 16x/muted; story metadata only; no subjective voice or creative approval claim.' }, null, 2))
   } finally { await context.close(); await browser.close() }
 })().catch(e => { console.error(e); process.exitCode = 1 })
