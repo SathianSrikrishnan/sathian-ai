@@ -6500,3 +6500,16 @@ h1, h2, h3 {
     gap: 32px;
   }
 }
+
+/* Article image heroes: cream wash so the dark workshop title stays readable */
+.workshop-article > header:has(img) .bg-gradient-to-t {
+  background: linear-gradient(to top, #f6ead3 0%, rgba(246, 234, 211, 0.88) 45%, rgba(246, 234, 211, 0.45) 100%) !important;
+}
+
+.workshop-article > header:has(img) .mix-blend-color {
+  display: none;
+}
+
+.workshop-article > header:has(img) img {
+  filter: saturate(0.85) !important;
+}
