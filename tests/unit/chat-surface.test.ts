@@ -33,7 +33,7 @@ describe('public chat surface', () => {
     const constants = readSource('src/lib/constants.ts')
 
     expect(widget).toContain('Sathian’s site agent')
-    expect(widget).toContain('I can explain and compare Sathian’s projects, find writing or the latest Draw with Tanda release, answer follow-up questions, and help you leave him a note.')
+    expect(widget).toContain('I can explain and compare Sathian’s projects, help you give a child their first digital wallet, find Learn with Tanda or his writing, and help you leave him a note.')
     expect(widget).toContain('Ask a question…')
     expect(widget).toContain('Write your note to Sathian…')
     expect(prompt).toContain("You are Sathian's site agent")

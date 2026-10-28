@@ -145,7 +145,7 @@ describe('canonical site-agent public knowledge', () => {
     const capabilities = cards.find((card) => card.id === 'site-agent-capabilities')
 
     expect(capabilities?.body).toContain('explain and compare')
-    expect(capabilities?.body).toContain('latest Draw with Tanda release')
+    expect(capabilities?.body).toContain('first digital wallet')
     expect(capabilities?.body).toContain('find Sathian’s writing')
     expect(capabilities?.body).toContain('leave Sathian a note')
     expect(capabilities?.body).toContain('follow-up questions')

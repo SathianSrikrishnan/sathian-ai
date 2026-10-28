@@ -33,7 +33,7 @@ const SUGGESTIONS = CHAT_SUGGESTIONS
 const AGENT_SESSION_KEY = 'sathian-agent-session-id'
 const AGENT_TEST_TOKEN_SESSION_KEY = 'sathian-agent-test-token'
 const AGENT_CONVERSATION_SESSION_KEY = 'sathian-agent-conversation'
-const AGENT_INTRO_MESSAGE = 'I can explain and compare Sathian’s projects, find writing or the latest Draw with Tanda release, answer follow-up questions, and help you leave him a note.'
+const AGENT_INTRO_MESSAGE = 'I can explain and compare Sathian’s projects, help you give a child their first digital wallet, find Learn with Tanda or his writing, and help you leave him a note.'
 
 interface AgentMessage {
   role: 'bot' | 'user'
