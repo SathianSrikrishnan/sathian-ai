@@ -31,7 +31,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.locator('h1').count() === 1, 'one main heading')
       assert(await page.locator('.learn-collection video').count() === 3, 'three genuine Watch films')
       assert(await page.locator('video[autoplay]').count() === 0, 'no autoplay')
-      assert(await page.locator('video[src*="dad-welcome"], video[src*="stablecoins"], video[src*="planet-v2"], video[src*="recovered-review"]').count() === 0, 'held or rejected review media must not appear publicly')
+      assert(await page.locator('video[src*="/welcome-r2/dad-welcome-review"], video[src*="stablecoins"], video[src*="planet-v2"], video[src*="recovered-review"]').count() === 0, 'held or rejected review media must not appear publicly')
       assert(await page.locator('.border-earth, .border-venus').count() === 0, 'no decorative top planets')
       assert(await page.locator('.learn-proof-hub').getAttribute('href') === 'https://proof.sathian.ai', 'simple Proof link retained')
       const hero = page.locator('.learn-classroom-art')
@@ -41,7 +41,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       const guides = page.locator('.learn-meet-controls video')
       assert(await guides.count() === 2, 'both approved guide players visible')
       assert(await page.locator('.learn-meet-controls details').count() === 0, 'no collapsed welcome')
-      assert(await guides.nth(1).getAttribute('src') === '/proof-assets/proof-main-20261027/proof-main-before-final-cta-review.mp4', 'approved founder message only')
+      assert(await guides.nth(1).getAttribute('src') === '/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4', 'approved cartoon Dad welcome only')
       for (const video of await guides.all()) {
         assert(await video.isVisible(), 'guide player immediately visible')
         await video.evaluate(async v => { v.muted = true; await v.play() })
@@ -59,7 +59,30 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.locator('.proof-family-wall').evaluate(e => getComputedStyle(e).position === 'fixed'), 'Proof wall continues')
       await page.getByText('Why no subscription?', { exact: true }).click()
       assert(await page.getByText(/Future tools or network activity/).isVisible(), 'one-time purchase scope explained')
-      assert(await page.locator('input[name="email"]').isDisabled(), 'signup remains inactive')
+      assert(await page.locator('input[name="email"]').count() === 0, 'inactive signup is removed from the sales page')
+      assert(await page.locator('a[href="mailto:info@toothfairy.network"]').count() > 0, 'working email fallback retained')
+      if (await page.locator('#proof-question').count()) {
+        let mockedQuestions = 0
+        // This route is fulfilled in the browser: no real inquiry, database write or notification.
+        await page.route('**/api/proof-question', async route => {
+          const body = route.request().postDataJSON()
+          assert(body.consent === true && body.sourcePage === '/proof', 'purpose-specific consent and source')
+          assert(!('marketing' in body) && !('childName' in body), 'no marketing or child fields')
+          mockedQuestions++
+          await route.fulfill({ status: mockedQuestions === 1 ? 503 : 202, contentType: 'application/json', body: JSON.stringify(mockedQuestions === 1 ? { error: 'Your question was not saved. Please email us.' } : { ok: true, receipt: { code: 'SA-ABCDEFGHIJ', deliveryStatus: 'queued' } }) })
+        })
+        await page.locator('[name="question"]').fill('Mocked browser question; never submitted to server')
+        await page.locator('[name="replyEmail"]').fill('adult@example.invalid')
+        await page.locator('[name="consent"]').check()
+        await page.getByRole('button', { name: 'Send question', exact: true }).click()
+        await page.getByRole('status').filter({ hasText: 'not saved' }).waitFor()
+        assert(await page.locator('[name="question"]').inputValue() !== '', 'failed question retained for retry')
+        await page.getByRole('button', { name: 'Send question', exact: true }).click()
+        await page.getByRole('status').filter({ hasText: 'saved and queued' }).waitFor()
+        assert(await page.locator('[name="question"]').inputValue() === '', 'confirmed stored question resets')
+        assert(mockedQuestions === 2, 'both question cases intercepted without server submission')
+        await page.unroute('**/api/proof-question')
+      }
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Proof fits viewport')
       await page.screenshot({ path: path.join(proof, `proof-${width}.png`), fullPage: true })
       await page.goto(base + '/learn/stories')
@@ -78,6 +101,24 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
         await page.getByRole('button', { name: 'Previous page', exact: true }).isDisabled().then(v => assert(v, 'first-page boundary'))
       }
       await page.screenshot({ path: path.join(proof, `reader-${width}.png`), fullPage: true })
+    }
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto(base + '/learn/stablecoin')
+      assert(await page.locator('video').count() === 0, 'stablecoin is an honest interactive lesson without a fake film')
+      for (let mask = 0; mask < 16; mask++) {
+        for (let step = 0; step < 4; step++) {
+          assert(await page.getByRole('button', { name: 'Continue', exact: true }).count() === 0, 'answer before continuing')
+          const answer = page.getByRole('button', { name: (mask >> step) & 1 ? 'Yes' : 'No', exact: true })
+          if (width === 1440) { await answer.focus(); await page.keyboard.press('Enter') } else await answer.click()
+          await page.getByRole('button', { name: 'Continue', exact: true }).click()
+        }
+        await page.getByRole('heading', { name: 'You explored USDC.', exact: true }).waitFor()
+        await page.getByRole('button', { name: 'Try again', exact: true }).click()
+        await page.getByRole('heading', { name: 'Create', exact: true }).waitFor()
+      }
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'stablecoin fits viewport')
+      await page.screenshot({ path: path.join(proof, `stablecoin-${width}.png`), fullPage: true })
     }
     for (const lesson of ['bitcoin', 'ethereum']) for (const answer of ['Yes', 'No']) {
       await page.goto(base + `/learn/${lesson}?mode=try`)

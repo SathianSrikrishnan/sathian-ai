@@ -1,0 +1,6 @@
+/** Reuse the existing private site-agent intake; never expose credentials to the page. */
+export function proofQuestionsReady(): boolean {
+ if (process.env.PUBLIC_AGENT_ENABLED !== 'true' || !process.env.SUPABASE_SERVICE_ROLE_KEY) return false
+ try { const url=new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || ''); return url.protocol==='https:' && url.hostname.endsWith('.supabase.co') } catch { return false }
+}
+export const proofQuestionMarkup = `<form id="proof-question"><label>Your question<textarea name="question" rows="4" maxlength="2000" required></textarea></label><label>Reply email (optional)<input type="email" name="replyEmail" autocomplete="email" maxlength="320"></label><input name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px"><label class="question-consent"><input type="checkbox" name="consent" required>Send this question and optional reply email to Sathian’s private inbox. No marketing signup.</label><button type="submit" class="product-cta">Send question</button><p id="question-status" role="status" aria-live="polite"></p><a href="https://sathian.ai/privacy">Privacy</a></form>`
