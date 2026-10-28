@@ -4,13 +4,33 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { PROOF } from '@/content/proof'
+import { trackSiteEvent } from '@/lib/site-analytics'
+
 const navLinks = [
   { label: 'Home', href: '/', external: false },
   { label: 'About', href: '/about', external: false },
-  { label: 'Hackathons', href: '/hackathons', external: false },
-  { label: 'Writing', href: '/writings', external: false },
+  { label: 'Proof', href: PROOF.href, external: true },
   { label: 'Learn', href: '/learn', external: false },
+  { label: 'Writing', href: '/writings', external: false },
 ]
+
+type NavLink = (typeof navLinks)[number]
+
+function NavItem({ link, active }: { link: NavLink; active: boolean }) {
+  if (link.external) {
+    return (
+      <a href={link.href} onClick={() => trackSiteEvent('proof_opened', { placement: 'nav' })}>
+        {link.label}
+      </a>
+    )
+  }
+  return (
+    <Link href={link.href} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
+      {link.label}
+    </Link>
+  )
+}
 
 export function SiteNav() {
   const pathname = usePathname()
@@ -42,7 +62,7 @@ export function SiteNav() {
   }, [menuOpen])
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname?.startsWith(href)
+    href === '/' ? pathname === '/' : Boolean(pathname?.startsWith(href))
 
   return (
     <>
@@ -52,14 +72,7 @@ export function SiteNav() {
 
           <div className="minimal-site-nav__desktop">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={isActive(link.href) ? 'is-active' : undefined}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.label}
-              </Link>
+              <NavItem key={link.href} link={link} active={isActive(link.href)} />
             ))}
           </div>
 
@@ -82,14 +95,7 @@ export function SiteNav() {
         <div id="minimal-mobile-menu" className="minimal-mobile-menu">
           <nav aria-label="Mobile navigation">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={isActive(link.href) ? 'is-active' : undefined}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.label}
-              </Link>
+              <NavItem key={link.href} link={link} active={isActive(link.href)} />
             ))}
           </nav>
         </div>

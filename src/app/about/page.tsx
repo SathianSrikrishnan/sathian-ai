@@ -49,7 +49,7 @@ const START_HERE = [
     kicker: 'THE WRITING',
     title: LATEST_WRITING.title,
     text: 'Essays on what I’m learning, what works and what doesn’t.',
-    href: '/writings',
+    href: LATEST_WRITING.href,
     event: 'writing_opened',
     image: LATEST_WRITING.feature.image,
     alt: LATEST_WRITING.feature.alt,
