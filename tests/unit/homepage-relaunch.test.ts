@@ -30,7 +30,7 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('AGENT MANAGER + ORCHESTRATOR')
     expect(homepage).toContain('TORONTO')
     expect(homepage).toContain('Digital Experiments')
-    expect(rootLayout.match(/title: 'Sathian \| Digital Experiments'/g)).toHaveLength(3)
+    expect(rootLayout.match(/title: 'Sathian Srikrishnan \| Digital Experiments'/g)).toHaveLength(3)
     expect(siteIdentity).toContain("name: 'Sathian'")
     expect(siteIdentity).not.toContain('SATHN')
     expect(homepage).not.toContain("Welcome to Sathian's Digital Workshop")

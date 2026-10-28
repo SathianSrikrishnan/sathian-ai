@@ -118,7 +118,8 @@ describe('public-site indexing', () => {
     const prompts = readFileSync(new URL('../../src/lib/prompts.ts', import.meta.url), 'utf8')
     const articles = readFileSync(new URL('../../src/lib/articles.ts', import.meta.url), 'utf8')
 
-    expect(footer).toContain('© {new Date().getFullYear()} Sathian</span>')
+    expect(footer).toContain('© {new Date().getFullYear()} Sathian Srikrishnan</span>')
+    expect(footer).toContain('href="/privacy"')
     expect(footer).not.toContain('Sathian S.</span>')
     expect(links).toContain('LINKS / SATHIAN</p>')
     expect(links).not.toContain('LINKS / SATHIAN S.</p>')

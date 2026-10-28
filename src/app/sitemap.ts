@@ -35,6 +35,7 @@ export function buildSitemapForHost(
       '/hackathons',
       '/links',
       '/farcaster',
+      '/privacy',
       '/learn', '/learn/stories', '/learn/stories/tanda-origin', '/learn/stories/first-tooth-fee', '/learn/stories/toothlight-treaty', '/learn/stories/roof-song', '/learn/stories/edge-of-the-light', '/learn/stories/one-year-wish', '/learn/stories/gap-in-the-gold',
       '/learn/bitcoin',
       '/learn/ethereum',
