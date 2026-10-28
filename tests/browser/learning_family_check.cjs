@@ -189,6 +189,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       await page.getByRole('button', { name: 'Play again', exact: true }).click()
       await page.waitForFunction(() => document.querySelector('.learn-part-label').textContent.includes('1 / 6'))
     }
+    await require('./proof_legibility_check.cjs')(context, base, proof)
     assert(errors.length === 0, errors.join('\n'))
     fs.writeFileSync(path.join(proof, 'receipt.json'), JSON.stringify({ status: 'passed', errors, performanceMetrics, note: 'Lab timings from hosted Chromium without mobile network throttling, not field Core Web Vitals or Ads approval. Real decoded lesson clips at 16x/muted; story metadata only; no subjective voice or creative approval claim.' }, null, 2))
   } finally { await context.close(); await browser.close() }
