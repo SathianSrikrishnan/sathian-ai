@@ -24,6 +24,7 @@ export interface Article {
   specialElements?: { type: 'price-counter' | 'scroll-pin' | 'stacked-pages' | 'whitepaper-cta' | 'youtube-embed'; afterSection: number; data?: Record<string, unknown> }[]
   textHighlights?: { text: string; color: string; link?: string }[]  // Specific phrases to color-highlight (optional Grokipedia link)
   hiddenSignal?: string
+  cta?: { label: string; href: string; secondary?: { label: string; href: string } }  // Closing gift button
 }
 
 export const articles: Article[] = [
@@ -57,11 +58,11 @@ export const articles: Article[] = [
       'Who loses?',
     ],
     sectionTints: ['#D4A017', '#F59E0B', '#EF4444', '#22C55E', '#F7931A', '#06B6D4', '#D4A017'],
-    textHighlights: [
-      { text: 'Give a child their first wallet', color: '#D4A017', link: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
-      { text: 'Watch Proof', color: '#D4A017', link: 'https://proof.sathian.ai/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
-      { text: 'Learn with Tanda', color: '#22C55E', link: '/learn' },
-    ],
+    cta: {
+      label: 'Give a child their first wallet',
+      href: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay',
+      secondary: { label: 'Watch Proof: why I build this', href: 'https://proof.sathian.ai/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
+    },
     media: [
       { src: '/media/gold-at-birth/grandma-gift.webp', alt: 'A crayon drawing of a grandmother and her granddaughter on a park bench, receiving a green Vault Book from Tanda the tooth fairy', caption: 'The gift that lasts, drawn the way a child would draw it.', placement: 'hero' },
       { src: '/sathian-portrait.webp', alt: 'A pencil sketch of Sathian', caption: 'I have spent a silly amount on that drawer.', placement: 'inline-right', afterSection: 2 },
@@ -135,9 +136,7 @@ The grandparents, aunts, uncles and godparents get an easy way to give something
 
 If you already have an RESP or another savings account for your child, keep it. This is a small extra, built around your child's art, that the whole family can add to.
 
-My friend's grandfather gave him gold. I want every grandparent to be able to do the same, in a way a six-year-old can hold in their hands.
-
-Give a child their first wallet. Or Watch Proof to see why I'm building it, and try Learn with Tanda with your kids.`,
+My friend's grandfather gave him gold. I want every grandparent to be able to do the same, in a way a six-year-old can hold in their hands.`,
   },
   {
   "title": "Keep the Internet Open",

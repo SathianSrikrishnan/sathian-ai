@@ -6517,3 +6517,34 @@ h1, h2, h3 {
 .workshop-article > header:has(img) p.italic {
   color: #8c451c !important;
 }
+
+.article-cta {
+  margin-top: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+.article-cta__primary {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: #b84c17;
+  color: #fff8ec !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.article-cta__primary:hover {
+  background: #9a3d10;
+}
+
+.article-cta__secondary {
+  color: #8c451c !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  text-decoration: underline;
+}
