@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
+import { applyAdClick } from '@/lib/ad-click'
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { CHAT_SUGGESTIONS } from '@/lib/constants'
 import {
@@ -707,6 +708,10 @@ function ChatWidgetContent() {
                       rel={isExternalHref(msg.nextAction.href) ? 'noopener noreferrer' : undefined}
                       className="site-agent-next-action"
                        onClick={(event) => {
+                         applyAdClick(event.currentTarget)
+                         if (msg.nextAction?.href.includes('toothfairy.')) {
+                           trackSiteEvent('gift_cta_clicked', { placement: 'site_agent' })
+                         }
                          trackSiteEvent('agent_source_opened', {
                            page: pathname,
                            sourceHost: sourceLabel(msg.nextAction!.href, 0),

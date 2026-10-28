@@ -10,6 +10,7 @@ import {
   HACKATHON_SITE_PROJECTS,
   MORE_SITE_PROJECTS,
 } from '@/content/site-projects'
+import { applyAdClick } from '@/lib/ad-click'
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
@@ -113,7 +114,10 @@ export function HomeClient({ writings }: HomeClientProps) {
                     <a
                       href={HOME_GIFT_HREF}
                       className="minimal-text-link"
-                      onClick={() => trackSiteEvent('gift_cta_clicked', { placement: 'homepage_tfn' })}
+                      onClick={(event) => {
+                        applyAdClick(event.currentTarget)
+                        trackSiteEvent('gift_cta_clicked', { placement: 'homepage_tfn' })
+                      }}
                     >
                       Give a child their first wallet
                     </a>
