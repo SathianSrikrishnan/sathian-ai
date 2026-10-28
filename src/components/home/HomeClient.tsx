@@ -6,15 +6,9 @@ import Link from 'next/link'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import {
-  DRAW_WITH_TANDA_CHANNEL_HREF,
-  DRAW_WITH_TANDA_EPISODES,
-  LATEST_RELEASE,
-} from '@/content/site-releases'
-import {
   ARCHIVE_SITE_PROJECTS,
   FEATURED_SITE_PROJECTS,
   MORE_SITE_PROJECTS,
-  SOLANA_OBSERVATORY_PROJECT,
 } from '@/content/site-projects'
 import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
@@ -34,11 +28,6 @@ interface HomeClientProps {
   writings: HomeWriting[]
 }
 
-const DRAW_WITH_TANDA_PUBLISHED = DRAW_WITH_TANDA_EPISODES
-  .filter((release) => release.status === 'published' && release.youtubeVideoId)
-  .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
-const DRAW_WITH_TANDA_LATEST = LATEST_RELEASE
-const DRAW_WITH_TANDA_NEXT = DRAW_WITH_TANDA_EPISODES.find((release) => release.status === 'next')!
 const FEATURED_WRITINGS = [
   LATEST_WRITING.feature,
   {
@@ -75,11 +64,14 @@ export function HomeClient({ writings }: HomeClientProps) {
       <main>
         <header className="minimal-home-hero minimal-container">
           <p className="minimal-kicker minimal-home-identity">
-            <span className="minimal-home-identity__part">SATHIAN</span>
-            <span className="minimal-home-identity__part">AGENT MANAGER + ORCHESTRATOR</span>
+            <span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span>
+            <span className="minimal-home-identity__part">FOUNDER + DAD</span>
             <span className="minimal-home-identity__part">TORONTO</span>
           </p>
           <h1>Digital Experiments</h1>
+          <p className="minimal-home-mission">
+            I build products people really love, starting with the ones my own children need, for children and parents everywhere.
+          </p>
           <a className="home-proof-entry" href={PROOF.href} onClick={() => trackSiteEvent('proof_opened', { placement: 'homepage' })}>
             <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.jpg" alt="" width="76" height="76" />
             <span><strong>Start here — PROOF ↗</strong><span>{PROOF.description}</span></span>
@@ -157,33 +149,19 @@ export function HomeClient({ writings }: HomeClientProps) {
                   <Image src={project.image} alt={project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
                 </a>
                 {index === 0 && (
-                  <div className="minimal-tfn-extension">
+                  <div className="minimal-tfn-extension minimal-tfn-extension--learn">
                     <div className="minimal-tfn-extension__copy">
-                      <p className="minimal-kicker">DRAW WITH TANDA / TOOTH FAIRY NETWORK</p>
-                      <h4>Draw together. Keep the story.</h4>
-                      <p>
-                        A parent-and-child drawing channel from Tooth Fairy Network. {DRAW_WITH_TANDA_PUBLISHED.length} guided drawing {DRAW_WITH_TANDA_PUBLISHED.length === 1 ? 'episode is' : 'episodes are'} public now{DRAW_WITH_TANDA_NEXT ? `; ${DRAW_WITH_TANDA_NEXT.shortTitle} is next` : ''}.
-                      </p>
+                      <p className="minimal-kicker">LEARN WITH TANDA / TOOTH FAIRY NETWORK</p>
+                      <h4>Read the stories together.</h4>
+                      <p>Seven Tanda stories to read, watch and draw with your child.</p>
                       <div className="minimal-record-links">
                         <Link
-                          href={DRAW_WITH_TANDA_CHANNEL_HREF}
+                          href="/learn"
                           className="minimal-text-link"
-                          onClick={() => trackSiteEvent('draw_with_tanda_opened', { placement: 'homepage' })}
+                          onClick={() => trackSiteEvent('learn_opened', { placement: 'homepage' })}
                         >
-                          Explore the channel
+                          Learn with Tanda
                         </Link>
-                        <a
-                          href={DRAW_WITH_TANDA_LATEST.youtubeHref!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="minimal-text-link"
-                          onClick={() => trackSiteEvent('draw_with_tanda_watch_started', {
-                            placement: 'homepage',
-                            episode: DRAW_WITH_TANDA_LATEST.slug,
-                          })}
-                        >
-                          Watch on YouTube
-                        </a>
                       </div>
                       <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
                         {toothFairySocialLinks.map((link) => (
@@ -202,38 +180,11 @@ export function HomeClient({ writings }: HomeClientProps) {
                         ))}
                       </nav>
                     </div>
-                    <div className="minimal-tfn-video">
-                      <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${DRAW_WITH_TANDA_LATEST.youtubeVideoId}`}
-                        title={DRAW_WITH_TANDA_LATEST.title}
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                      />
-                    </div>
                   </div>
                 )}
               </article>
             ))}
           </div>
-        </section>
-
-        <section className="minimal-section minimal-container minimal-solana" aria-labelledby="new-to-solana">
-          <div className="minimal-project-copy">
-            <p className="minimal-kicker">PUBLIC DATA PROJECT</p>
-            <h2 id="new-to-solana">New to Solana?</h2>
-            <p>
-              Learn the ecosystem visually, see what the network is doing now, and understand why Solana fits Tooth Fairy Network.
-            </p>
-            <p className="minimal-label">LIVE FOUNDATION / DIRECT RPC / SOURCE-VISIBLE</p>
-            <Link href={SOLANA_OBSERVATORY_PROJECT.pageHref!} className="minimal-text-link">
-              {SOLANA_OBSERVATORY_PROJECT.pageCta ?? SOLANA_OBSERVATORY_PROJECT.cta}
-            </Link>
-          </div>
-          <Link href={SOLANA_OBSERVATORY_PROJECT.pageHref!} className="minimal-project-media" aria-label={`Open ${SOLANA_OBSERVATORY_PROJECT.name}`}>
-            <Image src={SOLANA_OBSERVATORY_PROJECT.image} alt={SOLANA_OBSERVATORY_PROJECT.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
-          </Link>
         </section>
 
         {writings.length > 0 && (

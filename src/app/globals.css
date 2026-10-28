@@ -3868,6 +3868,14 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+.minimal-home-mission {
+  max-width: 640px;
+  margin-top: 18px;
+  color: var(--minimal-ink);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.45;
+}
+
 .minimal-agent-section {
   padding-bottom: 22px;
   border-bottom: 1px solid var(--minimal-rule);
@@ -4122,6 +4130,10 @@ h1, h2, h3 {
   align-items: center;
   padding-top: 32px;
   border-top: 1px solid var(--minimal-rule);
+}
+
+.minimal-tfn-extension--learn {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .minimal-tfn-extension h4 {

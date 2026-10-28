@@ -24,10 +24,12 @@ describe('sathian.ai relaunch surface', () => {
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
   it('leads with the concise Digital Experiments title and the live site agent', () => {
-    expect(homepage).toContain('>SATHIAN</span>')
+    // Owner, Oct 27: full name visible; the agent-manager title retired for founder + dad.
+    expect(homepage).toContain('>SATHIAN SRIKRISHNAN</span>')
     expect(homepage).not.toContain('SATHN')
-    expect(homepage).not.toContain('SATHIAN SRIKRISHNAN')
-    expect(homepage).toContain('AGENT MANAGER + ORCHESTRATOR')
+    expect(homepage).not.toContain('AGENT MANAGER + ORCHESTRATOR')
+    expect(homepage).toContain('FOUNDER + DAD')
+    expect(homepage).toContain('minimal-home-mission')
     expect(homepage).toContain('TORONTO')
     expect(homepage).toContain('Digital Experiments')
     expect(rootLayout.match(/title: 'Sathian Srikrishnan \| Digital Experiments'/g)).toHaveLength(3)
@@ -139,11 +141,13 @@ describe('sathian.ai relaunch surface', () => {
     expect(existsSync(new URL('../../public/projects/tooth-fairy-network/draw-finn-thumbnail.jpg', import.meta.url))).toBe(true)
   })
 
-  it('keeps one clear Draw with Tanda feature instead of a duplicate release banner', () => {
+  it('nests Learn with Tanda under Tooth Fairy Network instead of a video banner', () => {
     expect(homeClient).not.toContain('id="latest-release"')
     expect(homeClient).not.toContain('minimal-latest-release')
-    expect(homeClient).toContain('Draw together. Keep the story.')
-    expect(homeClient).toContain('minimal-tfn-video')
+    expect(homeClient).not.toContain('minimal-tfn-video')
+    expect(homeClient).not.toContain('youtube-nocookie.com/embed')
+    expect(homeClient).toContain('LEARN WITH TANDA / TOOTH FAIRY NETWORK')
+    expect(homeClient).toContain('href="/learn"')
   })
 
   it('uses the same bold editorial heading treatment for the Solana project', () => {
@@ -165,8 +169,8 @@ describe('sathian.ai relaunch surface', () => {
 
   it('keeps the homepage focused while preserving older work in a quiet archive', () => {
     expect(homepage).toContain('Tooth Fairy Network')
-    expect(homepage).toContain('AutoQuote Automator')
-    expect(homepage).toContain('New to Solana?')
+    expect(homepage).not.toContain('New to Solana?')
+    expect(homeClient).toContain('[...MORE_SITE_PROJECTS, ...ARCHIVE_SITE_PROJECTS]')
     expect(homepage).toContain('Writing')
     expect(homepage).toContain('More projects &amp; curiosities')
     expect(homepage).toContain('Lex Rooftop Garden')
