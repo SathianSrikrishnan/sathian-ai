@@ -1078,8 +1078,8 @@
       "kind": "suggestion",
       "severity": "high",
       "tags": ["offline", "trust"],
-      "message": "Show me the latest release",
-      "suggestionId": "latest-release",
+      "message": "How do I give a child their first digital wallet?",
+      "suggestionId": "give-gift",
       "expected": {
         "route": "submit_question",
         "outcome": "question_suggestion",

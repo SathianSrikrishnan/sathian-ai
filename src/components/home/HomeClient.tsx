@@ -15,6 +15,8 @@ import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
 import { PROOF } from '@/content/proof'
 
+const HOME_GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=home'
+
 export interface HomeWriting {
   title: string
   description: string
@@ -107,9 +109,19 @@ export function HomeClient({ writings }: HomeClientProps) {
                   {index !== 0 && <h3>{project.name}</h3>}
                   <p className="minimal-label">{project.label}</p>
                   <p>{project.description}</p>
-                  <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
-                    {project.cta}
-                  </a>
+                  {index === 0 ? (
+                    <a
+                      href={HOME_GIFT_HREF}
+                      className="minimal-text-link"
+                      onClick={() => trackSiteEvent('gift_cta_clicked', { placement: 'homepage_tfn' })}
+                    >
+                      Give a child their first wallet
+                    </a>
+                  ) : (
+                    <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
+                      {project.cta}
+                    </a>
+                  )}
                   {index === 0 && (
                     <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
                       {toothFairySocialLinks.map((link) => (

@@ -17,10 +17,10 @@ export const CHAT_SUGGESTIONS: readonly ChatSuggestion[] = [
     message: 'Tell me about Tooth Fairy Network',
   },
   {
-    id: 'latest-release',
-    label: 'Show me the latest release',
+    id: 'give-gift',
+    label: 'Give a child their first wallet',
     action: 'submit_question',
-    message: 'Show me the latest release',
+    message: 'How do I give a child their first digital wallet?',
   },
   {
     id: 'current-work',

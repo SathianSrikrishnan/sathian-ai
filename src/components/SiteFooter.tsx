@@ -6,7 +6,7 @@ export function SiteFooter() {
       <div className="minimal-site-footer__inner">
         <div className="minimal-site-footer__identity">
           <Link href="/about" className="minimal-site-footer__brand">Sathian</Link>
-          <span>Agent manager + orchestrator</span>
+          <span>Founder + dad / Toronto</span>
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/">Home</Link>
