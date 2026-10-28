@@ -61,6 +61,10 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       const planets = page.locator('.learn-planet-grid video')
       assert(await planets.count() === 3, 'all three corrected Planet films visible')
       assert(await page.locator('.learn-planets a').getAttribute('href') === 'https://srikrishnan.work/planet-patterns', 'Planet drawing app retained')
+      assert(await page.locator('.learn-planets').evaluate(section=>{
+        const heading=section.querySelector('h2').getBoundingClientRect(), grid=section.querySelector('.learn-planet-grid').getBoundingClientRect(), link=section.querySelector('a').getBoundingClientRect()
+        return heading.bottom <= grid.top && link.top >= grid.bottom
+      }), 'Planet heading, films and app link follow a clear vertical reading order')
       for (const video of await planets.all()) {
         assert(await video.getAttribute('preload') === 'none', 'Planet waits for playback')
         const captionPath = await video.locator('track').getAttribute('src')
