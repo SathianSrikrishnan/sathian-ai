@@ -16,7 +16,18 @@ import { ClassroomBorder } from '@/components/learn/ClassroomBorder'
 
 import { MeetGuides } from '@/components/learn/MeetGuides'
 
-export const metadata: Metadata = { title: 'Learn with Tanda | PROOF', description: 'Learn, watch, read and draw with Tanda the Tooth Fairy.', alternates: { canonical: 'https://sathian.ai/learn' } }
+export const metadata: Metadata = {
+  title: { absolute: 'Learn with Tanda: Free Stories and Money Lessons for Kids' },
+  description: 'Free illustrated stories, short lessons on money and the internet, and draw-along videos with Tanda the tooth fairy. For children and the grown-ups who love them.',
+  alternates: { canonical: 'https://sathian.ai/learn' },
+  openGraph: {
+    title: 'Learn with Tanda: Free Stories and Money Lessons for Kids',
+    description: 'Free illustrated stories, money lessons and draw-along videos for families.',
+    url: 'https://sathian.ai/learn',
+    siteName: 'Sathian',
+    images: [{ url: 'https://sathian.ai/learn-art/classroom-master.webp', alt: 'Tanda teaching a family about saving and digital money' }],
+  },
+}
 
 export default function LearningBoard() {
 
