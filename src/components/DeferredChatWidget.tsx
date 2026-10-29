@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { holdPendingAgentOpen, isAgentListening } from '@/lib/agent/pending-open'
 import { isLearningPath } from '@/lib/learn/route-policy'
+import { isToothFairyHost } from '@/lib/site-host'
 
 // The site agent (and motion, which only it uses in the shared layout) is kept
 // off the first-paint path: its chunk is requested once the browser is idle
@@ -25,6 +26,10 @@ function DeferredChatWidgetContent() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
+    // Tooth Fairy hosts never get the site agent. The host is checked here, in
+    // the browser, so the shared layout stays static (no request headers).
+    if (isToothFairyHost(window.location.hostname)) return
+
     let done = false
     const load = () => {
       if (done) return

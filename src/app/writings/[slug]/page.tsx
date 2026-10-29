@@ -2,12 +2,20 @@ import { KeepInternetOpen } from '@/components/article/keep-internet-open/KeepIn
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getArticleBySlug } from '@/lib/articles-db'
+import { articles as staticArticles } from '@/lib/articles'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
 import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
 type Props = { params: Promise<{ slug: string }> }
 
-export const dynamic = 'force-dynamic'
+// ISR: essays are pre-rendered at build and refreshed at most once a minute, the
+// same window as the homepage and /writings. Slugs published later from Studio
+// (database only) render on first request and are then cached the same way.
+export const revalidate = 60
+
+export function generateStaticParams() {
+  return staticArticles.map((article) => ({ slug: article.slug }))
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticleBySlug((await params).slug)
