@@ -1,17 +1,16 @@
-'use client'
-
+// Server component: static homepage markup is not hydrated. Only the nav and
+// the tracked links (TrackedLinks.tsx) ship as client islands.
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
+import { TrackedAnchor, TrackedLink } from '@/components/home/TrackedLinks'
 import {
   FEATURED_SITE_PROJECTS,
   HACKATHON_SITE_PROJECTS,
   MORE_SITE_PROJECTS,
 } from '@/content/site-projects'
-import { applyAdClick } from '@/lib/ad-click'
-import { trackSiteEvent } from '@/lib/site-analytics'
 import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
 import { PROOF } from '@/content/proof'
@@ -75,10 +74,10 @@ export function HomeClient({ writings }: HomeClientProps) {
           <p className="minimal-home-mission">
             I build products people love, starting with the ones my own children need. This site is built for people and agents: ask it anything.
           </p>
-          <a className="home-proof-entry" href={PROOF.href} onClick={() => trackSiteEvent('proof_opened', { placement: 'homepage' })}>
-            <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12.jpg" alt="" width="76" height="76" />
+          <TrackedAnchor className="home-proof-entry" href={PROOF.href} event="proof_opened" properties={{ placement: 'homepage' }}>
+            <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12-thumb.webp" alt="" width="76" height="76" />
             <span><strong>Start here — PROOF ↗</strong><span>{PROOF.description}</span></span>
-          </a>
+          </TrackedAnchor>
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
@@ -111,16 +110,15 @@ export function HomeClient({ writings }: HomeClientProps) {
                   <p className="minimal-label">{project.label}</p>
                   <p>{project.description}</p>
                   {index === 0 ? (
-                    <a
+                    <TrackedAnchor
                       href={HOME_GIFT_HREF}
                       className="minimal-text-link"
-                      onClick={(event) => {
-                        applyAdClick(event.currentTarget)
-                        trackSiteEvent('gift_cta_clicked', { placement: 'homepage_tfn' })
-                      }}
+                      carryAdClick
+                      event="gift_cta_clicked"
+                      properties={{ placement: 'homepage_tfn' }}
                     >
                       Give a child their first wallet
-                    </a>
+                    </TrackedAnchor>
                   ) : (
                     <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-text-link">
                       {project.cta}
@@ -129,18 +127,19 @@ export function HomeClient({ writings }: HomeClientProps) {
                   {index === 0 && (
                     <nav className="minimal-tfn-socials" aria-label="Tooth Fairy Network social channels">
                       {toothFairySocialLinks.map((link) => (
-                        <a
+                        <TrackedAnchor
                           key={link.label}
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={() => trackSiteEvent('tfn_social_opened', {
+                          event="tfn_social_opened"
+                          properties={{
                             placement: 'homepage',
                             channel: link.label.toLowerCase(),
-                          })}
+                          }}
                         >
                           {link.label}
-                        </a>
+                        </TrackedAnchor>
                       ))}
                     </nav>
                   )}
@@ -156,13 +155,14 @@ export function HomeClient({ writings }: HomeClientProps) {
                 <h3>Learn with Tanda</h3>
                 <p className="minimal-label">STORIES + SHORT LESSONS / FREE</p>
                 <p>Stories and short lessons on saving, money and the internet, for children and the grown-ups who love them.</p>
-                <Link
+                <TrackedLink
                   href="/learn"
                   className="minimal-text-link"
-                  onClick={() => trackSiteEvent('learn_opened', { placement: 'homepage' })}
+                  event="learn_opened"
+                  properties={{ placement: 'homepage' }}
                 >
                   Start learning
-                </Link>
+                </TrackedLink>
               </div>
               <Link href="/learn" className="minimal-project-media" aria-label="Open Learn with Tanda">
                 <Image
