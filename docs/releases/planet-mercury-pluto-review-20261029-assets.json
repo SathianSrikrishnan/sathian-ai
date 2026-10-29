@@ -1,0 +1,26 @@
+{
+  "version": "R3",
+  "status": "Protected review only; creative acceptance and production publication pending",
+  "assets": [
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/mercury-pluto-r3.mp4",
+      "bytes": 8106758,
+      "sha256": "34e10c169c1e3aee3403ef19b7fb67ad3c8c2983c082b0f56358810ac2d41d1d"
+    },
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/mercury-pluto-r3.vtt",
+      "bytes": 1076,
+      "sha256": "ac1bf6f439e06e4301a1db7b5ca452869c7a7d734f133ff446a9cd2ba1bad4b6"
+    },
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/poster.webp",
+      "bytes": 12588,
+      "sha256": "bda4d8a42877396596a7c928657f49cf3d718190c1ac380f0d7d3fafcd71ac90"
+    }
+  ],
+  "articleSource": "ARTICLE-AND-TRANSCRIPT-R3.md",
+  "articleLibrary": "libfile_abe428ed9fe08191a71aff428df10593",
+  "captionNormalization": "UTF8 LF; original hash retained in film registry",
+  "sourceMovieSha256": "34e10c169c1e3aee3403ef19b7fb67ad3c8c2983c082b0f56358810ac2d41d1d",
+  "quietQA": "Exact R3 hash and quiet decode verified; final contact sheet inspected. No perceptual voice/lip-sync listening claim."
+}
