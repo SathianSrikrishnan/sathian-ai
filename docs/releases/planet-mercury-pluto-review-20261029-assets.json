@@ -1,26 +1,32 @@
 {
-  "version": "R3",
-  "status": "Protected review only; creative acceptance and production publication pending",
+  "version": "R4",
+  "status": "Protected review only; final owner acceptance and production publication pending",
   "assets": [
     {
-      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/mercury-pluto-r3.mp4",
-      "bytes": 8106758,
-      "sha256": "34e10c169c1e3aee3403ef19b7fb67ad3c8c2983c082b0f56358810ac2d41d1d"
+      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.mp4",
+      "bytes": 11847083,
+      "sha256": "560c6a9c9aa22f3026ea232ef1cddef897337898b5a5e5f3d037a2bcebffb9e5"
     },
     {
-      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/mercury-pluto-r3.vtt",
+      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.vtt",
       "bytes": 1076,
       "sha256": "ac1bf6f439e06e4301a1db7b5ca452869c7a7d734f133ff446a9cd2ba1bad4b6"
     },
     {
-      "path": "public/learn-media/planet-mercury-pluto-r3-20261029/poster.webp",
-      "bytes": 12588,
-      "sha256": "bda4d8a42877396596a7c928657f49cf3d718190c1ac380f0d7d3fafcd71ac90"
+      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/poster.webp",
+      "bytes": 18986,
+      "sha256": "0ffdb3795f64a7adbfd4aed7fcc8240e6ca526c51b06b519a4964ab7dea5ed13"
+    },
+    {
+      "path": "public/learn-art/mercury-pluto-stone-engraving.jpg",
+      "bytes": 343961,
+      "sha256": "c37684f77a32a0bb0ceaaa531523f911374023047f62b7fe0582fb58a509b37f"
     }
   ],
-  "articleSource": "ARTICLE-AND-TRANSCRIPT-R3.md",
-  "articleLibrary": "libfile_abe428ed9fe08191a71aff428df10593",
-  "captionNormalization": "UTF8 LF; original hash retained in film registry",
-  "sourceMovieSha256": "34e10c169c1e3aee3403ef19b7fb67ad3c8c2983c082b0f56358810ac2d41d1d",
-  "quietQA": "Exact R3 hash and quiet decode verified; final contact sheet inspected. No perceptual voice/lip-sync listening claim."
+  "articleSource": "ARTICLE-AND-TRANSCRIPT-R4.md",
+  "articleLibrary": "libfile_739459ea22988191b4a4ee26a87a8ff1",
+  "captionNormalization": "UTF8 LF; original hash retained in film registry; R4 source track unchanged from R3",
+  "sourceMovieSha256": "560c6a9c9aa22f3026ea232ef1cddef897337898b5a5e5f3d037a2bcebffb9e5",
+  "editorialCleanup": "Repaired supplied mojibake apostrophes; removed internal revision comparison wording while preserving model facts and image attribution.",
+  "quietQA": "Exact R4 hash and quiet decode verified; selected exact frames and poster inspected. No perceptual voice/lip-sync listening claim."
 }

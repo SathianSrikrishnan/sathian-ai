@@ -19,6 +19,8 @@ it('keeps the companion article truthful, readable and linked to its film',()=>{
  expect(text).toContain('dwarf planet');expect(text).toContain('88 Earth days');expect(text).toContain('248 Earth years')
  expect(text).toContain('1776');expect(text).not.toContain('2024');expect(text).toContain('about as long as the United States has existed');expect(text).toContain('not physical connections or orbital tracks')
  expect(article.sources).toHaveLength(4);expect(text).not.toContain('Production status')
+ expect(text).not.toContain('R4 restores');expect(text).not.toContain('â');expect(text).toContain('1823 Stone engraving')
+ expect(article.historicalImage.source).toBe('https://www.archives.gov/founding-docs/downloads')
  const film=films.find(f=>f.slug==='mercury-pluto')!
  expect(film.article).toBe('/learn/planet-patterns/mercury-pluto')
  const manifest=JSON.parse(readFileSync('docs/releases/planet-mercury-pluto-review-20261029-assets.json','utf8'))

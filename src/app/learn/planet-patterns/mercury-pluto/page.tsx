@@ -21,6 +21,11 @@ export default function MercuryPlutoPage() {
     <article>
       {article.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(p => <p key={p}>{p}</p>)}</section>)}
       <section><h2>Episode transcript</h2><p>{article.transcript}</p></section>
+      <section><h2>Historical image and reuse</h2>
+        <figure><a href={article.historicalImage.src} target="_blank" rel="noreferrer" aria-label="View the Stone engraving at full size"><img src={article.historicalImage.src} width={article.historicalImage.width} height={article.historicalImage.height} alt={article.historicalImage.alt} loading="lazy" /></a><figcaption>{article.historicalImage.caption}</figcaption></figure>
+        <p>{article.historicalImage.paragraph}</p>
+        <p><a href={article.historicalImage.source}>National Archives download and reuse statement</a> · <a href={article.historicalImage.original}>Original source image</a></p>
+      </section>
       <section><h2>Sources</h2><ul>{article.sources.map(source => <li key={source.url}><a href={source.url}>{source.title}</a></li>)}</ul></section>
     </article>
     <Link className="learn-button" href="/learn#planet-heading">Back to Planet Patterns</Link>
