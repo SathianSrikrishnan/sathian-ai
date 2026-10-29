@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { togglePublish } from '@/lib/articles-db'
+import { togglePublish, PublishGateError } from '@/lib/articles-db'
 import { requireStudioAal2 } from '@/lib/studio-server-auth'
 
 export const dynamic = 'force-dynamic'
@@ -19,6 +19,7 @@ export async function POST(
     const article = await togglePublish((await params).id, status)
     return NextResponse.json(article)
   } catch (err) {
+    if (err instanceof PublishGateError) return NextResponse.json({ error: err.message, gate: err.gate }, { status: 422 })
     return NextResponse.json({ error: (err as Error).message }, { status: 500 })
   }
 }
