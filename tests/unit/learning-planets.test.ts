@@ -21,6 +21,8 @@ it('keeps the companion article truthful, readable and linked to its film',()=>{
  expect(article.sources).toHaveLength(4);expect(text).not.toContain('Production status')
  expect(text).not.toContain('R4 restores');expect(text).not.toContain('â');expect(text).toContain('1823 Stone engraving')
  expect(article.historicalImage.source).toBe('https://www.archives.gov/founding-docs/downloads')
+ expect(article.transcript).toMatch(/^Hey explorers! Can two worlds help us draw\?/)
+ expect(article.transcript).not.toContain('Dad here')
  const film=films.find(f=>f.slug==='mercury-pluto')!
  expect(film.article).toBe('/learn/planet-patterns/mercury-pluto')
  const manifest=JSON.parse(readFileSync('docs/releases/planet-mercury-pluto-review-20261029-assets.json','utf8'))

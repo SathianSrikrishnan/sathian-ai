@@ -41,14 +41,13 @@
   {
     "slug": "mercury-pluto",
     "title": "Mercury and Pluto",
-    "src": "/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.mp4",
-    "poster": "/learn-media/planet-mercury-pluto-r4-20261029/poster.webp",
-    "captions": "/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.vtt",
-    "durationSeconds": 48.92,
-    "sha256": "560c6a9c9aa22f3026ea232ef1cddef897337898b5a5e5f3d037a2bcebffb9e5",
-    "captionSha256": "ac1bf6f439e06e4301a1db7b5ca452869c7a7d734f133ff446a9cd2ba1bad4b6",
-    "sourceCaptionSha256": "6da0fe086d2c6a49db7157865e617165f5735b6520407af0918f458892a8a4cb",
-    "libraryMovie": "libfile_366690aeae648191889199a31b09e2c2",
+    "src": "/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.mp4",
+    "poster": "/learn-media/planet-mercury-pluto-r5-20261029/poster.webp",
+    "captions": "/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.vtt",
+    "durationSeconds": 47.587,
+    "sha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923",
+    "captionSha256": "62df7cadf28b33523861d8b697f5bcf0ee2292c1d4849412c77822425f982b7f",
+    "sourceCaptionSha256": "56bd6042af88becea77f396c9b2e350d72c98925e63444d0947a1dcc79dd28f4",
     "article": "/learn/planet-patterns/mercury-pluto"
   }
 ]

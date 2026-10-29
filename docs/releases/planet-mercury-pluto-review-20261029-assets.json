@@ -1,21 +1,21 @@
 {
-  "version": "R4",
-  "status": "Protected review only; final owner acceptance and production publication pending",
+  "version": "R5 final cut",
+  "status": "Owner requested removing Dad here and then publication; release checks required",
   "assets": [
     {
-      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.mp4",
-      "bytes": 11847083,
-      "sha256": "560c6a9c9aa22f3026ea232ef1cddef897337898b5a5e5f3d037a2bcebffb9e5"
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.mp4",
+      "bytes": 11839470,
+      "sha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923"
     },
     {
-      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/mercury-pluto-r4.vtt",
-      "bytes": 1076,
-      "sha256": "ac1bf6f439e06e4301a1db7b5ca452869c7a7d734f133ff446a9cd2ba1bad4b6"
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.vtt",
+      "bytes": 1035,
+      "sha256": "62df7cadf28b33523861d8b697f5bcf0ee2292c1d4849412c77822425f982b7f"
     },
     {
-      "path": "public/learn-media/planet-mercury-pluto-r4-20261029/poster.webp",
-      "bytes": 18986,
-      "sha256": "0ffdb3795f64a7adbfd4aed7fcc8240e6ca526c51b06b519a4964ab7dea5ed13"
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/poster.webp",
+      "bytes": 18868,
+      "sha256": "d3f0e7ac2d205ea87dc0b8e365348fdc0cfe48542d68f5d344a9ce59bf40c59a"
     },
     {
       "path": "public/learn-art/mercury-pluto-stone-engraving.jpg",
@@ -23,10 +23,11 @@
       "sha256": "c37684f77a32a0bb0ceaaa531523f911374023047f62b7fe0582fb58a509b37f"
     }
   ],
-  "articleSource": "ARTICLE-AND-TRANSCRIPT-R4.md",
+  "articleSource": "ARTICLE-AND-TRANSCRIPT-R4.md; only Dad here removed from transcript to match final R5",
   "articleLibrary": "libfile_739459ea22988191b4a4ee26a87a8ff1",
-  "captionNormalization": "UTF8 LF; original hash retained in film registry; R4 source track unchanged from R3",
-  "sourceMovieSha256": "560c6a9c9aa22f3026ea232ef1cddef897337898b5a5e5f3d037a2bcebffb9e5",
-  "editorialCleanup": "Repaired supplied mojibake apostrophes; removed internal revision comparison wording while preserving model facts and image attribution.",
-  "quietQA": "Exact R4 hash and quiet decode verified; selected exact frames and poster inspected. No perceptual voice/lip-sync listening claim."
+  "captionNormalization": "UTF8 LF; original retimed R5 hash retained in film registry",
+  "sourceMovieSha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923",
+  "sourceReceipt": "final-review-r5/RECEIPT.json",
+  "editorialCleanup": "Previously repaired supplied mojibake apostrophes; internal revision comparison omitted from reader copy. No essay expansion.",
+  "quietQA": "Exact R5 hash, duration and quiet decode verified; supplied opening/phone frames inspected. No subjective voice/lip-sync listening claim."
 }
