@@ -18,7 +18,7 @@ it('keeps the companion article truthful, readable and linked to its film',()=>{
  const text=JSON.stringify(article)
  expect(text).toContain('dwarf planet');expect(text).toContain('88 Earth days');expect(text).toContain('248 Earth years')
  expect(text).toContain('1776');expect(text).not.toContain('2024');expect(text).toContain('about as long as the United States has existed');expect(text).toContain('not physical connections or orbital tracks')
- expect(article.sources).toHaveLength(4);expect(text).not.toContain('Production status')
+ expect(article.sections).toHaveLength(6);expect(article.sources.length).toBeGreaterThanOrEqual(12);expect(article.title).toBe('A Pluto year');expect(text).toContain('free from Britain');expect(text).toContain('1526');expect(text).not.toContain('Production status')
  expect(text).not.toContain('R4 restores');expect(text).not.toContain('â');expect(text).toContain('1823 Stone engraving')
  expect(article.historicalImage.source).toBe('https://www.archives.gov/founding-docs/downloads')
  expect(article.transcript).toMatch(/^Hey explorers! Can two worlds help us draw\?/)

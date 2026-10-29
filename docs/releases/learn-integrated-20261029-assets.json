@@ -1,0 +1,59 @@
+{
+  "base": "ce74db56e117cefeb310539acc7eb46d20c79045",
+  "scope": "Owner-approved USDC R4, Solana R2 and short illustrated Pluto article; publication approved Oct29 22:27UTC",
+  "assets": [
+    {
+      "path": "public/learn-media/stablecoin-private-review-20261029/overview.mp4",
+      "sha256": "6e234b2947eebf5f72c0ce8215c4a76d71529d2b1a8a37bdb0906a4f5961d536"
+    },
+    {
+      "path": "public/learn-media/stablecoin-private-review-20261029/overview.vtt",
+      "sha256": "fcfd2bfd0d4541c4d47a6ed52563bb32530170b670aa3e1e0b8b662793312468"
+    },
+    {
+      "path": "public/learn-media/stablecoin-private-review-20261029/poster.webp",
+      "sha256": "f94e23510c9e6ea8800ec657807af727712158082e195833c8d8a4d6c2bc2688"
+    },
+    {
+      "path": "public/learn-media/solana-overview-private-review-20261029/overview.mp4",
+      "sha256": "2a269dd2987900055cafae9a25c2f50598b2918c1e51c3733831f5110bff2081"
+    },
+    {
+      "path": "public/learn-media/solana-overview-private-review-20261029/overview.vtt",
+      "sha256": "f2c88f8697e377e7249759842180fbb84022e7ec6d0255235d648a299687d2f0"
+    },
+    {
+      "path": "public/learn-media/solana-overview-private-review-20261029/poster.webp",
+      "sha256": "e4d7b42f6ed142a1a6289eb4484756b92c86ee38c9b5aab4104fbbf206d6f539"
+    },
+    {
+      "path": "public/learn-art/pluto-year/bill-of-rights.webp",
+      "sha256": "32008a8fff86c462baa8d6f95c2430a793d5099ba3ef225a14de444373e8e6bf"
+    },
+    {
+      "path": "public/learn-art/pluto-year/constitution.webp",
+      "sha256": "3919bff37d0ab86443524e31e50c4083301791c4c1d13a23e36d85b6d124cb4e"
+    },
+    {
+      "path": "public/learn-art/pluto-year/pluto.webp",
+      "sha256": "3fb8b5b1d68fdc566f483fc78f1f776ae6ac8f0da0a1940a6cf569a3903b3769"
+    },
+    {
+      "path": "public/learn-art/pluto-year/united-states.webp",
+      "sha256": "1f552e1338a7ca1015f2139b5858b090aadb9b0d4a4093383407ea480cf84804"
+    }
+  ],
+  "retained": "Dad R5, Tanda, eight Storybook films, four Planet films, six Draw choices, navigation and SEO unchanged",
+  "usdcProvenance": {
+    "identity": "Factual USDC identification; no Circle endorsement, partnership or licence claim",
+    "policy": "https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/CircleBrandUsePolicy.pdf",
+    "note": "Commercial brand-use policy includes preservation of uses otherwise allowed by law. No legal-clearance conclusion. Owner approved visible R4 following policy disclosure.",
+    "artwork": "Official Circle USDC token artwork and USCurrency.gov unaltered SPECIMEN $1 from Studio receipt"
+  },
+  "articleImages": {
+    "map": "Census page1, all 50 states retained; labeled modern boundaries; federal public-domain work",
+    "documents": "National Archives public-domain documents; Declaration image is 1823 Stone engraving, dates distinguish adoption/signing/ratification",
+    "pluto": "NASA/Johns Hopkins APL/Southwest Research Institute; editorial identification, no endorsement"
+  },
+  "knownHeldIssue": "Unchanged StablecoinLesson.tsx intermittent keyboard answer/focus race; held patch excluded."
+}

@@ -1,0 +1,27 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.640
+Solana is a network of computers that keeps
+a shared record of transfers and app actions.
+
+00:00:06.792 --> 00:00:10.432
+Here, a parent approves a transfer in a wallet app.
+
+00:00:11.152 --> 00:00:15.652
+The wallet signs the request using a private key the parent controls.
+
+00:00:15.792 --> 00:00:21.192
+Computers check the signature and rules,
+then agree on updates to the shared record.
+
+00:00:21.333 --> 00:00:24.353
+Once recorded, we can look up the transfer.
+
+00:00:24.500 --> 00:00:28.380
+Network fees are paid in SOL, Solana's own token.
+
+00:00:28.500 --> 00:00:30.100
+Solana is the network.
+
+00:00:30.860 --> 00:00:32.100
+SOL is the token.

@@ -3,33 +3,25 @@ const film=require('../../src/lib/learn/planets.json').find(f=>f.slug==='mercury
 const assert=(ok,message)=>{if(!ok)throw new Error(message)}
 module.exports=async(context,base,folder)=>{
  const page=await context.newPage(),receipt=[]
- try{
-  for(const width of [390,1440]){
-   await page.setViewportSize({width,height:900})
-   await page.goto(base+'/learn')
-   const link=page.getByRole('link',{name:'Read about Mercury and Pluto',exact:true})
-   await link.focus();await page.keyboard.press('Enter')
-   await page.getByRole('heading',{name:'Mercury and Pluto: a pattern across generations',exact:true}).waitFor()
-   assert(new URL(page.url()).pathname===film.article,'Planet card opens its companion article')
-   assert(await page.locator('main article section').count()===9,'explanation, transcript, historical image and sources are readable sections')
-   assert(await page.locator('main article section:last-child a').count()===4,'four primary science/history sources linked')
-   const image=page.locator('main article img');await image.scrollIntoViewIfNeeded();await image.evaluate(i=>i.decode())
-   assert(await image.evaluate(i=>i.naturalWidth===900&&i.naturalHeight===1065),'supplied Stone engraving decodes without distortion')
-   assert(await page.getByRole('link',{name:'National Archives download and reuse statement',exact:true}).count()===1,'historical image credit and reuse source retained')
-   assert((await page.locator('main article').innerText()).includes('not physical connections or orbital tracks'),'drawing distinction remains explicit')
-   const video=page.locator('main>video')
-   assert(await video.getAttribute('src')===film.src&&await video.getAttribute('preload')==='none','article has the same optional film without eager loading')
-   assert(await video.locator('track').getAttribute('src')===film.captions,'same caption track')
-   await video.evaluate(async v=>{v.muted=true;await v.play()})
-   await page.waitForFunction(()=>document.querySelector('main>video').currentTime>.1)
-   assert(await video.evaluate((v,d)=>Math.abs(v.duration-d)<.05,film.durationSeconds),'full exact episode plays')
-   await video.evaluate(v=>v.pause())
-   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'article fits viewport')
-   await page.screenshot({path:path.join(folder,`mercury-pluto-article-${width}.png`),fullPage:true})
-   await page.getByRole('link',{name:'Back to Planet Patterns',exact:true}).last().click()
-   await page.locator('#planet-heading').waitFor()
-   assert(new URL(page.url()).pathname==='/learn'&&new URL(page.url()).hash==='#planet-heading','article returns to the Planet shelf')
-   receipt.push({width,status:'passed',duration:film.durationSeconds})
-  }
- }finally{fs.writeFileSync(path.join(folder,'mercury-pluto-article-receipt.json'),JSON.stringify(receipt,null,2));await page.close()}
+ try{for(const width of [390,1440]){
+  await page.setViewportSize({width,height:900});await page.goto(base+'/learn')
+  await page.getByRole('link',{name:'Read about Mercury and Pluto',exact:true}).click()
+  await page.getByRole('heading',{name:'A Pluto year',exact:true}).waitFor()
+  assert(await page.locator('.pluto-year-section').count()===6,'six short prose sections')
+  assert(await page.locator('article details').count()===3,'optional transcript, model and source disclosures')
+  assert(await page.locator('article details[open]').count()===0,'technical reading does not overwhelm the story')
+  for(const image of await page.locator('main article img').all()){await image.scrollIntoViewIfNeeded();await image.evaluate(i=>i.decode());assert(await image.evaluate(i=>i.naturalWidth>0),'article image decodes')}
+  assert((await page.locator('.pluto-map').innerText()).includes('modern state boundaries'),'map is honestly labeled modern')
+  assert((await page.locator('.pluto-documents').innerText()).includes('1823 Stone engraving'),'reproduction correctly labeled')
+  await page.getByText('Sources and image credits',{exact:true}).click()
+  assert(await page.locator('article details').last().locator('a').count()>=12,'primary sources preserved')
+  await page.getByText('Sources and image credits',{exact:true}).click()
+  const video=page.locator('main>video');assert(await video.getAttribute('src')===film.src,'live Planet R5 remains unchanged')
+  await video.evaluate(async v=>{v.muted=true;await v.play()});await page.waitForFunction(()=>document.querySelector('main>video').currentTime>.1)
+  assert(await video.evaluate((v,d)=>Math.abs(v.duration-d)<.05,film.durationSeconds),'exact Planet duration');await video.evaluate(v=>v.pause())
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'article fits viewport')
+  await page.screenshot({path:path.join(folder,`mercury-pluto-article-${width}.png`),fullPage:true})
+  await page.getByRole('link',{name:'Back to Planet Patterns',exact:true}).last().click();await page.locator('#planet-heading').waitFor()
+  receipt.push({width,status:'passed',duration:film.durationSeconds})
+ }}finally{fs.writeFileSync(path.join(folder,'mercury-pluto-article-receipt.json'),JSON.stringify(receipt,null,2));await page.close()}
 }

@@ -45,3 +45,23 @@
 .learn-planet-reading{display:inline-flex;align-items:center;min-height:44px;line-height:1.4;margin-top:10px;text-underline-offset:4px}.learn-planet-article{max-width:850px}.learn-planet-article>video{display:block;width:100%;max-width:320px;aspect-ratio:9/16;background:#f4eddc;margin:0 auto 32px}.learn-planet-article article{font-size:20px;line-height:1.65;overflow-wrap:anywhere}.learn-planet-article article section{margin:30px 0}.learn-planet-article article h2{font-size:28px;font-weight:700;line-height:1.3}.learn-planet-article article a{text-underline-offset:4px}.learn-planet-article article li{margin:10px 0}
 
 .learn-planet-article article figure{max-width:520px;margin:24px auto}.learn-planet-article article figure img{display:block;width:100%;height:auto}.learn-planet-article article figcaption{font-size:16px;line-height:1.5;margin-top:10px}
+/* Integrated private review: clear modern lesson, quiet media and image-led reading. */
+.learn-stablecoin-film {display:block;width:100%;max-width:900px;aspect-ratio:16/9;object-fit:contain;background:#faf6ed;border-radius:9px;margin:18px auto;}
+.learn-stablecoin-card .learn-stablecoin-film {margin:12px 0;}
+.learn-solana-overview {max-width:900px;margin:38px auto;padding:22px;background:#f0edf7;border:2px solid #a99bc7;border-radius:18px;}
+.learn-solana-overview video {display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#faf6ed;margin:16px 0;border-radius:9px;}
+.learn-solana-overview p {font-size:20px;line-height:1.5;}
+.learn-planet-article .pluto-year-section {margin:36px 0 46px;}
+.learn-planet-article .pluto-year-section h2 {font-weight:800;}
+.learn-planet-article figure {margin:22px 0;max-width:none;}
+.learn-planet-article figure img {display:block;width:100%;height:auto;border-radius:12px;}
+.learn-planet-article figcaption {font-size:15px;line-height:1.55;margin-top:10px;color:#4c4a42;}
+.learn-planet-article .pluto-photo {max-width:440px;margin:24px auto;}
+.learn-planet-article .pluto-documents {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.learn-planet-article .pluto-documents figure {margin:12px 0;}
+.learn-planet-article .pluto-documents img {height:240px;object-fit:contain;background:#f3e9ce;border-radius:8px;}
+.learn-planet-article .pluto-documents strong {display:block;margin-bottom:6px;}
+.learn-planet-article .pluto-image-credit,.learn-planet-article .pluto-grownup-link {font-size:16px;line-height:1.6;}
+.learn-planet-article details {margin:22px 0;}
+.learn-planet-article details summary {cursor:pointer;font-weight:700;}
+@media(max-width:600px){.learn-planet-article .pluto-documents{grid-template-columns:1fr;gap:16px}.learn-planet-article .pluto-documents figure{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start}.learn-planet-article .pluto-documents img{height:150px}.learn-planet-article .pluto-documents figcaption{margin:0}.learn-solana-overview{padding:14px}}
