@@ -1,40 +1,40 @@
 {
-  "title": "Mercury and Pluto: a pattern across generations",
+  "title": "A Pluto year",
   "sections": [
     {
-      "heading": "A very short year and a very long year",
+      "heading": "One slow lap",
       "paragraphs": [
-        "Mercury is the closest planet to the Sun. It takes about 88 Earth days to orbit. Pluto is a dwarf planet, and one orbit takes about 248 Earth years. Mercury completes over a thousand orbits while Pluto completes one. Joining their positions over time lets us draw this striking contrast."
+        "Earth goes around the Sun once each year. Pluto takes about 248 Earth years. That is nearly 250 birthdays for one trip! Pluto is a small, icy world with a very big clock."
       ]
     },
     {
-      "heading": "A human way to imagine a Pluto year",
+      "heading": "A new start",
       "paragraphs": [
-        "One Pluto year is about as long as the United States has existed. The film uses 1776, the year of the Declaration of Independence, as a familiar historical landmark. This is an approximate sense of scale, not an exact anniversary, prediction or claim that Pluto returns to a particular position on a national birthday. The age of a country continues to increase; Pluto's orbital period is a different kind of clock."
+        "In 1776, thirteen colonies declared that they were free from Britain. The United States was born. People dreamed of freedom. But enslaved people were still not free. There was much more work to do."
       ]
     },
     {
-      "heading": "History is longer than a date on a document",
+      "heading": "So much in one lap",
       "paragraphs": [
-        "The Declaration is one landmark in a much longer human history. People and nations lived on these lands long before 1776. The comparison does not imply that every institution, law or community began together. A long planetary year invites a family conversation: what can change across many generations, and what records help people understand those changes? A document, a story and a drawing each preserve different kinds of evidence."
+        "America’s first 250 years span just over one Pluto year. In that time came the Civil War, then World War I and World War II. Think of your parents. Then their parents. Then their parents! Many groups of children grew up and raised children of their own."
       ]
     },
     {
-      "heading": "Try the observation together",
+      "heading": "One more jump back",
       "paragraphs": [
-        "At one moment, mark both worlds and draw a joining line. Move forward by an equal time interval, mark both again, and keep the new line. Which marks show the paths, and which marks did you add? What happens when one world moves much faster? Describe what you notice before trying another starting position or drawing interval."
+        "Go back 250 years before 1776. You land in 1526. In India, Babur began the Mughal Empire. He also loved gardens. People were building things that others would see long after they were gone."
       ]
     },
     {
-      "heading": "What this illustration simplifies",
+      "heading": "What was in a pocket?",
       "paragraphs": [
-        "The picture uses circular paths, constant angular speeds and compressed spacing and sizes. Real orbits are elliptical, and Pluto's orbit is inclined. Using JPL's listed sidereal periods gives approximately 1,029.37 Mercury orbits per Pluto orbit, rather than an exact integer loop. The spoken 88 days and 248 years are rounded figures. Starting positions are chosen for the illustration, not calculated historical positions."
+        "In 1776, people used coins and paper money. Now we can also pay with cards and phones. Bitcoin is digital money. You cannot hold it in your hand. What might people use 250 years from now?"
       ]
     },
     {
-      "heading": "How the threads are sampled",
+      "heading": "A gift for tomorrow",
       "paragraphs": [
-        "The drawing spans 1,600 equal time intervals over one modeled Pluto orbit, with 1,601 sampled positions including both endpoints, about 56.6 Earth days apart. The pattern depends on that interval and the starting positions; it does not promise a particular flower or exact closure. The drawing uses a fine-line lattice with a cycling color palette. Line weight and color are illustration choices. Fast Mercury is represented by a trail during the accelerated reveal to avoid a misleading slow strobing dot. The joining lines are drawing marks, not physical connections or orbital tracks."
+        "Imagine giving a child a gold coin. Then imagine that gift passing from one child to the next. Would it still buy something after a Pluto year? What about a dollar? Or Bitcoin? We do not know what any of them will be worth. I’m grateful for the people who helped build the world we share. What can we leave for the children still to come?"
       ]
     }
   ],
@@ -44,7 +44,7 @@
     "width": 900,
     "height": 1065,
     "alt": "1823 Stone engraving of the Declaration of Independence, including its headline and signatures",
-    "caption": "Declaration of Independence — William J. Stone engraving, 1823. National Archives.",
+    "caption": "Declaration of Independence - William J. Stone engraving, 1823. National Archives.",
     "paragraph": "The historical image in this episode is the 1823 Stone engraving, not a photograph of the original parchment. The National Archives identifies these download images as public domain and requests source credit.",
     "source": "https://www.archives.gov/founding-docs/downloads",
     "original": "https://www.archives.gov/files/founding-docs/downloads/Declaration_Engrav_Pg1of1_AC.jpg"
@@ -65,6 +65,62 @@
     {
       "title": "US National Archives: Declaration of Independence",
       "url": "https://www.archives.gov/founding-docs/declaration-transcript"
+    },
+    {
+      "title": "Babur and the Mughal Empire — Ashmolean",
+      "url": "https://jameelcentre.ashmolean.org/collection/4/891"
+    },
+    {
+      "title": "Money in the American Revolution — Smithsonian",
+      "url": "https://www.americanhistory.si.edu/explore/exhibitions/value-money/online/changing-display/revolutionary-money"
+    },
+    {
+      "title": "Declaration of Independence — National Archives",
+      "url": "https://www.archives.gov/milestone-documents/declaration-of-independence"
+    },
+    {
+      "title": "The Civil War — National Park Service",
+      "url": "https://www.nps.gov/civilwar/index.htm"
+    },
+    {
+      "title": "World War I — National Park Service",
+      "url": "https://home.nps.gov/wwim/wwioverview.htm"
+    },
+    {
+      "title": "World War II — National Park Service",
+      "url": "https://www.nps.gov/articles/000/the-american-home-front-and-world-war-ii.htm"
+    },
+    {
+      "title": "Bitcoin: original paper",
+      "url": "https://bitcoin.org/en/bitcoin-paper"
+    },
+    {
+      "title": "Modern U.S. map — Census Bureau",
+      "url": "https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf"
+    },
+    {
+      "title": "Pluto in true color — NASA",
+      "url": "https://science.nasa.gov/resource/pluto-in-true-color/"
+    }
+  ],
+  "modelNotes": [
+    {
+      "heading": "Try the observation together",
+      "paragraphs": [
+        "At one moment, mark both worlds and draw a joining line. Move forward by an equal time interval, mark both again, and keep the new line. Which marks show the paths, and which marks did you add? What happens when one world moves much faster? Describe what you notice before trying another starting position or drawing interval."
+      ]
+    },
+    {
+      "heading": "What this illustration simplifies",
+      "paragraphs": [
+        "The picture uses circular paths, constant angular speeds and compressed spacing and sizes. Real orbits are elliptical, and Pluto's orbit is inclined. Using JPL's listed sidereal periods gives approximately 1,029.37 Mercury orbits per Pluto orbit, rather than an exact integer loop. The spoken 88 days and 248 years are rounded figures. Starting positions are chosen for the illustration, not calculated historical positions."
+      ]
+    },
+    {
+      "heading": "How the threads are sampled",
+      "paragraphs": [
+        "The drawing spans 1,600 equal time intervals over one modeled Pluto orbit, with 1,601 sampled positions including both endpoints, about 56.6 Earth days apart. The pattern depends on that interval and the starting positions; it does not promise a particular flower or exact closure. The drawing uses a fine-line lattice with a cycling color palette. Line weight and color are illustration choices. Fast Mercury is represented by a trail during the accelerated reveal to avoid a misleading slow strobing dot. The joining lines are drawing marks, not physical connections or orbital tracks."
+      ]
     }
   ]
 }

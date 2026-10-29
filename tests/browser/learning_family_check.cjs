@@ -35,7 +35,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       await page.goto(base + '/learn')
       await page.getByRole('heading', { name: 'Learn with Tanda', exact: true }).waitFor()
       assert(await page.locator('h1').count() === 1, 'one main heading')
-      assert(await page.locator('.learn-collection video').count() === 3, 'three genuine Watch films')
+      assert(await page.locator('.learn-collection video').count() === 5, 'three preserved lesson films plus USDC and modern Solana overviews')
       assert(await page.locator('video[autoplay]').count() === 0, 'no autoplay')
       assert(await page.locator('video[src*="/welcome-r2/dad-welcome-review"], video[src*="stablecoins"], video[src*="planet-v2"], video[src*="recovered-review"]').count() === 0, 'held or rejected review media must not appear publicly')
       assert(await page.locator('.border-earth, .border-venus').count() === 0, 'no decorative top planets')
@@ -161,7 +161,9 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 })
       await page.goto(base + '/learn/stablecoin')
-      assert(await page.locator('video').count() === 0, 'stablecoin is an honest interactive lesson without a fake film')
+      assert(await page.locator('video').count() === 1, 'supplied USDC overview precedes the existing questions')
+      assert(await page.locator('.learn-stablecoin video').count() === 0, 'questions remain a separate interaction')
+      assert(await page.locator('video').getAttribute('src') === '/learn-media/stablecoin-private-review-20261029/overview.mp4', 'exact final USDC review movie selected')
       for (let mask = 0; mask < 16; mask++) {
         for (let step = 0; step < 4; step++) {
           assert(await page.getByRole('button', { name: 'Continue', exact: true }).count() === 0, 'answer before continuing')

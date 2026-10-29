@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { LessonPlayer } from './LessonPlayer'
 import { StablecoinLesson } from './StablecoinLesson'
+import { SolanaOverview } from './SolanaOverview'
+import { StablecoinFilm } from './StablecoinFilm'
 import { lessonEntryMode } from '@/lib/learn/selection'
 import type { Lesson, Mode } from '@/lib/learn/types'
 
@@ -67,7 +69,7 @@ export function LessonCollection({ lessons, readyIds }: { lessons: Lesson[]; rea
     const active = e.target as HTMLVideoElement
     collection.current?.querySelectorAll('video').forEach(v => { if (v !== active) v.pause() })
   }}>
-    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}<article className="learn-picture-lesson learn-stablecoin-card" aria-labelledby="stablecoin-card-title"><div className="learn-picture-caption"><h3 id="stablecoin-card-title" className="learn-topic-title">What is a stablecoin?</h3><div className="learn-token-preview" aria-hidden="true"><span>$1</span><span>↔</span><span>USDC</span></div><button className="learn-button" onClick={event=>choose('stablecoin','try',event.currentTarget)}>Start the USDC lesson</button></div></article></div><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
+    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}<article className="learn-picture-lesson learn-stablecoin-card" aria-labelledby="stablecoin-card-title"><div className="learn-picture-caption"><h3 id="stablecoin-card-title" className="learn-topic-title">What is a stablecoin?</h3><StablecoinFilm /><button className="learn-button" onClick={event=>choose('stablecoin','try',event.currentTarget)}>Start the USDC lesson</button></div></article></div><SolanaOverview /><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
 
     {selected && selection && <section className="learn-inline" ref={panel} aria-label={`${selectedTitle} lesson`}>
       <div className="learn-nav"><button className="learn-button secondary" onClick={clear}>Back to the lessons</button><span>{selected.label}</span></div>
