@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { headers } from 'next/headers'
 import { JetBrains_Mono, Outfit, Plus_Jakarta_Sans } from 'next/font/google'
 import { DeferredChatWidget } from '@/components/DeferredChatWidget'
 import { WebsiteAnalytics } from '@/components/WebsiteAnalytics'
@@ -48,17 +47,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+// No request data (headers/cookies) is read here, so pages can be static or ISR.
+// The site agent hides itself on Tooth Fairy hosts client-side (DeferredChatWidget).
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const host = (await headers()).get('host') ?? ''
-  const isTfnDomain =
-    host === 'toothfairy.network' ||
-    host === 'www.toothfairy.network' ||
-    host === 'toothfairy.sathian.ai'
-
   return (
     <html
       lang="en"
@@ -67,7 +62,7 @@ export default async function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
-        {!isTfnDomain && <DeferredChatWidget />}
+        <DeferredChatWidget />
         <WebsiteAnalytics />
       </body>
     </html>

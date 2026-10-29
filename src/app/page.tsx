@@ -1,8 +1,12 @@
+import type { Metadata } from 'next'
 import { HomeClient, type HomeWriting } from '@/components/home/HomeClient'
 import { getPublishedArticles } from '@/lib/articles-db'
 import { SATHIAN_PERSON_SCHEMA, SATHIAN_WEBSITE_SCHEMA } from '@/lib/site-identity'
 
 export const revalidate = 60
+
+// Static prerender resolves the layout's relative './' canonical to /index.
+export const metadata: Metadata = { alternates: { canonical: '/' } }
 
 export default async function Home() {
   const articles = await getPublishedArticles()

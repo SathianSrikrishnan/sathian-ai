@@ -1,9 +1,19 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
+// The token is read in the browser, so the page itself can be static. Suspense
+// is required for useSearchParams on a statically rendered page.
 export default function UnsubscribePage() {
+  return (
+    <Suspense fallback={null}>
+      <UnsubscribeForm />
+    </Suspense>
+  )
+}
+
+function UnsubscribeForm() {
   const token = useSearchParams().get('token') ?? ''
   const [state, setState] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
 
