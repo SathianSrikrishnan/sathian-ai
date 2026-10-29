@@ -28,6 +28,7 @@ import {
   SITE_AGENT_WAKE_SESSION_KEY,
   type SiteAgentSound,
 } from '@/lib/agent/sounds'
+import { setAgentListening, takePendingAgentOpen } from '@/lib/agent/pending-open'
 
 const SUGGESTIONS = CHAT_SUGGESTIONS
 
@@ -585,7 +586,13 @@ function ChatWidgetContent() {
       }
     }
     window.addEventListener('open-chat', handler)
-    return () => window.removeEventListener('open-chat', handler)
+    setAgentListening(true)
+    const pending = takePendingAgentOpen()
+    if (pending) handler(new CustomEvent('open-chat', { detail: pending.detail }))
+    return () => {
+      setAgentListening(false)
+      window.removeEventListener('open-chat', handler)
+    }
   }, [pathname, playAgentSound])
 
   useEffect(() => {

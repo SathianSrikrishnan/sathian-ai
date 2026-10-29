@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { JetBrains_Mono, Outfit, Plus_Jakarta_Sans } from 'next/font/google'
-import { ChatWidget } from '@/components/ChatWidget'
+import { DeferredChatWidget } from '@/components/DeferredChatWidget'
 import { WebsiteAnalytics } from '@/components/WebsiteAnalytics'
 import './globals.css'
 
@@ -67,7 +67,7 @@ export default async function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
-        {!isTfnDomain && <ChatWidget />}
+        {!isTfnDomain && <DeferredChatWidget />}
         <WebsiteAnalytics />
       </body>
     </html>
