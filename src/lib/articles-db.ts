@@ -1,6 +1,19 @@
 import { supabase, supabaseAdmin } from './supabase'
 import { articles as staticArticles } from './articles'
 import type { Article, ArticleTheme } from './articles'
+import { publishGate, type GateResult } from './publish-gate'
+
+export class PublishGateError extends Error {
+  constructor(public readonly gate: GateResult) {
+    super(`Publish blocked: ${gate.reasons.join(' ')}`)
+  }
+}
+
+function assertPublishable(article: Partial<ArticleWithMeta>) {
+  if (article.status !== 'published') return
+  const gate = publishGate({ slug: article.slug ?? '', title: article.title, description: article.description, body: article.body })
+  if (!gate.ok) throw new PublishGateError(gate)
+}
 
 interface ArticleRow {
   id: string
@@ -183,6 +196,8 @@ export async function getArticleByIdAdmin(id: string): Promise<ArticleWithMeta |
 
 export async function updateArticle(id: string, updates: Partial<ArticleWithMeta>): Promise<ArticleWithMeta> {
   if (!supabaseAdmin) throw new Error('Admin client only available server-side')
+  const current = await getArticleByIdAdmin(id)
+  assertPublishable({ ...current, ...updates })
   const row = toRow(updates)
   row.updated_at = new Date().toISOString()
 
@@ -199,6 +214,7 @@ export async function updateArticle(id: string, updates: Partial<ArticleWithMeta
 
 export async function createArticle(article: Partial<ArticleWithMeta>): Promise<ArticleWithMeta> {
   if (!supabaseAdmin) throw new Error('Admin client only available server-side')
+  assertPublishable(article)
   const row = toRow(article)
 
   const { data, error } = await supabaseAdmin

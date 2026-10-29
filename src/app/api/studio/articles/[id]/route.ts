@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getArticleByIdAdmin, updateArticle, deleteArticle } from '@/lib/articles-db'
+import { getArticleByIdAdmin, updateArticle, deleteArticle, PublishGateError } from '@/lib/articles-db'
 import { requireStudioAal2 } from '@/lib/studio-server-auth'
 
 export const dynamic = 'force-dynamic'
@@ -18,6 +18,7 @@ export async function GET(
     }
     return NextResponse.json(article)
   } catch (err) {
+    if (err instanceof PublishGateError) return NextResponse.json({ error: err.message, gate: err.gate }, { status: 422 })
     return NextResponse.json({ error: (err as Error).message }, { status: 500 })
   }
 }
@@ -34,6 +35,7 @@ export async function PUT(
     const article = await updateArticle((await params).id, data)
     return NextResponse.json(article)
   } catch (err) {
+    if (err instanceof PublishGateError) return NextResponse.json({ error: err.message, gate: err.gate }, { status: 422 })
     return NextResponse.json({ error: (err as Error).message }, { status: 500 })
   }
 }
@@ -49,6 +51,7 @@ export async function DELETE(
     await deleteArticle((await params).id)
     return NextResponse.json({ ok: true })
   } catch (err) {
+    if (err instanceof PublishGateError) return NextResponse.json({ error: err.message, gate: err.gate }, { status: 422 })
     return NextResponse.json({ error: (err as Error).message }, { status: 500 })
   }
 }

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { type Article } from '@/lib/articles'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
+import { publishGate } from '@/lib/publish-gate'
 
 function safeParseJson<T>(str: string, fallback: T): T {
   try {
@@ -44,6 +45,7 @@ export default function StudioEditor() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [gateError, setGateError] = useState('')
 
   // Form fields
   const [title, setTitle] = useState('')
@@ -128,6 +130,8 @@ export default function StudioEditor() {
     }
   }, [title, titleHighlight, slug, date, author, domains, description, readTime, body, pullQuotes, accentColor, background, mood, sectionHeadings, sectionTints, mediaJson, specialElementsJson, textHighlightsJson, hiddenSignal])
 
+  const gate = useMemo(() => publishGate({ slug, title, description, body }), [slug, title, description, body])
+
   async function handleSave() {
     setSaving(true)
     setSaved(false)
@@ -138,6 +142,7 @@ export default function StudioEditor() {
       body: JSON.stringify(articleData),
     })
     setSaving(false)
+    setGateError(res.ok ? '' : (await res.json().catch(() => ({}))).error || 'Save failed')
     if (res.ok) {
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -151,6 +156,7 @@ export default function StudioEditor() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
     })
+    setGateError(res.ok ? '' : (await res.json().catch(() => ({}))).error || 'Publish failed')
     if (res.ok) setStatus(newStatus)
   }
 
@@ -236,6 +242,17 @@ export default function StudioEditor() {
           >
             {status}
           </span>
+          <span
+            title={gate.reasons.join(' ') || 'Ready to publish'}
+            style={{ fontFamily: 'monospace', fontSize: 11, marginLeft: 8, color: gate.ok ? '#22C55E' : '#EF4444' }}
+          >
+            grade {gate.readability.grade} · {gate.ok ? 'ready to publish' : 'blocked'}
+          </span>
+          {gateError && (
+            <span role="alert" style={{ fontFamily: 'monospace', fontSize: 11, marginLeft: 8, color: '#EF4444', maxWidth: 520 }}>
+              {gateError}
+            </span>
+          )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button
