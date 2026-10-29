@@ -1,0 +1,28 @@
+{
+  "version": "R5",
+  "durationVideoSeconds": 25.208333,
+  "durationContainerSeconds": 25.211,
+  "libraryMovie": "libfile_194f211858c88191a28fe8318fc81ce8",
+  "libraryCaptions": "libfile_699cf02f22cc8191ad5c8f0cf6f28ae8",
+  "sourceReceipt": "RECEIPT.json",
+  "assets": [
+    {
+      "path": "public/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.mp4",
+      "bytes": 3576955,
+      "sha256": "9449f32c40f91681bbb225f80734cfbffc275fdfdd8f515272eb616fc36cef59"
+    },
+    {
+      "path": "public/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.vtt",
+      "bytes": 792,
+      "sha256": "503251ff96361c59977fc4d98dbd6e18c47d1448a29b82ce35e31fab12df2c22"
+    },
+    {
+      "path": "public/learn-media/cartoon-dad-welcome-r5-20261029/poster.webp",
+      "bytes": 9728,
+      "sha256": "4175f9d76afbf986007cfdd457a8108bff2591afeb013ebb2f100bacc0f67b06"
+    }
+  ],
+  "poster": "Exact R5 frame at0.2s,640px WebP",
+  "verification": "MP4 andVTT exact source hashes; quiet full decode; final contact sheet inspected;11caption cues; no audible playback. Pronunciation,voice,cadence and normal-speed mouth-sync remain owner listening review.",
+  "supersedes": "/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4"
+}
