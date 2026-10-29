@@ -79,7 +79,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       const guides = page.locator('.learn-meet-controls video')
       assert(await guides.count() === 2, 'both approved guide players visible')
       assert(await page.locator('.learn-meet-controls details').count() === 0, 'no collapsed welcome')
-      assert(await guides.nth(1).getAttribute('src') === '/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4', 'approved cartoon Dad welcome only')
+      assert(await guides.nth(1).getAttribute('src') === '/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.mp4', 'approved cartoon Dad welcome only')
       for (const video of await guides.all()) {
         assert(await video.isVisible(), 'guide player immediately visible')
         await video.evaluate(async v => { v.muted = true; await v.play() })
@@ -87,6 +87,8 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       }
       assert(await guides.first().evaluate(v => v.paused), 'starting another guide pauses the first')
       await guides.nth(1).evaluate(v => v.pause())
+      assert(await guides.nth(1).evaluate(v => Math.abs(v.duration - 25.208333) < 0.05), 'exact R5 Dad duration decoded')
+      assert(await guides.nth(1).locator('track').getAttribute('src') === '/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.vtt', 'R5 captions accompany the replacement')
       assert(await page.locator('.learn-collection details').count() === 0, 'no full transcript disclosure in learner flow')
       assert(await page.locator('.proof-family-wall').evaluate(e => getComputedStyle(e).position === 'fixed'), 'drawing wall continues at every scroll position')
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'home fits viewport')

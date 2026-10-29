@@ -8,10 +8,15 @@ it('keeps the two approved guide players visible and transcript disclosures out 
   const guides = readFileSync('src/components/learn/MeetGuides.tsx', 'utf8')
   expect(guides.match(/<video /g)).toHaveLength(2)
   expect(guides).not.toContain('<details')
-  expect(guides).toContain('/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4')
+  expect(guides).toContain('/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.mp4')
   expect(guides).not.toContain('/proof-assets/proof-main-20261027/')
-  expect(createHash('sha256').update(readFileSync('public/learn-media/cartoon-dad-welcome-20261028/learn-with-tanda-coherent-welcome.mp4')).digest('hex')).toBe('424acaff37c6281ee66f161f1aa027a3ec5a3f733b6f5ffbfc6c8d262c38f5ee')
+  expect(createHash('sha256').update(readFileSync('public/learn-media/cartoon-dad-welcome-r5-20261029/dad-welcome-r5.mp4')).digest('hex')).toBe('9449f32c40f91681bbb225f80734cfbffc275fdfdd8f515272eb616fc36cef59')
   expect(guides).not.toContain('/welcome-r2/dad-welcome-review.mp4')
+  expect(guides).not.toContain('/cartoon-dad-welcome-20261028/')
+  const dad = JSON.parse(readFileSync('docs/releases/learn-dad-r5-20261029-assets.json', 'utf8'))
+  for (const asset of dad.assets) {
+    expect(createHash('sha256').update(readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
+  }
   const collection = readFileSync('src/components/learn/LessonCollection.tsx', 'utf8')
   expect(collection).not.toContain('Parent notes')
   expect(collection).toContain('Try the questions')
