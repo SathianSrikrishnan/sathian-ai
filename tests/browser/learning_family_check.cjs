@@ -1,6 +1,7 @@
 const { chromium } = require('playwright')
 const fs = require('node:fs')
 const path = require('node:path')
+const planetFilms = require('../../src/lib/learn/planets.json')
 const base = process.env.SITE_URL
 const proof = process.env.BROWSER_PROOF_DIR || '/tmp/learn-family-proof'
 const assert = (ok, message) => { if (!ok) throw new Error(message) }
@@ -59,10 +60,10 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await page.locator('.learn-drawing-shelf iframe').count() === 0, 'drawing embeds wait for a user action')
       assert(await page.locator('.learn-drawing-shelf a[href^="https://www.youtube.com/watch"]').count() === 6, 'direct drawing fallbacks')
       const planets = page.locator('.learn-planet-grid video')
-      assert(await planets.count() === 3, 'all three corrected Planet films visible')
-      assert(await page.locator('.learn-planets a').getAttribute('href') === 'https://srikrishnan.work/planet-patterns', 'Planet drawing app retained')
+      assert(await planets.count() === 4, 'three corrected Planet films and Mercury Pluto visible')
+      assert(await page.locator('.learn-planets [data-planet-app]').getAttribute('href') === 'https://srikrishnan.work/planet-patterns', 'Planet drawing app retained')
       assert(await page.locator('.learn-planets').evaluate(section=>{
-        const heading=section.querySelector('h2').getBoundingClientRect(), grid=section.querySelector('.learn-planet-grid').getBoundingClientRect(), link=section.querySelector('a').getBoundingClientRect()
+        const heading=section.querySelector('h2').getBoundingClientRect(), grid=section.querySelector('.learn-planet-grid').getBoundingClientRect(), link=section.querySelector('[data-planet-app]').getBoundingClientRect()
         return heading.bottom <= grid.top && link.top >= grid.bottom
       }), 'Planet heading, films and app link follow a clear vertical reading order')
       for (const video of await planets.all()) {
@@ -71,7 +72,9 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
         assert(await page.evaluate(async src => { const r=await fetch(src); return r.ok && (await r.text()).startsWith('WEBVTT') }, captionPath), 'Planet caption route works')
         await video.evaluate(async v => { v.muted=true; await v.play() })
         await page.waitForFunction(src => [...document.querySelectorAll('.learn-planet-grid video')].some(v=>v.getAttribute('src')===src && v.currentTime>.1), await video.getAttribute('src'))
-        assert(await video.evaluate(v => v.duration > 40 && v.duration < 52), 'corrected full Planet movie decoded')
+        const movieSrc = await video.getAttribute('src')
+        const expected = planetFilms.find(f => f.src === movieSrc)
+        assert(expected && await video.evaluate((v,duration) => Math.abs(v.duration-duration)<0.05,expected.durationSeconds), 'exact registered full Planet movie decoded')
       }
       assert(await planets.first().evaluate(v=>v.paused), 'starting a Planet pauses the previous one')
       await planets.last().evaluate(v=>v.pause())
@@ -191,6 +194,7 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       await page.getByRole('button', { name: 'Play again', exact: true }).click()
       await page.waitForFunction(() => document.querySelector('.learn-part-label').textContent.includes('1 / 6'))
     }
+    await require('./planet_article_check.cjs')(context, base, proof)
     await require('./proof_legibility_check.cjs')(context, base, proof)
     assert(errors.length === 0, errors.join('\n'))
     fs.writeFileSync(path.join(proof, 'receipt.json'), JSON.stringify({ status: 'passed', errors, performanceMetrics, note: 'Lab timings from hosted Chromium without mobile network throttling, not field Core Web Vitals or Ads approval. Real decoded lesson clips at 16x/muted; story metadata only; no subjective voice or creative approval claim.' }, null, 2))

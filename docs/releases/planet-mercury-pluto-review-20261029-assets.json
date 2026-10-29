@@ -1,0 +1,33 @@
+{
+  "version": "R5 final cut",
+  "status": "Owner requested removing Dad here and then publication; release checks required",
+  "assets": [
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.mp4",
+      "bytes": 11839470,
+      "sha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923"
+    },
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.vtt",
+      "bytes": 1035,
+      "sha256": "62df7cadf28b33523861d8b697f5bcf0ee2292c1d4849412c77822425f982b7f"
+    },
+    {
+      "path": "public/learn-media/planet-mercury-pluto-r5-20261029/poster.webp",
+      "bytes": 18868,
+      "sha256": "d3f0e7ac2d205ea87dc0b8e365348fdc0cfe48542d68f5d344a9ce59bf40c59a"
+    },
+    {
+      "path": "public/learn-art/mercury-pluto-stone-engraving.jpg",
+      "bytes": 343961,
+      "sha256": "c37684f77a32a0bb0ceaaa531523f911374023047f62b7fe0582fb58a509b37f"
+    }
+  ],
+  "articleSource": "ARTICLE-AND-TRANSCRIPT-R4.md; only Dad here removed from transcript to match final R5",
+  "articleLibrary": "libfile_739459ea22988191b4a4ee26a87a8ff1",
+  "captionNormalization": "UTF8 LF; original retimed R5 hash retained in film registry",
+  "sourceMovieSha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923",
+  "sourceReceipt": "final-review-r5/RECEIPT.json",
+  "editorialCleanup": "Previously repaired supplied mojibake apostrophes; internal revision comparison omitted from reader copy. No essay expansion.",
+  "quietQA": "Exact R5 hash, duration and quiet decode verified; supplied opening/phone frames inspected. No subjective voice/lip-sync listening claim."
+}

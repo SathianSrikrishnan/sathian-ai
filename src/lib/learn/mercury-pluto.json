@@ -1,0 +1,70 @@
+{
+  "title": "Mercury and Pluto: a pattern across generations",
+  "sections": [
+    {
+      "heading": "A very short year and a very long year",
+      "paragraphs": [
+        "Mercury is the closest planet to the Sun. It takes about 88 Earth days to orbit. Pluto is a dwarf planet, and one orbit takes about 248 Earth years. Mercury completes over a thousand orbits while Pluto completes one. Joining their positions over time lets us draw this striking contrast."
+      ]
+    },
+    {
+      "heading": "A human way to imagine a Pluto year",
+      "paragraphs": [
+        "One Pluto year is about as long as the United States has existed. The film uses 1776, the year of the Declaration of Independence, as a familiar historical landmark. This is an approximate sense of scale, not an exact anniversary, prediction or claim that Pluto returns to a particular position on a national birthday. The age of a country continues to increase; Pluto's orbital period is a different kind of clock."
+      ]
+    },
+    {
+      "heading": "History is longer than a date on a document",
+      "paragraphs": [
+        "The Declaration is one landmark in a much longer human history. People and nations lived on these lands long before 1776. The comparison does not imply that every institution, law or community began together. A long planetary year invites a family conversation: what can change across many generations, and what records help people understand those changes? A document, a story and a drawing each preserve different kinds of evidence."
+      ]
+    },
+    {
+      "heading": "Try the observation together",
+      "paragraphs": [
+        "At one moment, mark both worlds and draw a joining line. Move forward by an equal time interval, mark both again, and keep the new line. Which marks show the paths, and which marks did you add? What happens when one world moves much faster? Describe what you notice before trying another starting position or drawing interval."
+      ]
+    },
+    {
+      "heading": "What this illustration simplifies",
+      "paragraphs": [
+        "The picture uses circular paths, constant angular speeds and compressed spacing and sizes. Real orbits are elliptical, and Pluto's orbit is inclined. Using JPL's listed sidereal periods gives approximately 1,029.37 Mercury orbits per Pluto orbit, rather than an exact integer loop. The spoken 88 days and 248 years are rounded figures. Starting positions are chosen for the illustration, not calculated historical positions."
+      ]
+    },
+    {
+      "heading": "How the threads are sampled",
+      "paragraphs": [
+        "The drawing spans 1,600 equal time intervals over one modeled Pluto orbit, with 1,601 sampled positions including both endpoints, about 56.6 Earth days apart. The pattern depends on that interval and the starting positions; it does not promise a particular flower or exact closure. The drawing uses a fine-line lattice with a cycling color palette. Line weight and color are illustration choices. Fast Mercury is represented by a trail during the accelerated reveal to avoid a misleading slow strobing dot. The joining lines are drawing marks, not physical connections or orbital tracks."
+      ]
+    }
+  ],
+  "transcript": "Hey explorers! Can two worlds help us draw? Mercury, the closest planet to the Sun, goes around in about 88 Earth days. Far away Pluto is a dwarf planet. One trip takes about 248 Earth years. One Pluto year is about as long as the United States has existed. Mercury makes over a thousand trips, while Pluto makes one. Now, let's draw a line between them in our simple model. Keep each line as they move. Watch the thread spread. Look at that beautiful pattern! These lines are our drawing, not strings in space. What do you notice?",
+  "historicalImage": {
+    "src": "/learn-art/mercury-pluto-stone-engraving.jpg",
+    "width": 900,
+    "height": 1065,
+    "alt": "1823 Stone engraving of the Declaration of Independence, including its headline and signatures",
+    "caption": "Declaration of Independence — William J. Stone engraving, 1823. National Archives.",
+    "paragraph": "The historical image in this episode is the 1823 Stone engraving, not a photograph of the original parchment. The National Archives identifies these download images as public domain and requests source credit.",
+    "source": "https://www.archives.gov/founding-docs/downloads",
+    "original": "https://www.archives.gov/files/founding-docs/downloads/Declaration_Engrav_Pg1of1_AC.jpg"
+  },
+  "sources": [
+    {
+      "title": "NASA: Mercury facts",
+      "url": "https://science.nasa.gov/mercury/facts/"
+    },
+    {
+      "title": "NASA: Pluto facts",
+      "url": "https://science.nasa.gov/dwarf-planets/pluto/facts/"
+    },
+    {
+      "title": "JPL: Planetary physical parameters",
+      "url": "https://ssd.jpl.nasa.gov/planets/phys_par.html"
+    },
+    {
+      "title": "US National Archives: Declaration of Independence",
+      "url": "https://www.archives.gov/founding-docs/declaration-transcript"
+    }
+  ]
+}

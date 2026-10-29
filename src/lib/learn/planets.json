@@ -37,5 +37,17 @@
     "libraryMovie": "libfile_f78bb96f494081918e4da083f35d703c",
     "libraryCaptions": "libfile_b208c124046881918c6f1bad038c9abe",
     "sourceCaptionSha256": "74bc57b842031774686377ac9e11a03c09463248a5ab25ccfe1f83edb1723f5d"
+  },
+  {
+    "slug": "mercury-pluto",
+    "title": "Mercury and Pluto",
+    "src": "/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.mp4",
+    "poster": "/learn-media/planet-mercury-pluto-r5-20261029/poster.webp",
+    "captions": "/learn-media/planet-mercury-pluto-r5-20261029/mercury-pluto-r5.vtt",
+    "durationSeconds": 47.587,
+    "sha256": "b3f0a9a2963e72839c7a6d79e44e10e5cdce5f52946ff68ee6219ac726081923",
+    "captionSha256": "62df7cadf28b33523861d8b697f5bcf0ee2292c1d4849412c77822425f982b7f",
+    "sourceCaptionSha256": "56bd6042af88becea77f396c9b2e350d72c98925e63444d0947a1dcc79dd28f4",
+    "article": "/learn/planet-patterns/mercury-pluto"
   }
 ]
