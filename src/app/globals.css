@@ -6613,13 +6613,16 @@ h1, h2, h3 {
 }
 
 .first20-hero-photo {
-  aspect-ratio: 805 / 1200;
+  aspect-ratio: 687 / 463;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 14px;
   height: auto;
   object-fit: cover;
 }
 .first20-gets {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 420px;
   gap: 32px;
   align-items: center;
   max-width: 900px;
@@ -6650,6 +6653,28 @@ h1, h2, h3 {
 }
 @media (max-width: 760px) {
   .first20-gets {
+    grid-template-columns: 1fr;
+  }
+}
+
+.village-wide {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  margin: 8px 0 20px;
+  border-radius: 12px;
+}
+
+.village-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+}
+.village-hero .first20-hero-photo {
+  max-width: none;
+  transform: rotate(-1deg);
+}
+@media (max-width: 760px) {
+  .village-hero {
     grid-template-columns: 1fr;
   }
 }

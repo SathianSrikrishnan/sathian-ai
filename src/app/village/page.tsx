@@ -62,7 +62,7 @@ export default function VillagePage() {
       <SiteNav />
 
       <main className="about-page">
-        <header className="about-hero minimal-container">
+        <header className="about-hero village-hero minimal-container">
           <div className="about-hero__copy">
             <p className="minimal-kicker">THE VILLAGE / A FREE GIFT FROM SATHIAN</p>
             <h1>Are you part of a child&apos;s village?</h1>
@@ -80,11 +80,11 @@ export default function VillagePage() {
           </div>
           <Image
             className="about-hero__portrait first20-hero-photo"
-            src="/village/proof-my-tooth.webp"
-            alt="A printed Proof of Growth with a child's drawing called My Tooth"
-            width={805}
-            height={1200}
-            sizes="(max-width: 760px) 200px, 340px"
+            src="/village/village-hands.webp"
+            alt="A child's marker drawing: a family holds hands around a child who holds up a Proof of Growth, while Tanda the tooth fairy drops a coin into a piggy bank"
+            width={687}
+            height={463}
+            sizes="(max-width: 760px) 100vw, 480px"
             priority
           />
         </header>
@@ -103,18 +103,34 @@ export default function VillagePage() {
               {GETS.map((line) => <li key={line}>{line}</li>)}
             </ul>
             <Image
-              src="/village/proof-fathers-day.webp"
-              alt="A printed Proof of Growth held in a hand. Names and the code are hidden."
-              width={900}
-              height={1184}
+              src="/village/proof-hero-flat.webp"
+              alt="A printed Proof of Growth, No. 1, with a crayon drawing of Tanda dropping a coin into a piggy bank"
+              width={1600}
+              height={1200}
               sizes="(max-width: 760px) 100vw, 320px"
             />
           </div>
-          <p className="first20-note">Real Proofs I&apos;ve printed. Names and codes are hidden.</p>
+          <p className="first20-note">Each gift adds a new numbered Proof, and the savings grow in one place.</p>
+          <Image
+            className="village-wide"
+            src="/village/proof-pair.webp"
+            alt="Two printed Proofs of Growth, No. 1 and No. 2"
+            width={1600}
+            height={1200}
+            sizes="(max-width: 760px) 100vw, 640px"
+          />
         </section>
 
         <section className="minimal-section minimal-container about-story" aria-labelledby="first20-who">
           <h2 id="first20-who">It takes a village</h2>
+          <Image
+            className="village-wide"
+            src="/village/village-map.webp"
+            alt="A child's marker drawing of a village: family members walk dotted paths from their houses to the child, who holds a Proof of Growth beside a piggy bank"
+            width={687}
+            height={463}
+            sizes="(max-width: 760px) 100vw, 640px"
+          />
           <p>
             Parents are busy. I know. I&apos;m one. When it comes to their kids, they count on the people
             closest to them: aunts, uncles, godparents, grandparents and good friends. That&apos;s the village.
