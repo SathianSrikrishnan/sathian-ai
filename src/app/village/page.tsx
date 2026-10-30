@@ -1,21 +1,21 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 
-import { FirstTwentyForm } from '@/components/FirstTwentyForm'
+import { VillageForm } from '@/components/VillageForm'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import { TrackedLink } from '@/components/TrackedLink'
 import { PROOF } from '@/content/proof'
 
 // Unlisted offer page for people the owner meets in person or online (Luma, events). Not in the nav or sitemap.
-const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=first20'
+const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=village'
 // Set to the owner's short video message once it is recorded; the section stays hidden until then.
 const WELCOME_VIDEO = ''
 
 export const metadata: Metadata = {
-  title: { absolute: 'Give a child you love their own savings, free | Sathian' },
-  description: 'Give a child you love a printed Proof and their own savings wallet, free. The child keeps it for life. The parent holds the key.',
-  alternates: { canonical: '/first-20' },
+  title: { absolute: 'Are you part of a child’s village? | Sathian' },
+  description: 'It takes a village to raise a child. Give a child you love a printed Proof and their own savings wallet, free. The child keeps it for life. The parent holds the key.',
+  alternates: { canonical: '/village' },
   robots: { index: false, follow: false },
 }
 
@@ -55,7 +55,7 @@ const LEARN_MORE = [
   },
 ] as const
 
-export default function FirstTwentyPage() {
+export default function VillagePage() {
   return (
     <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
       <SiteNav />
@@ -63,22 +63,23 @@ export default function FirstTwentyPage() {
       <main className="about-page">
         <header className="about-hero minimal-container">
           <div className="about-hero__copy">
-            <p className="minimal-kicker">A FREE GIFT / FROM SATHIAN</p>
-            <h1>Give a child you love their own savings. Free.</h1>
+            <p className="minimal-kicker">THE VILLAGE / A FREE GIFT FROM SATHIAN</p>
+            <h1>Are you part of a child&apos;s village?</h1>
             <p className="about-lead">
-              I&apos;ll print them a Proof and start their own savings wallet. The child keeps it for life.
+              It takes a village to raise a child. Give one you love their own savings, free.
+              I&apos;ll print them a Proof and start their savings wallet. The child keeps it for life.
               The parent holds the key. You&apos;re the giver.
             </p>
             <div className="about-actions">
               <a href="#ask" className="about-button about-button--primary">Ask for a free gift</a>
-              <TrackedLink href={PROOF.href} event="proof_opened" placement="first20_hero" className="about-button">
+              <TrackedLink href={PROOF.href} event="proof_opened" placement="village_hero" className="about-button">
                 Why I built it
               </TrackedLink>
             </div>
           </div>
           <Image
             className="about-hero__portrait first20-hero-photo"
-            src="/first-20/proof-my-tooth.webp"
+            src="/village/proof-my-tooth.webp"
             alt="A printed Proof of Growth with a child's drawing called My Tooth"
             width={805}
             height={1200}
@@ -101,7 +102,7 @@ export default function FirstTwentyPage() {
               {GETS.map((line) => <li key={line}>{line}</li>)}
             </ul>
             <Image
-              src="/first-20/proof-fathers-day.webp"
+              src="/village/proof-fathers-day.webp"
               alt="A printed Proof of Growth held in a hand. Names and the code are hidden."
               width={900}
               height={1184}
@@ -112,14 +113,14 @@ export default function FirstTwentyPage() {
         </section>
 
         <section className="minimal-section minimal-container about-story" aria-labelledby="first20-who">
-          <h2 id="first20-who">Why it comes from you</h2>
+          <h2 id="first20-who">It takes a village</h2>
           <p>
             Parents are busy. I know. I&apos;m one. When it comes to their kids, they count on the people
-            closest to them: aunts, uncles, godparents, grandparents and good friends.
+            closest to them: aunts, uncles, godparents, grandparents and good friends. That&apos;s the village.
           </p>
           <p>
-            That&apos;s who this gift is for. You give it. The parent says yes and holds the key.
-            The child keeps it. Are you a parent? Even better. Ask for your own child.
+            Tooth Fairy Network connects a child&apos;s village. You give the gift. The parent says yes and holds the key.
+            The child keeps it. Anyone in the village can add to it later. Are you a parent? Even better. Ask for your own child.
           </p>
         </section>
 
@@ -149,14 +150,14 @@ export default function FirstTwentyPage() {
 
         <section id="ask" className="minimal-section minimal-container" aria-labelledby="first20-ask">
           <h2 id="first20-ask">Ask for a free gift</h2>
-          <FirstTwentyForm />
+          <VillageForm />
         </section>
 
         <section className="minimal-section minimal-container" aria-labelledby="first20-more">
           <h2 id="first20-more">Learn more</h2>
           <div className="about-cards">
             {LEARN_MORE.map((card) => (
-              <TrackedLink key={card.title} href={card.href} event={card.event} placement="first20_learn_more" className="about-card">
+              <TrackedLink key={card.title} href={card.href} event={card.event} placement="village_learn_more" className="about-card">
                 <span className="about-card__media">
                   <Image src={card.image} alt={card.alt} fill sizes="(max-width: 760px) 100vw, 360px" />
                 </span>
