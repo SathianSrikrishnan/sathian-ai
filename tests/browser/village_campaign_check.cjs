@@ -68,7 +68,7 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
       assert(calls === 0, 'required fields prevent empty request')
       await form.getByLabel('Your name', { exact: true }).fill('Synthetic local check')
       await form.getByLabel('Email or phone').fill('local@example.invalid')
-      await form.getByLabel("The child's age").fill('7')
+      await form.getByLabel(/The child.s age/).fill('7')
       await form.getByLabel('Who are you to the child?').selectOption('network')
       await form.getByRole('button', { name: 'Ask for a free gift' }).click()
       await form.getByRole('status').filter({ hasText: 'Please try again.' }).waitFor()

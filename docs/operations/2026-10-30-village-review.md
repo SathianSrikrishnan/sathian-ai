@@ -22,7 +22,15 @@ Existing hero/map illustrations remain labeled marker-style illustrations, not a
 
 ## Verification and limits
 
-Evidence logs and screenshots are in the parent task workspace (not public source). Record final results here before review.
+Local final results: 546/546 unit checks, 60/60 offline agent cases, production build/type/lint checks, and critical production-dependency threshold all pass. The dependency audit still reports 57 existing lower-severity issues (15 low, 23 moderate, 19 high); no dependency change was made.
+
+Quiet headless campaign check passes at 1440×1000, 390×844 and 320×740. It covers one H1, correct canonical/indexability, all page images, zero horizontal overflow, collapsed chat and repeated keyboard opening/closing with returned focus, required form validation, mocked failure/input preservation/retry/success, Village source fields and unchecked updates opt-in. Village passes the existing plain-language checker (below grade 5, no very hard sentences). Desktop and 390px screenshots were inspected. A lazy optimized founder portrait stalled in Chromium; using the original static 42 KB portrait resolved it. The nested headings and paragraph spacing were corrected after visual inspection.
+
+Local public sitemap audit: all 36 listed URLs return 200, have the expected canonical, and allow indexing. This uses built-in article fallback, so configured preview must also verify database-published writing. Intentional noindex test surfaces remain excluded.
+
+Evidence in `C:/Users/sathi/Documents/Codex/2026-10-30/task/`: `village-build.log`, `village-unit.log`, `village-eval/`, `village-audit.log`, `village-browser.log`, `village-seo-audit.json`, and `village-review-proof/` (six final screenshots plus `checks.json`).
+
+Draft review: https://github.com/SathianSrikrishnan/sathian-ai/pull/45. Hosted quality/canary and Vercel preview checks were pending at the local handoff; inspect the final head's status before release. Production is unchanged.
 
 The first build failed because this isolated checkout had no environment configuration. Automatic approval review denied copying `.env.local` from another worktree due to possible secret duplication; that copy did not execute and was not retried. Local checks instead use explicit non-secret Supabase placeholders at an unused localhost port and built-in article fallback. They do not validate the live database or delivery integration. Protected CI must validate configured preview behavior.
 
