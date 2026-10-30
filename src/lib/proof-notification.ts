@@ -21,7 +21,7 @@ export async function notifyProofInterest(receipt: string): Promise<void> {
         body: JSON.stringify({
           from: 'Tooth Fairy Network <noreply@toothfairy.network>',
           to: [RECIPIENT],
-          subject: 'PROOF — new founding-family interest',
+          subject: row.feedback?.startsWith('[Village]') ? 'New Village request' : 'PROOF — new founding-family interest',
           text: `A new PROOF registration is saved.\n\nName: ${row.adult_name}\nContact: ${row.contact}\nFeedback: ${row.feedback || '(none)'}\n\nReceipt: ${receipt}\nReview: https://supabase.com/dashboard/project/tvujxgdwgvrunjvhseey/editor\n\nThe child’s age is kept in the private database, not included in this email.`,
         }),
         signal: AbortSignal.timeout(8000),

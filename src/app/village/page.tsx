@@ -23,6 +23,7 @@ const GETS = [
   'A printed Proof to keep on their shelf, with their drawing or your photo and your note.',
   'Their own savings wallet, started with US$10. It belongs to the child for life.',
   'A code on the Proof that opens the wallet. The parent holds the key.',
+  'Only the parent can take money out. Everyone in the village can only add.',
 ]
 
 const LEARN_MORE = [
@@ -124,6 +125,16 @@ export default function VillagePage() {
           </p>
         </section>
 
+        <section className="minimal-section minimal-container about-story" aria-labelledby="village-soon">
+          <h2 id="village-soon">Coming soon: the village app</h2>
+          <p>
+            Soon, anyone in the village can snap a growth moment with Meta glasses or a phone: a new drawing,
+            a lost tooth, a first bike. Add a gift, and it lands in the child&apos;s vault with the photo.
+            The child gets to see their money, their pictures and their art in one place.
+          </p>
+          <p>Free-gift families get the app first.</p>
+        </section>
+
         <section className="minimal-section minimal-container about-story" aria-labelledby="first20-why">
           <h2 id="first20-why">Why I built it</h2>
           <p>
@@ -144,7 +155,7 @@ export default function VillagePage() {
           </p>
           <p>
             People who&apos;ve tried it tell me it&apos;s really cool, and the first paying families are coming in.
-            An app for Meta glasses is almost ready. I&apos;m open to ideas and partnerships too. Let&apos;s talk.
+            I&apos;m open to ideas and partnerships too. Let&apos;s talk.
           </p>
         </section>
 
