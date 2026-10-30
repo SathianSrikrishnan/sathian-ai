@@ -38,6 +38,10 @@ No local media playback, production form submission, ad click, purchase, registr
 
 Indexability is not confirmation of Google's index status. Search Console inspection/submission remains after approved production release. Google says recrawling can take days to weeks and inclusion is not guaranteed: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl.
 
+Independent follow-up: decoded the new certificate QR locally with OpenCV, without visiting it. It exactly matches the illustrative manifest's fixed all-`a` placeholder identifier, has no query/fragment, and the manifest marks this as a sandbox concept rather than an order. No usable real-gift claim capability was found. The decoded URL is not reproduced here. Added stable, content-based sitemap dates: home/Village October 30; the stablecoin lesson and Pluto article October 29 (approved film/article release), rather than inheriting the July site baseline.
+
+Final visual evidence uploaded to Library: desktop Village `libfile_b4a6f09b56f48191a038f9a8fc964400`; mobile Village `libfile_9fed7276f5a48191b8740050581e65af`; mobile home `libfile_479b69aade00819186782aad6c2c8309`. These screenshots show the unchanged visual content of the candidate; the follow-up only changes sitemap metadata and assertions.
+
 ## Remaining owner/product inputs
 
 The short founder video and new current-edition product photos would improve the next revision; this candidate does not block on them. Giveaway count and exact fulfillment terms remain unanswered, so none were invented. Claude's notes name Tanda but do not define a separate second fairy's commercial role; no new character/function is invented.
