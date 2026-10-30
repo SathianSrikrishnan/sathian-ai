@@ -6611,3 +6611,45 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
   }
 }
+
+.first20-hero-photo {
+  aspect-ratio: 805 / 1200;
+  height: auto;
+  object-fit: cover;
+}
+.first20-gets {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: center;
+  max-width: 900px;
+}
+.first20-gets ul {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 14px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+.first20-gets img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.first20-note {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+.first20-video {
+  width: 100%;
+  max-width: 720px;
+  border-radius: 10px;
+  background: #111;
+}
+@media (max-width: 760px) {
+  .first20-gets {
+    grid-template-columns: 1fr;
+  }
+}

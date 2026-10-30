@@ -7,21 +7,29 @@ import { SiteNav } from '@/components/SiteNav'
 import { TrackedLink } from '@/components/TrackedLink'
 import { PROOF } from '@/content/proof'
 
-// Unlisted page for people the owner meets in person (Luma events). Not in the nav or sitemap.
+// Unlisted offer page for people the owner meets in person or online (Luma, events). Not in the nav or sitemap.
 const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=first20'
+// Set to the owner's short video message once it is recorded; the section stays hidden until then.
+const WELCOME_VIDEO = ''
 
 export const metadata: Metadata = {
-  title: { absolute: 'The First 20 | Sathian' },
-  description: 'For people I meet in person: a free Proof for a special child in your life, in return for your honest feedback.',
+  title: { absolute: 'Give a child you love their own savings, free | Sathian' },
+  description: 'Give a child you love a printed Proof and their own savings wallet, free. The child keeps it for life. The parent holds the key.',
   alternates: { canonical: '/first-20' },
   robots: { index: false, follow: false },
 }
+
+const GETS = [
+  'A printed Proof to keep on their shelf, with their drawing or your photo and your note.',
+  'Their own savings wallet, started with US$10. It belongs to the child for life.',
+  'A code on the Proof that opens the wallet. The parent holds the key.',
+]
 
 const LEARN_MORE = [
   {
     kicker: 'WHY I BUILT IT',
     title: 'Watch Proof',
-    text: 'The story behind Tooth Fairy Network, in short films.',
+    text: 'The story behind it, in short films.',
     href: PROOF.href,
     event: 'proof_opened',
     image: '/proof-assets/product-samples-20261028/sample-front.webp',
@@ -38,8 +46,8 @@ const LEARN_MORE = [
   },
   {
     kicker: 'THE GIFT',
-    title: 'See the gift',
-    text: 'A printed Proof, plus US$10 in their own savings.',
+    title: 'See the full gift',
+    text: 'How it works, what it costs and common questions.',
     href: GIFT_HREF,
     event: 'gift_cta_clicked',
     image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
@@ -55,60 +63,92 @@ export default function FirstTwentyPage() {
       <main className="about-page">
         <header className="about-hero minimal-container">
           <div className="about-hero__copy">
-            <p className="minimal-kicker">THE FIRST 20 / FOR PEOPLE I MEET</p>
-            <h1>Glad we met.</h1>
+            <p className="minimal-kicker">A FREE GIFT / FROM SATHIAN</p>
+            <h1>Give a child you love their own savings. Free.</h1>
             <p className="about-lead">
-              I&apos;m Sathian, a dad and a builder in Toronto. I made Tooth Fairy Network for my own kids.
-              It&apos;s a gift that belongs to the child. The parent holds the key.
+              I&apos;ll print them a Proof and start their own savings wallet. The child keeps it for life.
+              The parent holds the key. You&apos;re the giver.
             </p>
             <div className="about-actions">
-              <a href="#ask" className="about-button about-button--primary">Ask for a free Proof</a>
+              <a href="#ask" className="about-button about-button--primary">Ask for a free gift</a>
               <TrackedLink href={PROOF.href} event="proof_opened" placement="first20_hero" className="about-button">
                 Why I built it
               </TrackedLink>
             </div>
           </div>
           <Image
-            className="about-hero__portrait"
-            src="/sathian-portrait.webp"
-            alt="Pencil portrait of Sathian Srikrishnan"
-            width={720}
-            height={720}
-            sizes="(max-width: 760px) 160px, 340px"
+            className="about-hero__portrait first20-hero-photo"
+            src="/first-20/proof-my-tooth.webp"
+            alt="A printed Proof of Growth with a child's drawing called My Tooth"
+            width={805}
+            height={1200}
+            sizes="(max-width: 760px) 200px, 340px"
             priority
           />
         </header>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-why">
-          <h2 id="first20-why">Why I built it</h2>
+        {WELCOME_VIDEO && (
+          <section className="minimal-section minimal-container" aria-labelledby="first20-video">
+            <h2 id="first20-video">A quick hello</h2>
+            <video className="first20-video" src={WELCOME_VIDEO} controls playsInline preload="metadata" />
+          </section>
+        )}
+
+        <section className="minimal-section minimal-container" aria-labelledby="first20-gets">
+          <h2 id="first20-gets">What the child gets</h2>
+          <div className="first20-gets">
+            <ul>
+              {GETS.map((line) => <li key={line}>{line}</li>)}
+            </ul>
+            <Image
+              src="/first-20/proof-fathers-day.webp"
+              alt="A printed Proof of Growth held in a hand. Names and the code are hidden."
+              width={900}
+              height={1184}
+              sizes="(max-width: 760px) 100vw, 320px"
+            />
+          </div>
+          <p className="first20-note">Real Proofs I&apos;ve printed. Names and codes are hidden.</p>
+        </section>
+
+        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-who">
+          <h2 id="first20-who">Why it comes from you</h2>
           <p>
-            I&apos;m divorced, and I&apos;m very much in my kids&apos; lives. A lot of kids grow up like mine.
-            The people who love them don&apos;t all live under one roof.
+            Parents are busy. I know. I&apos;m one. When it comes to their kids, they count on the people
+            closest to them: aunts, uncles, godparents, grandparents and good friends.
           </p>
           <p>
-            Dads, moms, aunts, uncles and grandparents still want to be part of their days.
-            Tech can help us show up, even from far away.
-          </p>
-          <p>
-            So I built a gift that stays with the child. A printed Proof with their drawing or your photo.
-            Savings that are theirs. Anyone who loves them can add to it with a gift of their own.
+            That&apos;s who this gift is for. You give it. The parent says yes and holds the key.
+            The child keeps it. Are you a parent? Even better. Ask for your own child.
           </p>
         </section>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-offer">
-          <h2 id="first20-offer">My offer to the first 20</h2>
+        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-why">
+          <h2 id="first20-why">Why I built it</h2>
           <p>
-            Is there a special child in your life? Maybe you&apos;re their aunt, uncle or godparent.
-            Maybe you&apos;re their parent. I&apos;ll make them a Proof for free. No strings.
+            I&apos;m a dad and a builder in Toronto. I&apos;m divorced, and I&apos;m very much in my kids&apos; lives.
+            A lot of kids grow up like mine. The people who love them don&apos;t all live under one roof.
           </p>
           <p>
-            All I ask is your honest feedback. Tell me what works and what doesn&apos;t.
-            A review would mean a lot, but it&apos;s up to you. If you post one, please say your Proof was free.
+            I built this for my own kids first: one gift they won&apos;t outgrow. Toys get lost. Cash gets spent.
+            This stays on their shelf, and the savings stay theirs.
+          </p>
+        </section>
+
+        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-ask-back">
+          <h2 id="first20-ask-back">What I ask in return</h2>
+          <p>
+            Just your honest feedback. Tell me what works and what doesn&apos;t. Want to post a review?
+            That would mean a lot. Please say your gift was free.
+          </p>
+          <p>
+            People who&apos;ve tried it tell me it&apos;s really cool, and the first paying families are coming in.
+            An app for Meta glasses is almost ready. I&apos;m open to ideas and partnerships too. Let&apos;s talk.
           </p>
         </section>
 
         <section id="ask" className="minimal-section minimal-container" aria-labelledby="first20-ask">
-          <h2 id="first20-ask">Ask for a free Proof</h2>
+          <h2 id="first20-ask">Ask for a free gift</h2>
           <FirstTwentyForm />
         </section>
 

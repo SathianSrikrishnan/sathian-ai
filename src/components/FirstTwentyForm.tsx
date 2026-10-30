@@ -68,14 +68,14 @@ export function FirstTwentyForm() {
         </select>
       </label>
       <label className="first20-form__wide">
-        Where did we meet? Anything else? (optional)
+        How did you hear about this? Anything else? (optional)
         <textarea name="feedback" maxLength={1500} rows={3} />
       </label>
       <label className="first20-form__check">
         <input type="checkbox" name="updates" /> Send me updates as I build.
       </label>
       <input name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="first20-form__trap" />
-      <button type="submit" disabled={status === 'saving'}>Ask for a free Proof</button>
+      <button type="submit" disabled={status === 'saving'}>Ask for a free gift</button>
       <small role="status">{message}</small>
     </form>
   )
