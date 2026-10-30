@@ -6548,3 +6548,66 @@ h1, h2, h3 {
   font-weight: 600;
   text-decoration: underline;
 }
+
+/* The First 20 (unlisted /first-20): request form */
+.first20-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 720px;
+}
+.first20-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+.first20-form input,
+.first20-form select,
+.first20-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--minimal-line, #c9bfa9);
+  border-radius: 6px;
+  background: #fffaf0;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+}
+.first20-form__wide,
+.first20-form button,
+.first20-form small {
+  grid-column: 1 / -1;
+}
+.first20-form__check {
+  grid-column: 1 / -1;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+.first20-form__check input {
+  width: 18px;
+  height: 18px;
+}
+.first20-form__trap {
+  position: absolute;
+  left: -10000px;
+}
+.first20-form button {
+  padding: 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--minimal-rust);
+  color: #fff8ee;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.first20-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+@media (max-width: 760px) {
+  .first20-form {
+    grid-template-columns: 1fr;
+  }
+}
