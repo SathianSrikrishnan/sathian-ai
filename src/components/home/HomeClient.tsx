@@ -89,6 +89,15 @@ export function HomeClient({ writings }: HomeClientProps) {
           </TrackedAnchor>
         </header>
 
+        <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
+          <div className="minimal-agent-frame relaunch-agent-host">
+            <div id="home-agent-slot" />
+          </div>
+          <p className="minimal-agent-note">
+            Answers come from reviewed public context. Notes can be routed to Sathian. Please do not send secrets.
+          </p>
+        </section>
+
         <section className="minimal-container home-5w" aria-label="Who, what, why, when and where">
           {HOME_5W.map((tile) => (
             <a key={tile.kicker} href={tile.href} className="home-5w__tile">
@@ -100,15 +109,6 @@ export function HomeClient({ writings }: HomeClientProps) {
               <span className="home-5w__link">{tile.link} →</span>
             </a>
           ))}
-        </section>
-
-        <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
-          <div className="minimal-agent-frame relaunch-agent-host">
-            <div id="home-agent-slot" />
-          </div>
-          <p className="minimal-agent-note">
-            Answers come from reviewed public context. Notes can be routed to Sathian. Please do not send secrets.
-          </p>
         </section>
 
         <section className="minimal-section minimal-container" aria-labelledby="building-now">
