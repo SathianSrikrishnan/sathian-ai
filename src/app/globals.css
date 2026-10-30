@@ -6718,3 +6718,47 @@ h1, h2, h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+/* Village campaign: images carry the story; public site shell stays shared. */
+.village-page figure { margin: 0; min-width: 0; }
+.village-page figure img, .village-story-grid > img { width: 100%; height: auto; border-radius: 14px; }
+.village-page h2 { max-width: 24ch; margin: 12px 0 20px; color: var(--minimal-ink); font-family: Iowan Old Style, Baskerville, Georgia, serif; font-size: clamp(32px,4vw,43px); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+.village-page h3 { color: var(--minimal-ink); margin: 0 0 8px; font-size: 1.4rem; line-height: 1.25; }
+.village-page p { line-height: 1.65; }
+.village-page p + p { margin-top: 12px; }
+.village-page p + .about-button { margin-top: 20px; }
+.village-product-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; margin-top: 28px; }
+.village-product-grid figure > img { height: 360px; object-fit: contain; background: #f1ebdf; padding: 16px; }
+.village-product-grid figcaption { padding-top: 20px; }
+.village-product-grid small, .village-page figcaption, .first20-note { color: var(--minimal-muted); }
+.village-story-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 56px; align-items: center; }
+.village-steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 28px; }
+.village-steps li { border-top: 1px solid var(--minimal-rule); padding-top: 20px; }
+.village-steps li > span { display: block; font-size: 2rem; color: var(--minimal-rust); margin-bottom: 20px; }
+.village-deposits { padding: 0; list-style: none; border-top: 1px solid var(--minimal-rule); }
+.village-deposits li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--minimal-rule); }
+.village-deposits strong { color: var(--minimal-rust); }
+.village-founder { display: grid; grid-template-columns: 160px minmax(0,650px); gap: 36px; align-items: start; }
+.village-founder img { border-radius: 50%; }
+.village-request { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 64px; scroll-margin-top: 100px; }
+.village-next-links { display: grid; gap: 16px; margin: 24px 0; }
+.village-next details { max-width: 700px; border-top: 1px solid var(--minimal-rule); padding-top: 20px; }
+.village-next summary { cursor: pointer; font-weight: 600; }
+.village-home-hero { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr); gap: 64px; align-items: center; }
+.village-home-hero h1 { font-size: clamp(3rem,6vw,6rem); }
+.village-home-art img { display: block; width: 100%; height: min(520px,55vw); object-fit: contain; border-radius: 14px; background: #eee7da; }
+.minimal-agent-section .relaunch-agent-host { min-height: 112px; }
+.minimal-agent-section .minimal-agent-frame { min-height: 0; }
+@media (max-width: 760px) {
+  .village-product-grid, .village-story-grid, .village-request, .village-home-hero { grid-template-columns: 1fr; gap: 28px; }
+  .village-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .village-product-grid figure > img { height: 380px; }
+  .village-founder { grid-template-columns: 72px minmax(0,1fr); gap: 20px; }
+  .village-founder img { width: 72px; height: 72px; }
+  .village-home-art img { height: 400px; }
+}
+@media (prefers-reduced-motion: reduce) { .village-home-art { transform: none; } }
+.minimal-agent-section .site-agent-reopen { min-height: 112px; padding: 20px 24px; }
+.minimal-agent-section .site-agent-reopen strong { font-size: 24px; }
+.relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host { min-height: 112px; padding: 0; border: 0; background: none; box-shadow: none; transform: none; }
+.relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host::before,
+.relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host::after { display: none; }

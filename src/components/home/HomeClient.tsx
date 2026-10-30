@@ -13,7 +13,6 @@ import {
 } from '@/content/site-projects'
 import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
-import { PROOF } from '@/content/proof'
 
 const HOME_GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=home'
 
@@ -50,15 +49,6 @@ const FEATURED_WRITINGS = [
   },
 ] as const
 
-// Owner idea (Oct 30): orient every visitor in one row, each tile one picture and one link.
-const HOME_5W = [
-  { kicker: 'WHO', title: 'A dad and a builder in Toronto.', link: 'Why I built it', href: PROOF.href, image: '/sathian-portrait.webp', alt: 'Pencil portrait of Sathian' },
-  { kicker: 'WHAT', title: 'A gift that stays theirs.', link: 'See the gift', href: HOME_GIFT_HREF, image: '/village/proof-hero-flat.webp', alt: 'A printed Proof of Growth' },
-  { kicker: 'WHY', title: 'It takes a village to raise a child.', link: 'Join a child’s village', href: '/village', image: '/village/village-hands.webp', alt: 'A child’s drawing of a family holding hands around a child' },
-  { kicker: 'WHEN', title: 'When a tooth comes out, and any day worth keeping.', link: 'Learn with Tanda', href: '/learn', image: '/projects/tooth-fairy-network/family-storybook-hero.webp', alt: 'Tanda the tooth fairy beside a glowing Proof' },
-  { kicker: 'WHERE', title: 'Here, online, and at events in Toronto.', link: 'Meet me', href: 'https://lu.ma/sathian', image: '/village/village-map.webp', alt: 'A child’s drawing of a village' },
-] as const
-
 function formatDate(value: string) {
   return new Date(`${value}T12:00:00`).toLocaleDateString('en-CA', {
     month: 'short',
@@ -73,20 +63,21 @@ export function HomeClient({ writings }: HomeClientProps) {
       <SiteNav />
 
       <main>
-        <header className="minimal-home-hero minimal-container">
-          <p className="minimal-kicker minimal-home-identity">
-            <span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span>
-            <span className="minimal-home-identity__part">FOUNDER + DAD</span>
-            <span className="minimal-home-identity__part">TORONTO</span>
-          </p>
-          <h1>Digital Experiments</h1>
-          <p className="minimal-home-mission">
-            I build products people love, starting with the ones my own children need. This site is built for people and agents: ask it anything.
-          </p>
-          <TrackedAnchor className="home-proof-entry" href={PROOF.href} event="proof_opened" properties={{ placement: 'homepage' }}>
-            <img src="/proof-assets/proof-site-first-edition/revision12/founder-proof-r12-thumb.webp" alt="" width="76" height="76" />
-            <span><strong>Start here — PROOF ↗</strong><span>{PROOF.description}</span></span>
-          </TrackedAnchor>
+        <header className="minimal-home-hero minimal-container village-home-hero">
+          <div>
+            <p className="minimal-kicker minimal-home-identity"><span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span><span className="minimal-home-identity__part">FOUNDER + DAD</span><span className="minimal-home-identity__part">TORONTO</span></p>
+            <h1>A village around a child.</h1>
+            <p className="minimal-home-mission">I build things for the people I love. This one starts with a child, a drawing and the people who show up.</p>
+            <p>A printed Proof of Growth. A note from you. A first digital wallet, with the parent holding the key.</p>
+            <div className="about-actions">
+              <TrackedLink href="/village" event="village_opened" properties={{ placement: 'homepage_hero' }} className="about-button about-button--primary">See the Village gift</TrackedLink>
+              <Link href="/about" className="about-button">Meet Sathian</Link>
+            </div>
+            <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
+          </div>
+          <Link href="/village" className="village-home-art" aria-label="See what a child gets in the Village gift">
+            <Image src="/village/proof-in-hand.webp" alt="A real printed Proof of Growth with a tooth-fairy drawing, held in a hand" width={1105} height={1600} sizes="(max-width: 760px) 100vw, 460px" priority />
+          </Link>
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
@@ -96,19 +87,6 @@ export function HomeClient({ writings }: HomeClientProps) {
           <p className="minimal-agent-note">
             Answers come from reviewed public context. Notes can be routed to Sathian. Please do not send secrets.
           </p>
-        </section>
-
-        <section className="minimal-container home-5w" aria-label="Who, what, why, when and where">
-          {HOME_5W.map((tile) => (
-            <a key={tile.kicker} href={tile.href} className="home-5w__tile">
-              <span className="home-5w__media">
-                <Image src={tile.image} alt={tile.alt} fill sizes="(max-width: 760px) 100vw, 240px" />
-              </span>
-              <span className="minimal-kicker">{tile.kicker}</span>
-              <strong>{tile.title}</strong>
-              <span className="home-5w__link">{tile.link} →</span>
-            </a>
-          ))}
         </section>
 
         <section className="minimal-section minimal-container" aria-labelledby="building-now">

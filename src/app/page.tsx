@@ -6,7 +6,13 @@ import { SATHIAN_PERSON_SCHEMA, SATHIAN_WEBSITE_SCHEMA } from '@/lib/site-identi
 export const revalidate = 60
 
 // Static prerender resolves the layout's relative './' canonical to /index.
-export const metadata: Metadata = { alternates: { canonical: '/' } }
+export const metadata: Metadata = {
+  title: { absolute: "Sathian Srikrishnan | A village around a child" },
+  description: "A dad and builder in Toronto. Explore the Village gift: a printed Proof of Growth, a note from you and a child's first digital wallet. Plus stories, lessons and writing.",
+  alternates: { canonical: '/' },
+  openGraph: { title: "Sathian Srikrishnan | A village around a child", description: "A printed Proof. A note from you. A first wallet, with the parent holding the key.", url: 'https://sathian.ai', images: ['/village/village-hands.webp'] },
+  twitter: { card: 'summary_large_image', title: "Sathian Srikrishnan | A village around a child", images: ['/village/village-hands.webp'] },
+}
 
 export default async function Home() {
   const articles = await getPublishedArticles()

@@ -83,6 +83,8 @@ def install_agent_fixture(page, requests):
 def open_agent(page):
     page.goto(BASE_URL, wait_until="commit", timeout=90_000)
     panel = page.locator("[data-chat-panel]")
+    page.get_by_role("button", name="Ask Sathian").wait_for(state="visible", timeout=90_000)
+    page.get_by_role("button", name="Ask Sathian").click()
     panel.wait_for(state="visible", timeout=90_000)
     try:
         page.wait_for_load_state("networkidle", timeout=10_000)
@@ -91,7 +93,7 @@ def open_agent(page):
         # surface is the stronger readiness signal for this browser check.
         pass
     if not panel.is_visible():
-        page.get_by_role("button", name="Open the site agent").click()
+        page.get_by_role("button", name="Ask Sathian").click()
     panel.wait_for(state="visible")
     return panel
 
