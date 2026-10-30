@@ -50,6 +50,15 @@ const FEATURED_WRITINGS = [
   },
 ] as const
 
+// Owner idea (Oct 30): orient every visitor in one row, each tile one picture and one link.
+const HOME_5W = [
+  { kicker: 'WHO', title: 'A dad and a builder in Toronto.', link: 'Why I built it', href: PROOF.href, image: '/sathian-portrait.webp', alt: 'Pencil portrait of Sathian' },
+  { kicker: 'WHAT', title: 'A gift that stays theirs.', link: 'See the gift', href: HOME_GIFT_HREF, image: '/village/proof-hero-flat.webp', alt: 'A printed Proof of Growth' },
+  { kicker: 'WHY', title: 'It takes a village to raise a child.', link: 'Join a child’s village', href: '/village', image: '/village/village-hands.webp', alt: 'A child’s drawing of a family holding hands around a child' },
+  { kicker: 'WHEN', title: 'When a tooth comes out, and any day worth keeping.', link: 'Learn with Tanda', href: '/learn', image: '/projects/tooth-fairy-network/family-storybook-hero.webp', alt: 'Tanda the tooth fairy beside a glowing Proof' },
+  { kicker: 'WHERE', title: 'Here, online, and at events in Toronto.', link: 'Meet me', href: 'https://lu.ma/sathian', image: '/village/village-map.webp', alt: 'A child’s drawing of a village' },
+] as const
+
 function formatDate(value: string) {
   return new Date(`${value}T12:00:00`).toLocaleDateString('en-CA', {
     month: 'short',
@@ -87,6 +96,19 @@ export function HomeClient({ writings }: HomeClientProps) {
           <p className="minimal-agent-note">
             Answers come from reviewed public context. Notes can be routed to Sathian. Please do not send secrets.
           </p>
+        </section>
+
+        <section className="minimal-container home-5w" aria-label="Who, what, why, when and where">
+          {HOME_5W.map((tile) => (
+            <a key={tile.kicker} href={tile.href} className="home-5w__tile">
+              <span className="home-5w__media">
+                <Image src={tile.image} alt={tile.alt} fill sizes="(max-width: 760px) 100vw, 240px" />
+              </span>
+              <span className="minimal-kicker">{tile.kicker}</span>
+              <strong>{tile.title}</strong>
+              <span className="home-5w__link">{tile.link} →</span>
+            </a>
+          ))}
         </section>
 
         <section className="minimal-section minimal-container" aria-labelledby="building-now">
