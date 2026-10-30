@@ -23,7 +23,10 @@ def new_page(browser, viewport):
         options["extra_http_headers"] = {
             "x-vercel-protection-bypass": AUTOMATION_BYPASS_SECRET,
         }
-    return browser.new_page(**options)
+    page = browser.new_page(**options)
+    # This fixture verifies text/history, not audio. Playback has its own gate.
+    page.add_init_script("localStorage.setItem('sathian-agent-sound-enabled', 'false'); HTMLMediaElement.prototype.play = async function () {};")
+    return page
 
 
 def install_agent_fixture(page, requests):
@@ -130,6 +133,10 @@ def check_desktop(browser):
     page.screenshot(path=str(OUTPUT / "desktop-follow-up.png"), full_page=True)
 
     page.reload(wait_until="commit", timeout=90_000)
+    # Reload starts at the compact doorway; history stays in this tab and is
+    # revealed when the visitor deliberately opens chat again.
+    page.get_by_role("button", name="Ask Sathian").wait_for(state="visible", timeout=90_000)
+    page.get_by_role("button", name="Ask Sathian").click()
     page.get_by_text("How is that different from Solana?", exact=True).wait_for()
     page.get_by_role("button", name="Start a new conversation").click()
     assert page.evaluate("sessionStorage.getItem('sathian-agent-conversation')") is None

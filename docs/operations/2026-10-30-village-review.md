@@ -42,6 +42,10 @@ Independent follow-up: decoded the new certificate QR locally with OpenCV, witho
 
 Final visual evidence uploaded to Library: desktop Village `libfile_b4a6f09b56f48191a038f9a8fc964400`; mobile Village `libfile_9fed7276f5a48191b8740050581e65af`; mobile home `libfile_479b69aade00819186782aad6c2c8309`. These screenshots show the unchanged visual content of the candidate; the follow-up only changes sitemap metadata and assertions.
 
+Configured hosted follow-up at `b49f678`: Vercel READY, all 37 published sitemap routes returned 200 with expected production canonicals and no page-level noindex; preview-level noindex is expected. Hosted offline quality/build and 10-case canary passed. The later chat fixture failed because its reload check still expected automatic opening. Corrected it to reopen deliberately, then verify restored history/reset/note composition without removing assertions. That exact Python fixture passes locally at desktop/mobile; playback is disabled only in this text/history fixture, while the separate hosted real-playback gate remains unchanged. A fresh final-head hosted run is required after this test-only correction.
+
+An additional standalone `tsc --noEmit` reports existing JSON-fixture type errors in the unchanged `tests/unit/learning-entry.test.ts`; no errors identify revised files. The configured Next build, 546 unit tests and hosted build passed. This unrelated test-typing backlog was not modified.
+
 ## Remaining owner/product inputs
 
 The short founder video and new current-edition product photos would improve the next revision; this candidate does not block on them. Giveaway count and exact fulfillment terms remain unanswered, so none were invented. Claude's notes name Tanda but do not define a separate second fairy's commercial role; no new character/function is invented.
