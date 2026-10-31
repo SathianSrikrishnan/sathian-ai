@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { GiftGallery } from '@/components/marketing/GiftGallery'
+import { TrustpilotReviewStrip } from '@/components/marketing/TrustpilotReviewStrip'
 import { NetworkBenefits } from '@/components/NetworkBenefits'
 import { VillageForm } from '@/components/VillageForm'
 import { SiteFooter } from '@/components/SiteFooter'
@@ -25,15 +27,65 @@ const STEPS = [
   { title: 'You make it theirs', text: 'Choose artwork or a photo. Add your note.', image: 'make-it-yours.webp', alt: 'Childlike artwork of Tanda with a printed Proof, artwork, a piggy bank and a digital wallet' },
   { title: 'We print and mail it', text: 'We print their Proof and send it on its way.', image: 'print-and-mail.webp', alt: 'Childlike artwork of Tanda printing a Proof of Growth and packing it in an envelope' },
   { title: 'Their parent accepts it', text: 'Their parent accepts the gift and holds the key.', image: 'parent-accepts.webp', alt: 'Childlike artwork of a parent holding the key and accepting a wallet gift beside their child' },
-  { title: 'Their village gives again', text: 'A lost tooth. A birthday. Loved ones can add another gift.', image: 'family-gives-again.webp', alt: 'Childlike artwork of family members adding gifts, with the parent holding the key' },
+  { title: 'Their village celebrates each new step', text: 'The people their parent chooses can give again through the family link. Each gift adds to the child’s savings as they grow.', image: 'family-gives-again.webp', alt: 'Childlike artwork of family members adding gifts, with the parent holding the key' },
 ] as const
+
+const GIFT_PICTURES = [
+  {
+    "src": "/village/gallery-oct31/sample-front.webp",
+    "title": "Their printed Proof",
+    "caption": "One printed keepsake, made with their artwork or your photo.",
+    "alt": "Sample front of one printed Proof of Growth",
+    "width": 638,
+    "height": 1031
+  },
+  {
+    "src": "/village/gallery-oct31/sample-inside-wallet.webp",
+    "title": "A note from you",
+    "caption": "A few words from someone who cares, kept inside their Proof.",
+    "alt": "Sample personal letter printed inside the Proof",
+    "width": 638,
+    "height": 1031
+  },
+  {
+    "src": "/village/review-oct31/proof-and-certificate-usdc.webp",
+    "title": "Their first wallet",
+    "caption": "US$10 to start, with their parent holding the key.",
+    "alt": "Illustrative US$10 USDC gift with a printed Proof and digital wallet screen",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "src": "/village/process-oct31/parent-vault-background.webp",
+    "title": "Their parent holds the key",
+    "caption": "A village brought together by the people who care for the child.",
+    "alt": "Childlike artwork of a parent holding a green vault and a gold key",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "src": "/village/network-oct31/02-network-picnic.webp",
+    "title": "People who show up",
+    "caption": "Near or far, small moments give loved ones a reason to connect.",
+    "alt": "Childlike artwork of a child and their village sharing a picnic",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "src": "/village/process-oct31/family-gives-again.webp",
+    "title": "Each new step matters",
+    "caption": "Loved ones can mark growth with another gift through the family link.",
+    "alt": "Childlike artwork of loved ones giving again, with the parent holding the key",
+    "width": 1536,
+    "height": 1024
+  }
+]
 
 export default function VillagePage() {
   return <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
     <SiteNav />
     <main className="about-page village-page">
       <header className="about-hero village-hero village-vsl minimal-container">
-        <p className="minimal-kicker">THE CHILD’S VILLAGE / TOOTH FAIRY NETWORK</p>
         <h1>A child’s network is their village.</h1>
         <p className="about-lead village-parent-lead">Led by their parent.</p>
         <video controls playsInline preload="metadata" poster="/media/founder-20261031/founder-film-poster.jpg" width={1280} height={720} aria-label="Sathian introduces a child's village" className="village-vsl-film"><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video>
@@ -41,6 +93,7 @@ export default function VillagePage() {
           <p>A free printed Proof and US$10 to start. For the child you love, near or far.</p>
           <div className="about-actions"><a href="#ask" className="about-button about-button--primary">Ask for a free gift</a><a href="#the-gift" className="about-button">See what they get</a></div>
         </div>
+        <TrustpilotReviewStrip />
         <div className="village-vsl-offer">
           <div className="about-hero__copy">
             <p>Tooth Fairy Network connects a child’s village. Their parent chooses who joins and controls the wallet for the child.</p>
@@ -61,6 +114,8 @@ export default function VillagePage() {
         </div>
       </section>
 
+      <div className="minimal-container"><GiftGallery id="village-gift-gallery" items={GIFT_PICTURES} /></div>
+
       <section className="minimal-section minimal-container village-story-grid" aria-labelledby="village-roles">
         <Image src="/village/network-oct31/03-network-village-path.webp" alt="Childlike illustration of Tanda connecting four family homes to a girl holding Proof of Growth, with the parent holding the key" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" />
         <div><h2 id="village-roles">A village chosen by the parent.</h2><p>Aunts. Uncles. Grandparents. Godparents. Friends. The people who show up for a child.</p><p><strong>You give.</strong> A picture, a note and a gift.</p><p><strong>The parent holds the key.</strong> They choose who joins the child’s village, accept the gift and control the wallet for the child.</p><p><strong>The child gets a keepsake.</strong> Each gift marks a moment in their life.</p><p>Tanda brings the Tooth Fairy story to life. Think of a village: real people who care, brought together in a network the parent chooses.</p></div>
@@ -77,7 +132,7 @@ export default function VillagePage() {
 
       <section id="ask" className="minimal-section minimal-container village-request" aria-labelledby="ask-title"><div><h2 id="ask-title">Ask for a free gift</h2><p className="first20-note"><strong>{FREE_GIFTS_REMAINING} of 20 free gifts left</strong></p><p>I’ll print a Proof and start the wallet with US$10. Leave your details and I’ll get in touch to work out the next steps.</p><p>I’d love your honest feedback. A public review is your choice. Want to post a review? That would mean a lot. <a href="https://www.trustpilot.com/review/toothfairy.network" target="_blank" rel="noopener noreferrer">Leave a review &#8599;</a> If you write one, please say the gift was free.</p><p className="first20-note">This is a request, not a checkout. Please share only your own contact details here. <Link href="/privacy">Privacy</Link></p></div><VillageForm /></section>
 
-      <section className="minimal-section minimal-container village-next" aria-labelledby="next-title"><h2 id="next-title">More from Tooth Fairy Network</h2><div className="village-next-links"><TrackedLink href="/learn" event="learn_opened" placement="village_footer">Free stories and money lessons with Tanda →</TrackedLink><TrackedLink href={GIFT_HREF} event="gift_cta_clicked" placement="village_footer">See the paid gift and full details →</TrackedLink></div><details><summary>Coming next: the Proof of Growth app</summary><p>I’m building a way to save growth moments and gifts in one place. Planned for Meta glasses, Apple iPhone and Google Android. The app is not public yet, and no launch date is set.</p></details></section>
+      <section className="minimal-section minimal-container village-next" aria-labelledby="next-title"><h2 id="next-title">More from Tooth Fairy Network</h2><div className="village-next-links"><TrackedLink href="/learn" event="learn_opened" placement="village_footer">Free stories and money lessons with Tanda →</TrackedLink><TrackedLink href={GIFT_HREF} event="gift_cta_clicked" placement="village_footer">See the paid gift and full details →</TrackedLink></div><details><summary>Coming next: the Proof of Growth app</summary><p>I’m building a way to save growth moments and gifts in one place. Planned for Meta glasses, Apple iPhone and Google Android.</p></details></section>
     </main><SiteFooter />
   </div>
 }
