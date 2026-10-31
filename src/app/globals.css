@@ -6773,3 +6773,21 @@ h1, h2, h3 {
 .network-product-display figcaption, .network-image-caption { display: block; margin-top: 8px; font-size: 12px; color: var(--minimal-muted); }
 .network-product-details { margin-top: 28px; }
 .village-home-art { color: inherit; text-decoration: none; }
+
+/* Review round 2: a village is the parent-led network, with the art behind the story. */
+.village-hero { position:relative; isolation:isolate; }
+.village-hero::before { content:""; position:absolute; inset:12px -18px; z-index:-1; background:url('/village/network-oct31/03-network-village-path.webp') center / cover no-repeat; opacity:.2; pointer-events:none; border-radius:18px; }
+.village-hero .about-hero__copy { position:relative; background:rgb(235 219 185 / .9); border-radius:12px; padding:18px; }
+.village-parent-lead { font-weight:650; }
+.founder-question-row { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:18px; align-items:start; }
+.founder-question-row details { min-width:0; border-bottom:1px solid #bba889; }
+.founder-question-row summary { position:relative; display:block; min-height:48px; padding:0 0 14px; cursor:pointer; }
+.founder-question-row summary::-webkit-details-marker { display:none; }
+.founder-question-row summary:focus-visible { outline:2px solid #a34013; outline-offset:4px; }
+.founder-question-row summary img { display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:contain; border-radius:8px; background:#fff6e8; margin-bottom:12px; }
+.founder-question-row .minimal-kicker { display:block; margin:0 0 6px; }
+.founder-question-title { display:block; padding-right:14px; font-size:19px; font-family:var(--font-display),serif; line-height:1.2; }
+.founder-question-prompt { position:absolute; right:0; bottom:14px; color:#a34013; }
+.founder-question-row details[open] .founder-question-prompt { transform:rotate(45deg); }
+.founder-question-row details p { padding:0 0 14px; margin:0; font-size:14px; line-height:1.6; }
+@media(max-width:760px) { .founder-question-row { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 14px; } .village-hero::before { inset:0 -8px; } .village-hero .about-hero__copy { padding:12px; } }

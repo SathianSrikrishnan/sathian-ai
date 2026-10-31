@@ -78,8 +78,7 @@ export function HomeClient({ writings }: HomeClientProps) {
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>
           <Link href="/village" className="village-home-art" aria-label="See what a child gets from Tooth Fairy Network">
-            <Image src="/village/network-oct31/04-product-glass-table-concept.webp" alt="Illustrative gift presentation with Proof of Growth and Proof of Love designs, a piggy bank and sample digital wallet screen" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
-            <span className="network-image-caption">Illustrative gift presentation.</span>
+            <Image src="/village/review-oct31/open-proof-certificate.webp" alt="One open Proof of Growth booklet with a sample certificate, beside a piggy bank and illustrative wallet screen" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
           </Link>
         </header>
 
@@ -90,6 +89,16 @@ export function HomeClient({ writings }: HomeClientProps) {
           <p className="minimal-agent-note">
             Answers come from reviewed public context. Notes can be routed to Sathian. Please do not send secrets.
           </p>
+        </section>
+
+        <section className="minimal-section minimal-container founder-quick-questions" aria-label="Who, what, where, when and why">
+          <div className="founder-question-row">
+            <details><summary><Image src="/village/review-oct31/who-dad.webp" alt="Childlike artwork of Sathian in his red maple-leaf shirt, drawing at a table" width={360} height={270} /><span className="minimal-kicker">WHO</span><span className="founder-question-title">Meet Sathian.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>I'm a dad and builder in Toronto. I build things for the people I love, starting with my own children. <Link href="/about">Meet Sathian</Link>.</p></details>
+            <details><summary><Image src="/village/review-oct31/what-gift.webp" alt="Childlike artwork of Tanda with a printed Proof, a child’s art, piggy bank and digital wallet" width={360} height={270} /><span className="minimal-kicker">WHAT</span><span className="founder-question-title">A child. Their people.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>One printed Proof, a first digital wallet and a family network led by the parent. <Link href="/village">See the gift</Link>, or <Link href="/learn">learn with Tanda</Link>.</p></details>
+            <details><summary><Image src="/village/review-oct31/where-online.webp" alt="Childlike artwork of family homes linked online around a child and Tanda" width={360} height={270} /><span className="minimal-kicker">WHERE</span><span className="founder-question-title">Right here, online.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Explore the gift, free stories and my work here. Start from wherever you are. <Link href="/learn">Read a story with Tanda</Link>.</p></details>
+            <details><summary><Image src="/village/review-oct31/when-gift.webp" alt="Childlike artwork of a child receiving a Proof on her birthday" width={360} height={270} /><span className="minimal-kicker">WHEN</span><span className="founder-question-title">You can start now.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>The printed gift is available now. A lost tooth, a birthday or any day worth keeping can be a start. <Link href="/village#ask">Ask about a free gift</Link>.</p></details>
+            <details><summary><Image src="/village/network-oct31/02-network-picnic.webp" alt="Childlike artwork of a child sharing a picnic with the people who love them" width={360} height={270} /><span className="minimal-kicker">WHY</span><span className="founder-question-title">For the people we love.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A child's people don't all live in one home. I built this for my children: a way to give, keep their art and share the story. <a href="https://proof.sathian.ai/">Watch why I built it</a>.</p></details>
+          </div>
         </section>
 
         <section className="minimal-section minimal-container" aria-labelledby="building-now">
