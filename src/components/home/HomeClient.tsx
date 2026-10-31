@@ -78,7 +78,8 @@ export function HomeClient({ writings }: HomeClientProps) {
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>
           <Link href="/village" className="village-home-art" aria-label="See what a child gets from Tooth Fairy Network">
-            <Image src="/village/proof-in-hand.webp" alt="A real printed Proof of Growth with a tooth-fairy artwork, held in a hand" width={1105} height={1600} sizes="(max-width: 760px) 100vw, 460px" priority />
+            <Image src="/village/network-oct31/04-product-glass-table-concept.webp" alt="Illustrative gift presentation with Proof of Growth and Proof of Love designs, a piggy bank and sample digital wallet screen" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
+            <span className="network-image-caption">Illustrative gift presentation.</span>
           </Link>
         </header>
 
@@ -147,7 +148,7 @@ export function HomeClient({ writings }: HomeClientProps) {
                   )}
                 </div>
                 <a href={project.href} target="_blank" rel="noopener noreferrer" className="minimal-project-media" aria-label={project.cta}>
-                  <Image src={project.image} alt={project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
+                  <Image src={index === 0 ? "/village/network-oct31/01-network-circle.webp" : project.image} alt={index === 0 ? "Childlike illustration of a child’s parent-chosen network with Tanda and printed Proofs" : project.alt} fill sizes="(max-width: 760px) 100vw, 58vw" />
                 </a>
               </article>
             ))}

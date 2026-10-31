@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: { absolute: "Sathian Srikrishnan | Tooth Fairy Network" },
   description: "A dad and builder in Toronto. Explore Tooth Fairy Network: a printed Proof of Growth, a note from you and a child's first digital wallet. Plus stories, lessons and writing.",
   alternates: { canonical: '/' },
-  openGraph: { title: "Sathian Srikrishnan | Tooth Fairy Network", description: "A printed Proof, artwork and a first wallet. Parents choose their child’s network and hold the key.", url: 'https://sathian.ai', images: ['/village/village-hands.webp'] },
-  twitter: { card: 'summary_large_image', title: "Sathian Srikrishnan | Tooth Fairy Network", images: ['/village/village-hands.webp'] },
+  openGraph: { title: "Sathian Srikrishnan | Tooth Fairy Network", description: "A printed Proof, artwork and a first wallet. Parents choose their child’s network and hold the key.", url: 'https://sathian.ai', images: ['/village/network-oct31/01-network-circle.webp'] },
+  twitter: { card: 'summary_large_image', title: "Sathian Srikrishnan | Tooth Fairy Network", images: ['/village/network-oct31/01-network-circle.webp'] },
 }
 
 export default async function Home() {
