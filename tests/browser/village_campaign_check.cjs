@@ -47,6 +47,20 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
           assert(await page.locator('.village-steps li img').count() === 4, `${label}: four illustrated steps`)
           assert(await page.locator('.village-vsl-next a[href="#ask"]').count() === 1, `${label}: gift CTA directly after film`)
 
+          assert(await page.locator('.village-vsl > .minimal-kicker').count() === 0, `${label}: removed top eyebrow`)
+          assert(await page.locator('[data-trustpilot-strip] a').getAttribute('href') === 'https://www.trustpilot.com/review/toothfairy.network', `${label}: conspicuous verified review profile`)
+          const gallery = page.locator('[data-gift-gallery]')
+          await gallery.focus(); await page.keyboard.press('ArrowRight')
+          await gallery.locator('[aria-live]').filter({ hasText: '2 of 6:' }).waitFor()
+          await page.keyboard.press('ArrowLeft'); await gallery.locator('[aria-live]').filter({ hasText: '1 of 6:' }).waitFor()
+          await page.keyboard.press('End'); await gallery.locator('[aria-live]').filter({ hasText: '6 of 6:' }).waitFor()
+          await page.keyboard.press('Home'); await gallery.locator('[aria-live]').filter({ hasText: '1 of 6:' }).waitFor()
+          for (let slide = 2; slide <= 7; slide++) {
+            await gallery.getByRole('button', { name: 'Next picture' }).click()
+            await gallery.locator('[aria-live]').filter({ hasText: `${slide === 7 ? 1 : slide} of 6:` }).waitFor()
+            await page.waitForFunction(() => { const i = document.querySelector('[data-gift-gallery] img'); return i.complete && i.naturalWidth > 0 })
+          }
+          await page.evaluate(() => scrollTo({ top:0, behavior:'instant' }))
           const reading = checkReadability(await page.locator('main').innerText())
           assert(reading.pass, `${label}: Village reading grade ${reading.grade}, very hard sentences ${reading.veryHardSentences.length}`)
           console.log(`${label}: Village reading grade ${reading.grade}`)
