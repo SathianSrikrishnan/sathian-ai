@@ -86,6 +86,7 @@ export function VillageForm() {
       <input name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="first20-form__trap" />
       <button type="submit" disabled={status === 'saving'}>Ask for a free gift</button>
       <small role="status">{message}</small>
+      <small className="first20-form__wide">I use your email or phone to arrange your gift, and send updates if you choose them; read the <a href="/privacy">privacy policy</a>.</small>
     </form>
   )
 }
