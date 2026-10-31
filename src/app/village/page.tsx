@@ -44,7 +44,7 @@ export default function VillagePage() {
 
       <section id="the-gift" className="minimal-section minimal-container" aria-labelledby="gift-title">
         <h2 id="gift-title">What the child gets</h2>
-        <figure className="network-product-display"><Image src="/village/review-oct31/open-proof-certificate-usdc.webp" alt="One open Proof of Growth booklet showing a US$10 USDC sample certificate on a glass table, with a piggy bank and illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 1100px" /></figure>
+        <figure className="network-product-display"><Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 1100px" /></figure>
         <div className="village-product-grid network-product-details">
           <div><h3>A printed Proof of Growth</h3><p>Their artwork or your photo, with your note inside. A keepsake to hold and read again.</p></div>
           <div><h3>A note from someone who cares</h3><p>A message that marks a small moment. Even when you live far away.</p></div>

@@ -78,7 +78,7 @@ export function HomeClient({ writings }: HomeClientProps) {
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>
           <Link href="/village" className="village-home-art" aria-label="See what a child gets from Tooth Fairy Network">
-            <Image src="/village/review-oct31/open-proof-certificate-usdc.webp" alt="One open Proof of Growth booklet with a US$10 USDC sample certificate, beside a piggy bank and illustrative wallet screen" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
+            <Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
           </Link>
         </header>
 
