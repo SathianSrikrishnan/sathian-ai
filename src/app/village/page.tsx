@@ -22,27 +22,33 @@ export const metadata: Metadata = {
 }
 
 const STEPS = [
-  ['You ask', 'Tell me who you are to the child. Please leave the child’s name and photos out of this form.'],
-  ['We make it theirs', 'I’ll get in touch. We choose artwork or a photo and a note from you.'],
-  ['The parent says yes', 'The parent chooses who joins the child’s village and accepts the gift.'],
-  ['Their village can add', 'A lost tooth. A birthday. A first bike ride. Loved ones can give again.'],
+  { title: 'You make it theirs', text: 'Choose artwork or a photo. Add your note.', image: 'make-it-yours.webp', alt: 'Childlike artwork of Tanda with a printed Proof, artwork, a piggy bank and a digital wallet' },
+  { title: 'We print and mail it', text: 'We print their Proof and send it on its way.', image: 'print-and-mail.webp', alt: 'Childlike artwork of Tanda printing a Proof of Growth and packing it in an envelope' },
+  { title: 'Their parent accepts it', text: 'Their parent accepts the gift and holds the key.', image: 'parent-accepts.webp', alt: 'Childlike artwork of a parent holding the key and accepting a wallet gift beside their child' },
+  { title: 'Their village gives again', text: 'A lost tooth. A birthday. Loved ones can add another gift.', image: 'family-gives-again.webp', alt: 'Childlike artwork of family members adding gifts, with the parent holding the key' },
 ] as const
 
 export default function VillagePage() {
   return <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
     <SiteNav />
     <main className="about-page village-page">
-      <header className="about-hero village-hero minimal-container">
-        <div className="about-hero__copy">
-          <p className="minimal-kicker">THE CHILD’S VILLAGE / TOOTH FAIRY NETWORK</p>
-          <h1>A child’s network is their village.</h1>
-          <p className="about-lead village-parent-lead">Led by their parent.</p><p>Tooth Fairy Network connects a child’s village. Their parent chooses who joins and controls the wallet for the child.</p>
-          <NetworkBenefits />
+      <header className="about-hero village-hero village-vsl minimal-container">
+        <p className="minimal-kicker">THE CHILD�S VILLAGE / TOOTH FAIRY NETWORK</p>
+        <h1>A child�s network is their village.</h1>
+        <p className="about-lead village-parent-lead">Led by their parent.</p>
+        <video controls playsInline preload="metadata" poster="/media/founder-20261031/founder-film-poster.jpg" width={1280} height={720} aria-label="Sathian introduces a child's village" className="village-vsl-film"><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video>
+        <div className="village-vsl-next">
           <p>A free printed Proof and US$10 to start. For the child you love, near or far.</p>
           <div className="about-actions"><a href="#ask" className="about-button about-button--primary">Ask for a free gift</a><a href="#the-gift" className="about-button">See what they get</a></div>
-          <p className="first20-note">I’m Sathian, a dad in Toronto. Try it and tell me what you think.</p>
         </div>
-        <Image className="first20-hero-photo" src="/village/network-oct31/01-network-circle.webp" alt="Childlike illustration of a girl holding Proof of Growth, four adults holding Proof of Love and Tanda beside a piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" priority />
+        <div className="village-vsl-offer">
+          <div className="about-hero__copy">
+            <p>Tooth Fairy Network connects a child�s village. Their parent chooses who joins and controls the wallet for the child.</p>
+            <NetworkBenefits />
+            <p className="first20-note">I'm Sathian, a dad in Toronto. Try it and tell me what you think.</p>
+          </div>
+          <Image className="first20-hero-photo" src="/village/network-oct31/01-network-circle.webp" alt="Childlike illustration of a girl holding Proof of Growth, four adults holding Proof of Love and Tanda beside a piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 500px" />
+        </div>
       </header>
 
       <section id="the-gift" className="minimal-section minimal-container" aria-labelledby="gift-title">
@@ -60,14 +66,14 @@ export default function VillagePage() {
         <div><h2 id="village-roles">A village chosen by the parent.</h2><p>Aunts. Uncles. Grandparents. Godparents. Friends. The people who show up for a child.</p><p><strong>You give.</strong> A picture, a note and a gift.</p><p><strong>The parent holds the key.</strong> They choose who joins the child’s village, accept the gift and control the wallet for the child.</p><p><strong>The child gets a keepsake.</strong> Each gift marks a moment in their life.</p><p>Tanda brings the Tooth Fairy story to life. Think of a village: real people who care, brought together in a network the parent chooses.</p></div>
       </section>
 
-      <section className="minimal-section minimal-container" aria-labelledby="steps-title"><h2 id="steps-title">From their village to their shelf</h2><ol className="village-steps">{STEPS.map(([title, text], index) => <li key={title}><span aria-hidden="true">0{index + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
+      <section className="minimal-section minimal-container" aria-labelledby="steps-title"><h2 id="steps-title">From their village to their shelf</h2><ol className="village-steps">{STEPS.map(({ title, text, image, alt }, index) => <li key={title}><Image src={`/village/process-oct31/${image}`} alt={alt} width={1536} height={1024} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 45vw, 260px" /><span aria-hidden="true">0{index + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
 
       <section className="minimal-section minimal-container village-story-grid" aria-labelledby="grow-title">
         <div><h2 id="grow-title">Keep the artwork. Add to the story.</h2><p>The tiny hands get bigger. The artwork changes. Each Proof gives that moment a place to stay.</p><p>New gifts can add to the same wallet. Here’s a simple example of gifts adding up.</p><ol className="village-deposits"><li>First gift <strong>US$10</strong></li><li>Another US$10 gift <strong>US$20</strong></li><li>A US$5 gift <strong>US$25</strong></li></ol><p className="first20-note">Gift totals shown before any fees or changes in value. This is an example, not a forecast.</p><p>The wallet uses digital money on Solana. Fees and risks apply. <a href={GIFT_HREF}>Read the gift details and FAQ</a>.</p></div>
         <figure><Image src="/village/network-oct31/02-network-picnic.webp" alt="Childlike illustration of a family picnic: a girl holds Proof of Growth, adults hold Proof of Love and Tanda brings a gift to the piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" /><figcaption>A small moment, shared by their network.</figcaption></figure>
       </section>
 
-      <section className="minimal-section minimal-container village-founder" aria-labelledby="why-title"><Image src="/sathian-portrait.webp" alt="Pencil portrait of Sathian" width={160} height={160} unoptimized loading="eager" /><div><p className="minimal-kicker">A NOTE FROM SATHIAN</p><h2 id="why-title">I built it for my children first.</h2><p>I’m a dad and a builder in Toronto. The people who love a child don’t all live in one home. I wanted a way for them to give a keepsake and set money aside for the child.</p><video controls playsInline preload="none" poster="/media/founder-20261031/founder-film-poster.jpg" width={1280} height={720} aria-label="Sathian introduces a child's village" style={{ width: '100%', height: 'auto', borderRadius: 16, marginBlock: 20 }}><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video><p><a className="minimal-text-link" href="#ask">Ask for a free gift</a></p><TrackedLink href={PROOF.href} event="proof_opened" placement="village_founder" className="minimal-text-link">Watch why I built Proof</TrackedLink></div></section>
+      <section className="minimal-section minimal-container village-founder" aria-labelledby="why-title"><Image src="/sathian-portrait.webp" alt="Pencil portrait of Sathian" width={160} height={160} unoptimized loading="eager" /><div><p className="minimal-kicker">A NOTE FROM SATHIAN</p><h2 id="why-title">I built it for my children first.</h2><p>I’m a dad and a builder in Toronto. The people who love a child don’t all live in one home. I wanted a way for them to give a keepsake and set money aside for the child.</p><p><a className="minimal-text-link" href="#ask">Ask for a free gift</a></p><TrackedLink href={PROOF.href} event="proof_opened" placement="village_founder" className="minimal-text-link">Watch why I built Proof</TrackedLink></div></section>
 
       <section id="ask" className="minimal-section minimal-container village-request" aria-labelledby="ask-title"><div><h2 id="ask-title">Ask for a free gift</h2><p className="first20-note"><strong>{FREE_GIFTS_REMAINING} of 20 free gifts left</strong></p><p>I’ll print a Proof and start the wallet with US$10. Leave your details and I’ll get in touch to work out the next steps.</p><p>I’d love your honest feedback. A public review is your choice. Want to post a review? That would mean a lot. <a href="https://www.trustpilot.com/review/toothfairy.network" target="_blank" rel="noopener noreferrer">Leave a review &#8599;</a> If you write one, please say the gift was free.</p><p className="first20-note">This is a request, not a checkout. Please share only your own contact details here. <Link href="/privacy">Privacy</Link></p></div><VillageForm /></section>
 

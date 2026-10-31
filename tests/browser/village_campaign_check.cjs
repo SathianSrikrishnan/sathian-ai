@@ -39,6 +39,14 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
         await page.waitForFunction(() => [...document.querySelectorAll('main img')].every(i => i.complete && i.naturalWidth > 0)).catch(async () => { throw new Error('Unloaded images: ' + JSON.stringify(await page.locator('main img').evaluateAll(images => images.filter(i => !i.complete || !i.naturalWidth).map(i => ({src:i.currentSrc || i.src, complete:i.complete})))) ) })
         assert(!await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), `${label} ${path}: overflow`)
         if (path === '/village') {
+          assert(await page.locator('main video').count() === 1, `${label}: one founder film`)
+          const film = page.locator('.village-vsl-film')
+          const box = await film.boundingBox()
+          assert(box && box.y >= 0 && box.y + box.height <= height, `${label}: full film visible above fold`)
+          assert(await film.getAttribute('autoplay') === null && await film.getAttribute('controls') !== null, `${label}: visitor controls playback`)
+          assert(await page.locator('.village-steps li img').count() === 4, `${label}: four illustrated steps`)
+          assert(await page.locator('.village-vsl-next a[href="#ask"]').count() === 1, `${label}: gift CTA directly after film`)
+
           const reading = checkReadability(await page.locator('main').innerText())
           assert(reading.pass, `${label}: Village reading grade ${reading.grade}, very hard sentences ${reading.veryHardSentences.length}`)
           console.log(`${label}: Village reading grade ${reading.grade}`)
