@@ -13,7 +13,7 @@ const surfaces = [
   { path: '/farcaster/library', heading: 'Short explanations.', title: 'Farcaster and Network School, explained | Sathian' },
   { path: '/writings/keep-the-internet-open', heading: 'Keep the Internet Open.', title: 'Keep the Internet Open — sathian.ai' },
   { path: '/projects/family-art-pod', heading: 'A little masterpiece. A home of its own.', title: 'Family Art Pod | Sathian' },
-  { path: '/', heading: 'Bring the Tooth Fairy to your child’s network.', title: 'Sathian Srikrishnan | Tooth Fairy Network' },
+  { path: '/', heading: 'Bring the Tooth Fairy to Your Child’s Village', title: 'Sathian Srikrishnan | Tooth Fairy Network' },
   { path: '/village', heading: "A child’s network is their village.", title: "Tooth Fairy Network | A parent-controlled child's network" },
   { path: '/privacy', heading: 'Privacy.', title: 'Privacy | Sathian' },
   { path: '/about', heading: "Hi, I'm Sathian.", title: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },
