@@ -25,6 +25,11 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
         console.log(label, path, 'navigation')
         const response = await page.goto(base + path, { waitUntil: 'load' })
         assert(response.ok(), `${label} ${path}: HTTP ${response.status()}`)
+        const hero = await page.request.get(base + '/village/review-oct31/proof-and-certificate-usdc.webp')
+        assert(hero.status() === 200 && hero.headers()['content-type']?.startsWith('image/webp'), `${label} ${path}: raw approved hero unavailable`)
+        const heroHash = require('node:crypto').createHash('sha256').update(await hero.body()).digest('hex')
+        assert(heroHash === 'af43366b8a4cfe935ca4850943f678ba3b7dadbd83bb0eed458c885dde8a846b', `${label} ${path}: wrong hero version`)
+
         assert(await page.locator('h1').count() === 1, `${label} ${path}: one H1`)
         assert(await page.locator('link[rel="canonical"]').getAttribute('href') === 'https://sathian.ai' + (path === '/' ? '' : path), `${label} ${path}: canonical`)
         assert(!/noindex|nofollow/.test(await page.locator('meta[name="robots"]').evaluateAll(nodes => nodes.map(n => n.content).join(','))), `${label} ${path}: indexable`)
