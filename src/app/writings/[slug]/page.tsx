@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getArticleBySlug } from '@/lib/articles-db'
 import { articles as staticArticles } from '@/lib/articles'
+import { genericWritingParams } from '@/lib/writing-routes'
 import { ArticleRenderer } from '@/components/article/ArticleRenderer'
 import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 
@@ -14,7 +15,7 @@ type Props = { params: Promise<{ slug: string }> }
 export const revalidate = 60
 
 export function generateStaticParams() {
-  return staticArticles.map((article) => ({ slug: article.slug }))
+  return genericWritingParams(staticArticles)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
