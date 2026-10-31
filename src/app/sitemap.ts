@@ -10,8 +10,8 @@ const SITE_RELEASED_AT = new Date('2026-07-15T00:00:00.000Z')
 // Content dates, not the time the sitemap was requested. The learning pages were
 // last materially revised in the approved October 29 film/article release.
 const CONTENT_MODIFIED_AT: Record<string, string> = {
-  '': '2026-10-30T00:00:00.000Z',
-  '/village': '2026-10-30T00:00:00.000Z',
+  '': '2026-10-31T00:00:00.000Z',
+  '/village': '2026-10-31T00:00:00.000Z',
   '/learn/stablecoin': '2026-10-29T22:29:53.000Z',
   '/learn/planet-patterns/mercury-pluto': '2026-10-29T22:29:53.000Z',
 }

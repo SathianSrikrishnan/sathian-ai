@@ -31,7 +31,7 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('FOUNDER + DAD')
     expect(homepage).toContain('minimal-home-mission')
     expect(homepage).toContain('TORONTO')
-    expect(homepage).toContain('A village around a child.')
+    expect(homepage).toContain('Bring the Tooth Fairy to your child’s network.')
     expect(rootLayout.match(/title: 'Sathian Srikrishnan \| Digital Experiments'/g)).toHaveLength(3)
     expect(siteIdentity).toContain("name: 'Sathian'")
     expect(siteIdentity).not.toContain('SATHN')

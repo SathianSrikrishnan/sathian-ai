@@ -51,7 +51,7 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
           await page.waitForFunction(() => document.activeElement?.classList.contains('site-agent-reopen'))
           await opener.press('Enter'); await page.locator('[data-chat-panel]').waitFor()
           await page.getByRole('button', { name: 'Close chat', exact: true }).click()
-          assert(await page.getByRole('link', { name: 'See the Village gift', exact: true }).getAttribute('href') === '/village', 'home campaign link')
+          assert(await page.getByRole('link', { name: 'See the Tooth Fairy Network gift', exact: true }).getAttribute('href') === '/village', 'home campaign link')
         }
       }
       console.log(label, 'form checks')

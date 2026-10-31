@@ -6744,7 +6744,7 @@ h1, h2, h3 {
 .village-next details { max-width: 700px; border-top: 1px solid var(--minimal-rule); padding-top: 20px; }
 .village-next summary { cursor: pointer; font-weight: 600; }
 .village-home-hero { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,.8fr); gap: 64px; align-items: center; }
-.village-home-hero h1 { font-size: clamp(3rem,6vw,6rem); }
+.village-home-hero h1 { font-size: clamp(40px,4.4vw,68px); }
 .village-home-art img { display: block; width: 100%; height: min(520px,55vw); object-fit: contain; border-radius: 14px; background: #eee7da; }
 .minimal-agent-section .relaunch-agent-host { min-height: 112px; }
 .minimal-agent-section .minimal-agent-frame { min-height: 0; }
@@ -6762,3 +6762,8 @@ h1, h2, h3 {
 .relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host { min-height: 112px; padding: 0; border: 0; background: none; box-shadow: none; transform: none; }
 .relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host::before,
 .relaunch-shell.minimal-site[data-theme="workshop"] .minimal-agent-section .relaunch-agent-host::after { display: none; }
+
+.network-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; padding: 0; margin: 22px 0; list-style: none; }
+.network-benefits li { display: flex; gap: 9px; align-items: center; font-size: 14px; line-height: 1.35; }
+.network-benefits svg { flex: 0 0 30px; color: var(--minimal-rust); transform: rotate(-2deg); }
+@media (max-width: 420px) { .network-benefits { gap: 12px; } .network-benefits li { font-size: 13px; } .village-home-hero h1 { font-size: clamp(36px,10vw,44px); } }

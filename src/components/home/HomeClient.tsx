@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { NetworkBenefits } from '@/components/NetworkBenefits'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import { TrackedAnchor, TrackedLink } from '@/components/home/TrackedLinks'
@@ -66,17 +67,18 @@ export function HomeClient({ writings }: HomeClientProps) {
         <header className="minimal-home-hero minimal-container village-home-hero">
           <div>
             <p className="minimal-kicker minimal-home-identity"><span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span><span className="minimal-home-identity__part">FOUNDER + DAD</span><span className="minimal-home-identity__part">TORONTO</span></p>
-            <h1>A village around a child.</h1>
-            <p className="minimal-home-mission">I build things for the people I love. This one starts with a child, a drawing and the people who show up.</p>
-            <p>A printed Proof of Growth. A note from you. A first digital wallet, with the parent holding the key.</p>
+            <h1>Bring the Tooth Fairy to your child’s network.</h1>
+            <p className="minimal-home-mission">I build things for the people I love. This one starts with a child, their art and the people who show up.</p>
+            <NetworkBenefits />
+            <p>Parents choose who joins their child’s network. They hold the wallet key.</p>
             <div className="about-actions">
-              <TrackedLink href="/village" event="village_opened" properties={{ placement: 'homepage_hero' }} className="about-button about-button--primary">See the Village gift</TrackedLink>
+              <TrackedLink href="/village" event="village_opened" properties={{ placement: 'homepage_hero' }} className="about-button about-button--primary">See the Tooth Fairy Network gift</TrackedLink>
               <Link href="/about" className="about-button">Meet Sathian</Link>
             </div>
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>
-          <Link href="/village" className="village-home-art" aria-label="See what a child gets in the Village gift">
-            <Image src="/village/proof-in-hand.webp" alt="A real printed Proof of Growth with a tooth-fairy drawing, held in a hand" width={1105} height={1600} sizes="(max-width: 760px) 100vw, 460px" priority />
+          <Link href="/village" className="village-home-art" aria-label="See what a child gets from Tooth Fairy Network">
+            <Image src="/village/proof-in-hand.webp" alt="A real printed Proof of Growth with a tooth-fairy artwork, held in a hand" width={1105} height={1600} sizes="(max-width: 760px) 100vw, 460px" priority />
           </Link>
         </header>
 

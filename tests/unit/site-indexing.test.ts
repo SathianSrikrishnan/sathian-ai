@@ -141,7 +141,7 @@ describe('public-site indexing', () => {
     expect(first.map((entry) => String(entry.lastModified))).toEqual(
       second.map((entry) => String(entry.lastModified)),
     )
-    expect(new Date(first.find(entry => entry.url === 'https://sathian.ai/village')!.lastModified!).toISOString()).toBe('2026-10-30T00:00:00.000Z')
+    expect(new Date(first.find(entry => entry.url === 'https://sathian.ai/village')!.lastModified!).toISOString()).toBe('2026-10-31T00:00:00.000Z')
     for (const path of ['/learn/stablecoin', '/learn/planet-patterns/mercury-pluto']) {
       expect(new Date(first.find(entry => entry.url === `https://sathian.ai${path}`)!.lastModified!).toISOString()).toBe('2026-10-29T22:29:53.000Z')
     }
