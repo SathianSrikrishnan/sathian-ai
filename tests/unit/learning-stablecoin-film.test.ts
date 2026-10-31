@@ -14,5 +14,8 @@ it('preserves the question flow and makes the overview optional',()=>{
  expect(collection).toContain('<StablecoinFilm />');expect(collection).toContain('Start the USDC lesson')
  expect(collection).toContain('<StablecoinLesson key=')
  const quiz=readFileSync('src/components/learn/StablecoinLesson.tsx','utf8')
- expect(quiz).not.toContain('<video');expect(quiz).not.toContain('useLayoutEffect')
+ expect(quiz).not.toContain('<video')
+ // The approved keyboard correction focuses on commit, only after advance/reset.
+ // A delayed animation-frame callback can steal focus from the next answer.
+ expect(quiz).not.toContain('requestAnimationFrame')
 })
