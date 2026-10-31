@@ -1,203 +1,74 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-
+import Link from 'next/link'
+import { NetworkBenefits } from '@/components/NetworkBenefits'
 import { VillageForm } from '@/components/VillageForm'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
 import { TrackedLink } from '@/components/TrackedLink'
 import { PROOF } from '@/content/proof'
 
-// Unlisted offer page for people the owner meets in person or online (Luma, events). Not in the nav or sitemap.
 const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=village'
-// Set to the owner's short video message once it is recorded; the section stays hidden until then.
-const WELCOME_VIDEO = ''
-
 export const metadata: Metadata = {
-  title: { absolute: 'Are you part of a child’s village? | Sathian' },
-  description: 'It takes a village to raise a child. Give a child you love a printed Proof and their own savings wallet, free. The child keeps it for life. The parent holds the key.',
+  title: { absolute: "Tooth Fairy Network | A parent-controlled child's network" },
+  description: 'Give a child you love a printed Proof of Growth and a parent-controlled digital wallet. Ask Sathian for a free printed Proof with US$10 to start.',
   alternates: { canonical: '/village' },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
+  openGraph: { title: "A child’s network, led by their parent.", description: 'Parents choose the network. A printed Proof, a personal note and US$10 to start.', url: 'https://sathian.ai/village', images: [{ url: '/village/network-oct31/01-network-circle.webp', width: 1536, height: 1024, alt: 'A village of loved ones around a child' }] },
+  twitter: { card: 'summary_large_image', title: "A child’s network, led by their parent.", description: 'A printed Proof and a first wallet, with the parent holding the key.', images: ['/village/network-oct31/01-network-circle.webp'] },
 }
 
-const GETS = [
-  'A printed Proof to keep on their shelf, with their drawing or your photo and your note.',
-  'Their own savings wallet, started with US$10. It belongs to the child for life.',
-  'A code on the Proof that opens the wallet. The parent holds the key.',
-  'Only the parent can take money out. Everyone in the village can only add.',
-]
-
-const LEARN_MORE = [
-  {
-    kicker: 'WHY I BUILT IT',
-    title: 'Watch Proof',
-    text: 'The story behind it, in short films.',
-    href: PROOF.href,
-    event: 'proof_opened',
-    image: '/proof-assets/product-samples-20261028/sample-front.webp',
-    alt: 'A crayon sketch of Tanda the tooth fairy dropping a coin into a piggy bank',
-  },
-  {
-    kicker: 'FOR FAMILIES',
-    title: 'Learn with Tanda',
-    text: 'Free stories and short lessons about money, for kids and grown-ups.',
-    href: '/learn',
-    event: 'learn_opened',
-    image: '/learn-art/classroom-master.webp',
-    alt: 'Tanda teaching a family about saving and digital money',
-  },
-  {
-    kicker: 'THE GIFT',
-    title: 'See the full gift',
-    text: 'How it works, what it costs and common questions.',
-    href: GIFT_HREF,
-    event: 'gift_cta_clicked',
-    image: '/projects/tooth-fairy-network/family-storybook-hero.webp',
-    alt: 'Tanda the tooth fairy beside a glowing Proof',
-  },
+const STEPS = [
+  ['You ask', 'Tell me who you are to the child. Please leave the child’s name and photos out of this form.'],
+  ['We make it theirs', 'I’ll get in touch. We choose artwork or a photo and a note from you.'],
+  ['The parent says yes', 'The parent chooses who joins the child’s network and accepts the gift.'],
+  ['Their network can add', 'A lost tooth. A birthday. A first bike ride. Loved ones can give again.'],
 ] as const
 
 export default function VillagePage() {
-  return (
-    <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
-      <SiteNav />
+  return <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
+    <SiteNav />
+    <main className="about-page village-page">
+      <header className="about-hero village-hero minimal-container">
+        <div className="about-hero__copy">
+          <p className="minimal-kicker">THE CHILD’S VILLAGE / TOOTH FAIRY NETWORK</p>
+          <h1>A child’s network, led by their parent.</h1>
+          <p className="about-lead">Tooth Fairy Network brings the people who love a child together. The parent decides who joins.</p>
+          <NetworkBenefits />
+          <p>A free printed Proof and US$10 to start. For the child you love, near or far.</p>
+          <div className="about-actions"><a href="#ask" className="about-button about-button--primary">Ask for a free gift</a><a href="#the-gift" className="about-button">See what they get</a></div>
+          <p className="first20-note">I’m Sathian, a dad in Toronto. Try it and tell me what you think.</p>
+        </div>
+        <Image className="first20-hero-photo" src="/village/network-oct31/01-network-circle.webp" alt="Childlike illustration of a girl holding Proof of Growth, four adults holding Proof of Love and Tanda beside a piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" priority />
+      </header>
 
-      <main className="about-page">
-        <header className="about-hero village-hero minimal-container">
-          <div className="about-hero__copy">
-            <p className="minimal-kicker">THE VILLAGE / A FREE GIFT FROM SATHIAN</p>
-            <h1>Are you part of a child&apos;s village?</h1>
-            <p className="about-lead">
-              It takes a village to raise a child. Give one you love their own savings, free.
-              I&apos;ll print them a Proof and start their savings wallet. The child keeps it for life.
-              The parent holds the key. You&apos;re the giver.
-            </p>
-            <div className="about-actions">
-              <a href="#ask" className="about-button about-button--primary">Ask for a free gift</a>
-              <TrackedLink href={PROOF.href} event="proof_opened" placement="village_hero" className="about-button">
-                Why I built it
-              </TrackedLink>
-            </div>
-          </div>
-          <Image
-            className="about-hero__portrait first20-hero-photo"
-            src="/village/village-hands.webp"
-            alt="A child's marker drawing: a family holds hands around a child who holds up a Proof of Growth, while Tanda the tooth fairy drops a coin into a piggy bank"
-            width={687}
-            height={463}
-            sizes="(max-width: 760px) 100vw, 480px"
-            priority
-          />
-        </header>
+      <section id="the-gift" className="minimal-section minimal-container" aria-labelledby="gift-title">
+        <h2 id="gift-title">What the child gets</h2>
+        <figure className="network-product-display"><Image src="/village/network-oct31/04-product-glass-table-concept.webp" alt="Illustrative gift presentation: Proof of Growth and Proof of Love designs on a glass table, a piggy bank and a sample digital wallet screen" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 1100px" /><figcaption>Illustrative gift presentation.</figcaption></figure>
+        <div className="village-product-grid network-product-details">
+          <div><h3>A printed Proof of Growth</h3><p>Their artwork or your photo, with your note inside. A keepsake to hold and read again.</p></div>
+          <div><h3>A note from someone who cares</h3><p>A message that marks a small moment. Even when you live far away.</p></div>
+          <div><h3>A first digital wallet</h3><p>US$10 to start. The parent holds the key and can take money out.</p></div>
+        </div>
+      </section>
 
-        {WELCOME_VIDEO && (
-          <section className="minimal-section minimal-container" aria-labelledby="first20-video">
-            <h2 id="first20-video">A quick hello</h2>
-            <video className="first20-video" src={WELCOME_VIDEO} controls playsInline preload="metadata" />
-          </section>
-        )}
+      <section className="minimal-section minimal-container village-story-grid" aria-labelledby="village-roles">
+        <Image src="/village/network-oct31/03-network-village-path.webp" alt="Childlike illustration of Tanda connecting four family homes to a girl holding Proof of Growth, with the parent holding the key" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" />
+        <div><h2 id="village-roles">A network chosen by the parent.</h2><p>Aunts. Uncles. Grandparents. Godparents. Friends. The people who show up for a child.</p><p><strong>You give.</strong> A picture, a note and a gift.</p><p><strong>The parent holds the key.</strong> They choose who joins the child’s network, accept the gift and control the wallet.</p><p><strong>The child gets a keepsake.</strong> Each gift marks a moment in their life.</p><p>Tanda brings the Tooth Fairy story to life. Think of a village: real people who care, brought together in a network the parent chooses.</p></div>
+      </section>
 
-        <section className="minimal-section minimal-container" aria-labelledby="first20-gets">
-          <h2 id="first20-gets">What the child gets</h2>
-          <div className="first20-gets">
-            <ul>
-              {GETS.map((line) => <li key={line}>{line}</li>)}
-            </ul>
-            <Image
-              src="/village/proof-hero-flat.webp"
-              alt="A printed Proof of Growth, No. 1, with a crayon drawing of Tanda dropping a coin into a piggy bank"
-              width={1600}
-              height={1200}
-              sizes="(max-width: 760px) 100vw, 320px"
-            />
-          </div>
-          <p className="first20-note">Each gift adds a new numbered Proof, and the savings grow in one place.</p>
-          <Image
-            className="village-wide"
-            src="/village/proof-pair.webp"
-            alt="Two printed Proofs of Growth, No. 1 and No. 2"
-            width={1600}
-            height={1200}
-            sizes="(max-width: 760px) 100vw, 640px"
-          />
-        </section>
+      <section className="minimal-section minimal-container" aria-labelledby="steps-title"><h2 id="steps-title">From their network to their shelf</h2><ol className="village-steps">{STEPS.map(([title, text], index) => <li key={title}><span aria-hidden="true">0{index + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-who">
-          <h2 id="first20-who">It takes a village</h2>
-          <Image
-            className="village-wide"
-            src="/village/village-map.webp"
-            alt="A child's marker drawing of a village: family members walk dotted paths from their houses to the child, who holds a Proof of Growth beside a piggy bank"
-            width={687}
-            height={463}
-            sizes="(max-width: 760px) 100vw, 640px"
-          />
-          <p>
-            Parents are busy. I know. I&apos;m one. When it comes to their kids, they count on the people
-            closest to them: aunts, uncles, godparents, grandparents and good friends. That&apos;s the village.
-          </p>
-          <p>
-            Tooth Fairy Network connects a child&apos;s village. You give the gift. The parent says yes and holds the key.
-            The child keeps it. Anyone in the village can add to it later. Are you a parent? Even better. Ask for your own child.
-          </p>
-        </section>
+      <section className="minimal-section minimal-container village-story-grid" aria-labelledby="grow-title">
+        <div><h2 id="grow-title">Keep the artwork. Add to the story.</h2><p>The tiny hands get bigger. The artwork changes. Each Proof gives that moment a place to stay.</p><p>New gifts can add to the same wallet. Here’s a simple example of gifts adding up.</p><ol className="village-deposits"><li>First gift <strong>US$10</strong></li><li>Another US$10 gift <strong>US$20</strong></li><li>A US$5 gift <strong>US$25</strong></li></ol><p className="first20-note">Gift totals shown before any fees or changes in value. This is an example, not a forecast.</p><p>The wallet uses digital money on Solana. Fees and risks apply. <a href={GIFT_HREF}>Read the gift details and FAQ</a>.</p></div>
+        <figure><Image src="/village/network-oct31/02-network-picnic.webp" alt="Childlike illustration of a family picnic: a girl holds Proof of Growth, adults hold Proof of Love and Tanda brings a gift to the piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" /><figcaption>A small moment, shared by their network.</figcaption></figure>
+      </section>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="village-soon">
-          <h2 id="village-soon">Coming soon: the village app</h2>
-          <p>
-            Soon, anyone in the village can snap a growth moment with Meta glasses or a phone: a new drawing,
-            a lost tooth, a first bike. Add a gift, and it lands in the child&apos;s vault with the photo.
-            The child gets to see their money, their pictures and their art in one place.
-          </p>
-          <p>Free-gift families get the app first.</p>
-        </section>
+      <section className="minimal-section minimal-container village-founder" aria-labelledby="why-title"><Image src="/sathian-portrait.webp" alt="Pencil portrait of Sathian" width={160} height={160} unoptimized loading="eager" /><div><p className="minimal-kicker">A NOTE FROM SATHIAN</p><h2 id="why-title">I built it for my kids first.</h2><p>I’m a dad and a builder in Toronto. The people who love a child don’t all live in one home. I wanted a way for them to give, and for the child to keep the story.</p><TrackedLink href={PROOF.href} event="proof_opened" placement="village_founder" className="minimal-text-link">Watch why I built Proof</TrackedLink></div></section>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-why">
-          <h2 id="first20-why">Why I built it</h2>
-          <p>
-            I&apos;m a dad and a builder in Toronto. I&apos;m divorced, and I&apos;m very much in my kids&apos; lives.
-            A lot of kids grow up like mine. The people who love them don&apos;t all live under one roof.
-          </p>
-          <p>
-            I built this for my own kids first: one gift they won&apos;t outgrow. Toys get lost. Cash gets spent.
-            This stays on their shelf, and the savings stay theirs.
-          </p>
-        </section>
+      <section id="ask" className="minimal-section minimal-container village-request" aria-labelledby="ask-title"><div><h2 id="ask-title">Ask for a free gift</h2><p>I’ll print a Proof and start the wallet with US$10. Leave your details and I’ll get in touch to work out the next steps.</p><p>I’d love your honest feedback. A public review is your choice. If you write one, please say the gift was free.</p><p className="first20-note">This is a request, not a checkout. Please share only your own contact details here. <Link href="/privacy">Privacy</Link></p></div><VillageForm /></section>
 
-        <section className="minimal-section minimal-container about-story" aria-labelledby="first20-ask-back">
-          <h2 id="first20-ask-back">What I ask in return</h2>
-          <p>
-            Just your honest feedback. Tell me what works and what doesn&apos;t. Want to post a review?
-            That would mean a lot. Please say your gift was free.
-          </p>
-          <p>
-            People who&apos;ve tried it tell me it&apos;s really cool, and the first paying families are coming in.
-            I&apos;m open to ideas and partnerships too. Let&apos;s talk.
-          </p>
-        </section>
-
-        <section id="ask" className="minimal-section minimal-container" aria-labelledby="first20-ask">
-          <h2 id="first20-ask">Ask for a free gift</h2>
-          <VillageForm />
-        </section>
-
-        <section className="minimal-section minimal-container" aria-labelledby="first20-more">
-          <h2 id="first20-more">Learn more</h2>
-          <div className="about-cards">
-            {LEARN_MORE.map((card) => (
-              <TrackedLink key={card.title} href={card.href} event={card.event} placement="village_learn_more" className="about-card">
-                <span className="about-card__media">
-                  <Image src={card.image} alt={card.alt} fill sizes="(max-width: 760px) 100vw, 360px" />
-                </span>
-                <span className="minimal-kicker">{card.kicker}</span>
-                <strong>{card.title}</strong>
-                <span className="about-card__text">{card.text}</span>
-              </TrackedLink>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      <SiteFooter />
-    </div>
-  )
+      <section className="minimal-section minimal-container village-next" aria-labelledby="next-title"><h2 id="next-title">More from Tooth Fairy Network</h2><div className="village-next-links"><TrackedLink href="/learn" event="learn_opened" placement="village_footer">Free stories and money lessons with Tanda →</TrackedLink><TrackedLink href={GIFT_HREF} event="gift_cta_clicked" placement="village_footer">See the paid gift and full details →</TrackedLink></div><details><summary>Coming next: the Proof of Growth app</summary><p>I’m building a way to save growth moments and gifts in one place. Planned for Meta glasses, Apple iPhone and Google Android. The app is not public yet, and no launch date is set.</p></details></section>
+    </main><SiteFooter />
+  </div>
 }

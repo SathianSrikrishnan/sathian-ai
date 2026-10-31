@@ -24,7 +24,7 @@ describe('site-agent-first editorial pass', () => {
   })
 
   it('uses Sathian\'s approved minimal homepage language', () => {
-    expect(home).toContain('Digital Experiments')
+    expect(home).toContain('Bring the Tooth Fairy to your child’s network.')
     expect(home).not.toContain("Welcome to Sathian's Digital Workshop")
     expect(home).not.toContain('Ask the site agent about what I am building and writing, or leave me a note.')
     expect(widget).not.toContain('PUBLIC CONTEXT / PRIVATE INTAKE')

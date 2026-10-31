@@ -130,6 +130,11 @@ jobs:
           SITE_URL: ${{ steps.preview.outputs.url }}
           BROWSER_PROOF_DIR: ${{ runner.temp }}/public-surface
         run: node tests/browser/public_surface_check.cjs
+      - name: Verify Village campaign and mocked request flow
+        env:
+          SITE_URL: ${{ steps.preview.outputs.url }}
+          BROWSER_PROOF_DIR: ${{ runner.temp }}/public-surface/village
+        run: node tests/browser/village_campaign_check.cjs
       - name: Verify Learn lessons and seven story readers
         env:
           SITE_URL: ${{ steps.preview.outputs.url }}

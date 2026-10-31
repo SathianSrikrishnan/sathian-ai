@@ -23,7 +23,7 @@ describe('sathian.ai relaunch surface', () => {
   const homepage = `${page}\n${homeClient}\n${siteProjects}`
   const publicBuildRecord = `${agentIndex}\n${publicBuildNotes}`
 
-  it('leads with the concise Digital Experiments title and the live site agent', () => {
+  it('leads with the Village gift and preserves the live site agent', () => {
     // Owner, Oct 27: full name visible; the agent-manager title retired for founder + dad.
     expect(homepage).toContain('>SATHIAN SRIKRISHNAN</span>')
     expect(homepage).not.toContain('SATHN')
@@ -31,7 +31,7 @@ describe('sathian.ai relaunch surface', () => {
     expect(homepage).toContain('FOUNDER + DAD')
     expect(homepage).toContain('minimal-home-mission')
     expect(homepage).toContain('TORONTO')
-    expect(homepage).toContain('Digital Experiments')
+    expect(homepage).toContain('Bring the Tooth Fairy to your child’s network.')
     expect(rootLayout.match(/title: 'Sathian Srikrishnan \| Digital Experiments'/g)).toHaveLength(3)
     expect(siteIdentity).toContain("name: 'Sathian'")
     expect(siteIdentity).not.toContain('SATHN')

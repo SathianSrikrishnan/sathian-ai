@@ -141,6 +141,7 @@ async function verifyViewport(browser, label, viewport) {
 
   console.log(`${label}: homepage note-receipt flow`)
   await gotoHydratedAgentPage(page, '/')
+  await page.getByRole('button', { name: /Ask Sathian/ }).click()
   const signatureAssetStatus = await page.evaluate(async () => {
     const response = await fetch('/audio/site-agent-note-signature.mp3')
     return response.status
@@ -207,6 +208,7 @@ async function verifyActualMobilePlayback(browser) {
   }
 
   await gotoHydratedAgentPage(page, '/')
+  await page.getByRole('button', { name: /Ask Sathian/ }).click()
   await page.getByRole('button', { name: 'I want to leave Sathian a note' }).click()
   await page.getByRole('textbox', { name: 'Write your note to Sathian' }).fill('Synthetic decode verification; do not deliver.')
   await page.getByRole('button', { name: 'Send note' }).click()

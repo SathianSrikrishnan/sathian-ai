@@ -173,6 +173,7 @@ export function ChatWidget() {
 
 function ChatWidgetContent() {
   const [open, setOpen] = useState(false)
+  const inlineOpenRef = useRef<HTMLButtonElement>(null)
   const [messages, setMessages] = useState<AgentMessage[]>([
     { role: 'bot', text: AGENT_INTRO_MESSAGE },
   ])
@@ -505,7 +506,7 @@ function ChatWidgetContent() {
   sendRef.current = (text: string) => handleSend(text)
 
    useEffect(() => {
-     if (open && !isHomepage && inputRef.current) inputRef.current.focus()
+     if (open && inputRef.current) inputRef.current.focus()
    }, [isHomepage, open])
 
    useEffect(() => {
@@ -565,7 +566,7 @@ function ChatWidgetContent() {
 
     const target = document.getElementById('home-agent-slot')
     setHomeTarget(target)
-    setOpen(true)
+    setOpen(false)
   }, [isHomepage])
 
   // Listen for custom events from other components (e.g. homepage chat prompts)
@@ -671,7 +672,7 @@ function ChatWidgetContent() {
                >
                  New
                </button>
-               <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="site-agent-close w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none">
+               <button type="button" onClick={() => { setOpen(false); if (isHomepage) setTimeout(() => inlineOpenRef.current?.focus(), 0) }} aria-label="Close chat" className="site-agent-close w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors focus-visible:outline-none">
                  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2L10 10M10 2L2 10" /></svg>
                </button>
              </div>
@@ -908,12 +909,12 @@ function ChatWidgetContent() {
   )
 
   const inlineSurface = open ? chatSurface : (
-    <button type="button" className="site-agent-reopen" onClick={() => {
+    <button ref={inlineOpenRef} type="button" aria-expanded={false} className="site-agent-reopen" onClick={() => {
       playAgentSound('wake')
       setOpen(true)
     }}>
       <span className="site-agent-reopen__status"><span /> SITE AGENT</span>
-      <strong>Open the site agent</strong>
+      <strong>Ask Sathian</strong>
       <span>Ask about the work or leave Sathian a note.</span>
     </button>
   )

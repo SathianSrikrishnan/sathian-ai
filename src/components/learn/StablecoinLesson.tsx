@@ -1,12 +1,18 @@
 'use client'
-import { useReducer, useRef } from 'react'
+import { useLayoutEffect, useReducer, useRef } from 'react'
 import { initialStablecoinState, stablecoinLesson, stablecoinTransition, STABLECOIN_STEPS } from '@/lib/learn/stablecoin'
 export function StablecoinLesson() {
  const [state, dispatch] = useReducer(stablecoinTransition, undefined, initialStablecoinState)
  const heading=useRef<HTMLHeadingElement>(null)
+ const focusHeading=useRef(false)
+ useLayoutEffect(()=>{
+  if (!focusHeading.current) return
+  focusHeading.current=false
+  heading.current?.focus()
+ },[state])
  const step=STABLECOIN_STEPS[state.step]
- function advance() { dispatch({type:'continue'}); requestAnimationFrame(()=>heading.current?.focus()) }
- function reset() { dispatch({type:'reset'}); requestAnimationFrame(()=>heading.current?.focus()) }
+ function advance() { focusHeading.current=true; dispatch({type:'continue'}) }
+ function reset() { focusHeading.current=true; dispatch({type:'reset'}) }
  return <section className="learn-stablecoin" aria-label="USDC questions">
   <p>USDC is a stablecoin: a digital token designed to stay worth one US dollar.</p>
   <div className={`learn-token-model token-step-${state.step}`} aria-label="A pretend dollar in reserves, a USDC token and two wallets"><div className="learn-reserve-box"><span>Reserves</span><strong>$1</strong></div><span aria-hidden="true">↔</span><div className="learn-token">USDC</div><span aria-hidden="true">↔</span><div className="learn-wallet-box"><span>Wallet A</span><span>Wallet B</span></div></div>

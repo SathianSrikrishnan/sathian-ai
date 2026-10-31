@@ -31,11 +31,15 @@ describe('public-site indexing', () => {
     const urls = buildSitemap('sathian.ai', new Date('2026-07-15T00:00:00.000Z')).map((entry) => entry.url)
     expect(urls).toContain('https://sathian.ai')
     expect(urls).toContain('https://sathian.ai/about')
+    expect(urls).toContain('https://sathian.ai/village')
+    expect(urls).toContain('https://sathian.ai/learn/stablecoin')
+    expect(urls).toContain('https://sathian.ai/learn/planet-patterns/mercury-pluto')
+    expect(urls.some(url => /studio|api\/|first-20/.test(url))).toBe(false)
     expect(urls).toContain('https://sathian.ai/hackathons')
     expect(urls).toContain('https://sathian.ai/writings')
     expect(urls).toContain('https://sathian.ai/agents')
     expect(urls).toContain('https://sathian.ai/links')
-    expect(urls).toContain('https://sathian.ai/farcaster')
+    expect(urls).not.toContain('https://sathian.ai/farcaster')
     expect(urls).toContain('https://sathian.ai/projects/solana-observatory')
     expect(urls).toContain('https://sathian.ai/projects/tooth-fairy-network/draw-with-tanda')
     expect(urls).toContain('https://sathian.ai/projects/clinicalguard')
@@ -137,6 +141,10 @@ describe('public-site indexing', () => {
     expect(first.map((entry) => String(entry.lastModified))).toEqual(
       second.map((entry) => String(entry.lastModified)),
     )
+    expect(new Date(first.find(entry => entry.url === 'https://sathian.ai/village')!.lastModified!).toISOString()).toBe('2026-10-31T00:00:00.000Z')
+    for (const path of ['/learn/stablecoin', '/learn/planet-patterns/mercury-pluto']) {
+      expect(new Date(first.find(entry => entry.url === `https://sathian.ai${path}`)!.lastModified!).toISOString()).toBe('2026-10-29T22:29:53.000Z')
+    }
 
     const source = readFileSync(new URL('../../src/app/sitemap.ts', import.meta.url), 'utf8')
     expect(source).toMatch(/getPublishedArticles/)

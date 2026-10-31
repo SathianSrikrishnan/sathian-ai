@@ -7,6 +7,14 @@ import { isToothFairyHost } from '@/lib/site-host'
 export const dynamic = 'force-dynamic'
 
 const SITE_RELEASED_AT = new Date('2026-07-15T00:00:00.000Z')
+// Content dates, not the time the sitemap was requested. The learning pages were
+// last materially revised in the approved October 29 film/article release.
+const CONTENT_MODIFIED_AT: Record<string, string> = {
+  '': '2026-10-31T00:00:00.000Z',
+  '/village': '2026-10-31T00:00:00.000Z',
+  '/learn/stablecoin': '2026-10-29T22:29:53.000Z',
+  '/learn/planet-patterns/mercury-pluto': '2026-10-29T22:29:53.000Z',
+}
 
 interface PublishedWriting {
   slug: string
@@ -30,15 +38,17 @@ export function buildSitemapForHost(
     const coreRoutes = [
       '',
       '/about',
+      '/village',
       '/agents',
       '/hackathons',
       '/links',
-      '/farcaster',
       '/privacy',
       '/learn', '/learn/stories', '/learn/stories/tanda-origin', '/learn/stories/first-tooth-fee', '/learn/stories/toothlight-treaty', '/learn/stories/roof-song', '/learn/stories/edge-of-the-light', '/learn/stories/one-year-wish', '/learn/stories/gap-in-the-gold',
       '/learn/bitcoin',
       '/learn/ethereum',
       '/learn/solana',
+      '/learn/stablecoin',
+      '/learn/planet-patterns/mercury-pluto',
       '/writings',
       '/projects/solana-observatory',
       '/projects/tooth-fairy-network/draw-with-tanda',
@@ -53,7 +63,7 @@ export function buildSitemapForHost(
     )
     const coreEntries = coreRoutes.map((path, index) => ({
       url: `${base}${path}`,
-      lastModified: path === '/writings' ? writingIndexUpdated : updated,
+      lastModified: path === '/writings' ? writingIndexUpdated : safeDate(CONTENT_MODIFIED_AT[path], updated),
       changeFrequency: path === '' || path === '/writings' ? 'weekly' : 'monthly',
       priority: index === 0 ? 1 : path === '/writings' ? 0.9 : 0.7,
     })) as MetadataRoute.Sitemap

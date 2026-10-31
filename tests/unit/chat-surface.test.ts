@@ -93,10 +93,10 @@ describe('public chat surface', () => {
     expect(widget).toContain('sessionStorage.removeItem(AGENT_CONVERSATION_SESSION_KEY)')
   })
 
-  it('does not auto-focus the inline homepage input and pull mobile visitors past the introduction', () => {
+  it('focuses the composer when the visitor opens chat', () => {
     const widget = readSource('src/components/ChatWidget.tsx')
 
-    expect(widget).toContain('if (open && !isHomepage && inputRef.current) inputRef.current.focus()')
+    expect(widget).toContain('if (open && inputRef.current) inputRef.current.focus()')
   })
 
   it('lets a note-workflow answer open the note composer without navigating away', () => {
