@@ -32,6 +32,10 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
         const cta = page.locator(route === '/' ? '.village-home-hero .about-button--primary' : '.village-vsl-next .about-button--primary').first()
         const box = await cta.boundingBox()
         assert(box && box.y >= 0 && box.y + box.height <= height, `${route} ${width}: primary CTA must be in the initial viewport`)
+        if (route === '/village') {
+          assert(await page.locator('link[rel=preload][as=image][href="/village/performance-nov2/founder-film-poster.webp"]').count() === 1, 'Video poster should be discovered before decorative art')
+          assert(await page.locator('img.village-vsl-backdrop[fetchpriority=low]').count() === 1, 'Approved backdrop must remain without competing with the poster')
+        }
         assert((await page.locator('link[rel=canonical]').getAttribute('href')).replace(/\/$/, '') === `https://sathian.ai${route === '/' ? '' : route}`, `${route}: canonical changed`)
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${route}: overflow`)
         if (route === '/village') {
