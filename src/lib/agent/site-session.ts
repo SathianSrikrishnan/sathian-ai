@@ -6,7 +6,11 @@ export function ensureAgentSession(page: string | null) {
   if (!sessionId) {
     sessionId = crypto.randomUUID()
     sessionStorage.setItem(key, sessionId)
-    void fetch('/api/agent/event', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'site_session_started', sessionId, page, source: 'site' }), keepalive: true }).catch(() => undefined)
+    void fetch('/api/agent/event', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'site_session_started', sessionId, page, source: 'site' }), keepalive: true })
+      // Consume the small receipt so Chromium can finish the request. An unread
+      // keepalive response otherwise remains pending in navigation diagnostics.
+      .then(response => response.arrayBuffer())
+      .catch(() => undefined)
   }
   return sessionId
 }

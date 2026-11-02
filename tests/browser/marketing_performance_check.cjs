@@ -10,7 +10,7 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
 
 ;(async () => {
   fs.mkdirSync(out, { recursive: true })
-  const browser = await chromium.launch({ headless: true, args: ['--mute-audio'] })
+  const browser = await chromium.launch({ headless: true, args: ['--mute-audio'], executablePath: process.env.MARKETING_BROWSER_EXECUTABLE || undefined })
   const receipt = []
   try {
     for (const [width, height] of [[1440, 1000], [390, 844], [320, 740]]) {
@@ -26,6 +26,7 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
         const response = await page.goto(base + route, { waitUntil: 'networkidle' })
         assert(response.status() === 200, `${route}: intended page must load`)
         await page.waitForTimeout(1200)
+        if (route === '/') assert(await page.evaluate(() => performance.getEntriesByType('resource').some(entry => entry.name.includes('/api/agent/event') && entry.responseEnd > 0)), 'Session receipt response must finish without loading chat')
         assert(!requested.some(url => chatFiles.some(file => url.includes(file))), `${route}: closed chat downloaded its full bundle`)
         assert(!requested.some(url => url.includes('founder-film-final.mp4')), `${route}: film downloaded before play`)
         const cta = page.locator(route === '/' ? '.village-home-hero .about-button--primary' : '.village-vsl-next .about-button--primary').first()
