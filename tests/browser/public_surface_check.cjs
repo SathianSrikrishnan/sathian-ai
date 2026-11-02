@@ -239,7 +239,7 @@ async function verifyViewport(browser, label, viewport) {
 }
 
 ;(async () => {
-  const browser = await chromium.launch({ headless: true })
+  const browser = await chromium.launch({ headless: true, args: ['--mute-audio'], executablePath: process.env.MARKETING_BROWSER_EXECUTABLE || undefined })
   try {
     const results = [
       await verifyViewport(browser, 'desktop', { width: 1440, height: 1000 }),

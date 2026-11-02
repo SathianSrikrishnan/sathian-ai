@@ -26,7 +26,7 @@ function NavItem({ link, active }: { link: NavLink; active: boolean }) {
     )
   }
   return (
-    <Link href={link.href} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
+    <Link href={link.href} prefetch={link.href === '/'} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
       {link.label}
     </Link>
   )

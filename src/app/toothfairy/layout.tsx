@@ -1,3 +1,4 @@
+import '../secondary-surfaces.css'
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from '@/components/toothfairy/nav/theme-context'
 import { ThemeTransition } from '@/components/toothfairy/nav/theme-transition'

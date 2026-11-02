@@ -2,6 +2,7 @@ const { chromium } = require('playwright')
 const fs = require('node:fs')
 const path = require('node:path')
 const base = (process.env.SITE_URL || 'http://127.0.0.1:3317').replace(/\/$/, '')
+const publicBuild = process.env.PUBLIC_MARKETING_BUILD === 'true'
 const out = process.env.BROWSER_PROOF_DIR || '../nov2-speed-browser'
 const assert = (ok, message) => { if (!ok) throw new Error(message) }
 const loadable = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../.next/react-loadable-manifest.json'), 'utf8'))
@@ -20,14 +21,22 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
       await context.route(/googletagmanager|google-analytics|posthog/, route => route.abort())
       const page = await context.newPage()
       const requested = []
+      const servedScripts = []
+      const servedStyles = []
+      const chatLoaded = async () => publicBuild ? (await Promise.all(servedScripts)).some(text => text.includes('Ask a question')) : requested.some(url => chatFiles.some(file => url.includes(file)))
       page.on('request', request => requested.push(request.url()))
+      page.on('response', response => { if (/\/_next\/static\/css\//.test(response.url())) servedStyles.push(response.text().catch(() => '')); })
+      if (publicBuild) page.on('response', response => { if (/\/_next\/static\/chunks\/.*\.js(?:\?|$)/.test(response.url())) servedScripts.push(response.text().catch(() => '')); })
       for (const route of ['/', '/village']) {
         requested.length = 0
+        servedScripts.length = 0
+        servedStyles.length = 0
         const response = await page.goto(base + route, { waitUntil: 'networkidle' })
         assert(response.status() === 200, `${route}: intended page must load`)
         await page.waitForTimeout(1200)
         if (route === '/') assert(await page.evaluate(() => performance.getEntriesByType('resource').some(entry => entry.name.includes('/api/agent/event') && entry.responseEnd > 0)), 'Session receipt response must finish without loading chat')
-        assert(!requested.some(url => chatFiles.some(file => url.includes(file))), `${route}: closed chat downloaded its full bundle`)
+        assert(!(await Promise.all(servedStyles)).some(text => text.includes('--secondary-surface-styles')), `${route}: secondary styles downloaded speculatively before navigation`)
+        assert(!(await chatLoaded()), `${route}: closed chat downloaded its full bundle`)
         assert(!requested.some(url => url.includes('founder-film-final.mp4')), `${route}: film downloaded before play`)
         const cta = page.locator(route === '/' ? '.village-home-hero .about-button--primary' : '.village-vsl-next .about-button--primary').first()
         const box = await cta.boundingBox()
@@ -56,7 +65,7 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
         if (route === '/') {
           await page.getByRole('button', { name: /Ask Sathian/ }).click()
           await page.getByRole('textbox', { name: 'Ask a question', exact: true }).waitFor()
-          assert(requested.some(url => chatFiles.some(file => url.includes(file))), 'Chat bundle must load after opening')
+          assert(await chatLoaded(), 'Chat bundle must load after opening')
           await page.getByRole('button', { name: 'Close chat', exact: true }).click()
           await page.getByRole('button', { name: /Ask Sathian/ }).waitFor()
         }
