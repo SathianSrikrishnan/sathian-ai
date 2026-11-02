@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { preload } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import { GiftGallery } from '@/components/marketing/GiftGallery'
@@ -82,10 +83,12 @@ const GIFT_PICTURES = [
 ]
 
 export default function VillagePage() {
+  preload('/village/performance-nov2/founder-film-poster.webp', { as: 'image', fetchPriority: 'high' })
   return <div className="relaunch-shell minimal-site minimal-inner-page" data-theme="workshop">
     <SiteNav />
     <main className="about-page village-page">
       <header className="about-hero village-hero village-vsl minimal-container">
+        <Image className="village-vsl-backdrop" src="/village/performance-nov2/parent-vault-background.webp" alt="" fill sizes="(max-width:760px) 100vw, 1000px" quality={50} loading="eager" fetchPriority="low" aria-hidden="true" />
         <h1>A child’s network is their village.</h1>
         <p className="about-lead village-parent-lead">Led by their parent.</p>
         <video controls playsInline preload="none" poster="/village/performance-nov2/founder-film-poster.webp" width={1280} height={720} aria-label="Sathian introduces a child's village" className="village-vsl-film"><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video>

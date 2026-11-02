@@ -10,7 +10,7 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
 
 ;(async () => {
   fs.mkdirSync(out, { recursive: true })
-  const browser = await chromium.launch({ headless: true, args: ['--mute-audio'] })
+  const browser = await chromium.launch({ headless: true, args: ['--mute-audio'], executablePath: process.env.MARKETING_BROWSER_EXECUTABLE || undefined })
   const receipt = []
   try {
     for (const [width, height] of [[1440, 1000], [390, 844], [320, 740]]) {
@@ -26,11 +26,16 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
         const response = await page.goto(base + route, { waitUntil: 'networkidle' })
         assert(response.status() === 200, `${route}: intended page must load`)
         await page.waitForTimeout(1200)
+        if (route === '/') assert(await page.evaluate(() => performance.getEntriesByType('resource').some(entry => entry.name.includes('/api/agent/event') && entry.responseEnd > 0)), 'Session receipt response must finish without loading chat')
         assert(!requested.some(url => chatFiles.some(file => url.includes(file))), `${route}: closed chat downloaded its full bundle`)
         assert(!requested.some(url => url.includes('founder-film-final.mp4')), `${route}: film downloaded before play`)
         const cta = page.locator(route === '/' ? '.village-home-hero .about-button--primary' : '.village-vsl-next .about-button--primary').first()
         const box = await cta.boundingBox()
         assert(box && box.y >= 0 && box.y + box.height <= height, `${route} ${width}: primary CTA must be in the initial viewport`)
+        if (route === '/village') {
+          assert(await page.locator('link[rel=preload][as=image][href="/village/performance-nov2/founder-film-poster.webp"]').count() === 1, 'Video poster should be discovered before decorative art')
+          assert(await page.locator('img.village-vsl-backdrop[fetchpriority=low]').count() === 1, 'Approved backdrop must remain without competing with the poster')
+        }
         assert((await page.locator('link[rel=canonical]').getAttribute('href')).replace(/\/$/, '') === `https://sathian.ai${route === '/' ? '' : route}`, `${route}: canonical changed`)
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${route}: overflow`)
         if (route === '/village') {
