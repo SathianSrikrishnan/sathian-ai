@@ -55,10 +55,15 @@ function prune(node) {
   }
 }
 prune(tree)
-const critical = header + tree.toString().trim() + '\n'
+const dependencyList = [...visited].map(file => path.relative(root, file).replaceAll('\\', '/')).sort()
+const dependencyFile = path.join(root, 'scripts/marketing-style-dependencies.json')
+const dependencyJSON = JSON.stringify(dependencyList, null, 2) + '\n'
+if (writing) fs.writeFileSync(dependencyFile, dependencyJSON)
+else if (!fs.existsSync(dependencyFile) || fs.readFileSync(dependencyFile, 'utf8').replace(/\r\n/g, '\n') !== dependencyJSON) throw new Error('Marketing utility dependency list needs regeneration: npm run styles:generate')
+const critical = header + '@config "../../tailwind.marketing.config.ts";\n' + tree.toString().trim() + '\n'
 const full = postcss.parse(original)
 full.walkAtRules('tailwind', rule => rule.remove())
-const secondary = header + ':root { --secondary-surface-styles: 1; }\n' + full.toString().trim() + '\n'
+const secondary = header + '@config "../../tailwind.config.ts";\n@tailwind utilities;\n:root { --secondary-surface-styles: 1; }\n' + full.toString().trim() + '\n'
 if (gzipSync(critical).length > 13000) throw new Error('Marketing custom CSS exceeds its 13KB gzip source budget; inspect new dependencies rather than dropping content.')
 for (const [name, value] of [['marketing-critical.css', critical], ['secondary-surfaces.css', secondary]]) {
   const file = path.join(app, name)

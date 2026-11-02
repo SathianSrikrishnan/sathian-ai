@@ -42,6 +42,8 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
         const box = await cta.boundingBox()
         assert(box && box.y >= 0 && box.y + box.height <= height, `${route} ${width}: primary CTA must be in the initial viewport`)
         if (route === '/village') {
+          assert(!requested.some(url => url.includes('/village/process-oct31/parent-vault-background.webp')), 'Obsolete CSS must not download a second full-size backdrop')
+          assert(!requested.some(url => { const request = new URL(url); return request.pathname === '/' && request.searchParams.has('_rsc') }), 'Village must not speculatively hydrate the Home destination before navigation')
           assert(await page.locator('link[rel=preload][as=image][href="/village/performance-nov2/founder-film-poster.webp"]').count() === 1, 'Video poster should be discovered before decorative art')
           assert(await page.locator('img.village-vsl-backdrop[fetchpriority=low]').count() === 1, 'Approved backdrop must remain without competing with the poster')
         }

@@ -11,7 +11,8 @@ for (const route of ['index', 'village']) {
   if (!styles.length) throw new Error(`${route}: expected real stylesheets, not unstyled or altered benchmark markup`)
   const files = [...new Set(styles.map(url => path.join(root, '.next', url.split('?')[0].replace(/^\/_next\//, ''))))]
   const gzipBytes = files.reduce((sum, file) => sum + gzipSync(fs.readFileSync(file)).length, 0)
-  if (gzipBytes > 25000) throw new Error(`${route}: blocking CSS exceeds 25KB gzip budget (${gzipBytes}). Inspect the route imports.`)
+  const budget = route === 'index' ? 14000 : 15000
+  if (gzipBytes > budget) throw new Error(`${route}: blocking CSS exceeds ${budget}B gzip budget (${gzipBytes}). Inspect the route imports.`)
   results.push({ route, blockingStylesheets: files.length, gzipBytes })
 }
 console.log(JSON.stringify({ compiledMarketingStyles: 'passed', results }))

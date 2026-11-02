@@ -26,7 +26,7 @@ function NavItem({ link, active }: { link: NavLink; active: boolean }) {
     )
   }
   return (
-    <Link href={link.href} prefetch={link.href === '/'} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
+    <Link href={link.href} prefetch={false} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
       {link.label}
     </Link>
   )
@@ -68,7 +68,7 @@ export function SiteNav() {
     <>
       <nav className={`minimal-site-nav ${scrolled ? 'minimal-site-nav--solid' : ''}`} aria-label="Primary navigation">
         <div className="minimal-site-nav__inner">
-          <Link href="/" className="minimal-site-nav__brand">sathian.ai</Link>
+          <Link href="/" prefetch={false} className="minimal-site-nav__brand">sathian.ai</Link>
 
           <div className="minimal-site-nav__desktop">
             {navLinks.map((link) => (
