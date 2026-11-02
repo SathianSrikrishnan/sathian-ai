@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { JetBrains_Mono, Outfit, Plus_Jakarta_Sans } from 'next/font/google'
 import { DeferredChatWidget } from '@/components/DeferredChatWidget'
 import { WebsiteAnalytics } from '@/components/WebsiteAnalytics'
-import './globals.css'
+import './marketing-critical.css'
 
 const outfit = Outfit({
   subsets: ['latin'],

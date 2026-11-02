@@ -1,3 +1,4 @@
+import '../secondary-surfaces.css'
 import { Kalam, Patrick_Hand } from 'next/font/google'
 import './learn.css'
 import './review.css'

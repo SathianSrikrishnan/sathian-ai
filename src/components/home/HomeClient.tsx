@@ -73,7 +73,7 @@ export function HomeClient({ writings }: HomeClientProps) {
             <p>Parents choose who joins their child’s village. They control the wallet for their child.</p>
             <div className="about-actions">
               <TrackedLink href="/village" event="village_opened" properties={{ placement: 'homepage_hero' }} className="about-button about-button--primary">See the Tooth Fairy Network gift</TrackedLink>
-              <Link href="/about" className="about-button">Meet Sathian</Link>
+              <Link href="/about" prefetch={false} className="about-button">Meet Sathian</Link>
             </div>
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>

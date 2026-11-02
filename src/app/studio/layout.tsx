@@ -1,3 +1,4 @@
+import '../secondary-surfaces.css'
 import type { Metadata } from 'next'
 
 import { StudioNavigation } from './StudioNavigation'
