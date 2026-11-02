@@ -6,7 +6,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'docs/marketing/approved-assets-20261102.json'), 'utf8'));
 for (const asset of [...manifest.originals, ...manifest.deliveryVersions]) {
  if (!asset.path.startsWith('public/') || asset.path.includes('..')) throw new Error('Unsafe asset path');
- const bytes = fs.readFileSync(path.join(root, asset.path));
+ const raw = fs.readFileSync(path.join(root, asset.path));
+ const bytes = asset.textNormalization === 'lf' ? Buffer.from(raw.toString('utf8').replace(/\r\n/g, '\n')) : raw;
  if (crypto.createHash('sha256').update(bytes).digest('hex') !== asset.sha256) throw new Error('Approved asset changed or disappeared: ' + asset.path);
  if (manifest.budgets[asset.path] && bytes.length > manifest.budgets[asset.path]) throw new Error('Critical image budget exceeded: ' + asset.path);
 }

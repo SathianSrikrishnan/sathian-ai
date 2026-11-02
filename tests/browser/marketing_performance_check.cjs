@@ -4,7 +4,7 @@ const path = require('node:path')
 const base = (process.env.SITE_URL || 'http://127.0.0.1:3317').replace(/\/$/, '')
 const out = process.env.BROWSER_PROOF_DIR || '../nov2-speed-browser'
 const assert = (ok, message) => { if (!ok) throw new Error(message) }
-const loadable = JSON.parse(fs.readFileSync(path.resolve('.next/react-loadable-manifest.json'), 'utf8'))
+const loadable = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../.next/react-loadable-manifest.json'), 'utf8'))
 const chatFiles = Object.entries(loadable).filter(([key]) => key.includes('-> ./ChatWidget')).flatMap(([, value]) => value.files)
 assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-loading check')
 
@@ -44,6 +44,9 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
           }
           assert(await page.locator('.village-printed-examples img').count() === 2, 'Printed examples must remain visible')
         }
+        // Reveal lazy pictures only for the full-page review capture, after intent/budget assertions.
+        await page.locator('main img').evaluateAll(images => images.forEach(image => { image.loading = 'eager' }))
+        await page.waitForFunction(() => [...document.querySelectorAll('main img')].every(image => image.complete && image.naturalWidth > 0), undefined, { timeout: 60000 })
         await page.screenshot({ path: path.join(out, `marketing-${route === '/' ? 'home' : 'village'}-${width}.png`), fullPage: true })
         if (route === '/') {
           await page.getByRole('button', { name: /Ask Sathian/ }).click()

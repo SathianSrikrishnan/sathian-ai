@@ -134,8 +134,9 @@
     },
     {
       "path": "public/media/founder-20261031/founder-film-final.vtt",
-      "bytes": 745,
-      "sha256": "b706fa50d763e255d418280e467ea4ca3e1fb6d9664eba9a85401e55ddb7f1a6"
+      "bytes": 700,
+      "sha256": "7f6dab5ce45dce344558c229d18c4dfd44b8401a46ac21e32ee220f107faaaa4",
+      "textNormalization": "lf"
     },
     {
       "path": "public/media/founder-20261031/founder-film-poster.jpg",
