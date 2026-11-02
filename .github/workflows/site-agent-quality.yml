@@ -130,6 +130,11 @@ jobs:
           SITE_URL: ${{ steps.preview.outputs.url }}
           BROWSER_PROOF_DIR: ${{ runner.temp }}/public-surface
         run: node tests/browser/public_surface_check.cjs
+      - name: Verify critical marketing assets, intent loading and first-viewport CTAs
+        env:
+          SITE_URL: ${{ steps.preview.outputs.url }}
+          BROWSER_PROOF_DIR: ${{ runner.temp }}/public-surface/marketing-performance
+        run: node tests/browser/marketing_performance_check.cjs
       - name: Verify Village campaign and mocked request flow
         env:
           SITE_URL: ${{ steps.preview.outputs.url }}

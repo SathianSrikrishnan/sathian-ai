@@ -6811,3 +6811,20 @@ h1, h2, h3 {
   .village-vsl > .village-parent-lead { font-size:19px; }
 }
 @media(max-width:600px) { .village-steps { grid-template-columns:1fr; } }
+
+/* Keep the first frame and the action together; the full film loads on play. */
+.village-vsl::before { content:none; }
+.village-vsl .village-vsl-backdrop { z-index:-1; opacity:.2; object-fit:cover; border-radius:18px; pointer-events:none; }
+.village-vsl-film { max-height: min(45svh,450px); object-fit:contain; }
+@media(max-width:760px) {
+ .village-vsl { padding-top:12px; }
+ .village-vsl > h1 { font-size:clamp(30px,8.2vw,38px); margin-top:0; }
+ .village-vsl > .village-parent-lead { margin:8px 0 12px; }
+ .village-vsl-next { margin-top:12px; }
+ .village-vsl-next > p { font-size:16px; line-height:1.4; }
+ .village-vsl-next .about-actions { gap:8px; margin-top:10px; }
+ .village-vsl-next .about-button { min-height:44px; padding:10px 16px; }
+}
+
+.village-printed-examples { display:flex; justify-content:center; gap:24px; }
+.village-printed-examples img { width:min(44%,260px); height:auto; object-fit:contain; border-radius:12px; }

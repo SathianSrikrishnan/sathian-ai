@@ -16,7 +16,9 @@
     "release:verify": "node scripts/verify-site-release.mjs",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "learn:verify-media": "node scripts/verify-learning-media.mjs"
+    "learn:verify-media": "node scripts/verify-learning-media.mjs",
+    "marketing:verify": "node scripts/verify-marketing-assets.mjs",
+    "prebuild": "npm run marketing:verify"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",

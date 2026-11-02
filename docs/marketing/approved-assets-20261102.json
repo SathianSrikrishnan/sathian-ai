@@ -1,0 +1,172 @@
+{
+  "version": "2026-11-02",
+  "policy": "Keep original paths immutable. New versions get new paths and an intentional reviewed manifest update.",
+  "originals": [
+    {
+      "path": "public/village/proof-detail.webp",
+      "bytes": 309970,
+      "sha256": "e89995a2b4580956b57e556953850781651c113ba05030a50f4c3bb0e2b7b3d9"
+    },
+    {
+      "path": "public/village/proof-hero-flat.webp",
+      "bytes": 54168,
+      "sha256": "56606a3a75cdc7aaef20e4b56d98ab791f5a86d649abacdd59a39bc6b1f8763a"
+    },
+    {
+      "path": "public/village/proof-in-hand.webp",
+      "bytes": 475142,
+      "sha256": "759fffb334fa2b09488a28bc40f4741a1a08c6a7fe0bd70cd87f976814990471"
+    },
+    {
+      "path": "public/village/proof-pair.webp",
+      "bytes": 57242,
+      "sha256": "72466109ef49a66171c2d8a96b3090437f2f5a9637a79de3409d4da7244eb11d"
+    },
+    {
+      "path": "public/village/sample-certificate.webp",
+      "bytes": 56496,
+      "sha256": "8c1d269ba138cfd17200d466497f886b88631eb3633d83c5d21ac5dd84e43445"
+    },
+    {
+      "path": "public/village/sample-inside-love.webp",
+      "bytes": 57676,
+      "sha256": "e6aaa3ddb5a772799d34b1e2b2fb4e84c4b8b775a3c7acbef78aab17c09b7f7e"
+    },
+    {
+      "path": "public/village/sample-inside-wallet.webp",
+      "bytes": 34672,
+      "sha256": "b9b407d1f3f05cf4ff0a1d1174edf40f787bceb6df60b51b7382e911a360e261"
+    },
+    {
+      "path": "public/village/village-hands.webp",
+      "bytes": 68344,
+      "sha256": "1ee709efa6d6751df16e8a30e48054a49a537924211020ed1d18d5cb5f8536a1"
+    },
+    {
+      "path": "public/village/village-map.webp",
+      "bytes": 71362,
+      "sha256": "db962687a3a1d1c454bf13c374c844a5dc12e13b00a8bd36297f1c3f4cb64d25"
+    },
+    {
+      "path": "public/village/gallery-oct31/sample-front.webp",
+      "bytes": 48362,
+      "sha256": "67cc95570b3cbb7e55faa9aeda7a38a04c4e30c9997e8ff9820f896774267067"
+    },
+    {
+      "path": "public/village/gallery-oct31/sample-inside-wallet.webp",
+      "bytes": 34830,
+      "sha256": "d5888dba7f14561e672b8d2ad6b179e773acb40e9a67de06b9444c20047db9d1"
+    },
+    {
+      "path": "public/village/network-oct31/01-network-circle.webp",
+      "bytes": 324796,
+      "sha256": "ba597308803694d1a7dd4b13ce2a19bf732cf658500dfa958b086e1ceb944535"
+    },
+    {
+      "path": "public/village/network-oct31/02-network-picnic.webp",
+      "bytes": 450594,
+      "sha256": "a94b91617fde0c171389fe0b1596cf402b6de2b77e30d4298893ad0004529e7d"
+    },
+    {
+      "path": "public/village/network-oct31/03-network-village-path.webp",
+      "bytes": 361756,
+      "sha256": "5b66c40eb2c8f970938eac3452b8ef0e995d298da2b115caf452d5984d4b1ee2"
+    },
+    {
+      "path": "public/village/network-oct31/04-product-glass-table-concept.webp",
+      "bytes": 181512,
+      "sha256": "bd3b7628c0b09dbf0bf3e62bedc008896bce1142b6b66514974af328f6c4119d"
+    },
+    {
+      "path": "public/village/process-oct31/family-gives-again.webp",
+      "bytes": 426532,
+      "sha256": "74e6370e0480bcc6e51a461606b45de17e1115ae42ff2a167367a180028ca73e"
+    },
+    {
+      "path": "public/village/process-oct31/make-it-yours.webp",
+      "bytes": 261212,
+      "sha256": "46f42523a5aefaf00f13a3437373aa42882dec974fbcc16549206537dbb1fab4"
+    },
+    {
+      "path": "public/village/process-oct31/parent-accepts.webp",
+      "bytes": 271870,
+      "sha256": "cbe884a085533aaa521458e12356f03630c15be6207dc576e3d9d70b6fd36f06"
+    },
+    {
+      "path": "public/village/process-oct31/parent-vault-background.webp",
+      "bytes": 166302,
+      "sha256": "94bb6441612123e1b628bc96f286c45716a7b0a89a5a9a081af5162db4ecdeea"
+    },
+    {
+      "path": "public/village/process-oct31/print-and-mail.webp",
+      "bytes": 235084,
+      "sha256": "84c86b2433de040c5175cf20fa5483e4753bd9de9163d47b4b532927d9c0552a"
+    },
+    {
+      "path": "public/village/review-oct31/proof-and-certificate-usdc.webp",
+      "bytes": 157084,
+      "sha256": "af43366b8a4cfe935ca4850943f678ba3b7dadbd83bb0eed458c885dde8a846b"
+    },
+    {
+      "path": "public/village/review-oct31/what-gift.webp",
+      "bytes": 261212,
+      "sha256": "46f42523a5aefaf00f13a3437373aa42882dec974fbcc16549206537dbb1fab4"
+    },
+    {
+      "path": "public/village/review-oct31/when-gift.webp",
+      "bytes": 343344,
+      "sha256": "f12eca0df167dfbe610635ae82fe0913c20a7ce557f960ef1e764d977ae28b1d"
+    },
+    {
+      "path": "public/village/review-oct31/where-online.webp",
+      "bytes": 362468,
+      "sha256": "3c530424a71ba20894a626b0430a4e33174d1e386e808200b440e20927dba81c"
+    },
+    {
+      "path": "public/village/review-oct31/who-dad.webp",
+      "bytes": 299202,
+      "sha256": "b69013582674222a8463c123dfae2ff7012587cf5644cb0e953c0f6f0b52c140"
+    },
+    {
+      "path": "public/media/founder-20261031/founder-film-final.mp4",
+      "bytes": 5116991,
+      "sha256": "79ee9289b29e57df44244918df57d004b9a8a221426c7a3a1a0604fda0c4ae58"
+    },
+    {
+      "path": "public/media/founder-20261031/founder-film-final.vtt",
+      "bytes": 745,
+      "sha256": "b706fa50d763e255d418280e467ea4ca3e1fb6d9664eba9a85401e55ddb7f1a6"
+    },
+    {
+      "path": "public/media/founder-20261031/founder-film-poster.jpg",
+      "bytes": 106080,
+      "sha256": "3429b9b64e111c7151fed07ffeb6027f5cd43a39a9c6af719379d0d4f25151fb"
+    }
+  ],
+  "deliveryVersions": [
+    {
+      "path": "public/village/performance-nov2/founder-film-poster.webp",
+      "bytes": 26856,
+      "sha256": "b32eeeed176191c9965dae07d2eee83d04d2dbfae21c865925f10f56a7366fd5"
+    },
+    {
+      "path": "public/village/performance-nov2/parent-vault-background.webp",
+      "bytes": 49056,
+      "sha256": "95c88582a71b363b9225e9de02615e154ea9733867009fc15b66bc65d640c03c"
+    },
+    {
+      "path": "public/village/performance-nov2/real-proof-fathers-day.webp",
+      "bytes": 64800,
+      "sha256": "6c5417919e2a792f5fdd2ed0f330ea67d08f39c193396beaf78368be288be255"
+    },
+    {
+      "path": "public/village/performance-nov2/real-proof-my-tooth.webp",
+      "bytes": 80588,
+      "sha256": "a23ee4da492376ce32233be89a1efeafd84e15a9910015f880a836d3b8291464"
+    }
+  ],
+  "budgets": {
+    "public/village/performance-nov2/parent-vault-background.webp": 75000,
+    "public/village/performance-nov2/founder-film-poster.webp": 45000
+  }
+}
