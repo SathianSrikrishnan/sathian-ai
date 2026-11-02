@@ -7,19 +7,20 @@ import './globals.css'
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-display',
-  display: 'swap',
+  display: 'optional',
 })
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  display: 'swap',
+  display: 'optional',
 })
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
-  display: 'swap',
+  preload: false,
+  display: 'optional',
 })
 
 export const metadata: Metadata = {

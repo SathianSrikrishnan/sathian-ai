@@ -88,7 +88,7 @@ export default function VillagePage() {
       <header className="about-hero village-hero village-vsl minimal-container">
         <h1>A child’s network is their village.</h1>
         <p className="about-lead village-parent-lead">Led by their parent.</p>
-        <video controls playsInline preload="metadata" poster="/media/founder-20261031/founder-film-poster.jpg" width={1280} height={720} aria-label="Sathian introduces a child's village" className="village-vsl-film"><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video>
+        <video controls playsInline preload="none" poster="/village/performance-nov2/founder-film-poster.webp" width={1280} height={720} aria-label="Sathian introduces a child's village" className="village-vsl-film"><source src="/media/founder-20261031/founder-film-final.mp4" type="video/mp4" /><track kind="captions" src="/media/founder-20261031/founder-film-final.vtt" srcLang="en" label="English" default />Your browser does not support video.</video>
         <div className="village-vsl-next">
           <p>A free printed Proof and US$10 to start. For the child you love, near or far.</p>
           <div className="about-actions"><a href="#ask" className="about-button about-button--primary">Ask for a free gift</a><a href="#the-gift" className="about-button">See what they get</a></div>
@@ -106,13 +106,18 @@ export default function VillagePage() {
 
       <section id="the-gift" className="minimal-section minimal-container" aria-labelledby="gift-title">
         <h2 id="gift-title">What the child gets</h2>
-        <figure className="network-product-display"><Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 1100px" /></figure>
+        <figure className="network-product-display"><Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) calc(100vw - 32px), 1100px" /></figure>
         <div className="village-product-grid network-product-details">
           <div><h3>A printed Proof of Growth</h3><p>Their artwork or your photo, with your note inside. A keepsake to hold and read again.</p></div>
           <div><h3>A note from someone who cares</h3><p>A message that marks a small moment. Even when you live far away.</p></div>
           <div><h3>A first digital wallet</h3><p>US$10 to start. The parent holds the key and can take money out.</p></div>
         </div>
       </section>
+
+      <section className="minimal-section minimal-container" aria-label="Printed Proof examples"><div className="village-printed-examples">
+        <Image src="/village/performance-nov2/real-proof-fathers-day.webp" alt="A printed Proof of Growth held in a hand, with a child's Father's Day drawing on the cover; names and codes hidden" width={720} height={960} sizes="(max-width:760px) 44vw, 260px" quality={65} loading="lazy" />
+        <Image src="/village/performance-nov2/real-proof-my-tooth.webp" alt="A printed Proof of Growth with a My Tooth drawing on the cover; names and codes hidden" width={720} height={960} sizes="(max-width:760px) 44vw, 260px" quality={65} loading="lazy" />
+      </div></section>
 
       <div className="minimal-container"><GiftGallery id="village-gift-gallery" items={GIFT_PICTURES} /></div>
 
@@ -128,7 +133,7 @@ export default function VillagePage() {
         <figure><Image src="/village/network-oct31/02-network-picnic.webp" alt="Childlike illustration of a family picnic: a girl holds Proof of Growth, adults hold Proof of Love and Tanda brings a gift to the piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" /><figcaption>A small moment, shared by their network.</figcaption></figure>
       </section>
 
-      <section className="minimal-section minimal-container village-founder" aria-labelledby="why-title"><Image src="/sathian-portrait.webp" alt="Pencil portrait of Sathian" width={160} height={160} unoptimized loading="eager" /><div><p className="minimal-kicker">A NOTE FROM SATHIAN</p><h2 id="why-title">I built it for my children first.</h2><p>I’m a dad and a builder in Toronto. The people who love a child don’t all live in one home. I wanted a way for them to give a keepsake and set money aside for the child.</p><p><a className="minimal-text-link" href="#ask">Ask for a free gift</a></p><TrackedLink href={PROOF.href} event="proof_opened" placement="village_founder" className="minimal-text-link">Watch why I built Proof</TrackedLink></div></section>
+      <section className="minimal-section minimal-container village-founder" aria-labelledby="why-title"><Image src="/sathian-portrait.webp" alt="Pencil portrait of Sathian" width={160} height={160} sizes="(max-width:760px) 72px, 160px" loading="lazy" /><div><p className="minimal-kicker">A NOTE FROM SATHIAN</p><h2 id="why-title">I built it for my children first.</h2><p>I’m a dad and a builder in Toronto. The people who love a child don’t all live in one home. I wanted a way for them to give a keepsake and set money aside for the child.</p><p><a className="minimal-text-link" href="#ask">Ask for a free gift</a></p><TrackedLink href={PROOF.href} event="proof_opened" placement="village_founder" className="minimal-text-link">Watch why I built Proof</TrackedLink></div></section>
 
       <section id="ask" className="minimal-section minimal-container village-request" aria-labelledby="ask-title"><div><h2 id="ask-title">Ask for a free gift</h2><p className="first20-note"><strong>{FREE_GIFTS_REMAINING} of 20 free gifts left</strong></p><p>I’ll print a Proof and start the wallet with US$10. Leave your details and I’ll get in touch to work out the next steps.</p><p>I’d love your honest feedback. A public review is your choice. Want to post a review? That would mean a lot. <a href="https://www.trustpilot.com/review/toothfairy.network" target="_blank" rel="noopener noreferrer">Leave a review &#8599;</a> If you write one, please say the gift was free.</p><p className="first20-note">This is a request, not a checkout. Please share only your own contact details here. <Link href="/privacy">Privacy</Link></p></div><VillageForm /></section>
 

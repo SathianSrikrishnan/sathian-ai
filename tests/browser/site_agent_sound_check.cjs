@@ -62,7 +62,7 @@ async function verifyViewport(browser, label, viewport) {
   if (wakeAssetStatus !== 200) throw new Error(`${label}: wake asset returned ${wakeAssetStatus}`)
 
   await page.getByRole('button', { name: 'Open chat' }).click()
-  await page.waitForTimeout(200)
+  await page.locator('[data-chat-panel]').waitFor({ state: 'visible' })
   const architectureCounts = await page.evaluate(() => ({
     agentRoots: document.querySelectorAll('[data-site-agent-root]').length,
     audioElements: document.querySelectorAll('[data-site-agent-root] audio').length,

@@ -28,6 +28,7 @@ import {
   SITE_AGENT_WAKE_SESSION_KEY,
   type SiteAgentSound,
 } from '@/lib/agent/sounds'
+import { ensureAgentSession } from '@/lib/agent/site-session'
 import { setAgentListening, takePendingAgentOpen } from '@/lib/agent/pending-open'
 
 const SUGGESTIONS = CHAT_SUGGESTIONS
@@ -532,17 +533,7 @@ function ChatWidgetContent() {
        }
      }
 
-     let sessionId = sessionStorage.getItem(AGENT_SESSION_KEY)
-     if (!sessionId) {
-       sessionId = crypto.randomUUID()
-       sessionStorage.setItem(AGENT_SESSION_KEY, sessionId)
-       recordAgentEvent({
-         event: 'site_session_started',
-         sessionId,
-         page: pathname,
-         source: 'site',
-       })
-     }
+     const sessionId = ensureAgentSession(pathname)
      agentSessionRef.current = sessionId
    }, [pathname])
 
