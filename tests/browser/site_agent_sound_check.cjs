@@ -1,4 +1,5 @@
 const { chromium } = require('playwright')
+const { waitForAudioAdvance } = require('./helpers/audio-playback.cjs')
 
 const baseUrl = (process.env.SITE_URL || 'http://127.0.0.1:3000').replace(/\/$/, '')
 const axePath = require.resolve('axe-core/axe.min.js')
@@ -183,26 +184,13 @@ async function verifyActualMobilePlayback(browser) {
 
   await gotoHydratedAgentPage(page, '/writings')
   await page.getByRole('button', { name: 'Open chat' }).click()
-  await page.waitForTimeout(550)
-  const wakeState = await page.locator('audio').evaluate((audio) => ({
-    currentTime: audio.currentTime,
-    error: audio.error?.message || null,
-    paused: audio.paused,
-    src: audio.src,
-  }))
+  const wakeState = await waitForAudioAdvance(page, '/audio/site-agent-wake-sting.mp3')
   if (wakeState.error || wakeState.paused || wakeState.currentTime <= 0.05 || !wakeState.src.includes('/audio/site-agent-wake-sting.mp3')) {
     throw new Error(`mobile-real-playback: wake sting did not decode and advance: ${JSON.stringify(wakeState)}`)
   }
 
   await page.getByRole('button', { name: 'Replay complete signature' }).click()
-  await page.waitForTimeout(550)
-  const replayState = await page.locator('audio').evaluate((audio) => ({
-    currentTime: audio.currentTime,
-    error: audio.error?.message || null,
-    muted: audio.muted,
-    paused: audio.paused,
-    src: audio.src,
-  }))
+  const replayState = await waitForAudioAdvance(page, '/audio/site-agent-note-signature.mp3', { requireUnmuted: true })
   if (replayState.error || replayState.paused || replayState.muted || replayState.currentTime <= 0.05 || !replayState.src.includes('/audio/site-agent-note-signature.mp3')) {
     throw new Error(`mobile-real-playback: replay signature did not decode and advance: ${JSON.stringify(replayState)}`)
   }
@@ -213,20 +201,51 @@ async function verifyActualMobilePlayback(browser) {
   await page.getByRole('textbox', { name: 'Write your note to Sathian' }).fill('Synthetic decode verification; do not deliver.')
   await page.getByRole('button', { name: 'Send note' }).click()
   await page.getByText(/Receipt DECODE-TEST/).waitFor()
-  await page.waitForTimeout(550)
-  const signatureState = await page.locator('audio').evaluate((audio) => ({
-    currentTime: audio.currentTime,
-    error: audio.error?.message || null,
-    muted: audio.muted,
-    paused: audio.paused,
-    src: audio.src,
-  }))
+  const signatureState = await waitForAudioAdvance(page, '/audio/site-agent-note-signature.mp3', { requireUnmuted: true })
   if (signatureState.error || signatureState.paused || signatureState.muted || signatureState.currentTime <= 0.05 || !signatureState.src.includes('/audio/site-agent-note-signature.mp3')) {
     throw new Error(`mobile-real-playback: note signature did not decode and advance: ${JSON.stringify(signatureState)}`)
   }
 
   await context.close()
   return { label: 'mobile-real-playback', replaySeconds: replayState.currentTime, signatureSeconds: signatureState.currentTime, wakeSeconds: wakeState.currentTime }
+}
+
+async function verifyPlaybackWaitRejectsStalledAudio(browser) {
+  const context = await browser.newContext(contextOptions({ width: 390, height: 844 }))
+  try {
+    const page = await context.newPage()
+    await page.route('**/__audio-contract-fixture', route => route.fulfill({
+      status: 200,
+      contentType: 'text/html',
+      body: '<button onclick="const a=document.querySelector(\'audio\');a.playbackRate=0;a.play()">Start stalled audio</button><audio src="/audio/site-agent-wake-sting.mp3" preload="auto"></audio>',
+    }))
+    await page.goto(`${baseUrl}/__audio-contract-fixture`)
+    await page.getByRole('button', { name: 'Start stalled audio' }).click()
+    await page.waitForFunction(() => {
+      const audio = document.querySelector('audio')
+      return audio && audio.readyState >= 2 && !audio.paused
+    }, undefined, { timeout: 5000 })
+    let rejected = false
+    try {
+      await waitForAudioAdvance(page, '/audio/site-agent-wake-sting.mp3', { requireUnmuted: true, timeoutMs: 300 })
+    } catch (error) {
+      if (!error.message.startsWith('Real audio did not advance within 300ms:')) throw error
+      rejected = true
+    }
+    const stalled = await page.locator('audio').evaluate(audio => ({ currentTime: audio.currentTime, error: audio.error, paused: audio.paused, muted: audio.muted }))
+    if (!rejected || stalled.error || stalled.paused || stalled.muted || stalled.currentTime > 0.05) {
+      throw new Error(`Real-playback wait did not reject non-advancing native audio: ${JSON.stringify(stalled)}`)
+    }
+    // The exact same real media must pass once its clock is allowed to move.
+    await page.locator('audio').evaluate(audio => { audio.playbackRate = 1 })
+    const resumed = await waitForAudioAdvance(page, '/audio/site-agent-wake-sting.mp3', { requireUnmuted: true })
+    if (resumed.error || resumed.paused || resumed.muted || resumed.currentTime <= 0.05) {
+      throw new Error(`Real-playback wait failed native-audio recovery: ${JSON.stringify(resumed)}`)
+    }
+    return { label: 'real-playback-wait-contract', stalledRejected: rejected, resumedSeconds: resumed.currentTime }
+  } finally {
+    await context.close()
+  }
 }
 
 ;(async () => {
@@ -236,6 +255,7 @@ async function verifyActualMobilePlayback(browser) {
     results.push(await verifyViewport(browser, 'desktop', { width: 1440, height: 1000 }))
     results.push(await verifyViewport(browser, 'mobile', { width: 390, height: 844 }))
     results.push(await verifyActualMobilePlayback(browser))
+    results.push(await verifyPlaybackWaitRejectsStalledAudio(browser))
     console.log(JSON.stringify({ baseUrl, results }, null, 2))
   } finally {
     await browser.close()
