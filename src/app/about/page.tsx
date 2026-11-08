@@ -105,12 +105,13 @@ export default function AboutPage() {
           />
         </header>
 
+        <div className="minimal-container"><FollowSath profiles title="How You Connect" /></div>
+
         <section className="minimal-section minimal-container" aria-labelledby="about-building">
           <h2 id="about-building">What I&apos;m building</h2>
           <article className="minimal-featured-project">
             <div className="minimal-project-copy">
               <h3>Tooth Fairy Network</h3>
-              <p className="minimal-label">PRIMARY BUILD / LIVE</p>
               <p>
                 A child&apos;s first digital wallet, and a personalized Vault Book to keep.
                 Grandparents, aunts and uncles give it as a gift. The parent holds the key.
@@ -151,7 +152,6 @@ export default function AboutPage() {
                 <span className="about-card__media">
                   <Image src={card.image} alt={card.alt} fill sizes="(max-width: 760px) 100vw, 360px" />
                 </span>
-                <span className="minimal-kicker">{card.kicker}</span>
                 <strong>{card.title}</strong>
                 <span className="about-card__text">{card.text}</span>
               </TrackedLink>
@@ -159,7 +159,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <div className="minimal-container"><FollowSath profiles /></div>
       </main>
 
       <SiteFooter />
