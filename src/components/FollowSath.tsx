@@ -24,7 +24,7 @@ export function FollowSath({ profiles = false, showMore = true, title = 'Tech Ta
         <nav className={styles.profiles} aria-label="Find Sathian online">
           {personalSocialLinks.filter((link) => link.label !== 'Luma').map((link) => (
             <a key={link.label} href={link.href} target="_blank" rel="me noopener noreferrer">
-              {link.label === 'X' ? 'X · @Sathian' : link.label}<span aria-hidden="true"> ↗</span>
+              {link.label}<span aria-hidden="true"> ↗</span>
             </a>
           ))}
         </nav>

@@ -18,7 +18,7 @@ const surfaces = [
   { path: '/village', heading: "A child’s network is their village.", title: "Tooth Fairy Network | A parent-controlled child's network" },
   { path: '/privacy', heading: 'Privacy.', title: 'Privacy | Sathian' },
   { path: '/about', heading: "Hi, I'm Sathian.", title: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },
-  { path: '/links', heading: 'Come say hi.', title: 'Links | Sathian' },
+  { path: '/links', heading: 'A few ways in.', title: 'Links | Sathian' },
   { path: '/writings', heading: 'Writing.', title: 'Writing | sathian.ai' },
   { path: '/hackathons', heading: 'Ideas meet the clock.', title: 'Hackathons | sathian.ai' },
   {
@@ -189,9 +189,9 @@ async function verifyViewport(browser, label, viewport) {
       }
     }
     if (surface.path === '/') {
-      assert(await page.locator('[aria-labelledby="home-moments-title"] a').count() === 11, 'ten image stories plus About link')
-      assert(await page.locator('#home-moments-title').evaluate(e => parseFloat(getComputedStyle(e).fontSize) >= 24), 'gallery heading retains section-level typography')
-      assert(await page.locator('[aria-labelledby="home-moments-title"] img[loading="lazy"]').count() === 10, 'homepage gallery remains lazy loaded')
+      assert(await page.locator('[aria-labelledby="home-moments-title"]').count() === 0, 'unrequested personal gallery removed')
+      assert(await page.locator('.village-home-art img').count() === 3, 'three artworks within existing hero')
+      assert(await page.locator('.founder-question-row summary img').count() === 15, 'three artworks within each of the five questions')
       const expected = ['Home', 'Proof', 'Learn', 'Write']
       assert(JSON.stringify(await page.locator('.minimal-site-nav__desktop a').allTextContents()) === JSON.stringify(expected), 'primary menu order')
       const toggle = page.getByRole('button', { name: 'Open menu', exact: true })
@@ -219,7 +219,6 @@ async function verifyViewport(browser, label, viewport) {
         assert(await follow.locator('nav[aria-label="Find Sathian online"] a').count() === 7, `${label}: homepage personal profiles missing`)
       }
       if (surface.path === '/about') {
-        assert(await page.getByRole('link', { name: 'All links and channels', exact: true }).getAttribute('href') === '/links', 'About keeps the full links hub reachable')
         assert(await follow.locator('h2').innerText() === 'How You Connect', `${label}: About connection heading missing`)
         assert(await page.evaluate(() => {
           const follow = document.querySelector('#follow')
@@ -299,13 +298,22 @@ async function verifyViewport(browser, label, viewport) {
     }
 
     if (surface.path === '/') {
-      const galleryImages = page.locator('[aria-labelledby="home-moments-title"] img')
-      for (const image of await galleryImages.all()) {
+      const artworkImages = page.locator('.village-home-art img, .founder-question-row img')
+      for (const image of await artworkImages.all()) {
         await image.scrollIntoViewIfNeeded()
         await image.evaluate(img => img.decode())
-        assert(await image.evaluate(img => img.naturalWidth > 0), 'gallery image decodes')
+        assert(await image.evaluate(img => img.naturalWidth > 0), 'approved homepage artwork decodes')
       }
-      if (proofDirectory) await page.locator('[aria-labelledby="home-moments-title"]').screenshot({ path: join(proofDirectory, `${label}-home-gallery.png`) })
+      if (proofDirectory) {
+        await page.locator('.village-home-hero').screenshot({ path: join(proofDirectory, `${label}-home-hero.png`) })
+        await page.locator('.founder-quick-questions').screenshot({ path: join(proofDirectory, `${label}-home-questions.png`) })
+      }
+      const firstQuestion = page.locator('.founder-question-row summary').first()
+      await firstQuestion.focus()
+      await page.keyboard.press('Enter')
+      assert(await page.locator('.founder-question-row details').first().getAttribute('open') !== null, 'question opens by keyboard')
+      await page.keyboard.press('Enter')
+      assert(await page.locator('.founder-question-row details').first().getAttribute('open') === null, 'question closes by keyboard')
     }
 
     results.push({ path: surface.path, heading: state.heading?.text, title: state.title })
