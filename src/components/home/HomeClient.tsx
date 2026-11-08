@@ -1,6 +1,7 @@
 // Server component: static homepage markup is not hydrated. Only the nav and
 // the tracked links (TrackedLinks.tsx) ship as client islands.
 import Image from 'next/image'
+import { HomeMoments } from '@/components/home/HomeMoments'
 import { FollowSath } from '@/components/FollowSath'
 import Link from 'next/link'
 
@@ -101,6 +102,8 @@ export function HomeClient({ writings }: HomeClientProps) {
             <details><summary><Image src="/village/network-oct31/02-network-picnic.webp" alt="Childlike artwork of a child sharing a picnic with the people who love them" width={360} height={270} sizes="(max-width: 760px) 44vw, 200px" quality={65} /><span className="founder-question-title">For the people we love.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A child's people don't all live in one home. I built this for my children: a way to keep their art and set money aside for them. <a href="https://proof.sathian.ai/">Watch why I built it</a>.</p></details>
           </div>
         </section>
+
+        <HomeMoments />
 
         <section className="minimal-section minimal-container" aria-labelledby="building-now">
           <h2 id="building-now">Building now</h2>

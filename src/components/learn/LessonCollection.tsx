@@ -69,7 +69,11 @@ export function LessonCollection({ lessons, readyIds }: { lessons: Lesson[]; rea
     const active = e.target as HTMLVideoElement
     collection.current?.querySelectorAll('video').forEach(v => { if (v !== active) v.pause() })
   }}>
-    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}<article className="learn-picture-lesson learn-stablecoin-card" aria-labelledby="stablecoin-card-title"><div className="learn-picture-caption"><h3 id="stablecoin-card-title" className="learn-topic-title">What is a stablecoin?</h3><StablecoinFilm /><button className="learn-button" onClick={event=>choose('stablecoin','try',event.currentTarget)}>Start the USDC lesson</button></div></article></div><SolanaOverview /><section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
+    <div className="learn-picture-lessons">{lessons.filter(l => l.id === 'bitcoin').map(renderLesson)}{lessons.filter(l => l.id === 'ethereum').map(renderLesson)}<article className="learn-picture-lesson learn-stablecoin-card" aria-labelledby="stablecoin-card-title"><div className="learn-picture-caption"><h3 id="stablecoin-card-title" className="learn-topic-title">What is a stablecoin?</h3><StablecoinFilm /><button className="learn-button" onClick={event=>choose('stablecoin','try',event.currentTarget)}>Start the USDC lesson</button></div></article></div>
+    <section className="learn-picture-lessons learn-solana-lessons" aria-label="Solana lessons">
+      <SolanaOverview />
+      <section className="learn-history-feed" aria-label="Historical Solana film">{lessons.filter(l => l.id === 'solana').map(renderLesson)}</section>
+    </section>
 
     {selected && selection && <section className="learn-inline" ref={panel} aria-label={`${selectedTitle} lesson`}>
       <div className="learn-nav"><button className="learn-button secondary" onClick={clear}>Back to the lessons</button><span>{selected.label}</span></div>

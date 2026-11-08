@@ -11,9 +11,9 @@ export function SiteFooter() {
         <nav aria-label="Footer navigation">
           <Link href="/">Home</Link>
           <Link href="/about">About</Link>
-          <Link href="/links">Follow Sathian</Link>
+          <Link href="/about#follow">Connect with Sathian</Link>
           <Link href="/hackathons">Hackathons</Link>
-          <Link href="/writings">Writing</Link>
+          <Link href="/writings">Write</Link>
           <Link href="/#agent">Ask the site agent</Link>
         </nav>
       </div>

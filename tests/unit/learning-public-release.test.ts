@@ -24,7 +24,7 @@ it('keeps the two approved guide players visible and transcript disclosures out 
   for (const asset of inventory.assets) {
     expect(createHash('sha256').update(asset.normalization ? readFileSync(asset.path, 'utf8').replace(/\r\n/g, '\n') : readFileSync(asset.path)).digest('hex')).toBe(asset.sha256)
   }
-})
+}, 30_000) // Hashing the full approved media inventory also runs on slower secondary drives.
 
 it('preserves the approved classroom and Tanda assets alongside the eight-film review inventory', () => {
   expect(lessons.map(l => l.id)).toEqual(['bitcoin', 'ethereum', 'solana'])

@@ -45,6 +45,15 @@ const assert = (ok, message) => { if (!ok) throw new Error(message) }
       assert(await hero.evaluate(i => i.naturalWidth === 1672), 'approved complete hero decoded')
       await page.screenshot({ path: path.join(proof, `arrival-learn-${width}.png`), fullPage: false })
       performanceMetrics.push({ page: 'learn', width, ...await page.evaluate(() => ({ ...window.learnVitals, responseMs: performance.getEntriesByType('navigation')[0]?.responseEnd, transferredBytes: performance.getEntriesByType('resource').reduce((sum, r) => sum + r.transferSize, 0), initialIframes: document.querySelectorAll('iframe').length })) })
+      await require('./helpers/learn-layout.cjs')(page, width)
+      const solanaFilms = page.locator('.learn-solana-lessons video')
+      for (const video of await solanaFilms.all()) {
+        await video.evaluate(async v => { v.muted = true; await v.play() })
+        await page.waitForFunction(src => [...document.querySelectorAll('.learn-solana-lessons video')].some(v => v.getAttribute('src') === src && v.currentTime > 0.1), await video.getAttribute('src'))
+        assert(await video.evaluate(v => !v.error && v.videoWidth > 0 && v.duration > 0), 'Solana film decodes and plays')
+      }
+      assert(await solanaFilms.first().evaluate(v => v.paused), 'starting historical Solana pauses its overview')
+      await solanaFilms.last().evaluate(v => v.pause())
       const storyFilms = page.locator('.learn-room-stories video')
       assert(await storyFilms.count() === 8, 'eight full story films retained')
       for (const video of await storyFilms.all()) {

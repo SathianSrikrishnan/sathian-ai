@@ -52,11 +52,11 @@ describe('site-agent-first editorial pass', () => {
 
   it('keeps the human navigation to the four approved pages and gives agents a quieter index', () => {
     expect(nav).toContain("{ label: 'Home', href: '/'")
-    expect(nav).toContain("{ label: 'About', href: '/about'")
+    expect(nav).not.toContain("{ label: 'About'")
     expect(nav).toContain("{ label: 'Proof', href: PROOF.href")
     expect(nav).toContain("{ label: 'Learn', href: '/learn'")
     expect(nav).not.toContain("{ label: 'Hackathons'")
-    expect(nav).toContain("{ label: 'Writing', href: '/writings'")
+    expect(nav).toContain("{ label: 'Write', href: '/writings'")
     expect(nav).not.toContain("{ label: 'Projects'")
     expect(nav).not.toContain("{ label: 'Automation'")
     expect(nav).not.toContain("{ label: 'Email'")

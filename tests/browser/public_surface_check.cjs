@@ -8,6 +8,7 @@ const automationBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
 const proofDirectory = process.env.BROWSER_PROOF_DIR
 
 const surfaces = [
+  { path: '/learn', heading: 'Learn with Tanda', title: 'Learn with Tanda: Free Stories and Money Lessons for Kids', headingFont: /Georgia/ },
   { path: '/farcaster', heading: 'Run your own Farcaster server.', title: 'Run your own Farcaster server | Sathian' },
   { path: '/farcaster/setup', heading: 'Set up your server.', title: 'Farcaster setup | Sathian' },
   { path: '/farcaster/library', heading: 'Short explanations.', title: 'Farcaster and Network School, explained | Sathian' },
@@ -17,7 +18,7 @@ const surfaces = [
   { path: '/village', heading: "A child’s network is their village.", title: "Tooth Fairy Network | A parent-controlled child's network" },
   { path: '/privacy', heading: 'Privacy.', title: 'Privacy | Sathian' },
   { path: '/about', heading: "Hi, I'm Sathian.", title: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },
-  { path: '/links', heading: 'A few ways in.', title: 'Links | Sathian' },
+  { path: '/links', heading: 'Come say hi.', title: 'Links | Sathian' },
   { path: '/writings', heading: 'Writing.', title: 'Writing | sathian.ai' },
   { path: '/hackathons', heading: 'Ideas meet the clock.', title: 'Hackathons | sathian.ai' },
   {
@@ -180,6 +181,30 @@ async function verifyViewport(browser, label, viewport) {
       )
     }
     assert(!state.horizontalOverflow, `${label} ${surface.path}: horizontal overflow detected`)
+    if (surface.path === '/learn') {
+      await require('./helpers/learn-layout.cjs')(page, viewport.width)
+      if (proofDirectory) {
+        mkdirSync(proofDirectory, { recursive: true })
+        await page.locator('.learn-solana-lessons').screenshot({ path: join(proofDirectory, `${label}-solana-cards.png`) })
+      }
+    }
+    if (surface.path === '/') {
+      assert(await page.locator('[aria-labelledby="home-moments-title"] a').count() === 11, 'ten image stories plus About link')
+      assert(await page.locator('#home-moments-title').evaluate(e => parseFloat(getComputedStyle(e).fontSize) >= 24), 'gallery heading retains section-level typography')
+      assert(await page.locator('[aria-labelledby="home-moments-title"] img[loading="lazy"]').count() === 10, 'homepage gallery remains lazy loaded')
+      const expected = ['Home', 'Proof', 'Learn', 'Write']
+      assert(JSON.stringify(await page.locator('.minimal-site-nav__desktop a').allTextContents()) === JSON.stringify(expected), 'primary menu order')
+      const toggle = page.getByRole('button', { name: 'Open menu', exact: true })
+      if (await toggle.isVisible()) {
+        await toggle.click()
+        assert(JSON.stringify(await page.locator('#minimal-mobile-menu a').allTextContents()) === JSON.stringify(expected), 'mobile menu order')
+        await page.keyboard.press('Escape')
+        assert(await page.locator('#minimal-mobile-menu').count() === 0, 'Escape closes mobile menu')
+        await toggle.click()
+        await page.getByRole('button', { name: 'Close menu', exact: true }).click()
+        assert(await page.locator('#minimal-mobile-menu').count() === 0, 'repeated menu close works')
+      }
+    }
     if (['/', '/about', '/links'].includes(surface.path)) {
       const follow = page.locator('#follow')
       assert(await follow.locator('h2').count() === 1, `${label} ${surface.path}: expected one follow section heading`)
@@ -194,6 +219,7 @@ async function verifyViewport(browser, label, viewport) {
         assert(await follow.locator('nav[aria-label="Find Sathian online"] a').count() === 7, `${label}: homepage personal profiles missing`)
       }
       if (surface.path === '/about') {
+        assert(await page.getByRole('link', { name: 'All links and channels', exact: true }).getAttribute('href') === '/links', 'About keeps the full links hub reachable')
         assert(await follow.locator('h2').innerText() === 'How You Connect', `${label}: About connection heading missing`)
         assert(await page.evaluate(() => {
           const follow = document.querySelector('#follow')
@@ -270,6 +296,16 @@ async function verifyViewport(browser, label, viewport) {
       mkdirSync(proofDirectory, { recursive: true })
       const slug = surface.path === '/' ? 'home' : surface.path.slice(1).replaceAll('/', '-')
       await page.screenshot({ fullPage: true, path: join(proofDirectory, `${label}-${slug}.png`) })
+    }
+
+    if (surface.path === '/') {
+      const galleryImages = page.locator('[aria-labelledby="home-moments-title"] img')
+      for (const image of await galleryImages.all()) {
+        await image.scrollIntoViewIfNeeded()
+        await image.evaluate(img => img.decode())
+        assert(await image.evaluate(img => img.naturalWidth > 0), 'gallery image decodes')
+      }
+      if (proofDirectory) await page.locator('[aria-labelledby="home-moments-title"]').screenshot({ path: join(proofDirectory, `${label}-home-gallery.png`) })
     }
 
     results.push({ path: surface.path, heading: state.heading?.text, title: state.title })
