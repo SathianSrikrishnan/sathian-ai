@@ -1,0 +1,26 @@
+.section { padding-top: 2rem; }
+.heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 1.75rem; }
+.heading h2 { margin-bottom: .65rem; color: var(--minimal-ink); font-family: Iowan Old Style, Baskerville, Georgia, serif; font-size: clamp(32px, 4vw, 43px); font-weight: 600; letter-spacing: -.035em; line-height: 1; }
+.heading p { max-width: 46ch; margin: 0; color: #655d4c; line-height: 1.6; }
+.heading > a { white-space: nowrap; margin-bottom: .2rem; }
+.grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.3rem 1rem; }
+.card { min-width: 0; color: inherit; text-decoration: none; display: flex; flex-direction: column; }
+.media { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 12px; overflow: hidden; background: #d6ceb9; border: 1px solid rgba(37, 30, 21, .16); }
+.media img { object-fit: cover; }
+.number { position: absolute; bottom: .65rem; left: .65rem; padding: .15rem .45rem; border-radius: 4px; background: #f7f2e7; color: #29271f; font-size: .7rem; font-variant-numeric: tabular-nums; }
+.caption { display: flex; align-items: start; justify-content: space-between; gap: .5rem; padding: .8rem .1rem .25rem; }
+.caption strong { display: block; font-size: .91rem; font-weight: 600; line-height: 1.45; }
+.detail { display: block; margin-top: .25rem; color: #675e4e; font-size: .75rem; line-height: 1.5; }
+.arrow { font-size: 1.1rem; color: #985027; }
+.card:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.card:focus-visible { outline: 3px solid #9b4e26; outline-offset: 5px; border-radius: 12px; }
+.note { margin: 1.2rem 0 0; color: #675e4e; font-size: .8rem; line-height: 1.6; }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .heading { display: block; }
+  .heading > a { display: inline-flex; min-height: 44px; align-items: center; margin-top: .6rem; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem .75rem; }
+  .media { border-radius: 9px; aspect-ratio: 4 / 5; }
+  .caption strong { font-size: .86rem; }
+  .detail { font-size: .72rem; }
+}

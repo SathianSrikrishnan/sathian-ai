@@ -36,7 +36,7 @@ export default function LearningBoard() {
 
   return <main className="learn-board learn-review learn-room family-surface">
 
-    <div className="proof-family-wall" aria-hidden="true">{Array.from({length:20},(_,i)=><img key={i} src={`/proof-assets/proof-site-first-edition/collage-${i%8}-640.webp`} alt="" />)}</div><nav className="learn-nav family-nav" aria-label="Learning navigation"><a href="https://sathian.ai">sathian.ai</a><a href="https://proof.sathian.ai">PROOF</a><a href="https://sathian.ai/learn" aria-current="page">Learn with Tanda</a></nav><MeetGuides />
+    <div className="proof-family-wall" aria-hidden="true">{Array.from({length:20},(_,i)=><img key={i} src={`/proof-assets/proof-site-first-edition/collage-${i%8}-640.webp`} alt="" />)}</div><nav className="learn-nav family-nav" aria-label="Learning navigation"><a href="https://sathian.ai">Home</a><a href="https://proof.sathian.ai">Proof</a><a href="https://sathian.ai/learn" aria-current="page">Learn</a><a href="https://sathian.ai/writings">Write</a></nav><MeetGuides />
 
     <ClassroomBorder><header className="learn-feed-heading learn-hero-first"><h1>Learn with Tanda</h1><p className="learn-feed-tagline">Big ideas made simple</p><a className="learn-hero-zoom" href="/learn-art/classroom-master.webp" target="_blank" rel="noreferrer" aria-label="View the complete classroom illustration in a new tab"><img className="learn-classroom-art" src="/learn-art/classroom-master.webp" alt="Tanda, Sathian and two children at a classroom board illustrating Dollars (USDC), Bitcoin and SOL, a digital vault screen, a public receiving address, a private key and physical Proof keepsakes." width="1672" height="941" fetchPriority="high" /></a></header></ClassroomBorder>
     <div className="learn-room-section-line"><h2>More to explore</h2></div>
@@ -51,7 +51,7 @@ export default function LearningBoard() {
     <aside className="learn-adult-invitation" aria-label="Gift invitation for adults"><div><a className="learn-proof-hub" href="https://proof.sathian.ai">Explore PROOF</a></div><a className="learn-button learn-gift-invitation" href="https://toothfairy.network/give/start">Create a gift</a></aside>
 
 
-    <footer className="learn-footer"><a href="https://toothfairy.network/#home-faq">Product questions</a><a href="https://sathian.ai/privacy">Privacy</a><a href="https://proof.sathian.ai/?from=learn#ask-a-question">Ask a question</a></footer>
+    <footer className="learn-footer"><a href="https://sathian.ai/about">About Sathian</a><a href="https://toothfairy.network/#home-faq">Product questions</a><a href="https://sathian.ai/privacy">Privacy</a><a href="https://proof.sathian.ai/?from=learn#ask-a-question">Ask a question</a></footer>
 
   </main>
 

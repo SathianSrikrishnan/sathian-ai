@@ -65,3 +65,13 @@
 .learn-planet-article details {margin:22px 0;}
 .learn-planet-article details summary {cursor:pointer;font-weight:700;}
 @media(max-width:600px){.learn-planet-article .pluto-documents{grid-template-columns:1fr;gap:16px}.learn-planet-article .pluto-documents figure{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start}.learn-planet-article .pluto-documents img{height:150px}.learn-planet-article .pluto-documents figcaption{margin:0}.learn-solana-overview{padding:14px}}
+
+/* Both Solana films use the same card and media geometry as the lesson shelf. */
+.learn-room .learn-solana-lessons { margin:22px 0 32px; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch; }
+.learn-solana-lessons .learn-solana-overview { max-width:none; margin:0; padding:12px; }
+.learn-solana-lessons .learn-solana-overview video { margin:0; }
+.learn-solana-lessons .learn-solana-overview p { margin:0; font-size:21px; line-height:1.35; }
+.learn-solana-lessons .learn-history-note { white-space:normal; overflow-wrap:anywhere; }
+.learn-solana-lessons .learn-history-feed { min-width:0; max-width:none; margin:0; }
+.learn-solana-lessons .learn-history-feed > .learn-picture-lesson { height:100%; box-sizing:border-box; }
+@media(max-width:700px) { .learn-room .learn-solana-lessons { grid-template-columns:1fr; gap:20px; } }
