@@ -4,16 +4,17 @@ import Image from 'next/image'
 import { SATH_CALENDAR_HREF, personalSocialLinks } from '@/lib/social-links'
 import styles from './FollowSath.module.css'
 
-export function FollowSath({ profiles = false, showMore = true }: { profiles?: boolean; showMore?: boolean }) {
+export function FollowSath({ profiles = false, showMore = true, title = 'Tech Talk with Sath' }: { profiles?: boolean; showMore?: boolean; title?: string }) {
   return (
-    <section id="follow" className={styles.section} aria-labelledby="follow-title">
+    <section id="follow" className={`minimal-section ${styles.section}`} aria-labelledby="follow-title">
+      <div className={`minimal-section-heading ${styles.heading}`}>
+        <h2 id="follow-title">{title}</h2>
+      </div>
       <div className={styles.banner}>
         <a href={SATH_CALENDAR_HREF} className={styles.mark} aria-label="Open Tech Talk with Sath on Luma">
           <Image src="/tech-talk/qr-mark.svg" width={600} height={600} alt="Tech left, Talk above, With right and Sath below a QR code for lu.ma/sath" unoptimized />
         </a>
         <div className={styles.copy}>
-          <p className="minimal-kicker">TORONTO / COME ALONG</p>
-          <h2 id="follow-title">Tech Talk with Sath</h2>
           <p>Tech, ideas, and good people. These are my event picks around Toronto. Come say hi.</p>
           <a href={SATH_CALENDAR_HREF} className={styles.cta}>Follow on Luma <span aria-hidden="true">↗</span></a>
           <span className={styles.address}>lu.ma/sath</span>

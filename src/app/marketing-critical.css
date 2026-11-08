@@ -1190,10 +1190,6 @@ h1, h2, h3 {
   text-decoration: underline;
 }
 
-.minimal-project-copy .minimal-label {
-  margin-top: 12px;
-}
-
 .minimal-project-copy > p:not(.minimal-kicker):not(.minimal-label) {
   max-width: 510px;
   margin-top: 17px;
@@ -1472,10 +1468,6 @@ h1, h2, h3 {
     width: 84px;
     height: 58px;
     grid-row: 1 / 3;
-  }
-
-  .minimal-more-list .minimal-label {
-    grid-column: 2;
   }
 
   .minimal-site-footer__inner {

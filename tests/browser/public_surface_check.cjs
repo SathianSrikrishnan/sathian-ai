@@ -182,13 +182,33 @@ async function verifyViewport(browser, label, viewport) {
     assert(!state.horizontalOverflow, `${label} ${surface.path}: horizontal overflow detected`)
     if (['/', '/about', '/links'].includes(surface.path)) {
       const follow = page.locator('#follow')
+      assert(await follow.locator('h2').count() === 1, `${label} ${surface.path}: expected one follow section heading`)
+      assert(!(await follow.innerText()).includes('COME ALONG'), `${label} ${surface.path}: redundant calendar tag remains`)
+      if (surface.path === '/') {
+        assert(await page.evaluate(() => {
+          const follow = document.querySelector('#follow')
+          const hackathons = document.querySelector('#home-hackathons')?.closest('section')
+          return hackathons?.nextElementSibling?.contains(follow) && !follow?.parentElement?.nextElementSibling
+        }), `${label}: homepage follow section must be last, directly after Hackathons`)
+        assert(await page.locator('main .minimal-kicker:not(.minimal-home-identity), main .minimal-label').count() === 0, `${label}: redundant homepage labels remain`)
+        assert(await follow.locator('nav[aria-label="Find Sathian online"] a').count() === 7, `${label}: homepage personal profiles missing`)
+      }
+      if (surface.path === '/about') {
+        assert(await follow.locator('h2').innerText() === 'How You Connect', `${label}: About connection heading missing`)
+        assert(await page.evaluate(() => {
+          const follow = document.querySelector('#follow')
+          const hero = document.querySelector('.about-hero')
+          const building = document.querySelector('#about-building')?.closest('section')
+          return hero?.nextElementSibling?.contains(follow) && follow?.parentElement?.nextElementSibling === building
+        }), `${label}: About connections must follow the introduction and precede What I'm building`)
+      }
       await follow.scrollIntoViewIfNeeded()
       const calendarLinks = await follow.locator('a[href="https://lu.ma/sath"]').count()
       assert(calendarLinks === 2, `${label} ${surface.path}: QR and button must link to the current calendar`)
       await follow.locator('img').evaluate(img => img.decode())
       const qr = await follow.locator('img').evaluate(img => ({ loaded: img.naturalWidth > 0, lazy: img.loading === 'lazy', width: img.getBoundingClientRect().width }))
       assert(qr.loaded && qr.lazy && qr.width > 100, `${label} ${surface.path}: missing or eager calendar QR`)
-      if (surface.path !== '/') {
+      if (['/', '/about', '/links'].includes(surface.path)) {
         assert(await page.locator('main a[href="https://x.com/Sathian"]').count() === 1, `${label} ${surface.path}: current X identity missing`)
         assert(await page.locator('main a[href="https://x.com/_sathian_"]').count() === 0, `${label} ${surface.path}: old X identity remains`)
       }
