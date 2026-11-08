@@ -180,6 +180,27 @@ async function verifyViewport(browser, label, viewport) {
       )
     }
     assert(!state.horizontalOverflow, `${label} ${surface.path}: horizontal overflow detected`)
+    if (['/', '/about', '/links'].includes(surface.path)) {
+      const follow = page.locator('#follow')
+      await follow.scrollIntoViewIfNeeded()
+      const calendarLinks = await follow.locator('a[href="https://lu.ma/sath"]').count()
+      assert(calendarLinks === 2, `${label} ${surface.path}: QR and button must link to the current calendar`)
+      await follow.locator('img').evaluate(img => img.decode())
+      const qr = await follow.locator('img').evaluate(img => ({ loaded: img.naturalWidth > 0, lazy: img.loading === 'lazy', width: img.getBoundingClientRect().width }))
+      assert(qr.loaded && qr.lazy && qr.width > 100, `${label} ${surface.path}: missing or eager calendar QR`)
+      if (surface.path !== '/') {
+        assert(await page.locator('main a[href="https://x.com/Sathian"]').count() === 1, `${label} ${surface.path}: current X identity missing`)
+        assert(await page.locator('main a[href="https://x.com/_sathian_"]').count() === 0, `${label} ${surface.path}: old X identity remains`)
+      }
+      if (surface.path === '/links') {
+        assert((await page.locator('meta[property="og:image"]').first().getAttribute('content')).endsWith('/tech-talk/social-preview.png'), `${label}: links share image missing`)
+      }
+      if (proofDirectory) {
+        mkdirSync(proofDirectory, { recursive: true })
+        await follow.screenshot({ path: join(proofDirectory, `${label}-${surface.path === '/' ? 'home' : surface.path.slice(1)}-follow.png`) })
+      }
+      await page.evaluate(() => scrollTo(0, 0))
+    }
     if (surface.heroTitleMustFitColumn && label !== 'mobile') {
       assert(state.heroTitleFitsColumn, `${label} ${surface.path}: outlined hero title crosses into the image column`)
     }

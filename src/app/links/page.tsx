@@ -1,12 +1,26 @@
 import type { Metadata } from 'next'
 
 import { SiteNav } from '@/components/SiteNav'
+import { FollowSath } from '@/components/FollowSath'
 import { WorkshopFooter } from '@/components/WorkshopFooter'
 import { personalSocialLinks, toothFairySocialLinks } from '@/lib/social-links'
 
 export const metadata: Metadata = {
   title: 'Links | Sathian',
   description: "Sathian's maintained profiles, projects, writing, events, and public channels in one place.",
+  alternates: { canonical: '/links' },
+  openGraph: {
+    title: 'Tech Talk with Sath | Find Sathian online',
+    description: 'Toronto events, ideas, and good people. Follow my picks and come say hi.',
+    url: 'https://sathian.ai/links',
+    images: [{ url: '/tech-talk/social-preview.png', width: 1200, height: 628, alt: 'Tech Talk with Sath — follow on lu.ma/sath' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tech Talk with Sath | Find Sathian online',
+    description: 'Toronto events, ideas, and good people. Follow my picks and come say hi.',
+    images: ['/tech-talk/social-preview.png'],
+  },
 }
 
 const workLinks = [
@@ -26,6 +40,8 @@ export default function LinksPage() {
           <h1>A few ways in.</h1>
           <p>Current projects, writing, and the channels where I share work in progress.</p>
         </header>
+
+        <FollowSath showMore={false} />
 
         <section aria-labelledby="personal-links">
           <h2 id="personal-links">Sathian</h2>

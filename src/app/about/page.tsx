@@ -7,7 +7,7 @@ import { TrackedLink } from '@/components/TrackedLink'
 import { LATEST_WRITING } from '@/content/latest-writing'
 import { PROOF } from '@/content/proof'
 import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
-import { personalSocialLinks } from '@/lib/social-links'
+import { FollowSath } from '@/components/FollowSath'
 
 const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=about'
 
@@ -159,16 +159,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="minimal-container about-find" aria-labelledby="about-find">
-          <h2 id="about-find" className="minimal-kicker">FIND ME</h2>
-          <nav className="about-socials" aria-label="Sathian profiles">
-            {personalSocialLinks.map((link) => (
-              <a key={link.href} href={link.href} target="_blank" rel="me noopener noreferrer">
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </section>
+        <div className="minimal-container"><FollowSath profiles /></div>
       </main>
 
       <SiteFooter />

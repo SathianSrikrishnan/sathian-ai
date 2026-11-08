@@ -18,7 +18,7 @@ export const SATHIAN_PERSON_SCHEMA = {
     '@type': 'Place',
     name: 'Toronto, Ontario, Canada',
   },
-  sameAs: personalSocialLinks.map((link) => link.href),
+  sameAs: personalSocialLinks.map((link) => link.label === 'Luma' ? 'https://luma.com/user/Sathians' : link.href),
 } as const
 export const SATHIAN_WEBSITE_SCHEMA = {
   '@context': 'https://schema.org',

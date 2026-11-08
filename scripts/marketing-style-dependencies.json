@@ -6,6 +6,7 @@
   "src/components/AgentFileVerification.tsx",
   "src/components/ChatWidget.tsx",
   "src/components/DeferredChatWidget.tsx",
+  "src/components/FollowSath.tsx",
   "src/components/NetworkBenefits.tsx",
   "src/components/SiteFooter.tsx",
   "src/components/SiteNav.tsx",

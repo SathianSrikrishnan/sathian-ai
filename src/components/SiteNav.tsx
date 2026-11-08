@@ -10,6 +10,7 @@ import { trackSiteEvent } from '@/lib/site-analytics'
 const navLinks = [
   { label: 'Home', href: '/', external: false },
   { label: 'About', href: '/about', external: false },
+  { label: 'Follow', href: '/links', external: false },
   { label: 'Proof', href: PROOF.href, external: true },
   { label: 'Learn', href: '/learn', external: false },
   { label: 'Writing', href: '/writings', external: false },
