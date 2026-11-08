@@ -21,6 +21,11 @@ describe('public social destinations', () => {
     expect(personalSocialLinks.find(link => link.label === 'Farcaster')?.href).toBe('https://farcaster.xyz/sathian')
   })
 
+  it('uses the current X account and public event calendar', () => {
+    expect(personalSocialLinks.find(link => link.label === 'X')?.href).toBe('https://x.com/Sathian')
+    expect(personalSocialLinks.find(link => link.label === 'Luma')?.href).toBe('https://lu.ma/sath')
+  })
+
   it('publishes the complete Tooth Fairy Network profile set', () => {
     expect(toothFairySocialLinks.map((link) => link.label)).toEqual([
       'LinkedIn',
