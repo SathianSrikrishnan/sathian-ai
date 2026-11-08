@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
@@ -106,7 +105,7 @@ export default function AboutPage() {
           />
         </header>
 
-        <div className="minimal-container"><FollowSath profiles title="How You Connect" /><p className="about-actions"><Link href="/links" prefetch={false} className="about-button">All links and channels</Link></p></div>
+        <div className="minimal-container"><FollowSath profiles title="How You Connect" /></div>
 
         <section className="minimal-section minimal-container" aria-labelledby="about-building">
           <h2 id="about-building">What I&apos;m building</h2>
