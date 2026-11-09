@@ -6828,3 +6828,5 @@ h1, h2, h3 {
 
 .village-printed-examples { display:flex; justify-content:center; gap:24px; }
 .village-printed-examples img { width:min(44%,260px); height:auto; object-fit:contain; border-radius:12px; }
+.village-real-proofs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 640px; }
+.village-real-proofs img { border-radius: 4px; }

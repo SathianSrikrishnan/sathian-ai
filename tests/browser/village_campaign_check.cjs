@@ -65,8 +65,9 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
             await page.waitForFunction(expected => [...document.querySelectorAll('button[aria-label="Show the next Proof"] img')]
               .findIndex(image => image.dataset.pos === '0') === expected, (before + 1) % cards)
           }
-          const row = page.getByRole('region', { name: 'Finished Proofs', exact: true })
-          assert(await row.count() === 1 && await row.locator('img').count() >= 4, `${label}: Finished Proofs rows`)
+          // Owner, Nov 9 (second pass): no drifting rows on Village; the stack and the round carousel stay.
+          assert(await page.getByRole('region', { name: 'Finished Proofs', exact: true }).count() === 0, `${label}: no Finished Proofs rows`)
+          assert(await page.locator('.village-real-proofs img').count() === 2, `${label}: real finished Proofs in What the child gets`)
           assert(await page.locator('[aria-label="Finished Proofs, turning"] img').count() >= 4, `${label}: round Finished Proofs carousel`)
           await page.evaluate(() => scrollTo({ top:0, behavior:'instant' }))
           const reading = checkReadability(await page.locator('main').innerText())
