@@ -21,7 +21,7 @@ import {
 import { toothFairySocialLinks } from '@/lib/social-links'
 import { LATEST_WRITING } from '@/content/latest-writing'
 
-const HOME_GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=home'
+const HOME_GIFT_HREF = 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=home'
 
 export interface HomeWriting {
   title: string

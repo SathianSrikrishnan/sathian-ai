@@ -9,7 +9,7 @@ import { PROOF } from '@/content/proof'
 import { SATHIAN_PERSON_SCHEMA } from '@/lib/site-identity'
 import { FollowSath } from '@/components/FollowSath'
 
-const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=about'
+const GIFT_HREF = 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=about'
 
 export const metadata: Metadata = {
   title: { absolute: 'About Sathian Srikrishnan | Founder, Tooth Fairy Network' },

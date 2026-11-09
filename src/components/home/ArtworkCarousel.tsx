@@ -11,7 +11,6 @@ type Props = { slides: readonly ArtworkSlide[]; label: string; sizes: string; he
 
 export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Props) {
   const root = useRef<HTMLDivElement>(null)
-  const pointerIntent = useRef<boolean | null>(null)
   const [index, setIndex] = useState(0)
   const [requested, setRequested] = useState<number | null>(null)
   const [ready, setReady] = useState<number | null>(null)
@@ -84,7 +83,7 @@ export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Pr
   }, [requested, ready, rotating, due, next])
 
   const move = (step: number) => {
-    setRunning(false)
+    // A tap shows the next picture and the carousel keeps turning.
     setFailed(false)
     setRequested(value => ((value ?? index) + step + slides.length) % slides.length)
   }
@@ -93,21 +92,14 @@ export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Pr
 
   return (
     <div ref={root} className={`${hero ? 'village-home-art' : styles.mini} ${styles.carousel}`} role="region" aria-roledescription="carousel" aria-label={label} data-slide={index + 1} data-ready={ready === next} data-running={rotating} data-image-count={slides.length}
-      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovered(true) }} onPointerLeave={event => { if (event.pointerType === 'mouse') setHovered(false) }} onFocusCapture={() => setRunning(false)}>
+      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovered(true) }} onPointerLeave={event => { if (event.pointerType === 'mouse') setHovered(false) }} onFocusCapture={event => { if ((event.target as HTMLElement).matches(':focus-visible')) setRunning(false) }} onBlurCapture={() => setRunning(!reducedMotion)}>
       <div className={styles.frame}>
         <div className={styles.slide} aria-live={running ? 'off' : 'polite'} aria-atomic="true">
           <div role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${slides.length}`}>
-            {href ? <Link href={href} prefetch={false} aria-label="See what a child gets from Tooth Fairy Network">{picture}</Link> : picture}
+            {/* Nov 9 (owner): no arrows or pause icon. It turns by itself; a tap shows the next picture. Hover and keyboard focus pause it, and reduced motion keeps it still. */}
+            {href ? <Link href={href} prefetch={false} aria-label="See what a child gets from Tooth Fairy Network">{picture}</Link> : <button type="button" className={styles.tap} aria-label="Show the next picture" onClick={() => move(1)}>{picture}</button>}
           </div>
         </div>
-        <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="Previous image" onClick={() => move(-1)}><span aria-hidden="true">&lsaquo;</span></button>
-        <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="Next image" onClick={() => move(1)}><span aria-hidden="true">&rsaquo;</span></button>
-        <button className={styles.pause} type="button" disabled={reducedMotion}
-          aria-label={reducedMotion ? 'Automatic rotation off: reduced motion' : running ? 'Pause automatic rotation' : 'Start automatic rotation'}
-          onPointerDown={() => { pointerIntent.current = !running }} onPointerCancel={() => { pointerIntent.current = null }} onBlur={() => { pointerIntent.current = null }}
-          onClick={() => { setRunning(pointerIntent.current ?? !running); pointerIntent.current = null }}>
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">{running && !reducedMotion ? <><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></> : <path d="M7 4v16l13-8z" />}</svg>
-        </button>
       </div>
       {failed && <span className={styles.srOnly} role="status">This image could not load. The previous picture is still shown.</span>}
     </div>

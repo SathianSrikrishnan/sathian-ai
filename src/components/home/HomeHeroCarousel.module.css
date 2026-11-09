@@ -20,3 +20,4 @@
 
 /* Decorative glyphs must not replace the stable pointer target on Play/Pause. */
 .arrow span, .pause svg { pointer-events: none; }
+.tap { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }

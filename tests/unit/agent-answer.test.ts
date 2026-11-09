@@ -48,7 +48,7 @@ describe('bounded public answer service', () => {
       expect(result.answer).toContain('not a bank account')
       expect(result.nextAction).toEqual({
         label: 'Give a gift',
-        href: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=site-agent&utm_campaign=agent',
+        href: 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=site-agent&utm_campaign=agent',
       })
       expect(model.generate).not.toHaveBeenCalled()
     })

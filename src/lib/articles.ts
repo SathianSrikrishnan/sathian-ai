@@ -60,7 +60,7 @@ export const articles: Article[] = [
     sectionTints: ['#D4A017', '#F59E0B', '#EF4444', '#22C55E', '#F7931A', '#06B6D4', '#D4A017'],
     cta: {
       label: 'Give a child their first wallet',
-      href: 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay',
+      href: 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay',
       secondary: { label: 'Watch Proof: why I build this', href: 'https://proof.sathian.ai/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=gold-essay' },
     },
     media: [

@@ -85,7 +85,8 @@ describe('requested homepage artwork correction', () => {
     expect(carousel).toContain('prefers-reduced-motion: reduce')
     expect(carousel).toContain('visibilitychange')
     expect(carousel).toContain('IntersectionObserver')
-    expect(carousel).toContain('onFocusCapture={() => setRunning(false)}')
+    // Nov 9: keyboard focus pauses; a tap (mouse/touch focus) keeps it turning.
+    expect(carousel).toContain("matches(':focus-visible')) setRunning(false)")
     expect(carousel).toContain('running && !reducedMotion && !hovered && visible && pageVisible')
     expect(carousel).toContain('if (!rotating || !imageLoaded) return')
     expect(carousel).toContain('window.clearTimeout(timer)')
@@ -99,20 +100,20 @@ describe('requested homepage artwork correction', () => {
     expect(carousel).not.toMatch(/gsap|motion\/|swiper|setInterval/)
   })
 
-  it('keeps just side arrows and a small in-frame pause icon without a bottom bar or caption', () => {
+  it('turns by itself with no arrows, pause icon, bottom bar or caption; a tap shows the next picture (owner, Nov 9)', () => {
     const carousel = read('src/components/home/ArtworkCarousel.tsx')
-    expect(carousel.match(/<button /g)).toHaveLength(3)
-    for (const label of ['Previous image', 'Next image', 'Pause automatic rotation']) expect(carousel).toContain(label)
+    for (const label of ['Previous image', 'Next image', 'Pause automatic rotation']) expect(carousel).not.toContain(label)
+    expect(carousel).toContain('aria-label="Show the next picture"')
     expect(carousel).toContain('aria-roledescription="carousel"')
     expect(carousel).toContain('aria-label={`${index + 1} of ${slides.length}`}')
-    expect(carousel).not.toMatch(/<figcaption|styles\.(?:caption|counter|controls|bottomBar)|<details|<summary/)
-    expect(carousel).toContain('width="14" height="14"')
-    const styles = read('src/components/home/HomeHeroCarousel.module.css')
-    expect(styles).toContain('width: 44px; height: 44px;')
-    expect(styles).toContain('.previous { left: 0; }')
-    expect(styles).toContain('.next { right: 0; }')
-    expect(styles).toContain('.pause { top: 0; right: 0; }')
-    expect(styles).toContain(':focus-visible')
+    expect(carousel).not.toMatch(/<figcaption|styles\.(?:caption|counter|controls|bottomBar|arrow|pause)|<details|<summary/)
+    expect(carousel).toContain("prefers-reduced-motion: reduce")
+  })
+
+  it('shows Finished Proofs on the Village page: a stack, a drifting row and a round carousel', () => {
+    const village = read('src/app/village/page.tsx')
+    for (const part of ['<ProofStack />', '<ProofRow />', '<ProofRound />']) expect(village).toContain(part)
+    expect(village).not.toContain('<GiftGallery')
   })
 
   it('restores About and Links contact presentation with plain X labels', () => {

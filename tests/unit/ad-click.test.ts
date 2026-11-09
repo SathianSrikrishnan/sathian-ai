@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { withAdClick } from '@/lib/ad-click'
 
-const GIFT = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=about'
+const GIFT = 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=about'
 
 describe('ad click pass-through to the gift site', () => {
   it('adds the landing gclid to a gift link and keeps the UTMs', () => {
