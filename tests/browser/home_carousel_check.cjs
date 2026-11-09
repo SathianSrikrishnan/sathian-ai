@@ -176,8 +176,19 @@ async function setup(browser, viewport, reducedMotion = 'no-preference', slowNet
   return { page, context, hero, errors, cdp }
 }
 
+// Only keyboard (:focus-visible) focus pauses rotation; mouse/touch focus does not.
+// A non-moving key press puts Chromium in keyboard modality so that a scripted
+// focus() matches :focus-visible exactly as a Tab press would.
+async function keyboardFocus(page, locator, label) {
+  await locator.evaluate(el => { if (el === document.activeElement) el.blur() })
+  await page.keyboard.press('Shift')
+  await locator.focus()
+  assert(await locator.evaluate(el => el === document.activeElement && el.matches(':focus-visible')),
+    `${label}: keyboard focus matches :focus-visible`)
+}
+
 async function focused(locator, label) {
-  assert(await locator.evaluate(el => el === document.activeElement), `${label}: keyboard focus`)
+  assert(await locator.evaluate(el => el === document.activeElement && el.matches(':focus-visible')), `${label}: keyboard focus`)
   const outline = await locator.evaluate(el => {
     const style = getComputedStyle(el)
     return { width: parseFloat(style.outlineWidth), style: style.outlineStyle }
@@ -185,39 +196,53 @@ async function focused(locator, label) {
   assert(outline.width >= 2 && outline.style !== 'none', `${label}: visible keyboard focus`)
 }
 
+const inside = (inner, outer, slack = 1) => inner.x >= outer.x - slack && inner.y >= outer.y - slack
+  && inner.x + inner.width <= outer.x + outer.width + slack && inner.y + inner.height <= outer.y + outer.height + slack
+
+// Nov 9 (owner): no side arrows and no Previous. The picture itself is the Next
+// button; the small in-frame pause toggle stays (WCAG 2.2.2).
 async function controlsInsideFrame(carousel, label) {
   const imageBox = await carousel.locator('img').boundingBox()
   assert(imageBox, `${label}: image has bounds`)
+  // The frame is the region's single visual child; the picture sits inside it.
+  const frameBox = await carousel.locator(':scope > div').first().boundingBox()
+  assert(frameBox && inside(imageBox, frameBox), `${label}: picture stays inside the frame ${JSON.stringify({ imageBox, frameBox })}`)
   const buttons = await carousel.getByRole('button').all()
-  const boxes = []
-  assert.equal(buttons.length, 3, `${label}: only two arrows and one pause control`)
+  assert.equal(buttons.length, 2, `${label}: exactly two controls: the picture (Next) and the pause toggle`)
+  assert.equal(await carousel.getByRole('button', { name: 'Previous image', exact: true }).count(), 0, `${label}: no Previous control`)
+  assert.equal(await carousel.locator('[class*="arrow"], [class*="previous"]').count(), 0, `${label}: no arrow elements`)
+  assert.equal(await carousel.locator('a').count(), 0, `${label}: picture is a Next button, not a link`)
+  const next = carousel.getByRole('button', { name: 'Next image', exact: true })
+  const pause = carousel.getByRole('button', { name: /^(?:Pause|Start) automatic rotation$|^Automatic rotation off: reduced motion$/ })
+  assert.equal(await next.count(), 1, `${label}: one Next control`)
+  assert.equal(await pause.count(), 1, `${label}: one pause toggle`)
+  assert.equal(await next.locator('img').count(), 1, `${label}: the active picture is inside the Next button`)
   for (const button of buttons) {
     const box = await button.boundingBox()
     assert(box && box.width >= 44 && box.height >= 44, `${label}: 44px targets`)
-    assert(box.x >= imageBox.x - 1 && box.y >= imageBox.y - 1
-      && box.x + box.width <= imageBox.x + imageBox.width + 1
-      && box.y + box.height <= imageBox.y + imageBox.height + 1,
-    `${label}: controls remain inside artwork ${JSON.stringify({ imageBox, box })}`)
-    boxes.push({ name: await button.getAttribute('aria-label'), ...box })
     assert.equal(await button.evaluate(el => !!el.parentElement.closest('button,a,summary,details')), false,
       `${label}: no nested interactive controls or details`)
+    assert.equal(await button.evaluate(el => !!el.querySelector('button,a,summary,details,input')), false,
+      `${label}: no interactive content inside a control`)
   }
-  for (let a = 0; a < boxes.length; a++) for (let b = a + 1; b < boxes.length; b++) {
-    const first = boxes[a], second = boxes[b]
-    const overlapX = Math.min(first.x + first.width, second.x + second.width) - Math.max(first.x, second.x)
-    const overlapY = Math.min(first.y + first.height, second.y + second.height) - Math.max(first.y, second.y)
-    assert(overlapX <= 0.5 || overlapY <= 0.5, `${label}: distinct non-overlapping 44px targets ${JSON.stringify({ first, second })}`)
-  }
-  const previous = await carousel.getByRole('button', { name: 'Previous image', exact: true }).boundingBox()
-  const next = await carousel.getByRole('button', { name: 'Next image', exact: true }).boundingBox()
-  assert(previous.x < imageBox.x + imageBox.width / 2 && next.x > imageBox.x + imageBox.width / 2,
-    `${label}: arrows sit on opposite sides`)
-  const pauseIcon = await carousel.locator('button svg').boundingBox()
-  assert(pauseIcon && pauseIcon.width <= 30 && pauseIcon.height <= 30, `${label}: small pause icon`)
+  const nextBox = await next.boundingBox()
+  assert(inside(imageBox, nextBox), `${label}: the whole picture is the Next target ${JSON.stringify({ imageBox, nextBox })}`)
+  const pauseBox = await pause.boundingBox()
+  assert(inside(pauseBox, frameBox), `${label}: pause control stays inside the frame ${JSON.stringify({ frameBox, pauseBox })}`)
+  assert(Math.abs(pauseBox.y - frameBox.y) <= 1 && Math.abs(pauseBox.x + pauseBox.width - (frameBox.x + frameBox.width)) <= 1,
+    `${label}: pause control sits in the frame's top-right corner`)
+  // The pause toggle sits on top of the picture and receives its own clicks.
+  assert(await pause.evaluate(el => {
+    const r = el.getBoundingClientRect()
+    return document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)?.closest('button') === el
+  }), `${label}: pause toggle is on top of the picture`)
+  const pauseIcon = await pause.locator('svg').boundingBox()
+  assert(pauseIcon && pauseIcon.width >= 14 && pauseIcon.width <= 30 && pauseIcon.height <= 30, `${label}: small visible pause icon`)
+  assert(inside(pauseIcon, frameBox), `${label}: pause icon stays inside the frame`)
   assert.equal(await carousel.locator('figcaption').count(), 0, `${label}: no caption`)
-  assert.equal((await carousel.innerText()).replace(/\s/g, ''), '‹›', `${label}: no visible counter or wordy controls`)
+  assert.equal((await carousel.innerText()).replace(/\s/g, ''), '', `${label}: no visible counter, arrows or wordy controls`)
   const regionBox = await carousel.boundingBox()
-  assert(regionBox.height <= imageBox.height + 2, `${label}: no bottom control bar`)
+  assert(regionBox.height <= frameBox.height + 2, `${label}: no bottom control bar ${JSON.stringify({ regionBox, frameBox })}`)
 }
 
 async function detailsState(carousel) {
@@ -293,35 +318,34 @@ async function checkViewport(browser, width, height) {
     for (const item of cases) {
       const carousel = region(page, item)
       const label = `${width}: ${item.key}`
-      const previous = carousel.getByRole('button', { name: 'Previous image', exact: true })
       const next = carousel.getByRole('button', { name: 'Next image', exact: true })
       await carousel.scrollIntoViewIfNeeded()
       await page.mouse.move(0, 0)
       await waitRunning(carousel, true, label + ': automatic rotation starts on visibility')
-      await next.focus() // User focus stops autoplay; elapsed real time cannot race these checks.
+      await keyboardFocus(page, next, label) // Keyboard focus stops autoplay; elapsed real time cannot race these checks.
+      await waitRunning(carousel, false, `${label}: keyboard focus pauses`)
       await checkSlide(carousel, item.key, 1, `${label}: initial`)
+      await focused(next, `${label}: keyboard Next (the picture)`)
       await controlsInsideFrame(carousel, label)
       await screenshot(page, `home-${item.key}-${width}-slide-1`)
       for (const number of [2, 3, 4, 1]) {
         await clickWithoutTogglingDetails(next, carousel, label)
-        await checkSlide(carousel, item.key, number, `${label}: next including wrap`)
+        await checkSlide(carousel, item.key, number, `${label}: picture advances by one including wrap`)
         await noOverflow(page, `${label}: slide ${number}`)
         if (number !== 1) await screenshot(page, `home-${item.key}-${width}-slide-${number}`)
       }
-      await clickWithoutTogglingDetails(previous, carousel, label)
-      await checkSlide(carousel, item.key, 4, `${label}: previous wraps`)
-      await clickWithoutTogglingDetails(next, carousel, label)
-      await checkSlide(carousel, item.key, 1, `${label}: next wraps`)
+      assert.equal(page.url().replace(/\/$/, ''), base, `${label}: the picture does not navigate`)
       assert.equal(await carousel.locator('[aria-live]').getAttribute('aria-live'), 'polite', `${label}: manual changes announced`)
-      await next.focus()
-      await page.keyboard.press('Shift+Tab')
-      await focused(previous, `${label}: keyboard previous`)
+      await keyboardFocus(page, next, label)
       await page.keyboard.press('Enter')
-      await checkSlide(carousel, item.key, 4, `${label}: keyboard previous wrap`)
-      await page.keyboard.press('Tab')
-      await focused(next, `${label}: keyboard next`)
+      await checkSlide(carousel, item.key, 2, `${label}: keyboard Enter next`)
+      await page.keyboard.press('Space')
+      await checkSlide(carousel, item.key, 3, `${label}: keyboard Space next`)
+      await page.keyboard.press('Enter')
+      await checkSlide(carousel, item.key, 4, `${label}: keyboard next`)
       await page.keyboard.press('Space')
       await checkSlide(carousel, item.key, 1, `${label}: keyboard next wrap`)
+      await focused(next, `${label}: keyboard focus stays on the picture`)
       await page.keyboard.press('Tab')
       const rotation = carousel.getByRole('button', { name: 'Start automatic rotation', exact: true })
       await focused(rotation, `${label}: keyboard rotation control`)
@@ -339,10 +363,10 @@ async function checkViewport(browser, width, height) {
         assert.equal(await detailsState(carousel), false, `${label}: initially collapsed details`)
         await summary.click()
         assert.equal(await detailsState(carousel), true, `${label}: summary opens details`)
-        await clickWithoutTogglingDetails(next, carousel, `${label}: open details`)
-        await checkSlide(carousel, item.key, 2, `${label}: open details next`)
-        await clickWithoutTogglingDetails(previous, carousel, `${label}: open details`)
-        await checkSlide(carousel, item.key, 1, `${label}: open details previous`)
+        for (const number of [2, 3, 4, 1]) {
+          await clickWithoutTogglingDetails(next, carousel, `${label}: open details`)
+          await checkSlide(carousel, item.key, number, `${label}: open details next`)
+        }
         await summary.click()
         assert.equal(await detailsState(carousel), false, `${label}: summary closes details`)
       }
@@ -352,7 +376,7 @@ async function checkViewport(browser, width, height) {
     assert.deepEqual(errors, [], `${width}: no uncaught browser errors`)
     receipt.checks.push({ name: currentCheck, passed: true, carousels: 4, decodedSlides: 16,
       staticCards: 2, controlsInsideFrames: true, detailsIndependent: true, about: true, contacts: true })
-    console.log(`PASS ${width}px: 4 carousels, 16 decoded exact-source slides, 2 static cards, wrap, keyboard, in-frame controls, details, overflow, About/contacts`)
+    console.log(`PASS ${width}px: 4 carousels, 16 decoded exact-source slides, 2 static cards, picture-is-Next wrap, keyboard, 2 in-frame controls (no Previous/arrows/link), details, overflow, About/contacts`)
   } catch (error) {
     await screenshot(page, `failure-${currentCheck}`, true).catch(() => {})
     throw error
@@ -368,13 +392,12 @@ async function ready(carousel, label) {
 }
 
 async function restart(page, carousel) {
-  // Explicit keyboard Play restarts after focus has stopped rotation.
+  // Explicit keyboard Play restarts after keyboard focus has stopped rotation.
   const rotation = carousel.getByRole('button', { name: /(?:Start|Pause) automatic rotation/ })
-  await rotation.focus()
-  // Moving focus within a carousel still fires onFocusCapture. If it already
-  // held focus, move to Next first to guarantee an intentional fresh start.
-  await carousel.getByRole('button', { name: 'Next image', exact: true }).focus()
-  await rotation.focus()
+  // Moving keyboard focus within a carousel still fires onFocusCapture: focus
+  // Next first, then the toggle, to guarantee an intentional fresh start.
+  await keyboardFocus(page, carousel.getByRole('button', { name: 'Next image', exact: true }), 'Restart')
+  await keyboardFocus(page, rotation, 'Restart')
   await carousel.getByRole('button', { name: 'Start automatic rotation', exact: true }).waitFor()
   await page.mouse.move(0, 0)
   await page.keyboard.press('Enter')
@@ -451,15 +474,15 @@ async function checkTiming(browser) {
   currentCheck = 'clock-timing'
   const { page, context, errors } = await setup(browser, { width: 1440, height: 1000 })
   try {
-    // Isolate each timer under test; focus stops each carousel through its real UX.
-    for (const item of cases) await region(page, item).getByRole('button', { name: 'Next image', exact: true }).focus()
+    // Isolate each timer under test; keyboard focus stops each carousel through its real UX.
+    for (const item of cases) await keyboardFocus(page, region(page, item).getByRole('button', { name: 'Next image', exact: true }), item.key)
     await installTimerProbe(page)
     const timerSources = new Set()
     for (const item of cases) {
       const carousel = region(page, item)
       await carousel.scrollIntoViewIfNeeded()
       // Other visible mini carousels can have advanced during earlier cases.
-      await carousel.getByRole('button', { name: 'Next image', exact: true }).focus()
+      await keyboardFocus(page, carousel.getByRole('button', { name: 'Next image', exact: true }), item.key)
       while (await carousel.getAttribute('data-slide') !== '1') {
         const before = Number(await carousel.getAttribute('data-slide'))
         await carousel.getByRole('button', { name: 'Next image', exact: true }).click()
@@ -492,7 +515,7 @@ async function checkTiming(browser) {
       await checkSlide(carousel, item.key, 1, `${item.key}: hover exit fresh interval`)
       await page.clock.fastForward(1)
       await checkSlide(carousel, item.key, 2, `${item.key}: hover exit resumes`)
-      await carousel.getByRole('button', { name: 'Next image', exact: true }).focus()
+      await keyboardFocus(page, carousel.getByRole('button', { name: 'Next image', exact: true }), item.key)
       await waitRunning(carousel, false, `${item.key}: focus`)
       await page.clock.fastForward(interval * 2)
       await checkSlide(carousel, item.key, 2, `${item.key}: focus stops`)
@@ -514,15 +537,27 @@ async function checkTiming(browser) {
       await ready(carousel, `${item.key}: pointer Play preload`)
       await page.clock.fastForward(interval)
       await checkSlide(carousel, item.key, 3, `${item.key}: pointer Play resumes`)
+      // A pointer click on the picture shows the next one and does not stop rotation.
+      await clickWithoutTogglingDetails(carousel.getByRole('button', { name: 'Next image', exact: true }), carousel, item.key)
+      await checkSlide(carousel, item.key, 4, `${item.key}: pointer Next advances by one`)
+      await page.mouse.move(0, 0)
+      await waitRunning(carousel, true, `${item.key}: pointer Next keeps rotating`)
+      assert.equal(await carousel.getByRole('button', { name: 'Pause automatic rotation', exact: true }).count(), 1,
+        `${item.key}: pointer Next leaves the toggle on Pause`)
+      await ready(carousel, `${item.key}: pointer Next preload`)
+      await page.clock.fastForward(interval - 1)
+      await checkSlide(carousel, item.key, 4, `${item.key}: pointer Next starts a fresh interval`)
+      await page.clock.fastForward(1)
+      await checkSlide(carousel, item.key, 1, `${item.key}: rotation continues and wraps after pointer Next`)
       await stopAndCheckTimers(page, carousel, item, timerSources, 'offscreen')
       await stopAndCheckTimers(page, carousel, item, timerSources, 'hidden')
-      await carousel.getByRole('button', { name: 'Next image', exact: true }).focus()
+      await keyboardFocus(page, carousel.getByRole('button', { name: 'Next image', exact: true }), item.key)
     }
     assert.deepEqual(errors, [], 'No uncaught timing errors')
     receipt.checks.push({ name: currentCheck, passed: true, carousels: 4, intervalMs: interval,
-      exactWhenPreloaded: true, hover: true, focus: true, pauseAndPlay: true,
+      exactWhenPreloaded: true, hover: true, focus: true, pauseAndPlay: true, pointerNextKeepsRotating: true,
       offscreenCallbacks: 0, hiddenCallbacks: 0, hiddenSignal: 'simulated document.hidden + real visibilitychange handler' })
-    console.log('PASS clock: all 4 carousels at exactly 1000ms preloaded, automatic wrap, hover, focus, Pause/Play, no offscreen/hidden callbacks')
+    console.log('PASS clock: all 4 carousels at exactly 1000ms preloaded, automatic wrap, hover, keyboard focus, Pause/Play, pointer Next keeps rotating, no offscreen/hidden callbacks')
   } catch (error) {
     await screenshot(page, `failure-${currentCheck}`, true).catch(() => {})
     throw error
@@ -538,13 +573,16 @@ async function checkReducedMotion(browser) {
       await carousel.scrollIntoViewIfNeeded()
       const rotation = carousel.getByRole('button', { name: 'Automatic rotation off: reduced motion', exact: true })
       assert(await rotation.isDisabled(), `${item.key}: reduced motion disables rotation`)
+      await controlsInsideFrame(carousel, `${item.key}: reduced motion`)
       assert.equal(await carousel.locator('[aria-live]').getAttribute('aria-live'), 'polite', `${item.key}: manual changes announced`)
       await page.clock.fastForward(interval * 3)
       await checkSlide(carousel, item.key, 1, `${item.key}: reduced motion never advances`)
-      await clickWithoutTogglingDetails(carousel.getByRole('button', { name: 'Next image', exact: true }), carousel, item.key)
-      await checkSlide(carousel, item.key, 2, `${item.key}: reduced motion manual next`)
-      await clickWithoutTogglingDetails(carousel.getByRole('button', { name: 'Previous image', exact: true }), carousel, item.key)
-      await checkSlide(carousel, item.key, 1, `${item.key}: reduced motion manual previous`)
+      assert.equal(await carousel.getByRole('button', { name: 'Previous image', exact: true }).count(), 0, `${item.key}: no Previous control`)
+      for (const number of [2, 3, 4, 1]) {
+        await clickWithoutTogglingDetails(carousel.getByRole('button', { name: 'Next image', exact: true }), carousel, item.key)
+        await checkSlide(carousel, item.key, number, `${item.key}: reduced motion manual next including wrap`)
+      }
+      await page.mouse.move(0, 0)
       await page.clock.fastForward(interval * 2)
       await checkSlide(carousel, item.key, 1, `${item.key}: manual use does not enable autoplay`)
       await noOverflow(page, `${item.key}: reduced motion mobile`)
@@ -566,31 +604,40 @@ async function checkTouch(browser) {
   try {
     assert(await page.evaluate(() => navigator.maxTouchPoints > 0), 'True touch-enabled browser context')
     // Adjacent mini cards share the viewport; stop them so each touch case has a known initial slide.
-    for (const item of cases) await region(page, item).getByRole('button', { name: 'Next image', exact: true }).focus()
+    for (const item of cases) await keyboardFocus(page, region(page, item).getByRole('button', { name: 'Next image', exact: true }), item.key)
+    await page.evaluate(() => document.activeElement?.blur())
     for (const item of cases) {
       const carousel = region(page, item)
+      const next = carousel.getByRole('button', { name: 'Next image', exact: true })
       await carousel.scrollIntoViewIfNeeded()
       await checkSlide(carousel, item.key, 1, `${item.key}: touch initial`)
-      await carousel.getByRole('button', { name: 'Next image', exact: true }).tap()
-      await checkSlide(carousel, item.key, 2, `${item.key}: touch manual next`)
-      await waitRunning(carousel, false, `${item.key}: touch manual navigation pauses`)
+      await next.tap()
+      await checkSlide(carousel, item.key, 2, `${item.key}: tapping the picture shows the next one`)
       await page.clock.fastForward(interval * 2)
-      await checkSlide(carousel, item.key, 2, `${item.key}: touch manual pause persists`)
+      await checkSlide(carousel, item.key, 2, `${item.key}: stopped carousel stays stopped after a tap`)
       await carousel.getByRole('button', { name: 'Start automatic rotation', exact: true }).tap()
       // No synthetic mouse move: a touchscreen has no hover-exit gesture.
       await waitRunning(carousel, true, `${item.key}: touchscreen Play really resumes`)
       await ready(carousel, `${item.key}: touch Play preload`)
       await page.clock.fastForward(interval)
       await checkSlide(carousel, item.key, 3, `${item.key}: touch Play advances at 1000ms`)
+      // Touch focus is not keyboard focus: tapping the picture advances and keeps rotating.
+      await next.tap()
+      await checkSlide(carousel, item.key, 4, `${item.key}: tap advances by one while rotating`)
+      assert.equal(await next.evaluate(el => el.matches(':focus-visible')), false, `${item.key}: touch focus is not keyboard focus`)
+      await waitRunning(carousel, true, `${item.key}: tap does not stop rotation`)
+      await ready(carousel, `${item.key}: tap preload`)
+      await page.clock.fastForward(interval)
+      await checkSlide(carousel, item.key, 1, `${item.key}: rotation continues and wraps after a tap`)
       await carousel.getByRole('button', { name: 'Pause automatic rotation', exact: true }).tap()
       await waitRunning(carousel, false, `${item.key}: touch Pause really stops`)
       await page.clock.fastForward(interval * 2)
-      await checkSlide(carousel, item.key, 3, `${item.key}: touch Pause persists`)
+      await checkSlide(carousel, item.key, 1, `${item.key}: touch Pause persists`)
     }
     assert.deepEqual(errors, [], 'No uncaught touch errors')
     receipt.checks.push({ name: currentCheck, passed: true, carousels: 4, isMobile: true, hasTouch: true,
-      manualNavigationPauses: true, explicitPlayActuallyRotates: true, pausePersists: true })
-    console.log('PASS touch: all four carousels pause on manual taps, resume on Play without hover exit, and pause explicitly')
+      tapAdvancesByOne: true, tapKeepsRotating: true, explicitPlayActuallyRotates: true, pausePersists: true })
+    console.log('PASS touch: all four carousels advance one picture per tap without stopping rotation, resume on Play without hover exit, and pause explicitly')
   } catch (error) {
     await screenshot(page, `failure-${currentCheck}`, true).catch(() => {})
     throw error
