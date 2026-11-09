@@ -191,7 +191,9 @@ async function verifyViewport(browser, label, viewport) {
     if (surface.path === '/') {
       assert(await page.locator('[aria-labelledby="home-moments-title"]').count() === 0, 'unrequested personal gallery removed')
       assert(await page.locator('.village-home-art img').count() === 1, 'one active image within existing hero carousel')
-      assert(await page.locator('.founder-question-row summary img').count() === 5, 'one artwork in each of the five questions')
+      assert(await page.locator('.founder-question-row article img').count() === 5, 'one active artwork in each of the five questions')
+      assert(await page.locator('.founder-question-row [aria-roledescription="carousel"]').count() === 3, 'Where, When and Why each have a mini carousel')
+      assert(await page.locator('.founder-question-row summary button').count() === 0, 'carousel controls stay outside disclosure summaries')
       const expected = ['Home', 'Proof', 'Learn', 'Write', 'About']
       assert(JSON.stringify(await page.locator('.minimal-site-nav__desktop a').allTextContents()) === JSON.stringify(expected), 'primary menu order')
       const toggle = page.getByRole('button', { name: 'Open menu', exact: true })
@@ -298,6 +300,11 @@ async function verifyViewport(browser, label, viewport) {
     }
 
     if (surface.path === '/') {
+      // Freeze rotating images before decoding and saving stable screenshots.
+      for (const carousel of await page.locator('[aria-roledescription="carousel"]').all()) {
+        const pause = carousel.getByRole('button', { name: 'Pause automatic rotation', exact: true })
+        if (await pause.count()) await pause.click()
+      }
       const artworkImages = page.locator('.village-home-art img, .founder-question-row img')
       for (const image of await artworkImages.all()) {
         await image.scrollIntoViewIfNeeded()

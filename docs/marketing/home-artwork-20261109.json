@@ -1,0 +1,160 @@
+{
+  "version": "2026-11-09",
+  "approval": "Owner-approved September 29 bank and latest requested homepage reuse.",
+  "assets": [
+    {
+      "slug": "photo-grandma-granddaughter",
+      "path": "public/home-art/approved-bank-20261109/photo-grandma-granddaughter.jpg",
+      "source": "tooth-fairy-network/public/product/wall/photo-grandma-granddaughter-cottage.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 290206,
+      "sha256": "aad31c5f77c72973d3b2a050431343582519a3eaeeb010408460d8090a0e3269",
+      "alt": "Illustrative photo-style scene of a grandmother and granddaughter laughing on a cottage doorstep",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "photo-uncle-niece",
+      "path": "public/home-art/approved-bank-20261109/photo-uncle-niece.jpg",
+      "source": "tooth-fairy-network/public/product/wall/photo-uncle-niece-shoulders.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 168269,
+      "sha256": "7ee92c781637e294e2bbd7de1ea348d0a6c896bde7eeeff27177bec7c7d10e7f",
+      "alt": "Illustrative photo-style scene of a laughing child riding an uncle's shoulders on a city street",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "family-circle",
+      "path": "public/home-art/approved-bank-20261109/family-circle.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/family-circle.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 179267,
+      "sha256": "6dc30571418972b5987175731f45f9c5875156531f53dcfb91f0015fff752c0c",
+      "alt": "Illustration of grandparents and parents holding hands around a child with a piggy bank",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "future-world",
+      "path": "public/home-art/approved-bank-20261109/future-world.jpg",
+      "source": "tooth-fairy-network/public/product/home/why-future-world.jpg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 275305,
+      "sha256": "45aba9a50aff538691343d4cb2f32cd1f389822cec0876530920907a46d3b1f9",
+      "alt": "Illustration of a parent and child walking toward a colorful future city with a small safe",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "fairies-over-town",
+      "path": "public/home-art/approved-bank-20261109/fairies-over-town.jpg",
+      "source": "tooth-fairy-network/public/product/wall/keepers-4-flying-over-town.jpg",
+      "width": 1000,
+      "height": 747,
+      "bytes": 217764,
+      "sha256": "ff7539089a525d0078e05f20d35518301a65a4b3925eb95969c204bccef71675",
+      "alt": "Illustration of three tooth fairies carrying a coin, tooth and key above colorful homes",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "coin-handover",
+      "path": "public/home-art/approved-bank-20261109/coin-handover.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/coin-handover.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 175299,
+      "sha256": "3759437d0dc67d26db781cf58eadae0ce4e43e726b519c8de03c176939cb8557",
+      "alt": "Illustration of Tanda giving a coin to a child and a golden key to the parent",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "tooth-to-coins",
+      "path": "public/home-art/approved-bank-20261109/tooth-to-coins.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/hero-kid-piggy.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 166667,
+      "sha256": "6856a43b7c92fc160f3969d1f3b4d27d92cebbe64c7f4841b6b52a7965d58899",
+      "alt": "Illustration of a tooth becoming colorful coins above a piggy bank beside Tanda",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "growing-up",
+      "path": "public/home-art/approved-bank-20261109/growing-up.jpg",
+      "source": "tooth-fairy-network/public/product/home/why-growing-up.jpg",
+      "width": 1600,
+      "height": 1000,
+      "bytes": 306612,
+      "sha256": "200dcfc3e440b3fce96b8d7b21a648f8b180b13faa15397f544231f425cce7c3",
+      "alt": "Illustration of a girl at three ages holding blue keepsake safes",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "tooth-morning",
+      "path": "public/home-art/approved-bank-20261109/tooth-morning.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/hero-kid-morning.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 175417,
+      "sha256": "a4e49f916cd279c4e9df01fd292005327dd5870e2dc39b133a5c795f967615b8",
+      "alt": "Illustration of a gap-toothed child waking with a coin while Tanda waves through the window",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "three-piggy-banks",
+      "path": "public/home-art/approved-bank-20261109/three-piggy-banks.jpg",
+      "source": "tooth-fairy-network/public/product/wall/pig-6-three-growing.jpg",
+      "width": 1000,
+      "height": 747,
+      "bytes": 90870,
+      "sha256": "707f4cdda6e88d0f2271ef97738d855ab8f5bf95718e0f551016f39970ee4114",
+      "alt": "Illustration of three colorful piggy banks in different sizes",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "book-of-love",
+      "path": "public/home-art/approved-bank-20261109/book-of-love.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/how-love.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 162461,
+      "sha256": "a261d039559d12a96786c377309b07d48b33852fc3893827e7c7cd7b82538f64",
+      "alt": "Illustration of Tanda placing a red heart beside a family picture inside an open green book",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "family-hug",
+      "path": "public/home-art/approved-bank-20261109/family-hug.jpg",
+      "source": "tooth-fairy-network/public/product/wall/hug-family-group.jpg",
+      "width": 1000,
+      "height": 747,
+      "bytes": 144090,
+      "sha256": "58e2f451a943a19bb03f16ba2e8cb91ecc54c29a6ec12998b4365a95bd413d9c",
+      "alt": "Crayon-style illustration of a family hug beneath a rainbow and hearts",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "grandma-drawing",
+      "path": "public/home-art/approved-bank-20261109/grandma-drawing.jpg",
+      "source": "tooth-fairy-network/public/product/wall/hug-grandma-me.jpg",
+      "width": 1000,
+      "height": 747,
+      "bytes": 81175,
+      "sha256": "479a56b3ad1cc590839bbbe954a6cf98054cde4192ca33724b48079b30969f85",
+      "alt": "Crayon-style illustration of a grandmother and child holding hands beside flowers and a cat",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    },
+    {
+      "slug": "family-tree",
+      "path": "public/home-art/approved-bank-20261109/family-tree.jpg",
+      "source": "tooth-fairy-network/public/product/scenes/family-tree.jpg",
+      "width": 1200,
+      "height": 896,
+      "bytes": 194822,
+      "sha256": "97c5f6fa188bb4171d118c24a016cf863de22bc43345035c929df5509427506c",
+      "alt": "Illustration of relatives adding coins and hearts to a growing family tree beside Tanda",
+      "provenance": "Generated illustration or photo-style example; approved bank for site/marketing, not an authenticated customer."
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "hero": [
+    {
+      "src": "/village/review-oct31/proof-and-certificate-usdc.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/photo-grandma-granddaughter.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustrative photo-style scene of a grandmother and granddaughter laughing on a cottage doorstep"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/photo-uncle-niece.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustrative photo-style scene of a laughing child riding an uncle's shoulders on a city street"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/family-circle.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of grandparents and parents holding hands around a child with a piggy bank"
+    }
+  ],
+  "where": [
+    {
+      "src": "/home-art/approved-bank-20261109/future-world.jpg",
+      "width": 1600,
+      "height": 900,
+      "alt": "Illustration of a parent and child walking toward a colorful future city with a small safe"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/fairies-over-town.jpg",
+      "width": 1000,
+      "height": 747,
+      "alt": "Illustration of three tooth fairies carrying a coin, tooth and key above colorful homes"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/coin-handover.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of Tanda giving a coin to a child and a golden key to the parent"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/tooth-to-coins.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of a tooth becoming colorful coins above a piggy bank beside Tanda"
+    }
+  ],
+  "when": [
+    {
+      "src": "/home-art/approved-bank-20261109/growing-up.jpg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Illustration of a girl at three ages holding blue keepsake safes"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/tooth-morning.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of a gap-toothed child waking with a coin while Tanda waves through the window"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/three-piggy-banks.jpg",
+      "width": 1000,
+      "height": 747,
+      "alt": "Illustration of three colorful piggy banks in different sizes"
+    },
+    {
+      "src": "/village/review-oct31/when-gift.webp",
+      "width": 1536,
+      "height": 1024,
+      "alt": "Illustration of a child receiving a Proof on her birthday"
+    }
+  ],
+  "why": [
+    {
+      "src": "/home-art/approved-bank-20261109/book-of-love.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of Tanda placing a red heart beside a family picture inside an open green book"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/family-hug.jpg",
+      "width": 1000,
+      "height": 747,
+      "alt": "Crayon-style illustration of a family hug beneath a rainbow and hearts"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/grandma-drawing.jpg",
+      "width": 1000,
+      "height": 747,
+      "alt": "Crayon-style illustration of a grandmother and child holding hands beside flowers and a cat"
+    },
+    {
+      "src": "/home-art/approved-bank-20261109/family-tree.jpg",
+      "width": 1200,
+      "height": 896,
+      "alt": "Illustration of relatives adding coins and hearts to a growing family tree beside Tanda"
+    }
+  ]
+}

@@ -13,6 +13,7 @@
   "src/components/TrackedLink.tsx",
   "src/components/VillageForm.tsx",
   "src/components/WebsiteAnalytics.tsx",
+  "src/components/home/ArtworkCarousel.tsx",
   "src/components/home/HomeClient.tsx",
   "src/components/home/HomeHeroCarousel.tsx",
   "src/components/home/QuestionArtwork.tsx",
