@@ -1,9 +1,0 @@
-.hero { display: block; min-width: 0; }
-.heroDetails, .questionDetails { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.heroDetails { margin-top: 10px; }
-.hero .heroDetails img { aspect-ratio: 4 / 3; object-fit: contain; border-radius: 10px; }
-.questionArt { display: block; margin-bottom: 12px; }
-.questionArt img { margin-bottom: 0 !important; }
-.questionDetails { gap: 6px; margin-top: 6px; }
-.questionArt .questionDetails img { border-radius: 5px; aspect-ratio: 4 / 3; object-fit: contain; }
-.hero:focus-visible { outline: 2px solid #a34013; outline-offset: 5px; border-radius: 14px; }

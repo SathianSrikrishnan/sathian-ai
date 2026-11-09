@@ -50,9 +50,9 @@ describe('site-agent-first editorial pass', () => {
     expect(automation).toContain("redirect('/#agent')")
   })
 
-  it('keeps the human navigation to the four approved pages and gives agents a quieter index', () => {
+  it('keeps the main pages and restored About link visible, with a quieter agent index', () => {
     expect(nav).toContain("{ label: 'Home', href: '/'")
-    expect(nav).not.toContain("{ label: 'About'")
+    expect(nav).toContain("{ label: 'About', href: '/about'")
     expect(nav).toContain("{ label: 'Proof', href: PROOF.href")
     expect(nav).toContain("{ label: 'Learn', href: '/learn'")
     expect(nav).not.toContain("{ label: 'Hackathons'")

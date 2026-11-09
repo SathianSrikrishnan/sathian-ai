@@ -12,6 +12,7 @@ const navLinks = [
   { label: 'Proof', href: PROOF.href, external: true },
   { label: 'Learn', href: '/learn', external: false },
   { label: 'Write', href: '/writings', external: false },
+  { label: 'About', href: '/about', external: false },
 ]
 
 type NavLink = (typeof navLinks)[number]

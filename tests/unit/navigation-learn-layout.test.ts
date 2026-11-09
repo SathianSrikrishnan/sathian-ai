@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 
 it('keeps the primary menu focused and connections under About', () => {
   const nav = readFileSync('src/components/SiteNav.tsx', 'utf8')
-  expect([...nav.matchAll(/label: '([^']+)'/g)].map(match => match[1])).toEqual(['Home', 'Proof', 'Learn', 'Write'])
+  expect([...nav.matchAll(/label: '([^']+)'/g)].map(match => match[1])).toEqual(['Home', 'Proof', 'Learn', 'Write', 'About'])
   expect(readFileSync('src/components/SiteFooter.tsx', 'utf8')).toContain('href="/about#follow"')
   expect(readFileSync('src/app/about/page.tsx', 'utf8')).toContain('<FollowSath profiles')
 })

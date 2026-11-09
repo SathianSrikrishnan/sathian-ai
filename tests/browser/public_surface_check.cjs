@@ -190,9 +190,9 @@ async function verifyViewport(browser, label, viewport) {
     }
     if (surface.path === '/') {
       assert(await page.locator('[aria-labelledby="home-moments-title"]').count() === 0, 'unrequested personal gallery removed')
-      assert(await page.locator('.village-home-art img').count() === 3, 'three artworks within existing hero')
-      assert(await page.locator('.founder-question-row summary img').count() === 15, 'three artworks within each of the five questions')
-      const expected = ['Home', 'Proof', 'Learn', 'Write']
+      assert(await page.locator('.village-home-art img').count() === 1, 'one active image within existing hero carousel')
+      assert(await page.locator('.founder-question-row summary img').count() === 5, 'one artwork in each of the five questions')
+      const expected = ['Home', 'Proof', 'Learn', 'Write', 'About']
       assert(JSON.stringify(await page.locator('.minimal-site-nav__desktop a').allTextContents()) === JSON.stringify(expected), 'primary menu order')
       const toggle = page.getByRole('button', { name: 'Open menu', exact: true })
       if (await toggle.isVisible()) {
