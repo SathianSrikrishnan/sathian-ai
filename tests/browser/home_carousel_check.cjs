@@ -30,6 +30,64 @@ const receipt = { site: base, startedAt: new Date().toISOString(), checks: [], m
 let currentPage
 let currentCheck = 'launch'
 
+async function decodedImage(image, expected, label) {
+  // React can update src/srcset before the browser has selected currentSrc.
+  // Calling decode in that interval can reject even when the new image is
+  // valid. Poll using Node's real clock: page.clock is deliberately paused.
+  const deadline = Date.now() + 20_000
+  let sourceChanges = 0
+  let last
+  while (Date.now() < deadline) {
+    let timer
+    try {
+      last = await Promise.race([
+        image.evaluate(async (img, expectedPath) => {
+          const assetPath = value => {
+            if (!value) return null
+            const url = new URL(value, location.href)
+            return url.pathname === '/_next/image' ? url.searchParams.get('url') : url.pathname
+          }
+          const snapshot = () => ({
+            src: img.getAttribute('src'), currentSrc: img.currentSrc, srcset: img.srcset,
+            asset: assetPath(img.getAttribute('src')), currentAsset: assetPath(img.currentSrc),
+            connected: img.isConnected, complete: img.complete,
+            width: img.naturalWidth, height: img.naturalHeight, alt: img.alt,
+          })
+          const ready = state => state.connected && state.complete && state.width > 0 && state.height > 0
+            && state.asset === expectedPath && state.currentAsset === expectedPath
+          const changed = (before, after) => !after.connected || before.src !== after.src
+            || before.currentSrc !== after.currentSrc || before.srcset !== after.srcset
+          const before = snapshot()
+          if (!ready(before)) return { status: 'loading', state: before }
+          try {
+            await img.decode()
+          } catch (error) {
+            const after = snapshot()
+            return { status: changed(before, after) ? 'source-changed' : 'decode-failed',
+              before, state: after, error: `${error.name}: ${error.message}` }
+          }
+          const after = snapshot()
+          if (changed(before, after)) return { status: 'source-changed', before, state: after }
+          if (!ready(after)) return { status: 'invalid-after-decode', state: after }
+          return { status: 'decoded', state: after }
+        }, expected),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`${label}: timed out decoding ${expected}; last state ${JSON.stringify(last)}`)),
+            Math.max(1, deadline - Date.now()))
+        }),
+      ])
+    } finally { clearTimeout(timer) }
+    if (last.status === 'decoded') return last.state
+    if (last.status === 'source-changed') {
+      assert(++sourceChanges <= 3, `${label}: image source repeatedly changed during decode: ${JSON.stringify(last)}`)
+    } else {
+      assert.equal(last.status, 'loading', `${label}: stable image failed to decode: ${JSON.stringify(last)}`)
+    }
+    await new Promise(resolve => setTimeout(resolve, 50))
+  }
+  throw new Error(`${label}: image did not load and decode within 20000ms: ${JSON.stringify(last)}`)
+}
+
 async function checkSlide(page, number, label) {
   const carousel = page.locator(selector)
   await carousel.locator(`[aria-roledescription="slide"][aria-label="${number} of 4"]`).waitFor()
@@ -37,15 +95,9 @@ async function checkSlide(page, number, label) {
   assert.equal(await carousel.locator('img').count(), 1, `${label}: exactly one carousel image`)
   assert.equal(await carousel.locator('[aria-roledescription="slide"]').count(), 1, `${label}: only one rendered slide`)
   const image = carousel.locator('img')
-  const data = await image.evaluate(async img => {
-    await img.decode()
-    const url = new URL(img.currentSrc, location.href)
-    return {
-      src: url.pathname === '/_next/image' ? url.searchParams.get('url') : url.pathname,
-      width: img.naturalWidth, height: img.naturalHeight, alt: img.alt,
-    }
-  })
-  assert.equal(data.src, images[number - 1], `${label}: approved artwork ${number}`)
+  const data = await decodedImage(image, images[number - 1], label)
+  assert.equal(data.asset, images[number - 1], `${label}: approved artwork src ${number}`)
+  assert.equal(data.currentAsset, images[number - 1], `${label}: approved selected artwork ${number}`)
   assert(data.width > 0 && data.height > 0, `${label}: image ${number} decoded`)
   assert(data.alt.trim().length > 20, `${label}: meaningful alternative text`)
 }
