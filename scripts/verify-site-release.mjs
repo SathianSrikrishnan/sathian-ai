@@ -48,7 +48,7 @@ try {
   await waitForServer(siteUrl)
   const browserEnv = { ...process.env, SITE_URL: siteUrl }
   run(nodeCommand, ['tests/browser/public_surface_check.cjs'], 'public surfaces', browserEnv)
-  run(nodeCommand, ['tests/browser/home_carousel_check.cjs'], 'hero carousel accessibility', browserEnv)
+  run(nodeCommand, ['tests/browser/home_carousel_check.cjs'], 'artwork carousel accessibility', browserEnv)
   run(nodeCommand, ['tests/browser/site_agent_sound_check.cjs'], 'site-agent sound', browserEnv)
 } finally {
   server.kill()

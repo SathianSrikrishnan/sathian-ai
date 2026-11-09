@@ -1,8 +1,11 @@
 // Server component: static homepage markup is not hydrated. Only the nav and
-// the tracked links and the small hero carousel ship as client islands.
+// the tracked links and small artwork carousels ship as client islands.
 import Image from 'next/image'
 import { QuestionArtwork } from '@/components/home/QuestionArtwork'
 import { HomeHeroCarousel } from '@/components/home/HomeHeroCarousel'
+import { ArtworkCarousel } from '@/components/home/ArtworkCarousel'
+import { HOME_QUESTION_SLIDES } from '@/content/home-hero-slides'
+import artworkStyles from '@/components/home/HomeHeroCarousel.module.css'
 import { FollowSath } from '@/components/FollowSath'
 import Link from 'next/link'
 
@@ -71,9 +74,9 @@ export function HomeClient({ writings }: HomeClientProps) {
           <div>
             <p className="minimal-kicker minimal-home-identity"><span className="minimal-home-identity__part">SATHIAN SRIKRISHNAN</span><span className="minimal-home-identity__part">FOUNDER + DAD</span><span className="minimal-home-identity__part">TORONTO</span></p>
             <h1>Bring the Tooth Fairy to Your Child’s Village</h1>
-            <p className="minimal-home-mission">I build things for the people I love. This one starts with a child, their art and the people who show up.</p>
+            <p className="minimal-home-mission">I build for my children, and families like ours.</p>
             <NetworkBenefits />
-            <p>Parents choose who joins their child’s village. They control the wallet for their child.</p>
+            <p>Parents choose the village and control the wallet.</p>
             <div className="about-actions">
               <TrackedLink href="/village" event="village_opened" properties={{ placement: 'homepage_hero' }} className="about-button about-button--primary">See the Tooth Fairy Network gift</TrackedLink>
               <Link href="/about" prefetch={false} className="about-button">Meet Sathian</Link>
@@ -94,11 +97,11 @@ export function HomeClient({ writings }: HomeClientProps) {
 
         <section className="minimal-section minimal-container founder-quick-questions" aria-label="Who, what, where, when and why">
           <div className="founder-question-row">
-            <details><summary><QuestionArtwork src="/village/review-oct31/who-dad.webp" alt="Childlike artwork of Sathian in his red maple-leaf shirt, drawing at a table" /><span className="founder-question-title">Who I am.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A dad and builder in Toronto, making things for my children and families like ours. <Link href="/about">My story</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/what-gift.webp" alt="Childlike artwork of Tanda with a printed Proof, a child’s art, piggy bank and digital wallet" /><span className="founder-question-title">What I build.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A printed keepsake, a first wallet and a parent-led village. <Link href="/village">See the gift</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/where-online.webp" alt="Childlike artwork of family homes linked online around a child and Tanda" /><span className="founder-question-title">Where to begin.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Start here with free stories and simple lessons. <Link href="/learn">Learn with Tanda</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/when-gift.webp" alt="Childlike artwork of a child receiving a Proof on her birthday" /><span className="founder-question-title">When to start.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A lost tooth, a birthday or any small milestone. <Link href="/village#ask">Ask about a free gift</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/network-oct31/02-network-picnic.webp" alt="Childlike artwork of a child sharing a picnic with the people who love them" /><span className="founder-question-title">Why it matters.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>To keep a child's art and bring their people closer. <a href="https://proof.sathian.ai/">Watch the story</a>.</p></details>
+            <article className={artworkStyles.card}><QuestionArtwork src="/village/review-oct31/who-dad.webp" alt="Illustration of Sathian drawing at a table" /><details><summary><span className="founder-question-title">Who I am.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A dad and builder in Toronto. <Link href="/about">My story</Link>.</p></details></article>
+            <article className={artworkStyles.card}><QuestionArtwork src="/village/review-oct31/what-gift.webp" alt="Illustration of Tanda with a printed Proof, a piggy bank and digital wallet" /><details><summary><span className="founder-question-title">What I build.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A keepsake, a first wallet and a parent-led village. <Link href="/village">See the gift</Link>.</p></details></article>
+            <article className={artworkStyles.card}><ArtworkCarousel slides={HOME_QUESTION_SLIDES.where} label="Where to begin" sizes="(max-width: 760px) 44vw, 210px" /><details><summary><span className="founder-question-title">Where to begin.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Free stories and simple lessons. <Link href="/learn">Learn with Tanda</Link>.</p></details></article>
+            <article className={artworkStyles.card}><ArtworkCarousel slides={HOME_QUESTION_SLIDES.when} label="When to start" sizes="(max-width: 760px) 44vw, 210px" /><details><summary><span className="founder-question-title">When to start.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A lost tooth, a birthday, a small milestone. <Link href="/village#ask">Ask about a gift</Link>.</p></details></article>
+            <article className={artworkStyles.card}><ArtworkCarousel slides={HOME_QUESTION_SLIDES.why} label="Why it matters" sizes="(max-width: 760px) 44vw, 210px" /><details><summary><span className="founder-question-title">Why it matters.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Keep their art. Bring their people closer. <a href="https://proof.sathian.ai/">Watch the story</a>.</p></details></article>
           </div>
         </section>
 
