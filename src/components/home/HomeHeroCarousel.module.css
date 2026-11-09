@@ -1,0 +1,11 @@
+.carousel { min-width: 0; }
+.carousel a { display: block; }
+.carousel img { aspect-ratio: 3 / 2; object-fit: contain; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+.controls button { min-width: 44px; min-height: 44px; padding: 6px 12px; border: 1px solid #bba889; border-radius: 8px; background: #fff6e8; color: #493520; font: inherit; font-size: 14px; cursor: pointer; }
+.controls .rotation { min-width: 86px; }
+.controls button:disabled { cursor: default; }
+.controls button:hover:not(:disabled) { background: #f4e5cc; }
+.carousel a:focus-visible, .controls button:focus-visible { outline: 2px solid #a34013; outline-offset: 4px; border-radius: 8px; }
+.count { min-width: 42px; text-align: center; font-size: 13px; color: #594532; font-variant-numeric: tabular-nums; }
+.carousel .note { margin: 7px 0 0; text-align: center; font-size: 12px; line-height: 1.5; color: #594532; }

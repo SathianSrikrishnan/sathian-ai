@@ -1,8 +1,8 @@
 // Server component: static homepage markup is not hydrated. Only the nav and
-// the tracked links (TrackedLinks.tsx) ship as client islands.
+// the tracked links and the small hero carousel ship as client islands.
 import Image from 'next/image'
 import { QuestionArtwork } from '@/components/home/QuestionArtwork'
-import styles from '@/components/home/HomeArtwork.module.css'
+import { HomeHeroCarousel } from '@/components/home/HomeHeroCarousel'
 import { FollowSath } from '@/components/FollowSath'
 import Link from 'next/link'
 
@@ -80,13 +80,7 @@ export function HomeClient({ writings }: HomeClientProps) {
             </div>
             <p className="first20-note">I’m inviting families to try a free printed Proof with US$10 to start.</p>
           </div>
-          <Link href="/village" className={`village-home-art ${styles.hero}`} aria-label="See what a child gets from Tooth Fairy Network">
-            <Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 460px" priority />
-            <span className={styles.heroDetails}>
-              <Image src="/proof-assets/proof-site-first-edition/collage-7-640.webp" alt="Crayon artwork of a family together beneath a rainbow" width={640} height={478} sizes="(max-width: 760px) 44vw, 220px" quality={65} />
-              <Image src="/proof-assets/proof-site-first-edition/collage-6-640.webp" alt="Grandma and Me artwork with a grandmother, child, cat and flowers" width={640} height={478} sizes="(max-width: 760px) 44vw, 220px" quality={65} />
-            </span>
-          </Link>
+          <HomeHeroCarousel />
         </header>
 
         <section id="agent" className="minimal-agent-section minimal-container" aria-label="Ask Sathian's site agent">
@@ -100,11 +94,11 @@ export function HomeClient({ writings }: HomeClientProps) {
 
         <section className="minimal-section minimal-container founder-quick-questions" aria-label="Who, what, where, when and why">
           <div className="founder-question-row">
-            <details><summary><QuestionArtwork src="/village/review-oct31/who-dad.webp" alt="Childlike artwork of Sathian in his red maple-leaf shirt, drawing at a table" additional={[5, 4]} /><span className="founder-question-title">Meet Sathian.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>I'm a dad and builder in Toronto. I build things for the people I love, starting with my own children. <Link href="/about">Meet Sathian</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/what-gift.webp" alt="Childlike artwork of Tanda with a printed Proof, a child’s art, piggy bank and digital wallet" additional={[0, 2]} /><span className="founder-question-title">A child. Their people.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>One printed Proof, a first digital wallet and a village led by the parent. <Link href="/village">See the gift</Link>, or <Link href="/learn">learn with Tanda</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/where-online.webp" alt="Childlike artwork of family homes linked online around a child and Tanda" additional={[7, 6]} /><span className="founder-question-title">Right here, online.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Explore the gift, free stories and my work here. Start from wherever you are. <Link href="/learn">Read a story with Tanda</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/review-oct31/when-gift.webp" alt="Childlike artwork of a child receiving a Proof on her birthday" additional={[3, 1]} /><span className="founder-question-title">You can start now.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>The printed gift is available now. A lost tooth, a birthday or any day worth keeping can be a start. <Link href="/village#ask">Ask about a free gift</Link>.</p></details>
-            <details><summary><QuestionArtwork src="/village/network-oct31/02-network-picnic.webp" alt="Childlike artwork of a child sharing a picnic with the people who love them" additional={[4, 5]} /><span className="founder-question-title">For the people we love.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A child's people don't all live in one home. I built this for my children: a way to keep their art and set money aside for them. <a href="https://proof.sathian.ai/">Watch why I built it</a>.</p></details>
+            <details><summary><QuestionArtwork src="/village/review-oct31/who-dad.webp" alt="Childlike artwork of Sathian in his red maple-leaf shirt, drawing at a table" /><span className="founder-question-title">Who I am.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A dad and builder in Toronto, making things for my children and families like ours. <Link href="/about">My story</Link>.</p></details>
+            <details><summary><QuestionArtwork src="/village/review-oct31/what-gift.webp" alt="Childlike artwork of Tanda with a printed Proof, a child’s art, piggy bank and digital wallet" /><span className="founder-question-title">What I build.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A printed keepsake, a first wallet and a parent-led village. <Link href="/village">See the gift</Link>.</p></details>
+            <details><summary><QuestionArtwork src="/village/review-oct31/where-online.webp" alt="Childlike artwork of family homes linked online around a child and Tanda" /><span className="founder-question-title">Where to begin.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>Start here with free stories and simple lessons. <Link href="/learn">Learn with Tanda</Link>.</p></details>
+            <details><summary><QuestionArtwork src="/village/review-oct31/when-gift.webp" alt="Childlike artwork of a child receiving a Proof on her birthday" /><span className="founder-question-title">When to start.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>A lost tooth, a birthday or any small milestone. <Link href="/village#ask">Ask about a free gift</Link>.</p></details>
+            <details><summary><QuestionArtwork src="/village/network-oct31/02-network-picnic.webp" alt="Childlike artwork of a child sharing a picnic with the people who love them" /><span className="founder-question-title">Why it matters.</span><span className="founder-question-prompt" aria-hidden="true">+</span></summary><p>To keep a child's art and bring their people closer. <a href="https://proof.sathian.ai/">Watch the story</a>.</p></details>
           </div>
         </section>
 
