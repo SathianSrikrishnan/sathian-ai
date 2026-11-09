@@ -100,14 +100,17 @@ describe('requested homepage artwork correction', () => {
     expect(carousel).not.toMatch(/gsap|motion\/|swiper|setInterval/)
   })
 
-  it('turns by itself with no arrows, pause icon, bottom bar or caption; a tap shows the next picture (owner, Nov 9)', () => {
+  it('turns by itself with no arrows: the picture is the Next button and a small in-frame pause icon stays (owner, Nov 9; WCAG 2.2.2)', () => {
     const carousel = read('src/components/home/ArtworkCarousel.tsx')
-    for (const label of ['Previous image', 'Next image', 'Pause automatic rotation']) expect(carousel).not.toContain(label)
-    expect(carousel).toContain('aria-label="Show the next picture"')
+    expect(carousel.match(/<button /g)).toHaveLength(2)
+    for (const label of ['Previous image', 'styles.arrow']) expect(carousel).not.toContain(label)
+    for (const label of ['aria-label="Next image"', 'Pause automatic rotation', 'width="14" height="14"']) expect(carousel).toContain(label)
     expect(carousel).toContain('aria-roledescription="carousel"')
     expect(carousel).toContain('aria-label={`${index + 1} of ${slides.length}`}')
-    expect(carousel).not.toMatch(/<figcaption|styles\.(?:caption|counter|controls|bottomBar|arrow|pause)|<details|<summary/)
-    expect(carousel).toContain("prefers-reduced-motion: reduce")
+    expect(carousel).not.toMatch(/<figcaption|styles\.(?:caption|counter|controls|bottomBar)|<details|<summary/)
+    const styles = read('src/components/home/HomeHeroCarousel.module.css')
+    expect(styles).toContain('.pause { top: 0; right: 0; }')
+    expect(styles).toContain(':focus-visible')
   })
 
   it('shows Finished Proofs on the Village page: a stack, a drifting row and a round carousel', () => {
