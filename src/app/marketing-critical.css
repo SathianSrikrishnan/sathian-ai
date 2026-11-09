@@ -1807,6 +1807,3 @@ h1, h2, h3 {
  .village-vsl-next .about-actions { gap:8px; margin-top:10px; }
  .village-vsl-next .about-button { min-height:44px; padding:10px 16px; }
 }
-
-.village-printed-examples { display:flex; justify-content:center; gap:24px; }
-.village-printed-examples img { width:min(44%,260px); height:auto; object-fit:contain; border-radius:12px; }

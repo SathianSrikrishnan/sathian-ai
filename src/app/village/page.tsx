@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { preload } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
-import { GiftGallery } from '@/components/marketing/GiftGallery'
+import { ProofStack, ProofRow, ProofRound } from '@/components/proofs/FinishedProofs'
 import { TrustpilotReviewStrip } from '@/components/marketing/TrustpilotReviewStrip'
 import { NetworkBenefits } from '@/components/NetworkBenefits'
 import { VillageForm } from '@/components/VillageForm'
@@ -11,7 +11,7 @@ import { SiteNav } from '@/components/SiteNav'
 import { TrackedLink } from '@/components/TrackedLink'
 import { PROOF } from '@/content/proof'
 
-const GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=village'
+const GIFT_HREF = 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=referral&utm_campaign=village'
 export const metadata: Metadata = {
   title: { absolute: "Tooth Fairy Network | A parent-controlled child's network" },
   description: 'Give a child you love a printed Proof of Growth and a parent-controlled digital wallet. Ask Sathian for a free printed Proof with US$10 to start.',
@@ -28,56 +28,6 @@ const STEPS = [
   { title: 'Their village celebrates each new step', text: 'The people their parent chooses can give again through the family link. Each gift adds to the child’s savings as they grow.', image: 'family-gives-again.webp', alt: 'Childlike artwork of family members adding gifts, with the parent holding the key' },
 ] as const
 
-const GIFT_PICTURES = [
-  {
-    "src": "/village/gallery-oct31/sample-front.webp",
-    "title": "Their printed Proof",
-    "caption": "One printed keepsake, made with their artwork or your photo.",
-    "alt": "Sample front of one printed Proof of Growth",
-    "width": 638,
-    "height": 1031
-  },
-  {
-    "src": "/village/gallery-oct31/sample-inside-wallet.webp",
-    "title": "A note from you",
-    "caption": "A few words from someone who cares, kept inside their Proof.",
-    "alt": "Sample personal letter printed inside the Proof",
-    "width": 638,
-    "height": 1031
-  },
-  {
-    "src": "/village/review-oct31/proof-and-certificate-usdc.webp",
-    "title": "Their first wallet",
-    "caption": "US$10 to start, with their parent holding the key.",
-    "alt": "Illustrative US$10 USDC gift with a printed Proof and digital wallet screen",
-    "width": 1536,
-    "height": 1024
-  },
-  {
-    "src": "/village/process-oct31/parent-vault-background.webp",
-    "title": "Their parent holds the key",
-    "caption": "A village brought together by the people who care for the child.",
-    "alt": "Childlike artwork of a parent holding a green vault and a gold key",
-    "width": 1536,
-    "height": 1024
-  },
-  {
-    "src": "/village/network-oct31/02-network-picnic.webp",
-    "title": "People who show up",
-    "caption": "Near or far, small moments give loved ones a reason to connect.",
-    "alt": "Childlike artwork of a child and their village sharing a picnic",
-    "width": 1536,
-    "height": 1024
-  },
-  {
-    "src": "/village/process-oct31/family-gives-again.webp",
-    "title": "Each new step matters",
-    "caption": "Loved ones can mark growth with another gift through the family link.",
-    "alt": "Childlike artwork of loved ones giving again, with the parent holding the key",
-    "width": 1536,
-    "height": 1024
-  }
-]
 
 export default function VillagePage() {
   preload('/village/performance-nov2/founder-film-poster.webp', { as: 'image', fetchPriority: 'high' })
@@ -100,7 +50,8 @@ export default function VillagePage() {
             <NetworkBenefits />
             <p className="first20-note">I'm Sathian, a dad in Toronto. Try it and tell me what you think.</p>
           </div>
-          <Image className="first20-hero-photo" src="/village/network-oct31/01-network-circle.webp" alt="Childlike illustration of a girl holding Proof of Growth, four adults holding Proof of Love and Tanda beside a piggy bank" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 500px" />
+          {/* Nov 9 (owner): finished Proofs stacked, flipping by themselves or on a tap. No arrows. */}
+          <div className="first20-hero-photo"><ProofStack /></div>
         </div>
       </header>
 
@@ -114,12 +65,9 @@ export default function VillagePage() {
         </div>
       </section>
 
-      <section className="minimal-section minimal-container" aria-label="Printed Proof examples"><div className="village-printed-examples">
-        <Image src="/village/performance-nov2/real-proof-fathers-day.webp" alt="A printed Proof of Growth held in a hand, with a child's Father's Day drawing on the cover; names and codes hidden" width={720} height={960} sizes="(max-width:760px) 44vw, 260px" quality={65} loading="lazy" />
-        <Image src="/village/performance-nov2/real-proof-my-tooth.webp" alt="A printed Proof of Growth with a My Tooth drawing on the cover; names and codes hidden" width={720} height={960} sizes="(max-width:760px) 44vw, 260px" quality={65} loading="lazy" />
-      </div></section>
+      <div className="minimal-container"><ProofRow /></div>
 
-      <div className="minimal-container"><GiftGallery id="village-gift-gallery" items={GIFT_PICTURES} /></div>
+      <div className="minimal-container"><ProofRound /></div>
 
       <section className="minimal-section minimal-container village-story-grid" aria-labelledby="village-roles">
         <Image src="/village/network-oct31/03-network-village-path.webp" alt="Childlike illustration of Tanda connecting four family homes to a girl holding Proof of Growth, with the parent holding the key" width={1536} height={1024} sizes="(max-width: 760px) 100vw, 600px" />

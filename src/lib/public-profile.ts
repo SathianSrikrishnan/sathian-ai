@@ -15,7 +15,7 @@ import {
 } from '@/content/site-projects'
 
 const PROFILE_SOURCE = 'https://sathian.ai/'
-export const TFN_GIFT_HREF = 'https://toothfairy.money/?utm_source=sathian.ai&utm_medium=site-agent&utm_campaign=agent'
+export const TFN_GIFT_HREF = 'https://toothfairy.network/?utm_source=sathian.ai&utm_medium=site-agent&utm_campaign=agent'
 const TFN_MAINNET_PROGRAM ='https://solscan.io/account/FqCSNerRsjdxamLyiyTvqiGKZ4vnfYngLUuTKtSi7RTC'
 
 function projectToPublicMemoryCard(project: PublicSiteProject): PublicMemoryCard {

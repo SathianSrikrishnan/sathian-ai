@@ -49,17 +49,25 @@ const assert = (ok, reason) => { if (!ok) throw new Error(reason) }
 
           assert(await page.locator('.village-vsl > .minimal-kicker').count() === 0, `${label}: removed top eyebrow`)
           assert(await page.locator('[data-trustpilot-strip] a').getAttribute('href') === 'https://www.trustpilot.com/review/toothfairy.network', `${label}: conspicuous verified review profile`)
-          const gallery = page.locator('[data-gift-gallery]')
-          await gallery.focus(); await page.keyboard.press('ArrowRight')
-          await gallery.locator('[aria-live]').filter({ hasText: '2 of 6:' }).waitFor()
-          await page.keyboard.press('ArrowLeft'); await gallery.locator('[aria-live]').filter({ hasText: '1 of 6:' }).waitFor()
-          await page.keyboard.press('End'); await gallery.locator('[aria-live]').filter({ hasText: '6 of 6:' }).waitFor()
-          await page.keyboard.press('Home'); await gallery.locator('[aria-live]').filter({ hasText: '1 of 6:' }).waitFor()
-          for (let slide = 2; slide <= 7; slide++) {
-            await gallery.getByRole('button', { name: 'Next picture' }).click()
-            await gallery.locator('[aria-live]').filter({ hasText: `${slide === 7 ? 1 : slide} of 6:` }).waitFor()
-            await page.waitForFunction(() => { const i = document.querySelector('[data-gift-gallery] img'); return i.complete && i.naturalWidth > 0 })
+          // Nov 9 (owner): the Previous/Next gift gallery became Finished Proofs (stack, rows, round carousel).
+          assert(await page.locator('[data-gift-gallery]').count() === 0, `${label}: old gift gallery removed`)
+          assert(await page.getByRole('button', { name: /^(?:Previous|Next) picture$/ }).count() === 0, `${label}: no Previous/Next gallery arrows`)
+          const stack = page.getByRole('button', { name: 'Show the next Proof', exact: true })
+          assert(await stack.count() === 1, `${label}: one Finished Proofs stack`)
+          const cards = await stack.locator('img').count()
+          assert(cards >= 2, `${label}: stack holds several Proofs`)
+          const topIndex = () => stack.locator('img').evaluateAll(images => images.findIndex(image => image.dataset.pos === '0'))
+          for (let step = 0; step <= cards; step++) {
+            const before = await topIndex()
+            assert(before >= 0, `${label}: one Proof on top`)
+            assert((await stack.locator('img[data-pos="0"]').getAttribute('alt')).trim().length > 10, `${label}: top Proof has meaningful alt text`)
+            await stack.click()
+            await page.waitForFunction(expected => [...document.querySelectorAll('button[aria-label="Show the next Proof"] img')]
+              .findIndex(image => image.dataset.pos === '0') === expected, (before + 1) % cards)
           }
+          const row = page.getByRole('region', { name: 'Finished Proofs', exact: true })
+          assert(await row.count() === 1 && await row.locator('img').count() >= 4, `${label}: Finished Proofs rows`)
+          assert(await page.locator('[aria-label="Finished Proofs, turning"] img').count() >= 4, `${label}: round Finished Proofs carousel`)
           await page.evaluate(() => scrollTo({ top:0, behavior:'instant' }))
           const reading = checkReadability(await page.locator('main').innerText())
           assert(reading.pass, `${label}: Village reading grade ${reading.grade}, very hard sentences ${reading.veryHardSentences.length}`)

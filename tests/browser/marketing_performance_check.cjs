@@ -58,7 +58,8 @@ assert(chatFiles.length > 0, 'Chat bundle must be identifiable for the intent-lo
             const raw = await page.request.get(base + asset)
             assert(raw.status() === 200 && raw.headers()['content-type']?.includes('image/webp'), `Missing deployed image ${asset}`)
           }
-          assert(await page.locator('.village-printed-examples img').count() === 2, 'Printed examples must remain visible')
+          // Nov 9 (owner): the two printed examples became the Finished Proofs row (cut-out cards, faces blurred).
+          assert(await page.locator('[aria-label="Finished Proofs"] img').count() >= 30, 'Finished Proofs must remain visible')
         }
         // Reveal lazy pictures only for the full-page review capture, after intent/budget assertions.
         await page.locator('main img').evaluateAll(images => images.forEach(image => { image.loading = 'eager' }))

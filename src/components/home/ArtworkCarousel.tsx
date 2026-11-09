@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image, { getImageProps } from 'next/image'
-import Link from 'next/link'
 import type { ArtworkSlide } from '@/content/home-hero-slides'
 import { HOME_HERO_INTERVAL_MS } from '@/content/home-hero-slides'
 import styles from './HomeHeroCarousel.module.css'
 
 type Props = { slides: readonly ArtworkSlide[]; label: string; sizes: string; hero?: boolean; href?: string }
 
-export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Props) {
+export function ArtworkCarousel({ slides, label, sizes, hero = false }: Props) {
   const root = useRef<HTMLDivElement>(null)
   const pointerIntent = useRef<boolean | null>(null)
   const [index, setIndex] = useState(0)
@@ -84,7 +83,6 @@ export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Pr
   }, [requested, ready, rotating, due, next])
 
   const move = (step: number) => {
-    setRunning(false)
     setFailed(false)
     setRequested(value => ((value ?? index) + step + slides.length) % slides.length)
   }
@@ -93,15 +91,14 @@ export function ArtworkCarousel({ slides, label, sizes, hero = false, href }: Pr
 
   return (
     <div ref={root} className={`${hero ? 'village-home-art' : styles.mini} ${styles.carousel}`} role="region" aria-roledescription="carousel" aria-label={label} data-slide={index + 1} data-ready={ready === next} data-running={rotating} data-image-count={slides.length}
-      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovered(true) }} onPointerLeave={event => { if (event.pointerType === 'mouse') setHovered(false) }} onFocusCapture={() => setRunning(false)}>
+      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovered(true) }} onPointerLeave={event => { if (event.pointerType === 'mouse') setHovered(false) }} onFocusCapture={event => { if ((event.target as HTMLElement).matches(':focus-visible')) setRunning(false) }}>
       <div className={styles.frame}>
         <div className={styles.slide} aria-live={running ? 'off' : 'polite'} aria-atomic="true">
           <div role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${slides.length}`}>
-            {href ? <Link href={href} prefetch={false} aria-label="See what a child gets from Tooth Fairy Network">{picture}</Link> : picture}
+            {/* Nov 9 (owner): no arrows. The picture is the Next button; it keeps turning by itself. The small in-frame pause icon stays (WCAG 2.2.2). */}
+            <button type="button" className={styles.tap} aria-label="Next image" onClick={() => move(1)}>{picture}</button>
           </div>
         </div>
-        <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="Previous image" onClick={() => move(-1)}><span aria-hidden="true">&lsaquo;</span></button>
-        <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="Next image" onClick={() => move(1)}><span aria-hidden="true">&rsaquo;</span></button>
         <button className={styles.pause} type="button" disabled={reducedMotion}
           aria-label={reducedMotion ? 'Automatic rotation off: reduced motion' : running ? 'Pause automatic rotation' : 'Start automatic rotation'}
           onPointerDown={() => { pointerIntent.current = !running }} onPointerCancel={() => { pointerIntent.current = null }} onBlur={() => { pointerIntent.current = null }}

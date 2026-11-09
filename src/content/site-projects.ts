@@ -28,7 +28,7 @@ export const TOOTH_FAIRY_NETWORK_PROJECT: PublicSiteProject = {
     'A child’s first digital wallet and a personalized Vault Book, given by the people who love them.',
   approvedClaims: [
     'Tooth Fairy Network gives a child their first digital wallet and a personalized printed Vault Book. Grandparents, aunts, uncles and other family usually give it as a gift; parents can start one too.',
-    'The gift is US$59 once, with standard shipping and tax included, delivered in the US and Canada. It includes the printed Vault Book with the giver’s message and picture, and US$10 for the child’s vault in Dollars, Bitcoin or Solana. Give one at https://toothfairy.money/.',
+    'The gift is US$59 once, with standard shipping and tax included, delivered in the US and Canada. It includes the printed Vault Book with the giver’s message and picture, and US$10 for the child’s vault in Dollars, Bitcoin or Solana. Give one at https://toothfairy.network/.',
     'The giver does not need the parent to have an account first. The parent accepts the gift, and the vault is controlled by the parent’s key. The US$10 reaches the vault seven days after payment or when the parent accepts, whichever is later. Later family gifts join the same vault.',
     'It is not a bank account and is not insured. Do not promise instant funding or financial returns.',
     'PROOF at https://proof.sathian.ai/ is Sathian’s visual introduction to why he is building it. Its Ethereum chapter explains an idea; it does not mean an Ethereum product rail is available.',
