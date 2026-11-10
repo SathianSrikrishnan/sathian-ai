@@ -115,7 +115,8 @@ describe('requested homepage artwork correction', () => {
 
   it('shows Finished Proofs on the Village page: a stack, a drifting row and a round carousel', () => {
     const village = read('src/app/village/page.tsx')
-    for (const part of ['<ProofStack />', '<ProofRow />', '<ProofRound />']) expect(village).toContain(part)
+    for (const part of ['<ProofStack />', '<ProofRound />', 'village-real-proofs']) expect(village).toContain(part)
+    expect(village).not.toContain('<ProofRow')
     expect(village).not.toContain('<GiftGallery')
   })
 

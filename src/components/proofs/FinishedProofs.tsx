@@ -21,7 +21,7 @@ export function ProofStack({ proofs = FINISHED_PROOFS.slice(0, 5), priority = fa
         {proofs.map((p, i) => {
           const pos = (i - top + proofs.length) % proofs.length;
           return <Image key={p.src} src={p.src} alt={pos === 0 ? p.alt : ''} width={p.width} height={p.height} sizes={size === 'sm' ? '170px' : '(min-width: 700px) 280px, 62vw'}
-            priority={priority && i === 0} loading={priority && i === 0 ? undefined : 'lazy'} className={styles.card} data-pos={Math.min(pos, 4)} />;
+            priority={priority && i === 0} loading={priority && i === 0 ? undefined : priority && i === 1 ? 'eager' : 'lazy'} className={styles.card} data-pos={Math.min(pos, 4)} />;
         })}
       </button>
       <div className={styles.dots} aria-hidden="true">{proofs.map((p, i) => <i key={p.src} className={i === top ? styles.on : undefined} />)}</div>

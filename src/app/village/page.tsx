@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { preload } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ProofStack, ProofRow, ProofRound } from '@/components/proofs/FinishedProofs'
+import { ProofStack, ProofRound } from '@/components/proofs/FinishedProofs'
 import { TrustpilotReviewStrip } from '@/components/marketing/TrustpilotReviewStrip'
 import { NetworkBenefits } from '@/components/NetworkBenefits'
 import { VillageForm } from '@/components/VillageForm'
@@ -57,7 +57,8 @@ export default function VillagePage() {
 
       <section id="the-gift" className="minimal-section minimal-container" aria-labelledby="gift-title">
         <h2 id="gift-title">What the child gets</h2>
-        <figure className="network-product-display"><Image src="/village/review-oct31/proof-and-certificate-usdc.webp" alt="Proof of Growth booklet beside an open US$10 USDC certificate design, a piggy bank and an illustrative digital wallet" width={1536} height={1024} sizes="(max-width: 760px) calc(100vw - 32px), 1100px" /></figure>
+        {/* Nov 9 (owner): show the real finished Proofs here; the old booklet render looked like a different product. */}
+        <figure className="network-product-display village-real-proofs"><Image src="/village/finished/real-140138-earth-sun.webp" alt="A finished Proof of Love with a child's earth and sun drawing" width={440} height={711} sizes="(max-width: 760px) 44vw, 300px" /><Image src="/village/finished/real-140129.webp" alt="A finished Proof of Growth with a child's My Tooth drawing" width={440} height={711} sizes="(max-width: 760px) 44vw, 300px" /></figure>
         <div className="village-product-grid network-product-details">
           <div><h3>A printed Proof of Growth</h3><p>Their artwork or your photo, with your note inside. A keepsake to hold and read again.</p></div>
           <div><h3>A note from someone who cares</h3><p>A message that marks a small moment. Even when you live far away.</p></div>
@@ -65,7 +66,6 @@ export default function VillagePage() {
         </div>
       </section>
 
-      <div className="minimal-container"><ProofRow /></div>
 
       <div className="minimal-container"><ProofRound /></div>
 

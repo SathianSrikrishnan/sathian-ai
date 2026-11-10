@@ -7,7 +7,8 @@
 .card[data-pos="1"] { transform: translate(9px, 7px) rotate(-4deg) scale(.965); z-index: 4; }
 .card[data-pos="2"] { transform: translate(16px, 13px) rotate(3deg) scale(.93); z-index: 3; }
 .card[data-pos="3"] { transform: translate(22px, 18px) rotate(-2deg) scale(.9); z-index: 2; opacity: .9; }
-.card[data-pos="4"] { transform: translate(-60%, -4%) rotate(-12deg); opacity: 0; z-index: 1; }
+/* Leaving card shrinks as it goes, so it never becomes the page's largest paint (LCP). */
+.card[data-pos="4"] { transform: translate(-55%, -2%) rotate(-10deg) scale(.8); opacity: 0; z-index: 1; }
 .dots { display: flex; gap: 7px; }
 .dots i { width: 7px; height: 7px; border-radius: 4px; background: rgba(27, 35, 64, .18); transition: width .3s, background .3s; }
 .dots i.on { width: 20px; background: currentColor; }
